@@ -34,7 +34,7 @@ export default function Home() {
                     className="absolute z-10 object-cover w-full h-full opacity-50"
                 >
                     <source
-                        src="http://mldsai.com/static/vid/bg.mp4"
+                        src="./hero.mp4"
                         type="video/mp4"
                     />
                     Your browser does not support the video tag.
