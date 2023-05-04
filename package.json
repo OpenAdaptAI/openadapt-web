@@ -18,12 +18,17 @@
     "export": "next export"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-brands-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "cypress": "^10.0.3",
     "daisyui": "^2.51.6",
     "eslint-config-next": "^13.3.4",
     "next": "^13.3.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-fontawesome": "^1.7.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
