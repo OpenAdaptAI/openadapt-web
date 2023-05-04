@@ -12,7 +12,7 @@ export default function Home() {
                 <div className="relative z-30 p-5 text-2xl">
                     <div className="hero-content text-center">
                         <div className="grid grid-flow-row auto-rows-max">
-                            <h1 className="text-7xl mb-8">
+                            <h1 className="text-6xl mb-8 md:text-7xl">
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
