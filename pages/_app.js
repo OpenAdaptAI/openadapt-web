@@ -1,7 +1,15 @@
 import '@styles/globals.css'
+import { Raleway } from 'next/font/google'
 
-function Application({ Component, pageProps }) {
-  return <Component {...pageProps} />
+const raleway = Raleway({
+  subsets: ['latin'],
+  variable: '--font-raleway',
+})
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <main className={`${raleway.variable} font-sans`}>
+      <Component {...pageProps} />
+    </main>
+  )
 }
-
-export default Application
