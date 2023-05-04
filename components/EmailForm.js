@@ -39,7 +39,8 @@ export default function FeedbackForm() {
                     </p>
 
                     <input
-                        type="text"
+                        name="email"
+                        type="email"
                         placeholder="Email"
                         className="input w-full max-w-xs text-neutral"
                         required
