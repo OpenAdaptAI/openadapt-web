@@ -41,8 +41,7 @@ export default function Home() {
                                 AI for Humans.
                             </h2>
                             <h3 className="my-12 mb-20 font-light">
-                                Adapt to the Future with Ease.
-                            </h3>
+                                Let's Adapt and Share.
                             <EmailForm />
                         </div>
                     </div>
