@@ -42,6 +42,7 @@ export default function Home() {
                             </h2>
                             <h3 className="my-12 mb-20 font-light">
                                 Let's Adapt and Share.
+                            </h3>
                             <EmailForm />
                         </div>
                     </div>
