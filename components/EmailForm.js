@@ -7,9 +7,7 @@ import styles from './EmailForm.module.css'
 
 export default function FeedbackForm() {
     const router = useRouter()
-    console.log({ router })
     const success = router.pathname.endsWith('success')
-    console.log({ success })
 
     if (success) {
         return (

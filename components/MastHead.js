@@ -1,7 +1,11 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
+import { motion } from "framer-motion"
 
-import Head from 'next/head'
+
 
 import EmailForm from '@components/EmailForm'
+
 
 import styles from './MastHead.module.css'
 
@@ -16,6 +20,23 @@ export default function Home() {
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
+                            <div className="flex flex-col align-items-center justify-content-center mr-2">
+                                <motion.div
+                                    animate={{
+                                        y: [-3, 3, -3]
+                                    }}
+                                    transition={{
+                                      duration: 2,
+                                      ease: "easeInOut",
+                                      times: [0, .5, 1],
+                                      repeat: Infinity,
+                                      repeatDelay: 0,
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faBrain} className="text-5xl mb-2" />
+                                </motion.div>
+                                <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
+                            </div>
                             <h2 className="text-4xl my-12 font-extralight">
                                 AI for Humans.
                             </h2>
