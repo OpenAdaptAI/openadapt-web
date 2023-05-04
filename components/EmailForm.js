@@ -45,7 +45,7 @@ export default function FeedbackForm() {
                         className="input w-full max-w-xs text-neutral"
                         required
                     />
-                    <button className="btn btn-primary ml-2">Register</button>
+                    <button className="btn btn-primary ml-2 mt-2">Register</button>
                 </form>
                 <p className="text-sm mt-2 font-light opacity-70">
                     Register for updates (we promise not to spam)

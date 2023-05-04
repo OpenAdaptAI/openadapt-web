@@ -17,11 +17,10 @@ export default function Home() {
                                 <span className="font-thin">.AI</span>
                             </h1>
                             <h2 className="text-4xl my-12 font-extralight">
-                                Empowering Humans to Build AI Solutions
+                                AI for Humans.
                             </h2>
                             <h3 className="my-12 mb-20 font-light">
-                                Unleash the power of cutting-edge AI with zero
-                                effort.
+                                Adapt to the Future with Ease.
                             </h3>
                             <EmailForm />
                         </div>
