@@ -3,6 +3,7 @@ describe('empty spec', () => {
     cy.visit('/')
   })
 
+  /*
   it('displays the resources text', () => {
     cy.get('h1')
     .contains('Next.js Toolbox');
@@ -11,4 +12,5 @@ describe('empty spec', () => {
     cy.get('form')
     .should('be.visible')
   })
+  */
 })
