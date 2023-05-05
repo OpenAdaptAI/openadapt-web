@@ -2,15 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
 
-
-
 import EmailForm from '@components/EmailForm'
-
 
 import styles from './MastHead.module.css'
 
 export default function Home() {
     return (
+        <>
         <div className={styles.section}>
             <div className="relative flex items-center justify-center h-screen overflow-hidden">
                 <div className="relative z-30 p-5 text-2xl">
@@ -41,7 +39,9 @@ export default function Home() {
                                 AI for Humans.
                             </h2>
                             <h3 className="my-12 mb-20 font-light">
-                                Let's Adapt and Share.
+                                Automate your workflows. <br/>
+                                No programming required. <br />
+                                Record, play, and share.
                             </h3>
                             <EmailForm />
                         </div>
@@ -65,5 +65,67 @@ export default function Home() {
       <Footer />
       */}
         </div>
+        <div className={styles.section}>
+            <div className="relative flex items-center justify-center mb-20 mx-20">
+                <div>
+                    <h2 className="text-2xl mt-10">Getting Started</h2>
+                    <ol className="list-decimal">
+                        <li className="mt-2">
+                            <a
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                href="https://join.slack.com/t/mldsai/shared_invite/zt-1uf94nn7r-qcQnS~hinLPKftUapNzbuw"
+                            >
+                            Join us on Slack
+                            </a>
+                        </li>
+
+
+                        <li className="mt-2">
+                            Download and install Git:
+                            <br/>
+                            <a href="https://git-scm.com/download/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                https://git-scm.com/download/
+                            </a>
+                        </li>
+                        <li className="mt-2">
+                            Download and install Python:
+                            <br/>
+                            <a href="https://www.python.org/downloads/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                https://www.python.org/downloads/
+                            </a>
+                        </li>
+                        <li className="mt-2">
+                            Download and install PuterBot:
+
+                            <h3 className="mt-5"><b>Windows</b></h3>
+                            <ul className="mt-5">
+                                <li>press WINKEY, type "powershell", and press Enter</li>
+                                <li>copy and paste the following command into the terminal, then press Enter:</li>
+                            </ul>
+                            <pre className="whitespace-pre-wrap code bg-slate-100 p-5">
+                                powershell -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.ps1' | Invoke-Expression"
+                            </pre>
+
+                            <h3 className="mt-5"><b>MacOS</b></h3>
+                            <ul className="mt-5">
+                                <li>press CMD+Space, type "terminal" and press Enter</li>
+                                <li>copy and paste the following command into the terminal, then press Enter:</li>
+                            </ul>
+                            <pre className="whitespace-pre-wrap code bg-slate-100 p-5">
+                                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.sh)"
+                            </pre>
+
+                        </li>
+                    </ol> 
+                    <h2 className="text-2xl mt-10">Troubleshooting</h2>
+
+                    <p>If you experience any issue, please post an issue to our Github:</p>
+                    <p>
+                        <a href="https://github.com/MLDSAI/puterbot/issues/new"
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline">https://github.com/MLDSAI/puterbot/issues/new</a></p>
+                </div>
+            </div>
+        </div>
+        </>
     )
 }

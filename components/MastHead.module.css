@@ -6,8 +6,8 @@
   min-height: 100vh;
   padding: 0;
 }
-.section:first-of-type,
-.section:last-of-type
+.section:first-of-type
+/*, .section:last-of-type*/
 {
   background: #000033;
   color: #eee;
