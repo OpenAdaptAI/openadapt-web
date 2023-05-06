@@ -49,12 +49,12 @@ export default function Home() {
                                     Automate your workflows.
                                 </span>
                                 <br/>
-                                <span className="bg-white bg-opacity-30 inline-block p-2 -my-2">
-                                    No programming required.
+                                <span className="inline-block p-2 -my-2">
+                                    Record, replay, and share.
                                 </span>
                                 <br />
-                                <span className="inline-block p-2">
-                                    Record, play, and share.
+                                <span className="bg-white bg-opacity-20 inline-block p-2">
+                                    <b>No programming required.</b>
                                 </span>
                             </h3>
                             <EmailForm />
