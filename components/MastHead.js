@@ -66,8 +66,8 @@ export default function Home() {
       */}
         </div>
         <div className={styles.section}>
-            <div className="relative flex items-center justify-center mb-20 mx-20">
-                <div>
+            <div className="relative flex items-center justify-center mb-2 mx-2 md-12">
+                <div className="grid grid-cols-1 break-words">
                     <h2 className="text-2xl mt-10">Getting Started</h2>
                     <ol className="list-decimal">
                         <li className="mt-2">
@@ -78,8 +78,6 @@ export default function Home() {
                             Join us on Slack
                             </a>
                         </li>
-
-
                         <li className="mt-2">
                             Download and install Git:
                             <br/>
