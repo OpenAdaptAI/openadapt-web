@@ -45,7 +45,7 @@ export default function Home() {
                                 </Link>
                             </div>
                             <h3 className="my-12 mb-20 font-light">
-                                <span className="bg-white bg-opacity-30 inline-block p-2">
+                                <span className="inline-block p-2">
                                     Automate your workflows.
                                 </span>
                                 <br/>
@@ -53,7 +53,7 @@ export default function Home() {
                                     No programming required.
                                 </span>
                                 <br />
-                                <span className="bg-white bg-opacity-30 inline-block p-2">
+                                <span className="inline-block p-2">
                                     Record, play, and share.
                                 </span>
                             </h3>
@@ -85,25 +85,13 @@ export default function Home() {
                     <h2 id="start" className="text-2xl mt-10">Getting Started</h2>
                     <ol className="list-decimal list-inside">
                         <li className="mt-2">
-                            <a
-                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                href="https://join.slack.com/t/mldsai/shared_invite/zt-1uf94nn7r-qcQnS~hinLPKftUapNzbuw"
-                            >
-                            Join us on Slack
-                            </a>
-                        </li>
-                        <li className="mt-2">
-                            Download and install Git:
-                            <br/>
                             <a href="https://git-scm.com/download/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                https://git-scm.com/download/
+                                Download and install Git
                             </a>
                         </li>
                         <li className="mt-2">
-                            Download and install Python:
-                            <br/>
                             <a href="https://www.python.org/downloads/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                https://www.python.org/downloads/
+                                Download and install Python
                             </a>
                         </li>
                         <li className="mt-2">
@@ -111,10 +99,14 @@ export default function Home() {
 
                             <h3 className="mt-5"><b>Windows</b></h3>
                             <ul className="mt-5 list-disc list-inside">
+                                <li>Download and install <a
+                                    href="https://aka.ms/vs/17/release/vs_BuildTools.exe"
+                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                >Visual Studio Build Tools</a> (select "Desktop development with C++")</li>
                                 <li>Press Windows Key, type "powershell", and press Enter</li>
                                 <li>Copy and paste the following command into the terminal, and press Enter:</li>
                             </ul>
-                            <pre className="whitespace-pre-wrap code bg-slate-100 p-5">
+                            <pre className="whitespace-pre-wrap code bg-slate-100 p-3 m-2">
                                 powershell -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.ps1' | Invoke-Expression"
                             </pre>
 
@@ -123,18 +115,38 @@ export default function Home() {
                                 <li>Press Command+Space, type "terminal", and press Enter</li>
                                 <li>Copy and paste the following command into the terminal, and press Enter:</li>
                             </ul>
-                            <pre className="whitespace-pre-wrap code bg-slate-100 p-5">
+                            <pre className="whitespace-pre-wrap code bg-slate-100 p-3 m-2">
                                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.sh)"
                             </pre>
 
                         </li>
                     </ol> 
+                    <h2 className="text-2xl mt-10">What's Next?</h2>
+                        <li className="mt-2">
+                            <a
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                href="https://github.com/MLDSAI/puterbot#run"
+                            >
+                                Read our usage instructions
+                            </a>
+                        </li>
+                        <li className="mt-2">
+                            <a
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                href="https://join.slack.com/t/mldsai/shared_invite/zt-1uf94nn7r-qcQnS~hinLPKftUapNzbuw"
+                            >
+                            Join us on Slack
+                            </a>
+                        </li>
                     <h2 className="text-2xl mt-10">Troubleshooting</h2>
-
-                    <p>If you experience any issue, please post an issue to our Github:</p>
                     <p>
-                        <a href="https://github.com/MLDSAI/puterbot/issues/new"
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline">https://github.com/MLDSAI/puterbot/issues/new</a></p>
+                        If you have any questions, please <a
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            href="https://github.com/MLDSAI/puterbot/issues/new"
+                        >
+                            Submit an issue to our Github
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
