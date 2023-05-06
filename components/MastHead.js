@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
@@ -38,10 +39,23 @@ export default function Home() {
                             <h2 className="text-4xl my-12 font-extralight">
                                 AI for Humans.
                             </h2>
+                            <div>
+                                <Link className="btn btn-primary ml-2 mt-2" href="#start"  scroll={false}>
+                                    Get Started
+                                </Link>
+                            </div>
                             <h3 className="my-12 mb-20 font-light">
-                                Automate your workflows. <br/>
-                                No programming required. <br />
-                                Record, play, and share.
+                                <span className="bg-white bg-opacity-30 inline-block p-2">
+                                    Automate your workflows.
+                                </span>
+                                <br/>
+                                <span className="bg-white bg-opacity-30 inline-block p-2 -my-2">
+                                    No programming required.
+                                </span>
+                                <br />
+                                <span className="bg-white bg-opacity-30 inline-block p-2">
+                                    Record, play, and share.
+                                </span>
                             </h3>
                             <EmailForm />
                         </div>
@@ -68,8 +82,8 @@ export default function Home() {
         <div className={styles.section}>
             <div className="relative flex items-center justify-center mb-2 mx-2 md-12">
                 <div className="grid grid-cols-1 break-words">
-                    <h2 className="text-2xl mt-10">Getting Started</h2>
-                    <ol className="list-decimal">
+                    <h2 id="start" className="text-2xl mt-10">Getting Started</h2>
+                    <ol className="list-decimal list-inside">
                         <li className="mt-2">
                             <a
                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -96,18 +110,18 @@ export default function Home() {
                             Download and install PuterBot:
 
                             <h3 className="mt-5"><b>Windows</b></h3>
-                            <ul className="mt-5">
-                                <li>press WINKEY, type "powershell", and press Enter</li>
-                                <li>copy and paste the following command into the terminal, then press Enter:</li>
+                            <ul className="mt-5 list-disc list-inside">
+                                <li>Press Windows Key, type "powershell", and press Enter</li>
+                                <li>Copy and paste the following command into the terminal, and press Enter:</li>
                             </ul>
                             <pre className="whitespace-pre-wrap code bg-slate-100 p-5">
                                 powershell -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.ps1' | Invoke-Expression"
                             </pre>
 
                             <h3 className="mt-5"><b>MacOS</b></h3>
-                            <ul className="mt-5">
-                                <li>press CMD+Space, type "terminal" and press Enter</li>
-                                <li>copy and paste the following command into the terminal, then press Enter:</li>
+                            <ul className="mt-5 list-disc list-inside">
+                                <li>Press Command+Space, type "terminal", and press Enter</li>
+                                <li>Copy and paste the following command into the terminal, and press Enter:</li>
                             </ul>
                             <pre className="whitespace-pre-wrap code bg-slate-100 p-5">
                                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.sh)"

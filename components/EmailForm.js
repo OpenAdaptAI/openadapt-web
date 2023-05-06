@@ -11,16 +11,16 @@ export default function FeedbackForm() {
 
     if (success) {
         return (
-            <div>
+            <>
                 <h2 className="font-extralight">
                     <FontAwesomeIcon icon={faPaperPlane} className="mr-4" />
 					Get Ready
                 </h2>
-            </div>
+            </>
         )
     } else {
         return (
-            <div>
+            <>
                 <form
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
@@ -48,7 +48,7 @@ export default function FeedbackForm() {
                 <p className="text-sm mt-2 font-light opacity-70">
                     Register for updates (we promise not to spam)
                 </p>
-            </div>
+            </>
         )
     }
 }
