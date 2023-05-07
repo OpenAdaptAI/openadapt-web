@@ -59,7 +59,7 @@ export default function Home() {
                                 AI for Humans.
                             </h2>
                             <div>
-                                <Link className="btn btn-primary ml-2 mt-2" href="#start"  scroll={false}>
+                                <Link className="btn btn-primary ml-2 mt-2" href="#start" scroll={false}>
                                     Get Started
                                 </Link>
                             </div>
