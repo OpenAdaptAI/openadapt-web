@@ -3,6 +3,7 @@ import { Raleway } from 'next/font/google'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import Head from 'next/head';
+import Script from 'next/script';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -26,6 +27,7 @@ export default function MyApp({ Component, pageProps }) {
       <main className={`${raleway.variable} font-sans`}>
         <Component {...pageProps} />
       </main>
+      <Script src="https://buttons.github.io/buttons.js" />
     </>
   )
 }

@@ -93,6 +93,14 @@ export default function Home() {
                     />
                     Your browser does not support the video tag.
                 </video>
+                <div className="absolute top-0 right-0 z-50">
+                    <div className="relative z-50 inline-block mr-2 mt-2">
+                        <a className="github-button mr-2" href="https://github.com/MLDSAI/OpenAdaptAI/fork" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork MLDSAI/OpenAdaptAI on GitHub">Fork</a>
+                    </div>
+                    <div className="relative z-50 inline-block mr-2 mt-2">
+                        <a className="github-button" href="https://github.com/MLDSAI/OpenAdaptAI" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star MLDSAI/OpenAdaptAI on GitHub">Star</a>
+                    </div>
+                </div>
             </div>
             {/*
       <Footer />
