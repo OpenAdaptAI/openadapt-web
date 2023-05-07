@@ -2,6 +2,7 @@ import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
+import Image from 'next/image';
 
 import EmailForm from '@components/EmailForm'
 
@@ -32,7 +33,25 @@ export default function Home() {
                                       repeatDelay: 0,
                                     }}
                                 >
+                                    {/*
                                     <FontAwesomeIcon icon={faBrain} className="text-5xl mb-2" />
+                                    <Image
+                                      className="hue-rotate-90 invert text-center inline absolute -ml-4 -mt-10"
+                                      priority
+                                      src="/images/favicon.svg"
+                                      height={64}
+                                      width={64}
+                                      alt="Large Language Model"
+                                    />
+                                    */}
+                                    <Image
+                                      className="invert text-center inline contrast-200"
+                                      priority
+                                      src="/images/favicon.svg"
+                                      height={64}
+                                      width={64}
+                                      alt="Large Language Model"
+                                    />
                                 </motion.div>
                                 <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                             </div>
@@ -44,7 +63,7 @@ export default function Home() {
                                     Get Started
                                 </Link>
                             </div>
-                            <h3 className="my-12 mb-20 font-light">
+                            <h3 className="my-10 mb-10 font-light">
                                 <span className="inline-block p-2">
                                     Automate your workflows.
                                 </span>
@@ -53,7 +72,7 @@ export default function Home() {
                                     Record, replay, and share.
                                 </span>
                                 <br />
-                                <span className="bg-white bg-opacity-20 inline-block p-2">
+                                <span className="bg-white bg-opacity-20 inline-block p-2 py-0">
                                     <b>No programming required.</b>
                                 </span>
                             </h3>
@@ -146,6 +165,13 @@ export default function Home() {
                         >
                             Submit an issue to our Github
                         </a>
+                                    <Image
+                                      priority
+                                      src="/images/favicon.svg"
+                                      height={32}
+                                      width={32}
+                                      alt="Large Language Model"
+                                    />
                     </p>
                 </div>
             </div>
