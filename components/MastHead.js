@@ -122,7 +122,7 @@ export default function Home() {
                             </a>
                         </li>
                         <li className="mt-2">
-                            Download and install PuterBot:
+                            Download and install <b>OpenAdapt</b>:
 
                             <h3 className="mt-5"><b>Windows</b></h3>
                             <ul className="mt-5 list-disc list-inside">
@@ -152,7 +152,7 @@ export default function Home() {
                         <li className="mt-2">
                             <a
                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                href="https://github.com/MLDSAI/puterbot#run"
+                                href="https://github.com/MLDSAI/OpenAdapt#run"
                             >
                                 Read our usage instructions
                             </a>
@@ -169,7 +169,7 @@ export default function Home() {
                     <p>
                         Please <a
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                            href="https://github.com/MLDSAI/puterbot/issues/new"
+                            href="https://github.com/MLDSAI/OpenAdapt/issues/new"
                         >
                             submit an issue to our Github
                         </a>.
