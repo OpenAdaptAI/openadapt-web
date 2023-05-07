@@ -16,7 +16,7 @@ export default function Home() {
                 <div className="relative z-30 p-5 text-2xl">
                     <div className="hero-content text-center">
                         <div className="grid grid-flow-row auto-rows-max">
-                            <h1 className="text-6xl mb-8 md:text-7xl">
+                            <h1 className="text-6xl mb-6 md:text-7xl">
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
@@ -45,7 +45,7 @@ export default function Home() {
                                     />
                                     */}
                                     <Image
-                                      className="invert text-center inline contrast-200"
+                                      className="invert text-center inline"
                                       priority
                                       src="/images/favicon.svg"
                                       height={64}
@@ -55,7 +55,7 @@ export default function Home() {
                                 </motion.div>
                                 <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                             </div>
-                            <h2 className="text-4xl my-12 font-extralight">
+                            <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
                             </h2>
                             <div>
@@ -63,7 +63,7 @@ export default function Home() {
                                     Get Started
                                 </Link>
                             </div>
-                            <h3 className="my-10 mb-10 font-light">
+                            <h3 className="my-10 font-light">
                                 <span className="inline-block p-2">
                                     Automate your workflows.
                                 </span>
@@ -159,23 +159,26 @@ export default function Home() {
                         </li>
                     <h2 className="text-2xl mt-10">Troubleshooting</h2>
                     <p>
-                        If you have any questions, please <a
+                        Please <a
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                             href="https://github.com/MLDSAI/puterbot/issues/new"
                         >
-                            Submit an issue to our Github
-                        </a>
-                                    <Image
-                                      priority
-                                      src="/images/favicon.svg"
-                                      height={32}
-                                      width={32}
-                                      alt="Large Language Model"
-                                    />
+                            submit an issue to our Github
+                        </a>.
                     </p>
                 </div>
             </div>
         </div>
+          <footer className="grid grid-flow-row auto-rows-max">
+            <Image
+              className="m-auto my-6"
+              priority
+              src="/images/favicon.svg"
+              height={32}
+              width={32}
+              alt="Large Language Model"
+            />
+          </footer>
         </>
     )
 }

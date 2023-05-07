@@ -22,6 +22,7 @@ export default function FeedbackForm() {
         return (
             <>
                 <form
+                    className="mt-6"
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
                     name="email"
@@ -36,14 +37,16 @@ export default function FeedbackForm() {
                         </label>
                     </p>
 
-                    <input
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        className="input w-full max-w-xs text-neutral"
-                        required
-                    />
-                    <button className="btn btn-primary ml-2 mt-2">Register</button>
+                    <div className="flex justify-center ">
+                        <input
+                            name="email"
+                            type="email"
+                            placeholder="Email"
+                            className="input w-8/12 max-w-xs text-neutral"
+                            required
+                        />
+                        <button className="btn btn-primary ml-2">Register</button>
+                    </div>
                 </form>
                 <p className="text-sm mt-2 font-light opacity-70">
                     Register for updates (we promise not to spam)
