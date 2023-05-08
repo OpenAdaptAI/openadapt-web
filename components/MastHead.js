@@ -134,7 +134,7 @@ export default function Home() {
                                 <li>Copy and paste the following command into the terminal, and press Enter:</li>
                             </ul>
                             <pre className="whitespace-pre-wrap code bg-slate-100 p-3 m-2">
-                                powershell -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.ps1' | Invoke-Expression"
+                                powershell -noexit -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.ps1' | Invoke-Expression"
                             </pre>
 
                             <h3 className="mt-5"><b>MacOS</b></h3>
