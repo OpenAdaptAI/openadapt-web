@@ -110,44 +110,32 @@ export default function Home() {
             <div className="relative flex items-center justify-center mb-2 mx-2 md-12">
                 <div className="grid grid-cols-1 break-words">
                     <h2 id="start" className="text-2xl mt-10">Getting Started</h2>
-                    <ol className="list-decimal list-inside">
-                        <li className="mt-2">
-                            <a href="https://git-scm.com/download/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                Download and install Git
-                            </a>
-                        </li>
-                        <li className="mt-2">
-                            <a href="https://www.python.org/downloads/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                Download and install Python
-                            </a>
-                        </li>
-                        <li className="mt-2">
-                            Download and install <b>OpenAdapt</b>:
-
                             <h3 className="mt-5"><b>Windows</b></h3>
-                            <ul className="mt-5 list-disc list-inside">
-                                <li>Download and install <a
-                                    href="https://aka.ms/vs/17/release/vs_BuildTools.exe"
-                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                >Visual Studio Build Tools</a> (select "Desktop development with C++")</li>
+                            <ul className="mt-2 list-disc list-inside">
                                 <li>Press Windows Key, type "powershell", and press Enter</li>
                                 <li>Copy and paste the following command into the terminal, and press Enter:</li>
                             </ul>
-                            <pre className="whitespace-pre-wrap code bg-slate-100 p-3 m-2">
+                            <pre className="whitespace-pre-wrap code text-slate-600 bg-slate-100 p-3 m-2">
                                 powershell -noexit -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.ps1' | Invoke-Expression"
                             </pre>
-
                             <h3 className="mt-5"><b>MacOS</b></h3>
-                            <ul className="mt-5 list-disc list-inside">
+                            <ul className="mt-2 list-disc list-inside">
+                                <li>
+                                    <a href="https://git-scm.com/download/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                        Download and install Git
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.python.org/downloads/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                        Download and install Python
+                                    </a>
+                                </li>
                                 <li>Press Command+Space, type "terminal", and press Enter</li>
                                 <li>Copy and paste the following command into the terminal, and press Enter:</li>
                             </ul>
-                            <pre className="whitespace-pre-wrap code bg-slate-100 p-3 m-2">
+                            <pre className="whitespace-pre-wrap code text-slate-600 bg-slate-100 p-3 m-2">
                                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.sh)"
                             </pre>
-
-                        </li>
-                    </ol> 
                     <h2 className="text-2xl mt-10">What's Next?</h2>
                         <li className="mt-2">
                             <a
