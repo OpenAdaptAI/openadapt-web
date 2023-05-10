@@ -121,13 +121,13 @@ export default function Home() {
                             <h3 className="mt-5"><b>MacOS</b></h3>
                             <ul className="mt-2 list-disc list-inside">
                                 <li>
+                                    Download and install 
                                     <a href="https://git-scm.com/download/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                        Download and install Git
+                                        Git
                                     </a>
-                                </li>
-                                <li>
+                                    and
                                     <a href="https://www.python.org/downloads/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                        Download and install Python
+                                        Python 3.10
                                     </a>
                                 </li>
                                 <li>Press Command+Space, type "terminal", and press Enter</li>
