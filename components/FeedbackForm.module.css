@@ -1,8 +1,9 @@
 .form {
-  margin: 40px 40px;
+  margin: 0px 0px;
   min-width: 300px;
-  width: 90%;
-  background-color: #000033;
+  width: 100%;
+  background-color: rgba(0,0,30,1);
+  border: 40px solid rgba(0,0,30,1);
 }
 
 .form-field {
@@ -10,8 +11,9 @@
   margin: 15px 0;
   padding: 12px 20px;
   width: 100%;
-  background-color: cornsilk;
+  background-color: oldlace;
   color: black;
+  border-radius: 5px;
 }
 
 .button {
@@ -20,7 +22,7 @@
   color: white;
   width: 50%;
   font-size: inherit;
-  margin: 15px 0;
+  margin: 15px auto;
   padding: 12px 20px;
   width: 100%;
 }
@@ -37,4 +39,10 @@
 .required {
   color: red;
   font-size: 2em;
+}
+.email_label {
+  font-size: 1.1em
+}
+.input_label {
+  font-size: 1em
 }

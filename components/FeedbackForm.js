@@ -27,7 +27,14 @@ export default function FeedbackForm() {
                 your spot for OpenAdapt Alpha
             </h2>
 
-            <label htmlFor="email_form">Email Address:<span className={styles["required"]}>*</span></label>
+            <label 
+                className={styles["email_label"]} 
+                htmlFor="email_form"> 
+                    Email Address:
+                <span className={styles["required"]}>
+                    *
+                </span>
+            </label>
             <input
                 id="email_form"
                 className={styles['form-field']}
@@ -36,7 +43,11 @@ export default function FeedbackForm() {
                 required
             />
 
-            <label htmlFor="hear">How did you hear about us? [Optional] </label>
+            <label 
+                className={styles["input_label"]}  
+                htmlFor="hear">
+                    How did you hear about us? [Optional] 
+            </label>
             <textarea
                 id="hear"
                 className={styles['form-field']}
@@ -44,7 +55,11 @@ export default function FeedbackForm() {
                 name="hear"
             ></textarea>
 
-            <label htmlFor="help">How can OpenAdapt help you? [Optional] </label>
+            <label 
+                className={styles["input_label"]} 
+                htmlFor="help">
+                    How can OpenAdapt help you? [Optional] 
+            </label>
             <textarea
                 id="help"
                 className={styles['form-field']}
@@ -53,7 +68,10 @@ export default function FeedbackForm() {
             ></textarea>
 
 
-            <button className="btn btn-primary ml-2">Submit</button>
+            <div className="container" style={{ textAlign: "center" }}>
+                <button className="btn btn-primary ml-2">Submit</button>
+            </div>
+
 
             <p className="text-sm mt-2 font-light opacity-70">
                     Register for updates (we promise not to spam)
