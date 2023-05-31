@@ -7,6 +7,7 @@ import Image from 'next/image';
 import EmailForm from '@components/EmailForm'
 
 import styles from './MastHead.module.css'
+import FeedbackForm from "@components/FeedbackForm";
 
 export default function Home() {
     return (
@@ -102,6 +103,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+            <FeedbackForm />
             {/*
       <Footer />
       */}

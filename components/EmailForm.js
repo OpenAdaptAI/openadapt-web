@@ -5,7 +5,7 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 
 import styles from './EmailForm.module.css'
 
-export default function FeedbackForm() {
+export default function EmailForm() {
     const router = useRouter()
     const success = router.pathname.endsWith('success')
 

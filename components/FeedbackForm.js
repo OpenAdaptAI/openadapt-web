@@ -17,35 +17,47 @@ export default function FeedbackForm() {
                     <input name="bot-field" />
                 </label>
             </p>
+            
+            <h1 className="my-10 font-light text-3xl">
+                OpenAdapt.AI
+            </h1>
 
-            <label htmlFor="name">Name</label>
-            <input
-                id="name"
-                className={styles['form-field']}
-                type="text"
-                name="name"
-            />
+            <h2 className="my-10 font-light">
+                Fill out your email and we'll let you know when you can access 
+                your spot for OpenAdapt Alpha
+            </h2>
 
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email_form">Email Address:<span className={styles["required"]}>*</span></label>
             <input
-                id="email"
+                id="email_form"
                 className={styles['form-field']}
-                type="email"
-                name="email"
+                type="email_form"
+                name="email_form"
                 required
             />
 
-            <label htmlFor="feedback">What is your feedback?</label>
+            <label htmlFor="hear">How did you hear about us? [Optional] </label>
             <textarea
-                id="feedback"
+                id="hear"
                 className={styles['form-field']}
                 wrap="soft"
-                name="feedback"
-                required
+                name="hear"
             ></textarea>
-            <button className={styles.button} type="submit">
-                Submit
-            </button>
+
+            <label htmlFor="help">How can OpenAdapt help you? [Optional] </label>
+            <textarea
+                id="help"
+                className={styles['form-field']}
+                wrap="soft"
+                name="help"
+            ></textarea>
+
+
+            <button className="btn btn-primary ml-2">Submit</button>
+
+            <p className="text-sm mt-2 font-light opacity-70">
+                    Register for updates (we promise not to spam)
+            </p>
         </form>
     )
 }
