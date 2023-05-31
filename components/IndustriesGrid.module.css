@@ -1,0 +1,47 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.title {
+  color: #000000;
+}
+
+.description {
+  color: #000000;
+  margin-bottom: 10px;
+  font-size:small
+}
+
+.button {
+  background-color: purple;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.checkpoints {
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+.checkpoints li {
+  margin-bottom: 5px;
+  list-style-type: none;
+}
+
+.checkpoints li:before {
+  content: "✓";
+  color: black;
+  margin-right: 5px;
+}
