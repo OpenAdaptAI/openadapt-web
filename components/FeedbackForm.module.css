@@ -41,8 +41,10 @@
   font-size: 2em;
 }
 .email_label {
-  font-size: 1.1em
+  font-size: 1.1em;
+  color: white;
 }
 .input_label {
-  font-size: 1em
+  font-size: 1em;
+  color: white;
 }

@@ -18,11 +18,11 @@ export default function FeedbackForm() {
                 </label>
             </p>
             
-            <h1 className="my-10 font-light text-3xl">
+            <h1 className="my-10 font-light text-3xl text-white">
                 OpenAdapt.AI
             </h1>
 
-            <h2 className="my-10 font-light">
+            <h2 className="my-10 font-light text-white">
                 Fill out your email and we'll let you know when you can access 
                 your spot for OpenAdapt Alpha
             </h2>

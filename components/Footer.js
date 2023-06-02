@@ -4,7 +4,7 @@ import styles from './Footer.module.css'
 
 export default function Footer() {
     return (
-        <div className={styles.section} style={{backgroundColor: '#00001c'}}>
+        <div className={`${styles.section} text-white`} style={{backgroundColor: '#00001c'}}>
             <div className="relative flex items-center justify-center mb-10 mx-10 md-12">
                 <div className="grid grid-cols-1 break-words">
                     <h2 id="start" className="text-2xl mt-10 font-light">Getting Started</h2>
