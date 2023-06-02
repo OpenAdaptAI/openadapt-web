@@ -14,12 +14,12 @@ export default function IndustriesGrid() {
     },
     {
       title: 'Insurance',
-      checkpoints: ['1', '2', '3'],
+      checkpoints: ['Optimize your operational costs', 'Help adjusters and underwriters automate daunting tasks', 'Future-proof your insurance business with automation'],
       buttonLabel: 'Join Waitlist',
     },
     {
       title: 'Healthcare',
-      checkpoints: ['1', '2', '3'],
+      checkpoints: ['Focus on patient care, not paperwork', 'Reduce burnout-inducing administrative tasks', 'Drive positive healthcare outcomes with automation'],
       buttonLabel: 'Join Waitlist',
     },
     {
@@ -55,18 +55,22 @@ export default function IndustriesGrid() {
   ];
 
   return (
-    <div className={styles.container}>
-      {gridData.map((grid, index) => (
-        <div key={index} className={styles.card}>
-          <h2 className={styles.title}>{grid.title}</h2>
-          <ul className={styles.checkpoints}>
-            {grid.checkpoints.map((checkpoint, checkpointIndex) => (
-              <li key={checkpointIndex}>{checkpoint}</li>
-            ))}
-          </ul>
-          <button className={styles.button}>{grid.buttonLabel}</button>
-        </div>
-      ))}
-    </div>
+    <div className={styles.section}>
+            <div className="relative flex items-center justify-center mb-2 mx-2 md-12">
+                <div className="grid grid-cols-4 break-words">
+                    {gridData.map((grid, index) => (
+                      <div key={index} className={styles.card}>
+                        <h2 className={styles.title}>{grid.title}</h2>
+                        <ul className={styles.checkpoints}>
+                          {grid.checkpoints.map((checkpoint, checkpointIndex) => (
+                            <li key={checkpointIndex}>{checkpoint}</li>
+                          ))}
+                        </ul>
+                        <button className={styles.button}>{grid.buttonLabel}</button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                </div>
   );
 }

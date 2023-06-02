@@ -1,14 +1,13 @@
-.container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
-}
-
 .card {
   background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
+  font-size:medium;
+  margin: 20px;
+  color: black;
+  position: relative;
+  height: 350px;
 }
 
 .title {
@@ -18,17 +17,25 @@
 .description {
   color: #000000;
   margin-bottom: 10px;
-  font-size:small
+  font-size: small;
 }
 
 .button {
-  background-color: purple;
-  color: white;
+  background-color: transparent;
+  color: #661ae6;
   padding: 10px 20px;
-  border: none;
+  border: 2px solid #661ae6;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin:20px;
 }
+
+.button:hover {
+  background-color: #661ae6;
+  color: white;
+}
+
 .checkpoints {
   text-align: left;
   margin: 0;
