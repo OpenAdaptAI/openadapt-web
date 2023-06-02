@@ -79,7 +79,6 @@ export default function Home() {
                             <EmailForm />
                         </div>
                     </div>
-                    <IndustriesGrid />
                 </div>
                 <video
                     autoPlay
@@ -102,7 +101,9 @@ export default function Home() {
                         <a className="github-button" href="https://github.com/MLDSAI/OpenAdaptAI" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star MLDSAI/OpenAdaptAI on GitHub">Star</a>
                     </div>
                 </div>
+                
             </div>
+            <IndustriesGrid />
             {/*
       <Footer />
       */}
