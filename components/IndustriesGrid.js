@@ -55,9 +55,8 @@ export default function IndustriesGrid() {
   ];
 
   return (
-    <div className={styles.section}>
-            <div className="relative flex items-center justify-center mb-2 mx-2 md-12">
-                <div className="grid grid-cols-4 break-words">
+    <div className={styles.container}>
+                <div className={styles.row}>
                     {gridData.map((grid, index) => (
                       <div key={index} className={styles.card}>
                         <h2 className={styles.title}>{grid.title}</h2>
@@ -70,7 +69,6 @@ export default function IndustriesGrid() {
                       </div>
                     ))}
                   </div>
-                </div>
                 </div>
   );
 }

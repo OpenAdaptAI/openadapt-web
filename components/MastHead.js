@@ -12,7 +12,7 @@ export default function Home() {
     return (
         <>
         <div className={styles.section}>
-            <div className="relative flex items-center justify-center h-screen overflow-hidden">
+            <div className={`relative flex items-center justify-center ${styles.container}`}>
                 <div className="relative z-30 p-5 text-2xl">
                     <div className="hero-content text-center">
                         <div className="grid grid-flow-row auto-rows-max">
@@ -104,10 +104,12 @@ export default function Home() {
                 
             </div>
             <IndustriesGrid />
+            
             {/*
       <Footer />
       */}
         </div>
+        
         <div className={styles.section}>
             <div className="relative flex items-center justify-center mb-2 mx-2 md-12">
                 <div className="grid grid-cols-1 break-words">
