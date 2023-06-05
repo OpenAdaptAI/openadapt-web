@@ -12,32 +12,35 @@
   justify-content: space-between;
 }
 .card {
-  background-color: #ffffff;
   border-radius: 10px;
   font-size:medium;
-  color: black;
+  color: whitesmoke;
   height: 300px;
   display: flex; /* Add this */
   flex-direction: column; /* Add this */
   flex: 0 0 calc(25% - 40px); /* Adjust the width calculation as needed */
   align-items:center;
   margin: 10px 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0,4);
   padding: 10px 20px;
   align-self:normal;
+  border-radius: 43px;
+  background: #00001e;
+  box-shadow:  -19px 19px 39px #00000c,
+             19px -19px 39px #000030;
 }
 
 .title {
-  color: #000000;
+  color: whitesmoke;
+  font-size:large;
 
 }
 
 
 .button {
   background-color: transparent;
-  color: #661ae6;
+  color: #7225f8;
   padding: 10px 20px;
-  border: 2px solid #661ae6;
+  border: 2px solid #7225f8;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
@@ -55,7 +58,7 @@
   text-align: left;
   margin: 0;
   padding: 0;
-  font-size:small;
+  font-size:14px;
 }
 
 .checkpoints li {
@@ -65,7 +68,7 @@
 
 .checkpoints li:before {
   content: "✓";
-  color: black;
+  color: whitesmoke;
   margin-right: 5px;
 }
 
