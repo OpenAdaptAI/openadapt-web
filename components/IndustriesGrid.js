@@ -57,9 +57,18 @@ export default function IndustriesGrid() {
 
   return (
     <div className={styles.container}>
+      <div>
+        <h2 className={styles.heading}>Achieve more with less effort.</h2>
+          <p className={styles.p}>
+          Our technology observes and records your software interactions, automating repetitive tasks.<br></br>
+          Spend less time on manual processes and more on tasks that truly matter.
+          </p>
+      </div>
+      <br>
+      </br>
       <h1 className={styles.heading}>
 
-        Revolutionizing Industries with AI-First Automation for Growth and Transformation
+        Revolutionizing Industries with AI-First Automation for Growth and Transformation.
       </h1>
       <div className={styles.row}>
         {gridData.map((grid, index) => (
