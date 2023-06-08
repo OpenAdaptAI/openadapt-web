@@ -55,15 +55,10 @@ export default function Home() {
                                 </motion.div>
                                 <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                             </div>
-                            <h2 className="text-4xl my-10 font-extralight">
+                            <h2 className="text-4xl my-0 font-extralight">
                                 AI for Humans.
                             </h2>
-                            <div>
-                                <Link className="btn btn-primary ml-2 mt-2" href="#start">
-                                    Get Started
-                                </Link>
-                            </div>
-                            <h3 className="my-10 font-light">
+                            <h3 className="my-0 font-light">
                                 <span className="inline-block p-2">
                                     Automate your workflows.
                                 </span>
