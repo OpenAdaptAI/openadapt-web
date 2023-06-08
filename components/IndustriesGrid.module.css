@@ -24,12 +24,16 @@
   align-self: normal;
   border-radius: 30px;
   background: rgba(62, 48, 103, 0.6);
-  backdrop-filter: blur(20px);
 }
 
+@media screen and (max-width:1000px){
+  .card{
+    width: 30%;
+  }
+}
 .title {
   color: whitesmoke;
-  font-size: 25px;
+  font-size: 22px;
   margin: 10px;
   font-weight: bold;
 }
@@ -42,10 +46,10 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-  margin: 20px;
   margin-top: auto;
+  margin-bottom:10px;
   display: inline-block;
-  
+  font-size:14px;
 }
 
 .button:hover {
@@ -58,7 +62,7 @@
   text-align: left;
   margin: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 15px;
   color:rgb(204, 194, 194);
 }
 

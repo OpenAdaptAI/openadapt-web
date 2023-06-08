@@ -40,7 +40,7 @@ export default function IndustriesGrid() {
     },
     {
       title: 'Sales Development',
-      checkpoints: ['Automate lead generation', 'Improve sales forecasting', 'Enhance customer relationship management'],
+      checkpoints: ['Automate lead generation', 'Improve sales forecasting', 'Enhance CRM'],
       buttonLabel: 'Join Waitlist',
     },
     {
