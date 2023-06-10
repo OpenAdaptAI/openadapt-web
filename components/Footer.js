@@ -7,7 +7,7 @@ export default function Footer() {
         <div className={`${styles.section} text-white`} style={{backgroundColor: '#00001c'}}>
             <div className="relative flex items-center justify-center mb-10 mx-10 md-12">
                 <div className="grid grid-cols-1 break-words">
-                    <h2 id="start" className="text-2xl mt-10 font-light">Getting Started</h2>
+                    <h2 id="start" className="text-2xl mt-10 font-light">Getting Started for Developers</h2>
                         <h3 className="mt-5"><b>Windows</b></h3>
                         <ul className="mt-2 list-disc list-inside font-light">
                             <li>Press Windows Key, type "powershell", and press Enter</li>

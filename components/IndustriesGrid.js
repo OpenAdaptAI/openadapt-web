@@ -1,4 +1,7 @@
+import React, { useRef } from 'react';
+
 import styles from './IndustriesGrid.module.css';
+import FeedbackForm from "@components/FeedbackForm";
 
 export default function IndustriesGrid() {
 
@@ -55,6 +58,14 @@ export default function IndustriesGrid() {
     },
   ];
 
+  const sectionRef = useRef(null);
+
+  const scrollToSection = () => {
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className={styles.background}>
       <div>
@@ -74,12 +85,15 @@ export default function IndustriesGrid() {
             <h2 className={styles.title}>{grid.title}</h2>
             <ul className={styles.descriptions}>
               {grid.descriptions.split('\n').map((description) => (
-                <li>{description}</li>
+                <li key={grid.title}>{description}</li>
               ))}
             </ul>
-            <button className={styles.button}>{grid.buttonLabel}</button>
+            <button className={styles.button} onClick={scrollToSection}>{grid.buttonLabel}</button>
           </div>
         ))}
+      </div>
+      <div ref={sectionRef}>
+        <FeedbackForm />
       </div>
     </div>
   );

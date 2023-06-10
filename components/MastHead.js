@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
@@ -98,8 +97,8 @@ export default function Home() {
                 </div>
                 
             </div>
-        </div>
         <IndustriesGrid />
+        </div>
         </>
     )
 }
