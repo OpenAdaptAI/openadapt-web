@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
@@ -8,6 +9,12 @@ import IndustriesGrid from '@components/IndustriesGrid'
 import styles from './MastHead.module.css'
 
 export default function Home() {
+    const [feedbackData, setFeedbackData] = useState({
+        name: '',
+        email: '',
+        message: ''
+      });
+
     return (
         <>
         <div className={styles.section}>
@@ -97,7 +104,7 @@ export default function Home() {
                 </div>
                 
             </div>
-        <IndustriesGrid />
+        <IndustriesGrid feedbackData={feedbackData}/>
         </div>
         </>
     )

@@ -1,6 +1,8 @@
+import React from 'react';
+
 import styles from './FeedbackForm.module.css'
 
-export default function FeedbackForm() {
+export default function FeedbackForm({ feedbackData }) {
     return (
         <form
             className={styles.form}
@@ -40,6 +42,7 @@ export default function FeedbackForm() {
                 className={styles['form-field']}
                 type="email_form"
                 name="email_form"
+                value={feedbackData.email}
                 required
             />
 
@@ -65,6 +68,7 @@ export default function FeedbackForm() {
                 className={styles['form-field']}
                 wrap="soft"
                 name="help"
+                value={feedbackData.message}
             ></textarea>
 
 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import styles from './IndustriesGrid.module.css';
 import FeedbackForm from "@components/FeedbackForm";
@@ -66,6 +66,26 @@ export default function IndustriesGrid() {
     }
   };
 
+  const [feedbackData, setFeedbackData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleButtonClick = (title) => {
+    // Fill in the feedback form data based on the button clicked
+    const data = {
+      email: '',
+      message: `I'm interested in ${title}. Please provide more information.`
+    };
+    
+    // Update the feedback data state
+    setFeedbackData(data);
+
+    // Scroll to the feedback form section
+    scrollToSection();
+  };
+
   return (
     <div className={styles.background}>
       <div>
@@ -88,12 +108,12 @@ export default function IndustriesGrid() {
                 <li key={grid.title}>{description}</li>
               ))}
             </ul>
-            <button className={styles.button} onClick={scrollToSection}>{grid.buttonLabel}</button>
+            <button className={styles.button} onClick={() => handleButtonClick(grid.title)}>{grid.buttonLabel}</button>
           </div>
         ))}
       </div>
       <div ref={sectionRef}>
-        <FeedbackForm />
+        <FeedbackForm feedbackData={feedbackData}/>
       </div>
     </div>
   );
