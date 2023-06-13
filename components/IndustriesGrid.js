@@ -74,11 +74,14 @@ export default function IndustriesGrid() {
 
   const handleButtonClick = (title) => {
     // Fill in the feedback form data based on the button clicked
-    const data = {
+    let data = {
       email: '',
       message: `I'm interested in ${title}. Please provide more information.`
     };
-    
+
+    if (title === 'Let us build for you') {
+      data.message = 'I would love to talk more.';
+    }
     // Update the feedback data state
     setFeedbackData(data);
 

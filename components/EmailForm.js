@@ -39,6 +39,7 @@ export default function EmailForm() {
 
                     <div className="flex justify-center ">
                         <input
+                            id="emailInput"
                             name="email"
                             type="email"
                             placeholder="Email"
