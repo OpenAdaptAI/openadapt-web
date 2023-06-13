@@ -13,13 +13,12 @@
   font-size: medium;
   width: 350px;
   height: 300px;
-  margin: 10px 20px;
-  padding: 10px 20px;
+  margin:20px;
+  padding: 20px;
   border-radius: 30px;
   background: rgba(62, 48, 103, 0.6);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .title {
