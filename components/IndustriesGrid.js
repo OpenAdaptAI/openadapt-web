@@ -67,7 +67,6 @@ export default function IndustriesGrid() {
   };
 
   const [feedbackData, setFeedbackData] = useState({
-    name: '',
     email: '',
     message: ''
   });
@@ -76,11 +75,14 @@ export default function IndustriesGrid() {
     // Fill in the feedback form data based on the button clicked
     let data = {
       email: '',
-      message: `I'm interested in ${title}. Please provide more information.`
+      message: `I'm interested in how OpenAdapt can help me make ${title} better.`
     };
 
     if (title === 'Let us build for you') {
       data.message = 'I would love to talk more.';
+    }
+    else if (title == 'Developers') {
+
     }
     // Update the feedback data state
     setFeedbackData(data);
@@ -116,7 +118,7 @@ export default function IndustriesGrid() {
         ))}
       </div>
       <div ref={sectionRef}>
-        <FeedbackForm feedbackData={feedbackData}/>
+        <FeedbackForm feedbackData={feedbackData} />
       </div>
     </div>
   );

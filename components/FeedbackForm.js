@@ -17,20 +17,20 @@ export default function FeedbackForm({ feedbackData }) {
                     <input name="bot-field" />
                 </label>
             </p>
-            
+
             <h1 className="my-10 font-light text-3xl text-white">
                 OpenAdapt.AI
             </h1>
 
             <h2 className="my-10 font-light text-white">
-                Fill out your email and we'll let you know when you can access 
+                Fill out your email and we'll let you know when you can access
                 your spot for OpenAdapt Alpha
             </h2>
 
-            <label 
-                className={styles["email_label"]} 
-                htmlFor="email_form"> 
-                    Email Address:
+            <label
+                className={styles["email_label"]}
+                htmlFor="email_form">
+                Email Address:
                 <span className={styles["required"]}>
                     *
                 </span>
@@ -43,10 +43,10 @@ export default function FeedbackForm({ feedbackData }) {
                 required
             />
 
-            <label 
-                className={styles["input_label"]}  
+            <label
+                className={styles["input_label"]}
                 htmlFor="hear">
-                    How did you hear about us? [Optional] 
+                How did you hear about us? [Optional]
             </label>
             <textarea
                 id="hear"
@@ -55,10 +55,10 @@ export default function FeedbackForm({ feedbackData }) {
                 name="hear"
             ></textarea>
 
-            <label 
-                className={styles["input_label"]} 
+            <label
+                className={styles["input_label"]}
                 htmlFor="help">
-                    How can OpenAdapt help you? [Optional] 
+                How can OpenAdapt help you? [Optional]
             </label>
             <textarea
                 id="help"
@@ -70,12 +70,12 @@ export default function FeedbackForm({ feedbackData }) {
 
 
             <div className="container" style={{ textAlign: "center" }}>
-                <button className="btn btn-primary ml-2">Submit</button>
+                <button className="b-tn btn-primary ml-2">Submit</button>
             </div>
 
 
             <p className="text-sm mt-2 font-light opacity-70">
-                    Register for updates (we promise not to spam)
+                Register for updates (we promise not to spam)
             </p>
         </form>
     )

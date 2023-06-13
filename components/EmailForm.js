@@ -14,7 +14,7 @@ export default function EmailForm() {
             <>
                 <h2 className="font-extralight">
                     <FontAwesomeIcon icon={faPaperPlane} className="mr-4" />
-					Get Ready
+                    Get Ready
                 </h2>
             </>
         )
