@@ -77,7 +77,13 @@ export default function IndustriesGrid() {
                 <li>{description}</li>
               ))}
             </ul>
-            <button className={styles.button}>{grid.buttonLabel}</button>
+            {grid.title === 'Developers' ? (
+              <a href="#start" className={styles.button}>
+                {grid.buttonLabel}
+              </a>
+            ) : (
+              <button className={styles.button}>{grid.buttonLabel}</button>
+            )}
           </div>
         ))}
       </div>
