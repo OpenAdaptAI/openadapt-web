@@ -38,7 +38,7 @@
 .button {
   background-color: transparent;
   color: #b58bff;
-  padding: 10px 20px;
+  padding: 6px 15px;
   border: 2px solid #b58bff;
   border-radius: 5px;
   cursor: pointer;
@@ -48,7 +48,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
   width: 40%;
   margin-left: auto;
   margin-right: auto;

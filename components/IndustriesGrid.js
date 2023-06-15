@@ -65,7 +65,7 @@ export default function IndustriesGrid() {
         </p>
       </div>
       <br />
-      <h1 className={styles.heading}>
+      <h1 className={styles.heading} id ="industries">
         Revolutionizing Industries with AI-First Automation for Growth and Transformation.
       </h1>
       <div className={styles.row}>
