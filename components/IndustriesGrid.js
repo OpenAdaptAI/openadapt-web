@@ -81,13 +81,10 @@ export default function IndustriesGrid() {
     if (title === 'Let us build for you') {
       data.message = 'I would love to talk more.';
     }
-    else if (title == 'Developers') {
-
-    }
     // Update the feedback data state
     setFeedbackData(data);
 
-    // Scroll to the feedback form section
+    // Scroll to the feedback form section unless 
     scrollToSection();
   };
 
@@ -101,7 +98,7 @@ export default function IndustriesGrid() {
         </p>
       </div>
       <br />
-      <h1 className={styles.heading}>
+      <h1 className={styles.heading} id ="industries">
         Revolutionizing Industries with AI-First Automation for Growth and Transformation.
       </h1>
       <div className={styles.row}>
@@ -113,7 +110,13 @@ export default function IndustriesGrid() {
                 <li key={grid.title}>{description}</li>
               ))}
             </ul>
-            <button className={styles.button} onClick={() => handleButtonClick(grid.title)}>{grid.buttonLabel}</button>
+            {grid.title === 'Developers' ? (
+              <a href="#start" className={styles.button}>
+                {grid.buttonLabel}
+              </a>
+            ) : (
+              <button className={styles.button} onClick={() => handleButtonClick(grid.title)}>{grid.buttonLabel}</button>
+            )}
           </div>
         ))}
       </div>

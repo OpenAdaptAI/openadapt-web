@@ -4,7 +4,7 @@ import styles from './Footer.module.css'
 
 export default function Footer() {
     return (
-        <div className={`${styles.section} text-white`} style={{backgroundColor: '#00001c'}}>
+        <div className={`${styles.section} text-white`} style={{backgroundColor: 'rgba(12, 16, 46, 1)'}}>
             <div className="relative flex items-center justify-center mb-10 mx-10 md-12">
                 <div className="grid grid-cols-1 break-words">
                     <h2 id="start" className="text-2xl mt-10 font-light">Getting Started for Developers</h2>
@@ -59,7 +59,7 @@ export default function Footer() {
                     </p>
                 </div>
             </div>
-            <footer className="grid grid-flow-row auto-rows-max" style={{backgroundColor: '#00001a'}}>
+            <footer className="grid grid-flow-row auto-rows-max" style={{backgroundColor: 'rgba(12, 16, 46, 1)'}}>
 				<Image
 				className="invert m-auto my-6"
 				priority

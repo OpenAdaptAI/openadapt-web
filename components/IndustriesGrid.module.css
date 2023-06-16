@@ -1,25 +1,30 @@
 .background {
   background: rgb(10, 27, 96);
-  background: radial-gradient(circle, rgba(10, 27, 96, 1) 19%, rgba(12, 16, 46, 1) 44%, rgba(0, 0, 30, 1) 66%);
+  background: radial-gradient(
+    circle,
+    rgba(10, 27, 96, 1) 19%,
+    rgba(12, 16, 46, 1) 44%,
+    rgba(0, 0, 30, 1) 66%
+  );
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding-bottom:25px;
 }
 
 .card {
   font-size: medium;
   width: 350px;
   height: 300px;
-  margin: 10px 20px;
-  padding: 10px 20px;
+  margin: 20px;
+  padding: 20px;
   border-radius: 30px;
   background: rgba(62, 48, 103, 0.6);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .title {
@@ -34,7 +39,7 @@
 .button {
   background-color: transparent;
   color: #b58bff;
-  padding: 10px 20px;
+  padding: 6px 15px;
   border: 2px solid #b58bff;
   border-radius: 5px;
   cursor: pointer;
@@ -44,7 +49,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
   width: 40%;
   margin-left: auto;
   margin-right: auto;
@@ -52,7 +57,7 @@
 
 .button:hover {
   background-color: #661ae6;
-  border : #661ae6;
+  border: #661ae6;
   color: white;
 }
 
@@ -61,7 +66,7 @@
   margin-bottom: 10px;
   padding: 0;
   font-size: 15px;
-  color:rgb(204, 194, 194);
+  color: rgb(204, 194, 194);
 }
 
 .heading {
@@ -71,8 +76,8 @@
   margin: 10px;
 }
 .p {
-  padding : 30px;
+  padding: 30px;
   font-size: 18px;
   text-align: center;
-  color:rgb(204, 194, 194);
+  color: rgb(204, 194, 194);
 }

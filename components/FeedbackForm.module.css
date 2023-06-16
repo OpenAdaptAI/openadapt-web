@@ -2,8 +2,8 @@
   margin: 0px 0px;
   min-width: 300px;
   width: 100%;
-  background-color: rgba(0,0,30,1);
-  border: 40px solid rgba(0,0,30,1);
+  background-color: rgba(12, 16, 46, 1);
+  border: 40px solid rgba(12, 16, 46, 1);
 }
 
 .form-field {

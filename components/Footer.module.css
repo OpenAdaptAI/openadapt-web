@@ -5,8 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0,0,30,1);
-  border: 40px solid rgba(0,0,30,1);
+  border: 40px solid rgba(12, 16, 46, 1);
 }
 
 .logo {

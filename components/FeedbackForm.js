@@ -69,10 +69,9 @@ export default function FeedbackForm({ feedbackData }) {
             ></textarea>
 
 
-            <div className="container" style={{ textAlign: "center" }}>
-                <button className="b-tn btn-primary ml-2">Submit</button>
+            <div className="container" style={{ textAlign: "center", borderRadius: "10px"  }}>
+                <button className="btn btn-primary ml-2">Submit</button>
             </div>
-
 
             <p className="text-sm mt-2 font-light opacity-70">
                 Register for updates (we promise not to spam)

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
@@ -6,6 +7,7 @@ import Image from 'next/image';
 
 import EmailForm from '@components/EmailForm'
 import IndustriesGrid from '@components/IndustriesGrid'
+
 import styles from './MastHead.module.css'
 
 export default function Home() {
@@ -18,7 +20,7 @@ export default function Home() {
     return (
         <>
         <div className={styles.section}>
-            <div className={`relative flex items-center justify-center ${styles.container}`}>
+            <div className="relative flex items-center justify-center h-screen overflow-hidden">
                 <div className="relative z-30 p-5 text-2xl">
                     <div className="hero-content text-center">
                         <div className="grid grid-flow-row auto-rows-max">
@@ -61,10 +63,15 @@ export default function Home() {
                                 </motion.div>
                                 <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                             </div>
-                            <h2 className="text-4xl my-0 font-extralight">
+                            <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
                             </h2>
-                            <h3 className="my-0 font-light">
+                            <div>
+                                <Link className="btn btn-primary ml-2 mt-2" href="#industries">
+                                    Get Started
+                                </Link>
+                            </div>
+                            <h3 className="my-10 font-light">
                                 <span className="inline-block p-2">
                                     Automate your workflows.
                                 </span>
@@ -102,9 +109,8 @@ export default function Home() {
                         <a className="github-button" href="https://github.com/MLDSAI/OpenAdaptAI" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star MLDSAI/OpenAdaptAI on GitHub">Star</a>
                     </div>
                 </div>
-                
             </div>
-        <IndustriesGrid feedbackData={feedbackData}/>
+            <IndustriesGrid />
         </div>
         </>
     )
