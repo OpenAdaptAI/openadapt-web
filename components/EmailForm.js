@@ -43,7 +43,7 @@ export default function EmailForm() {
                             name="email"
                             type="email"
                             placeholder="Email"
-                            className="input w-8/12 max-w-xs text-neutral"
+                            className="input w-8/12 max-w-xs text-white"
                             required
                         />
                         <button className="btn btn-primary ml-2">Register</button>

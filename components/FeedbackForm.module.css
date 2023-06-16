@@ -1,11 +1,3 @@
-.form {
-  margin: 0px 0px;
-  min-width: 300px;
-  width: 100%;
-  background-color: rgba(12, 16, 46, 1);
-  border: 40px solid rgba(12, 16, 46, 1);
-}
-
 .form-field {
   font-size: inherit;
   margin: 15px 0;
@@ -14,17 +6,7 @@
   background-color: #f8f6ff;
   color: black;
   border-radius: 5px;
-}
-
-.button {
-  background-color: teal;
-  border: 1px solid black;
-  color: white;
-  width: 50%;
-  font-size: inherit;
-  margin: 15px auto;
-  padding: 12px 20px;
-  width: 100%;
+  display: block;
 }
 .hidden {
   clip: rect(0 0 0 0);
