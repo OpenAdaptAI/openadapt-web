@@ -79,12 +79,12 @@ export default function IndustriesGrid() {
     };
 
     if (title === 'Let us build for you') {
-      data.message = 'I would love to talk more.';
+      data.message = '';
     }
     // Update the feedback data state
     setFeedbackData(data);
 
-    // Scroll to the feedback form section unless 
+    // Scroll to the feedback form section 
     scrollToSection();
   };
 

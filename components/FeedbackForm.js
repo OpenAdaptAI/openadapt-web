@@ -24,7 +24,7 @@ export default function FeedbackForm({ feedbackData }) {
                 </h1>
 
                 <h2 className="my-10 font-light text-white flex-auto w-96">
-                    Submit this form to get on the waitlist
+                    Fill out your email and we'll let you know when you can access your spot for OpenAdapt Alpha.
                 </h2>
 
                 <label
@@ -46,7 +46,7 @@ export default function FeedbackForm({ feedbackData }) {
                 <label
                     className={styles["input_label"]}
                     htmlFor="help">
-                    How can we help?
+                    How can OpenAdapt help you?
                 </label>
                 <textarea
                     id="help"
