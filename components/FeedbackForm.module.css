@@ -20,7 +20,7 @@
 }
 .required {
   color: red;
-  font-size: 2em;
+  font-size: 1.7em;
 }
 .email_label {
   font-size: 1.1em;
@@ -29,4 +29,5 @@
 .input_label {
   font-size: 1em;
   color: white;
+  margin: 0.7em 0;
 }

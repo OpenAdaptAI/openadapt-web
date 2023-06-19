@@ -19,11 +19,11 @@ export default function FeedbackForm({ feedbackData }) {
                     </label>
                 </p>
 
-                <h1 className="my-10 font-light text-3xl text-white">
+                <h1 className="font-light text-3xl text-white my-0">
                     Join the Waitlist
                 </h1>
 
-                <h2 className="my-10 font-light text-white flex-auto w-96">
+                <h2 className="mt-10 mb-8 font-light text-white flex-auto">
                     Fill out your email and we'll let you know when you can access your spot for OpenAdapt Alpha.
                 </h2>
 
