@@ -22,7 +22,7 @@
  /* Add this line */
 }
 .title {
-  margin: 10px;
+  margin: 5px;
   color: whitesmoke;
   font-size: 22px;
   font-weight: bold;
@@ -60,7 +60,6 @@
 }
 .heading {
   font-size: 30px;
-  font-weight: bold;
   text-align: center;
   margin: 10px;
 }
