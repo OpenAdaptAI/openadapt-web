@@ -73,6 +73,6 @@
 .logo {
   transition: transform 0.3s ease;
 }
-.logo:hover {
+.card:hover .logo {
   transform: scale(1.2);
 }
