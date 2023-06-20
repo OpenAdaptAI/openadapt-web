@@ -69,8 +69,6 @@
 }
 .logo {
   transition: transform 0.3s ease;
-  height: 65px;
-  width: 65px;
 }
 .card:hover .logo {
   transform: scale(1.2);
