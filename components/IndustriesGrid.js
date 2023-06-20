@@ -69,13 +69,12 @@ export default function IndustriesGrid() {
   return (
     <div className={styles.background}>
       <div>
-        <h2 className={styles.heading}>Achieve more with less effort.</h2>
+        <h1 className={styles.heading}>Achieve more with less effort.</h1>
         <p className={styles.p}>
           Our technology observes and records your software interactions, automating repetitive tasks.<br />
           Spend less time on manual processes and more on tasks that truly matter.
         </p>
       </div>
-      <br />
       <h1 className={styles.heading} id="industries">
         Revolutionizing Industries with AI-First Automation for Growth and Transformation.
       </h1>
