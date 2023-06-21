@@ -61,9 +61,6 @@ export default function FeedbackForm({ feedbackData }) {
                     <button className="btn btn-primary">Submit</button>
                 </div>
 
-                <p className="text-sm mt-2 font-light opacity-70 flex justify-center">
-                    Register for updates (we promise not to spam)
-                </p>
             </div>
         </form>
     )
