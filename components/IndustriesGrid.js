@@ -29,7 +29,7 @@ export default function IndustriesGrid() {
       logo: '/images/noun-healthcare.svg',
     },
     {
-      title: 'Freight',
+      title: 'Logistics',
       descriptions: 'Upgrade logistics for on-time deliveries. Automate tasks with TMS, Freight Management Systems (FMS), Load Tracking Systems, and Document Management Systems for efficient tracking, scheduling, and financial record-keeping.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-freight.svg',
