@@ -111,7 +111,7 @@ export default function Home() {
         <div className={styles.section}>
             <div className="relative flex items-center justify-center mb-2 mx-2 md-12">
                 <div className="grid grid-cols-1 break-words">
-                    <h2 id="start" className="text-2xl mt-10">Getting Started</h2>
+                    <h2 id="start" className="text-2xl mt-10">For Developers</h2>
                             <h3 className="mt-5"><b>Windows</b></h3>
                             <ul className="mt-2 list-disc list-inside">
                                 <li>Press Windows Key, type "powershell", and press Enter</li>
