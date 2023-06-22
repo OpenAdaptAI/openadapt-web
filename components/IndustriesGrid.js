@@ -58,12 +58,6 @@ export default function IndustriesGrid() {
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-build.svg',
     },
-    {
-      title: 'Developers',
-      descriptions: 'Upgrade software development processes. Utilize IDEs like Visual Studio, JetBrains IntelliJ IDEA, GitHub for collaboration, Git for version control, and Jira for project management to enhance productivity and code quality.',
-      buttonLabel: 'Join Waitlist',
-      logo: '/images/noun-developer.svg',
-    },
   ];
 
   return (
@@ -97,13 +91,7 @@ export default function IndustriesGrid() {
                 <li>{description}</li>
               ))}
             </ul>
-            {grid.title === 'Developers' ? (
-              <a href="#start" className={styles.button}>
-                {grid.buttonLabel}
-              </a>
-            ) : (
               <button className={styles.button}>{grid.buttonLabel}</button>
-            )}
           </div>
         ))}
       </div>
