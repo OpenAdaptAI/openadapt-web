@@ -116,7 +116,7 @@ export default function Home() {
                                 <li>Copy and paste the following command into the terminal, and press Enter:</li>
                             </ul>
                             <pre className="whitespace-pre-wrap code text-slate-600 bg-slate-100 p-3 m-2">
-                                powershell -noexit -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/MLDSAI/OpenAdapt/main/install/install_openadapt.ps1' | Invoke-Expression"
+                            Start-Process powershell -Verb RunAs -ArgumentList '-NoExit', '-ExecutionPolicy', 'Bypass', '-Command', "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/MLDSAI/OpenAdapt/main/install/install_openadapt.ps1' | Invoke-Expression"
                             </pre>
                             <h3 className="mt-5"><b>MacOS</b></h3>
                             <ul className="mt-2 list-disc list-inside">
