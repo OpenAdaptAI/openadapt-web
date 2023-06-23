@@ -22,7 +22,9 @@
   justify-content: center;
 }
 .card:hover {
-  border: 2px solid rgba(89, 67, 162, 0.6);
+  border: 2px solid rgba(106, 80, 191, 0.6);
+  background: rgba(107, 84, 176, 0.6);
+  transition: background-color 0.5s, color 0.5s;
 }
 .title {
   margin: 5px;
