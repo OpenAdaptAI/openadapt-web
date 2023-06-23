@@ -49,8 +49,8 @@
 }
 .button:hover {
   background-color: #661ae6;
-  border: #661ae6;
   color: white;
+  border: 2px solid transparent;
 }
 .descriptions {
   text-align: center;
