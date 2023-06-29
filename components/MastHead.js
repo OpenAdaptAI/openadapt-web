@@ -113,7 +113,7 @@ export default function Home() {
                             <h3 className="mt-5"><b>Windows</b></h3>
                             <ul className="mt-2 list-disc list-inside">
                                 <li>Press Windows Key, type "powershell", and press Enter</li>
-                                <li>Copy and paste the following command into the terminal, and press Enter:</li>
+                                <li>Copy and paste the following command into the terminal, and press Enter (If Prompted for `User Account Control`, click 'Yes'):</li>
                             </ul>
                             <pre className="whitespace-pre-wrap code text-slate-600 bg-slate-100 p-3 m-2">
                             Start-Process powershell -Verb RunAs -ArgumentList '-NoExit', '-ExecutionPolicy', 'Bypass', '-Command', "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/MLDSAI/OpenAdapt/main/install/install_openadapt.ps1' | Invoke-Expression"
