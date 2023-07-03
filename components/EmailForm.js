@@ -5,7 +5,7 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 
 import styles from './EmailForm.module.css'
 
-export default function FeedbackForm() {
+export default function EmailForm() {
     const router = useRouter()
     const success = router.pathname.endsWith('success')
 
@@ -14,7 +14,7 @@ export default function FeedbackForm() {
             <>
                 <h2 className="font-extralight">
                     <FontAwesomeIcon icon={faPaperPlane} className="mr-4" />
-					Get Ready
+                    Get Ready
                 </h2>
             </>
         )
@@ -39,10 +39,11 @@ export default function FeedbackForm() {
 
                     <div className="flex justify-center ">
                         <input
+                            id="emailInput"
                             name="email"
                             type="email"
                             placeholder="Email"
-                            className="input w-8/12 max-w-xs text-neutral"
+                            className="input w-8/12 max-w-xs text-white"
                             required
                         />
                         <button className="btn btn-primary ml-2">Register</button>

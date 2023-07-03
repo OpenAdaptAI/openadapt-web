@@ -1,0 +1,78 @@
+.background {
+  background: rgb(10, 27, 96);
+  background: radial-gradient( circle, rgba(10, 27, 96, 1) 19%, rgba(12, 16, 46, 1) 44%, rgba(0, 0, 30, 1) 66% );
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom:25px;
+}
+.card {
+  font-size: medium;
+  width: 350px;
+  height: 350px;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 30px;
+  background: rgba(62, 48, 103, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.card:hover {
+  outline: 2px solid rgba(122, 105, 175, 0.6);
+  background: rgba(107, 84, 176, 0.6);
+  transition: background-color 0.5s, color 0.5s;
+}
+.title {
+  margin: 5px;
+  color: whitesmoke;
+  font-size: 22px;
+  text-align: center;
+}
+.button {
+  background-color: transparent;
+  color: #b58bff;
+  padding: 6px 15px;
+  border: 2px solid #b58bff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  width: 40%;
+  margin: 10px auto;
+}
+.button:hover {
+  background-color: #661ae6;
+  color: white;
+  border: 2px solid transparent;
+}
+.descriptions {
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 0;
+  font-size: 15px;
+  color: rgb(204, 194, 194);
+}
+.heading {
+  font-size: 30px;
+  text-align: center;
+}
+.p {
+  padding:20px;
+  font-size: 18px;
+  text-align: center;
+  color: rgb(204, 194, 194);
+}
+.card:hover .logo {
+  transform: scale(1.2);
+  transition: transform 0.5s ease;
+}
+.logo{
+  margin:15px;
+}

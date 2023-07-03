@@ -1,25 +1,12 @@
-.form {
-  margin: 40px 40px;
-  min-width: 300px;
-  width: 45%;
-}
-
 .form-field {
   font-size: inherit;
-  margin: 15px 0;
+  margin: 15px auto;
   padding: 12px 20px;
   width: 100%;
-}
-
-.button {
-  background-color: teal;
-  border: 1px solid black;
-  color: white;
-  width: 50%;
-  font-size: inherit;
-  margin: 15px 0;
-  padding: 12px 20px;
-  width: 100%;
+  background-color: #f8f6ff;
+  color: black;
+  border-radius: 5px;
+  display: block;
 }
 .hidden {
   clip: rect(0 0 0 0);
@@ -29,4 +16,18 @@
   position: absolute;
   white-space: nowrap;
   width: 1px;
+  color: #000033;
+}
+.required {
+  color: red;
+  font-size: 1.7em;
+}
+.email_label {
+  font-size: 1.1em;
+  color: white;
+}
+.input_label {
+  font-size: 1em;
+  color: white;
+  margin: 0.7em 0;
 }
