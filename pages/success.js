@@ -1,7 +1,11 @@
 import MastHead from '@components/MastHead'
+import Footer from "@components/Footer";
 
 export default function Home() {
     return (
-        <MastHead />
+        <div>
+            <MastHead />
+            <Footer />
+        </div>
     )
 }

@@ -15,10 +15,9 @@ export default function Home() {
         name: '',
         email: '',
         message: ''
-      });
+    });
 
     return (
-        <>
         <div className={styles.section}>
             <div className="relative flex items-center justify-center h-screen overflow-hidden">
                 <div className="relative z-30 p-5 text-2xl">
@@ -41,17 +40,6 @@ export default function Home() {
                                       repeatDelay: 0,
                                     }}
                                 >
-                                    {/*
-                                    <FontAwesomeIcon icon={faBrain} className="text-5xl mb-2" />
-                                    <Image
-                                      className="hue-rotate-90 invert text-center inline absolute -ml-4 -mt-10"
-                                      priority
-                                      src="/images/favicon.svg"
-                                      height={64}
-                                      width={64}
-                                      alt="Large Language Model"
-                                    />
-                                    */}
                                     <Image
                                       className="invert text-center inline"
                                       priority
@@ -68,7 +56,7 @@ export default function Home() {
                             </h2>
                             <div>
                                 <Link className="btn btn-primary ml-2 mt-2" href="#industries">
-                                    Get Started
+                                    Learn How
                                 </Link>
                             </div>
                             <h3 className="my-10 font-light">
@@ -112,6 +100,5 @@ export default function Home() {
             </div>
             <IndustriesGrid />
         </div>
-        </>
     )
 }

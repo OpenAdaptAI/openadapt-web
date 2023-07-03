@@ -9,43 +9,43 @@ export default function IndustriesGrid() {
   const gridData = [
     {
       title: 'HR',
-      descriptions: 'Enhance Boost team productivity in HR operations with automation. Automate candidate sourcing using LinkedIn Recruiter, LinkedIn Talent Solutions, GetProspect, Reply.io, outreach.io, Gmail/Outlook, and more.',
+      descriptions: 'Boost team productivity in HR operations. Automate candidate sourcing using LinkedIn Recruiter, LinkedIn Talent Solutions, GetProspect, Reply.io, outreach.io, Gmail/Outlook, and more.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-human-resources.svg',
     },
     {
       title: 'Law',
-      descriptions: 'Streamline legal procedures and case management. Automate tasks like generating legal documents, managing contracts, tracking cases, and conducting legal research with LexisNexis, Westlaw, Adobe Acrobat, and Microsoft Excel.',
+      descriptions: 'Streamline legal procedures and case management. Automate tasks like generating legal documents, managing contracts, tracking cases, and conducting legal research with LexisNexis, Westlaw, Adobe Acrobat, Microsoft Excel, and more.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-law.svg',
     },
     {
       title: 'Insurance',
-      descriptions: 'Optimize productivity in insurance. Automate policy management, claims processing, data analysis, and document collaboration with GuideWire PolicyCenter, Excel, SharePoint, PowerBI, and specialized tools.',
+      descriptions: 'Optimize productivity in insurance. Automate policy management, claims processing, data analysis, and document collaboration with PolicyCenter, Xactimate, Excel, SharePoint, PowerBI, and more.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-insurance.svg',
     },
     {
       title: 'Healthcare',
-      descriptions: 'Advance patient care and streamline operations. Utilize Cerner, Epic, PowerBI, and other tools to automate patient data management, medical billing, clinical documentation, and data analytics.',
+      descriptions: 'Advance patient care and streamline operations. Automate revenue cycle management, clinical documentation, and scheduling in Cerner, Epic, and more.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-healthcare.svg',
     },
     {
       title: 'Logistics',
-      descriptions: 'Upgrade logistics for on-time deliveries. Automate tasks with TMS, Freight Management Systems (FMS), Load Tracking Systems, and Document Management Systems for efficient tracking, scheduling, and financial record-keeping.',
+      descriptions: 'Automate tasks with Transportation Management Systems (TMS), Freight Management Systems (FMS), Load Tracking Systems, and Document Management Systems for efficient tracking, scheduling, and financial record-keeping.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-freight.svg',
     },
     {
       title: 'Pharmacy',
-      descriptions: 'Enhance accuracy and inventory management. Automate prescription management, inventory control, medication dispensing, and patient records with Krol (Telus), Filware, Healthwatch, and industry-specific tools.',
+      descriptions: 'Enhance accuracy and inventory management. Automate prescription management, inventory control, medication dispensing, and patient records with Krol (Telus), Filware, Healthwatch, and more.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-pharmacy.svg',
     },
     {
       title: 'Customer Support',
-      descriptions: 'Revolutionize customer service with automation. Automate customer inquiries, ticket management, collaboration, data analysis, and communication using OracleHCM, Workday, SAP, Excel, SharePoint, Outlook, LinkedIn, Teams, and PowerBI.',
+      descriptions: 'Automate customer inquiries, ticket management, collaboration, data analysis, and communication using OracleHCM, Workday, SAP, Excel, SharePoint, Outlook, LinkedIn, Teams, PowerBI, and more.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-customer-support.svg',
     },
@@ -94,7 +94,7 @@ export default function IndustriesGrid() {
   };
 
   return (
-    <div className={styles.background}>
+    <div className={styles.background} id="industries">
       <div>
         <h1 className={styles.heading}>Achieve more with less effort.</h1>
         <p className={styles.p}>
