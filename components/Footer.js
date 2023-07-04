@@ -14,22 +14,15 @@ export default function Footer() {
                             <li>Copy and paste the following command into the terminal, and press Enter:</li>
                         </ul>
                         <pre className="whitespace-pre-wrap code text-slate-600 bg-slate-100 p-3 m-2" style={{backgroundColor: '#f8f6ff'}}>
-                            powershell -noexit -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.ps1' | Invoke-Expression"
+                            powershell -noexit -ExecutionPolicy Bypass -Command "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/OpenAdapt/HEAD/install/install_openadapt.ps1' | Invoke-Expression"
                         </pre>
                         <h3 className="mt-5"><b>MacOS</b></h3>
                         <ul className="mt-2 list-disc list-inside font-light">
-                            <li>
-                                Download and install <a href="https://git-scm.com/download/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                    Git
-                                </a> and <a href="https://www.python.org/downloads/" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                    Python 3.10
-                                </a>
-                            </li>
                             <li>Press Command+Space, type "terminal", and press Enter</li>
                             <li>Copy and paste the following command into the terminal, and press Enter:</li>
                         </ul>
                         <pre className="whitespace-pre-wrap code text-slate-600 bg-slate-100 p-3 m-2" style={{backgroundColor: '#f8f6ff'}}>
-                            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/OpenAdaptAI/install/HEAD/install_puterbot.sh)"
+                            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/OpenAdaptAI/OpenAdapt/HEAD/install/install_openadapt.sh)"
                         </pre>
                     <h2 className="text-2xl mt-10 font-light">What's Next?</h2>
                         <li className="mt-2 font-light">
