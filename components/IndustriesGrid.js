@@ -57,7 +57,7 @@ export default function IndustriesGrid() {
     },
     {
       title: 'Let us build for you',
-      descriptions: 'If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.',
+      descriptions: "If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.",
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-build.svg',
     },
