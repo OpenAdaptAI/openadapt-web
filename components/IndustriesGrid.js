@@ -51,13 +51,13 @@ export default function IndustriesGrid() {
     },
     {
       title: 'Sales Development',
-      descriptions: 'Automate repetitive tasks in sales. Use OracleHCM, LinkedIn, SalesForce, and Gmail to automate lead generation, prospecting, CRM, and communication for efficient sales pipeline management and revenue growth.',
+      descriptions: 'Automate repetitive tasks in OracleHCM, LinkedIn, SalesForce, and Gmail for lead generation, prospecting, and communication to optimize revenue growth.',
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-sales-development.svg',
     },
     {
       title: 'Let us build for you',
-      descriptions: 'Customize automation solution.',
+      descriptions: "If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.",
       buttonLabel: 'Join Waitlist',
       logo: '/images/noun-build.svg',
     },
