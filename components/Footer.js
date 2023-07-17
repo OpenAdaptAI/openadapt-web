@@ -14,7 +14,7 @@ export default function Footer() {
                             <li>Copy and paste the following command into the terminal, and press Enter (If Prompted for `User Account Control`, click 'Yes'):</li>
                         </ul>
                         <pre className="whitespace-pre-wrap code text-slate-600 bg-slate-100 p-3 m-2" style={{backgroundColor: '#f8f6ff'}}>
-                           Start-Process powershell -Verb RunAs -ArgumentList '-NoExit', '-ExecutionPolicy', 'Bypass', '-Command', "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/MLDSAI/OpenAdapt/main/install/install_openadapt.ps1' | Invoke-Expression"
+                           Start-Process powershell -Verb RunAs -ArgumentList '-NoExit', '-ExecutionPolicy', 'Bypass', '-Command', "iwr -UseBasicParsing -Uri 'https://raw.githubusercontent.com/OpenAdaptAI/OpenAdapt/main/install/install_openadapt.ps1' | Invoke-Expression"
                         </pre>
                         <h3 className="mt-5"><b>MacOS</b></h3>
                         <ul className="mt-2 list-disc list-inside font-light">
@@ -28,7 +28,7 @@ export default function Footer() {
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                href="https://github.com/MLDSAI/OpenAdapt#run"
+                                href="https://github.com/OpenAdaptAI/OpenAdapt#run"
                             >
                                 Read our usage instructions
                             </a>
@@ -45,7 +45,7 @@ export default function Footer() {
                     <p>
                         Please <a
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                            href="https://github.com/MLDSAI/OpenAdapt/issues/new"
+                            href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new"
                         >
                             submit an issue to our Github
                         </a>.
