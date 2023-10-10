@@ -36,9 +36,9 @@ export default function Footer() {
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                href="https://join.slack.com/t/mldsai/shared_invite/zt-1uf94nn7r-qcQnS~hinLPKftUapNzbuw"
+                                href="https://discord.gg/yF527cQbDG"
                             >
-                            Join us on Slack
+                            Join us on Discord
                             </a>
                         </li>
                     <h2 className="text-2xl mt-10 font-light">Troubleshooting</h2>
