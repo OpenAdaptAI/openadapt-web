@@ -49,7 +49,20 @@ export default function Home() {
                                           width={64}
                                           alt="Large Language Model"
                                         />
-                                        <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
+                                        <motion.div
+                                            animate={{
+                                                x: [-1.5, 1.5, -1.5] // Half the amplitude of the y animation
+                                            }}
+                                            transition={{
+                                              duration: 2,
+                                              ease: "easeInOut",
+                                              times: [0, .5, 1],
+                                              repeat: Infinity,
+                                              repeatDelay: 0,
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
+                                        </motion.div>
                                     </div>
                                 </motion.div>
                                 <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
