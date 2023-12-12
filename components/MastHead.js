@@ -68,9 +68,10 @@ export default function Home() {
             style={{
                 // Center vertically
                 top: '50%',
-                //transform: 'translateY(-50%)',
+                transform: 'translateY(-50%)',
                 // Offset horizontally to the right of favicon.svg
-                transform: 'translate(calc(-50% + 64px), -50%)',
+                //transform: 'translate(calc(-50% + 64px), -50%)',
+                left: 'calc(100% + 8px)', 
             }}
         >
             <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
