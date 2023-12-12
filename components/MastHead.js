@@ -40,17 +40,19 @@ export default function Home() {
                                       repeatDelay: 0,
                                     }}
                                 >
-                                    <Image
-                                      className="invert text-center inline"
-                                      priority
-                                      src="/images/favicon.svg"
-                                      height={64}
-                                      width={64}
-                                      alt="Large Language Model"
-                                    />
+                                    <div className="flex items-center justify-center"> {/* Horizontal alignment container */}
+                                        <Image
+                                          className="invert inline"
+                                          priority
+                                          src="/images/favicon.svg"
+                                          height={64}
+                                          width={64}
+                                          alt="Large Language Model"
+                                        />
+                                        <FontAwesomeIcon icon={faArrowPointer} className="text-5xl" />
+                                    </div>
                                     <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                                 </motion.div>
-                                <FontAwesomeIcon icon={faArrowPointer} className="text-5xl" />
                             </div>
                             <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
