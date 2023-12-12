@@ -29,7 +29,7 @@ export default function Footer() {
                             <a
                                 className="font-medium text-blue-300 dark:text-blue-100 hover:underline"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt#run"
-				style={{backgroundColor: '#560DF8'}
+				style={{backgroundColor: '#560DF8'}}
                             >
                                 Read our usage instructions
                             </a>
@@ -38,7 +38,7 @@ export default function Footer() {
                             <a
                                 className="font-medium text-blue-300 dark:text-blue-100 hover:underline"
                                 href="https://discord.gg/yF527cQbDG"
-				style={{backgroundColor: '#560DF8'}
+				style={{backgroundColor: '#560DF8'}}
                             >
                             Join us on Discord
                             </a>
@@ -48,7 +48,7 @@ export default function Footer() {
                         Please <a
                             className="font-medium text-blue-300 dark:text-blue-100 hover:underline"
                             href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new"
-		    	    style={{backgroundColor: '#560DF8'}
+		    	    style={{backgroundColor: '#560DF8'}}
                         >
                             submit an issue to our Github
                         </a>.
