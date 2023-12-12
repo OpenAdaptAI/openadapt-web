@@ -70,7 +70,7 @@ export default function Home() {
                 top: '50%',
                 //transform: 'translateY(-50%)',
                 // Offset horizontally to the right of favicon.svg
-                transform: 'translate(64px, -50%)',
+                transform: 'translate(calc(-50% + 64px), -50%)',
             }}
         >
             <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
