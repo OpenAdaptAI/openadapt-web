@@ -27,16 +27,18 @@ export default function Footer() {
                     <h2 className="text-2xl mt-10 font-light">What's Next?</h2>
                         <li className="mt-2 font-light">
                             <a
-                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                className="font-medium hover:underline"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt#run"
+				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', margin: '10px'}}
                             >
                                 Read our usage instructions
                             </a>
                         </li>
                         <li className="mt-2 font-light">
                             <a
-                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                className="font-medium hover:underline"
                                 href="https://discord.gg/yF527cQbDG"
+				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', margin: '10px'}}
                             >
                             Join us on Discord
                             </a>
@@ -44,8 +46,9 @@ export default function Footer() {
                     <h2 className="text-2xl mt-10 font-light">Troubleshooting</h2>
                     <p>
                         Please <a
-                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            className="font-medium hover:underline"
                             href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new"
+		    	    style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', margin: '10px'}}
                         >
                             submit an issue to our Github
                         </a>.
