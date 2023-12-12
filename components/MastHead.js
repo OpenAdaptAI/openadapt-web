@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
+import { faBoxOpen, faBrain, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
@@ -28,28 +28,52 @@ export default function Home() {
                                 <span className="font-thin">.AI</span>
                             </h1>
                             <div className="flex flex-col align-items-center justify-content-center mr-2">
-                                <motion.div
-                                    animate={{
-                                        y: [-3, 3, -3]
-                                    }}
-                                    transition={{
-                                      duration: 2,
-                                      ease: "easeInOut",
-                                      times: [0, .5, 1],
-                                      repeat: Infinity,
-                                      repeatDelay: 0,
-                                    }}
-                                >
-                                    <Image
-                                      className="invert text-center inline"
-                                      priority
-                                      src="/images/favicon.svg"
-                                      height={64}
-                                      width={64}
-                                      alt="Large Language Model"
-                                    />
-                                </motion.div>
-                                <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
+<motion.div
+    animate={{
+        y: [-3, 3, -3]
+    }}
+    transition={{
+      duration: 2,
+      ease: "easeInOut",
+      times: [0, .5, 1],
+      repeat: Infinity,
+      repeatDelay: 0,
+    }}
+>
+    <div className="relative"> {/* Relative positioning container */}
+        <Image
+          className="invert inline"
+          priority
+          src="/images/favicon.svg"
+          height={64}
+          width={64}
+          alt="Large Language Model"
+        />
+        <motion.div
+            animate={{
+                x: [-1.5, 1.5, -1.5] // Half the amplitude of the y animation
+            }}
+            transition={{
+              duration: 1.5,
+              ease: "easeInOut",
+              times: [0, .5, 1],
+              repeat: Infinity,
+              repeatDelay: 0,
+            }}
+            className="absolute" // Absolute positioning for faArrowPointer
+            style={{
+                // Center vertically
+                top: '50%',
+                //transform: 'translateY(-50%)',
+                top: 'calc(50% - 16px)',
+                left: 'calc(50% + 32px)', 
+            }}
+        >
+            <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
+        </motion.div>
+    </div>
+</motion.div>
+<FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                             </div>
                             <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
