@@ -41,15 +41,15 @@ export default function Home() {
                                     }}
                                 >
                                     <div className="flex items-center justify-center"> {/* Horizontal alignment container */}
-                                        <FontAwesomeIcon icon={faArrowPointer} className="text-5xl" />
                                         <Image
                                           className="invert inline"
                                           priority
                                           src="/images/favicon.svg"
-                                          height={64}
-                                          width={64}
+                                          height={32}
+                                          width={32}
                                           alt="Large Language Model"
                                         />
+                                        <FontAwesomeIcon icon={faArrowPointer} className="text-5xl" />
                                     </div>
                                 </motion.div>
                                 <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
