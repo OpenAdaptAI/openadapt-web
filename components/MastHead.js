@@ -65,7 +65,7 @@ export default function Home() {
                 // Center vertically
                 top: '50%',
                 //transform: 'translateY(-50%)',
-                top: 'calc(50%)',
+                top: 'calc(50% - 16px)',
                 left: 'calc(50% + 32px)', 
             }}
         >
