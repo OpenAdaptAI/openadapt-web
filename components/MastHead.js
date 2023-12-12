@@ -27,13 +27,15 @@ export default function Home() {
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
+                            const A = 3  // Amplitude
+                            const D = 2  // Duration
                             <div className="flex flex-col align-items-center justify-content-center mr-2">
                                 <motion.div
                                     animate={{
-                                        y: [-3, 3, -3]
+                                        y: [-A, A, -A]
                                     }}
                                     transition={{
-                                      duration: 2,
+                                      duration: D,
                                       ease: "easeInOut",
                                       times: [0, .5, 1],
                                       repeat: Infinity,
@@ -50,16 +52,18 @@ export default function Home() {
                                           alt="Large Language Model"
                                         />
                                         <motion.div
-                                            animate={{
-                                                x: [-1.5, 1.5, -1.5] // Half the amplitude of the y animation
+                                           animate={{
+                                                x: [-A/2, A, -A/2] // Half the amplitude of the y animation
                                             }}
                                             transition={{
-                                              duration: 2,
+                                              duration: D/2,
                                               ease: "easeInOut",
                                               times: [0, .5, 1],
                                               repeat: Infinity,
                                               repeatDelay: 0,
                                             }}
+                                            className="absolute" // Absolute positioning for faArrowPointer
+                                            style={{ top: '50%', transform: 'translateY(-50%)' }} // Center vertically
                                         >
                                             <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
                                         </motion.div>
