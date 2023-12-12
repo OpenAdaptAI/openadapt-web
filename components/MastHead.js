@@ -65,9 +65,18 @@ export default function Home() {
                                               repeatDelay: 0,
                                             }}
                                             className="absolute" // Absolute positioning for faArrowPointer
-                                            style={{ top: '50%', transform: 'translateY(-50%)' }} // Center vertically
+                                            style={{
+                                                // Center vertically
+                                                top: '50%',
+                                                transform: 'translateY(-50%)',
+                                                // Align right
+                                                right: 0,
+                                            }}
                                         >
-                                            <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
+                                            <FontAwesomeIcon
+                                                icon={faArrowPointer}
+                                                className="text-2xl"
+                                            />
                                         </motion.div>
                                     </div>
                                 </motion.div>
