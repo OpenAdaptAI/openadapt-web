@@ -32,55 +32,65 @@ export default function Home() {
                                 <span className="font-thin">.AI</span>
                             </h1>
                             <div className="flex flex-col align-items-center justify-content-center mr-2">
-                                <motion.div
-                                    animate={{
-                                        y: [-A, A, -A]
-                                    }}
-                                    transition={{
-                                      duration: D,
-                                      ease: "easeInOut",
-                                      times: [0, .5, 1],
-                                      repeat: Infinity,
-                                      repeatDelay: 0,
-                                    }}
-                                >
-                                    <div className="flex items-center justify-center"> {/* Horizontal alignment container */}
-                                        <Image
-                                          className="invert inline"
-                                          priority
-                                          src="/images/favicon.svg"
-                                          height={64}
-                                          width={64}
-                                          alt="Large Language Model"
-                                        />
-                                        <motion.div
-                                           animate={{
-                                                x: [-A/2, A, -A/2] // Half the amplitude of the y animation
-                                            }}
-                                            transition={{
-                                              duration: D/2,
-                                              ease: "easeInOut",
-                                              times: [0, .5, 1],
-                                              repeat: Infinity,
-                                              repeatDelay: 0,
-                                            }}
-                                            className="absolute" // Absolute positioning for faArrowPointer
-                                            style={{
-                                                // Center vertically
-                                                top: '50%',
-                                                transform: 'translateY(-50%)',
-                                                // Align right
-                                                right: 0,
-                                            }}
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faArrowPointer}
-                                                className="text-2xl"
-                                            />
-                                        </motion.div>
-                                    </div>
-                                </motion.div>
-                                <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
+<motion.div
+    animate={{
+        y: [-A, A, -A]
+    }}
+    transition={{
+      duration: D,
+      ease: "easeInOut",
+      times: [0, .5, 1],
+      repeat: Infinity,
+      repeatDelay: 0,
+    }}
+>
+    <div className="relative flex items-center justify-center"> {/* Horizontal alignment container */}
+        <Image
+          className="invert inline"
+          priority
+          src="/images/favicon.svg"
+          height={64}
+          width={64}
+          alt="Large Language Model"
+        />
+        <motion.div
+            animate={{
+                x: [
+                    0, 
+                    A/2 * Math.cos(0), 
+                    A/2 * Math.cos(Math.PI), 
+                    A/2 * Math.cos(2 * Math.PI)
+                ],
+                y: [
+                    0, 
+                    A/2 * Math.sin(0), 
+                    A/2 * Math.sin(Math.PI), 
+                    A/2 * Math.sin(2 * Math.PI)
+                ]
+            }}
+            transition={{
+              duration: D,
+              ease: "linear",
+              times: [0, 0.5, 1],
+              repeat: Infinity,
+              repeatDelay: 0,
+            }}
+            className="absolute" // Absolute positioning for faArrowPointer
+            style={{
+                // Center relative to the image
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+            }}
+        >
+            <FontAwesomeIcon
+                icon={faArrowPointer}
+                className="text-2xl"
+            />
+        </motion.div>
+    </div>
+</motion.div>
+<FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                             </div>
                             <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
