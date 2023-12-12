@@ -45,11 +45,11 @@ export default function Home() {
                                           className="invert inline"
                                           priority
                                           src="/images/favicon.svg"
-                                          height={32}
-                                          width={32}
+                                          height={64}
+                                          width={64}
                                           alt="Large Language Model"
                                         />
-                                        <FontAwesomeIcon icon={faArrowPointer} className="text-5xl" />
+                                        <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
                                     </div>
                                 </motion.div>
                                 <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
