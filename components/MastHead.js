@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBoxOpen, faBrain } from '@fortawesome/free-solid-svg-icons'
+import { faBoxOpen, faBrain, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
@@ -48,8 +48,9 @@ export default function Home() {
                                       width={64}
                                       alt="Large Language Model"
                                     />
+                                    <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                                 </motion.div>
-                                <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
+                                <FontAwesomeIcon icon={faArrowPointer} className="text-5xl" />
                             </div>
                             <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
