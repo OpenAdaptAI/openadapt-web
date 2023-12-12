@@ -78,7 +78,7 @@ export default function Home() {
             transition={{
               duration: 1.5,
               ease: "easeInOut",
-              times: [0, .5, 1],
+              times: [0 + .5, .5 + .5, 1 + .5],  // as above but + .5
               repeat: Infinity,
               repeatDelay: 0,
             }}
@@ -87,7 +87,7 @@ export default function Home() {
                 // Center vertically
                 top: '50%',
                 //transform: 'translateY(-50%)',
-                top: 'calc(50% - 16px - 32px)',  // as above but -32px
+                top: 'calc(50% + 16px)',  // as above but +16px instead of -16px
                 left: 'calc(50% + 32px)', 
             }}
         >
