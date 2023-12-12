@@ -58,7 +58,7 @@ export default function Home() {
                 x: [-1.5, 1.5, -1.5] // Half the amplitude of the y animation
             }}
             transition={{
-              duration: 2,
+              duration: .67,
               ease: "easeInOut",
               times: [0, .5, 1],
               repeat: Infinity,
