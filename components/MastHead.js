@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBoxOpen, faBrain, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import { faBoxOpen, faBrain, faArrowPointer, faKeyboard } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
@@ -70,6 +70,28 @@ export default function Home() {
             }}
         >
             <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
+        </motion.div>
+        <motion.div
+            animate={{
+                x: [-1.5, 1.5, -1.5] // Half the amplitude of the y animation
+            }}
+            transition={{
+              duration: 1.5,
+              ease: "easeInOut",
+              times: [0, .5, 1],
+              repeat: Infinity,
+              repeatDelay: 0,
+            }}
+            className="absolute" // Absolute positioning for faArrowPointer
+            style={{
+                // Center vertically
+                top: '50%',
+                //transform: 'translateY(-50%)',
+                top: 'calc(50% - 16px - 32px)',  // as above but -32px
+                left: 'calc(50% + 32px)', 
+            }}
+        >
+            <FontAwesomeIcon icon={faKeyboard} className="text-2xl" />
         </motion.div>
     </div>
 </motion.div>
