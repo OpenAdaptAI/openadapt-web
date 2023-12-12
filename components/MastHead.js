@@ -17,6 +17,10 @@ export default function Home() {
         message: ''
     });
 
+    // Animation parameters
+    const A = 3;  // Amplitude
+    const D = 2;  // Duration
+
     return (
         <div className={styles.section}>
             <div className="relative flex items-center justify-center h-screen overflow-hidden">
@@ -27,8 +31,6 @@ export default function Home() {
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
-                            const A = 3  // Amplitude
-                            const D = 2  // Duration
                             <div className="flex flex-col align-items-center justify-content-center mr-2">
                                 <motion.div
                                     animate={{
