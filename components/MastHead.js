@@ -17,10 +17,6 @@ export default function Home() {
         message: ''
     });
 
-    // Animation parameters
-    const A = 3;  // Amplitude
-    const D = 2;  // Duration
-
     return (
         <div className={styles.section}>
             <div className="relative flex items-center justify-center h-screen overflow-hidden">
@@ -69,7 +65,7 @@ export default function Home() {
                 // Center vertically
                 top: '50%',
                 //transform: 'translateY(-50%)',
-                top: 'calc(50% - 32px)',
+                top: 'calc(50%)',
                 left: 'calc(50% + 32px)', 
             }}
         >
