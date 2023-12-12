@@ -34,17 +34,17 @@ export default function Home() {
                             <div className="flex flex-col align-items-center justify-content-center mr-2">
 <motion.div
     animate={{
-        y: [-A, A, -A]
+        y: [-3, 3, -3]
     }}
     transition={{
-      duration: D,
+      duration: 2,
       ease: "easeInOut",
       times: [0, .5, 1],
       repeat: Infinity,
       repeatDelay: 0,
     }}
 >
-    <div className="relative flex items-center justify-center"> {/* Horizontal alignment container */}
+    <div className="relative"> {/* Relative positioning container */}
         <Image
           className="invert inline"
           priority
@@ -55,38 +55,26 @@ export default function Home() {
         />
         <motion.div
             animate={{
-                x: [
-                    0, 
-                    A/2 * Math.cos(0), 
-                    A/2 * Math.cos(Math.PI), 
-                    A/2 * Math.cos(2 * Math.PI)
-                ],
-                y: [
-                    0, 
-                    A/2 * Math.sin(0), 
-                    A/2 * Math.sin(Math.PI), 
-                    A/2 * Math.sin(2 * Math.PI)
-                ]
+                x: [-1.5, 1.5, -1.5] // Half the amplitude of the y animation
             }}
             transition={{
-              duration: D,
-              ease: "linear",
-              times: [0, 0.5, 1],
+              duration: 2,
+              ease: "easeInOut",
+              times: [0, .5, 1],
               repeat: Infinity,
               repeatDelay: 0,
             }}
             className="absolute" // Absolute positioning for faArrowPointer
             style={{
-                // Center relative to the image
+                // Center vertically
                 top: '50%',
+                transform: 'translateY(-50%)',
+                // Offset horizontally
                 left: '50%',
-                transform: 'translate(-50%, -50%)',
+                transform: 'translateX(75%)',
             }}
         >
-            <FontAwesomeIcon
-                icon={faArrowPointer}
-                className="text-2xl"
-            />
+            <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
         </motion.div>
     </div>
 </motion.div>
