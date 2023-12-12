@@ -41,6 +41,7 @@ export default function Home() {
                                     }}
                                 >
                                     <div className="flex items-center justify-center"> {/* Horizontal alignment container */}
+                                        <FontAwesomeIcon icon={faArrowPointer} className="text-5xl" />
                                         <Image
                                           className="invert inline"
                                           priority
@@ -49,10 +50,9 @@ export default function Home() {
                                           width={64}
                                           alt="Large Language Model"
                                         />
-                                        <FontAwesomeIcon icon={faArrowPointer} className="text-5xl" />
                                     </div>
-                                    <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                                 </motion.div>
+                                <FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
                             </div>
                             <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
