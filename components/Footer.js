@@ -29,7 +29,7 @@ export default function Footer() {
                             <a
                                 className="font-medium hover:underline"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt#run"
-				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '10px'}}
+				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '5px'}}
                             >
                                 Read our usage instructions
                             </a>
@@ -38,7 +38,7 @@ export default function Footer() {
                             <a
                                 className="font-medium hover:underline"
                                 href="https://discord.gg/yF527cQbDG"
-				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '10px'}}
+				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '5px'}}
                             >
                             Join us on Discord
                             </a>
@@ -48,7 +48,7 @@ export default function Footer() {
                         Please <a
                             className="font-medium hover:underline"
                             href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose"
-		    	    style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '10px'}}
+		    	    style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '5px'}}
                         >
                             submit an issue to our Github
                         </a>.
