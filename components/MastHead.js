@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMonitor, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import { faDesktop, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
@@ -73,7 +73,7 @@ export default function Home() {
         </motion.div>
     </div>
 </motion.div>
-<FontAwesomeIcon icon={faMonitor} className="text-5xl" />
+<FontAwesomeIcon icon={faDesktop} className="text-5xl" />
                             </div>
                             <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
