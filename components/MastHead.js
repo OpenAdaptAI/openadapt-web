@@ -73,7 +73,7 @@ export default function Home() {
         </motion.div>
     </div>
 </motion.div>
-<FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
+<FontAwesomeIcon icon={faMonitor} className="text-5xl" />
                             </div>
                             <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
