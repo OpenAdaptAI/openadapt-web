@@ -27,7 +27,7 @@ export default function Home() {
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
-                            <h2 className="text-4xl mt-2 mb-10 font-extralight">
+                            <h2 className="text-4xl mt-0 mb-6 font-extralight">
                                 AI for Humans.
                             </h2>
                             <div className="flex flex-col align-items-center justify-content-center">
@@ -70,12 +70,12 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                            <h3 className="my-10 font-light">
+                            <h3 className="mt-8 font-light">
                                 <span className="inline-block p-2">
                                     Automate your workflows.
                                 </span>
                                 <br/>
-                                <span className="inline-block p-2 -my-2">
+                                <span className="inline-block p-2">
                                     Record, replay, and share.
                                 </span>
                                 <br />
