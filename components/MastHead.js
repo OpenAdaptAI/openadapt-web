@@ -84,7 +84,7 @@ export default function Home() {
                                 </span>
                             </h3>
                             <div>
-                                <Link className="btn btn-primary mt-2 mb-4" href="#industries">
+                                <Link className="btn btn-primary mt-2 mb-6" href="#industries">
                                     Learn How
                                 </Link>
                             </div>
