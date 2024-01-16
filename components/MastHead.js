@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDesktop, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import { faTv, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
@@ -29,9 +29,9 @@ export default function Home() {
                             </h1>
                             <div className="flex flex-col align-items-center justify-content-center mr-2">
         
-<div className="relative inline-block"> {/* Container with relative positioning */}
-    <FontAwesomeIcon icon={faDesktop} className="text-8xl" /> {/* Larger monitor icon */}
-    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center"> {/* Centering the icons */}
+<div className="relative inline-block">
+    <FontAwesomeIcon icon={faTv} className="text-8xl z-0" />
+    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10"> {/* Centering the icons */}
         <motion.div
             animate={{ y: [-3, 3, -3] }}
             transition={{
