@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBoxOpen, faBrain, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import { faMonitor, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
