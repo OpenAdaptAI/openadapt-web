@@ -27,10 +27,13 @@ export default function Home() {
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
-                            <div className="flex flex-col align-items-center justify-content-center mr-2">
+                            <h2 className="text-4xl my-10 font-extralight">
+                                AI for Humans.
+                            </h2>
+                            <div className="flex flex-col align-items-center justify-content-center">
         
-<div className="relative inline-block">
-    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10"> {/* Centering the icons */}
+<div className="relative inline-block ma-10">
+    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10">
         <motion.div
             animate={{ y: [-3, 3, -3] }}
             transition={{
@@ -70,14 +73,6 @@ export default function Home() {
 
 
                             </div>
-                            <h2 className="text-4xl my-10 font-extralight">
-                                AI for Humans.
-                            </h2>
-                            <div>
-                                <Link className="btn btn-primary ml-2 mt-2" href="#industries">
-                                    Learn How
-                                </Link>
-                            </div>
                             <h3 className="my-10 font-light">
                                 <span className="inline-block p-2">
                                     Automate your workflows.
@@ -91,6 +86,11 @@ export default function Home() {
                                     <b>No programming required.</b>
                                 </span>
                             </h3>
+                            <div>
+                                <Link className="btn btn-primary ml-2 mt-2" href="#industries">
+                                    Learn How
+                                </Link>
+                            </div>
                             <EmailForm />
                         </div>
                     </div>
