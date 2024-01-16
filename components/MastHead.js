@@ -30,47 +30,46 @@ export default function Home() {
                             <h2 className="text-4xl mt-2 mb-10 font-extralight">
                                 AI for Humans.
                             </h2>
-        
-<div className="flex flex-col items-center justify-center my-10">
-    <div className="relative inline-block">
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10">
-            <motion.div
-                animate={{ y: [-3, 3, -3] }}
-                transition={{
-                    duration: 2,
-                    ease: "easeInOut",
-                    times: [0, .5, 1],
-                    repeat: Infinity,
-                    repeatDelay: 0,
-                }}
-            >
-                <Image
-                    className="invert"
-                    priority
-                    src="/images/favicon.svg"
-                    height={64}
-                    width={64}
-                    alt="Large Language Model"
-                />
-            </motion.div>
-            <motion.div
-                animate={{ x: [-1.5, 1.5, -1.5] }}
-                transition={{
-                    duration: 1.5,
-                    ease: "easeInOut",
-                    times: [0, .5, 1],
-                    repeat: Infinity,
-                    repeatDelay: 0,
-                }}
-                style={{
-                    zIndex: 10,
-                }}
-            >
-                <FontAwesomeIcon icon={faArrowPointer} className="text-2xl ml-2" />
-            </motion.div>
-        </div>
-    </div>
-</div>
+                            <div className="flex flex-col items-center justify-center my-10">
+                                <div className="relative inline-block">
+                                    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10">
+                                        <motion.div
+                                            animate={{ y: [-3, 3, -3] }}
+                                            transition={{
+                                                duration: 2,
+                                                ease: "easeInOut",
+                                                times: [0, .5, 1],
+                                                repeat: Infinity,
+                                                repeatDelay: 0,
+                                            }}
+                                        >
+                                            <Image
+                                                className="invert"
+                                                priority
+                                                src="/images/favicon.svg"
+                                                height={64}
+                                                width={64}
+                                                alt="Large Language Model"
+                                            />
+                                        </motion.div>
+                                        <motion.div
+                                            animate={{ x: [-1.5, 1.5, -1.5] }}
+                                            transition={{
+                                                duration: 1.5,
+                                                ease: "easeInOut",
+                                                times: [0, .5, 1],
+                                                repeat: Infinity,
+                                                repeatDelay: 0,
+                                            }}
+                                            style={{
+                                                zIndex: 10,
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowPointer} className="text-2xl ml-2" />
+                                        </motion.div>
+                                    </div>
+                                </div>
+                            </div>
                             <h3 className="my-10 font-light">
                                 <span className="inline-block p-2">
                                     Automate your workflows.
