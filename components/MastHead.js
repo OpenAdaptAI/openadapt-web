@@ -30,7 +30,13 @@ export default function Home() {
                             <div className="flex flex-col align-items-center justify-content-center mr-2">
         
 <div className="relative inline-block">
-    <FontAwesomeIcon icon={faTv} className="text-8xl z-0" />
+    <FontAwesomeIcon
+        icon={faTv}
+        className="text-8xl z-0"
+        style={{
+            filter: 'brightness(50%)',
+        }}
+    />
     <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10"> {/* Centering the icons */}
         <motion.div
             animate={{ y: [-3, 3, -3] }}
@@ -65,6 +71,7 @@ export default function Home() {
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
+                zIndex: 10,
             }}
         >
             <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
