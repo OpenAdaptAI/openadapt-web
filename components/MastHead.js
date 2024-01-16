@@ -27,12 +27,11 @@ export default function Home() {
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
-                            <h2 className="text-4xl my-10 font-extralight">
+                            <h2 className="text-4xl mt-2 mb-10 font-extralight">
                                 AI for Humans.
                             </h2>
                             <div className="flex flex-col align-items-center justify-content-center">
-        
-<div className="relative inline-block ma-10">
+<div className="relative inline-block my-10">
     <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10">
         <motion.div
             animate={{ y: [-3, 3, -3] }}
