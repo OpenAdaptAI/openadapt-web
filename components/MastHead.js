@@ -31,8 +31,8 @@ export default function Home() {
                                 AI for Humans.
                             </h2>
                             <div className="flex flex-col align-items-center justify-content-center">
-                                <div className="relative inline-block mb-8">
-                                    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10">
+                                <div className="relative inline-block mb-4">
+                                    <div className="flex items-center justify-center z-10">
                                         <motion.div
                                             animate={{ y: [-3, 3, -3] }}
                                             transition={{
@@ -84,7 +84,7 @@ export default function Home() {
                                 </span>
                             </h3>
                             <div>
-                                <Link className="btn btn-primary my-6" href="#industries">
+                                <Link className="btn btn-primary mt-10 mb-6" href="#industries">
                                     Learn How
                                 </Link>
                             </div>
