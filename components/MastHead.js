@@ -27,11 +27,11 @@ export default function Home() {
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
-                            <h2 className="text-4xl mt-0 mb-6 font-extralight">
+                            <h2 className="text-4xl mt-0 mb-8 font-extralight">
                                 AI for Humans.
                             </h2>
                             <div className="flex flex-col align-items-center justify-content-center">
-                                <div className="relative inline-block my-10">
+                                <div className="relative inline-block mb-8">
                                     <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10">
                                         <motion.div
                                             animate={{ y: [-3, 3, -3] }}
@@ -79,12 +79,12 @@ export default function Home() {
                                     Record, replay, and share.
                                 </span>
                                 <br />
-                                <span className="bg-white bg-opacity-20 inline-block p-2 py-0">
+                                <span className="bg-white bg-opacity-20 inline-block p-2">
                                     <b>No programming required.</b>
                                 </span>
                             </h3>
                             <div>
-                                <Link className="btn btn-primary mt-2 mb-6" href="#industries">
+                                <Link className="btn btn-primary my-6" href="#industries">
                                     Learn How
                                 </Link>
                             </div>
