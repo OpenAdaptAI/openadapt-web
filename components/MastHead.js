@@ -30,8 +30,8 @@ export default function Home() {
                             <h2 className="text-4xl mt-2 mb-10 font-extralight">
                                 AI for Humans.
                             </h2>
-                            <div className="flex flex-col items-center justify-center my-10">
-                                <div className="relative inline-block">
+                            <div className="flex flex-col align-items-center justify-content-center">
+                                <div className="relative inline-block my-10">
                                     <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10">
                                         <motion.div
                                             animate={{ y: [-3, 3, -3] }}
@@ -84,7 +84,7 @@ export default function Home() {
                                 </span>
                             </h3>
                             <div>
-                                <Link className="btn btn-primary ml-2 my-2" href="#industries">
+                                <Link className="btn btn-primary mt-2 mb-4" href="#industries">
                                     Learn How
                                 </Link>
                             </div>
