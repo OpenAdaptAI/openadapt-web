@@ -28,52 +28,51 @@ export default function Home() {
                                 <span className="font-thin">.AI</span>
                             </h1>
                             <div className="flex flex-col align-items-center justify-content-center mr-2">
-<motion.div
-    animate={{
-        y: [-3, 3, -3]
-    }}
-    transition={{
-      duration: 2,
-      ease: "easeInOut",
-      times: [0, .5, 1],
-      repeat: Infinity,
-      repeatDelay: 0,
-    }}
->
-    <div className="relative"> {/* Relative positioning container */}
-        <Image
-          className="invert inline"
-          priority
-          src="/images/favicon.svg"
-          height={64}
-          width={64}
-          alt="Large Language Model"
-        />
+        
+<div className="relative inline-block"> {/* Container with relative positioning */}
+    <FontAwesomeIcon icon={faDesktop} className="text-8xl" /> {/* Larger monitor icon */}
+    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center"> {/* Centering the icons */}
         <motion.div
-            animate={{
-                x: [-1.5, 1.5, -1.5] // Half the amplitude of the y animation
-            }}
+            animate={{ y: [-3, 3, -3] }}
             transition={{
-              duration: 1.5,
-              ease: "easeInOut",
-              times: [0, .5, 1],
-              repeat: Infinity,
-              repeatDelay: 0,
+                duration: 2,
+                ease: "easeInOut",
+                times: [0, .5, 1],
+                repeat: Infinity,
+                repeatDelay: 0,
             }}
-            className="absolute" // Absolute positioning for faArrowPointer
+        >
+            <Image
+                className="invert"
+                priority
+                src="/images/favicon.svg"
+                height={64}
+                width={64}
+                alt="Large Language Model"
+            />
+        </motion.div>
+        <motion.div
+            animate={{ x: [-1.5, 1.5, -1.5] }}
+            transition={{
+                duration: 1.5,
+                ease: "easeInOut",
+                times: [0, .5, 1],
+                repeat: Infinity,
+                repeatDelay: 0,
+            }}
+            className="absolute"
             style={{
-                // Center vertically
                 top: '50%',
-                //transform: 'translateY(-50%)',
-                top: 'calc(50% - 16px)',
-                left: 'calc(50% + 32px)', 
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
             }}
         >
             <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
         </motion.div>
     </div>
-</motion.div>
-<FontAwesomeIcon icon={faDesktop} className="text-5xl" />
+</div>
+
+
                             </div>
                             <h2 className="text-4xl my-10 font-extralight">
                                 AI for Humans.
