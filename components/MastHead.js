@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBoxOpen, faBrain, faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
@@ -27,75 +27,67 @@ export default function Home() {
                                 <span className="font-thin">Open</span>Adapt
                                 <span className="font-thin">.AI</span>
                             </h1>
-                            <div className="flex flex-col align-items-center justify-content-center mr-2">
-<motion.div
-    animate={{
-        y: [-3, 3, -3]
-    }}
-    transition={{
-      duration: 2,
-      ease: "easeInOut",
-      times: [0, .5, 1],
-      repeat: Infinity,
-      repeatDelay: 0,
-    }}
->
-    <div className="relative"> {/* Relative positioning container */}
-        <Image
-          className="invert inline"
-          priority
-          src="/images/favicon.svg"
-          height={64}
-          width={64}
-          alt="Large Language Model"
-        />
-        <motion.div
-            animate={{
-                x: [-1.5, 1.5, -1.5] // Half the amplitude of the y animation
-            }}
-            transition={{
-              duration: 1.5,
-              ease: "easeInOut",
-              times: [0, .5, 1],
-              repeat: Infinity,
-              repeatDelay: 0,
-            }}
-            className="absolute" // Absolute positioning for faArrowPointer
-            style={{
-                // Center vertically
-                top: '50%',
-                //transform: 'translateY(-50%)',
-                top: 'calc(50% - 16px)',
-                left: 'calc(50% + 32px)', 
-            }}
-        >
-            <FontAwesomeIcon icon={faArrowPointer} className="text-2xl" />
-        </motion.div>
-    </div>
-</motion.div>
-<FontAwesomeIcon icon={faBoxOpen} className="text-5xl" />
-                            </div>
-                            <h2 className="text-4xl my-10 font-extralight">
+                            <h2 className="text-4xl mt-0 mb-8 font-extralight">
                                 AI for Humans.
                             </h2>
-                            <div>
-                                <Link className="btn btn-primary ml-2 mt-2" href="#industries">
-                                    Learn How
-                                </Link>
+                            <div className="flex flex-col align-items-center justify-content-center">
+                                <div className="relative inline-block mb-4">
+                                    <div className="flex items-center justify-center z-10">
+                                        <motion.div
+                                            animate={{ y: [-3, 3, -3] }}
+                                            transition={{
+                                                duration: 2,
+                                                ease: "easeInOut",
+                                                times: [0, .5, 1],
+                                                repeat: Infinity,
+                                                repeatDelay: 0,
+                                            }}
+                                        >
+                                            <Image
+                                                className="invert"
+                                                priority
+                                                src="/images/favicon.svg"
+                                                height={64}
+                                                width={64}
+                                                alt="Large Language Model"
+                                            />
+                                        </motion.div>
+                                        <motion.div
+                                            animate={{ x: [-1.5, 1.5, -1.5] }}
+                                            transition={{
+                                                duration: 1.5,
+                                                ease: "easeInOut",
+                                                times: [0, .5, 1],
+                                                repeat: Infinity,
+                                                repeatDelay: 0,
+                                            }}
+                                            style={{
+                                                zIndex: 10,
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowPointer} className="text-2xl ml-2" />
+                                        </motion.div>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 className="my-10 font-light">
+                            <h3 className="mt-8 font-light">
                                 <span className="inline-block p-2">
                                     Automate your workflows.
                                 </span>
                                 <br/>
-                                <span className="inline-block p-2 -my-2">
+                                <span className="inline-block p-2">
                                     Record, replay, and share.
                                 </span>
                                 <br />
-                                <span className="bg-white bg-opacity-20 inline-block p-2 py-0">
+                                <span className="bg-white bg-opacity-20 inline-block p-2">
                                     <b>No programming required.</b>
                                 </span>
                             </h3>
+                            <div>
+                                <Link className="btn btn-primary mt-10 mb-6" href="#industries">
+                                    Learn How
+                                </Link>
+                            </div>
                             <EmailForm />
                         </div>
                     </div>
