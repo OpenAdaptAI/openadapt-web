@@ -31,7 +31,7 @@ export default function Footer() {
                                 href="https://github.com/OpenAdaptAI/OpenAdapt#run"
 				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '5px'}}
                             >
-                                Read our usage instructions on Github
+                                Read our Usage Instructions on Github
                             </a>
                         </li>
                         <li className="mt-2 font-light">
@@ -40,7 +40,7 @@ export default function Footer() {
                                 href="https://discord.gg/yF527cQbDG"
 				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '5px'}}
                             >
-                            Join our discussion us on Discord
+                            Join our Discord
                             </a>
                         </li>
                         <li className="mt-2 font-light">
@@ -49,7 +49,7 @@ export default function Footer() {
                                 href="https://openadapt.gitbook.io/openadapt.ai/"
 				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '5px'}}
                             >
-                            Read our documentation on Gitbook
+                            Read our Documentation on Gitbook
                             </a>
                         </li>
                     <h2 className="text-2xl mt-10 font-light">Troubleshooting</h2>
