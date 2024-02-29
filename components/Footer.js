@@ -28,7 +28,7 @@ export default function Footer() {
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium hover:underline"
-                                href="https://github.com/OpenAdaptAI/OpenAdapt#run"
+                                href="https://github.com/OpenAdaptAI/OpenAdapt#usage"
 				style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '5px'}}
                             >
                                 Read our Usage Instructions on Github
