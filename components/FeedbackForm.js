@@ -49,6 +49,7 @@ export default function FeedbackForm({ feedbackData }) {
 
     return (
         <div
+          id="waitlist"
           className={`${styles.background} px-10`}
           style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
         >
