@@ -68,6 +68,7 @@ export default function EmailForm() {
                             type="email"
                             placeholder="Email"
                             className="input w-8/12 max-w-xs text-white"
+                            style={{ color: 'black', backgroundColor: 'white' /* Ensure text is visible */ }}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
