@@ -1,10 +1,17 @@
+import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-
 import styles from './Footer.module.css';
 
 export default function Footer() {
     const currentYear = new Date().getFullYear();
+
+    // Function to handle the reveal of the email address
+    const revealEmail = () => {
+        // Construct the email address and open in mail client
+        const user = 'hello';
+        const domain = 'openadapt.ai';
+        window.location.href = `mailto:${user}@${domain}`;
+    };
 
     return (
         <div className={styles.footerContainer}>
@@ -20,21 +27,15 @@ export default function Footer() {
                     />
                 </div>
                 <div className={styles.footerContent}>
-                    <div className={ `${styles.socialLinks} pt-20` }>
-                        <Link href="https://github.com/OpenAdaptAI/OpenAdapt" className={styles.link} passHref>
-                            GitHub
-                        </Link>
-                        <Link href="https://x.com/OpenAdaptAI" className={styles.link} passHref>
-                            X
-                        </Link>
-                        <Link href="https://www.linkedin.com/company/95677624" className={styles.link} passHref>
-                            LinkedIn
-                        </Link>
+                    <div className={`${styles.socialLinks} pt-20`}>
+                        <a href="https://github.com/OpenAdaptAI/OpenAdapt" className={styles.link}>GitHub</a>
+                        <a href="https://x.com/OpenAdaptAI" className={styles.link}>X</a>
+                        <a href="https://www.linkedin.com/company/95677624" className={styles.link}>LinkedIn</a>
                     </div>
                     <ul className={styles.footerLinks}>
-                        <li><Link href="mailto:hello@openadapt.ai" className={styles.link} passHref>Contact</Link></li>
-                        <li><Link href="/privacy-policy" className={styles.link} passHref>Privacy Policy</Link></li>
-                        <li><Link href="/terms-of-service" className={styles.link} passHref>Terms of Service</Link></li>
+                        <li><a onClick={revealEmail} className={styles.link} style={{cursor: 'pointer'}}>Contact</a></li>
+                        <li><a href="/privacy-policy" className={styles.link}>Privacy Policy</a></li>
+                        <li><a href="/terms-of-service" className={styles.link}>Terms of Service</a></li>
                     </ul>
                     <p className="mt-10">© {currentYear} OpenAdaptAI and MLDSAI Inc. All rights reserved.</p>
                     <p>Our software is open source and licensed under the MIT License.</p>
