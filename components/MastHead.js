@@ -86,6 +86,9 @@ export default function Home() {
                                 <Link className="btn btn-primary mt-10 mb-6" href="#industries">
                                     Learn How
                                 </Link>
+                                <Link className="btn btn-primary mt-10 mb-6 ml-3" href="#developers">
+                                    Get Started
+                                </Link>
                             </div>
                             <EmailForm />
                         </div>

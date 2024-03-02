@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export default function Developers() {
   return (
-        <div className={ styles.row }>
+        <div className={ styles.row } id="developers">
             <div className="relative flex items-center justify-center mb-10 mx-20 md-12">
                 <div className="grid grid-cols-1 break-words">
                     <h2 id="start" className="text-2xl mt-10 font-light">Getting Started for Developers</h2>
@@ -26,6 +26,7 @@ export default function Developers() {
                             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/OpenAdaptAI/OpenAdapt/HEAD/install/install_openadapt.sh)"
                         </pre>
                     <h2 className="text-2xl mt-10 font-light">What's Next?</h2>
+                        <ul className={`${styles.noBullets} mt-2 font-light`}>
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium hover:underline"
@@ -53,7 +54,9 @@ export default function Developers() {
                             Read our Documentation on Gitbook
                             </a>
                         </li>
+                        </ul>
                     <h2 className="text-2xl mt-10 font-light">Troubleshooting</h2>
+                        <ul className={`${styles.noBullets} mt-2 font-light`}>
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium hover:underline"
@@ -63,6 +66,7 @@ export default function Developers() {
                                 Submit an issue to our Github
                             </a> 🙏
                         </li>
+                        </ul>
                 </div>
             </div>
       </div>
