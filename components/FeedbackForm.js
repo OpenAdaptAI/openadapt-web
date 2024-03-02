@@ -42,8 +42,8 @@ export default function FeedbackForm() {
     return (
         <div className={styles.background} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             {formHidden ? (
-                <div className="fade-in" style={{ opacity: 1, transition: 'opacity 1s ease-in', color: 'black' /* Adjust for visibility */ }}>
-                    <h2 className="font-extralight text-white">
+                <div className="fade-in" style={{ opacity: 1, transition: 'opacity 1s ease-in' }}>
+                    <h2 className="font-extralight text-white text-2xl">
                         <FontAwesomeIcon icon={faPaperPlane} className="mr-4" />
                         Get Ready
                     </h2>
@@ -56,33 +56,21 @@ export default function FeedbackForm() {
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
                     name="feedback"
-                    style={{ width: '100%', transition: 'opacity 1s ease-out', opacity: isSubmitting ? 0 : 1 }}
                 >
-                    <input type="hidden" name="form-name" value="feedback" />
-                    {/* Form fields with adjusted styles for visibility */}
-                    <div className="flex flex-col items-center justify-center">
-                        <input
-                            name="email"
-                            type="email"
-                            placeholder="Your Email"
-                            className="input"
-                            style={{ color: 'black', backgroundColor: 'white' }} // Ensure text is visible
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <textarea
-                            name="message"
-                            placeholder="Your Message"
-                            className="textarea"
-                            style={{ color: 'black', backgroundColor: 'white' }} // Ensure text is visible
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            required
-                        ></textarea>
-                        <button type="submit" className="btn" disabled={isSubmitting} style={{ color: 'white', backgroundColor: 'blue' }}>
-                            {isSubmitting ? 'Submitting...' : 'Submit'}
-                        </button>
+                    <div className="grid grid-flow-row auto-rows-max row-auto">
+                        <input type="hidden" name="form-name" value="feedback" />
+                        <p className={styles.hidden}>
+                            <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                        </p>
+                        <h1 className="font-light text-3xl text-white my-0">Join the Waitlist</h1>
+                        <h2 className="mt-10 mb-8 font-light text-white flex-auto">We'll email you when you can access OpenAdapt Alpha.</h2>
+                        <label className={styles["email_label"]} htmlFor="email_form">Email Address:<span className={styles["required"]}>*</span></label>
+                        <input id="email_form" className={styles['form-field']} type="email" name="email_form" required />
+                        <label className={styles["input_label"]} htmlFor="help">How can OpenAdapt help you?</label>
+                        <textarea id="help" style={{ minHeight: '100px' }} className={styles['form-field']} wrap="soft" name="help" defaultValue={message} onChange={(e) => setMessage(e.target.value)}></textarea>
+                        <div className="container mx-auto" style={{ textAlign: "center"}}>
+                            <button className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Submit'}</button>
+                        </div>
                     </div>
                 </form>
             )}

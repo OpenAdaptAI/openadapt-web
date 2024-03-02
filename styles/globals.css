@@ -25,24 +25,6 @@ a:hover {
   text-decoration: underline; /* Adds underline on hover for better visual feedback */
 }
 
-.fade-enter {
-  opacity: 0;
-  transition: opacity 0.5s ease-in;
-}
-
-.fade-enter.fade-enter-active {
-  opacity: 1;
-}
-
-.fade-exit {
-  opacity: 1;
-  transition: opacity 0.5s ease-out;
-}
-
-.fade-exit.fade-exit-active {
-  opacity: 0;
-}
-
 .fade-in {
   animation: fadeInAnimation 1s forwards; /* Adjust time as needed */
 }

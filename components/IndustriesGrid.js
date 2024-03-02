@@ -76,8 +76,6 @@ export default function IndustriesGrid({ feedbackData, setFeedbackData, sectionR
     scrollToSection();
   };
 
-	console.log("Rendering IndustriesGrid", { feedbackData });
-
   return (
     <div className={styles.background} id="industries">
       <div>

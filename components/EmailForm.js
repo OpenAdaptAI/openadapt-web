@@ -45,10 +45,10 @@ export default function EmailForm() {
         <div className={styles.background} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             {formHidden ? (
                 <div className="fade-in" style={{ opacity: 1, transition: 'opacity 1s ease-in' }}>
-                    <h2 className="font-extralight text-white">
+                    <h4 className="font-extralight text-white">
                         <FontAwesomeIcon icon={faPaperPlane} className="mr-4" />
                         Get Ready
-                    </h2>
+                    </h4>
                 </div>
             ) : (
                 <form
