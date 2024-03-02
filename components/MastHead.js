@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
-import { faLinkedin, faDiscord, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faLinkedin, faDiscord, faGithub, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
@@ -85,8 +85,7 @@ export default function Home() {
                             </h3>
                             <div>
                                 <div>
-    <Link className="btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 mt-10 mb-6" href="#industries">
-
+                                    <Link className="btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 mt-10 mb-6" href="#industries">
                                         Learn How
                                     </Link>
                                     <Link className="btn btn-primary mt-10 mb-6 ml-3" href="#developers">
@@ -112,6 +111,12 @@ export default function Home() {
                     Your browser does not support the video tag.
                 </video>
                 <div className="fixed top-0 right-0 z-50">
+										{/* Github Icon */}
+										<div className="relative z-50 inline-block mr-6" style={{ transform: 'translateY(-5px)' }}>
+												<a href="https://github.com/OpenAdaptAI" aria-label="X">
+														<FontAwesomeIcon icon={faGithub} className="text-2xl" />
+												</a>
+										</div>
 										{/* Discord Icon */}
 										<div className="relative z-50 inline-block mr-6" style={{ transform: 'translateY(-5px)' }}>
 												<a href="https://discord.gg/yF527cQbDG" aria-label="X">
