@@ -40,7 +40,10 @@ export default function FeedbackForm() {
     };
 
     return (
-        <div className={styles.background} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div
+          className={`${styles.background} px-10`}
+          style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
+        >
             {formHidden ? (
                 <div className="fade-in" style={{ opacity: 1, transition: 'opacity 1s ease-in' }}>
                     <h2 className="font-extralight text-white text-2xl">
