@@ -15,7 +15,8 @@ export default function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <title>OpenAdapt.AI</title>
-        <meta name="description" content="AI for Humans. No programming required." />
+        <meta name="description" content="AI for Humans. No programming required."/>
+        <meta name="description" content="OpenAdapt.AI - AI for Humans. Open source infrastructure for using Large Language Models (LLMs), Large Multimodal Models (LMMs) / Visual Language Models (VLMs), and Large Action Models (LAMs) to automate your desktop application workflows. Record, replay, and share. No programming required."/>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
