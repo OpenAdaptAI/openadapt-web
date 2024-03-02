@@ -24,6 +24,7 @@ export default function FeedbackForm({ feedbackData }) {
         <div className={styles.background}>
             <div className={styles.row}>
                 <form
+                    id="waitlist"
                     className="flex items-center justify-center h-screen"
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
@@ -45,8 +46,7 @@ export default function FeedbackForm({ feedbackData }) {
                         </h1>
 
                         <h2 className="mt-10 mb-8 font-light text-white flex-auto">
-                            Fill out your email and we'll let you know when you
-                            can access your spot for OpenAdapt Alpha.
+                            We'll email you when you can access OpenAdapt Alpha.
                         </h2>
 
                         <label

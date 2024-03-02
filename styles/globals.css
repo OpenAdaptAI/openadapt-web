@@ -5,3 +5,22 @@
 html {
   scroll-behavior: smooth !important;
 }
+
+body {
+  color: whitesmoke; /* Sets the default text color to whitesmoke */
+}
+
+/* You can also ensure that all text inside the body inherits this color */
+body, body * {
+  color: inherit;
+}
+
+a {
+  color: #4d9ef6; /* A light blue color that stands out on dark backgrounds */
+  text-decoration: none; /* Removes the underline */
+}
+
+a:hover {
+  color: #82c0ff; /* A lighter blue for hover state */
+  text-decoration: underline; /* Adds underline on hover for better visual feedback */
+}
