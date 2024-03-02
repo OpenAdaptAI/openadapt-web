@@ -42,7 +42,7 @@ export default function EmailForm() {
     };
 
     return (
-        <div className={styles.background} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div className={styles.background} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '1em' }}>
             {formHidden ? (
                 <div className="fade-in" style={{ opacity: 1, transition: 'opacity 1s ease-in' }}>
                     <h4 className="font-extralight text-white">
