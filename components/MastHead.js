@@ -83,7 +83,7 @@ export default function Home() {
                                     <b>No programming required.</b>
                                 </span>
                             </h3>
-                            <div>
+                            <div id="register">
                                 <div>
                                     <Link className="btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 mt-10 mb-6" href="#industries">
                                         Learn How

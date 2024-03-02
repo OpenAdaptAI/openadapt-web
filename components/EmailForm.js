@@ -22,7 +22,7 @@ export default function EmailForm() {
         return (
             <>
                 <form
-                    id="register"
+                    id="register-form"
                     className="mt-6"
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
