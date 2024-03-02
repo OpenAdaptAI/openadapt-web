@@ -32,7 +32,7 @@ export default function FeedbackForm({ feedbackData }) {
                     method="POST"
                     action="/success"
                 >
-                    <div className="w-2/3 grid grid-flow-row auto-rows-max row-auto">
+                    <div className="grid grid-flow-row auto-rows-max row-auto">
                         <input type="hidden" name="form-name" value="feedback" />
                         <p className={styles.hidden}>
                             <label>
