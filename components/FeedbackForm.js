@@ -21,7 +21,8 @@ export default function FeedbackForm({ feedbackData }) {
         )
     } else {
         return (
-            <>
+        <div className={styles.background}>
+            <div className={styles.row}>
                 <form
                     className="flex items-center justify-center h-screen"
                     data-netlify="true"
@@ -30,7 +31,7 @@ export default function FeedbackForm({ feedbackData }) {
                     method="POST"
                     action="/success"
                 >
-                    <div className="w-1/2 grid grid-flow-row auto-rows-max row-auto">
+                    <div className="w-2/3 grid grid-flow-row auto-rows-max row-auto">
                         <input type="hidden" name="form-name" value="feedback" />
                         <p className={styles.hidden}>
                             <label>
@@ -71,6 +72,7 @@ export default function FeedbackForm({ feedbackData }) {
                         </label>
                         <textarea
                             id="help"
+                            style={{ minHeight: '100px' }}
                             className={styles['form-field']}
                             wrap="soft"
                             name="help"
@@ -84,7 +86,8 @@ export default function FeedbackForm({ feedbackData }) {
 
                     </div>
                 </form>
-            </>
+            </div>
+        </div>
         )
     }
 }

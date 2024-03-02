@@ -6,7 +6,6 @@ import { motion } from "framer-motion"
 import Image from 'next/image';
 
 import EmailForm from '@components/EmailForm'
-import IndustriesGrid from '@components/IndustriesGrid'
 
 import styles from './MastHead.module.css'
 
@@ -114,7 +113,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <IndustriesGrid />
         </div>
     )
 }
