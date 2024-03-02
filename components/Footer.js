@@ -20,7 +20,7 @@ export default function Footer() {
                     />
                 </div>
                 <div className={styles.footerContent}>
-                    <p>© {currentYear} OpenAdapt Project. All rights reserved.</p>
+                    <p>© {currentYear} OpenAdaptAI and MLDSAI Inc. All rights reserved.</p>
                     <p>Our software is open source and licensed under the MIT License.</p>
                     <div className={ `${styles.socialLinks} pt-20` }>
                         <Link href="https://github.com/OpenAdaptAI/OpenAdapt" className={styles.link} passHref>
