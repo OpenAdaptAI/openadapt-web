@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function Developers() {
   return (
         <div className={ styles.row } id="developers">
-            <div className="relative flex items-center justify-center mb-10 mx-20 md-12">
+            <div className="relative flex items-center justify-center mx-20 md-12">
                 <div className="grid grid-cols-1 break-words">
                     <h2 id="start" className="text-2xl mt-10 font-light">Getting Started</h2>
                         <h3 className="mt-5"><b>Coming soon!</b></h3>

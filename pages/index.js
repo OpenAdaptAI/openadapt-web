@@ -20,7 +20,7 @@ export default function Home() {
       <IndustriesGrid feedbackData={feedbackData} setFeedbackData={setFeedbackData} sectionRef={sectionRef} />
       <Developers />
       <div ref={sectionRef}>
-        <FeedbackForm feedbackData={feedbackData} />
+        <FeedbackForm feedbackData={feedbackData} setFeedbackData={setFeedbackData} />
       </div>
       <Footer />
     </div>
