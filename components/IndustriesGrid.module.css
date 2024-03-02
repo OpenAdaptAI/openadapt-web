@@ -6,7 +6,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding-bottom:25px;
+  padding-bottom: 50px;
 }
 .card {
   font-size: medium;
@@ -62,6 +62,7 @@
 .heading {
   font-size: 30px;
   text-align: center;
+  color: whitesmoke;
 }
 .p {
   padding:20px;

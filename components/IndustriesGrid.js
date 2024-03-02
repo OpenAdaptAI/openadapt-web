@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react';
 
 import styles from './IndustriesGrid.module.css';
-import FeedbackForm from "@components/FeedbackForm";
 import Image from 'next/image';
 
-export default function IndustriesGrid() {
-
+export default function IndustriesGrid({ feedbackData, setFeedbackData, sectionRef }) {
   const gridData = [
     {
       title: 'HR',
@@ -63,33 +61,18 @@ export default function IndustriesGrid() {
     },
   ];
 
-  const sectionRef = useRef(null);
-
   const scrollToSection = () => {
     if (sectionRef.current) {
       sectionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const [feedbackData, setFeedbackData] = useState({
-    email: '',
-    message: ''
-  });
-
   const handleButtonClick = (title) => {
-    // Fill in the feedback form data based on the button clicked
     let data = {
       email: '',
-      message: `I'm interested in how OpenAdapt can help me make ${title} better.`
+      message: title === 'Let us build for you' ? '' : `I'm interested in how OpenAdapt can help me make ${title} better.`
     };
-
-    if (title === 'Let us build for you') {
-      data.message = '';
-    }
-    // Update the feedback data state
     setFeedbackData(data);
-
-    // Scroll to the feedback form section 
     scrollToSection();
   };
 
@@ -130,9 +113,6 @@ export default function IndustriesGrid() {
             )}
           </div>
         ))}
-      </div>
-      <div ref={sectionRef}>
-        <FeedbackForm feedbackData={feedbackData} />
       </div>
     </div>
   );
