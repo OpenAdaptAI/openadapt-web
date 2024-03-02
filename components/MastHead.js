@@ -112,25 +112,25 @@ export default function Home() {
                 </video>
                 <div className="fixed top-0 right-0 z-50">
 										{/* Github Icon */}
-										<div className="relative z-50 inline-block mr-6" style={{ transform: 'translateY(-5px)' }}>
+										<div className="relative z-50 inline-block mr-3" style={{ transform: 'translateY(-5px)' }}>
 												<a href="https://github.com/OpenAdaptAI" aria-label="X">
 														<FontAwesomeIcon icon={faGithub} className="text-2xl" />
 												</a>
 										</div>
 										{/* Discord Icon */}
-										<div className="relative z-50 inline-block mr-6" style={{ transform: 'translateY(-5px)' }}>
+										<div className="relative z-50 inline-block mr-3" style={{ transform: 'translateY(-5px)' }}>
 												<a href="https://discord.gg/yF527cQbDG" aria-label="X">
 														<FontAwesomeIcon icon={faDiscord} className="text-2xl" />
 												</a>
 										</div>
 										{/* X Icon */}
-										<div className="relative z-50 inline-block mr-6" style={{ transform: 'translateY(-5px)' }}>
+										<div className="relative z-50 inline-block mr-3" style={{ transform: 'translateY(-5px)' }}>
 												<a href="https://x.com/OpenAdaptAI" aria-label="X">
 														<FontAwesomeIcon icon={faXTwitter} className="text-2xl" />
 												</a>
 										</div>
 										{/* LinkedIn Icon */}
-										<div className="relative z-50 inline-block mr-12" style={{ transform: 'translateY(-5px)' }}>
+										<div className="relative z-50 inline-block mr-3" style={{ transform: 'translateY(-5px)' }}>
 												<a href="https://www.linkedin.com/company/95677624" aria-label="LinkedIn">
 														<FontAwesomeIcon icon={faLinkedin} className="text-2xl" />
 												</a>
