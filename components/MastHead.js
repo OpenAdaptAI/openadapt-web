@@ -84,12 +84,15 @@ export default function Home() {
                                 </span>
                             </h3>
                             <div>
-                                <Link className="btn btn mt-10 mb-6" href="#industries">
-                                    Learn How
-                                </Link>
-                                <Link className="btn btn-primary mt-10 mb-6 ml-3" href="#developers">
-                                    Get Started
-                                </Link>
+                                <div>
+    <Link className="btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 mt-10 mb-6" href="#industries">
+
+                                        Learn How
+                                    </Link>
+                                    <Link className="btn btn-primary mt-10 mb-6 ml-3" href="#developers">
+                                        Get Started
+                                    </Link>
+                                </div>
                             </div>
                             <EmailForm />
                         </div>
