@@ -1,16 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { submitToNetlify } from '../utils/formSubmission';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import styles from './FeedbackForm.module.css';
 
-export default function FeedbackForm() {
+export default function FeedbackForm({ feedbackData }) {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formHidden, setFormHidden] = useState(false);
+
+    // Update local state when feedbackData changes
+    useEffect(() => {
+        if (feedbackData) {
+            setEmail(feedbackData.email);
+            setMessage(feedbackData.message);
+        }
+    }, [feedbackData]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -70,7 +78,15 @@ export default function FeedbackForm() {
                         <label className={styles["email_label"]} htmlFor="email_form">Email Address:<span className={styles["required"]}>*</span></label>
                         <input id="email_form" className={styles['form-field']} type="email" name="email_form" required />
                         <label className={styles["input_label"]} htmlFor="help">How can OpenAdapt help you?</label>
-                        <textarea id="help" style={{ minHeight: '100px' }} className={styles['form-field']} wrap="soft" name="help" defaultValue={message} onChange={(e) => setMessage(e.target.value)}></textarea>
+                        <textarea
+                            id="help"
+                            style={{ minHeight: '100px' }}
+                            className={styles['form-field']}
+                            wrap="soft"
+                            name="help"
+                            value={message} // Use controlled component
+                            onChange={(e) => setMessage(e.target.value)}
+                        ></textarea>
                         <div className="container mx-auto" style={{ textAlign: "center"}}>
                             <button className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Submit'}</button>
                         </div>
