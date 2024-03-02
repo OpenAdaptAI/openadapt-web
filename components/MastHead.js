@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import { faLinkedin, faDiscord, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
@@ -83,7 +84,7 @@ export default function Home() {
                                 </span>
                             </h3>
                             <div>
-                                <Link className="btn btn-primary mt-10 mb-6" href="#industries">
+                                <Link className="btn btn mt-10 mb-6" href="#industries">
                                     Learn How
                                 </Link>
                                 <Link className="btn btn-primary mt-10 mb-6 ml-3" href="#developers">
@@ -107,7 +108,26 @@ export default function Home() {
                     />
                     Your browser does not support the video tag.
                 </video>
-                <div className="absolute top-0 right-0 z-50">
+                <div className="fixed top-0 right-0 z-50">
+										{/* Discord Icon */}
+										<div className="relative z-50 inline-block mr-6" style={{ transform: 'translateY(-5px)' }}>
+												<a href="https://discord.gg/yF527cQbDG" aria-label="X">
+														<FontAwesomeIcon icon={faDiscord} className="text-2xl" />
+												</a>
+										</div>
+										{/* X Icon */}
+										<div className="relative z-50 inline-block mr-6" style={{ transform: 'translateY(-5px)' }}>
+												<a href="https://x.com/OpenAdaptAI" aria-label="X">
+														<FontAwesomeIcon icon={faXTwitter} className="text-2xl" />
+												</a>
+										</div>
+										{/* LinkedIn Icon */}
+										<div className="relative z-50 inline-block mr-12" style={{ transform: 'translateY(-5px)' }}>
+												<a href="https://www.linkedin.com/company/95677624" aria-label="LinkedIn">
+														<FontAwesomeIcon icon={faLinkedin} className="text-2xl" />
+												</a>
+										</div>
+										{/* Github icons */}
                     <div className="relative z-50 inline-block mr-2 mt-2">
                         <a className="github-button mr-2" href="https://github.com/MLDSAI/OpenAdaptAI/fork" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork MLDSAI/OpenAdaptAI on GitHub">Fork</a>
                     </div>
