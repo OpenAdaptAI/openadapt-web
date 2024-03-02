@@ -54,7 +54,6 @@ export default function Developers() {
                             </a>
                         </li>
                     <h2 className="text-2xl mt-10 font-light">Troubleshooting</h2>
-                    <p>
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium hover:underline"
@@ -64,7 +63,6 @@ export default function Developers() {
                                 Submit an issue to our Github
                             </a> 🙏
                         </li>
-                    </p>
                 </div>
             </div>
       </div>
