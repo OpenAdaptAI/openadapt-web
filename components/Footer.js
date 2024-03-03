@@ -29,7 +29,7 @@ export default function Footer() {
                             width={32}
                             alt="Large Language Model"
                         />
-                        <FontAwesomeIcon icon={faArrowPointer} className="ml-1" />
+                        <FontAwesomeIcon icon={faArrowPointer} className="ml-1 text-white" />
                     </div>
                 </div>
                 <div className={styles.footerContent}>
