@@ -89,8 +89,8 @@ export default function Developers() {
                                 href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose"
                   style={{color: "#FFF", backgroundColor: '#560DF8', padding: '10px', display: 'inline-block', margin: '5px'}}
                             >
-                                Submit an issue to our Github
-                            </a> 🙏
+                                Submit an Issue on Github 🙏
+                            </a>
                         </li>
                         </ul>
                 </div>
