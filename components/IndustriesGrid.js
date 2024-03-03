@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
+import Image from 'next/image';
+import Link from "next/link"
 
 import styles from './IndustriesGrid.module.css';
-import Image from 'next/image';
 
 export default function IndustriesGrid({ feedbackData, setFeedbackData, sectionRef }) {
   const gridData = [
@@ -106,13 +107,14 @@ export default function IndustriesGrid({ feedbackData, setFeedbackData, sectionR
                 <li key={grid.title}>{description}</li>
               ))}
             </ul>
-            {grid.title === 'Developers' ? (
-              <a href="#start" className={styles.button}>
-                {grid.buttonLabel}
-              </a>
-            ) : (
-              <button className={styles.button} onClick={() => handleButtonClick(grid.title)}>{grid.buttonLabel}</button>
-            )}
+            <div className="flex flex-row align-items-center justify-content-center mt-2 mb-4">
+                <button className={`btn btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 ${styles.button}`} onClick={() => handleButtonClick(grid.title)}>
+                    {grid.buttonLabel}
+                </button>
+                <Link className="btn btn-primary ml-2" href="#developers">
+                    Get Started
+                </Link>
+            </div>
           </div>
         ))}
       </div>

@@ -34,23 +34,11 @@
 }
 .button {
   background-color: transparent;
-  color: #b58bff;
-  padding: 6px 15px;
-  border: 2px solid #b58bff;
   border-radius: 5px;
   cursor: pointer;
+  padding: 6px 15px;
   transition: background-color 0.3s, color 0.3s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  width: 40%;
-  margin: 10px auto;
-}
-.button:hover {
-  background-color: #661ae6;
-  color: white;
-  border: 2px solid transparent;
+  text-align: center;
 }
 .descriptions {
   text-align: center;
