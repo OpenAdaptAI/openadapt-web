@@ -81,8 +81,11 @@ export default function IndustriesGrid({ feedbackData, setFeedbackData, sectionR
       <div>
         <h1 className={styles.heading}>Achieve more with less effort.</h1>
         <p className={styles.p}>
-          Our technology observes and records your software interactions, automating repetitive tasks.<br />
-          Spend less time on manual processes and more on tasks that truly matter.
+          OpenAdapt learns to automate your desktop and web workflows by observing
+          your demonstrations.<br />
+          Spend less time on repetitive tasks and more on work that truly matters.<br />
+          {/*<b>None of your data ever leaves your computer without your explicit approval.</b><br/>*/}
+          <a href="https://github.com/OpenAdaptAI/OpenAdapt?tab=readme-ov-file#industry-leading-privacy-piiphi-scrubbing-via-aws-comprehend-microsoft-presidio-and-private-ai">Industry leading privacy technologies</a> keep your data safe.
         </p>
       </div>
       <div className={styles.row}>

@@ -34,6 +34,7 @@ export default function Footer() {
                         <a href="https://www.linkedin.com/company/95677624" className={styles.link}>LinkedIn</a>
                     </div>
                     <ul className={styles.footerLinks}>
+                        <li><a href="https://github.com/OpenAdaptAI/OpenAdapt?tab=readme-ov-file#-open-contract-positions-at-openadaptai" className={styles.link}>Careers</a></li>
                         <li><a onClick={revealEmail} className={styles.link} style={{cursor: 'pointer'}}>Contact</a></li>
                         <li><a href="/privacy-policy" className={styles.link}>Privacy Policy</a></li>
                         <li><a href="/terms-of-service" className={styles.link}>Terms of Service</a></li>
