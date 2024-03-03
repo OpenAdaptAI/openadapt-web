@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -17,14 +20,17 @@ export default function Footer() {
         <div className={styles.footerContainer}>
             <footer className="grid grid-flow-row auto-rows-max gap-4">
                 <div className="m-auto pb-10">
-                    <Image
-                        className="invert"
-                        priority
-                        src="/images/favicon.svg"
-                        height={32}
-                        width={32}
-                        alt="Large Language Model"
-                    />
+                    <div className="flex items-center justify-center z-10">
+                        <Image
+                            className="invert"
+                            priority
+                            src="/images/favicon.svg"
+                            height={32}
+                            width={32}
+                            alt="Large Language Model"
+                        />
+                        <FontAwesomeIcon icon={faArrowPointer} className="ml-1" />
+                    </div>
                 </div>
                 <div className={styles.footerContent}>
                     <div className={`${styles.footerLinks} pt-20`}>
