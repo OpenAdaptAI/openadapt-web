@@ -108,9 +108,9 @@ export default function IndustriesGrid({ feedbackData, setFeedbackData, sectionR
               ))}
             </ul>
             <div className="flex flex-row align-items-center justify-content-center mt-2 mb-4">
-                <button className={`btn btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 ${styles.button}`} onClick={() => handleWaitlistButtonClick(grid.title)}>
+                <Link className={`btn btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 ${styles.button}`} href="#waitlist" onClick={() => handleWaitlistButtonClick(grid.title)}>
                     Join Waitlist
-                </button>
+                </Link>
                 <Link className="btn btn-primary ml-2" href="#developers" onClick={() => handleGetStartedButtonClick(grid.title)}>
                     Get Started
                 </Link>
