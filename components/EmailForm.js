@@ -51,33 +51,38 @@ export default function EmailForm() {
                     </h4>
                 </div>
             ) : (
-                <form
-                    id="email-form"
-                    className="flex items-center justify-center"
-                    onSubmit={handleSubmit}
-                    data-netlify="true"
-                    data-netlify-honeypot="bot-field"
-                    name="email" // Ensure this matches with Netlify form settings
-                    style={{ width: '100%', transition: 'opacity 1s ease-out', opacity: isSubmitting ? 0 : 1 }}
-                >
-                    <input type="hidden" name="form-name" value="email" />
-                    <div className="flex justify-center">
-                        <input
-                            id="emailInput"
-                            name="email"
-                            type="email"
-                            placeholder="Email"
-                            className="input w-8/12 max-w-xs text-white"
-                            style={{ color: 'black', backgroundColor: 'white' /* Ensure text is visible */ }}
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <button type="submit" className="btn btn-primary ml-2" disabled={isSubmitting}>
-                            {isSubmitting ? 'Submitting...' : 'Register'}
-                        </button>
-                    </div>
-                </form>
+                <>
+                    <form
+                        id="email-form"
+                        className="flex items-center justify-center"
+                        onSubmit={handleSubmit}
+                        data-netlify="true"
+                        data-netlify-honeypot="bot-field"
+                        name="email" // Ensure this matches with Netlify form settings
+                        style={{ width: '100%', transition: 'opacity 1s ease-out', opacity: isSubmitting ? 0 : 1 }}
+                    >
+                        <input type="hidden" name="form-name" value="email" />
+                        <div className="flex justify-center">
+                            <input
+                                id="emailInput"
+                                name="email"
+                                type="email"
+                                placeholder="Email"
+                                className="input w-8/12 max-w-xs text-white"
+                                style={{ color: 'black', backgroundColor: 'white' /* Ensure text is visible */ }}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                            <button type="submit" className="btn btn-primary ml-2" disabled={isSubmitting}>
+                                {isSubmitting ? 'Submitting...' : 'Register'}
+                            </button>
+                        </div>
+                    </form>
+                    <p className="text-sm mt-2 font-light opacity-70">
+                        Register for updates (we promise not to spam)
+                    </p>
+                </>
             )}
         </div>
     );
