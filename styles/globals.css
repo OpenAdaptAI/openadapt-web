@@ -25,6 +25,18 @@ a:hover {
   text-decoration: underline; /* Adds underline on hover for better visual feedback */
 }
 
+/* TODO: figure out why this doesn't work */
+html body a,
+html body a *,
+html body a:hover,
+html body a:hover *,
+html body a:focus,
+html body a:focus *,
+html body a:active,
+html body a:active * {
+  cursor: pointer !important;
+}
+
 .fade-in {
   animation: fadeInAnimation 1s forwards; /* Adjust time as needed */
 }

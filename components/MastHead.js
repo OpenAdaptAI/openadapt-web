@@ -85,7 +85,7 @@ export default function Home() {
                             </h3>
                             <div id="register">
                                 <div>
-                                    <Link className="btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 mt-10 mb-6" href="#industries">
+                                    <Link className="btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 mt-10 mb-6 hover:bg-transparent" href="#industries">
                                         Learn How
                                     </Link>
                                     <Link className="btn btn-primary mt-10 mb-6 ml-3" href="#developers">

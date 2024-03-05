@@ -32,13 +32,9 @@
   font-size: 22px;
   text-align: center;
 }
-.button {
-  background-color: transparent;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 6px 15px;
-  transition: background-color 0.3s, color 0.3s;
-  text-align: center;
+.button:hover {
+  color: white;
+  border: 2px solid transparent;
 }
 .descriptions {
   text-align: center;
