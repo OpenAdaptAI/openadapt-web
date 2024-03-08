@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 import Link from "next/link"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,6 +10,11 @@ import Image from 'next/image';
 import EmailForm from '@components/EmailForm'
 
 import styles from './MastHead.module.css'
+
+// Import the Sketch component dynamically and set ssr to false
+const SketchNoSSR = dynamic(() => import('./Sketch'), {
+  ssr: false,
+});
 
 export default function Home() {
     const [feedbackData, setFeedbackData] = useState({
@@ -96,6 +102,9 @@ export default function Home() {
                             <EmailForm />
                         </div>
                     </div>
+                </div>
+                <div className={styles.sketchContainer}>
+                    <SketchNoSSR />
                 </div>
                 <video
                     autoPlay

@@ -17,3 +17,12 @@
     rgba(0,0,45,1) 100%
   );
 }
+
+.sketchContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20; /* Adjust if needed to be above the video but below other content */
+}
