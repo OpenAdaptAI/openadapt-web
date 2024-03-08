@@ -36,7 +36,7 @@ const TermsOfService = () => {
 
       <h2 className={styles.subheading}>6. Governing Law</h2>
       <p className={styles.paragraph}>
-        These Terms of Service shall be governed by and construed in accordance with the laws of [Jurisdiction], without regard to its conflict of law principles.
+        These Terms of Service shall be governed by and construed in accordance with the laws of Ontario, Canada, without regard to its conflict of law principles.
       </p>
     </div>
   );
