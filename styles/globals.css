@@ -54,3 +54,6 @@ html body a:active * {
   from { opacity: 1; }
   to { opacity: 0; }
 }
+
+:root {
+  filter: invert(100%) hue-rotate(-220deg); }
