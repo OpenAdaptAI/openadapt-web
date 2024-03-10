@@ -37,7 +37,7 @@ export default function Home() {
                                 AI for Humans.
                             </h2>
                             <div className="flex flex-col align-items-center justify-content-center">
-                                <div className="relative inline-block mb-4">
+                                <div className="relative inline-block">
                                     <div className="flex items-center justify-center z-10">
                                         <motion.div
                                             animate={{ y: [-3, 3, -3] }}
@@ -63,7 +63,7 @@ export default function Home() {
                                                 }}
                                             >
                                                 <Image
-                                                    className="invert relative left-12"
+                                                    className="invert relative left-8"
                                                     priority
                                                     src="/images/favicon.svg"
                                                     height={64}
