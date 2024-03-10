@@ -66,12 +66,12 @@ export default function Home() {
                                                     className="invert relative left-12"
                                                     priority
                                                     src="/images/favicon.svg"
-                                                    height={96}
-                                                    width={96}
+                                                    height={64}
+                                                    width={64}
                                                     alt="Large Language Model"
                                                 />
                                             </motion.div>
-                                            <FontAwesomeIcon icon={faArrowPointer} className="text-7xl relative bottom-4" />
+                                            <FontAwesomeIcon icon={faArrowPointer} className="text-6xl relative bottom-4" />
                                         </motion.div>
                                     </div>
                                 </div>
