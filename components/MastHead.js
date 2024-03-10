@@ -49,29 +49,29 @@ export default function Home() {
                                                 repeatDelay: 0,
                                             }}
                                         >
-                                            <Image
-                                                className="invert"
-                                                priority
-                                                src="/images/favicon.svg"
-                                                height={64}
-                                                width={64}
-                                                alt="Large Language Model"
-                                            />
-                                        </motion.div>
-                                        <motion.div
-                                            animate={{ x: [-1.5, 1.5, -1.5] }}
-                                            transition={{
-                                                duration: 1.5,
-                                                ease: "easeInOut",
-                                                times: [0, .5, 1],
-                                                repeat: Infinity,
-                                                repeatDelay: 0,
-                                            }}
-                                            style={{
-                                                zIndex: 10,
-                                            }}
-                                        >
-                                            <FontAwesomeIcon icon={faArrowPointer} className="text-2xl ml-2" />
+                                            <motion.div
+                                                animate={{ x: [-1.5, 1.5, -1.5] }}
+                                                transition={{
+                                                    duration: 1.5,
+                                                    ease: "easeInOut",
+                                                    times: [0, .5, 1],
+                                                    repeat: Infinity,
+                                                    repeatDelay: 0,
+                                                }}
+                                                style={{
+                                                    zIndex: 10,
+                                                }}
+                                            >
+                                                <Image
+                                                    className="invert relative left-12"
+                                                    priority
+                                                    src="/images/favicon.svg"
+                                                    height={96}
+                                                    width={96}
+                                                    alt="Large Language Model"
+                                                />
+                                            </motion.div>
+                                            <FontAwesomeIcon icon={faArrowPointer} className="text-7xl relative bottom-4" />
                                         </motion.div>
                                     </div>
                                 </div>
