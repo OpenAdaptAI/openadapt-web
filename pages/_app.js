@@ -24,6 +24,15 @@ export default function MyApp({ Component, pageProps }) {
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000"/>
         <meta name="msapplication-TileColor" content="#2b5797"/>
         <meta name="theme-color" content="#ffffff"/>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJ01Y19XJN"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-CJ01Y19XJN');
+        </script>
       </Head>
       <main className={`${raleway.variable} font-sans`}>
         <Component {...pageProps} />
