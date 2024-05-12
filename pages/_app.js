@@ -26,13 +26,16 @@ export default function MyApp({ Component, pageProps }) {
         <meta name="theme-color" content="#ffffff"/>
         {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJ01Y19XJN"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-CJ01Y19XJN');
-        </script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-CJ01Y19XJN');
+            `,
+          }}
+        />
       </Head>
       <main className={`${raleway.variable} font-sans`}>
         <Component {...pageProps} />
