@@ -66,12 +66,6 @@ export default function IndustriesGrid({ feedbackData, setFeedbackData, sectionR
     };
   }
 
-  const handleWaitlistButtonClick = (title) => {
-      let data = getDataFromTitle(title);
-      setFeedbackData(data);
-      scrollToSection();
-  };
-
   const handleGetStartedButtonClick = (title) => {
       let data = getDataFromTitle(title);
       setFeedbackData(data);
@@ -108,9 +102,6 @@ export default function IndustriesGrid({ feedbackData, setFeedbackData, sectionR
               ))}
             </ul>
             <div className="flex flex-row align-items-center justify-content-center mt-2 mb-4">
-                <Link className={`btn btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 hover:bg-transparent`} href="#waitlist" onClick={() => handleWaitlistButtonClick(grid.title)}>
-                    Join Waitlist
-                </Link>
                 <Link  className="btn btn-primary ml-2" href="#developers" onClick={() => handleGetStartedButtonClick(grid.title)}>
                     Get Started
                 </Link>

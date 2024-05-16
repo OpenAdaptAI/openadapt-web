@@ -7,6 +7,8 @@ import { faLinkedin, faDiscord, faGithub, faXTwitter } from '@fortawesome/free-b
 import { motion } from "framer-motion"
 import Image from 'next/image';
 
+import AnimatedBackground from '@components/AnimatedBackground'
+import AnimatedLogo from '@components/AnimatedLogo'
 import EmailForm from '@components/EmailForm'
 
 import styles from './MastHead.module.css'
@@ -25,7 +27,7 @@ export default function Home() {
 
     return (
         <div className={styles.section}>
-            <div className="relative flex items-center justify-center h-screen overflow-hidden">
+            <div className="relative flex items-center justify-center">
                 <div className="relative z-30 p-5 text-2xl">
                     <div className="hero-content text-center">
                         <div className="grid grid-flow-row auto-rows-max">
@@ -34,46 +36,22 @@ export default function Home() {
                                 <span className="font-thin">.AI</span>
                             </h1>
                             <h2 className="text-4xl mt-0 mb-8 font-extralight">
-                                AI for Humans.
+                                AI for Desktops.
                             </h2>
                             <div className="flex flex-col align-items-center justify-content-center">
                                 <div className="relative inline-block">
-                                    <div className="flex items-center justify-center z-10">
-                                        <motion.div
-                                            animate={{ y: [-3, 3, -3] }}
-                                            transition={{
-                                                duration: 2,
-                                                ease: "easeInOut",
-                                                times: [0, .5, 1],
-                                                repeat: Infinity,
-                                                repeatDelay: 0,
-                                            }}
-                                        >
-                                            <motion.div
-                                                animate={{ x: [-1.5, 1.5, -1.5] }}
-                                                transition={{
-                                                    duration: 1.5,
-                                                    ease: "easeInOut",
-                                                    times: [0, .5, 1],
-                                                    repeat: Infinity,
-                                                    repeatDelay: 0,
-                                                }}
-                                                style={{
-                                                    zIndex: 10,
-                                                }}
-                                            >
-                                                <Image
-                                                    className="invert relative left-8"
-                                                    priority
-                                                    src="/images/favicon.svg"
-                                                    height={64}
-                                                    width={64}
-                                                    alt="Large Language Model"
-                                                />
-                                            </motion.div>
-                                            <FontAwesomeIcon icon={faArrowPointer} className="text-6xl relative bottom-4" />
-                                        </motion.div>
-                                    </div>
+                                    {/* <AnimatedLogo /> */}
+                                    <video
+                                        controls
+                                        className="demo-video"
+                                        style={{ maxWidth: '80%', margin: '0 auto' }}
+                                    >
+                                        <source
+                                            src="./demo.mp4"
+                                            type="video/mp4"
+                                        />
+                                        Your browser does not support the video tag.
+                                    </video>
                                 </div>
                             </div>
                             <h3 className="mt-8 font-light">
@@ -103,22 +81,7 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                <div className={styles.sketchContainer}>
-                    <SketchNoSSR />
-                </div>
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="absolute z-10 object-cover w-full h-full opacity-50"
-                >
-                    <source
-                        src="./hero.mp4"
-                        type="video/mp4"
-                    />
-                    Your browser does not support the video tag.
-                </video>
+                {/* <AnimatedBackground /> */}
                 <div className="fixed top-0 right-0 z-50">
 										{/* Github Icon */}
 										<div className="relative z-50 inline-block mr-3" style={{ transform: 'translateY(-5px)' }}>

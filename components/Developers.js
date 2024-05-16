@@ -31,11 +31,11 @@ export default function Developers() {
                         </Link>
                         <Link className="px-8 w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-16 sm:px-6" href={macURL}>
                             <FontAwesomeIcon icon={faApple} style={{ fontSize: 96 }} />
-                            <span className='text-2xl'>Download for MacOS</span>
+                            <span className='text-2xl'>Download for Mac</span>
                         </Link>
                     </div>
                     <p>
-                        Please <a href="#register">Register for Updates</a> and <a href="#waitlist">Join the Waitlist</a>.
+                        Don't forget to <a href="#register">Register for Updates</a>.
                     </p>
                     <p>
                         Comfortable on the command line? Read on:

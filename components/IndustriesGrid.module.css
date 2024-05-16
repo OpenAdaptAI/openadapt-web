@@ -1,5 +1,5 @@
 .background {
-  background: rgb(10, 27, 96);
+  /*background: rgb(10, 27, 96);*/
   background: radial-gradient( circle, rgba(10, 27, 96, 1) 19%, rgba(12, 16, 46, 1) 44%, rgba(0, 0, 30, 1) 66% );
 }
 .row {
