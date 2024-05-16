@@ -28,8 +28,8 @@ export default function Home() {
     return (
         <div className={styles.section}>
             <div className="relative flex items-center justify-center">
-                <div className="relative z-30 p-5 text-2xl">
-                    <div className="hero-content text-center">
+                <div className="relative z-30 py-5 text-2xl">
+                    <div className="text-center pt-6">
                         <div className="grid grid-flow-row auto-rows-max">
                             <h1 className="text-6xl mb-6 md:text-7xl">
                                 <span className="font-thin">Open</span>Adapt
