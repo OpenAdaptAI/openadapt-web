@@ -6,9 +6,11 @@ import { faWindows, faApple} from '@fortawesome/free-brands-svg-icons';
 
 import styles from './Developers.module.css';
 import Link from 'next/link';
+import { getReleasesDownloadCount } from 'utils/githubStats';
 
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState(null);
+    const [downloadCount, setDownloadCount] = useState({windows: 0, mac: 0});
     const macURL = latestRelease ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease}/OpenAdapt-${latestRelease}.app.zip` : '';
     const windowsURL = latestRelease ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease}/OpenAdapt-${latestRelease}.zip` : '';
 
@@ -17,6 +19,9 @@ export default function Developers() {
             .then(response => response.json())
             .then(data => {
                 setLatestRelease(data.name);
+            });
+            getReleasesDownloadCount().then(({windowsDownloadCount, macDownloadCount}) => {
+                setDownloadCount({windows: windowsDownloadCount, mac: macDownloadCount });
             });
     }, [])
   return (
@@ -28,10 +33,12 @@ export default function Developers() {
                         <Link className="w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-16" href={windowsURL}>
                             <FontAwesomeIcon icon={faWindows} className='text-[96px]' />
                             <span className='text-2xl'>Download for Windows</span>
+                            {downloadCount.windows > 0 && <span className='text-lg'>{downloadCount.windows} downloads</span>}
                         </Link>
                         <Link className="px-8 w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-16 sm:px-6" href={macURL}>
                             <FontAwesomeIcon icon={faApple} style={{ fontSize: 96 }} />
                             <span className='text-2xl'>Download for Mac</span>
+                            {downloadCount.mac > 0 && <span className='text-lg'>{downloadCount.mac} downloads</span>}
                         </Link>
                     </div>
                     <p>
