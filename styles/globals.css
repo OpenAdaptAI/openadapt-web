@@ -3,26 +3,27 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth !important;
+    scroll-behavior: smooth !important;
 }
 
 body {
-  color: whitesmoke; /* Sets the default text color to whitesmoke */
+    color: whitesmoke; /* Sets the default text color to whitesmoke */
 }
 
 /* You can also ensure that all text inside the body inherits this color */
-body, body * {
-  color: inherit;
+body,
+body * {
+    color: inherit;
 }
 
 a {
-  color: #4d9ef6; /* A light blue color that stands out on dark backgrounds */
-  text-decoration: none; /* Removes the underline */
+    color: #4d9ef6; /* A light blue color that stands out on dark backgrounds */
+    text-decoration: none; /* Removes the underline */
 }
 
 a:hover {
-  color: #82c0ff; /* A lighter blue for hover state */
-  text-decoration: underline; /* Adds underline on hover for better visual feedback */
+    color: #82c0ff; /* A lighter blue for hover state */
+    text-decoration: underline; /* Adds underline on hover for better visual feedback */
 }
 
 /* TODO: figure out why this doesn't work */
@@ -34,23 +35,31 @@ html body a:focus,
 html body a:focus *,
 html body a:active,
 html body a:active * {
-  cursor: pointer !important;
+    cursor: pointer !important;
 }
 
 .fade-in {
-  animation: fadeInAnimation 1s forwards; /* Adjust time as needed */
+    animation: fadeInAnimation 1s forwards; /* Adjust time as needed */
 }
 
 .fade-out {
-  animation: fadeOutAnimation 1s forwards; /* Adjust time as needed */
+    animation: fadeOutAnimation 1s forwards; /* Adjust time as needed */
 }
 
 @keyframes fadeInAnimation {
-  from { opacity: 0; }
-  to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes fadeOutAnimation {
-  from { opacity: 1; }
-  to { opacity: 0; }
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }

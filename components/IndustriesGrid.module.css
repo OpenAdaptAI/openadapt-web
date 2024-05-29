@@ -1,63 +1,70 @@
 .background {
-  /*background: rgb(10, 27, 96);*/
-  background: radial-gradient( circle, rgba(10, 27, 96, 1) 19%, rgba(12, 16, 46, 1) 44%, rgba(0, 0, 30, 1) 66% );
+    /*background: rgb(10, 27, 96);*/
+    background: radial-gradient(
+        circle,
+        rgba(10, 27, 96, 1) 19%,
+        rgba(12, 16, 46, 1) 44%,
+        rgba(0, 0, 30, 1) 66%
+    );
 }
 .row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding-bottom: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 50px;
 }
 .card {
-  font-size: medium;
-  width: 350px;
-  height: 350px;
-  margin: 20px;
-  padding: 20px;
-  border-radius: 30px;
-  background: rgba(62, 48, 103, 0.6);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    font-size: medium;
+    width: 350px;
+    height: 350px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(62, 48, 103, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .card:hover {
-  outline: 2px solid rgba(122, 105, 175, 0.6);
-  background: rgba(107, 84, 176, 0.6);
-  transition: background-color 0.5s, color 0.5s;
+    outline: 2px solid rgba(122, 105, 175, 0.6);
+    background: rgba(107, 84, 176, 0.6);
+    transition:
+        background-color 0.5s,
+        color 0.5s;
 }
 .title {
-  margin: 5px;
-  color: whitesmoke;
-  font-size: 22px;
-  text-align: center;
+    margin: 5px;
+    color: whitesmoke;
+    font-size: 22px;
+    text-align: center;
 }
 .button:hover {
-  color: white;
-  border: 2px solid transparent;
+    color: white;
+    border: 2px solid transparent;
 }
 .descriptions {
-  text-align: center;
-  margin-bottom: 10px;
-  padding: 0;
-  font-size: 15px;
-  color: rgb(204, 194, 194);
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 0;
+    font-size: 15px;
+    color: rgb(204, 194, 194);
 }
 .heading {
-  font-size: 30px;
-  text-align: center;
-  color: whitesmoke;
+    font-size: 30px;
+    text-align: center;
+    color: whitesmoke;
 }
 .p {
-  padding:20px;
-  font-size: 18px;
-  text-align: center;
-  color: rgb(204, 194, 194);
+    padding: 20px;
+    font-size: 18px;
+    text-align: center;
+    color: rgb(204, 194, 194);
 }
 .card:hover .logo {
-  transform: scale(1.2);
-  transition: transform 0.5s ease;
+    transform: scale(1.2);
+    transition: transform 0.5s ease;
 }
-.logo{
-  margin:15px;
+.logo {
+    margin: 15px;
 }

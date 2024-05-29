@@ -1,19 +1,19 @@
 .row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  background-color: rgba(0, 0, 30, 1);
-  color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: rgba(0, 0, 30, 1);
+    color: white;
 }
 .p {
-  padding:20px;
-  font-size: 18px;
-  text-align: center;
-  color: rgb(204, 194, 194);
+    padding: 20px;
+    font-size: 18px;
+    text-align: center;
+    color: rgb(204, 194, 194);
 }
 .no-bullets {
-  list-style-type: none; /* Removes bullet points */
-  padding-left: 0; /* Removes default padding */
+    list-style-type: none; /* Removes bullet points */
+    padding-left: 0; /* Removes default padding */
 }
