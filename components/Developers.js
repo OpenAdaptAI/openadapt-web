@@ -44,7 +44,7 @@ export default function Developers() {
                     </h2>
                     <div className="flex flex-col gap-10 justify-center items-center sm:flex-row">
                         <Link
-                            className="w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-16"
+                            className="w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8"
                             href={windowsURL}
                         >
                             <FontAwesomeIcon
