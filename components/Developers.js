@@ -68,7 +68,7 @@ export default function Developers() {
                                 icon={faApple}
                                 style={{ fontSize: 96 }}
                             />
-                            <span className="text-2xl">Download for Mac</span>
+                            <span className="text-2xl">Download for MacOS</span>
                             {downloadCount.mac > 0 && (
                                 <span className="text-lg">
                                     {downloadCount.mac} downloads
