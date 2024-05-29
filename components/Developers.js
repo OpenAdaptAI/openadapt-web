@@ -61,7 +61,7 @@ export default function Developers() {
                             )}
                         </Link>
                         <Link
-                            className="px-8 w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-16 sm:px-6"
+                            className="px-8 w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8 sm:px-6"
                             href={macURL}
                         >
                             <FontAwesomeIcon
