@@ -101,7 +101,7 @@ export default function Developers() {
                         Don't forget to{' '}
                         <a href="#register">Register for Updates</a>.
                     </p>
-                    <p>Comfortable on the command line? Read on:</p>
+                    <p className="text-center">Comfortable on the command line? Read on:</p>
                     <h2 id="start" className="text-2xl mt-10 font-light mb-5">
                         Getting Started for Developers
                     </h2>
