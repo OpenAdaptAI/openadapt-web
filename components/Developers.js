@@ -39,7 +39,7 @@ export default function Developers() {
         <div className={styles.row} id="developers">
             <div className="relative flex items-center justify-center mx-20 md-12">
                 <div className="grid grid-cols-1 break-words">
-                    <h2 id="start" className="text-2xl mt-10 mb-5 font-light">
+                    <h2 id="start" className="text-2xl mt-10 mb-5 font-light text-center">
                         Getting Started
                     </h2>
                     <p className="font-light mb-6 mx-auto w-[600px]">
@@ -95,13 +95,13 @@ export default function Developers() {
                         height="32"
                         width="114"
                         style={{ border: '0', borderRadius: '6px' }}
-                        className="mx-auto"
+                        className="mx-auto mb-4"
                     ></iframe>
-                    <p>
+                    <p className="text-center">
                         Don't forget to{' '}
                         <a href="#register">Register for Updates</a>.
                     </p>
-                    <p>Comfortable on the command line? Read on:</p>
+                    <p className="text-center">Comfortable on the command line? Read on:</p>
                     <h2 id="start" className="text-2xl mt-10 font-light mb-5">
                         Getting Started for Developers
                     </h2>
