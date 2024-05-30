@@ -88,6 +88,8 @@ export default function Developers() {
                                 </span>
                             )}
                         </Link>
+                    </div>
+                    <div className="flex flex-col justify-center items-center sm:flex-row">
                         <iframe
                             src="https://github.com/sponsors/OpenAdaptAI/card"
                             title="Sponsor OpenAdaptAI"
