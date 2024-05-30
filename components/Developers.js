@@ -94,8 +94,8 @@ export default function Developers() {
                         title="Sponsor OpenAdaptAI"
                         height="32"
                         width="114"
-                        style="border: 0; border-radius: 6px;"
-                        class="mx-auto"
+                        style={{ border: '0', borderRadius: '6px' }}
+                        className="mx-auto"
                     ></iframe>
                     <p>
                         Don't forget to{' '}
