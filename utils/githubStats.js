@@ -15,8 +15,9 @@ function getReleaseData(data) {
 
 export async function getReleasesDownloadCount() {
     function getWindowsDownloadCount(release) {
+        const releaseName = release.name
         return release.assets.reduce((acc, asset) => {
-            if (!asset.name.includes('.app')) {
+            if (asset.name === `OpenAdapt-${releaseName}.zip`) {
                 return acc + asset.download_count
             }
             return acc
@@ -24,8 +25,9 @@ export async function getReleasesDownloadCount() {
     }
 
     function getMacDownloadCount(release) {
+        const releaseName = release.name
         return release.assets.reduce((acc, asset) => {
-            if (asset.name.includes('.app')) {
+            if (asset.name === `OpenAdapt-${releaseName}.app.zip`) {
                 return acc + asset.download_count
             }
             return acc
