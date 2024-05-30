@@ -42,7 +42,7 @@ export default function Developers() {
                     <h2 id="start" className="text-2xl mt-10 mb-5 font-light text-center">
                         Getting Started
                     </h2>
-                    <p className="font-light mb-6 mx-auto w-[600px]">
+                    <p className="font-light mb-6 mx-auto">
                         Note: OpenAdapt is Alpha software. This means it is in
                         the early stages of development and may contain bugs,
                         incomplete features, and other issues. Users should
