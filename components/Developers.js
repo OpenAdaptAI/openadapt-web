@@ -42,6 +42,19 @@ export default function Developers() {
                     <h2 id="start" className="text-2xl mt-10 mb-5 font-light">
                         Getting Started
                     </h2>
+                    <p className="font-light mb-6 mx-auto w-[600px]">
+                        Note: OpenAdapt is Alpha software. This means it is in
+                        the early stages of development and may contain bugs,
+                        incomplete features, and other issues. Users should
+                        exercise caution and understand that the software is
+                        provided "as-is" without any guarantees or warranties.
+                        We appreciate your feedback and contributions to help
+                        improve the project. For more information and to support
+                        our development, please visit our{' '}
+                        <a href="https://github.com/sponsors/OpenAdaptAI">
+                            GitHub sponsors page.
+                        </a>
+                    </p>
                     <div className="flex flex-col gap-10 justify-center items-center sm:flex-row">
                         <Link
                             className="w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8"
