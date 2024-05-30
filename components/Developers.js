@@ -93,8 +93,8 @@ export default function Developers() {
                             title="Sponsor OpenAdaptAI"
                             height="225"
                             width="600"
-                            style="border: 0;"
-                        ></iframe>
+                            style={{ border: '0' }}
+                        />
                     </div>
                     <p>
                         Don't forget to{' '}
