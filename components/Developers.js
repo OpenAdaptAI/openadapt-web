@@ -88,6 +88,13 @@ export default function Developers() {
                                 </span>
                             )}
                         </Link>
+                        <iframe
+                            src="https://github.com/sponsors/OpenAdaptAI/card"
+                            title="Sponsor OpenAdaptAI"
+                            height="225"
+                            width="600"
+                            style="border: 0;"
+                        ></iframe>
                     </div>
                     <p>
                         Don't forget to{' '}
