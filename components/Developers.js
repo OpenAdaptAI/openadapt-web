@@ -89,15 +89,14 @@ export default function Developers() {
                             )}
                         </Link>
                     </div>
-                    <div className="flex flex-col justify-center items-center sm:flex-row">
-                        <iframe
-                            src="https://github.com/sponsors/OpenAdaptAI/card"
-                            title="Sponsor OpenAdaptAI"
-                            height="225"
-                            width="600"
-                            style={{ border: '0' }}
-                        />
-                    </div>
+                    <iframe
+                        src="https://github.com/sponsors/OpenAdaptAI/button"
+                        title="Sponsor OpenAdaptAI"
+                        height="32"
+                        width="114"
+                        style="border: 0; border-radius: 6px;"
+                        class="mx-auto"
+                    ></iframe>
                     <p>
                         Don't forget to{' '}
                         <a href="#register">Register for Updates</a>.
