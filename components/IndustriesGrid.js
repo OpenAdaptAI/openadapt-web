@@ -90,7 +90,7 @@ export default function IndustriesGrid({
     return (
         <div className={styles.background} id="industries">
             <div>
-                <h1 className={styles.heading}>
+                <h1 className="text-center text-2xl text-white mt-4">
                     Achieve more with less effort.
                 </h1>
                 <p className={styles.p}>
