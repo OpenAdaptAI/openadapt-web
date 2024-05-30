@@ -89,8 +89,8 @@ export default function IndustriesGrid({
 
     return (
         <div className={styles.background} id="industries">
-            <div>
-                <h1 className="text-center text-2xl text-white pt-8">
+            <div style={{ paddingTop: '50px' }}>
+                <h1 className="text-center text-2xl text-white">
                     Achieve more with less effort.
                 </h1>
                 <p className={styles.p}>
