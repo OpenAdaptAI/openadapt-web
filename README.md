@@ -2,27 +2,27 @@
 
 ![Netlify + Next](https://user-images.githubusercontent.com/43764894/223561089-2b729a3d-2963-4fc1-ad9b-a8618cd3c87e.png)
 
-This is a [Next.js](https://nextjs.org/) v12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It is a reference on how to integrate commonly used features within Netlify for Next.js. 
+This is a [Next.js](https://nextjs.org/) v12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It is a reference on how to integrate commonly used features within Netlify for Next.js.
 
 ## Table of Contents:
 
-- [Getting Started](#getting-started)
-- [Deploy to Netlify](#deploy-to-netlify)
-  - [Deploy using the Netlify CLI](#deploy-using-the-netlify-cli)
-  - [Running Locally](#running-locally)
-- [Forms](#forms)
-  - [Adding a Custom Submission Page](#adding-a-custom-submission-page)
-  - [Blocking Bot Spam with a Honeypot Field](#blocking-bot-spam-with-a-honeypot-field)
-  - [Forms Resources](#forms-resources)
-- [Netlify Functions](#netlify-functions)
-  - [Functions Resources](#functions-resources)
-- [Redirects](#redirects)
-  - [Redirect Resources](#redirect-resources)
-- [Next.js Toolbox Template Video Walkthrough](#nextjs-toolbox-template-video-walkthrough)
-- [Testing](#testing)
-  - [Included Default Testing](#included-default-testing)
-  - [Removing Renovate](#removing-renovate)
-  - [Removing Cypress](#removing-cypress)
+-   [Getting Started](#getting-started)
+-   [Deploy to Netlify](#deploy-to-netlify)
+    -   [Deploy using the Netlify CLI](#deploy-using-the-netlify-cli)
+    -   [Running Locally](#running-locally)
+-   [Forms](#forms)
+    -   [Adding a Custom Submission Page](#adding-a-custom-submission-page)
+    -   [Blocking Bot Spam with a Honeypot Field](#blocking-bot-spam-with-a-honeypot-field)
+    -   [Forms Resources](#forms-resources)
+-   [Netlify Functions](#netlify-functions)
+    -   [Functions Resources](#functions-resources)
+-   [Redirects](#redirects)
+    -   [Redirect Resources](#redirect-resources)
+-   [Next.js Toolbox Template Video Walkthrough](#nextjs-toolbox-template-video-walkthrough)
+-   [Testing](#testing)
+    -   [Included Default Testing](#included-default-testing)
+    -   [Removing Renovate](#removing-renovate)
+    -   [Removing Cypress](#removing-cypress)
 
 ## Getting Started
 
@@ -47,10 +47,11 @@ Want to deploy immediately? Click this button
 Clicking this button will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Netlify.
 
 ### Deploy using the Netlify CLI:
+
 Click the 'Use the Template' button at the top of this repo or clone it with the `git clone` command. Then install the Netlify CLI tool and run `netlify init`. Or straight from the Netlify CLI, use the `netlify sites:create-template` command in you terminal ([learn more about this command here](https://www.netlify.com/blog/create-a-site-from-a-template-using-the-netlify-cli)) to do the entire flow for you.
 
 ```bash
-git clone https://github.com/netlify-templates/nextjs-toolbox 
+git clone https://github.com/netlify-templates/nextjs-toolbox
 
 npm install netlify-cli -g # to install the Netlify CLI tool globally
 
@@ -69,17 +70,17 @@ You can also use `netlify deploy (--prod)` to manually deploy and `netlify open`
 
 You can use `netlify dev` from the command line to access project information like environment variables as well as
 
-- test functions
-- test redirects
-- share a live session via url with `netlify dev --live`
-- [and more](https://cli.netlify.com/netlify-dev/) :)
+-   test functions
+-   test redirects
+-   share a live session via url with `netlify dev --live`
+-   [and more](https://cli.netlify.com/netlify-dev/) :)
 
 ### Deployment Resources
 
-- [CLI docs](https://docs.netlify.com/cli/get-started/)
-- [File-based Netlify Configuration](https://docs.netlify.com/configure-builds/file-based-configuration/)
-- [Netlify Dev Overview](https://www.youtube.com/watch?v=RL_gtVZ_79Q&t=812s)
-- [Netlify Edge, CDN deployment](https://www.netlify.com/products/edge/)
+-   [CLI docs](https://docs.netlify.com/cli/get-started/)
+-   [File-based Netlify Configuration](https://docs.netlify.com/configure-builds/file-based-configuration/)
+-   [Netlify Dev Overview](https://www.youtube.com/watch?v=RL_gtVZ_79Q&t=812s)
+-   [Netlify Edge, CDN deployment](https://www.netlify.com/products/edge/)
 
 ## Forms
 
@@ -107,9 +108,9 @@ Many bots scan through webpages and try to see what pages and forms they can get
 
 ```html
 <p class="hidden">
-  <label>
-    Don’t fill this out if you’re human: <input name="bot-field" />
-  </label>
+    <label>
+        Don’t fill this out if you’re human: <input name="bot-field" />
+    </label>
 </p>
 ```
 
@@ -119,17 +120,22 @@ communicate that this is a field not meant to be filled in.
 For this to work we also need to add a `data-netlify-honeypot` attribute to the form element.
 
 ```html
-<form data-netlify="true" data-netlify-honeypot="bot-field" action="/success" method="POST"></form>
+<form
+    data-netlify="true"
+    data-netlify-honeypot="bot-field"
+    action="/success"
+    method="POST"
+></form>
 ```
 
 [See it here in the template code.](https://github.com/netlify-templates/next-toolbox/blob/main/components/FeedbackForm.js#L8)
 
 ### Forms Resources
 
-- [Netlify Forms Setup](https://docs.netlify.com/forms/setup/)
-- [Netlify Forms](https://www.netlify.com/products/forms/#main)
-- [Netlify Forms - Form Triggered Functions](https://docs.netlify.com/functions/trigger-on-events/)
-- [Netlify Forms - Using reCAPTCHA 2](https://docs.netlify.com/forms/spam-filters/#recaptcha-2-challenge)
+-   [Netlify Forms Setup](https://docs.netlify.com/forms/setup/)
+-   [Netlify Forms](https://www.netlify.com/products/forms/#main)
+-   [Netlify Forms - Form Triggered Functions](https://docs.netlify.com/functions/trigger-on-events/)
+-   [Netlify Forms - Using reCAPTCHA 2](https://docs.netlify.com/forms/spam-filters/#recaptcha-2-challenge)
 
 ## Netlify Functions
 
@@ -143,21 +149,21 @@ The function format expects a function named `handler` to be exported. This will
 
 There is quite a bit you can do with these functions, so here are some additional resources to learn more!
 
-- [Netlify Function Format](https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format)
-- [Build Netlify Functions with TypeScript](https://docs.netlify.com/functions/build-with-typescript/)
-- [Event-triggered Functions](https://docs.netlify.com/functions/trigger-on-events/)
-- [What are Background Functions](https://www.netlify.com/blog/2021/01/07/what-are-background-functions/)
-- [Netlify Functions - Examples](https://functions.netlify.com/examples/)
-- [Using esbuild as your bundler for new ECMAScript Features](https://www.netlify.com/blog/2021/04/02/modern-faster-netlify-functions/)
+-   [Netlify Function Format](https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format)
+-   [Build Netlify Functions with TypeScript](https://docs.netlify.com/functions/build-with-typescript/)
+-   [Event-triggered Functions](https://docs.netlify.com/functions/trigger-on-events/)
+-   [What are Background Functions](https://www.netlify.com/blog/2021/01/07/what-are-background-functions/)
+-   [Netlify Functions - Examples](https://functions.netlify.com/examples/)
+-   [Using esbuild as your bundler for new ECMAScript Features](https://www.netlify.com/blog/2021/04/02/modern-faster-netlify-functions/)
 
 ## Redirects
 
-In the [`netlify.toml`](./netlify.toml) configuration file there is an example of how to implement redirects. Redirects can be used to do many things from redirecting Single Page Apps more predictably, redirecting based on country/language to leveraging On-Demand Builders for [Distributed Persistant Rendering](https://www.netlify.com/blog/2021/04/14/distributed-persistent-rendering-a-new-jamstack-approach-for-faster-builds/). 
+In the [`netlify.toml`](./netlify.toml) configuration file there is an example of how to implement redirects. Redirects can be used to do many things from redirecting Single Page Apps more predictably, redirecting based on country/language to leveraging On-Demand Builders for [Distributed Persistant Rendering](https://www.netlify.com/blog/2021/04/14/distributed-persistent-rendering-a-new-jamstack-approach-for-faster-builds/).
 
-In the example we'll be using redirects to have a shorter endpoint to Netlify functions. By default, you call a Netlify function when requesting a path like `https://yoursite.netlify.com/.netlify/functions/functionName`. Instead, we'll redirect all calls from a path including `/api` to call on the Netlify functions. So the path will be `https://yoursite.netlify.com/api/functionName`, a lot easier to remember too. 
-
+In the example we'll be using redirects to have a shorter endpoint to Netlify functions. By default, you call a Netlify function when requesting a path like `https://yoursite.netlify.com/.netlify/functions/functionName`. Instead, we'll redirect all calls from a path including `/api` to call on the Netlify functions. So the path will be `https://yoursite.netlify.com/api/functionName`, a lot easier to remember too.
 
 ### Example
+
 ```toml
 [[redirects]]
 from = "/api/*"
@@ -174,11 +180,11 @@ There are many ways to use redirects. Check out the resouces below to learn more
 
 ### Redirect Resources
 
-- [Redirect syntax and configuration](https://docs.netlify.com/routing/redirects/#syntax-for-the-netlify-configuration-file)
-- [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
-- [Creating better, more predicatable redirect rules for SPAs](https://www.netlify.com/blog/2020/04/07/creating-better-more-predictable-redirect-rules-for-spas/)
-- [Redirect by country or language](https://docs.netlify.com/routing/redirects/redirect-options/#redirect-by-country-or-language)
-- [On-Demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/)
+-   [Redirect syntax and configuration](https://docs.netlify.com/routing/redirects/#syntax-for-the-netlify-configuration-file)
+-   [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
+-   [Creating better, more predicatable redirect rules for SPAs](https://www.netlify.com/blog/2020/04/07/creating-better-more-predictable-redirect-rules-for-spas/)
+-   [Redirect by country or language](https://docs.netlify.com/routing/redirects/redirect-options/#redirect-by-country-or-language)
+-   [On-Demand Builders](https://docs.netlify.com/configure-builds/on-demand-builders/)
 
 ## Next.js Toolbox Template Video Walkthrough
 
@@ -190,9 +196,9 @@ https://user-images.githubusercontent.com/76533034/156541634-4dd7ce20-c413-43c1-
 
 We’ve included some tooling that helps us maintain these templates. This template currently uses:
 
-- [Renovate](https://www.mend.io/free-developer-tools/renovate/) - to regularly update our dependencies
-- [Cypress](https://www.cypress.io/) - to run tests against how the template runs in the browser
-- [Cypress Netlify Build Plugin](https://github.com/cypress-io/netlify-plugin-cypress) - to run our tests during our build process
+-   [Renovate](https://www.mend.io/free-developer-tools/renovate/) - to regularly update our dependencies
+-   [Cypress](https://www.cypress.io/) - to run tests against how the template runs in the browser
+-   [Cypress Netlify Build Plugin](https://github.com/cypress-io/netlify-plugin-cypress) - to run our tests during our build process
 
 If your team is not interested in this tooling, you can remove them with ease!
 

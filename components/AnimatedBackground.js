@@ -1,11 +1,11 @@
-import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic'
 
 import styles from './AnimatedBackground.module.css'
 
 // Import the Sketch component dynamically and set ssr to false
 const SketchNoSSR = dynamic(() => import('./Sketch'), {
-  ssr: false,
-});
+    ssr: false,
+})
 
 export default function AnimatedBackground() {
     return (
@@ -20,10 +20,7 @@ export default function AnimatedBackground() {
                 playsInline
                 className="absolute z-10 object-cover w-full h-full opacity-50"
             >
-                <source
-                    src="./hero.mp4"
-                    type="video/mp4"
-                />
+                <source src="./hero.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
         </>

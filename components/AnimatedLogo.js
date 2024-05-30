@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowPointer } from "@fortawesome/free-solid-svg-icons";
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 
 export default function AnimatedLogo() {
     return (
@@ -10,7 +10,7 @@ export default function AnimatedLogo() {
                 animate={{ y: [-3, 3, -3] }}
                 transition={{
                     duration: 2,
-                    ease: "easeInOut",
+                    ease: 'easeInOut',
                     times: [0, 0.5, 1],
                     repeat: Infinity,
                     repeatDelay: 0,
@@ -20,7 +20,7 @@ export default function AnimatedLogo() {
                     animate={{ x: [-1.5, 1.5, -1.5] }}
                     transition={{
                         duration: 1.5,
-                        ease: "easeInOut",
+                        ease: 'easeInOut',
                         times: [0, 0.5, 1],
                         repeat: Infinity,
                         repeatDelay: 0,
@@ -36,8 +36,11 @@ export default function AnimatedLogo() {
                         alt="Large Language Model"
                     />
                 </motion.div>
-                <FontAwesomeIcon icon={faArrowPointer} className="text-6xl relative bottom-4" />
+                <FontAwesomeIcon
+                    icon={faArrowPointer}
+                    className="text-6xl relative bottom-4"
+                />
             </motion.div>
         </div>
-    );
+    )
 }
