@@ -130,7 +130,7 @@ export default function IndustriesGrid({
                         <div className="flex flex-row align-items-center justify-content-center mt-2 mb-4">
                             <Link
                                 className="btn btn-primary ml-2"
-                                href="#developers"
+                                href="#start"
                                 onClick={() =>
                                     handleGetStartedButtonClick(grid.title)
                                 }
