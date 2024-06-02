@@ -86,7 +86,7 @@ export default function Home() {
                                     </Link>
                                     <Link
                                         className="btn btn-primary mt-10 mb-6 ml-3"
-                                        href="#developers"
+                                        href="#start"
                                     >
                                         Get Started
                                     </Link>
