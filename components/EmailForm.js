@@ -69,7 +69,7 @@ export default function EmailForm() {
                         className="flex items-center justify-center"
                         onSubmit={handleSubmit}
                         data-netlify="true"
-                        data-netlify-honeypot="bot-field"
+                        netlify-honeypot="bot-field"
                         name="email" // Ensure this matches with Netlify form settings
                         style={{
                             width: '100%',
