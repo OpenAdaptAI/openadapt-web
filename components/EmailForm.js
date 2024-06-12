@@ -15,8 +15,8 @@ export default function EmailForm() {
         event.preventDefault()
         setIsSubmitting(true)
 
-        /*
         const formData = new FormData(event.target)
+        /*
         formData.append('form-name', 'email') // Ensure this matches the name attribute of your form
         */
 
