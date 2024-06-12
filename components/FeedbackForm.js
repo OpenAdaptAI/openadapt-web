@@ -26,7 +26,7 @@ export default function FeedbackForm({ feedbackData }) {
         const formData = new FormData(event.target)
         formData.append('form-name', 'feedback')
 
-        fetch('/', {
+        fetch('/form.html', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(formData).toString(),
