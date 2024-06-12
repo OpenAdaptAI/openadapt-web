@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { submitToNetlify } from '../utils/formSubmission' // Make sure this util follows Netlify's requirements
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import styles from './EmailForm.module.css'
@@ -15,6 +14,12 @@ export default function EmailForm() {
         event.preventDefault()
         setIsSubmitting(true)
 
+        window.gtag('event', 'submit_form', {
+            event_category: 'Form',
+            event_label: 'email',
+            value: 1,
+        })
+
         const formData = new FormData(event.target)
         /*
         formData.append('form-name', 'email') // Ensure this matches the name attribute of your form
@@ -27,6 +32,7 @@ export default function EmailForm() {
             body: new URLSearchParams(formData).toString(),
         })
             .then((response) => {
+                console.log({response})
                 setIsSubmitting(false)
                 if (response.ok) {
                     setFormHidden(true) // Hide form and show success message on successful submission
