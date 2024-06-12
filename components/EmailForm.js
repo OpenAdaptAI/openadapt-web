@@ -15,8 +15,10 @@ export default function EmailForm() {
         event.preventDefault()
         setIsSubmitting(true)
 
+        /*
         const formData = new FormData(event.target)
         formData.append('form-name', 'email') // Ensure this matches the name attribute of your form
+        */
 
         // Using fetch to submit form data to Netlify according to their AJAX submission guide
         fetch('/', {
