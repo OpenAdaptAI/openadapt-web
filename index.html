@@ -1,8 +1,9 @@
 <html>
 <body>
 <!-- A little help for the Netlify post-processing bots -->
-<form name="email" netlify netlify-honeypot="bot-field" hidden>
+<form name="email" data-netlify="true" method="POST" netlify netlify-honeypot="bot-field">
   <input type="email" name="email" />
+  <button type="submit">Register</button>
 </form>
 </body>
 </html>
