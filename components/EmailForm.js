@@ -78,6 +78,12 @@ export default function EmailForm() {
                         }}
                     >
                         <input type="hidden" name="form-name" value="email" />
+                        <p className={styles.hidden}>
+                            <label>
+                                Don’t fill this out if you’re human:{' '}
+                                <input name="bot-field" />
+                            </label>
+                        </p>
                         <div className="flex justify-center">
                             <input
                                 id="emailInput"
