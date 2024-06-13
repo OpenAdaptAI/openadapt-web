@@ -56,7 +56,7 @@ export default function Home() {
                                       frameborder="0"
                                       allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                       referrerpolicy="strict-origin-when-cross-origin"
-                                      allowfullscreen>
+                                      allowfullscreen
                                     </iframe>
                                 </div>
                             </div>
