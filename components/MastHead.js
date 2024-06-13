@@ -48,14 +48,14 @@ export default function Home() {
                                     {/* <AnimatedLogo /> */}
                                     <iframe
                                       style={{
-                                        maxWidth: '80%',
+                                        maxWidth: '200%',
+                                        width: '200%'
                                         margin: '0 auto',
                                       }}
-                                      src="https://www.youtube.com/embed/OVERugs50cQ?si=5Mh_B9V7NFV0aKY8"
+                                      src="https://www.youtube.com/embed/OVERugs50cQ?controls=0&autoplay=1"
                                       title="YouTube video player"
                                       frameborder="0"
-                                      allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                      referrerpolicy="strict-origin-when-cross-origin"
+                                      allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                                       allowfullscreen
                                     >
                                     </iframe>
