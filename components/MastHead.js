@@ -47,12 +47,14 @@ export default function Home() {
                                 <div className="relative inline-block">
                                     {/* <AnimatedLogo /> */}
                                     <iframe
-                                      width="560"
-                                      height="315"
+                                      style={{
+                                        maxWidth: '80%',
+                                        margin: '0 auto',
+                                      }}
                                       src="https://www.youtube.com/embed/OVERugs50cQ?si=5Mh_B9V7NFV0aKY8"
                                       title="YouTube video player"
                                       frameborder="0"
-                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                      allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                       referrerpolicy="strict-origin-when-cross-origin"
                                       allowfullscreen>
                                     </iframe>
