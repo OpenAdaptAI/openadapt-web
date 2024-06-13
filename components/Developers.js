@@ -1,40 +1,75 @@
-import React, { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
-import { faWindows, faApple } from '@fortawesome/free-brands-svg-icons'
-
-import styles from './Developers.module.css'
-import Link from 'next/link'
-import { getReleasesDownloadCount } from 'utils/githubStats'
+import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWindows, faApple } from '@fortawesome/free-brands-svg-icons';
+import Link from 'next/link';
+import styles from './Developers.module.css';
+import { getReleasesDownloadCount } from 'utils/githubStats';
 
 export default function Developers() {
-    const [latestRelease, setLatestRelease] = useState(null)
-    const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 })
+    const [latestRelease, setLatestRelease] = useState(null);
+    const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
     const macURL = latestRelease
         ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease}/OpenAdapt-${latestRelease}.app.zip`
-        : ''
+        : '';
     const windowsURL = latestRelease
         ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease}/OpenAdapt-${latestRelease}.zip`
-        : ''
+        : '';
 
     useEffect(() => {
-        fetch(
-            'https://api.github.com/repos/OpenAdaptAI/OpenAdapt/releases/latest'
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                setLatestRelease(data.name)
-            })
-        getReleasesDownloadCount().then(
-            ({ windowsDownloadCount, macDownloadCount }) => {
-                setDownloadCount({
-                    windows: windowsDownloadCount,
-                    mac: macDownloadCount,
-                })
+        fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt/releases/latest')
+            .then(response => response.json())
+            .then(data => {
+                setLatestRelease(data.name);
+            });
+        getReleasesDownloadCount().then(({ windowsDownloadCount, macDownloadCount }) => {
+            setDownloadCount({
+                windows: windowsDownloadCount,
+                mac: macDownloadCount,
+            });
+        });
+    }, []);
+
+    const handleDownloadClick = (os, url) => {
+        const fileName = url.split('/').pop();
+
+        // Track the download start
+        window.gtag('event', 'download_start', {
+            event_category: 'Software Downloads',
+            event_action: `Download Initiated ${os}`,
+            event_label: fileName,
+            value: 1
+        });
+
+        // Proceed to download the file
+        downloadFile(url, os, fileName);
+    }
+
+    const downloadFile = async (url, os, fileName) => {
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                // Track the successful download
+                window.gtag('event', 'download_success', {
+                    event_category: 'Software Downloads',
+                    event_action: `Download Successful ${os}`,
+                    event_label: fileName,
+                    value: 1
+                });
+            } else {
+                throw new Error('Network response was not ok.');
             }
-        )
-    }, [])
+        } catch (error) {
+            console.error('Download failed:', error);
+            // Track the failed download
+            window.gtag('event', 'download_failure', {
+                event_category: 'Software Downloads',
+                event_action: `Download Failed ${os}`,
+                event_label: fileName,
+                value: 0
+            });
+        }
+    }
+
     return (
         <div className={styles.row} id="start">
             <div className="relative flex items-center justify-center mx-20 md-12">
@@ -59,6 +94,7 @@ export default function Developers() {
                         <Link
                             className="w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8"
                             href={windowsURL}
+                            onClick={() => handleDownloadClick('Windows', windowsURL)}
                         >
                             <FontAwesomeIcon
                                 icon={faWindows}
@@ -76,6 +112,7 @@ export default function Developers() {
                         <Link
                             className="px-8 w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8 sm:px-6"
                             href={macURL}
+                            onClick={() => handleDownloadClick('MacOS', macURL)}
                         >
                             <FontAwesomeIcon
                                 icon={faApple}
