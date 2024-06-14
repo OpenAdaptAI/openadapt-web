@@ -71,7 +71,7 @@ export default function Developers() {
     }
 
     // TODO: Connect to the GitHub API to dynamically check and update the showBuildWarning state based on latest release status
-    const showBuildWarning = false;
+    const showBuildWarning = true;
     
     return (
         <div className={styles.row} id="start">
@@ -98,6 +98,11 @@ export default function Developers() {
                             GitHub sponsors page.
                         </a>
                     </p>
+                    {latestRelease && (
+                        <div className="text-center my-4">
+                            <h3 className="text-lg font-bold">Current Version: {latestRelease}</h3>
+                        </div>
+                    )}
                     <div className="flex flex-col gap-10 justify-center items-center sm:flex-row">
                         <Link
                             className="w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8"
