@@ -98,6 +98,11 @@ export default function Developers() {
                             GitHub sponsors page.
                         </a>
                     </p>
+                    {latestRelease && (
+                        <div className="text-center my-4">
+                            <h3 className="text-lg font-bold">Current Version: {latestRelease}</h3>
+                        </div>
+                    )}
                     <div className="flex flex-col gap-10 justify-center items-center sm:flex-row">
                         <Link
                             className="w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8"
@@ -109,7 +114,7 @@ export default function Developers() {
                                 className="text-[96px]"
                             />
                             <span className="text-2xl">
-                                Download for Windows {latestRelease && `(v${latestRelease})`}
+                                Download for Windows
                             </span>
                             {downloadCount.windows > 0 && (
                                 <span className="text-lg">
@@ -126,9 +131,7 @@ export default function Developers() {
                                 icon={faApple}
                                 style={{ fontSize: 96 }}
                             />
-                            <span className="text-2xl">
-                                Download for MacOS {latestRelease && `(v${latestRelease})`}
-                            </span>
+                            <span className="text-2xl">Download for MacOS</span>
                             {downloadCount.mac > 0 && (
                                 <span className="text-lg">
                                     {downloadCount.mac} downloads
