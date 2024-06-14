@@ -71,7 +71,7 @@ export default function Developers() {
     }
 
     // TODO: Connect to the GitHub API to dynamically check and update the showBuildWarning state based on latest release status
-    const showBuildWarning = false;
+    const showBuildWarning = true;
     
     return (
         <div className={styles.row} id="start">
@@ -109,7 +109,7 @@ export default function Developers() {
                                 className="text-[96px]"
                             />
                             <span className="text-2xl">
-                                Download for Windows
+                                Download for Windows {latestRelease && `(v${latestRelease})`}
                             </span>
                             {downloadCount.windows > 0 && (
                                 <span className="text-lg">
@@ -126,7 +126,9 @@ export default function Developers() {
                                 icon={faApple}
                                 style={{ fontSize: 96 }}
                             />
-                            <span className="text-2xl">Download for MacOS</span>
+                            <span className="text-2xl">
+                                Download for MacOS {latestRelease && `(v${latestRelease})`}
+                            </span>
                             {downloadCount.mac > 0 && (
                                 <span className="text-lg">
                                     {downloadCount.mac} downloads
