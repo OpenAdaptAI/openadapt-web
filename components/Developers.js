@@ -6,7 +6,7 @@ import styles from './Developers.module.css';
 import { getReleasesDownloadCount } from 'utils/githubStats';
 
 export default function Developers() {
-    const [latestRelease, setLatestRelease] = useState(null);
+    const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
     const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
     const macURL = latestRelease
         ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease}/OpenAdapt-${latestRelease}.app.zip`
@@ -19,7 +19,15 @@ export default function Developers() {
         fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt/releases/latest')
             .then(response => response.json())
             .then(data => {
-                setLatestRelease(data.name);
+                const releaseDate = new Date(data.published_at).toLocaleString('en-US', {
+                    year: 'numeric', month: 'numeric', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit',
+                    hour12: false, timeZoneName: 'short'  // Include timezone information
+                });
+                setLatestRelease({
+                    version: data.name,
+                    date: releaseDate
+                });
             });
         getReleasesDownloadCount().then(({ windowsDownloadCount, macDownloadCount }) => {
             setDownloadCount({
@@ -98,9 +106,10 @@ export default function Developers() {
                             GitHub sponsors page.
                         </a>
                     </p>
-                    {latestRelease && (
+                    {latestRelease.version && (
                         <div className="text-center my-4">
-                            <h3 className="text-lg font-bold">Current Version: {latestRelease}</h3>
+                            <h3 className="text-lg font-bold">Current Version: {latestRelease.version}</h3>
+                            <p className="text-lg">Released on: {latestRelease.date}</p>
                         </div>
                     )}
                     <div className="flex flex-col gap-10 justify-center items-center sm:flex-row">
