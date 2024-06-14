@@ -71,7 +71,7 @@ export default function Developers() {
     }
 
     // TODO: Connect to the GitHub API to dynamically check and update the showBuildWarning state based on latest release status
-    const showBuildWarning = true; // Set this to false once the issue is resolved
+    const showBuildWarning = false;
     
     return (
         <div className={styles.row} id="start">
