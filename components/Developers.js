@@ -70,10 +70,18 @@ export default function Developers() {
         }
     }
 
+    // TODO: Connect to the GitHub API to dynamically check and update the showBuildWarning state based on latest release status
+    const showBuildWarning = true; // Set this to false once the issue is resolved
+    
     return (
         <div className={styles.row} id="start">
             <div className="relative flex items-center justify-center mx-20 md-12">
                 <div className="grid grid-cols-1 break-words">
+                    {showBuildWarning && (
+                        <div className="bg-yellow-600 text-white text-center p-4">
+                            Warning: The current version has a known issue and may not function as expected. Please check back later for updates.
+                        </div>
+                    )}
                     <h2 id="start" className="text-2xl mt-10 mb-5 font-light text-center">
                         Getting Started
                     </h2>
