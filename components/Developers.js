@@ -8,47 +8,58 @@ import { getReleasesDownloadCount } from 'utils/githubStats';
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
     const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
-    const macURL = latestRelease
-        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease}/OpenAdapt-${latestRelease}.app.zip`
+    const [showBuildWarning, setShowBuildWarning] = useState(false);
+    const macURL = latestRelease.version
+        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.app.zip`
         : '';
-    const windowsURL = latestRelease
-        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease}/OpenAdapt-${latestRelease}.zip`
+    const windowsURL = latestRelease.version
+        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.zip`
         : '';
 
     useEffect(() => {
+        // Fetch the latest release information
         fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt/releases/latest')
             .then(response => response.json())
             .then(data => {
                 const releaseDate = new Date(data.published_at).toLocaleString('en-US', {
                     year: 'numeric', month: 'numeric', day: 'numeric',
                     hour: '2-digit', minute: '2-digit', second: '2-digit',
-                    hour12: false, timeZoneName: 'short'  // Include timezone information
+                    hour12: false, timeZoneName: 'short'
                 });
                 setLatestRelease({
                     version: data.name,
                     date: releaseDate
                 });
             });
+
+        // Fetch download counts
         getReleasesDownloadCount().then(({ windowsDownloadCount, macDownloadCount }) => {
             setDownloadCount({
                 windows: windowsDownloadCount,
                 mac: macDownloadCount,
             });
         });
+
+        // Check for issues labeled "main-broken"
+        fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt/issues?state=open&labels=main-broken')
+            .then(response => response.json())
+            .then(issues => {
+                if (issues.length > 0) {
+                    setShowBuildWarning(true);
+                } else {
+                    setShowBuildWarning(false);
+                }
+            });
     }, []);
 
     const handleDownloadClick = (os, url) => {
         const fileName = url.split('/').pop();
-
-        // Track the download start
         window.gtag('event', 'download_start', {
             event_category: 'Software Downloads',
             event_action: `Download Initiated ${os}`,
             event_label: fileName,
             value: 1
         });
-
-        // Proceed to download the file
         downloadFile(url, os, fileName);
     }
 
@@ -56,7 +67,6 @@ export default function Developers() {
         try {
             const response = await fetch(url);
             if (response.ok) {
-                // Track the successful download
                 window.gtag('event', 'download_success', {
                     event_category: 'Software Downloads',
                     event_action: `Download Successful ${os}`,
@@ -68,7 +78,6 @@ export default function Developers() {
             }
         } catch (error) {
             console.error('Download failed:', error);
-            // Track the failed download
             window.gtag('event', 'download_failure', {
                 event_category: 'Software Downloads',
                 event_action: `Download Failed ${os}`,
@@ -77,9 +86,6 @@ export default function Developers() {
             });
         }
     }
-
-    // TODO: Connect to the GitHub API to dynamically check and update the showBuildWarning state based on latest release status
-    const showBuildWarning = true;
     
     return (
         <div className={styles.row} id="start">
