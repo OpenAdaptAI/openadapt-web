@@ -115,7 +115,7 @@ export default function Home() {
                         className="relative z-50 inline-block mr-3"
                         style={{ transform: 'translateY(-5px)' }}
                     >
-                        <a href="https://discord.gg/quPWWYPK2F" aria-label="Join us on Discord" title="Join us on Discord">
+                        <a href="https://discord.gg/fEEBqRryep" aria-label="Join us on Discord" title="Join us on Discord">
                             <FontAwesomeIcon
                                 icon={faDiscord}
                                 className="text-2xl"
