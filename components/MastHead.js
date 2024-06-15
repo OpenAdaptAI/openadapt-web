@@ -155,7 +155,7 @@ export default function Home() {
                         className="relative z-50 inline-block mr-3"
                         style={{ transform: 'translateY(-5px)' }}
                     >
-                        <a href="https://reddit.com/r/openadaptai" aria-label="Join us on Reddit" title="Join us on Reddit">
+                        <a href="https://reddit.com/r/OpenAdaptAI" aria-label="Join us on Reddit" title="Join us on Reddit">
                             <FontAwesomeIcon
                                 icon={faReddit}
                                 className="text-2xl"
