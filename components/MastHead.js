@@ -103,7 +103,7 @@ export default function Home() {
                         className="relative z-50 inline-block mr-3"
                         style={{ transform: 'translateY(-5px)' }}
                     >
-                        <a href="https://github.com/OpenAdaptAI" aria-label="X">
+                        <a href="https://github.com/OpenAdaptAI" aria-label="Join us on Github" title="Join us on Github">
                             <FontAwesomeIcon
                                 icon={faGithub}
                                 className="text-2xl"
@@ -115,7 +115,7 @@ export default function Home() {
                         className="relative z-50 inline-block mr-3"
                         style={{ transform: 'translateY(-5px)' }}
                     >
-                        <a href="https://discord.gg/yF527cQbDG" aria-label="X">
+                        <a href="https://discord.gg/fqegnba9rg" aria-label="Join us on Discord" title="Join us on Discord">
                             <FontAwesomeIcon
                                 icon={faDiscord}
                                 className="text-2xl"
@@ -127,7 +127,7 @@ export default function Home() {
                         className="relative z-50 inline-block mr-3"
                         style={{ transform: 'translateY(-5px)' }}
                     >
-                        <a href="https://x.com/OpenAdaptAI" aria-label="X">
+                        <a href="https://x.com/OpenAdaptAI" aria-label="Join us on X" title="Join us on X">
                             <FontAwesomeIcon
                                 icon={faXTwitter}
                                 className="text-2xl"
@@ -141,7 +141,7 @@ export default function Home() {
                     >
                         <a
                             href="https://www.linkedin.com/company/95677624"
-                            aria-label="LinkedIn"
+                            aria-label="Join us on LinkedIn" title="Join us on LinkedIn"
                         >
                             <FontAwesomeIcon
                                 icon={faLinkedin}
@@ -153,12 +153,12 @@ export default function Home() {
                     <div className="relative z-50 inline-block mr-2 mt-2">
                         <a
                             className="github-button mr-2"
-                            href="https://github.com/MLDSAI/OpenAdaptAI/fork"
+                            href="https://github.com/OpenAdaptAI/OpenAdapt/fork"
                             data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;"
                             data-icon="octicon-repo-forked"
                             data-size="large"
                             data-show-count="true"
-                            aria-label="Fork MLDSAI/OpenAdaptAI on GitHub"
+                            aria-label="Fork OpenAdaptAI/OpenAdapt on GitHub"
                         >
                             Fork
                         </a>
@@ -166,12 +166,12 @@ export default function Home() {
                     <div className="relative z-50 inline-block mr-2 mt-2">
                         <a
                             className="github-button"
-                            href="https://github.com/MLDSAI/OpenAdaptAI"
+                            href="https://github.com/OpenAdaptAI/OpenAdapt"
                             data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;"
                             data-icon="octicon-star"
                             data-size="large"
                             data-show-count="true"
-                            aria-label="Star MLDSAI/OpenAdaptAI on GitHub"
+                            aria-label="Star OpenAdaptAI/OpenAdapt on GitHub"
                         >
                             Star
                         </a>
