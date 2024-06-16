@@ -4,6 +4,8 @@ import { faWindows, faApple } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
 import styles from './Developers.module.css';
 import { getReleasesDownloadCount } from 'utils/githubStats';
+import EmailForm from '@components/EmailForm';
+
 
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
@@ -162,10 +164,75 @@ export default function Developers() {
                         style={{ border: '0', borderRadius: '6px' }}
                         className="mx-auto mb-4"
                     ></iframe>
-                    <p className="text-center">
-                        Don't forget to{' '}
-                        <a href="#register">Register for Updates</a>.
-                    </p>
+                    <EmailForm />
+                    <h2 className="text-2xl mt-10 font-light text-center">What's Next?</h2>
+                    <ul className={`${styles.noBullets} mt-2 font-light text-center`}>
+                        <li className="mt-2 font-light">
+                            <a
+                                className="font-medium hover:underline"
+                                href="https://discord.gg/yF527cQbDG"
+                                style={{
+                                    color: '#FFF',
+                                    backgroundColor: '#560DF8',
+                                    padding: '10px',
+                                    display: 'inline-block',
+                                    margin: '5px',
+                                }}
+                            >
+                                Join our Discord
+                            </a>
+                        </li>
+                        <li className="mt-2 font-light">
+                            <a
+                                className="font-medium hover:underline"
+                                href="https://github.com/OpenAdaptAI/OpenAdapt#usage"
+                                style={{
+                                    color: '#FFF',
+                                    backgroundColor: '#560DF8',
+                                    padding: '10px',
+                                    display: 'inline-block',
+                                    margin: '5px',
+                                }}
+                            >
+                                Read our Usage Instructions on Github
+                            </a>
+                        </li>
+                        <li className="mt-2 font-light">
+                            <a
+                                className="font-medium hover:underline"
+                                href="https://openadapt.gitbook.io/openadapt.ai/"
+                                style={{
+                                    color: '#FFF',
+                                    backgroundColor: '#560DF8',
+                                    padding: '10px',
+                                    display: 'inline-block',
+                                    margin: '5px',
+                                }}
+                            >
+                                Read our Documentation on Gitbook
+                            </a>
+                        </li>
+                    </ul>
+                    <h2 className="text-2xl mt-10 font-light text-center">
+                        Troubleshooting
+                    </h2>
+                    <ul className={`${styles.noBullets} mt-2 font-light text-center`}>
+                        <li className="mt-2 font-light">
+                            <a
+                                className="font-medium hover:underline"
+                                href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose"
+                                style={{
+                                    color: '#FFF',
+                                    backgroundColor: '#560DF8',
+                                    padding: '10px',
+                                    display: 'inline-block',
+                                    margin: '5px',
+                                }}
+                            >
+                                Please submit a Github Issue 🙏
+                            </a>
+                        </li>
+                    </ul>
                     <p className="text-center">Comfortable on the command line? Read on:</p>
                     <h2 id="start" className="text-2xl mt-10 font-light mb-5">
                         Getting Started for Developers
@@ -230,74 +297,6 @@ export default function Developers() {
                         /bin/bash -c "$(curl -fsSL
                         https://raw.githubusercontent.com/OpenAdaptAI/OpenAdapt/HEAD/install/install_openadapt.sh)"
                     </pre>
-                    <h2 className="text-2xl mt-10 font-light">What's Next?</h2>
-                    <ul className={`${styles.noBullets} mt-2 font-light`}>
-                        <li className="mt-2 font-light">
-                            <a
-                                className="font-medium hover:underline"
-                                href="https://discord.gg/yF527cQbDG"
-                                style={{
-                                    color: '#FFF',
-                                    backgroundColor: '#560DF8',
-                                    padding: '10px',
-                                    display: 'inline-block',
-                                    margin: '5px',
-                                }}
-                            >
-                                Join our Discord
-                            </a>
-                        </li>
-                        <li className="mt-2 font-light">
-                            <a
-                                className="font-medium hover:underline"
-                                href="https://github.com/OpenAdaptAI/OpenAdapt#usage"
-                                style={{
-                                    color: '#FFF',
-                                    backgroundColor: '#560DF8',
-                                    padding: '10px',
-                                    display: 'inline-block',
-                                    margin: '5px',
-                                }}
-                            >
-                                Read our Usage Instructions on Github
-                            </a>
-                        </li>
-                        <li className="mt-2 font-light">
-                            <a
-                                className="font-medium hover:underline"
-                                href="https://openadapt.gitbook.io/openadapt.ai/"
-                                style={{
-                                    color: '#FFF',
-                                    backgroundColor: '#560DF8',
-                                    padding: '10px',
-                                    display: 'inline-block',
-                                    margin: '5px',
-                                }}
-                            >
-                                Read our Documentation on Gitbook
-                            </a>
-                        </li>
-                    </ul>
-                    <h2 className="text-2xl mt-10 font-light">
-                        Troubleshooting
-                    </h2>
-                    <ul className={`${styles.noBullets} mt-2 font-light`}>
-                        <li className="mt-2 font-light">
-                            <a
-                                className="font-medium hover:underline"
-                                href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose"
-                                style={{
-                                    color: '#FFF',
-                                    backgroundColor: '#560DF8',
-                                    padding: '10px',
-                                    display: 'inline-block',
-                                    margin: '5px',
-                                }}
-                            >
-                                Please submit a Github Issue 🙏
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
