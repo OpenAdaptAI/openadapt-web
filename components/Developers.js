@@ -4,6 +4,8 @@ import { faWindows, faApple } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
 import styles from './Developers.module.css';
 import { getReleasesDownloadCount } from 'utils/githubStats';
+import DownloadStats from './DownloadStats';
+
 
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
@@ -162,6 +164,7 @@ export default function Developers() {
                         style={{ border: '0', borderRadius: '6px' }}
                         className="mx-auto mb-4"
                     ></iframe>
+                    <DownloadStats />
                     <p className="text-center">
                         Don't forget to{' '}
                         <a href="#register">Register for Updates</a>.

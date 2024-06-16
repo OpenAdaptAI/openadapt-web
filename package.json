@@ -23,6 +23,8 @@
         "@fortawesome/free-regular-svg-icons": "^6.4.0",
         "@fortawesome/free-solid-svg-icons": "^6.4.0",
         "@fortawesome/react-fontawesome": "^0.2.0",
+        "chart.js": "^4.4.3",
+        "chartjs-adapter-date-fns": "^3.0.0",
         "cypress": "^10.0.3",
         "daisyui": "^4.7.2",
         "eslint-config-next": "^13.3.4",
@@ -30,6 +32,7 @@
         "next": "^14.1.2",
         "p5": "^1.9.1",
         "react": "^18.2.0",
+        "react-chartjs-2": "^5.2.0",
         "react-dom": "^18.2.0",
         "react-fontawesome": "^1.7.1"
     },
