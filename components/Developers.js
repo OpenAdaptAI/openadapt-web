@@ -165,7 +165,7 @@ export default function Developers() {
                         className="mx-auto mb-4"
                     ></iframe>
                     <EmailForm />
-                    <h2 className="text-2xl mt-10 font-light" className="text-center">What's Next?</h2>
+                    <h2 className="text-2xl mt-10 font-light text-center">What's Next?</h2>
                     <ul className={`${styles.noBullets} mt-2 font-light text-center`}>
                         <li className="mt-2 font-light">
                             <a
