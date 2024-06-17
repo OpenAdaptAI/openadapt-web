@@ -1,7 +1,3 @@
-/* 
- * From https://github.com/aidenybai/million/pull/492/files#diff-6e0bfa28d8a8d0deaf01cbb14e0cc6b4d00eaf912e50287391b1ff10f2459555
- */
-
 // Copyright (c) 2023 Algora PBC.
 // https://github.com/algora-io/sdk/blob/5bcda5de293246b959b5e5ea81529ec46d7a8fe3/README.md
 
