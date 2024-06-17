@@ -116,7 +116,7 @@ export default function Developers() {
                         </a>
                     </p>
                     {latestRelease.version && (
-                        <div className="text-center my-4">
+                        <div className="text-center mb-4">
                             <div className="inline-block bg-transparent p-3 shadow-lg rounded-lg">
                                 <table className="table-auto border-separate border-spacing-y-2">
                                     <tbody>
