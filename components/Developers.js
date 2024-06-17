@@ -235,10 +235,10 @@ export default function Developers() {
                     </ul>
                     <p className="text-center">Comfortable on the command line? Read on:</p>
                     <a href="https://console.algora.io/org/OpenAdaptAI/bounties?status=open">
-                      <picture>
-                        <source media="(prefers-color-scheme: dark)" srcset="https://console.algora.io/api/og/OpenAdaptAI/bounties.png?p=0&status=open&theme=dark">
-                        <img alt="Bounties of OpenAdaptAI" src="https://console.algora.io/api/og/OpenAdaptAI/bounties.png?p=0&status=open&theme=light">
-                      </picture>
+                        <picture>
+                          <source media="(prefers-color-scheme: dark)" srcset="https://console.algora.io/api/og/OpenAdaptAI/bounties.png?p=0&status=open&theme=dark" />
+                          <img alt="Bounties of OpenAdaptAI" src="https://console.algora.io/api/og/OpenAdaptAI/bounties.png?p=0&status=open&theme=light" />
+                        </picture>
                     </a>
                     <h2 id="start" className="text-2xl mt-10 font-light mb-5">
                         Getting Started for Developers
