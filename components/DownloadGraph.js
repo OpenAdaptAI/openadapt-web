@@ -85,7 +85,7 @@ const DownloadGraph = () => {
     }, []);
 
     return (
-        <div style={{ minHeight: '300px', height: '40vh' }}>
+        <div style={{ minHeight: '300px', height: '40vh' }} className="my-10">
             <h2>Downloads</h2>
             <Line data={chartData} options={options} />
         </div>

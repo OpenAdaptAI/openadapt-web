@@ -35,6 +35,14 @@ export default function Footer() {
                         />
                     </div>
                 </div>
+                <iframe
+                    src="https://github.com/sponsors/OpenAdaptAI/button"
+                    title="Sponsor OpenAdaptAI"
+                    height="32"
+                    width="114"
+                    style={{ border: '0', borderRadius: '6px' }}
+                    className="mx-auto mb-10"
+                ></iframe>
                 <div className={styles.footerContent}>
                     <div className={`${styles.footerLinks} pt-20`}>
                         <a

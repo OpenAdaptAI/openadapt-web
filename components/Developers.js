@@ -157,14 +157,6 @@ export default function Developers() {
                             )}
                         </Link>
                     </div>
-                    <iframe
-                        src="https://github.com/sponsors/OpenAdaptAI/button"
-                        title="Sponsor OpenAdaptAI"
-                        height="32"
-                        width="114"
-                        style={{ border: '0', borderRadius: '6px' }}
-                        className="mx-auto mb-4"
-                    ></iframe>
                     <DownloadGraph />
                     <EmailForm />
                     <h2 className="text-2xl mt-10 font-light text-center">What's Next?</h2>
