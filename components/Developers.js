@@ -117,8 +117,20 @@ export default function Developers() {
                     </p>
                     {latestRelease.version && (
                         <div className="text-center my-4">
-                            <h3 className="text-lg font-bold">Current Version: {latestRelease.version}</h3>
-                            <p className="text-lg">Released on: {latestRelease.date}</p>
+                            <div className="inline-block bg-transparent p-3 shadow-lg rounded-lg">
+                                <table className="table-auto border-separate border-spacing-y-2">
+                                    <tbody>
+                                        <tr>
+                                            <td className="bg-gray-800 px-4 py-2 rounded-l text-sm font-semibold text-white w-40 border-r border-gray-800">Current Version:</td>
+                                            <td className="bg-white bg-opacity-50 px-4 py-2 rounded-r text-lg font-bold text-white border-l border-transparent">{latestRelease.version}</td>
+                                        </tr>
+                                        <tr className="mt-2">
+                                            <td className="bg-gray-800 px-4 py-2 rounded-l text-sm font-semibold text-white w-40 border-r border-gray-800">Released on:</td>
+                                            <td className="bg-white bg-opacity-50 px-4 py-2 rounded-r text-lg text-white  border-l border-transparent">{latestRelease.date}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     )}
                     <div className="flex flex-col gap-10 justify-center items-center sm:flex-row">
