@@ -42,6 +42,7 @@ const DownloadGraph = () => {
 
         const processReleases = async (page = 1) => {
             const releaseData = await fetchReleaseData(page);
+            console.log({ releaseData });
             if (releaseData.length === 0) return;
 
             allReleases = [...allReleases, ...releaseData];
