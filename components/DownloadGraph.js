@@ -7,13 +7,13 @@ const DownloadGraph = () => {
         labels: [],
         datasets: [
             {
-                label: 'Daily Downloads',
+                label: 'Release Downloads',
                 data: [],
                 borderColor: 'rgb(75, 192, 192)',
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
             },
             {
-                label: 'Cumulative Total Downloads',
+                label: 'Total Downloads',
                 data: [],
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -57,7 +57,8 @@ const DownloadGraph = () => {
 
                 allReleases.forEach(release => {
                     const date = new Date(release.published_at).toLocaleDateString();
-                    labels.push(date);
+                    const label = `${release.name} : ${date}`; // Combine release name with date
+                    labels.push(label);
 
                     const dailyTotalDownloads = release.assets.reduce((acc, asset) => {
                         if (asset.name.endsWith('.zip')) {
@@ -93,3 +94,4 @@ const DownloadGraph = () => {
 };
 
 export default DownloadGraph;
+
