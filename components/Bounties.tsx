@@ -34,7 +34,7 @@ export function Bounties() {
   return (
     <div className="space-y-2">
       <Callout />
-      <ul className="hidden sm:grid sm:grid-cols-2 gap-2">
+      <ul className="grid sm:grid-cols-2 gap-2">
         {bounties._tag === 'success' &&
           bounties.data.map((bounty) => (
             <li key={bounty.id}>
