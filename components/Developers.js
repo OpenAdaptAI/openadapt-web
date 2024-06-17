@@ -5,7 +5,7 @@ import Link from 'next/link';
 import styles from './Developers.module.css';
 import { getReleasesDownloadCount } from 'utils/githubStats';
 import EmailForm from '@components/EmailForm';
-
+import { Bounties } from '@components/Bounties';
 
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
@@ -234,6 +234,7 @@ export default function Developers() {
                         </li>
                     </ul>
                     <p className="text-center">Comfortable on the command line? Read on:</p>
+                    <Bounties />
                     <h2 id="start" className="text-2xl mt-10 font-light mb-5">
                         Getting Started for Developers
                     </h2>
