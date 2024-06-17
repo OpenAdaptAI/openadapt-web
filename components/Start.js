@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindows, faApple } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
-import styles from './Developers.module.css';
+import styles from './Start.module.css';
 import { getReleasesDownloadCount } from 'utils/githubStats';
 import EmailForm from '@components/EmailForm';
 import { Bounties } from '@components/Bounties';
 import DownloadGraph from './DownloadGraph';
 
-export default function Developers() {
+export default function Start() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
     const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
     const [showBuildWarning, setShowBuildWarning] = useState(false);
