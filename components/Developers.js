@@ -6,6 +6,7 @@ import styles from './Developers.module.css';
 import { getReleasesDownloadCount } from 'utils/githubStats';
 import EmailForm from '@components/EmailForm';
 import { Bounties } from '@components/Bounties';
+import DownloadGraph from './DownloadGraph';
 
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
@@ -164,6 +165,7 @@ export default function Developers() {
                         style={{ border: '0', borderRadius: '6px' }}
                         className="mx-auto mb-4"
                     ></iframe>
+                    <DownloadGraph />
                     <EmailForm />
                     <h2 className="text-2xl mt-10 font-light text-center">What's Next?</h2>
                     <ul className={`${styles.noBullets} mt-2 font-light text-center`}>
