@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
-import 'chartjs-adapter-date-fns';
 
 const DownloadGraph = () => {
     const [chartData, setChartData] = useState({
+        labels: [],
         datasets: [
             {
                 label: 'Release Downloads',
@@ -24,25 +24,7 @@ const DownloadGraph = () => {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    unit: 'day'
-                },
-                title: {
-                    display: true,
-                    text: 'Date'
-                }
-            },
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Number of Downloads'
-                }
-            }
-        }
+        aspectRatio: 1.5, // Lower ratio to make the chart taller
     };
 
     const fetchReleaseData = async (page = 1) => {
@@ -69,21 +51,29 @@ const DownloadGraph = () => {
                 // Sort releases by published date
                 allReleases.sort((a, b) => new Date(a.published_at) - new Date(b.published_at));
 
+                const labels = [];
                 const dailyDownloads = [];
                 const cumulativeDownloads = [];
 
                 allReleases.forEach(release => {
-                    const date = new Date(release.published_at);
+                    const date = new Date(release.published_at).toLocaleDateString();
+                    const label = `${release.name} : ${date}`; // Combine release name with date
+                    labels.push(label);
+
                     const dailyTotalDownloads = release.assets.reduce((acc, asset) => {
-                        return acc + (asset.name.endsWith('.zip') ? asset.download_count : 0);
+                        if (asset.name.endsWith('.zip')) {
+                            return acc + asset.download_count;
+                        }
+                        return acc;
                     }, 0);
 
                     cumulativeTotalDownloads += dailyTotalDownloads;
-                    dailyDownloads.push({ x: date, y: dailyTotalDownloads });
-                    cumulativeDownloads.push({ x: date, y: cumulativeTotalDownloads });
+                    dailyDownloads.push(dailyTotalDownloads);
+                    cumulativeDownloads.push(cumulativeTotalDownloads);
                 });
 
                 setChartData({
+                    labels,
                     datasets: [
                         { ...chartData.datasets[0], data: dailyDownloads },
                         { ...chartData.datasets[1], data: cumulativeDownloads },
