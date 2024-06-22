@@ -48,6 +48,15 @@ export default function MyApp({ Component, pageProps }) {
                 />
                 <meta name="msapplication-TileColor" content="#2b5797" />
                 <meta name="theme-color" content="#ffffff" />
+
+                {/* Social media preview images */}
+                <meta property="og:image" content="/images/favicon.svg" />
+                <meta property="og:image:type" content="image/svg+xml" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:image" content="/images/favicon.svg" />
+
                 {/* Google tag (gtag.js) */}
                 <script
                     async
