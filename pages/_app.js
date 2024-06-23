@@ -50,12 +50,14 @@ export default function MyApp({ Component, pageProps }) {
                 <meta name="theme-color" content="#ffffff" />
 
                 {/* Social media preview images */}
-                <meta property="og:image" content="/DALL·E 2024-06-22 18.00.50 - Create an image with a sleek and modern design for OpenAdapt.AI. The image should have the OpenAdapt.AI logo centered with the exact tagline_ 'OpenAda.webp" />
-                <meta property="og:image:type" content="image/webp" />
-                <meta property="og:image:width" content="1200" />
-                <meta property="og:image:height" content="630" />
+                <meta property="og:title" content="OpenAdapt.AI - Revolutionizing Task Automation" />
+                <meta property="og:description" content="Discover OpenAdapt.AI, the leading AI-driven automation tool designed to streamline your workflow efficiently." />
+                <meta property="og:image" content="https://openadapt.ai/images/og.png" />
+                <meta property="og:image:type" content="image/png" />
+                <meta property="og:image:width" content="1024" />
+                <meta property="og:image:height" content="1024" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:image" content="/DALL·E 2024-06-22 18.00.50 - Create an image with a sleek and modern design for OpenAdapt.AI. The image should have the OpenAdapt.AI logo centered with the exact tagline_ 'OpenAda.webp" />
+                <meta name="twitter:image" content="https://openadapt.ai/images/og.png" />
 
                 {/* Google tag (gtag.js) */}
                 <script
