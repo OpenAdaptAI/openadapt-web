@@ -52,12 +52,12 @@ export default function MyApp({ Component, pageProps }) {
                 {/* Social media preview images */}
                 <meta property="og:title" content="OpenAdapt.AI - Revolutionizing Task Automation" />
                 <meta property="og:description" content="Discover OpenAdapt.AI, the leading AI-driven automation tool designed to streamline your workflow efficiently." />
-                <meta property="og:image" content="https://openadapt.ai/images/og.png" />
+                <meta property="og:image" content="https://openadapt.ai/og.png" />
                 <meta property="og:image:type" content="image/png" />
                 <meta property="og:image:width" content="1024" />
                 <meta property="og:image:height" content="1024" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:image" content="https://openadapt.ai/images/og.png" />
+                <meta name="twitter:image" content="https://openadapt.ai/og.png" />
 
                 {/* Google tag (gtag.js) */}
                 <script
