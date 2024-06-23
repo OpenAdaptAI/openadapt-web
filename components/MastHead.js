@@ -103,7 +103,7 @@ export default function Home() {
                         className="relative z-50 inline-block mr-3"
                         style={{ transform: 'translateY(-5px)' }}
                     >
-                        <a href="https://github.com/OpenAdaptAI" aria-label="Join us on Github" title="Join us on Github">
+                        <a href="https://github.com/OpenAdaptAI/OpenAdapt" aria-label="Join us on Github" title="Join us on Github">
                             <FontAwesomeIcon
                                 icon={faGithub}
                                 className="text-2xl"
