@@ -13,10 +13,10 @@ export default function Developers() {
     const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
     const [showBuildWarning, setShowBuildWarning] = useState(false);
     const macURL = latestRelease.version
-        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.app.zip`
+        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.dmg`
         : '';
     const windowsURL = latestRelease.version
-        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.zip`
+        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}_Installer.exe`
         : '';
 
     useEffect(() => {
