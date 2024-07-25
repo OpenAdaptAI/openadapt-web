@@ -16,7 +16,7 @@ export default function Developers() {
         ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.dmg`
         : '';
     const windowsURL = latestRelease.version
-        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}_Installer.exe`
+        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt_Installer-${latestRelease.version}.exe`
         : '';
 
     useEffect(() => {
