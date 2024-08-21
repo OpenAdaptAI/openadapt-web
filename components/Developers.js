@@ -41,6 +41,7 @@ export default function Developers() {
                 windows: windowsDownloadCount,
                 mac: macDownloadCount,
             });
+            console.log("Download counts:", { windowsDownloadCount, macDownloadCount });
         });
 
         // Check for issues labeled "main-broken"

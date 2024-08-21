@@ -37,50 +37,58 @@ const DownloadGraph = () => {
     };
 
     useEffect(() => {
-        let cumulativeTotalDownloads = 0;
-        let allReleases = [];
+        const processReleases = async () => {
+            let cumulativeTotalDownloads = 0;
+            let allReleases = [];
+            let page = 1;
 
-        const processReleases = async (page = 1) => {
-            const releaseData = await fetchReleaseData(page);
-            console.log({ releaseData });
-            if (releaseData.length === 0) return;
+            while (true) {
+                const releaseData = await fetchReleaseData(page);
+                if (releaseData.length === 0) break;
 
-            allReleases = [...allReleases, ...releaseData];
-            if (releaseData.length === 30) {
-                await processReleases(page + 1);
-            } else {
-                // Sort releases by published date
-                allReleases.sort((a, b) => new Date(a.published_at) - new Date(b.published_at));
+                allReleases = [...allReleases, ...releaseData];
+                if (releaseData.length < 30) break;
 
-                const labels = [];
-                const dailyDownloads = [];
-                const cumulativeDownloads = [];
-
-                allReleases.forEach(release => {
-                    const date = new Date(release.published_at).toLocaleDateString();
-                    const label = `${release.name} : ${date}`; // Combine release name with date
-                    labels.push(label);
-
-                    const dailyTotalDownloads = release.assets.reduce((acc, asset) => {
-                        if (asset.name.endsWith('.zip')) {
-                            return acc + asset.download_count;
-                        }
-                        return acc;
-                    }, 0);
-
-                    cumulativeTotalDownloads += dailyTotalDownloads;
-                    dailyDownloads.push(dailyTotalDownloads);
-                    cumulativeDownloads.push(cumulativeTotalDownloads);
-                });
-
-                setChartData({
-                    labels,
-                    datasets: [
-                        { ...chartData.datasets[0], data: dailyDownloads },
-                        { ...chartData.datasets[1], data: cumulativeDownloads },
-                    ],
-                });
+                page++;
             }
+
+            // Sort releases by published date
+            allReleases.sort((a, b) => new Date(a.published_at) - new Date(b.published_at));
+
+            const labels = [];
+            const dailyDownloads = [];
+            const cumulativeDownloads = [];
+
+            let foundNonZero = false;
+            allReleases.forEach(release => {
+                const dailyTotalDownloads = release.assets.reduce((acc, asset) => {
+                    if (asset.name.endsWith('.zip')) {
+                        return acc + asset.download_count;
+                    }
+                    return acc;
+                }, 0);
+
+                // Skip releases with zero downloads
+                if (dailyTotalDownloads > 0) foundNonZero = true;
+                if (dailyTotalDownloads === 0 && foundNonZero) return;
+
+                cumulativeTotalDownloads += dailyTotalDownloads;
+
+                const date = new Date(release.published_at).toLocaleDateString();
+                const label = `${release.name} : ${date}`; // Combine release name with date
+                labels.push(label);
+
+                dailyDownloads.push(dailyTotalDownloads);
+                cumulativeDownloads.push(cumulativeTotalDownloads);
+            });
+
+            setChartData(prevChartData => ({
+                labels,
+                datasets: [
+                    { ...prevChartData.datasets[0], data: dailyDownloads },
+                    { ...prevChartData.datasets[1], data: cumulativeDownloads },
+                ],
+            }));
         };
 
         processReleases();
@@ -95,4 +103,3 @@ const DownloadGraph = () => {
 };
 
 export default DownloadGraph;
-
