@@ -89,7 +89,16 @@ export default function IndustriesGrid({
 
     return (
         <div className={styles.background} id="industries">
-            <div style={{ paddingTop: '100px' }}>
+            <div className="flex flex-col items-center justify-center pt-14">
+                <a
+                    href="https://theresanaiforthat.com/ai/openadapt-ai/?ref=featured&v=2868434"
+                    target="_blank"
+                    rel="nofollow"
+                >
+                    <img width="300" src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600"></img>
+                </a>
+            </div>
+            <div className="mt-20">
                 <h1 className="text-center text-2xl text-white">
                     Achieve more with less effort.
                 </h1>

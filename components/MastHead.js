@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
-import React, { useState } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
@@ -24,11 +25,26 @@ const SketchNoSSR = dynamic(() => import('./Sketch'), {
 })
 
 export default function Home() {
-    const [feedbackData, setFeedbackData] = useState({
-        name: '',
-        email: '',
-        message: '',
-    })
+    const videoRef = useRef(null)
+    const [poster, setPoster] = useState('')
+
+    useEffect(() => {
+        const videoElement = videoRef.current
+
+        if (videoElement) {
+            // Load the video and capture a frame at a specific time (e.g., 1 second)
+            videoElement.currentTime = 80
+            videoElement.addEventListener('loadeddata', () => {
+                const canvas = document.createElement('canvas')
+                canvas.width = videoElement.videoWidth
+                canvas.height = videoElement.videoHeight
+                const ctx = canvas.getContext('2d')
+                ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height)
+                const dataURI = canvas.toDataURL('image/jpeg') // Capture as JPEG
+                setPoster(dataURI) // Set the captured frame as the poster
+            })
+        }
+    }, [])
 
     return (
         <div className={styles.section}>
@@ -43,23 +59,22 @@ export default function Home() {
                             <h2 className="text-4xl mt-0 mb-8 font-extralight">
                                 AI for Desktops.
                             </h2>
-                            <div className="flex flex-col align-items-center justify-content-center">
+                            <div className="flex flex-col align-center justify-center">
                                 <div className="relative inline-block">
                                     {/* <AnimatedLogo /> */}
+                                    {/* Set poster image dynamically */}
                                     <video
+                                        ref={videoRef}
                                         controls
                                         className="demo-video"
                                         style={{
                                             maxWidth: '80%',
                                             margin: '0 auto',
                                         }}
+                                        poster={poster} // Use the captured frame as the poster
                                     >
-                                        <source
-                                            src="./demo.mp4"
-                                            type="video/mp4"
-                                        />
-                                        Your browser does not support the video
-                                        tag.
+                                        <source src="./demo.mp4" type="video/mp4" />
+                                        Your browser does not support the video tag.
                                     </video>
                                 </div>
                             </div>
