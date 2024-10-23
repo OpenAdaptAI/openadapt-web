@@ -28,23 +28,32 @@ export default function Home() {
     const videoRef = useRef(null)
     const [poster, setPoster] = useState('')
 
-    useEffect(() => {
-        const videoElement = videoRef.current
+useEffect(() => {
+    const videoElement = videoRef.current
 
-        if (videoElement) {
-            // Load the video and capture a frame at a specific time (e.g., 1 second)
-            videoElement.currentTime = 80
-            videoElement.addEventListener('loadeddata', () => {
+    if (videoElement) {
+        // Create a separate video element just for poster generation
+        const posterVideo = document.createElement('video')
+        posterVideo.src = './demo.mp4'
+
+        // When poster video loads, seek to desired timestamp and capture frame
+        posterVideo.addEventListener('loadeddata', () => {
+            posterVideo.currentTime = 80 // Keep poster timestamp at 80 seconds
+            posterVideo.addEventListener('seeked', () => {
                 const canvas = document.createElement('canvas')
-                canvas.width = videoElement.videoWidth
-                canvas.height = videoElement.videoHeight
+                canvas.width = posterVideo.videoWidth
+                canvas.height = posterVideo.videoHeight
                 const ctx = canvas.getContext('2d')
-                ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height)
-                const dataURI = canvas.toDataURL('image/jpeg') // Capture as JPEG
-                setPoster(dataURI) // Set the captured frame as the poster
+                ctx.drawImage(posterVideo, 0, 0, canvas.width, canvas.height)
+                const dataURI = canvas.toDataURL('image/jpeg')
+                setPoster(dataURI)
+
+                // Clean up the poster video element
+                posterVideo.remove()
             })
-        }
-    }, [])
+        })
+    }
+}, [])
 
     return (
         <div className={styles.section}>
