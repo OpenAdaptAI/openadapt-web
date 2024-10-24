@@ -24,36 +24,80 @@ const SketchNoSSR = dynamic(() => import('./Sketch'), {
     ssr: false,
 })
 
+const CarouselSection = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const carouselItems = [
+        "Show, don't tell.",
+				"Perform, don't prompt.",
+        "Record, replay, and share.",
+				//"No prompting required.",
+    ];
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentIndex((prevIndex) => 
+                prevIndex === carouselItems.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 4000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    return (
+        <div className="relative h-12 w-full overflow-hidden">
+            <div className="absolute w-full">
+                {carouselItems.map((item, index) => (
+                    <div
+                        key={index}
+                        className={`
+                            absolute top-0 left-0 w-full
+                            transform transition-all duration-300 ease-in-out
+                            ${index === currentIndex ? 
+                                'opacity-100 translate-y-0' : 
+                                'opacity-0 translate-y-8'
+                            }
+                        `}
+                    >
+                        <span className="inline-block p-2 w-full text-center">
+                            {item}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 export default function Home() {
     const videoRef = useRef(null)
     const [poster, setPoster] = useState('')
 
-useEffect(() => {
-    const videoElement = videoRef.current
+    useEffect(() => {
+        const videoElement = videoRef.current
 
-    if (videoElement) {
-        // Create a separate video element just for poster generation
-        const posterVideo = document.createElement('video')
-        posterVideo.src = './demo.mp4'
+        if (videoElement) {
+            // Create a separate video element just for poster generation
+            const posterVideo = document.createElement('video')
+            posterVideo.src = './demo.mp4'
 
-        // When poster video loads, seek to desired timestamp and capture frame
-        posterVideo.addEventListener('loadeddata', () => {
-            posterVideo.currentTime = 80 // Keep poster timestamp at 80 seconds
-            posterVideo.addEventListener('seeked', () => {
-                const canvas = document.createElement('canvas')
-                canvas.width = posterVideo.videoWidth
-                canvas.height = posterVideo.videoHeight
-                const ctx = canvas.getContext('2d')
-                ctx.drawImage(posterVideo, 0, 0, canvas.width, canvas.height)
-                const dataURI = canvas.toDataURL('image/jpeg')
-                setPoster(dataURI)
+            // When poster video loads, seek to desired timestamp and capture frame
+            posterVideo.addEventListener('loadeddata', () => {
+                posterVideo.currentTime = 80 // Keep poster timestamp at 80 seconds
+                posterVideo.addEventListener('seeked', () => {
+                    const canvas = document.createElement('canvas')
+                    canvas.width = posterVideo.videoWidth
+                    canvas.height = posterVideo.videoHeight
+                    const ctx = canvas.getContext('2d')
+                    ctx.drawImage(posterVideo, 0, 0, canvas.width, canvas.height)
+                    const dataURI = canvas.toDataURL('image/jpeg')
+                    setPoster(dataURI)
 
-                // Clean up the poster video element
-                posterVideo.remove()
+                    // Clean up the poster video element
+                    posterVideo.remove()
+                })
             })
-        })
-    }
-}, [])
+        }
+    }, [])
 
     return (
         <div className={styles.section}>
@@ -88,16 +132,19 @@ useEffect(() => {
                                 </div>
                             </div>
                             <h3 className="mt-8 font-light">
-                                <span className="inline-block p-2">
-                                    Automate your workflows.
-                                </span>
-                                <br />
-                                <span className="inline-block p-2">
-                                    Record, replay, and share.
-                                </span>
-                                <br />
                                 <span className="bg-white bg-opacity-20 inline-block p-2">
-                                    <b>No programming required.</b>
+                                    <b>Automate your workflows.</b>
+                                </span>
+                                <br />
+                                    {/*
+                                <span className="inline-block p-2">
+                                    Record, replay, and share
+                                    Show, don't tell.
+                                </span>
+                                    */}
+                                <CarouselSection />
+                                <span className="bg-white bg-opacity-20 inline-block p-2">
+                                    <b>No coding required.</b>
                                 </span>
                             </h3>
                             <div id="register">
