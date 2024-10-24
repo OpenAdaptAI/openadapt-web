@@ -28,9 +28,9 @@ const CarouselSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselItems = [
         "Show, don't tell.",
-				"Perform, don't prompt.",
+        "Perform, don't prompt.",
         "Record, replay, and share.",
-				//"No prompting required.",
+        //"No prompting required.",
     ];
 
     useEffect(() => {
