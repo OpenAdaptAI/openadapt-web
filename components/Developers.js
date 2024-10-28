@@ -116,7 +116,7 @@ export default function Developers() {
                             . Please check back later for updates.
                         </div>
                     )}
-                    <p className="font-light mb-6 mx-auto">
+                    <p className="font-light mt-3 mb-6 mx-auto">
                         Note: OpenAdapt is Alpha software. This means it is in
                         the early stages of development and may contain bugs,
                         incomplete features, and other issues. Users should
