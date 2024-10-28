@@ -56,30 +56,30 @@
     display: flex;
     justify-content: center;
     padding: 20px 0;
-    background-color: rgba(0, 0, 50, 0.8);
-    width: 100%; /* Ensure it spans the full width */
+    background-color: rgba(0, 0, 40, 0.9); /* Darkened background */
+    width: 100%;
 }
 
 .cardSpecial {
-    width: calc(100% - 60px); /* Make it span three grid items' width */
-    max-width: 1080px; /* Adjust based on the width of three items */
-    margin: 0 auto; /* Center align within .specialSection */
+    width: calc(350px * 3 + 40px * 2); /* Width for three items, with two 20px margins */
+    max-width: 1140px; /* Adjusted for three grid items + margins */
+    margin: 0 auto;
     padding: 40px;
     border-radius: 30px;
-    background: rgba(107, 84, 176, 0.8);
+    background: rgba(80, 50, 120, 0.9); /* Darkened background for distinction */
     text-align: center;
     color: white;
     font-size: 1.2em;
 }
 
 .titleSpecial {
-    color: #ffdd57;
+    color: #ffd700; /* Brighter yellow for contrast */
     font-size: 26px;
     margin-bottom: 10px;
 }
 
 .descriptionsSpecial {
-    color: #e0e0e0;
+    color: #d0d0d0;
     font-size: 16px;
     margin-bottom: 20px;
 }
@@ -96,8 +96,17 @@
 
 .btn {
     display: inline-block;
-    text-align: center;
     padding: 10px 20px;
     border-radius: 5px;
+    background-color: #5a1eac; /* Adjusted button color */
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #7132d4; /* Slightly lighter on hover */
 }
 
