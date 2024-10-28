@@ -226,9 +226,7 @@ export default function Developers() {
                                     backgroundColor: '#560DF8',
                                     padding: '10px',
                                     display: 'inline-block',
-                                    margin: '5
-
-px',
+                                    margin: '5px',
                                 }}
                             >
                                 Read our Documentation on Gitbook
