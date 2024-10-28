@@ -11,7 +11,7 @@ import DownloadGraph from './DownloadGraph';
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
     const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
-    const [showBuildWarning, setShowBuildWarning] = useState(false);
+    const [buildWarnings, setBuildWarnings] = useState([]);
     const macURL = latestRelease.version
         ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.dmg`
         : '';
@@ -44,15 +44,14 @@ export default function Developers() {
             console.log("Download counts:", { windowsDownloadCount, macDownloadCount });
         });
 
-        // Check for issues labeled "main-broken"
+        // Fetch issues labeled "main-broken"
         fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt/issues?state=open&labels=main-broken')
             .then(response => response.json())
             .then(issues => {
-                if (issues.length > 0) {
-                    setShowBuildWarning(true);
-                } else {
-                    setShowBuildWarning(false);
-                }
+                setBuildWarnings(issues.map(issue => ({
+                    id: issue.number,
+                    url: issue.html_url
+                })));
             });
     }, []);
 
@@ -95,9 +94,23 @@ export default function Developers() {
         <div className={styles.row} id="start">
             <div className="relative flex items-center justify-center mx-20 md-12">
                 <div className="grid grid-cols-1 break-words">
-                    {showBuildWarning && (
+                    {buildWarnings.length > 0 && (
                         <div className="bg-yellow-600 text-white text-center p-4">
-                            Warning: The current version has a known issue and may not function as expected. Please check back later for updates.
+                            Warning: The current version has a known issue{buildWarnings.length > 1 ? 's' : ''}:
+                            {buildWarnings.map((issue, index) => (
+                                <React.Fragment key={issue.id}>
+                                    {index > 0 && ', '}
+                                    <a
+                                        href={issue.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="underline"
+                                    >
+                                        #{issue.id}
+                                    </a>
+                                </React.Fragment>
+                            ))}
+                            . Please check back later for updates.
                         </div>
                     )}
                     <h2 id="start" className="text-2xl mt-10 mb-5 font-light text-center">
@@ -127,7 +140,7 @@ export default function Developers() {
                                         </tr>
                                         <tr className="mt-2">
                                             <td className="bg-gray-800 px-4 py-2 rounded-l text-sm font-semibold text-white w-40 border-r border-gray-800">Released on:</td>
-                                            <td className="bg-white bg-opacity-50 px-4 py-2 rounded-r text-lg text-white  border-l border-transparent">{latestRelease.date}</td>
+                                            <td className="bg-white bg-opacity-50 px-4 py-2 rounded-r text-lg text-white border-l border-transparent">{latestRelease.date}</td>
                                         </tr>
                                     </tbody>
                                 </table>
