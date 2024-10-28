@@ -24,7 +24,7 @@
     z-index: 25; /* Overlay layer just above the animation */
 }
 
-footer {
+.footerContent {
     z-index: 30; /* Ensure footer content is on top */
     position: relative;
     color: white; /* Ensure text remains legible */
