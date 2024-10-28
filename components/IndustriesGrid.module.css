@@ -64,3 +64,25 @@
     max-width: 700px;
     margin: 20px;
     padding: 40px;
+    border-radius: 30px;
+    background: rgba(107, 84, 176, 0.8);
+    text-align: center;
+    color: white;
+    font-size: 1.2em;
+}
+.titleSpecial {
+    color: #ffdd57;
+    font-size: 26px;
+}
+.descriptionsSpecial {
+    color: #e0e0e0;
+    font-size: 16px;
+}
+.logoSpecial {
+    margin: 15px;
+    transform: scale(1.2);
+}
+.logoSpecial img {
+    height: 80px;
+    width: 80px;
+}
