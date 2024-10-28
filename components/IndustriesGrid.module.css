@@ -1,5 +1,4 @@
 .background {
-    /*background: rgb(10, 27, 96);*/
     background: radial-gradient(
         circle,
         rgba(10, 27, 96, 1) 19%,
@@ -39,10 +38,6 @@
     font-size: 22px;
     text-align: center;
 }
-.button:hover {
-    color: white;
-    border: 2px solid transparent;
-}
 .descriptions {
     text-align: center;
     margin-bottom: 10px;
@@ -56,10 +51,16 @@
     text-align: center;
     color: rgb(204, 194, 194);
 }
-.card:hover .logo {
-    transform: scale(1.2);
-    transition: transform 0.5s ease;
+
+/* Special section for "Let us build for you" */
+.specialSection {
+    display: flex;
+    justify-content: center;
+    padding: 50px 0;
+    background-color: rgba(0, 0, 50, 0.8);
 }
-.logo {
-    margin: 15px;
-}
+.cardSpecial {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px;
+    padding: 40px;
