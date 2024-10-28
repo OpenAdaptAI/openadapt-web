@@ -94,9 +94,13 @@
     width: 80px;
 }
 
+.buttonContainer {
+    display: flex;
+    justify-content: center; /* Center-aligns the button horizontally */
+    margin-top: 20px;
+}
+
 .btn {
-    display: block; /* Ensures button is centered as a block element */
-    margin: 20px auto 0; /* Centers button horizontally with space above */
     padding: 10px 20px;
     border-radius: 5px;
     background-color: #5a1eac;
