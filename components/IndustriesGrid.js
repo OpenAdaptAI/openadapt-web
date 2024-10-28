@@ -165,7 +165,7 @@ export default function IndustriesGrid({
                     <div className={styles.buttonContainer}>
                         <Link
                             className={styles.btn}
-                            href="mailto:sales@openadapt.ai?subject=Help%20automating%20%3Cyour%20use%20case%3E"
+                            href="mailto:sales@openadapt.ai?subject=OpenAdapt%20Inquiry%3A%20Assistance%20with%20Automating%20%5BYour%20Use%20Case%5D"
                         >
                             Contact Sales
                         </Link>
