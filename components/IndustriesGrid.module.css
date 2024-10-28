@@ -52,51 +52,10 @@
     color: rgb(204, 194, 194);
 }
 
-.specialSection {
-    display: flex;
-    justify-content: center;
-    padding: 20px 0 40px; /* Increased bottom padding for spacing */
-    background-color: rgba(0, 0, 40, 0.9);
-    width: 100%;
-}
-
-.cardSpecial {
-    width: calc(350px * 3 + 40px * 2);
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 30px;
-    background: rgba(80, 50, 120, 0.9);
-    text-align: center;
-    color: white;
-    font-size: 1.2em;
-}
-
-.titleSpecial {
-    color: #ffd700;
-    font-size: 26px;
-    margin-bottom: 10px;
-}
-
-.descriptionsSpecial {
-    color: #d0d0d0;
-    font-size: 16px;
-    margin-bottom: 20px;
-}
-
-.logoSpecial {
-    margin: 10px 0;
-    transform: scale(1.2);
-}
-
-.logoSpecial img {
-    height: 80px;
-    width: 80px;
-}
-
 .buttonContainer {
     display: flex;
-    justify-content: center; /* Center-aligns the button horizontally */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically if needed */
     margin-top: 20px;
 }
 
