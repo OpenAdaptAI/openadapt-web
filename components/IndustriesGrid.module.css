@@ -55,25 +55,25 @@
 .specialSection {
     display: flex;
     justify-content: center;
-    padding: 20px 0;
-    background-color: rgba(0, 0, 40, 0.9); /* Darkened background */
+    padding: 20px 0 40px; /* Increased bottom padding for spacing */
+    background-color: rgba(0, 0, 40, 0.9);
     width: 100%;
 }
 
 .cardSpecial {
-    width: calc(350px * 3 + 40px * 2); /* Width for three items, with two 20px margins */
-    max-width: 1140px; /* Adjusted for three grid items + margins */
+    width: calc(350px * 3 + 40px * 2);
+    max-width: 1140px;
     margin: 0 auto;
     padding: 40px;
     border-radius: 30px;
-    background: rgba(80, 50, 120, 0.9); /* Darkened background for distinction */
+    background: rgba(80, 50, 120, 0.9);
     text-align: center;
     color: white;
     font-size: 1.2em;
 }
 
 .titleSpecial {
-    color: #ffd700; /* Brighter yellow for contrast */
+    color: #ffd700;
     font-size: 26px;
     margin-bottom: 10px;
 }
@@ -95,16 +95,22 @@
 }
 
 .btn {
-    display: inline-block;
+    display: block; /* Ensures button is centered as a block element */
+    margin: 20px auto 0; /* Centers button horizontally with space above */
     padding: 10px 20px;
     border-radius: 5px;
-    background-color: #5a1eac; /* Adjusted button color */
+    background-color: #5a1eac;
     color: white;
-    text-align: center;
     font-weight: bold;
+    text-align: center;
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
+.btn:hover {
+    background-color: #7132d4;
+}
+
 
 .btn:hover {
     background-color: #7132d4; /* Slightly lighter on hover */
