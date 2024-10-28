@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 import AnimatedBackground from './AnimatedBackground'
 
 import styles from './Footer.module.css'
