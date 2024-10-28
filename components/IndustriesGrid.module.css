@@ -52,19 +52,17 @@
     color: rgb(204, 194, 194);
 }
 
-/* Special section for "Let us build for you" */
 .specialSection {
     display: flex;
     justify-content: center;
-    padding: 50px 0;
+    padding: 20px 0; /* Reduced padding for symmetry */
     background-color: rgba(0, 0, 50, 0.8);
 }
 
 .cardSpecial {
-    width: 100%;
-    max-width: 700px;
-    margin: 20px;
-    padding: 40px;
+    width: 350px; /* Matches the width of individual grid items */
+    margin: 20px; /* Consistent margin */
+    padding: 20px; /* Symmetrical padding */
     border-radius: 30px;
     background: rgba(107, 84, 176, 0.8);
     text-align: center;
@@ -75,17 +73,32 @@
 .titleSpecial {
     color: #ffdd57;
     font-size: 26px;
+    margin-bottom: 10px;
 }
 
 .descriptionsSpecial {
     color: #e0e0e0;
     font-size: 16px;
+    margin-bottom: 20px;
 }
 
 .logoSpecial {
-    margin: 15px;
+    margin: 10px 0; /* Reduced margin for symmetry */
     transform: scale(1.2);
 }
+
+.logoSpecial img {
+    height: 80px;
+    width: 80px;
+}
+
+.btn {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px; /* Center the button padding */
+    border-radius: 5px;
+}
+
 
 .logoSpecial img {
     height: 80px;
