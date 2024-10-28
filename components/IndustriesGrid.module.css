@@ -55,14 +55,16 @@
 .specialSection {
     display: flex;
     justify-content: center;
-    padding: 20px 0; /* Reduced padding for symmetry */
+    padding: 20px 0;
     background-color: rgba(0, 0, 50, 0.8);
+    width: 100%; /* Ensure it spans the full width */
 }
 
 .cardSpecial {
-    width: 350px; /* Matches the width of individual grid items */
-    margin: 20px; /* Consistent margin */
-    padding: 20px; /* Symmetrical padding */
+    width: calc(100% - 60px); /* Make it span three grid items' width */
+    max-width: 1080px; /* Adjust based on the width of three items */
+    margin: 0 auto; /* Center align within .specialSection */
+    padding: 40px;
     border-radius: 30px;
     background: rgba(107, 84, 176, 0.8);
     text-align: center;
@@ -83,7 +85,7 @@
 }
 
 .logoSpecial {
-    margin: 10px 0; /* Reduced margin for symmetry */
+    margin: 10px 0;
     transform: scale(1.2);
 }
 
@@ -95,12 +97,7 @@
 .btn {
     display: inline-block;
     text-align: center;
-    padding: 10px 20px; /* Center the button padding */
+    padding: 10px 20px;
     border-radius: 5px;
 }
 
-
-.logoSpecial img {
-    height: 80px;
-    width: 80px;
-}
