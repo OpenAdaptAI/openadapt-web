@@ -59,6 +59,7 @@
     padding: 50px 0;
     background-color: rgba(0, 0, 50, 0.8);
 }
+
 .cardSpecial {
     width: 100%;
     max-width: 700px;
@@ -70,18 +71,22 @@
     color: white;
     font-size: 1.2em;
 }
+
 .titleSpecial {
     color: #ffdd57;
     font-size: 26px;
 }
+
 .descriptionsSpecial {
     color: #e0e0e0;
     font-size: 16px;
 }
+
 .logoSpecial {
     margin: 15px;
     transform: scale(1.2);
 }
+
 .logoSpecial img {
     height: 80px;
     width: 80px;
