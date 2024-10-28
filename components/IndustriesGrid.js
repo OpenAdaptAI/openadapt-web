@@ -163,9 +163,9 @@ export default function IndustriesGrid({
                         If OpenAdapt doesn't fully automate your workflow out of
                         the box, we'll work with you to fix that.
                     </p>
-                    <div className="flex flex-row align-items-center justify-content-center mt-2 mb-4">
+                    <div className={styles.buttonContainer}>
                         <Link
-                            className="btn btn-primary ml-2"
+                            className={styles.btn}
                             href="mailto:sales@openadapt.ai?subject=Help%20automating%20%3Cyour%20use%20case%3E"
                         >
                             Contact Sales
