@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
-import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import AnimatedBackground from './AnimatedBackground' // Import AnimatedBackground component
 
 import styles from './Footer.module.css'
-
-// Dynamically import Sketch with SSR disabled
-const SketchNoSSR = dynamic(() => import('./Sketch'), {
-    ssr: false,
-})
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
@@ -22,7 +17,7 @@ export default function Footer() {
 
     return (
         <div className={styles.footerContainer}>
-            <SketchNoSSR /> {/* Include Sketch component here */}
+            <AnimatedBackground /> {/* Include AnimatedBackground here */}
             <footer className="grid grid-flow-row auto-rows-max gap-4">
                 <div className="m-auto pb-10">
                     <div className="flex items-center justify-center z-10">
