@@ -153,15 +153,14 @@ export default function IndustriesGrid({
                             className="invert text-center inline"
                             priority
                             src="/images/noun-build.svg"
-                            height={80}
-                            width={80}
+                            height={60}
+                            width={60}
                             alt="Let us build for you"
                         />
                     </div>
                     <h2 className={styles.titleSpecial}>Let us build for you</h2>
                     <p className={styles.descriptionsSpecial}>
-                        If OpenAdapt doesn't fully automate your workflow out of
-                        the box, we'll work with you to fix that.
+                        If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.
                     </p>
                     <div className={styles.buttonContainer}>
                         <Link
@@ -172,7 +171,7 @@ export default function IndustriesGrid({
                         </Link>
                     </div>
                 </div>
-            </div>
+            </div>                     
         </div>
     )
 }
