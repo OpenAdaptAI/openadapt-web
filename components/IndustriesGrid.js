@@ -35,6 +35,12 @@ export default function IndustriesGrid({
             logo: '/images/noun-healthcare.svg',
         },
         {
+            title: 'Finance',
+            descriptions:
+                'Enhance efficiency and compliance in financial services. Automate tasks like data entry, reporting, and portfolio management using tools like Excel, Bloomberg, QuickBooks, and more.',
+            logo: '/images/noun-finance.svg',
+        },
+        {
             title: 'Logistics',
             descriptions:
                 'Automate tasks with Transportation Management Systems (TMS), Freight Management Systems (FMS), Load Tracking Systems, and Document Management Systems for efficient tracking, scheduling, and financial record-keeping.',
@@ -58,19 +64,7 @@ export default function IndustriesGrid({
                 'Automate repetitive tasks in OracleHCM, LinkedIn, SalesForce, and Gmail for lead generation, prospecting, and communication to optimize revenue growth.',
             logo: '/images/noun-sales-development.svg',
         },
-        {
-            title: 'Let us build for you',
-            descriptions:
-                "If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.",
-            logo: '/images/noun-build.svg',
-        },
     ]
-
-    const scrollToSection = () => {
-        if (sectionRef.current) {
-            sectionRef.current.scrollIntoView({ behavior: 'smooth' })
-        }
-    }
 
     const getDataFromTitle = (title) => {
         return {
@@ -150,6 +144,34 @@ export default function IndustriesGrid({
                     </div>
                 ))}
             </div>
+
+            {/* Special Section for "Let us build for you" */}
+            <div className={styles.specialSection}>
+                <div className={styles.cardSpecial}>
+                    <div className={styles.logoSpecial}>
+                        <Image
+                            className="invert text-center inline"
+                            priority
+                            src="/images/noun-build.svg"
+                            height={60}
+                            width={60}
+                            alt="Let us build for you"
+                        />
+                    </div>
+                    <h2 className={styles.titleSpecial}>Let us build for you</h2>
+                    <p className={styles.descriptionsSpecial}>
+                        If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.
+                    </p>
+                    <div className={styles.buttonContainer}>
+                        <Link
+                            className={styles.btn}
+                            href="mailto:sales@openadapt.ai?subject=OpenAdapt%20Inquiry%3A%20Assistance%20with%20Automating%20%5BYour%20Use%20Case%5D"
+                        >
+                            Contact Sales
+                        </Link>
+                    </div>
+                </div>
+            </div>                     
         </div>
     )
 }

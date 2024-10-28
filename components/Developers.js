@@ -94,6 +94,9 @@ export default function Developers() {
         <div className={styles.row} id="start">
             <div className="relative flex items-center justify-center mx-20 md-12">
                 <div className="grid grid-cols-1 break-words">
+                    <h2 id="start" className="text-2xl mt-10 mb-5 font-light text-center">
+                        Getting Started
+                    </h2>
                     {buildWarnings.length > 0 && (
                         <div className="bg-yellow-600 text-white text-center p-4">
                             Warning: The current version has a known issue{buildWarnings.length > 1 ? 's' : ''}:
@@ -113,10 +116,7 @@ export default function Developers() {
                             . Please check back later for updates.
                         </div>
                     )}
-                    <h2 id="start" className="text-2xl mt-10 mb-5 font-light text-center">
-                        Getting Started
-                    </h2>
-                    <p className="font-light mb-6 mx-auto">
+                    <p className="font-light mt-3 mb-6 mx-auto">
                         Note: OpenAdapt is Alpha software. This means it is in
                         the early stages of development and may contain bugs,
                         incomplete features, and other issues. Users should

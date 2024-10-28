@@ -1,5 +1,4 @@
 .background {
-    /*background: rgb(10, 27, 96);*/
     background: radial-gradient(
         circle,
         rgba(10, 27, 96, 1) 19%,
@@ -39,10 +38,6 @@
     font-size: 22px;
     text-align: center;
 }
-.button:hover {
-    color: white;
-    border: 2px solid transparent;
-}
 .descriptions {
     text-align: center;
     margin-bottom: 10px;
@@ -56,10 +51,70 @@
     text-align: center;
     color: rgb(204, 194, 194);
 }
-.card:hover .logo {
-    transform: scale(1.2);
-    transition: transform 0.5s ease;
+
+.specialSection {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 40px; /* Extra padding for spacing */
+    width: 100%;
 }
-.logo {
-    margin: 15px;
+
+.cardSpecial {
+    width: 350px; /* Same width as grid items */
+    height: 350px; /* Same height as grid items */
+    margin: 20px; /* Consistent margin */
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(80, 50, 120, 0.9); /* Background color matching other items */
+    text-align: center;
+    color: white;
+    font-size: 1.2em;
 }
+
+.titleSpecial {
+    color: #ffd700; /* Brighter yellow for contrast */
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.descriptionsSpecial {
+    color: #d0d0d0;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.logoSpecial {
+    margin: 15px 0;
+}
+
+.logoSpecial img {
+    height: 60px;
+    width: 60px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center; /* Center-align the button */
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #5a1eac;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #7132d4;
+}
+
+
+.btn:hover {
+    background-color: #7132d4; /* Slightly lighter on hover */
+}
+
