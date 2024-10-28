@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
-import AnimatedBackground from './AnimatedBackground' // Import AnimatedBackground component
+import AnimatedBackground from './AnimatedBackground'
 
 import styles from './Footer.module.css'
 
@@ -17,10 +16,11 @@ export default function Footer() {
 
     return (
         <div className={styles.footerContainer}>
-            <AnimatedBackground /> {/* Include AnimatedBackground here */}
-            <footer className="grid grid-flow-row auto-rows-max gap-4">
+            <AnimatedBackground /> {/* Background animation component */}
+            <div className={styles.overlay}></div> {/* Dark overlay for readability */}
+            <footer className="relative grid grid-flow-row auto-rows-max gap-4 z-30">
                 <div className="m-auto pb-10">
-                    <div className="flex items-center justify-center z-10">
+                    <div className="flex items-center justify-center z-30">
                         <Image
                             className="invert"
                             priority
