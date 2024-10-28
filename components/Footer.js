@@ -18,7 +18,7 @@ export default function Footer() {
         <div className={styles.footerContainer}>
             <AnimatedBackground /> {/* Background animation component */}
             <div className={styles.overlay}></div> {/* Dark overlay for readability */}
-            <footer className="relative grid grid-flow-row auto-rows-max gap-4 z-30">
+            <footer className={`${styles.footerContent} relative grid grid-flow-row auto-rows-max gap-4`}>
                 <div className="m-auto pb-10">
                     <div className="flex items-center justify-center z-30">
                         <Image
