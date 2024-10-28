@@ -52,10 +52,49 @@
     color: rgb(204, 194, 194);
 }
 
+.specialSection {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 40px; /* Extra padding for spacing */
+    width: 100%;
+}
+
+.cardSpecial {
+    width: 350px; /* Same width as grid items */
+    height: 350px; /* Same height as grid items */
+    margin: 20px; /* Consistent margin */
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(80, 50, 120, 0.9); /* Background color matching other items */
+    text-align: center;
+    color: white;
+    font-size: 1.2em;
+}
+
+.titleSpecial {
+    color: #ffd700; /* Brighter yellow for contrast */
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.descriptionsSpecial {
+    color: #d0d0d0;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.logoSpecial {
+    margin: 15px 0;
+}
+
+.logoSpecial img {
+    height: 60px;
+    width: 60px;
+}
+
 .buttonContainer {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically if needed */
+    justify-content: center; /* Center-align the button */
     margin-top: 20px;
 }
 
