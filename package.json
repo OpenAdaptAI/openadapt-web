@@ -1,16 +1,12 @@
 {
-    "name": "nextjs-toolbox",
+    "name": "openadapt-web",
     "version": "1.0.0",
-    "author": "Netlify Inc",
-    "contributors": [
-        "Tara Manicsic",
-        "Prince Wilson",
-        "Charlie Gerard",
-        "Ben Hong"
-    ],
-    "homepage": "https://github.com/netlify-templates/nextjs-toolbox",
-    "bugs": {
-        "url": "https://github.com/netlify-templates/nextjs-toolbox/issues"
+    "description": "Official website for OpenAdapt.AI",
+    "author": "MLDSAI Inc.",
+    "homepage": "https://openadapt.ai",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/OpenAdaptAI/OpenAdapt.web"
     },
     "scripts": {
         "dev": "next dev",
