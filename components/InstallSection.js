@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindows, faApple, faLinux } from '@fortawesome/free-brands-svg-icons';
-import { faCopy, faCheck, faTerminal } from '@fortawesome/free-solid-svg-icons';
+import { faWindows, faApple, faLinux, faPython } from '@fortawesome/free-brands-svg-icons';
+import { faCopy, faCheck, faTerminal, faDownload } from '@fortawesome/free-solid-svg-icons';
 import styles from './InstallSection.module.css';
+import { getPyPIDownloadStats, formatDownloadCount } from 'utils/pypiStats';
 
 const platforms = {
     'macOS': {
@@ -62,6 +63,7 @@ function CopyButton({ text, className }) {
 export default function InstallSection() {
     const [selectedPlatform, setSelectedPlatform] = useState('macOS');
     const [detectedPlatform, setDetectedPlatform] = useState(null);
+    const [pypiStats, setPypiStats] = useState({ total: 0, packages: {} });
 
     useEffect(() => {
         // Auto-detect platform
@@ -76,6 +78,11 @@ export default function InstallSection() {
             setSelectedPlatform('Linux');
             setDetectedPlatform('Linux');
         }
+
+        // Fetch PyPI download stats
+        getPyPIDownloadStats().then(stats => {
+            setPypiStats(stats);
+        });
     }, []);
 
     const currentPlatform = platforms[selectedPlatform];
@@ -91,6 +98,17 @@ export default function InstallSection() {
             <p className={styles.subtitle}>
                 One command installs everything you need. No Python setup required.
             </p>
+
+            {/* PyPI Download Stats */}
+            {pypiStats.total > 0 && (
+                <div className={styles.pypiStats}>
+                    <FontAwesomeIcon icon={faPython} className={styles.pypiIcon} />
+                    <span className={styles.pypiCount}>
+                        {formatDownloadCount(pypiStats.total)}
+                    </span>
+                    <span className={styles.pypiLabel}>installs this month</span>
+                </div>
+            )}
 
             {/* Platform Tabs */}
             <div className={styles.platformTabs}>

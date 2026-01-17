@@ -36,6 +36,38 @@
     font-size: 16px;
 }
 
+/* PyPI Download Stats */
+.pypiStats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(86, 13, 248, 0.2) 100%);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    border-radius: 50px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pypiIcon {
+    font-size: 20px;
+    color: #3498db;
+}
+
+.pypiCount {
+    font-size: 18px;
+    font-weight: 700;
+    color: #60a5fa;
+}
+
+.pypiLabel {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
 /* Platform Tabs */
 .platformTabs {
     display: flex;
