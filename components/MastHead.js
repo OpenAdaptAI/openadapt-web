@@ -27,10 +27,9 @@ const SketchNoSSR = dynamic(() => import('./Sketch'), {
 const CarouselSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselItems = [
-        "Show, don't tell.",
+        "Show it once. Let it handle the rest.",
         "Perform, don't prompt.",
-        "Record, replay, and share.",
-        //"No prompting required.",
+        "Works with Claude, GPT-4V, Gemini, and more.",
     ];
 
     useEffect(() => {
@@ -110,7 +109,7 @@ export default function Home() {
                                 <span className="font-thin">.AI</span>
                             </h1>
                             <h2 className="text-4xl mt-0 mb-8 font-extralight">
-                                AI for Desktops.
+                                Teach AI to use any software.
                             </h2>
                             <div className="flex flex-col align-center justify-center">
                                 <div className="relative inline-block">
@@ -133,18 +132,12 @@ export default function Home() {
                             </div>
                             <h3 className="mt-8 font-light">
                                 <span className="bg-white bg-opacity-20 inline-block p-2">
-                                    <b>Automate your workflows.</b>
+                                    <b>Record demonstrations. Train models. Deploy agents.</b>
                                 </span>
                                 <br />
-                                    {/*
-                                <span className="inline-block p-2">
-                                    Record, replay, and share
-                                    Show, don't tell.
-                                </span>
-                                    */}
                                 <CarouselSection />
                                 <span className="bg-white bg-opacity-20 inline-block p-2">
-                                    <b>No coding required.</b>
+                                    <b>Open source. Model agnostic. Run anywhere.</b>
                                 </span>
                             </h3>
                             <div id="register">

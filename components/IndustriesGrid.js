@@ -94,19 +94,16 @@ export default function IndustriesGrid({
             </div>
             <div className="mt-20">
                 <h1 className="text-center text-2xl text-white">
-                    Achieve more with less effort.
+                    From demonstration to automation in minutes.
                 </h1>
                 <p className={styles.p}>
-                    OpenAdapt learns to automate your desktop and web workflows
-                    by observing your demonstrations.
+                    Just do the task once and OpenAdapt learns from watching.
+                    No prompt engineering. No scripting. No brittle selectors.
                     <br />
-                    Spend less time on repetitive tasks and more on work that
-                    truly matters.
-                    <br />
-                    <a href="https://github.com/OpenAdaptAI/OpenAdapt?tab=readme-ov-file#industry-leading-privacy-piiphi-scrubbing-via-aws-comprehend-microsoft-presidio-and-private-ai">
-                        Industry leading privacy technologies
+                    <a href="https://github.com/OpenAdaptAI/openadapt-privacy">
+                        Built-in PII/PHI scrubbing
                     </a>{' '}
-                    keep your data safe.
+                    keeps your sensitive data safe.
                 </p>
             </div>
             <div className={styles.row}>
