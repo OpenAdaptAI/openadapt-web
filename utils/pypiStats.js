@@ -71,17 +71,17 @@ export async function getPyPIDownloadStats() {
 }
 
 /**
- * Formats download count for display (e.g., 1500 -> "1,500+")
+ * Formats download count for display (e.g., 1500 -> "1,500")
  * @param {number} count - The download count
  * @returns {string} - Formatted string
  */
 export function formatDownloadCount(count) {
     if (count >= 1000000) {
-        return `${(count / 1000000).toFixed(1)}M+`;
+        return `${(count / 1000000).toFixed(1)}M`;
     } else if (count >= 1000) {
-        return `${(count / 1000).toFixed(1)}k+`;
+        return `${(count / 1000).toFixed(1)}k`;
     } else if (count > 0) {
-        return `${count.toLocaleString()}+`;
+        return `${count.toLocaleString()}`;
     }
     return '0';
 }

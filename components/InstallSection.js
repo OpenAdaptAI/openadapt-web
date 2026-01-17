@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindows, faApple, faLinux, faPython } from '@fortawesome/free-brands-svg-icons';
-import { faCopy, faCheck, faTerminal, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faCheck, faTerminal, faDownload, faLink } from '@fortawesome/free-solid-svg-icons';
 import styles from './InstallSection.module.css';
 import { getPyPIDownloadStats, formatDownloadCount } from 'utils/pypiStats';
 
@@ -106,7 +106,19 @@ export default function InstallSection() {
                     <span className={styles.pypiCount}>
                         {formatDownloadCount(pypiStats.total)}
                     </span>
-                    <span className={styles.pypiLabel}>installs this month</span>
+                    <span className={styles.pypiLabel}>
+                        installs this month
+                        <a
+                            href="https://pypistats.org/packages/openadapt"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.sourceLink}
+                            aria-label="View PyPI statistics data source"
+                        >
+                            <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
+                            <span className={styles.sourceLinkTooltip}>View data source</span>
+                        </a>
+                    </span>
                 </div>
             )}
 

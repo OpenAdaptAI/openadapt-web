@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindows, faApple } from '@fortawesome/free-brands-svg-icons';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import styles from './Developers.module.css';
 import { getReleasesDownloadCount } from 'utils/githubStats';
@@ -169,7 +170,17 @@ export default function Developers() {
                                 </span>
                                 {downloadCount.windows > 0 && (
                                     <span className="text-lg">
-                                        {downloadCount.windows} downloads
+                                        {downloadCount.windows.toLocaleString()} downloads
+                                        <a
+                                            href="https://github.com/OpenAdaptAI/OpenAdapt/releases"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.sourceLink}
+                                            aria-label="View GitHub releases"
+                                        >
+                                            <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
+                                            <span className={styles.sourceLinkTooltip}>View data source</span>
+                                        </a>
                                     </span>
                                 )}
                             </Link>
@@ -185,7 +196,17 @@ export default function Developers() {
                                 <span className="text-2xl">Download for MacOS</span>
                                 {downloadCount.mac > 0 && (
                                     <span className="text-lg">
-                                        {downloadCount.mac} downloads
+                                        {downloadCount.mac.toLocaleString()} downloads
+                                        <a
+                                            href="https://github.com/OpenAdaptAI/OpenAdapt/releases"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.sourceLink}
+                                            aria-label="View GitHub releases"
+                                        >
+                                            <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
+                                            <span className={styles.sourceLinkTooltip}>View data source</span>
+                                        </a>
                                     </span>
                                 )}
                             </Link>
