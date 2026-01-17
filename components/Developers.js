@@ -200,6 +200,21 @@ export default function Developers() {
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium hover:underline"
+                                href="https://docs.openadapt.ai"
+                                style={{
+                                    color: '#FFF',
+                                    backgroundColor: '#560DF8',
+                                    padding: '10px',
+                                    display: 'inline-block',
+                                    margin: '5px',
+                                }}
+                            >
+                                Read the Documentation
+                            </a>
+                        </li>
+                        <li className="mt-2 font-light">
+                            <a
+                                className="font-medium hover:underline"
                                 href="https://discord.gg/yF527cQbDG"
                                 style={{
                                     color: '#FFF',
