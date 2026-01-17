@@ -1,0 +1,228 @@
+.installSection {
+    background: linear-gradient(135deg, rgba(86, 13, 248, 0.1) 0%, rgba(0, 0, 30, 0.95) 100%);
+    border: 1px solid rgba(86, 13, 248, 0.3);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 24px 0;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.terminalIcon {
+    font-size: 24px;
+    color: #60a5fa;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+}
+
+.subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 24px;
+    font-size: 16px;
+}
+
+/* Platform Tabs */
+.platformTabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.platformTab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.platformTab:hover {
+    border-color: rgba(86, 13, 248, 0.5);
+    background: rgba(86, 13, 248, 0.1);
+    color: white;
+}
+
+.activeTab {
+    border-color: #560df8;
+    background: rgba(86, 13, 248, 0.2);
+    color: white;
+}
+
+.platformIcon {
+    font-size: 18px;
+}
+
+.detectedBadge {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: rgba(96, 165, 250, 0.2);
+    border-radius: 4px;
+    color: #60a5fa;
+    text-transform: uppercase;
+}
+
+/* Code Block */
+.codeContainer {
+    background: #1a1a2e;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.codeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.codeTitle {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.copyButton {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: rgba(86, 13, 248, 0.3);
+    border: 1px solid rgba(86, 13, 248, 0.5);
+    border-radius: 6px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copyButton:hover {
+    background: rgba(86, 13, 248, 0.5);
+}
+
+.codeBlock {
+    padding: 16px;
+    margin: 0;
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    overflow-x: auto;
+}
+
+.commandLine {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.prompt {
+    color: #22c55e;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.command {
+    color: #e2e8f0;
+    word-break: break-all;
+}
+
+.codeFooter {
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.note {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+}
+
+/* UV Info */
+.uvInfo {
+    margin-top: 16px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+}
+
+.uvLink {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+
+.uvLink:hover {
+    color: #93c5fd;
+}
+
+/* Quick Start Commands */
+.quickStart {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quickStartTitle {
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.commandGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 600px) {
+    .commandGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.commandItem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.commandItem code {
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    color: #22c55e;
+}
+
+.commandItem span {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
