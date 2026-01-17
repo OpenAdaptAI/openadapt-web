@@ -1,11 +1,20 @@
 /**
- * Utility functions for fetching historical PyPI download statistics from pypistats.org API
+ * Utility functions for fetching historical PyPI download statistics
  *
- * pypistats.org provides daily/weekly/monthly download history for Python packages.
- * API documentation: https://pypistats.org/api/
+ * Uses local API route to proxy pypistats.org requests (to avoid CORS issues)
+ * Original API documentation: https://pypistats.org/api/
  */
 
-const PYPI_PACKAGES = ['openadapt', 'openadapt-ml', 'openadapt-capture'];
+const PYPI_PACKAGES = [
+    'openadapt',
+    'openadapt-ml',
+    'openadapt-capture',
+    'openadapt-evals',
+    'openadapt-viewer',
+    'openadapt-grounding',
+    'openadapt-retrieval',
+    'openadapt-privacy',
+];
 
 /**
  * Fetches overall download history for a single PyPI package
@@ -15,9 +24,9 @@ const PYPI_PACKAGES = ['openadapt', 'openadapt-ml', 'openadapt-capture'];
  */
 async function getPackageHistory(packageName, period = 'month') {
     try {
-        // pypistats.org API endpoint for overall downloads
+        // Use local API route to avoid CORS issues
         const response = await fetch(
-            `https://pypistats.org/api/packages/${packageName}/overall?period=${period}&mirrors=true`
+            `/api/pypistats?package=${packageName}&endpoint=overall&period=${period}`
         );
 
         if (!response.ok) {
@@ -55,8 +64,9 @@ async function getPackageHistory(packageName, period = 'month') {
  */
 async function getPackageRecentHistory(packageName) {
     try {
+        // Use local API route to avoid CORS issues
         const response = await fetch(
-            `https://pypistats.org/api/packages/${packageName}/recent?period=month`
+            `/api/pypistats?package=${packageName}&endpoint=recent&period=month`
         );
 
         if (!response.ok) {
