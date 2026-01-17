@@ -64,6 +64,7 @@ const PyPIDownloadChart = () => {
     const [error, setError] = useState(null);
     const [chartType, setChartType] = useState('cumulative'); // 'cumulative', 'combined', or 'packages'
     const [period, setPeriod] = useState('month');
+    const [timeRange, setTimeRange] = useState('all'); // '2y' for 2 years, 'all' for all time
     const [growthStats, setGrowthStats] = useState(null);
     const [recentStats, setRecentStats] = useState(null);
     const [githubStats, setGithubStats] = useState(null);
@@ -73,8 +74,14 @@ const PyPIDownloadChart = () => {
             setLoading(true);
             setError(null);
             try {
-                // Fetch more data for a longer-term view
-                const limit = period === 'day' ? 60 : period === 'week' ? 24 : 24;
+                // Determine limit based on time range
+                let limit;
+                if (timeRange === 'all') {
+                    limit = 9999; // Effectively unlimited - get all available data
+                } else {
+                    // 2 years worth of data
+                    limit = period === 'day' ? 730 : period === 'week' ? 104 : 24;
+                }
                 const data = await getPyPIDownloadHistoryLimited(period, limit);
 
                 if (!data.combined || data.combined.length === 0) {
@@ -93,7 +100,7 @@ const PyPIDownloadChart = () => {
         };
 
         fetchData();
-    }, [period]);
+    }, [period, timeRange]);
 
     // Fetch recent stats and GitHub stats once on mount
     useEffect(() => {
@@ -386,6 +393,23 @@ const PyPIDownloadChart = () => {
                             onClick={() => setChartType('packages')}
                         >
                             By Package
+                        </button>
+                    </div>
+                </div>
+                <div className={styles.controlGroup}>
+                    <span className={styles.controlLabel}>Range:</span>
+                    <div className={styles.toggleGroup}>
+                        <button
+                            className={`${styles.toggleBtn} ${timeRange === 'all' ? styles.active : ''}`}
+                            onClick={() => setTimeRange('all')}
+                        >
+                            All Time
+                        </button>
+                        <button
+                            className={`${styles.toggleBtn} ${timeRange === '2y' ? styles.active : ''}`}
+                            onClick={() => setTimeRange('2y')}
+                        >
+                            2 Years
                         </button>
                     </div>
                 </div>
