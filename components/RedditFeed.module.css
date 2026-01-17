@@ -1,0 +1,145 @@
+.container {
+    background: rgba(86, 13, 248, 0.1);
+    border: 1px solid rgba(86, 13, 248, 0.3);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container:hover {
+    border-color: rgba(86, 13, 248, 0.6);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.headerIcon {
+    font-size: 1.75rem;
+    color: #ff4500;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: white;
+    margin: 0;
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.post {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+.post:hover {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(4px);
+}
+
+.postHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.subreddit {
+    font-size: 0.75rem;
+    color: #60a5fa;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stats {
+    display: flex;
+    gap: 12px;
+}
+
+.statItem {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.statIcon {
+    font-size: 0.75rem;
+}
+
+.postTitle {
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.postMeta {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.loading,
+.empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.viewMore {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(255, 69, 0, 0.1);
+    border: 1px solid rgba(255, 69, 0, 0.3);
+    border-radius: 8px;
+    color: #ff4500;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.viewMore:hover {
+    background: rgba(255, 69, 0, 0.2);
+    border-color: rgba(255, 69, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 1.25rem;
+    }
+
+    .postTitle {
+        font-size: 0.875rem;
+    }
+}

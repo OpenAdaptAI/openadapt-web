@@ -6,6 +6,7 @@ import FeedbackForm from '@components/FeedbackForm'
 import Footer from '@components/Footer'
 import IndustriesGrid from '@components/IndustriesGrid'
 import MastHead from '@components/MastHead'
+import SocialSection from '@components/SocialSection'
 
 export default function Home() {
     const [feedbackData, setFeedbackData] = useState({
@@ -24,6 +25,7 @@ export default function Home() {
                 setFeedbackData={setFeedbackData}
                 sectionRef={sectionRef}
             />
+            <SocialSection />
             <EmailForm />
             <Footer />
         </div>
