@@ -270,6 +270,33 @@ const PyPIDownloadChart = () => {
                         const value = context.parsed.y;
                         return `${context.dataset.label}: ${value.toLocaleString()} downloads`;
                     },
+                    afterBody: function(context) {
+                        if (!historyData || !versionHistory.length) return '';
+
+                        // Get the date for this data point
+                        const dataIndex = context[0].dataIndex;
+                        const dateStr = historyData.combined[dataIndex]?.date;
+
+                        if (!dateStr) return '';
+
+                        // Check if a version was released on this date
+                        const releasedVersion = getVersionReleasedOnDate(versionHistory, dateStr);
+
+                        if (releasedVersion) {
+                            const emoji = releasedVersion.type === 'major' ? '🎉' :
+                                         releasedVersion.type === 'minor' ? '🚀' : '📦';
+                            return `\n${emoji} Version ${releasedVersion.version} released!`;
+                        }
+
+                        // Otherwise, show the current version for this date
+                        const currentVersion = getVersionForDate(versionHistory, dateStr);
+
+                        if (currentVersion) {
+                            return `\nCurrent version: ${currentVersion.version}`;
+                        }
+
+                        return '';
+                    },
                 },
             },
         },
