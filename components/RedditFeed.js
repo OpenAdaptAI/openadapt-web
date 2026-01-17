@@ -11,31 +11,26 @@ export default function RedditFeed() {
 
     useEffect(() => {
         console.log('[RedditFeed] Starting to fetch Reddit posts...')
-        // Search Reddit for OpenAdapt mentions
-        // Note: Using User-Agent header to prevent Reddit 403 errors
-        fetch('https://www.reddit.com/search.json?q=openadapt&sort=new&limit=5', {
-            headers: {
-                'User-Agent': 'OpenAdapt-Web/1.0 (https://openadapt.ai)'
-            }
-        })
+        // Fetch Reddit posts from our API route to avoid CORS issues
+        // The API route handles server-side fetching with proper User-Agent headers
+        fetch('/api/social-feeds')
             .then(res => {
                 console.log('[RedditFeed] Fetch response:', { ok: res.ok, status: res.status })
-                if (!res.ok) throw new Error(`Failed to fetch Reddit posts: ${res.status} ${res.statusText}`)
+                if (!res.ok) throw new Error(`Failed to fetch social feeds: ${res.status} ${res.statusText}`)
                 return res.json()
             })
             .then(data => {
-                console.log('[RedditFeed] Raw data received:', {
-                    totalChildren: data.data.children.length,
-                    after: data.data.after
+                console.log('[RedditFeed] API data received:', {
+                    redditPostCount: data.reddit?.length || 0,
+                    cached_at: data.cached_at
                 })
-                const filteredPosts = data.data.children
-                    .map(child => child.data)
-                    .filter(post => !post.stickied) // Filter out stickied posts
-                console.log('[RedditFeed] Filtered posts:', {
-                    count: filteredPosts.length,
-                    titles: filteredPosts.map(p => p.title)
+                // Extract Reddit posts from the aggregated API response
+                const redditPosts = data.reddit || []
+                console.log('[RedditFeed] Reddit posts:', {
+                    count: redditPosts.length,
+                    titles: redditPosts.map(p => p.title)
                 })
-                setPosts(filteredPosts)
+                setPosts(redditPosts)
                 setLoading(false)
             })
             .catch(err => {

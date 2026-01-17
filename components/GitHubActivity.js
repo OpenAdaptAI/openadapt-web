@@ -9,18 +9,22 @@ export default function GitHubActivity() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt')
+        // Fetch GitHub stats from our API route for better caching and consistency
+        fetch('/api/social-feeds')
             .then(res => {
-                if (!res.ok) throw new Error('Failed to fetch GitHub stats')
+                if (!res.ok) throw new Error('Failed to fetch social feeds')
                 return res.json()
             })
             .then(data => {
-                setStats({
-                    stars: data.stargazers_count,
-                    forks: data.forks_count,
-                    watchers: data.subscribers_count,
-                    issues: data.open_issues_count
-                })
+                // Extract GitHub stats from the aggregated API response
+                if (data.github) {
+                    setStats({
+                        stars: data.github.stars,
+                        forks: data.github.forks,
+                        watchers: data.github.watchers,
+                        issues: data.github.issues
+                    })
+                }
                 setLoading(false)
             })
             .catch(err => {
