@@ -10,20 +10,36 @@ export default function RedditFeed() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
+        console.log('[RedditFeed] Starting to fetch Reddit posts...')
         // Search Reddit for OpenAdapt mentions
-        fetch('https://www.reddit.com/search.json?q=openadapt&sort=new&limit=5')
+        // Note: Using User-Agent header to prevent Reddit 403 errors
+        fetch('https://www.reddit.com/search.json?q=openadapt&sort=new&limit=5', {
+            headers: {
+                'User-Agent': 'OpenAdapt-Web/1.0 (https://openadapt.ai)'
+            }
+        })
             .then(res => {
-                if (!res.ok) throw new Error('Failed to fetch Reddit posts')
+                console.log('[RedditFeed] Fetch response:', { ok: res.ok, status: res.status })
+                if (!res.ok) throw new Error(`Failed to fetch Reddit posts: ${res.status} ${res.statusText}`)
                 return res.json()
             })
             .then(data => {
+                console.log('[RedditFeed] Raw data received:', {
+                    totalChildren: data.data.children.length,
+                    after: data.data.after
+                })
                 const filteredPosts = data.data.children
                     .map(child => child.data)
                     .filter(post => !post.stickied) // Filter out stickied posts
+                console.log('[RedditFeed] Filtered posts:', {
+                    count: filteredPosts.length,
+                    titles: filteredPosts.map(p => p.title)
+                })
                 setPosts(filteredPosts)
                 setLoading(false)
             })
             .catch(err => {
+                console.error('[RedditFeed] Error fetching posts:', err)
                 setError(err.message)
                 setLoading(false)
             })
