@@ -91,6 +91,70 @@
     color: #f59e0b;
 }
 
+/* Stats Grid */
+.statsGrid {
+    margin-bottom: 20px;
+}
+
+.statPrimary .statValue {
+    font-size: 24px;
+    color: #22c55e;
+}
+
+.statIcon {
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.statIconGold {
+    font-size: 16px;
+    margin-right: 4px;
+    color: #fbbf24;
+}
+
+/* Secondary Stats Row */
+.statsRowSecondary {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.statItemSmall {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    min-width: 70px;
+}
+
+.statValueSmall {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.statLabelSmall {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.statIconSmall {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
 /* Controls */
 .controls {
     display: flex;

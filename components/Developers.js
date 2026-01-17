@@ -128,7 +128,7 @@ export default function Developers() {
                     {/* PyPI Download Statistics */}
                     <PyPIDownloadChart />
 
-                    {/* Desktop App Downloads (Legacy - being updated) */}
+                    {/* Legacy Desktop App Downloads - Disabled during transition to new architecture
                     <div className="mt-12">
                         <h3 className="text-xl font-light text-center mb-2">
                             Or Download Desktop App (Legacy)
@@ -191,9 +191,8 @@ export default function Developers() {
                             </Link>
                         </div>
                     </div>
-
-                    <PyPIDownloadChart />
                     <DownloadGraph />
+                    */}
                     <EmailForm />
 
                     <h2 className="text-2xl mt-10 font-light text-center">What's Next?</h2>

@@ -13,12 +13,14 @@ import {
     Filler,
 } from 'chart.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPython } from '@fortawesome/free-brands-svg-icons';
-import { faChartLine, faArrowTrendUp, faArrowTrendDown, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faPython, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faChartLine, faArrowTrendUp, faArrowTrendDown, faMinus, faStar, faDownload, faCalendarDay, faCalendarWeek, faCube, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import {
     getPyPIDownloadHistoryLimited,
     formatDate,
     calculateGrowthStats,
+    getRecentDownloadStats,
+    getGitHubStats,
 } from 'utils/pypistatsHistory';
 import { formatDownloadCount } from 'utils/pypiStats';
 import styles from './PyPIDownloadChart.module.css';
@@ -60,16 +62,19 @@ const PyPIDownloadChart = () => {
     const [historyData, setHistoryData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [chartType, setChartType] = useState('combined'); // 'combined' or 'packages'
+    const [chartType, setChartType] = useState('cumulative'); // 'cumulative', 'combined', or 'packages'
     const [period, setPeriod] = useState('month');
     const [growthStats, setGrowthStats] = useState(null);
+    const [recentStats, setRecentStats] = useState(null);
+    const [githubStats, setGithubStats] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             setError(null);
             try {
-                const limit = period === 'day' ? 30 : period === 'week' ? 12 : 12;
+                // Fetch more data for a longer-term view
+                const limit = period === 'day' ? 60 : period === 'week' ? 24 : 24;
                 const data = await getPyPIDownloadHistoryLimited(period, limit);
 
                 if (!data.combined || data.combined.length === 0) {
@@ -90,6 +95,46 @@ const PyPIDownloadChart = () => {
         fetchData();
     }, [period]);
 
+    // Fetch recent stats and GitHub stats once on mount
+    useEffect(() => {
+        const fetchAdditionalStats = async () => {
+            try {
+                const [recent, github] = await Promise.all([
+                    getRecentDownloadStats(),
+                    getGitHubStats(),
+                ]);
+                setRecentStats(recent);
+                setGithubStats(github);
+            } catch (err) {
+                console.error('Error fetching additional stats:', err);
+            }
+        };
+        fetchAdditionalStats();
+    }, []);
+
+    const getCumulativeChartData = () => {
+        if (!historyData) return null;
+
+        const labels = historyData.cumulativeHistory.map(item => formatDate(item.date, period));
+        const downloads = historyData.cumulativeHistory.map(item => item.downloads);
+
+        return {
+            labels,
+            datasets: [
+                {
+                    label: 'Cumulative Downloads',
+                    data: downloads,
+                    borderColor: 'rgb(34, 197, 94)', // Green for growth
+                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                },
+            ],
+        };
+    };
+
     const getCombinedChartData = () => {
         if (!historyData) return null;
 
@@ -100,7 +145,7 @@ const PyPIDownloadChart = () => {
             labels,
             datasets: [
                 {
-                    label: 'Total Downloads',
+                    label: 'Downloads per Period',
                     data: downloads,
                     borderColor: packageColors.combined.border,
                     backgroundColor: packageColors.combined.background,
@@ -226,7 +271,18 @@ const PyPIDownloadChart = () => {
         return styles.trendStable;
     };
 
-    const chartData = chartType === 'combined' ? getCombinedChartData() : getPackagesChartData();
+    const getChartData = () => {
+        if (chartType === 'cumulative') return getCumulativeChartData();
+        if (chartType === 'combined') return getCombinedChartData();
+        return getPackagesChartData();
+    };
+
+    const chartData = getChartData();
+
+    // Calculate total cumulative downloads
+    const totalCumulative = historyData?.cumulativeHistory?.length > 0
+        ? historyData.cumulativeHistory[historyData.cumulativeHistory.length - 1].downloads
+        : 0;
 
     return (
         <div className={styles.container}>
@@ -240,32 +296,73 @@ const PyPIDownloadChart = () => {
                 </p>
             </div>
 
-            {/* Stats Summary */}
-            {growthStats && historyData && (
+            {/* Stats Summary - Enhanced Grid */}
+            <div className={styles.statsGrid}>
+                {/* Primary Stats Row */}
                 <div className={styles.statsRow}>
+                    {historyData && (
+                        <div className={`${styles.statItem} ${styles.statPrimary}`}>
+                            <span className={styles.statValue}>
+                                <FontAwesomeIcon icon={faDownload} className={styles.statIcon} />
+                                {formatDownloadCount(totalCumulative)}
+                            </span>
+                            <span className={styles.statLabel}>Total Downloads</span>
+                        </div>
+                    )}
+                    {githubStats && (
+                        <div className={styles.statItem}>
+                            <span className={styles.statValue}>
+                                <FontAwesomeIcon icon={faStar} className={styles.statIconGold} />
+                                {githubStats.stars.toLocaleString()}
+                            </span>
+                            <span className={styles.statLabel}>GitHub Stars</span>
+                        </div>
+                    )}
                     <div className={styles.statItem}>
                         <span className={styles.statValue}>
-                            {formatDownloadCount(
-                                historyData.combined.reduce((sum, item) => sum + item.downloads, 0)
-                            )}
+                            <FontAwesomeIcon icon={faCube} className={styles.statIcon} />
+                            {historyData?.packageNames?.length || 8}
                         </span>
-                        <span className={styles.statLabel}>Total ({period}ly)</span>
-                    </div>
-                    <div className={styles.statItem}>
-                        <span className={styles.statValue}>
-                            {formatDownloadCount(growthStats.recentAvg)}
-                        </span>
-                        <span className={styles.statLabel}>Avg per {period}</span>
-                    </div>
-                    <div className={`${styles.statItem} ${getTrendClass()}`}>
-                        <span className={styles.statValue}>
-                            <FontAwesomeIcon icon={getTrendIcon()} className={styles.trendIcon} />
-                            {growthStats.growthPercent > 0 ? '+' : ''}{growthStats.growthPercent}%
-                        </span>
-                        <span className={styles.statLabel}>Growth</span>
+                        <span className={styles.statLabel}>Packages</span>
                     </div>
                 </div>
-            )}
+
+                {/* Recent Activity Row */}
+                {recentStats && (
+                    <div className={styles.statsRowSecondary}>
+                        <div className={styles.statItemSmall}>
+                            <span className={styles.statValueSmall}>
+                                <FontAwesomeIcon icon={faCalendarDay} className={styles.statIconSmall} />
+                                {recentStats.totals.last_day.toLocaleString()}
+                            </span>
+                            <span className={styles.statLabelSmall}>Today</span>
+                        </div>
+                        <div className={styles.statItemSmall}>
+                            <span className={styles.statValueSmall}>
+                                <FontAwesomeIcon icon={faCalendarWeek} className={styles.statIconSmall} />
+                                {recentStats.totals.last_week.toLocaleString()}
+                            </span>
+                            <span className={styles.statLabelSmall}>This Week</span>
+                        </div>
+                        <div className={styles.statItemSmall}>
+                            <span className={styles.statValueSmall}>
+                                <FontAwesomeIcon icon={faArrowTrendUp} className={styles.statIconSmall} />
+                                {recentStats.totals.last_month.toLocaleString()}
+                            </span>
+                            <span className={styles.statLabelSmall}>This Month</span>
+                        </div>
+                        {recentStats.topPackage.name && (
+                            <div className={styles.statItemSmall}>
+                                <span className={styles.statValueSmall}>
+                                    <FontAwesomeIcon icon={faTrophy} className={styles.statIconGold} />
+                                    {recentStats.topPackage.name.replace('openadapt-', '')}
+                                </span>
+                                <span className={styles.statLabelSmall}>Top Package</span>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
 
             {/* Controls */}
             <div className={styles.controls}>
@@ -273,39 +370,22 @@ const PyPIDownloadChart = () => {
                     <span className={styles.controlLabel}>View:</span>
                     <div className={styles.toggleGroup}>
                         <button
+                            className={`${styles.toggleBtn} ${chartType === 'cumulative' ? styles.active : ''}`}
+                            onClick={() => setChartType('cumulative')}
+                        >
+                            Cumulative
+                        </button>
+                        <button
                             className={`${styles.toggleBtn} ${chartType === 'combined' ? styles.active : ''}`}
                             onClick={() => setChartType('combined')}
                         >
-                            Combined
+                            Per Period
                         </button>
                         <button
                             className={`${styles.toggleBtn} ${chartType === 'packages' ? styles.active : ''}`}
                             onClick={() => setChartType('packages')}
                         >
                             By Package
-                        </button>
-                    </div>
-                </div>
-                <div className={styles.controlGroup}>
-                    <span className={styles.controlLabel}>Period:</span>
-                    <div className={styles.toggleGroup}>
-                        <button
-                            className={`${styles.toggleBtn} ${period === 'day' ? styles.active : ''}`}
-                            onClick={() => setPeriod('day')}
-                        >
-                            Daily
-                        </button>
-                        <button
-                            className={`${styles.toggleBtn} ${period === 'week' ? styles.active : ''}`}
-                            onClick={() => setPeriod('week')}
-                        >
-                            Weekly
-                        </button>
-                        <button
-                            className={`${styles.toggleBtn} ${period === 'month' ? styles.active : ''}`}
-                            onClick={() => setPeriod('month')}
-                        >
-                            Monthly
                         </button>
                     </div>
                 </div>
