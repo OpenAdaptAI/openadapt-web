@@ -101,7 +101,7 @@ export default function Home() {
     return (
         <div className={styles.section}>
             <div className="relative flex items-center justify-center">
-                <div className="relative z-30 py-5 text-2xl">
+                <div className="relative z-30 py-5 px-4 text-2xl w-full">
                     <div className="text-center pt-6">
                         <div className="grid grid-flow-row auto-rows-max">
                             <h1 className="text-6xl mb-6 md:text-7xl">
@@ -118,11 +118,7 @@ export default function Home() {
                                     <video
                                         ref={videoRef}
                                         controls
-                                        className="demo-video"
-                                        style={{
-                                            maxWidth: '80%',
-                                            margin: '0 auto',
-                                        }}
+                                        className="demo-video w-full max-w-[90%] sm:max-w-[80%] mx-auto"
                                         poster={poster} // Use the captured frame as the poster
                                     >
                                         <source src="./demo.mp4" type="video/mp4" />
@@ -161,72 +157,57 @@ export default function Home() {
                     </div>
                 </div>
                 {/* <AnimatedBackground /> */}
-                <div className="fixed top-0 right-0 z-50">
+                <div className="fixed top-0 right-0 z-50 flex flex-wrap items-center justify-end gap-2 p-2 max-w-full">
                     {/* Docs Icon */}
-                    <div
-                        className="relative z-50 inline-block mr-3"
-                        style={{ transform: 'translateY(-5px)' }}
-                    >
+                    <div className="relative z-50">
                         <a href="https://docs.openadapt.ai" aria-label="Read our Documentation" title="Read our Documentation">
                             <FontAwesomeIcon
                                 icon={faBook}
-                                className="text-2xl"
+                                className="text-xl sm:text-2xl"
                             />
                         </a>
                     </div>
                     {/* Github Icon */}
-                    <div
-                        className="relative z-50 inline-block mr-3"
-                        style={{ transform: 'translateY(-5px)' }}
-                    >
+                    <div className="relative z-50">
                         <a href="https://github.com/OpenAdaptAI/OpenAdapt" aria-label="Join us on Github" title="Join us on Github">
                             <FontAwesomeIcon
                                 icon={faGithub}
-                                className="text-2xl"
+                                className="text-xl sm:text-2xl"
                             />
                         </a>
                     </div>
                     {/* Discord Icon */}
-                    <div
-                        className="relative z-50 inline-block mr-3"
-                        style={{ transform: 'translateY(-5px)' }}
-                    >
+                    <div className="relative z-50">
                         <a href="https://discord.gg/fEEBqRryep" aria-label="Join us on Discord" title="Join us on Discord">
                             <FontAwesomeIcon
                                 icon={faDiscord}
-                                className="text-2xl"
+                                className="text-xl sm:text-2xl"
                             />
                         </a>
                     </div>
                     {/* X Icon */}
-                    <div
-                        className="relative z-50 inline-block mr-3"
-                        style={{ transform: 'translateY(-5px)' }}
-                    >
+                    <div className="relative z-50">
                         <a href="https://x.com/OpenAdaptAI" aria-label="Join us on X" title="Join us on X">
                             <FontAwesomeIcon
                                 icon={faXTwitter}
-                                className="text-2xl"
+                                className="text-xl sm:text-2xl"
                             />
                         </a>
                     </div>
                     {/* LinkedIn Icon */}
-                    <div
-                        className="relative z-50 inline-block mr-3"
-                        style={{ transform: 'translateY(-5px)' }}
-                    >
+                    <div className="relative z-50">
                         <a
                             href="https://www.linkedin.com/company/95677624"
                             aria-label="Join us on LinkedIn" title="Join us on LinkedIn"
                         >
                             <FontAwesomeIcon
                                 icon={faLinkedin}
-                                className="text-2xl"
+                                className="text-xl sm:text-2xl"
                             />
                         </a>
                     </div>
-                    {/* Github icons */}
-                    <div className="relative z-50 inline-block mr-2 mt-2">
+                    {/* Github Fork/Star buttons - wrapped with flex */}
+                    <div className="relative z-50 inline-block">
                         <a
                             className="github-button mr-2"
                             href="https://github.com/OpenAdaptAI/OpenAdapt/fork"
@@ -239,7 +220,7 @@ export default function Home() {
                             Fork
                         </a>
                     </div>
-                    <div className="relative z-50 inline-block mr-2 mt-2">
+                    <div className="relative z-50 inline-block">
                         <a
                             className="github-button"
                             href="https://github.com/OpenAdaptAI/OpenAdapt"

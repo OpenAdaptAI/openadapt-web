@@ -2,9 +2,11 @@
     background: linear-gradient(135deg, rgba(86, 13, 248, 0.1) 0%, rgba(0, 0, 30, 0.95) 100%);
     border: 1px solid rgba(86, 13, 248, 0.3);
     border-radius: 16px;
-    padding: 32px;
+    padding: 24px;
     margin: 24px 0;
-    max-width: 700px;
+    max-width: 1100px;
+    width: 100%;
+    box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
 }
@@ -233,6 +235,12 @@
 }
 
 @media (max-width: 600px) {
+    .installSection {
+        padding: 16px;
+        margin: 16px 8px;
+        width: calc(100% - 16px);
+    }
+
     .commandGrid {
         grid-template-columns: 1fr;
     }

@@ -93,7 +93,7 @@ export default function Developers() {
 
     return (
         <div className={styles.row} id="start">
-            <div className="relative flex items-center justify-center mx-20 md-12">
+            <div className="relative flex items-center justify-center mx-4 sm:mx-8 md:mx-12 lg:mx-20">
                 <div className="grid grid-cols-1 break-words">
                     <h2 id="start" className="text-2xl mt-10 mb-5 font-light text-center">
                         Getting Started

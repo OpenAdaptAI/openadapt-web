@@ -4,10 +4,16 @@
 
 html {
     scroll-behavior: smooth !important;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 body {
     color: whitesmoke; /* Sets the default text color to whitesmoke */
+    width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 /* You can also ensure that all text inside the body inherits this color */
