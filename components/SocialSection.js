@@ -1,11 +1,32 @@
-import React from 'react'
-import GitHubActivity from './GitHubActivity'
+import React, { useState, useCallback } from 'react'
 import RedditFeed from './RedditFeed'
 import HackerNewsFeed from './HackerNewsFeed'
 import TwitterFeed from './TwitterFeed'
 import styles from './SocialSection.module.css'
 
 export default function SocialSection() {
+    const [feedVisibility, setFeedVisibility] = useState({
+        reddit: true,
+        hackernews: true,
+        twitter: true
+    })
+
+    const handleRedditVisibility = useCallback((isVisible) => {
+        setFeedVisibility(prev => ({ ...prev, reddit: isVisible }))
+    }, [])
+
+    const handleHackerNewsVisibility = useCallback((isVisible) => {
+        setFeedVisibility(prev => ({ ...prev, hackernews: isVisible }))
+    }, [])
+
+    const handleTwitterVisibility = useCallback((isVisible) => {
+        setFeedVisibility(prev => ({ ...prev, twitter: isVisible }))
+    }, [])
+
+    // Count visible feeds to determine if we should show the section at all
+    const visibleFeedsCount = Object.values(feedVisibility).filter(Boolean).length
+    const hasVisibleFeeds = visibleFeedsCount > 0
+
     return (
         <section className={styles.section} id="community">
             <div className={styles.container}>
@@ -16,21 +37,26 @@ export default function SocialSection() {
                     </p>
                 </div>
 
-                <div className={styles.socialGrid}>
-                    <div className={styles.gridItem}>
-                        <GitHubActivity />
+                {hasVisibleFeeds && (
+                    <div className={styles.socialGrid}>
+                        {feedVisibility.reddit && (
+                            <div className={styles.gridItem}>
+                                <RedditFeed onVisibilityChange={handleRedditVisibility} />
+                            </div>
+                        )}
+                        {feedVisibility.hackernews && (
+                            <div className={styles.gridItem}>
+                                <HackerNewsFeed onVisibilityChange={handleHackerNewsVisibility} />
+                            </div>
+                        )}
                     </div>
-                    <div className={styles.gridItem}>
-                        <RedditFeed />
-                    </div>
-                    <div className={styles.gridItem}>
-                        <HackerNewsFeed />
-                    </div>
-                </div>
+                )}
 
-                <div className={styles.twitterContainer}>
-                    <TwitterFeed />
-                </div>
+                {feedVisibility.twitter && (
+                    <div className={styles.twitterContainer}>
+                        <TwitterFeed onVisibilityChange={handleTwitterVisibility} />
+                    </div>
+                )}
 
                 <div className={styles.callToAction}>
                     <p className={styles.ctaText}>
