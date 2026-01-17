@@ -1,0 +1,155 @@
+.section {
+    background-color: rgba(0, 0, 30, 1);
+    padding: 60px 0;
+    color: white;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.headerContent {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 16px;
+    color: white;
+}
+
+.subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.socialGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.gridItem {
+    min-height: 400px;
+}
+
+.twitterContainer {
+    max-width: 800px;
+    margin: 32px auto;
+}
+
+.callToAction {
+    text-align: center;
+    margin-top: 48px;
+    padding: 32px;
+    background: rgba(86, 13, 248, 0.1);
+    border: 1px solid rgba(86, 13, 248, 0.3);
+    border-radius: 12px;
+}
+
+.ctaText {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 24px;
+    font-weight: 300;
+}
+
+.ctaButtons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.ctaButton {
+    display: inline-block;
+    padding: 12px 32px;
+    background: #560DF8;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 2px solid #560DF8;
+}
+
+.ctaButton:hover {
+    background: #6b1fff;
+    border-color: #6b1fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(86, 13, 248, 0.4);
+}
+
+.ctaButtonSecondary {
+    background: transparent;
+    border: 2px solid rgba(86, 13, 248, 0.5);
+}
+
+.ctaButtonSecondary:hover {
+    background: rgba(86, 13, 248, 0.1);
+    border-color: #560DF8;
+}
+
+@media (max-width: 1024px) {
+    .socialGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        padding: 40px 0;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .socialGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .gridItem {
+        min-height: 300px;
+    }
+
+    .ctaText {
+        font-size: 1.125rem;
+    }
+
+    .ctaButtons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ctaButton {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .headerContent {
+        margin-bottom: 32px;
+    }
+
+    .socialGrid {
+        grid-template-columns: 1fr;
+        min-width: 0;
+    }
+}
