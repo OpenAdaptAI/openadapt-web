@@ -1,0 +1,249 @@
+.container {
+    background: linear-gradient(135deg, rgba(86, 13, 248, 0.1) 0%, rgba(0, 0, 30, 0.95) 100%);
+    border: 1px solid rgba(86, 13, 248, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.titleRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.icon {
+    font-size: 24px;
+    color: #3498db;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Stats Row */
+.statsRow {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    min-width: 100px;
+}
+
+.statValue {
+    font-size: 18px;
+    font-weight: 700;
+    color: #60a5fa;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.statLabel {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 4px;
+}
+
+.trendIcon {
+    font-size: 14px;
+}
+
+.trendUp .statValue {
+    color: #22c55e;
+}
+
+.trendDown .statValue {
+    color: #ef4444;
+}
+
+.trendStable .statValue {
+    color: #f59e0b;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.controlGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.controlLabel {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.toggleGroup {
+    display: flex;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toggleBtn {
+    padding: 6px 12px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.toggleBtn:hover {
+    color: white;
+    background: rgba(86, 13, 248, 0.2);
+}
+
+.toggleBtn.active {
+    color: white;
+    background: rgba(86, 13, 248, 0.5);
+}
+
+/* Chart Container */
+.chartContainer {
+    position: relative;
+    height: 300px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Loading Overlay */
+.loadingOverlay,
+.errorOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(86, 13, 248, 0.3);
+    border-top-color: #560df8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.errorIcon {
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Attribution */
+.attribution {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.attributionLink {
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+.attributionLink:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 16px;
+        margin: 16px 8px;
+    }
+
+    .statsRow {
+        gap: 12px;
+    }
+
+    .statItem {
+        padding: 10px 16px;
+        min-width: 80px;
+    }
+
+    .statValue {
+        font-size: 16px;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .controlGroup {
+        justify-content: center;
+    }
+
+    .chartContainer {
+        height: 250px;
+        padding: 12px;
+    }
+
+    .toggleBtn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
