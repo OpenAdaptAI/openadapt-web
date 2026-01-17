@@ -124,11 +124,14 @@ export default function Developers() {
                     {/* New uv-first Installation Section */}
                     <InstallSection />
 
-                    {/* Desktop App Downloads (keep existing buttons) */}
+                    {/* Desktop App Downloads (Legacy - being updated) */}
                     <div className="mt-12">
-                        <h3 className="text-xl font-light text-center mb-4">
-                            Or Download Desktop App
+                        <h3 className="text-xl font-light text-center mb-2">
+                            Or Download Desktop App (Legacy)
                         </h3>
+                        <p className="text-sm text-center text-gray-400 mb-4">
+                            A new desktop app is in development. For now, we recommend using the CLI above.
+                        </p>
                         {latestRelease.version && (
                             <div className="text-center mb-4">
                                 <div className="inline-block bg-transparent p-3 shadow-lg rounded-lg">
@@ -208,7 +211,7 @@ export default function Developers() {
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium hover:underline"
-                                href="https://github.com/OpenAdaptAI/OpenAdapt#usage"
+                                href="https://github.com/OpenAdaptAI/OpenAdapt#quick-install-recommended"
                                 style={{
                                     color: '#FFF',
                                     backgroundColor: '#560DF8',
@@ -217,7 +220,7 @@ export default function Developers() {
                                     margin: '5px',
                                 }}
                             >
-                                Read our Usage Instructions on GitHub
+                                View README on GitHub
                             </a>
                         </li>
                     </ul>
