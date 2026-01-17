@@ -109,7 +109,7 @@ export default function InstallSection() {
                     <span className={styles.pypiLabel}>
                         installs this month (all packages)
                         <a
-                            href="https://pypi.org/user/openadapt/"
+                            href="https://pypi.org/search/?q=openadapt"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.sourceLink}

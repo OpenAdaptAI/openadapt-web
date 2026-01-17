@@ -384,7 +384,7 @@ const PyPIDownloadChart = () => {
                             <span className={styles.statLabel}>
                                 Total Downloads (All Packages)
                                 <a
-                                    href="https://pypi.org/user/openadapt/"
+                                    href="https://pypi.org/search/?q=openadapt"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.sourceLink}
@@ -425,14 +425,14 @@ const PyPIDownloadChart = () => {
                         <span className={styles.statLabel}>
                             Packages
                             <a
-                                href="https://pypi.org/user/openadapt/"
+                                href="https://pypi.org/search/?q=openadapt"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={styles.sourceLink}
-                                aria-label="View PyPI user page"
+                                aria-label="View all OpenAdapt packages on PyPI"
                             >
                                 <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                <span className={styles.sourceLinkTooltip}>View data source</span>
+                                <span className={styles.sourceLinkTooltip}>View all packages</span>
                             </a>
                         </span>
                     </div>
@@ -449,7 +449,7 @@ const PyPIDownloadChart = () => {
                             <span className={styles.statLabelSmall}>
                                 Today (All Packages)
                                 <a
-                                    href="https://pypi.org/user/openadapt/"
+                                    href="https://pypi.org/search/?q=openadapt"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.sourceLink}
@@ -468,7 +468,7 @@ const PyPIDownloadChart = () => {
                             <span className={styles.statLabelSmall}>
                                 This Week (All Packages)
                                 <a
-                                    href="https://pypi.org/user/openadapt/"
+                                    href="https://pypi.org/search/?q=openadapt"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.sourceLink}
@@ -487,7 +487,7 @@ const PyPIDownloadChart = () => {
                             <span className={styles.statLabelSmall}>
                                 This Month (All Packages)
                                 <a
-                                    href="https://pypi.org/user/openadapt/"
+                                    href="https://pypi.org/search/?q=openadapt"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.sourceLink}
@@ -590,7 +590,7 @@ const PyPIDownloadChart = () => {
             <div className={styles.attribution}>
                 Data aggregated from{' '}
                 <a
-                    href="https://pypi.org/user/openadapt/"
+                    href="https://pypi.org/search/?q=openadapt"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.attributionLink}
