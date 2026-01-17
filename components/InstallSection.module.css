@@ -266,3 +266,50 @@
     font-size: 11px;
     color: rgba(255, 255, 255, 0.5);
 }
+
+/* Source Link Styles */
+.sourceLink {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 6px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    position: relative;
+    vertical-align: super;
+    line-height: 1;
+}
+
+.sourceLink:hover {
+    color: #60a5fa;
+}
+
+.sourceLink:hover .sourceLinkTooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sourceLinkIcon {
+    font-size: 10px;
+}
+
+.sourceLinkTooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+    margin-bottom: 4px;
+    border: 1px solid rgba(86, 13, 248, 0.5);
+    z-index: 1000;
+}
