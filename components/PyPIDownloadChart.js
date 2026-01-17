@@ -382,16 +382,16 @@ const PyPIDownloadChart = () => {
                                 {formatDownloadCount(totalCumulative)}
                             </span>
                             <span className={styles.statLabel}>
-                                Total Downloads
+                                Total Downloads (All Packages)
                                 <a
-                                    href="https://pypistats.org/packages/openadapt"
+                                    href="https://pypi.org/user/openadapt/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.sourceLink}
-                                    aria-label="View PyPI statistics data source"
+                                    aria-label="View all OpenAdapt packages on PyPI"
                                 >
                                     <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                    <span className={styles.sourceLinkTooltip}>View data source</span>
+                                    <span className={styles.sourceLinkTooltip}>View all packages</span>
                                 </a>
                             </span>
                         </div>
@@ -447,16 +447,16 @@ const PyPIDownloadChart = () => {
                                 {recentStats.totals.last_day.toLocaleString()}
                             </span>
                             <span className={styles.statLabelSmall}>
-                                Today
+                                Today (All Packages)
                                 <a
-                                    href="https://pypistats.org/packages/openadapt"
+                                    href="https://pypi.org/user/openadapt/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.sourceLink}
-                                    aria-label="View PyPI statistics data source"
+                                    aria-label="View all OpenAdapt packages on PyPI"
                                 >
                                     <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                    <span className={styles.sourceLinkTooltip}>View data source</span>
+                                    <span className={styles.sourceLinkTooltip}>View all packages</span>
                                 </a>
                             </span>
                         </div>
@@ -466,16 +466,16 @@ const PyPIDownloadChart = () => {
                                 {recentStats.totals.last_week.toLocaleString()}
                             </span>
                             <span className={styles.statLabelSmall}>
-                                This Week
+                                This Week (All Packages)
                                 <a
-                                    href="https://pypistats.org/packages/openadapt"
+                                    href="https://pypi.org/user/openadapt/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.sourceLink}
-                                    aria-label="View PyPI statistics data source"
+                                    aria-label="View all OpenAdapt packages on PyPI"
                                 >
                                     <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                    <span className={styles.sourceLinkTooltip}>View data source</span>
+                                    <span className={styles.sourceLinkTooltip}>View all packages</span>
                                 </a>
                             </span>
                         </div>
@@ -485,16 +485,16 @@ const PyPIDownloadChart = () => {
                                 {recentStats.totals.last_month.toLocaleString()}
                             </span>
                             <span className={styles.statLabelSmall}>
-                                This Month
+                                This Month (All Packages)
                                 <a
-                                    href="https://pypistats.org/packages/openadapt"
+                                    href="https://pypi.org/user/openadapt/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.sourceLink}
-                                    aria-label="View PyPI statistics data source"
+                                    aria-label="View all OpenAdapt packages on PyPI"
                                 >
                                     <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                    <span className={styles.sourceLinkTooltip}>View data source</span>
+                                    <span className={styles.sourceLinkTooltip}>View all packages</span>
                                 </a>
                             </span>
                         </div>
@@ -505,16 +505,16 @@ const PyPIDownloadChart = () => {
                                     {recentStats.topPackage.name.replace('openadapt-', '')}
                                 </span>
                                 <span className={styles.statLabelSmall}>
-                                    Top Package
+                                    Top Package This Month
                                     <a
-                                        href="https://pypistats.org/packages/openadapt"
+                                        href={`https://pypistats.org/packages/${recentStats.topPackage.name}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.sourceLink}
-                                        aria-label="View PyPI statistics data source"
+                                        aria-label="View top package statistics"
                                     >
                                         <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                        <span className={styles.sourceLinkTooltip}>View data source</span>
+                                        <span className={styles.sourceLinkTooltip}>View package stats</span>
                                     </a>
                                 </span>
                             </div>
@@ -588,15 +588,16 @@ const PyPIDownloadChart = () => {
 
             {/* Data Source Attribution */}
             <div className={styles.attribution}>
-                Data from{' '}
+                Data aggregated from{' '}
                 <a
-                    href="https://pypistats.org/packages/openadapt"
+                    href="https://pypi.org/user/openadapt/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.attributionLink}
                 >
-                    pypistats.org
+                    all OpenAdapt packages
                 </a>
+                {' '}via pypistats.org API
             </div>
         </div>
     );

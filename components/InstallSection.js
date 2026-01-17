@@ -107,16 +107,16 @@ export default function InstallSection() {
                         {formatDownloadCount(pypiStats.total)}
                     </span>
                     <span className={styles.pypiLabel}>
-                        installs this month
+                        installs this month (all packages)
                         <a
-                            href="https://pypistats.org/packages/openadapt"
+                            href="https://pypi.org/user/openadapt/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.sourceLink}
-                            aria-label="View PyPI statistics data source"
+                            aria-label="View all OpenAdapt packages on PyPI"
                         >
                             <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                            <span className={styles.sourceLinkTooltip}>View data source</span>
+                            <span className={styles.sourceLinkTooltip}>View all packages</span>
                         </a>
                     </span>
                 </div>
