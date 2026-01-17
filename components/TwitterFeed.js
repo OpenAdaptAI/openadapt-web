@@ -7,30 +7,43 @@ export default function TwitterFeed({ onVisibilityChange }) {
     const [scriptLoaded, setScriptLoaded] = useState(false)
     const [scriptError, setScriptError] = useState(false)
     const [shouldHide, setShouldHide] = useState(false)
+    const [widgetRendered, setWidgetRendered] = useState(false)
 
     useEffect(() => {
         console.log('[TwitterFeed] Initializing Twitter widget...')
 
-        // Set timeout to hide feed if loading takes too long (30 seconds)
+        // Set timeout to hide feed if loading takes too long or widget doesn't render (10 seconds)
         const timeout = setTimeout(() => {
-            console.log('[TwitterFeed] Loading timeout - hiding feed')
-            setScriptError(true)
-            setShouldHide(true)
-            if (onVisibilityChange) onVisibilityChange(false)
-        }, 30000)
+            console.log('[TwitterFeed] Loading timeout - checking if widget rendered')
+            // Check if the Twitter widget actually rendered any content
+            const iframe = document.querySelector('iframe.twitter-timeline-rendered')
+            if (!iframe) {
+                console.log('[TwitterFeed] No Twitter widget iframe found - hiding feed')
+                setScriptError(true)
+                setShouldHide(true)
+                if (onVisibilityChange) onVisibilityChange(false)
+            } else {
+                console.log('[TwitterFeed] Twitter widget iframe found')
+                setWidgetRendered(true)
+                if (onVisibilityChange) onVisibilityChange(true)
+            }
+        }, 10000)
 
         // Check if script already exists
         const existingScript = document.querySelector('script[src="https://platform.twitter.com/widgets.js"]')
         if (existingScript) {
             console.log('[TwitterFeed] Twitter widget script already exists')
-            clearTimeout(timeout)
             setScriptLoaded(true)
             // Try to render widgets if twttr is available
             if (window.twttr?.widgets) {
                 console.log('[TwitterFeed] Calling twttr.widgets.load()')
-                window.twttr.widgets.load()
+                window.twttr.widgets.load().then(() => {
+                    console.log('[TwitterFeed] Twitter widgets loaded')
+                }).catch((err) => {
+                    console.error('[TwitterFeed] Error loading widgets:', err)
+                })
             }
-            return
+            return () => clearTimeout(timeout)
         }
 
         // Load Twitter widgets script
@@ -40,14 +53,16 @@ export default function TwitterFeed({ onVisibilityChange }) {
         script.charset = 'utf-8'
 
         script.onload = () => {
-            clearTimeout(timeout)
             console.log('[TwitterFeed] Twitter widget script loaded successfully')
             setScriptLoaded(true)
             if (window.twttr?.widgets) {
                 console.log('[TwitterFeed] twttr.widgets available, loading...')
-                window.twttr.widgets.load()
+                window.twttr.widgets.load().then(() => {
+                    console.log('[TwitterFeed] Twitter widgets loaded')
+                }).catch((err) => {
+                    console.error('[TwitterFeed] Error loading widgets:', err)
+                })
             }
-            if (onVisibilityChange) onVisibilityChange(true)
         }
 
         script.onerror = (error) => {
