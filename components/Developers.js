@@ -230,7 +230,7 @@ export default function Developers() {
                         <li className="mt-2 font-light">
                             <a
                                 className="font-medium hover:underline"
-                                href="https://github.com/OpenAdaptAI/OpenAdapt#quick-install-recommended"
+                                href="https://github.com/OpenAdaptAI/OpenAdapt#installation"
                                 style={{
                                     color: '#FFF',
                                     backgroundColor: '#560DF8',
