@@ -16,6 +16,7 @@ const PYPI_PACKAGES = [
     'openadapt-privacy',
     'openadapt-tray',
     'openadapt-telemetry',
+    // 'openadapt-agent', // TODO: Uncomment when published to PyPI
 ];
 
 /**

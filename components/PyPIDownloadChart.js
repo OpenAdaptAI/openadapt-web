@@ -52,6 +52,38 @@ const packageColors = {
         border: 'rgb(46, 204, 113)',
         background: 'rgba(46, 204, 113, 0.2)',
     },
+    'openadapt-evals': {
+        border: 'rgb(241, 196, 15)',
+        background: 'rgba(241, 196, 15, 0.2)',
+    },
+    'openadapt-viewer': {
+        border: 'rgb(231, 76, 60)',
+        background: 'rgba(231, 76, 60, 0.2)',
+    },
+    'openadapt-grounding': {
+        border: 'rgb(155, 89, 182)',
+        background: 'rgba(155, 89, 182, 0.2)',
+    },
+    'openadapt-retrieval': {
+        border: 'rgb(26, 188, 156)',
+        background: 'rgba(26, 188, 156, 0.2)',
+    },
+    'openadapt-privacy': {
+        border: 'rgb(230, 126, 34)',
+        background: 'rgba(230, 126, 34, 0.2)',
+    },
+    'openadapt-tray': {
+        border: 'rgb(149, 165, 166)',
+        background: 'rgba(149, 165, 166, 0.2)',
+    },
+    'openadapt-telemetry': {
+        border: 'rgb(52, 73, 94)',
+        background: 'rgba(52, 73, 94, 0.2)',
+    },
+    // 'openadapt-agent': {
+    //     border: 'rgb(255, 99, 132)',
+    //     background: 'rgba(255, 99, 132, 0.2)',
+    // },
     'combined': {
         border: 'rgb(96, 165, 250)',
         background: 'rgba(96, 165, 250, 0.3)',
@@ -208,13 +240,18 @@ const PyPIDownloadChart = () => {
         plugins: {
             legend: {
                 display: chartType === 'packages',
-                position: 'top',
+                position: 'right',
+                align: 'start',
                 labels: {
                     color: 'rgba(255, 255, 255, 0.8)',
                     font: {
-                        size: 12,
+                        size: 11,
                     },
-                    padding: 16,
+                    padding: 10,
+                    boxWidth: 12,
+                    boxHeight: 12,
+                    usePointStyle: true,
+                    pointStyle: 'circle',
                 },
             },
             tooltip: {
@@ -416,7 +453,7 @@ const PyPIDownloadChart = () => {
             </div>
 
             {/* Chart */}
-            <div className={styles.chartContainer}>
+            <div className={chartType === 'packages' ? styles.chartContainerPackages : styles.chartContainer}>
                 {loading && (
                     <div className={styles.loadingOverlay}>
                         <div className={styles.spinner}></div>
