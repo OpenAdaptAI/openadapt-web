@@ -12,6 +12,8 @@ const allowedPackages = [
     'openadapt-grounding',
     'openadapt-retrieval',
     'openadapt-privacy',
+    'openadapt-tray',
+    'openadapt-telemetry',
 ];
 
 const allowedEndpoints = ['overall', 'recent'];

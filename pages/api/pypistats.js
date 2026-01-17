@@ -20,6 +20,8 @@ export default async function handler(req, res) {
         'openadapt-grounding',
         'openadapt-retrieval',
         'openadapt-privacy',
+        'openadapt-tray',
+        'openadapt-telemetry',
     ];
 
     if (!allowedPackages.includes(packageName)) {

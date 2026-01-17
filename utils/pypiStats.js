@@ -2,7 +2,7 @@
  * Utility functions for fetching PyPI download statistics via Shields.io API
  */
 
-const PYPI_PACKAGES = ['openadapt', 'openadapt-ml', 'openadapt-capture'];
+const PYPI_PACKAGES = ['openadapt', 'openadapt-ml', 'openadapt-capture', 'openadapt-tray', 'openadapt-telemetry'];
 
 /**
  * Fetches monthly download count for a single PyPI package from Shields.io

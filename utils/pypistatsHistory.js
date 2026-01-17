@@ -14,6 +14,8 @@ const PYPI_PACKAGES = [
     'openadapt-grounding',
     'openadapt-retrieval',
     'openadapt-privacy',
+    'openadapt-tray',
+    'openadapt-telemetry',
 ];
 
 /**
