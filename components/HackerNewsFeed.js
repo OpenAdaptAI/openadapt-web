@@ -10,18 +10,16 @@ export default function HackerNewsFeed() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        // Search Hacker News via Algolia API
-        fetch('https://hn.algolia.com/api/v1/search?query=openadapt&tags=story')
+        // Fetch Hacker News stories from our API route for better caching and consistency
+        fetch('/api/social-feeds')
             .then(res => {
-                if (!res.ok) throw new Error('Failed to fetch HN stories')
+                if (!res.ok) throw new Error('Failed to fetch social feeds')
                 return res.json()
             })
             .then(data => {
-                // Filter out stories with no points and limit to 5
-                const filteredStories = data.hits
-                    .filter(story => story.points && story.points > 0)
-                    .slice(0, 5)
-                setStories(filteredStories)
+                // Extract Hacker News stories from the aggregated API response
+                const hnStories = data.hn || []
+                setStories(hnStories)
                 setLoading(false)
             })
             .catch(err => {
@@ -73,8 +71,8 @@ export default function HackerNewsFeed() {
             <div className={styles.stories}>
                 {stories.map(story => (
                     <a
-                        href={story.url || `https://news.ycombinator.com/item?id=${story.objectID}`}
-                        key={story.objectID}
+                        href={story.url}
+                        key={story.id}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.story}
@@ -87,7 +85,7 @@ export default function HackerNewsFeed() {
                                 </span>
                                 <span className={styles.statItem}>
                                     <FontAwesomeIcon icon={faComment} className={styles.statIcon} />
-                                    {story.num_comments || 0}
+                                    {story.num_comments}
                                 </span>
                             </span>
                         </div>
