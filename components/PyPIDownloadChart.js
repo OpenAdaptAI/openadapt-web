@@ -14,7 +14,7 @@ import {
 } from 'chart.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPython, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faChartLine, faArrowTrendUp, faArrowTrendDown, faMinus, faStar, faDownload, faCalendarDay, faCalendarWeek, faCube, faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faArrowTrendUp, faArrowTrendDown, faMinus, faStar, faDownload, faCalendarDay, faCalendarWeek, faCube, faTrophy, faLink } from '@fortawesome/free-solid-svg-icons';
 import {
     getPyPIDownloadHistoryLimited,
     formatDate,
