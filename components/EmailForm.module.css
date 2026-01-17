@@ -7,3 +7,16 @@
     white-space: nowrap;
     width: 1px;
 }
+
+.background {
+    background: rgba(0, 0, 30, 1);
+    padding: 80px 20px;
+    text-align: center;
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .background {
+        padding: 60px 20px;
+    }
+}

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 
 import Developers from '@components/Developers'
+import EmailForm from '@components/EmailForm'
 import FeedbackForm from '@components/FeedbackForm'
 import Footer from '@components/Footer'
 import IndustriesGrid from '@components/IndustriesGrid'
@@ -23,6 +24,7 @@ export default function Home() {
                 setFeedbackData={setFeedbackData}
                 sectionRef={sectionRef}
             />
+            <EmailForm />
             <Footer />
         </div>
     )
