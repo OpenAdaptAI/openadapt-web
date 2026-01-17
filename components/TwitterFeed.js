@@ -12,7 +12,7 @@ export default function TwitterFeed({ onVisibilityChange }) {
     useEffect(() => {
         console.log('[TwitterFeed] Initializing Twitter widget...')
 
-        // Set timeout to hide feed if loading takes too long or widget doesn't render (10 seconds)
+        // Set timeout to hide feed if loading takes too long or widget doesn't render (8 seconds)
         const timeout = setTimeout(() => {
             console.log('[TwitterFeed] Loading timeout - checking if widget rendered')
             // Check if the Twitter widget actually rendered any content
@@ -23,11 +23,30 @@ export default function TwitterFeed({ onVisibilityChange }) {
                 setShouldHide(true)
                 if (onVisibilityChange) onVisibilityChange(false)
             } else {
-                console.log('[TwitterFeed] Twitter widget iframe found')
-                setWidgetRendered(true)
-                if (onVisibilityChange) onVisibilityChange(true)
+                // Additional check: verify the iframe has actual content
+                try {
+                    const iframeHeight = iframe.offsetHeight
+                    console.log('[TwitterFeed] Twitter widget iframe found, height:', iframeHeight)
+                    // If iframe is too small (less than 100px), it likely has no content
+                    if (iframeHeight < 100) {
+                        console.log('[TwitterFeed] Twitter widget iframe too small, likely empty - hiding feed')
+                        setScriptError(true)
+                        setShouldHide(true)
+                        if (onVisibilityChange) onVisibilityChange(false)
+                    } else {
+                        console.log('[TwitterFeed] Twitter widget has content')
+                        setWidgetRendered(true)
+                        if (onVisibilityChange) onVisibilityChange(true)
+                    }
+                } catch (err) {
+                    console.error('[TwitterFeed] Error checking iframe:', err)
+                    // On error, assume no content
+                    setScriptError(true)
+                    setShouldHide(true)
+                    if (onVisibilityChange) onVisibilityChange(false)
+                }
             }
-        }, 10000)
+        }, 8000)
 
         // Check if script already exists
         const existingScript = document.querySelector('script[src="https://platform.twitter.com/widgets.js"]')
