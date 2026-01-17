@@ -7,6 +7,7 @@ import { getReleasesDownloadCount } from 'utils/githubStats';
 import EmailForm from '@components/EmailForm';
 import InstallSection from '@components/InstallSection';
 import DownloadGraph from './DownloadGraph';
+import PyPIDownloadChart from './PyPIDownloadChart';
 
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
@@ -188,6 +189,7 @@ export default function Developers() {
                         </div>
                     </div>
 
+                    <PyPIDownloadChart />
                     <DownloadGraph />
                     <EmailForm />
 
