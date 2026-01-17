@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindows, faApple, faLinux, faPython } from '@fortawesome/free-brands-svg-icons';
-import { faCopy, faCheck, faTerminal, faDownload, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faCheck, faTerminal, faDownload } from '@fortawesome/free-solid-svg-icons';
 import styles from './InstallSection.module.css';
 import { getPyPIDownloadStats, formatDownloadCount } from 'utils/pypiStats';
 
@@ -108,16 +108,6 @@ export default function InstallSection() {
                     </span>
                     <span className={styles.pypiLabel}>
                         installs this month (all packages)
-                        <a
-                            href="https://pypi.org/search/?q=openadapt"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.sourceLink}
-                            aria-label="View all OpenAdapt packages on PyPI"
-                        >
-                            <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                            <span className={styles.sourceLinkTooltip}>View all packages</span>
-                        </a>
                     </span>
                 </div>
             )}

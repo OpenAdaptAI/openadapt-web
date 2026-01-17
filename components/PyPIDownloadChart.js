@@ -383,16 +383,6 @@ const PyPIDownloadChart = () => {
                             </span>
                             <span className={styles.statLabel}>
                                 Total Downloads (All Packages)
-                                <a
-                                    href="https://pypi.org/search/?q=openadapt"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.sourceLink}
-                                    aria-label="View all OpenAdapt packages on PyPI"
-                                >
-                                    <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                    <span className={styles.sourceLinkTooltip}>View all packages</span>
-                                </a>
                             </span>
                         </div>
                     )}
@@ -424,16 +414,6 @@ const PyPIDownloadChart = () => {
                         </span>
                         <span className={styles.statLabel}>
                             Packages
-                            <a
-                                href="https://pypi.org/search/?q=openadapt"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.sourceLink}
-                                aria-label="View all OpenAdapt packages on PyPI"
-                            >
-                                <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                <span className={styles.sourceLinkTooltip}>View all packages</span>
-                            </a>
                         </span>
                     </div>
                 </div>
@@ -448,16 +428,6 @@ const PyPIDownloadChart = () => {
                             </span>
                             <span className={styles.statLabelSmall}>
                                 Today (All Packages)
-                                <a
-                                    href="https://pypi.org/search/?q=openadapt"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.sourceLink}
-                                    aria-label="View all OpenAdapt packages on PyPI"
-                                >
-                                    <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                    <span className={styles.sourceLinkTooltip}>View all packages</span>
-                                </a>
                             </span>
                         </div>
                         <div className={styles.statItemSmall}>
@@ -467,16 +437,6 @@ const PyPIDownloadChart = () => {
                             </span>
                             <span className={styles.statLabelSmall}>
                                 This Week (All Packages)
-                                <a
-                                    href="https://pypi.org/search/?q=openadapt"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.sourceLink}
-                                    aria-label="View all OpenAdapt packages on PyPI"
-                                >
-                                    <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                    <span className={styles.sourceLinkTooltip}>View all packages</span>
-                                </a>
                             </span>
                         </div>
                         <div className={styles.statItemSmall}>
@@ -486,16 +446,6 @@ const PyPIDownloadChart = () => {
                             </span>
                             <span className={styles.statLabelSmall}>
                                 This Month (All Packages)
-                                <a
-                                    href="https://pypi.org/search/?q=openadapt"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.sourceLink}
-                                    aria-label="View all OpenAdapt packages on PyPI"
-                                >
-                                    <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                    <span className={styles.sourceLinkTooltip}>View all packages</span>
-                                </a>
                             </span>
                         </div>
                         {recentStats.topPackage.name && (
@@ -588,16 +538,21 @@ const PyPIDownloadChart = () => {
 
             {/* Data Source Attribution */}
             <div className={styles.attribution}>
-                Data aggregated from{' '}
-                <a
-                    href="https://pypi.org/search/?q=openadapt"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.attributionLink}
-                >
-                    all OpenAdapt packages
-                </a>
-                {' '}via pypistats.org API
+                <div className={styles.attributionContent}>
+                    <FontAwesomeIcon icon={faPython} className={styles.attributionIcon} />
+                    <span>
+                        Data sourced from{' '}
+                        <a
+                            href="https://pypi.org/search/?q=openadapt"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.attributionLink}
+                        >
+                            PyPI OpenAdapt packages
+                        </a>
+                        {' '}via pypistats.org API
+                    </span>
+                </div>
             </div>
         </div>
     );
