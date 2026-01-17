@@ -192,6 +192,7 @@ export default function Developers() {
                         </div>
                     </div>
 
+                    <PyPIDownloadChart />
                     <DownloadGraph />
                     <EmailForm />
 
