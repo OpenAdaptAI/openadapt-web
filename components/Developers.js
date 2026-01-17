@@ -125,6 +125,9 @@ export default function Developers() {
                     {/* New uv-first Installation Section */}
                     <InstallSection />
 
+                    {/* PyPI Download Statistics */}
+                    <PyPIDownloadChart />
+
                     {/* Desktop App Downloads (Legacy - being updated) */}
                     <div className="mt-12">
                         <h3 className="text-xl font-light text-center mb-2">
