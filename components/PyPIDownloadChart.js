@@ -13,12 +13,14 @@ import {
     Filler,
 } from 'chart.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPython } from '@fortawesome/free-brands-svg-icons';
-import { faChartLine, faArrowTrendUp, faArrowTrendDown, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faPython, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faChartLine, faArrowTrendUp, faArrowTrendDown, faMinus, faStar, faDownload, faCalendarDay, faCalendarWeek, faCube, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import {
     getPyPIDownloadHistoryLimited,
     formatDate,
     calculateGrowthStats,
+    getRecentDownloadStats,
+    getGitHubStats,
 } from 'utils/pypistatsHistory';
 import { formatDownloadCount } from 'utils/pypiStats';
 import styles from './PyPIDownloadChart.module.css';
@@ -63,6 +65,8 @@ const PyPIDownloadChart = () => {
     const [chartType, setChartType] = useState('cumulative'); // 'cumulative', 'combined', or 'packages'
     const [period, setPeriod] = useState('month');
     const [growthStats, setGrowthStats] = useState(null);
+    const [recentStats, setRecentStats] = useState(null);
+    const [githubStats, setGithubStats] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,6 +94,23 @@ const PyPIDownloadChart = () => {
 
         fetchData();
     }, [period]);
+
+    // Fetch recent stats and GitHub stats once on mount
+    useEffect(() => {
+        const fetchAdditionalStats = async () => {
+            try {
+                const [recent, github] = await Promise.all([
+                    getRecentDownloadStats(),
+                    getGitHubStats(),
+                ]);
+                setRecentStats(recent);
+                setGithubStats(github);
+            } catch (err) {
+                console.error('Error fetching additional stats:', err);
+            }
+        };
+        fetchAdditionalStats();
+    }, []);
 
     const getCumulativeChartData = () => {
         if (!historyData) return null;
@@ -275,32 +296,73 @@ const PyPIDownloadChart = () => {
                 </p>
             </div>
 
-            {/* Stats Summary */}
-            {historyData && (
+            {/* Stats Summary - Enhanced Grid */}
+            <div className={styles.statsGrid}>
+                {/* Primary Stats Row */}
                 <div className={styles.statsRow}>
-                    <div className={`${styles.statItem} ${styles.trendUp}`}>
-                        <span className={styles.statValue}>
-                            <FontAwesomeIcon icon={faArrowTrendUp} className={styles.trendIcon} />
-                            {formatDownloadCount(totalCumulative)}
-                        </span>
-                        <span className={styles.statLabel}>Total Downloads</span>
-                    </div>
+                    {historyData && (
+                        <div className={`${styles.statItem} ${styles.statPrimary}`}>
+                            <span className={styles.statValue}>
+                                <FontAwesomeIcon icon={faDownload} className={styles.statIcon} />
+                                {formatDownloadCount(totalCumulative)}
+                            </span>
+                            <span className={styles.statLabel}>Total Downloads</span>
+                        </div>
+                    )}
+                    {githubStats && (
+                        <div className={styles.statItem}>
+                            <span className={styles.statValue}>
+                                <FontAwesomeIcon icon={faStar} className={styles.statIconGold} />
+                                {githubStats.stars.toLocaleString()}
+                            </span>
+                            <span className={styles.statLabel}>GitHub Stars</span>
+                        </div>
+                    )}
                     <div className={styles.statItem}>
                         <span className={styles.statValue}>
-                            {historyData.packageNames?.length || 8}
+                            <FontAwesomeIcon icon={faCube} className={styles.statIcon} />
+                            {historyData?.packageNames?.length || 8}
                         </span>
                         <span className={styles.statLabel}>Packages</span>
                     </div>
-                    {growthStats && (
-                        <div className={styles.statItem}>
-                            <span className={styles.statValue}>
-                                {formatDownloadCount(growthStats.recentAvg)}
-                            </span>
-                            <span className={styles.statLabel}>Avg per {period}</span>
-                        </div>
-                    )}
                 </div>
-            )}
+
+                {/* Recent Activity Row */}
+                {recentStats && (
+                    <div className={styles.statsRowSecondary}>
+                        <div className={styles.statItemSmall}>
+                            <span className={styles.statValueSmall}>
+                                <FontAwesomeIcon icon={faCalendarDay} className={styles.statIconSmall} />
+                                {recentStats.totals.last_day.toLocaleString()}
+                            </span>
+                            <span className={styles.statLabelSmall}>Today</span>
+                        </div>
+                        <div className={styles.statItemSmall}>
+                            <span className={styles.statValueSmall}>
+                                <FontAwesomeIcon icon={faCalendarWeek} className={styles.statIconSmall} />
+                                {recentStats.totals.last_week.toLocaleString()}
+                            </span>
+                            <span className={styles.statLabelSmall}>This Week</span>
+                        </div>
+                        <div className={styles.statItemSmall}>
+                            <span className={styles.statValueSmall}>
+                                <FontAwesomeIcon icon={faArrowTrendUp} className={styles.statIconSmall} />
+                                {recentStats.totals.last_month.toLocaleString()}
+                            </span>
+                            <span className={styles.statLabelSmall}>This Month</span>
+                        </div>
+                        {recentStats.topPackage.name && (
+                            <div className={styles.statItemSmall}>
+                                <span className={styles.statValueSmall}>
+                                    <FontAwesomeIcon icon={faTrophy} className={styles.statIconGold} />
+                                    {recentStats.topPackage.name.replace('openadapt-', '')}
+                                </span>
+                                <span className={styles.statLabelSmall}>Top Package</span>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
 
             {/* Controls */}
             <div className={styles.controls}>

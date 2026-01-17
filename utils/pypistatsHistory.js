@@ -208,3 +208,73 @@ export function calculateGrowthStats(history) {
         olderAvg: Math.round(olderAvg),
     };
 }
+
+/**
+ * Fetches aggregated recent download stats for all packages
+ * @returns {Promise<Object>} - Object with last_day, last_week, last_month totals and per-package breakdown
+ */
+export async function getRecentDownloadStats() {
+    const results = await Promise.all(
+        PYPI_PACKAGES.map(async (pkg) => {
+            const recent = await getPackageRecentHistory(pkg);
+            return { name: pkg, recent };
+        })
+    );
+
+    const totals = {
+        last_day: 0,
+        last_week: 0,
+        last_month: 0,
+    };
+    const perPackage = {};
+    let topPackage = { name: '', downloads: 0 };
+
+    results.forEach(({ name, recent }) => {
+        if (recent) {
+            const day = recent.last_day || 0;
+            const week = recent.last_week || 0;
+            const month = recent.last_month || 0;
+
+            totals.last_day += day;
+            totals.last_week += week;
+            totals.last_month += month;
+
+            perPackage[name] = { last_day: day, last_week: week, last_month: month };
+
+            if (month > topPackage.downloads) {
+                topPackage = { name, downloads: month };
+            }
+        }
+    });
+
+    return {
+        totals,
+        perPackage,
+        topPackage,
+        packageCount: results.filter(r => r.recent).length,
+    };
+}
+
+/**
+ * Fetches GitHub stats for the main OpenAdapt repository
+ * @returns {Promise<Object>} - Object with stars, forks, watchers
+ */
+export async function getGitHubStats() {
+    try {
+        const response = await fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt');
+        if (!response.ok) {
+            console.warn('Failed to fetch GitHub stats:', response.status);
+            return null;
+        }
+        const data = await response.json();
+        return {
+            stars: data.stargazers_count,
+            forks: data.forks_count,
+            watchers: data.subscribers_count,
+            openIssues: data.open_issues_count,
+        };
+    } catch (error) {
+        console.error('Error fetching GitHub stats:', error);
+        return null;
+    }
+}
