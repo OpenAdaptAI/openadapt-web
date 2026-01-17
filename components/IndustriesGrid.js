@@ -93,11 +93,11 @@ export default function IndustriesGrid({
                 </a>
             </div>
             <div className="mt-20">
-                <h1 className="text-center text-2xl text-white">
-                    From demonstration to automation in minutes.
+                <h1 className="text-center text-2xl text-white mb-4">
+                    Transform Your Industry with OpenAdapt
                 </h1>
                 <p className={styles.p}>
-                    Just do the task once and OpenAdapt learns from watching.
+                    From demonstration to automation in minutes. Just do the task once and OpenAdapt learns from watching.
                     No prompt engineering. No scripting. No brittle selectors.
                     <br />
                     <a href="https://github.com/OpenAdaptAI/openadapt-privacy">

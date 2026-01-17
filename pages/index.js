@@ -17,12 +17,12 @@ export default function Home() {
     return (
         <div>
             <MastHead />
+            <Developers />
             <IndustriesGrid
                 feedbackData={feedbackData}
                 setFeedbackData={setFeedbackData}
                 sectionRef={sectionRef}
             />
-            <Developers />
             <Footer />
         </div>
     )
