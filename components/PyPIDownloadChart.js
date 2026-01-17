@@ -60,7 +60,7 @@ const PyPIDownloadChart = () => {
     const [historyData, setHistoryData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [chartType, setChartType] = useState('combined'); // 'combined' or 'packages'
+    const [chartType, setChartType] = useState('cumulative'); // 'cumulative', 'combined', or 'packages'
     const [period, setPeriod] = useState('month');
     const [growthStats, setGrowthStats] = useState(null);
 
@@ -69,7 +69,8 @@ const PyPIDownloadChart = () => {
             setLoading(true);
             setError(null);
             try {
-                const limit = period === 'day' ? 30 : period === 'week' ? 12 : 12;
+                // Fetch more data for a longer-term view
+                const limit = period === 'day' ? 60 : period === 'week' ? 24 : 24;
                 const data = await getPyPIDownloadHistoryLimited(period, limit);
 
                 if (!data.combined || data.combined.length === 0) {
@@ -90,6 +91,29 @@ const PyPIDownloadChart = () => {
         fetchData();
     }, [period]);
 
+    const getCumulativeChartData = () => {
+        if (!historyData) return null;
+
+        const labels = historyData.cumulativeHistory.map(item => formatDate(item.date, period));
+        const downloads = historyData.cumulativeHistory.map(item => item.downloads);
+
+        return {
+            labels,
+            datasets: [
+                {
+                    label: 'Cumulative Downloads',
+                    data: downloads,
+                    borderColor: 'rgb(34, 197, 94)', // Green for growth
+                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                },
+            ],
+        };
+    };
+
     const getCombinedChartData = () => {
         if (!historyData) return null;
 
@@ -100,7 +124,7 @@ const PyPIDownloadChart = () => {
             labels,
             datasets: [
                 {
-                    label: 'Total Downloads',
+                    label: 'Downloads per Period',
                     data: downloads,
                     borderColor: packageColors.combined.border,
                     backgroundColor: packageColors.combined.background,
@@ -226,7 +250,18 @@ const PyPIDownloadChart = () => {
         return styles.trendStable;
     };
 
-    const chartData = chartType === 'combined' ? getCombinedChartData() : getPackagesChartData();
+    const getChartData = () => {
+        if (chartType === 'cumulative') return getCumulativeChartData();
+        if (chartType === 'combined') return getCombinedChartData();
+        return getPackagesChartData();
+    };
+
+    const chartData = getChartData();
+
+    // Calculate total cumulative downloads
+    const totalCumulative = historyData?.cumulativeHistory?.length > 0
+        ? historyData.cumulativeHistory[historyData.cumulativeHistory.length - 1].downloads
+        : 0;
 
     return (
         <div className={styles.container}>
@@ -241,29 +276,29 @@ const PyPIDownloadChart = () => {
             </div>
 
             {/* Stats Summary */}
-            {growthStats && historyData && (
+            {historyData && (
                 <div className={styles.statsRow}>
-                    <div className={styles.statItem}>
+                    <div className={`${styles.statItem} ${styles.trendUp}`}>
                         <span className={styles.statValue}>
-                            {formatDownloadCount(
-                                historyData.combined.reduce((sum, item) => sum + item.downloads, 0)
-                            )}
+                            <FontAwesomeIcon icon={faArrowTrendUp} className={styles.trendIcon} />
+                            {formatDownloadCount(totalCumulative)}
                         </span>
-                        <span className={styles.statLabel}>Total ({period}ly)</span>
+                        <span className={styles.statLabel}>Total Downloads</span>
                     </div>
                     <div className={styles.statItem}>
                         <span className={styles.statValue}>
-                            {formatDownloadCount(growthStats.recentAvg)}
+                            {historyData.packageNames?.length || 8}
                         </span>
-                        <span className={styles.statLabel}>Avg per {period}</span>
+                        <span className={styles.statLabel}>Packages</span>
                     </div>
-                    <div className={`${styles.statItem} ${getTrendClass()}`}>
-                        <span className={styles.statValue}>
-                            <FontAwesomeIcon icon={getTrendIcon()} className={styles.trendIcon} />
-                            {growthStats.growthPercent > 0 ? '+' : ''}{growthStats.growthPercent}%
-                        </span>
-                        <span className={styles.statLabel}>Growth</span>
-                    </div>
+                    {growthStats && (
+                        <div className={styles.statItem}>
+                            <span className={styles.statValue}>
+                                {formatDownloadCount(growthStats.recentAvg)}
+                            </span>
+                            <span className={styles.statLabel}>Avg per {period}</span>
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -273,39 +308,22 @@ const PyPIDownloadChart = () => {
                     <span className={styles.controlLabel}>View:</span>
                     <div className={styles.toggleGroup}>
                         <button
+                            className={`${styles.toggleBtn} ${chartType === 'cumulative' ? styles.active : ''}`}
+                            onClick={() => setChartType('cumulative')}
+                        >
+                            Cumulative
+                        </button>
+                        <button
                             className={`${styles.toggleBtn} ${chartType === 'combined' ? styles.active : ''}`}
                             onClick={() => setChartType('combined')}
                         >
-                            Combined
+                            Per Period
                         </button>
                         <button
                             className={`${styles.toggleBtn} ${chartType === 'packages' ? styles.active : ''}`}
                             onClick={() => setChartType('packages')}
                         >
                             By Package
-                        </button>
-                    </div>
-                </div>
-                <div className={styles.controlGroup}>
-                    <span className={styles.controlLabel}>Period:</span>
-                    <div className={styles.toggleGroup}>
-                        <button
-                            className={`${styles.toggleBtn} ${period === 'day' ? styles.active : ''}`}
-                            onClick={() => setPeriod('day')}
-                        >
-                            Daily
-                        </button>
-                        <button
-                            className={`${styles.toggleBtn} ${period === 'week' ? styles.active : ''}`}
-                            onClick={() => setPeriod('week')}
-                        >
-                            Weekly
-                        </button>
-                        <button
-                            className={`${styles.toggleBtn} ${period === 'month' ? styles.active : ''}`}
-                            onClick={() => setPeriod('month')}
-                        >
-                            Monthly
                         </button>
                     </div>
                 </div>
