@@ -18,7 +18,7 @@ const allowedEndpoints = ['overall', 'recent'];
 
 exports.handler = async function(event, context) {
     const params = event.queryStringParameters || {};
-    const { package: packageName, endpoint = 'overall', period = 'month' } = params;
+    const { package: packageName, endpoint = 'overall', period } = params;
 
     // Set CORS headers
     const headers = {
@@ -58,7 +58,12 @@ exports.handler = async function(event, context) {
     }
 
     try {
-        const url = `https://pypistats.org/api/packages/${packageName}/${endpoint}?period=${period}&mirrors=true`;
+        // Build URL - only include period if explicitly provided
+        // For the 'recent' endpoint, omitting period returns all three: last_day, last_week, last_month
+        let url = `https://pypistats.org/api/packages/${packageName}/${endpoint}?mirrors=true`;
+        if (period) {
+            url += `&period=${period}`;
+        }
         const response = await fetch(url);
 
         if (!response.ok) {

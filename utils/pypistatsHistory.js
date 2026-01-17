@@ -65,8 +65,10 @@ async function getPackageHistory(packageName, period = 'month') {
 async function getPackageRecentHistory(packageName) {
     try {
         // Use local API route to avoid CORS issues
+        // Note: Do NOT pass period parameter - without it, the API returns all three:
+        // last_day, last_week, and last_month. With period=month, only last_month is returned.
         const response = await fetch(
-            `/api/pypistats?package=${packageName}&endpoint=recent&period=month`
+            `/api/pypistats?package=${packageName}&endpoint=recent`
         );
 
         if (!response.ok) {

@@ -4,7 +4,7 @@
  */
 
 export default async function handler(req, res) {
-    const { package: packageName, endpoint = 'overall', period = 'month' } = req.query;
+    const { package: packageName, endpoint = 'overall', period } = req.query;
 
     if (!packageName) {
         return res.status(400).json({ error: 'Package name is required' });
@@ -33,7 +33,12 @@ export default async function handler(req, res) {
     }
 
     try {
-        const url = `https://pypistats.org/api/packages/${packageName}/${endpoint}?period=${period}&mirrors=true`;
+        // Build URL - only include period if explicitly provided
+        // For the 'recent' endpoint, omitting period returns all three: last_day, last_week, last_month
+        let url = `https://pypistats.org/api/packages/${packageName}/${endpoint}?mirrors=true`;
+        if (period) {
+            url += `&period=${period}`;
+        }
         const response = await fetch(url);
 
         if (!response.ok) {
