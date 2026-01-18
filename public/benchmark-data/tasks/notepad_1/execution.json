@@ -1,0 +1,142 @@
+{
+  "task_id": "notepad_1",
+  "model_id": "unknown",
+  "success": false,
+  "score": 0.0,
+  "num_steps": 5,
+  "total_time_seconds": 71.88987074999022,
+  "error": null,
+  "reason": "Evaluation requires WAA evaluators (not yet implemented)",
+  "steps": [
+    {
+      "step_idx": 0,
+      "screenshot_path": "screenshots/step_000.png",
+      "action": {
+        "type": "click",
+        "x": 0.6442708333333333,
+        "y": 0.32666666666666666,
+        "target_node_id": null,
+        "target_bbox": null,
+        "target_role": null,
+        "target_name": null,
+        "text": null,
+        "key": null,
+        "modifiers": null,
+        "scroll_direction": null,
+        "scroll_amount": null,
+        "end_x": null,
+        "end_y": null,
+        "answer": null,
+        "raw_action": {
+          "code": "computer.click(1237, 392)"
+        }
+      },
+      "reasoning": null,
+      "timestamp": 1768611618.802666
+    },
+    {
+      "step_idx": 1,
+      "screenshot_path": "screenshots/step_001.png",
+      "action": {
+        "type": "click",
+        "x": 0.6072916666666667,
+        "y": 0.5216666666666666,
+        "target_node_id": null,
+        "target_bbox": null,
+        "target_role": null,
+        "target_name": null,
+        "text": null,
+        "key": null,
+        "modifiers": null,
+        "scroll_direction": null,
+        "scroll_amount": null,
+        "end_x": null,
+        "end_y": null,
+        "answer": null,
+        "raw_action": {
+          "code": "computer.click(1166, 626)"
+        }
+      },
+      "reasoning": null,
+      "timestamp": 1768611631.025159
+    },
+    {
+      "step_idx": 2,
+      "screenshot_path": "screenshots/step_002.png",
+      "action": {
+        "type": "click",
+        "x": 0.6072916666666667,
+        "y": 0.5216666666666666,
+        "target_node_id": null,
+        "target_bbox": null,
+        "target_role": null,
+        "target_name": null,
+        "text": null,
+        "key": null,
+        "modifiers": null,
+        "scroll_direction": null,
+        "scroll_amount": null,
+        "end_x": null,
+        "end_y": null,
+        "answer": null,
+        "raw_action": {
+          "code": "computer.click(1166, 626)"
+        }
+      },
+      "reasoning": null,
+      "timestamp": 1768611644.028655
+    },
+    {
+      "step_idx": 3,
+      "screenshot_path": "screenshots/step_003.png",
+      "action": {
+        "type": "click",
+        "x": 0.6072916666666667,
+        "y": 0.5216666666666666,
+        "target_node_id": null,
+        "target_bbox": null,
+        "target_role": null,
+        "target_name": null,
+        "text": null,
+        "key": null,
+        "modifiers": null,
+        "scroll_direction": null,
+        "scroll_amount": null,
+        "end_x": null,
+        "end_y": null,
+        "answer": null,
+        "raw_action": {
+          "code": "computer.click(1166, 626)"
+        }
+      },
+      "reasoning": null,
+      "timestamp": 1768611657.31775
+    },
+    {
+      "step_idx": 4,
+      "screenshot_path": "screenshots/step_004.png",
+      "action": {
+        "type": "click",
+        "x": 0.6442708333333333,
+        "y": 0.32666666666666666,
+        "target_node_id": null,
+        "target_bbox": null,
+        "target_role": null,
+        "target_name": null,
+        "text": null,
+        "key": null,
+        "modifiers": null,
+        "scroll_direction": null,
+        "scroll_amount": null,
+        "end_x": null,
+        "end_y": null,
+        "answer": null,
+        "raw_action": {
+          "code": "computer.click(1237, 392)"
+        }
+      },
+      "reasoning": null,
+      "timestamp": 1768611670.178712
+    }
+  ]
+}

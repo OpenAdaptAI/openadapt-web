@@ -139,13 +139,19 @@ export default function Home() {
                             <div id="register">
                                 <div>
                                     <Link
-                                        className="btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 mt-10 mb-6 hover:bg-transparent"
+                                        className="btn btn-primary mt-10 mb-6"
+                                        href="/demo"
+                                    >
+                                        Try It Now
+                                    </Link>
+                                    <Link
+                                        className="btn bg-transparent border-2 border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300 mt-10 mb-6 ml-3 hover:bg-transparent"
                                         href="#industries"
                                     >
                                         Learn How
                                     </Link>
                                     <Link
-                                        className="btn btn-primary mt-10 mb-6 ml-3"
+                                        className="btn btn-outline mt-10 mb-6 ml-3"
                                         href="#start"
                                     >
                                         Get Started

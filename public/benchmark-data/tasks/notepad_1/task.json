@@ -1,0 +1,9 @@
+{
+  "task_id": "notepad_1",
+  "instruction": "Task notepad_1",
+  "domain": "notepad",
+  "initial_state_ref": null,
+  "time_limit_steps": 5,
+  "raw_config": {},
+  "evaluation_spec": null
+}

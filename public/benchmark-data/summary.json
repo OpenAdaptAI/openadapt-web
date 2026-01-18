@@ -1,0 +1,20 @@
+{
+  "benchmark_name": "waa-live",
+  "run_name": "waa-live_eval_20260116_200004",
+  "model_id": "unknown",
+  "num_tasks": 1,
+  "num_success": 0,
+  "success_rate": 0.0,
+  "avg_score": 0.0,
+  "avg_steps": 5.0,
+  "avg_time_seconds": 71.88987074999022,
+  "tasks": [
+    {
+      "task_id": "notepad_1",
+      "success": false,
+      "score": 0.0,
+      "num_steps": 5,
+      "error": null
+    }
+  ]
+}
