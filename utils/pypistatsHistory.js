@@ -5,19 +5,46 @@
  * Original API documentation: https://pypistats.org/api/
  */
 
-const PYPI_PACKAGES = [
-    'openadapt',
-    'openadapt-ml',
-    'openadapt-capture',
-    'openadapt-evals',
-    'openadapt-viewer',
-    'openadapt-grounding',
-    'openadapt-retrieval',
-    'openadapt-privacy',
-    'openadapt-tray',
-    'openadapt-telemetry',
-    // 'openadapt-agent', // TODO: Uncomment when published to PyPI
-];
+let cachedPackages = null;
+let cacheTimestamp = null;
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+/**
+ * Fetches the list of all openadapt-* packages from PyPI
+ * Uses the discover-packages API as the single source of truth with client-side caching
+ * @returns {Promise<string[]>} - Array of package names
+ */
+async function getPackageList() {
+    // Return cached result if still valid
+    if (cachedPackages && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_DURATION) {
+        return cachedPackages;
+    }
+
+    try {
+        // Fetch from the discover-packages API - the single source of truth
+        const response = await fetch('/api/discover-packages');
+        if (!response.ok) {
+            throw new Error(`Failed to discover packages: ${response.status}`);
+        }
+
+        const data = await response.json();
+        cachedPackages = data.packages || [];
+        cacheTimestamp = Date.now();
+
+        return cachedPackages;
+    } catch (error) {
+        console.error('Error fetching package list from discover-packages API:', error);
+
+        // If we have a stale cache, use it instead of failing completely
+        if (cachedPackages) {
+            console.warn('Using stale package cache due to API failure');
+            return cachedPackages;
+        }
+
+        // If no cache exists, throw error - the discover-packages API has its own fallback
+        throw new Error('Unable to fetch package list and no cache available');
+    }
+}
 
 /**
  * Fetches overall download history for a single PyPI package
@@ -93,8 +120,9 @@ async function getPackageRecentHistory(packageName) {
  * @returns {Promise<Object>} - Object containing combined history and per-package data
  */
 export async function getPyPIDownloadHistory(period = 'month') {
+    const packageList = await getPackageList();
     const results = await Promise.all(
-        PYPI_PACKAGES.map(async (pkg) => ({
+        packageList.map(async (pkg) => ({
             name: pkg,
             history: await getPackageHistory(pkg, period),
         }))
@@ -129,7 +157,7 @@ export async function getPyPIDownloadHistory(period = 'month') {
         combined,
         cumulativeHistory,
         packages: packageHistories,
-        packageNames: PYPI_PACKAGES,
+        packageNames: packageList,
     };
 }
 
@@ -219,8 +247,10 @@ export function calculateGrowthStats(history) {
  * @returns {Promise<Object>} - Object with last_day, last_week, last_month totals and per-package breakdown
  */
 export async function getRecentDownloadStats() {
-    const results = await Promise.all(
-        PYPI_PACKAGES.map(async (pkg) => {
+    const packageList = await getPackageList();
+    // Use Promise.allSettled to handle individual package failures gracefully
+    const results = await Promise.allSettled(
+        packageList.map(async (pkg) => {
             const recent = await getPackageRecentHistory(pkg);
             return { name: pkg, recent };
         })
@@ -234,21 +264,27 @@ export async function getRecentDownloadStats() {
     const perPackage = {};
     let topPackage = { name: '', downloads: 0 };
 
-    results.forEach(({ name, recent }) => {
-        if (recent) {
-            const day = recent.last_day || 0;
-            const week = recent.last_week || 0;
-            const month = recent.last_month || 0;
+    results.forEach((result) => {
+        // Only process fulfilled promises
+        if (result.status === 'fulfilled') {
+            const { name, recent } = result.value;
+            if (recent) {
+                const day = recent.last_day || 0;
+                const week = recent.last_week || 0;
+                const month = recent.last_month || 0;
 
-            totals.last_day += day;
-            totals.last_week += week;
-            totals.last_month += month;
+                totals.last_day += day;
+                totals.last_week += week;
+                totals.last_month += month;
 
-            perPackage[name] = { last_day: day, last_week: week, last_month: month };
+                perPackage[name] = { last_day: day, last_week: week, last_month: month };
 
-            if (month > topPackage.downloads) {
-                topPackage = { name, downloads: month };
+                if (month > topPackage.downloads) {
+                    topPackage = { name, downloads: month };
+                }
             }
+        } else {
+            console.warn('Failed to fetch stats for a package:', result.reason);
         }
     });
 
@@ -256,7 +292,7 @@ export async function getRecentDownloadStats() {
         totals,
         perPackage,
         topPackage,
-        packageCount: results.filter(r => r.recent).length,
+        packageCount: results.filter(r => r.status === 'fulfilled' && r.value?.recent).length,
     };
 }
 

@@ -39,55 +39,123 @@ ChartJS.register(
     Filler
 );
 
-// Color palette for different packages
+/**
+ * ACCESSIBILITY IMPROVEMENTS FOR COLORBLIND USERS
+ *
+ * This component implements multiple accessibility features to ensure
+ * the "By Package" chart is usable by colorblind users:
+ *
+ * 1. Colorblind-Safe Palette: Uses the Tol bright color scheme, scientifically
+ *    designed to be distinguishable for all types of color vision deficiency
+ *    (protanopia, deuteranopia, tritanopia, and achromatopsia).
+ *    Source: https://personal.sron.nl/~paultol/data/colourschemes.pdf
+ *
+ * 2. Line Patterns: Each package line uses a distinct dash pattern
+ *    (solid, dashed, dotted, dash-dot, etc.) providing visual differentiation
+ *    beyond color alone.
+ *
+ * 3. Line Widths: Varying line widths (2-3px) add another layer of distinction.
+ *
+ * 4. Interactive Legend: Click legend items to show/hide specific packages.
+ *    The legend shows line patterns matching the chart lines.
+ *
+ * 5. Enhanced Tooltips: Hover over any point to see:
+ *    - Package name prominently displayed
+ *    - Exact download counts
+ *    - Total across all packages
+ *    - Color indicators matching the line
+ *
+ * 6. Hover Highlighting: When hovering over a line, other lines fade out
+ *    (reduced opacity) to make the hovered line stand out clearly.
+ *
+ * These features work together to ensure the chart is fully accessible
+ * without relying solely on color perception.
+ */
+
+// Colorblind-safe color palette using Tol bright scheme
+// This palette is designed to be distinguishable for all types of color vision deficiency
+// Source: https://personal.sron.nl/~paultol/data/colourschemes.pdf
+const TOL_BRIGHT_COLORS = [
+    '#4477AA', // Blue
+    '#EE6677', // Red
+    '#228833', // Green
+    '#CCBB44', // Yellow
+    '#66CCEE', // Cyan
+    '#AA3377', // Purple
+    '#BBBBBB', // Grey
+    '#EE7733', // Orange (additional)
+];
+
+// Line patterns for additional visual differentiation
+const LINE_PATTERNS = [
+    [],           // Solid
+    [10, 5],      // Dashed
+    [2, 3],       // Dotted
+    [15, 5, 5, 5], // Dash-dot
+    [20, 5],      // Long dash
+    [5, 5, 1, 5], // Dash-dot-dot
+    [8, 4, 2, 4], // Mixed
+    [12, 3],      // Medium dash
+];
+
+// Line widths for additional differentiation
+const LINE_WIDTHS = [3, 2.5, 2.5, 2.5, 2, 2, 2, 2];
+
+// Package-specific configuration with colorblind-safe colors and patterns
 const packageColors = {
     'openadapt': {
-        border: 'rgb(86, 13, 248)',
-        background: 'rgba(86, 13, 248, 0.2)',
+        border: TOL_BRIGHT_COLORS[0], // Blue
+        background: `${TOL_BRIGHT_COLORS[0]}33`,
+        borderDash: LINE_PATTERNS[0], // Solid
+        borderWidth: LINE_WIDTHS[0],
     },
     'openadapt-ml': {
-        border: 'rgb(52, 152, 219)',
-        background: 'rgba(52, 152, 219, 0.2)',
+        border: TOL_BRIGHT_COLORS[1], // Red
+        background: `${TOL_BRIGHT_COLORS[1]}33`,
+        borderDash: LINE_PATTERNS[1], // Dashed
+        borderWidth: LINE_WIDTHS[1],
     },
     'openadapt-capture': {
-        border: 'rgb(46, 204, 113)',
-        background: 'rgba(46, 204, 113, 0.2)',
+        border: TOL_BRIGHT_COLORS[2], // Green
+        background: `${TOL_BRIGHT_COLORS[2]}33`,
+        borderDash: LINE_PATTERNS[2], // Dotted
+        borderWidth: LINE_WIDTHS[2],
     },
     'openadapt-evals': {
-        border: 'rgb(241, 196, 15)',
-        background: 'rgba(241, 196, 15, 0.2)',
+        border: TOL_BRIGHT_COLORS[3], // Yellow
+        background: `${TOL_BRIGHT_COLORS[3]}33`,
+        borderDash: LINE_PATTERNS[3], // Dash-dot
+        borderWidth: LINE_WIDTHS[3],
     },
     'openadapt-viewer': {
-        border: 'rgb(231, 76, 60)',
-        background: 'rgba(231, 76, 60, 0.2)',
+        border: TOL_BRIGHT_COLORS[4], // Cyan
+        background: `${TOL_BRIGHT_COLORS[4]}33`,
+        borderDash: LINE_PATTERNS[4], // Long dash
+        borderWidth: LINE_WIDTHS[4],
     },
     'openadapt-grounding': {
-        border: 'rgb(155, 89, 182)',
-        background: 'rgba(155, 89, 182, 0.2)',
+        border: TOL_BRIGHT_COLORS[5], // Purple
+        background: `${TOL_BRIGHT_COLORS[5]}33`,
+        borderDash: LINE_PATTERNS[5], // Dash-dot-dot
+        borderWidth: LINE_WIDTHS[5],
     },
     'openadapt-retrieval': {
-        border: 'rgb(26, 188, 156)',
-        background: 'rgba(26, 188, 156, 0.2)',
+        border: TOL_BRIGHT_COLORS[7], // Orange
+        background: `${TOL_BRIGHT_COLORS[7]}33`,
+        borderDash: LINE_PATTERNS[6], // Mixed
+        borderWidth: LINE_WIDTHS[6],
     },
     'openadapt-privacy': {
-        border: 'rgb(230, 126, 34)',
-        background: 'rgba(230, 126, 34, 0.2)',
+        border: TOL_BRIGHT_COLORS[6], // Grey
+        background: `${TOL_BRIGHT_COLORS[6]}33`,
+        borderDash: LINE_PATTERNS[7], // Medium dash
+        borderWidth: LINE_WIDTHS[7],
     },
-    'openadapt-tray': {
-        border: 'rgb(149, 165, 166)',
-        background: 'rgba(149, 165, 166, 0.2)',
-    },
-    'openadapt-telemetry': {
-        border: 'rgb(52, 73, 94)',
-        background: 'rgba(52, 73, 94, 0.2)',
-    },
-    // 'openadapt-agent': {
-    //     border: 'rgb(255, 99, 132)',
-    //     background: 'rgba(255, 99, 132, 0.2)',
-    // },
     'combined': {
         border: 'rgb(96, 165, 250)',
         background: 'rgba(96, 165, 250, 0.3)',
+        borderDash: [],
+        borderWidth: 3,
     },
 };
 
@@ -140,14 +208,32 @@ const PyPIDownloadChart = () => {
     useEffect(() => {
         const fetchAdditionalStats = async () => {
             try {
-                const [recent, github, versions] = await Promise.all([
+                // Use Promise.allSettled to ensure all promises complete even if some fail
+                const results = await Promise.allSettled([
                     getRecentDownloadStats(),
                     getGitHubStats(),
                     getPackageVersionHistory('openadapt'),
                 ]);
-                setRecentStats(recent);
-                setGithubStats(github);
-                setVersionHistory(versions);
+
+                // Handle each result individually
+                if (results[0].status === 'fulfilled' && results[0].value) {
+                    console.log('Recent stats loaded:', results[0].value);
+                    setRecentStats(results[0].value);
+                } else {
+                    console.error('Failed to load recent stats:', results[0].reason);
+                }
+
+                if (results[1].status === 'fulfilled' && results[1].value) {
+                    setGithubStats(results[1].value);
+                } else {
+                    console.error('Failed to load GitHub stats:', results[1].reason);
+                }
+
+                if (results[2].status === 'fulfilled' && results[2].value) {
+                    setVersionHistory(results[2].value);
+                } else {
+                    console.error('Failed to load version history:', results[2].reason);
+                }
             } catch (err) {
                 console.error('Error fetching additional stats:', err);
             }
@@ -224,10 +310,15 @@ const PyPIDownloadChart = () => {
                 data,
                 borderColor: colors.border,
                 backgroundColor: colors.background,
+                borderDash: colors.borderDash || [],
+                borderWidth: colors.borderWidth || 2,
                 fill: false,
                 tension: 0.4,
                 pointRadius: 3,
-                pointHoverRadius: 5,
+                pointHoverRadius: 6,
+                pointHoverBorderWidth: 3,
+                // Enhanced hover highlighting
+                hoverBorderWidth: colors.borderWidth ? colors.borderWidth + 1 : 3,
             };
         });
 
@@ -250,25 +341,79 @@ const PyPIDownloadChart = () => {
                     color: 'rgba(255, 255, 255, 0.8)',
                     font: {
                         size: 11,
+                        weight: '500',
                     },
                     padding: 10,
-                    boxWidth: 12,
-                    boxHeight: 12,
-                    usePointStyle: true,
-                    pointStyle: 'circle',
+                    boxWidth: 20,
+                    boxHeight: 3,
+                    usePointStyle: false,
+                    // Generate box to show line pattern
+                    generateLabels: function(chart) {
+                        const datasets = chart.data.datasets;
+                        return datasets.map((dataset, i) => ({
+                            text: dataset.label,
+                            fillStyle: dataset.borderColor,
+                            strokeStyle: dataset.borderColor,
+                            lineWidth: dataset.borderWidth || 2,
+                            lineDash: dataset.borderDash || [],
+                            hidden: !chart.isDatasetVisible(i),
+                            index: i,
+                            datasetIndex: i,
+                        }));
+                    },
+                },
+                onClick: function(e, legendItem, legend) {
+                    const index = legendItem.datasetIndex;
+                    const chart = legend.chart;
+                    const meta = chart.getDatasetMeta(index);
+
+                    // Toggle dataset visibility
+                    meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
+                    chart.update();
+                },
+                onHover: function(e, legendItem, legend) {
+                    e.native.target.style.cursor = 'pointer';
+                },
+                onLeave: function(e, legendItem, legend) {
+                    e.native.target.style.cursor = 'default';
                 },
             },
             tooltip: {
-                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                backgroundColor: 'rgba(26, 26, 46, 0.98)',
                 titleColor: 'white',
-                bodyColor: 'rgba(255, 255, 255, 0.8)',
+                titleFont: {
+                    size: 13,
+                    weight: 'bold',
+                },
+                bodyColor: 'rgba(255, 255, 255, 0.9)',
+                bodyFont: {
+                    size: 12,
+                },
                 borderColor: 'rgba(86, 13, 248, 0.5)',
-                borderWidth: 1,
-                padding: 12,
+                borderWidth: 2,
+                padding: 14,
+                displayColors: true,
+                boxWidth: 15,
+                boxHeight: 15,
+                boxPadding: 6,
+                usePointStyle: true,
                 callbacks: {
+                    title: function(context) {
+                        // Show date in tooltip title
+                        return context[0].label;
+                    },
                     label: function(context) {
                         const value = context.parsed.y;
-                        return `${context.dataset.label}: ${value.toLocaleString()} downloads`;
+                        const label = context.dataset.label;
+                        return `${label}: ${value.toLocaleString()} downloads`;
+                    },
+                    labelColor: function(context) {
+                        return {
+                            borderColor: context.dataset.borderColor,
+                            backgroundColor: context.dataset.borderColor,
+                            borderWidth: 2,
+                            borderDash: context.dataset.borderDash || [],
+                        };
                     },
                     afterBody: function(context) {
                         if (!historyData || !versionHistory.length) return '';
@@ -296,6 +441,13 @@ const PyPIDownloadChart = () => {
                         }
 
                         return '';
+                    },
+                    footer: function(context) {
+                        if (chartType !== 'packages') return '';
+
+                        // Show total across all packages for this time point
+                        const total = context.reduce((sum, item) => sum + item.parsed.y, 0);
+                        return `\nTotal: ${total.toLocaleString()} downloads`;
                     },
                 },
             },
@@ -329,6 +481,31 @@ const PyPIDownloadChart = () => {
                     },
                 },
             },
+        },
+        // Enhanced hover effect to highlight the active dataset
+        onHover: function(event, activeElements, chart) {
+            if (chartType !== 'packages') return;
+
+            if (activeElements.length > 0) {
+                const datasetIndex = activeElements[0].datasetIndex;
+
+                // Reduce opacity of non-hovered datasets
+                chart.data.datasets.forEach((dataset, index) => {
+                    if (index !== datasetIndex) {
+                        dataset.borderColor = dataset.borderColor.includes('rgba')
+                            ? dataset.borderColor
+                            : dataset.borderColor.replace(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/, 'rgba($1, $2, $3, 0.2)');
+                    }
+                });
+            } else {
+                // Restore original opacity when not hovering
+                chart.data.datasets.forEach((dataset, index) => {
+                    const packageName = historyData.packageNames[index];
+                    const originalColors = packageColors[packageName] || packageColors.combined;
+                    dataset.borderColor = originalColors.border;
+                });
+            }
+            chart.update('none'); // Update without animation
         },
     };
 

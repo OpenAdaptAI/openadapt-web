@@ -2,7 +2,46 @@
  * Utility functions for fetching PyPI download statistics via Shields.io API
  */
 
-const PYPI_PACKAGES = ['openadapt', 'openadapt-ml', 'openadapt-capture', 'openadapt-tray', 'openadapt-telemetry'];
+let cachedPackages = null;
+let cacheTimestamp = null;
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+/**
+ * Fetches the list of all openadapt-* packages from PyPI
+ * Uses the discover-packages API as the single source of truth with client-side caching
+ * @returns {Promise<string[]>} - Array of package names
+ */
+async function getPackageList() {
+    // Return cached result if still valid
+    if (cachedPackages && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_DURATION) {
+        return cachedPackages;
+    }
+
+    try {
+        // Fetch from the discover-packages API - the single source of truth
+        const response = await fetch('/api/discover-packages');
+        if (!response.ok) {
+            throw new Error(`Failed to discover packages: ${response.status}`);
+        }
+
+        const data = await response.json();
+        cachedPackages = data.packages || [];
+        cacheTimestamp = Date.now();
+
+        return cachedPackages;
+    } catch (error) {
+        console.error('Error fetching package list from discover-packages API:', error);
+
+        // If we have a stale cache, use it instead of failing completely
+        if (cachedPackages) {
+            console.warn('Using stale package cache due to API failure');
+            return cachedPackages;
+        }
+
+        // If no cache exists, throw error - the discover-packages API has its own fallback
+        throw new Error('Unable to fetch package list and no cache available');
+    }
+}
 
 /**
  * Fetches monthly download count for a single PyPI package from Shields.io
@@ -52,8 +91,9 @@ async function getPackageDownloads(packageName) {
  * @returns {Promise<{total: number, packages: Object<string, number>}>}
  */
 export async function getPyPIDownloadStats() {
+    const packageList = await getPackageList();
     const results = await Promise.all(
-        PYPI_PACKAGES.map(async (pkg) => ({
+        packageList.map(async (pkg) => ({
             name: pkg,
             downloads: await getPackageDownloads(pkg),
         }))

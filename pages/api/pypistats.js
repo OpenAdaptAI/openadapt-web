@@ -1,7 +1,12 @@
 /**
  * API route to proxy pypistats.org requests
  * This avoids CORS issues when fetching from the client
+ *
+ * Uses the shared packageDiscovery utility to get the list of valid packages.
+ * This avoids HTTP calls between serverless functions which can be unreliable.
  */
+
+import { getDiscoveredPackages } from '../../utils/packageDiscovery.js';
 
 export default async function handler(req, res) {
     const { package: packageName, endpoint = 'overall', period } = req.query;
@@ -10,22 +15,26 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Package name is required' });
     }
 
-    // Whitelist allowed packages for security
-    const allowedPackages = [
-        'openadapt',
-        'openadapt-ml',
-        'openadapt-capture',
-        'openadapt-evals',
-        'openadapt-viewer',
-        'openadapt-grounding',
-        'openadapt-retrieval',
-        'openadapt-privacy',
-        'openadapt-tray',
-        'openadapt-telemetry',
-    ];
+    // Validate package name pattern (must start with 'openadapt')
+    if (!packageName.startsWith('openadapt')) {
+        return res.status(400).json({ error: 'Only openadapt-* packages are allowed' });
+    }
 
-    if (!allowedPackages.includes(packageName)) {
-        return res.status(400).json({ error: 'Invalid package name' });
+    try {
+        // Validate package exists in discovered packages
+        const allowedPackages = await getDiscoveredPackages();
+        if (!allowedPackages.includes(packageName)) {
+            return res.status(400).json({
+                error: 'Package not found in discovered openadapt packages',
+                hint: 'Package may not exist on PyPI yet',
+            });
+        }
+    } catch (error) {
+        console.error('Error validating package:', error);
+        return res.status(500).json({
+            error: 'Failed to validate package',
+            message: error.message,
+        });
     }
 
     // Whitelist allowed endpoints
@@ -51,8 +60,15 @@ export default async function handler(req, res) {
 
         const data = await response.json();
 
-        // Cache for 1 hour
-        res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+        // CRITICAL: Netlify CDN caches based on URL path only, NOT query parameters
+        // This was causing all packages to return the same cached data!
+        // Solution: Disable serverless function caching, rely on browser cache only
+        // The client-side code has its own 24-hour cache for package lists
+        res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+        // Netlify-specific: prevent function response caching
+        res.setHeader('Netlify-CDN-Cache-Control', 'no-store');
+        // Tag for potential cache purging
+        res.setHeader('Cache-Tag', `pypistats-${packageName}-${endpoint}`);
         return res.status(200).json(data);
     } catch (error) {
         console.error('Error fetching from pypistats.org:', error);
