@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindows, faApple, faLinux, faPython } from '@fortawesome/free-brands-svg-icons';
-import { faCopy, faCheck, faTerminal, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faCheck, faTerminal, faDownload, faRocket, faBolt, faEye, faPlay, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import styles from './InstallSection.module.css';
 import { getPyPIDownloadStats, formatDownloadCount } from 'utils/pypiStats';
+
+// One-liner install command (inspired by clawd.bot)
+const ONE_LINER = 'curl -fsSL https://openadapt.ai/install.sh | bash';
+const ONE_LINER_WINDOWS = 'irm https://openadapt.ai/install.ps1 | iex';
 
 const platforms = {
     'macOS': {
@@ -88,16 +92,36 @@ export default function InstallSection() {
     const currentPlatform = platforms[selectedPlatform];
     const allCommands = currentPlatform.commands.join('\n');
 
+    const isWindows = selectedPlatform === 'Windows';
+    const oneLiner = isWindows ? ONE_LINER_WINDOWS : ONE_LINER;
+
     return (
         <div className={styles.installSection}>
             <div className={styles.header}>
-                <FontAwesomeIcon icon={faTerminal} className={styles.terminalIcon} />
+                <FontAwesomeIcon icon={faRocket} className={styles.terminalIcon} />
                 <h3 className={styles.title}>Install in 30 Seconds</h3>
             </div>
 
-            <p className={styles.subtitle}>
-                One command installs everything you need. No Python setup required.
-            </p>
+            {/* One-Liner Hero Section - inspired by clawd.bot */}
+            <div className={styles.oneLinerSection}>
+                <p className={styles.oneLinerTagline}>
+                    Works everywhere. Installs everything. You're welcome.
+                </p>
+                <div className={styles.oneLinerContainer}>
+                    <div className={styles.oneLinerCode}>
+                        <span className={styles.oneLinerComment}># {isWindows ? 'Run in PowerShell' : 'macOS / Linux / WSL'}</span>
+                        <code className={styles.oneLinerCommand}>{oneLiner}</code>
+                    </div>
+                    <CopyButton text={oneLiner} className={styles.oneLinerCopyBtn} />
+                </div>
+                <p className={styles.oneLinerNote}>
+                    Installs uv, Python 3.11, and OpenAdapt CLI automatically
+                </p>
+            </div>
+
+            <div className={styles.dividerOr}>
+                <span>or install manually</span>
+            </div>
 
             {/* PyPI Download Stats */}
             {pypiStats.total > 0 && (
@@ -168,20 +192,40 @@ export default function InstallSection() {
                 <h4 className={styles.quickStartTitle}>Quick Start Commands</h4>
                 <div className={styles.commandGrid}>
                     <div className={styles.commandItem}>
-                        <code>openadapt capture start --name my-task</code>
-                        <span>Start recording</span>
+                        <div className={styles.commandIcon}>
+                            <FontAwesomeIcon icon={faPlay} />
+                        </div>
+                        <div className={styles.commandContent}>
+                            <code>openadapt record --name invoice-task</code>
+                            <span>Record a demonstration</span>
+                        </div>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt capture stop</code>
-                        <span>Stop recording</span>
+                        <div className={styles.commandIcon}>
+                            <FontAwesomeIcon icon={faEye} />
+                        </div>
+                        <div className={styles.commandContent}>
+                            <code>openadapt view invoice-task</code>
+                            <span>Review and annotate</span>
+                        </div>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt capture view my-task</code>
-                        <span>View recording</span>
+                        <div className={styles.commandIcon}>
+                            <FontAwesomeIcon icon={faGraduationCap} />
+                        </div>
+                        <div className={styles.commandContent}>
+                            <code>openadapt replay invoice-task</code>
+                            <span>Replay with AI assistance</span>
+                        </div>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt doctor</code>
-                        <span>Check system</span>
+                        <div className={styles.commandIcon}>
+                            <FontAwesomeIcon icon={faBolt} />
+                        </div>
+                        <div className={styles.commandContent}>
+                            <code>openadapt doctor</code>
+                            <span>Check system setup</span>
+                        </div>
                     </div>
                 </div>
             </div>

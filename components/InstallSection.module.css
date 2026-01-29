@@ -38,6 +38,93 @@
     font-size: 16px;
 }
 
+/* One-Liner Hero Section (clawd.bot inspired) */
+.oneLinerSection {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(86, 13, 248, 0.15) 100%);
+    border: 2px solid rgba(34, 197, 94, 0.4);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.oneLinerTagline {
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.oneLinerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.oneLinerCode {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.oneLinerComment {
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 4px;
+}
+
+.oneLinerCommand {
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 15px;
+    color: #22c55e;
+    font-weight: 500;
+}
+
+.oneLinerCopyBtn {
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+    background: rgba(34, 197, 94, 0.3) !important;
+    border-color: rgba(34, 197, 94, 0.5) !important;
+}
+
+.oneLinerCopyBtn:hover {
+    background: rgba(34, 197, 94, 0.5) !important;
+}
+
+.oneLinerNote {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 12px;
+}
+
+.dividerOr {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.dividerOr::before,
+.dividerOr::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 16px;
+}
+
 /* PyPI Download Stats */
 .pypiStats {
     display: flex;
@@ -248,21 +335,49 @@
 
 .commandItem {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
 }
 
-.commandItem code {
+.commandItem:hover {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(86, 13, 248, 0.3);
+}
+
+.commandIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(86, 13, 248, 0.2);
+    border-radius: 8px;
+    color: #a78bfa;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.commandContent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.commandContent code {
     font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
     font-size: 12px;
     color: #22c55e;
+    word-break: break-all;
 }
 
-.commandItem span {
+.commandContent span {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.5);
 }
