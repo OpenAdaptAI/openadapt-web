@@ -16,6 +16,7 @@ import Image from 'next/image'
 import AnimatedBackground from '@components/AnimatedBackground'
 import AnimatedLogo from '@components/AnimatedLogo'
 import EmailForm from '@components/EmailForm'
+import ParticleField from '@components/ParticleField'
 
 import styles from './MastHead.module.css'
 
@@ -100,6 +101,7 @@ export default function Home() {
 
     return (
         <div className={styles.section}>
+            <ParticleField />
             <div className="relative flex items-center justify-center">
                 <div className="relative z-30 py-4 px-4 text-xl w-full max-w-5xl mx-auto">
                     <div className="text-center pt-6">
