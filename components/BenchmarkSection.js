@@ -21,28 +21,29 @@ export default function BenchmarkSection() {
                     <a href={WAA_URL} target="_blank" rel="noopener noreferrer">
                         Windows Agent Arena
                     </a>{' '}
-                    in an easy-to-use CLI, so you can run, inspect, and debug
-                    evaluations without modifying the original benchmarks.
+                    in a CLI that handles VM lifecycle, agent execution, and
+                    step-by-step inspection — so you can iterate on your agent
+                    fast without modifying the original benchmarks.
                 </p>
 
                 <div className={styles.highlights}>
                     <div className={styles.highlight}>
                         <FontAwesomeIcon icon={faTerminal} className={styles.highlightIcon} />
                         <div>
-                            <span className={styles.highlightTitle}>One-command evals</span>
+                            <span className={styles.highlightTitle}>Fast iteration</span>
                             <span className={styles.highlightDesc}>
-                                VM lifecycle, agent execution, and scoring handled
-                                by the <code>oa-vm</code> CLI
+                                One command to spin up a VM, run your agent,
+                                and collect results
                             </span>
                         </div>
                     </div>
                     <div className={styles.highlight}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.highlightIcon} />
                         <div>
-                            <span className={styles.highlightTitle}>Step-by-step inspection</span>
+                            <span className={styles.highlightTitle}>See what went wrong</span>
                             <span className={styles.highlightDesc}>
-                                Replay every screenshot, click, and keystroke —
-                                not just pass/fail
+                                Replay every screenshot, click, and keystroke
+                                to debug agent failures
                             </span>
                         </div>
                     </div>
