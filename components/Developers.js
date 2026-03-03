@@ -221,14 +221,6 @@ export default function Developers() {
                         <li className="mt-2">
                             <a
                                 className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
-                                href="https://docs.openadapt.ai"
-                            >
-                                Read the Documentation
-                            </a>
-                        </li>
-                        <li className="mt-2">
-                            <a
-                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://discord.gg/yF527cQbDG"
                             >
                                 Join our Discord
