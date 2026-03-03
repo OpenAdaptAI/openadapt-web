@@ -25,6 +25,16 @@
     margin: 0 auto 32px;
 }
 
+.intro a {
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+.intro a:hover {
+    color: #82c0ff;
+    text-decoration: underline;
+}
+
 .highlights {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

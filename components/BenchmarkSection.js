@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFlask, faDesktop, faListCheck } from '@fortawesome/free-solid-svg-icons'
+import { faTerminal, faMagnifyingGlass, faFlask } from '@fortawesome/free-solid-svg-icons'
 
 import styles from './BenchmarkSection.module.css'
 
 const EVALS_REPO_URL = 'https://github.com/OpenAdaptAI/openadapt-evals'
+const WAA_URL = 'https://github.com/microsoft/WindowsAgentArena'
 
 export default function BenchmarkSection() {
     const [animLoaded, setAnimLoaded] = useState(false)
@@ -16,38 +17,42 @@ export default function BenchmarkSection() {
                     Evaluation &amp; Benchmarks
                 </h2>
                 <p className={styles.intro}>
-                    We evaluate AI agents on real Windows desktop tasks —
-                    spreadsheets, file management, system settings — running
-                    in actual VMs, not simulated environments.
-                    Every screenshot, click, and keystroke is captured for
-                    step-by-step inspection.
+                    We wrap official benchmarks like{' '}
+                    <a href={WAA_URL} target="_blank" rel="noopener noreferrer">
+                        Windows Agent Arena
+                    </a>{' '}
+                    in an easy-to-use CLI, so you can run, inspect, and debug
+                    evaluations without modifying the original benchmarks.
                 </p>
 
                 <div className={styles.highlights}>
                     <div className={styles.highlight}>
-                        <FontAwesomeIcon icon={faDesktop} className={styles.highlightIcon} />
+                        <FontAwesomeIcon icon={faTerminal} className={styles.highlightIcon} />
                         <div>
-                            <span className={styles.highlightTitle}>Real desktop tasks</span>
+                            <span className={styles.highlightTitle}>One-command evals</span>
                             <span className={styles.highlightDesc}>
-                                Windows VMs running LibreOffice, Notepad, Settings, and more
+                                VM lifecycle, agent execution, and scoring handled
+                                by the <code>oa-vm</code> CLI
                             </span>
                         </div>
                     </div>
                     <div className={styles.highlight}>
-                        <FontAwesomeIcon icon={faListCheck} className={styles.highlightIcon} />
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.highlightIcon} />
                         <div>
-                            <span className={styles.highlightTitle}>Step-by-step replay</span>
+                            <span className={styles.highlightTitle}>Step-by-step inspection</span>
                             <span className={styles.highlightDesc}>
-                                Inspect every action the agent took, not just pass/fail
+                                Replay every screenshot, click, and keystroke —
+                                not just pass/fail
                             </span>
                         </div>
                     </div>
                     <div className={styles.highlight}>
                         <FontAwesomeIcon icon={faFlask} className={styles.highlightIcon} />
                         <div>
-                            <span className={styles.highlightTitle}>Active development</span>
+                            <span className={styles.highlightTitle}>Unmodified benchmarks</span>
                             <span className={styles.highlightDesc}>
-                                Expanding task suite and publishing results as they're validated
+                                Original tasks and scoring preserved — our
+                                tooling wraps, not forks
                             </span>
                         </div>
                     </div>
@@ -102,8 +107,8 @@ export default function BenchmarkSection() {
 
                 <div className={styles.status}>
                     <span className={styles.statusDot} />
-                    Results coming soon — we're running evaluations now and
-                    will publish scores as they're validated.
+                    Results coming soon — we're running evaluations on
+                    Windows Agent Arena and will publish scores once validated.
                 </div>
             </div>
         </div>
