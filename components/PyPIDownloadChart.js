@@ -631,7 +631,7 @@ const PyPIDownloadChart = () => {
                             </span>
                         </div>
                     )}
-                    <div className={styles.statItem}>
+                    <div className={`${styles.statItem} ${styles.packagesStat}`}>
                         <span className={styles.statValue}>
                             <FontAwesomeIcon icon={faCube} className={styles.statIcon} />
                             {historyData?.packageNames?.length || 8}
@@ -639,6 +639,21 @@ const PyPIDownloadChart = () => {
                         <span className={styles.statLabel}>
                             Packages
                         </span>
+                        {historyData?.packageNames && (
+                            <div className={styles.packagesDropdown}>
+                                {historyData.packageNames.map((pkg) => (
+                                    <a
+                                        key={pkg}
+                                        href={`https://pypi.org/project/${pkg}/`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.packageLink}
+                                    >
+                                        {pkg}
+                                    </a>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
 
