@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowPointer, faBook } from '@fortawesome/free-solid-svg-icons'
+import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 import {
     faLinkedin,
     faDiscord,
@@ -160,7 +160,8 @@ export default function Home() {
                 </div>
                 {/* <AnimatedBackground /> */}
                 <div className="fixed top-0 right-0 z-50 flex flex-nowrap items-center justify-end gap-2 p-2">
-                    {/* Docs Icon */}
+                    {/* Hidden until doc automation is live */}
+                    {/*
                     <div className="relative z-50">
                         <a href="https://docs.openadapt.ai" aria-label="Read our Documentation" title="Read our Documentation">
                             <FontAwesomeIcon
@@ -169,6 +170,7 @@ export default function Home() {
                             />
                         </a>
                     </div>
+                    */}
                     {/* Github Icon */}
                     <div className="relative z-50">
                         <a href="https://github.com/OpenAdaptAI/OpenAdapt" aria-label="Join us on Github" title="Join us on Github">

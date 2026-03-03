@@ -10,9 +10,6 @@ let cacheTimestamp = null;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
-<<<<<<< HEAD
- * Fetches discovered packages from the API with client-side caching.
-=======
  * Fetches a URL with retry logic and exponential backoff.
  * Returns null if all retries fail.
  * @param {string} url - The URL to fetch
@@ -47,9 +44,8 @@ async function fetchWithRetry(url, maxRetries = 3, baseDelayMs = 500) {
 }
 
 /**
- * Fetches the list of all openadapt-* packages from PyPI
- * Uses the discover-packages API as the single source of truth with client-side caching
->>>>>>> 0c1df2e (fix: improve PyPI Download Trends chart reliability, date ranges, and tooltip)
+ * Fetches core package names from the discover-packages API with client-side caching.
+ * Filters to core packages only (excludes hidden and devtools).
  * @returns {Promise<string[]>} - Array of package names
  */
 async function getPackageList() {
@@ -64,10 +60,10 @@ async function getPackageList() {
         }
 
         const data = await response.json();
-        // packages are now {name, description} objects — extract names for stats
-        const packages = (data.packages || []).map((p) =>
-            typeof p === 'string' ? p : p.name
-        );
+        // Filter to core packages only, extract names for stats
+        const packages = (data.packages || [])
+            .filter((p) => typeof p === 'string' || p.category === 'core')
+            .map((p) => (typeof p === 'string' ? p : p.name));
         cachedPackages = packages;
         cacheTimestamp = Date.now();
 
