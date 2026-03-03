@@ -14,8 +14,8 @@
     color: rgb(204, 194, 194);
 }
 .no-bullets {
-    list-style-type: none; /* Removes bullet points */
-    padding-left: 0; /* Removes default padding */
+    list-style-type: none;
+    padding-left: 0;
 }
 
 /* Source Link Styles */

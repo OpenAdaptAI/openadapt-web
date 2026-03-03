@@ -1,30 +1,30 @@
 .footerContainer {
     background-color: rgba(0, 0, 30, 1);
-    color: #c0c0c0; /* Dimmed text color */
-    padding: 2rem; /* Add padding */
+    color: #c0c0c0;
+    padding: 2rem;
 }
 
 .footerContent {
     text-align: center;
-    line-height: 1.6; /* Adjust line height for better readability */
-    margin-bottom: 17rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
 }
 
 .footerLinks {
-    list-style: none; /* Remove default list styling */
-    padding: 0; /* Remove default padding */
-    display: flex; /* Use flexbox for alignment */
-    justify-content: center; /* Center align the links */
-    gap: 1rem; /* Space out the links */
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .link {
-    color: #4d9ef6; /* Initial color for links for distinction */
-    text-decoration: none; /* Remove underline from links */
-    transition: color 0.3s; /* Smooth transition for hover effect */
+    color: #4d9ef6;
+    text-decoration: none;
+    transition: color 0.3s;
 }
 
 .link:hover,
 .link:focus {
-    color: #82c0ff; /* Lighter color on hover/focus for better interactivity */
+    color: #82c0ff;
 }
