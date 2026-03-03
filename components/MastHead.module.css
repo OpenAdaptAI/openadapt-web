@@ -3,24 +3,14 @@
     flex-direction: column;
 }
 .section:first-of-type {
-    /*min-height: 100vh;*/
     padding: 0;
 }
-.section:first-of-type
-/*, .section:last-of-type*/ {
-    color: #eee;
-    /*
-  background: #000033;
-  background: radial-gradient(circle,
-    rgba(0,0,75,1) 0%,
-    rgba(0,0,60,1) 75%,
-    rgba(0,0,45,1) 100%
-  );
-  */
+.section:first-of-type {
+    color: rgba(255, 255, 255, 0.9);
     background: radial-gradient(
-        circle,
-        rgba(10, 27, 96, 1) 19%,
-        rgba(12, 16, 46, 1) 44%,
-        rgba(0, 0, 30, 1) 66%
+        ellipse at 50% 0%,
+        rgba(15, 23, 72, 0.8) 0%,
+        rgba(8, 12, 36, 1) 50%,
+        #060614 100%
     );
 }

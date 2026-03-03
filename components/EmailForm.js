@@ -49,74 +49,56 @@ export default function EmailForm() {
             })
     }
 
+    const formClassName = 'flex items-center justify-center w-full transition-opacity duration-300'
+        + (isSubmitting ? ' opacity-0' : ' opacity-100')
+
     return (
-        <div
-            className={styles.background}
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
+        <div className={`${styles.background} flex flex-col justify-center items-center`}>
             {formHidden ? (
-                <div
-                    className="fade-in"
-                    style={{ opacity: 1, transition: 'opacity 1s ease-in' }}
-                >
-                    <h4 className="font-extralight text-white">
-                        <FontAwesomeIcon icon={faPaperPlane} className="mr-4" />
-                        Get Ready
+                <div className="fade-in">
+                    <h4 className="font-light text-white/90 text-sm">
+                        <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
+                        Thanks for registering!
                     </h4>
                 </div>
             ) : (
                 <>
                     <form
                         id="email-form"
-                        className="flex items-center justify-center"
+                        className={formClassName}
                         onSubmit={handleSubmit}
                         data-netlify="true"
                         netlify-honeypot="bot-field"
-                        name="email" // Ensure this matches with Netlify form settings
-                        style={{
-                            width: '100%',
-                            transition: 'opacity 1s ease-out',
-                            opacity: isSubmitting ? 0 : 1,
-                        }}
+                        name="email"
                     >
                         <input type="hidden" name="form-name" value="email" />
                         <p className={styles.hidden}>
                             <label>
-                                Don’t fill this out if you’re human:{' '}
+                                Do not fill this out if you are human:{' '}
                                 <input name="bot-field" />
                             </label>
                         </p>
-                        <div className="flex justify-center">
+                        <div className="flex justify-center gap-2">
                             <input
                                 id="emailInput"
                                 name="email"
                                 type="email"
-                                placeholder="Email"
-                                className="input w-8/12 max-w-xs text-white"
-                                style={{
-                                    color: 'black',
-                                    backgroundColor:
-                                        'white' /* Ensure text is visible */,
-                                }}
+                                placeholder="your@email.com"
+                                className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/90 text-sm placeholder-white/30 focus:border-indigo-400/50 focus:outline-none focus:ring-1 focus:ring-indigo-400/30 transition-all duration-200 w-56 max-w-xs"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
                             <button
                                 type="submit"
-                                className="btn btn-primary ml-2"
+                                className="px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white text-sm font-medium transition-all duration-200 disabled:opacity-50"
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? 'Submitting...' : 'Register'}
+                                {isSubmitting ? 'Sending...' : 'Register'}
                             </button>
                         </div>
                     </form>
-                    <p className="text-sm mt-2 font-light opacity-70">
+                    <p className="text-xs mt-2 font-light text-white/40">
                         Register for updates (we promise not to spam)
                     </p>
                 </>

@@ -18,20 +18,20 @@ export default function Footer() {
 
     return (
         <div className={styles.footerContainer}>
-            <footer className="grid grid-flow-row auto-rows-max gap-4">
-                <div className="m-auto pb-10">
-                    <div className="flex items-center justify-center z-10">
+            <footer className="grid grid-flow-row auto-rows-max gap-3 max-w-4xl mx-auto">
+                <div className="m-auto pb-4">
+                    <div className="flex items-center justify-center z-10 opacity-60">
                         <Image
                             className="invert"
                             priority
                             src="/images/favicon.svg"
-                            height={32}
-                            width={32}
-                            alt="Large Language Model"
+                            height={24}
+                            width={24}
+                            alt="OpenAdapt"
                         />
                         <FontAwesomeIcon
                             icon={faArrowPointer}
-                            className="ml-1 text-white"
+                            className="ml-1 text-white/50 text-sm"
                         />
                     </div>
                 </div>
@@ -41,10 +41,10 @@ export default function Footer() {
                     height="32"
                     width="114"
                     style={{ border: '0', borderRadius: '6px' }}
-                    className="mx-auto mb-10"
+                    className="mx-auto mb-4"
                 ></iframe>
                 <div className={styles.footerContent}>
-                    <div className={`${styles.footerLinks} pt-20`}>
+                    <div className={`${styles.footerLinks} pt-4`}>
                         <a
                             href="https://github.com/OpenAdaptAI/OpenAdapt?tab=readme-ov-file#-open-contract-positions-at-openadaptai"
                             className={styles.link}
@@ -89,11 +89,11 @@ export default function Footer() {
                             LinkedIn
                         </a>
                     </div>
-                    <p className="mt-10">
+                    <p className="mt-6 text-white/30 text-xs">
                         © 2023–{currentYear} OpenAdapt.AI and MLDSAI Inc. All
                         rights reserved.
                     </p>
-                    <p>
+                    <p className="text-white/30 text-xs">
                         Our software is open source and licensed under the MIT
                         License.
                     </p>

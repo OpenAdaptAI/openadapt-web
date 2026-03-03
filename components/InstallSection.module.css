@@ -1,7 +1,7 @@
 .installSection {
-    background: linear-gradient(135deg, rgba(86, 13, 248, 0.1) 0%, rgba(0, 0, 30, 0.95) 100%);
-    border: 1px solid rgba(86, 13, 248, 0.3);
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
     padding: 24px;
     margin: 24px 0;
     max-width: 1100px;
@@ -9,6 +9,7 @@
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
+    backdrop-filter: blur(12px);
 }
 
 .header {
@@ -20,22 +21,23 @@
 }
 
 .terminalIcon {
-    font-size: 24px;
-    color: #60a5fa;
+    font-size: 20px;
+    color: rgba(129, 140, 248, 0.8);
 }
 
 .title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
-    color: white;
+    color: rgba(255, 255, 255, 0.95);
     margin: 0;
+    letter-spacing: -0.01em;
 }
 
 .subtitle {
     text-align: center;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 24px;
-    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+    font-size: 14px;
 }
 
 /* PyPI Download Stats */
@@ -44,10 +46,10 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 24px;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(86, 13, 248, 0.2) 100%);
-    border: 1px solid rgba(52, 152, 219, 0.3);
+    margin-bottom: 20px;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 50px;
     width: fit-content;
     margin-left: auto;
@@ -55,19 +57,19 @@
 }
 
 .pypiIcon {
-    font-size: 20px;
-    color: #3498db;
+    font-size: 16px;
+    color: rgba(129, 140, 248, 0.7);
 }
 
 .pypiCount {
-    font-size: 18px;
-    font-weight: 700;
-    color: #60a5fa;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(129, 140, 248, 0.9);
 }
 
 .pypiLabel {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 /* Platform Tabs */
@@ -83,26 +85,26 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .platformTab:hover {
-    border-color: rgba(86, 13, 248, 0.5);
-    background: rgba(86, 13, 248, 0.1);
-    color: white;
+    border-color: rgba(129, 140, 248, 0.3);
+    background: rgba(129, 140, 248, 0.08);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .activeTab {
-    border-color: #560df8;
-    background: rgba(86, 13, 248, 0.2);
-    color: white;
+    border-color: rgba(129, 140, 248, 0.4);
+    background: rgba(129, 140, 248, 0.12);
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .platformIcon {
@@ -120,43 +122,46 @@
 
 /* Code Block */
 .codeContainer {
-    background: #1a1a2e;
-    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .codeHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    background: rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .codeTitle {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 11px;
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .copyButton {
     display: flex;
     align-items: center;
     gap: 4px;
-    padding: 6px 12px;
-    background: rgba(86, 13, 248, 0.3);
-    border: 1px solid rgba(86, 13, 248, 0.5);
+    padding: 5px 10px;
+    background: rgba(129, 140, 248, 0.15);
+    border: 1px solid rgba(129, 140, 248, 0.25);
     border-radius: 6px;
-    color: white;
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .copyButton:hover {
-    background: rgba(86, 13, 248, 0.5);
+    background: rgba(129, 140, 248, 0.25);
+    color: white;
 }
 
 .codeBlock {
@@ -186,46 +191,50 @@
 }
 
 .codeFooter {
-    padding: 12px 16px;
-    background: rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 16px;
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .note {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 11px;
 }
 
 /* UV Info */
 .uvInfo {
-    margin-top: 16px;
+    margin-top: 12px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 13px;
 }
 
 .uvLink {
-    color: #60a5fa;
-    text-decoration: underline;
+    color: rgba(129, 140, 248, 0.8);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(129, 140, 248, 0.3);
+    transition: all 0.2s ease;
 }
 
 .uvLink:hover {
-    color: #93c5fd;
+    color: rgba(165, 180, 252, 1);
+    border-bottom-color: rgba(165, 180, 252, 0.5);
 }
 
 /* Quick Start Commands */
 .quickStart {
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .quickStartTitle {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    color: white;
-    margin-bottom: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
     text-align: center;
+    letter-spacing: -0.01em;
 }
 
 .commandGrid {
@@ -250,19 +259,26 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: border-color 0.2s ease;
+}
+
+.commandItem:hover {
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .commandItem code {
     font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
     font-size: 12px;
-    color: #22c55e;
+    color: rgba(34, 197, 94, 0.85);
 }
 
 .commandItem span {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }

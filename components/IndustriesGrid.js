@@ -83,17 +83,18 @@ export default function IndustriesGrid({
 
     return (
         <div className={styles.background} id="industries">
-            <div className="flex flex-col items-center justify-center pt-14">
+            <div className="flex flex-col items-center justify-center pt-10">
                 <a
                     href="https://theresanaiforthat.com/ai/openadapt-ai/?ref=featured&v=2868434"
                     target="_blank"
                     rel="nofollow"
+                    className="opacity-70 hover:opacity-100 transition-opacity duration-200"
                 >
-                    <img width="300" src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600"></img>
+                    <img width="240" src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600"></img>
                 </a>
             </div>
-            <div className="mt-20">
-                <h1 className="text-center text-2xl text-white mb-4">
+            <div className="mt-12">
+                <h1 className="text-center text-xl font-medium text-white/95 mb-3 tracking-tight">
                     Transform Your Industry with OpenAdapt
                 </h1>
                 <p className={styles.p}>
@@ -127,9 +128,9 @@ export default function IndustriesGrid({
                                     <li key={grid.title}>{description}</li>
                                 ))}
                         </ul>
-                        <div className="flex flex-row align-items-center justify-content-center mt-2 mb-4">
+                        <div className="flex flex-row items-center justify-center mt-3 mb-2">
                             <Link
-                                className="btn btn-primary ml-2"
+                                className="px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white text-sm font-medium transition-all duration-200"
                                 href="#start"
                                 onClick={() =>
                                     handleGetStartedButtonClick(grid.title)
