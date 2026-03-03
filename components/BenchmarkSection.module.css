@@ -1,0 +1,109 @@
+.background {
+    background: rgba(0, 0, 30, 1);
+    padding: 60px 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.heading {
+    text-align: center;
+    color: whitesmoke;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+/* Window chrome frame — wraps screenshots to separate them from page */
+.windowFrame {
+    perspective: 1000px;
+}
+
+.windowFrameInner {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #1a1a2e;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    transform: rotateX(1deg);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    will-change: transform, box-shadow;
+}
+
+.windowFrameInner:hover {
+    transform: rotateX(-1.5deg) rotateY(1deg) translateY(-4px) scale(1.008);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.windowTitleBar {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    background: #2a2a3e;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    gap: 7px;
+}
+
+.windowDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.windowDotRed { background: #ff5f57; }
+.windowDotYellow { background: #febc2e; }
+.windowDotGreen { background: #28c840; }
+
+.windowTitle {
+    margin-left: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    user-select: none;
+}
+
+/* Part A: Benchmark Viewer */
+.viewer {}
+
+.gif {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gifPlaceholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: rgba(62, 48, 103, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+}
+
+.caption {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+.caption a {
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+.caption a:hover {
+    color: #82c0ff;
+    text-decoration: underline;
+}
+
+
