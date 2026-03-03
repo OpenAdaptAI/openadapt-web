@@ -118,7 +118,7 @@ export default function Developers() {
                             . Please check back later for updates.
                         </div>
                     )}
-                    <p className="font-light mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-white/60">
+                    <p className="font-light mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-white/75">
                         OpenAdapt is an open-source platform for GUI automation with ML.
                         Record human demonstrations, train models, and deploy agents that can operate any software.
                     </p>

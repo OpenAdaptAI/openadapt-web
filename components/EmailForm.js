@@ -84,7 +84,7 @@ export default function EmailForm() {
                                 name="email"
                                 type="email"
                                 placeholder="your@email.com"
-                                className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/90 text-sm placeholder-white/30 focus:border-[#560df8]/50 focus:outline-none focus:ring-1 focus:ring-[#560df8]/30 transition-all duration-200 w-56 max-w-xs"
+                                className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/90 text-sm placeholder-white/50 focus:border-[#560df8]/50 focus:outline-none focus:ring-1 focus:ring-[#560df8]/30 transition-all duration-200 w-56 max-w-xs"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -98,7 +98,7 @@ export default function EmailForm() {
                             </button>
                         </div>
                     </form>
-                    <p className="text-xs mt-2 font-light text-white/40">
+                    <p className="text-xs mt-2 font-light text-white/60">
                         Register for updates (we promise not to spam)
                     </p>
                 </>

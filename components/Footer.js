@@ -31,7 +31,7 @@ export default function Footer() {
                         />
                         <FontAwesomeIcon
                             icon={faArrowPointer}
-                            className="ml-1 text-white/50 text-sm"
+                            className="ml-1 text-white/65 text-sm"
                         />
                     </div>
                 </div>
@@ -89,11 +89,11 @@ export default function Footer() {
                             LinkedIn
                         </a>
                     </div>
-                    <p className="mt-6 text-white/30 text-xs">
+                    <p className="mt-6 text-white/60 text-xs">
                         © 2023–{currentYear} OpenAdapt.AI and MLDSAI Inc. All
                         rights reserved.
                     </p>
-                    <p className="text-white/30 text-xs">
+                    <p className="text-white/60 text-xs">
                         Our software is open source and licensed under the MIT
                         License.
                     </p>
