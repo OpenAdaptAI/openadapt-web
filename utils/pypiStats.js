@@ -7,6 +7,39 @@ let cacheTimestamp = null;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
+ * Fetches a URL with retry logic and exponential backoff.
+ * Returns null if all retries fail.
+ * @param {string} url - The URL to fetch
+ * @param {number} maxRetries - Maximum number of retry attempts (default: 3)
+ * @param {number} baseDelayMs - Base delay in ms before first retry (default: 500)
+ * @returns {Promise<Response|null>} - The fetch Response, or null if all retries failed
+ */
+async function fetchWithRetry(url, maxRetries = 3, baseDelayMs = 500) {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                return response;
+            }
+            if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+                console.warn(`fetchWithRetry: ${url} returned ${response.status}, not retrying`);
+                return null;
+            }
+            console.warn(`fetchWithRetry: ${url} returned ${response.status}, attempt ${attempt + 1}/${maxRetries + 1}`);
+        } catch (error) {
+            console.warn(`fetchWithRetry: ${url} threw error, attempt ${attempt + 1}/${maxRetries + 1}:`, error.message);
+        }
+
+        if (attempt < maxRetries) {
+            const delay = baseDelayMs * Math.pow(2, attempt);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+    console.error(`fetchWithRetry: ${url} failed after ${maxRetries + 1} attempts`);
+    return null;
+}
+
+/**
  * Fetches the discovered packages from the API.
  * Returns the full objects ({ name, description }) and caches them.
  * @returns {Promise<Array<{name: string, description: string}>>}
@@ -55,12 +88,11 @@ async function getPackageList() {
  */
 async function getPackageDownloads(packageName) {
     try {
-        const response = await fetch(
-            `https://img.shields.io/pypi/dm/${packageName}.json`
-        );
+        const url = `https://img.shields.io/pypi/dm/${packageName}.json`;
+        const response = await fetchWithRetry(url);
 
-        if (!response.ok) {
-            console.warn(`Failed to fetch stats for ${packageName}: ${response.status}`);
+        if (!response) {
+            console.warn(`Failed to fetch stats for ${packageName} after retries`);
             return 0;
         }
 
@@ -116,16 +148,16 @@ export async function getPyPIDownloadStats() {
 }
 
 /**
- * Formats download count for display (e.g., 1500 -> "1,500")
- * @param {number} count - The download count
- * @returns {string} - Formatted string
- */
-/**
  * Gets discovered packages with descriptions.
  * @returns {Promise<Array<{name: string, description: string}>>}
  */
 export { getPackageData };
 
+/**
+ * Formats download count for display (e.g., 1500 -> "1,500")
+ * @param {number} count - The download count
+ * @returns {string} - Formatted string
+ */
 export function formatDownloadCount(count) {
     if (count >= 1000000) {
         return `${(count / 1000000).toFixed(1)}M`;
