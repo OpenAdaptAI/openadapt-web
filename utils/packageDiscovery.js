@@ -16,6 +16,28 @@
 
 const GITHUB_ORG = 'OpenAdaptAI';
 
+// Repos hidden from the website entirely
+const HIDDEN_REPOS = new Set([
+    'openadapt-bootstrap',  // early prototype (stubs only)
+    'openadapt-telemetry',  // internal infrastructure
+    'openadapt-gitbook',    // docs site, not a package
+    'openadapt-web',        // this website
+]);
+
+// Dev automation tools — shown in their own section, not the core ecosystem
+const DEV_TOOL_REPOS = new Set([
+    'openadapt-wright',     // AI dev automation (Ralph Loop)
+    'openadapt-herald',     // social media announcements from git
+    'openadapt-crier',      // Telegram approval bot
+    'openadapt-consilium',  // multi-LLM consensus
+]);
+
+function categorizeRepo(name) {
+    if (HIDDEN_REPOS.has(name)) return 'hidden';
+    if (DEV_TOOL_REPOS.has(name)) return 'devtools';
+    return 'core';
+}
+
 /**
  * Fetches all public openadapt-* repos from the GitHub org.
  * Uses the unauthenticated API (60 req/hr limit, fine with 24h cache).
@@ -36,7 +58,7 @@ async function fetchGitHubRepos() {
         page++;
     }
     return repos
-        .filter((r) => !r.private)
+        .filter((r) => !r.private && !r.archived)
         .filter((r) => {
             const name = r.name.toLowerCase();
             return name === 'openadapt' || name.startsWith('openadapt-');
@@ -44,6 +66,11 @@ async function fetchGitHubRepos() {
         .map((r) => ({
             name: r.name.toLowerCase(),
             description: r.description || '',
+            stars: r.stargazers_count || 0,
+            language: r.language || '',
+            pushed_at: r.pushed_at || '',
+            html_url: r.html_url || '',
+            category: categorizeRepo(r.name.toLowerCase()),
         }));
 }
 
@@ -51,24 +78,21 @@ async function fetchGitHubRepos() {
 // Must include ALL public openadapt-* repos from the OpenAdaptAI org
 // Last updated: 2026-03-03
 const FALLBACK_PACKAGES = [
-    { name: 'openadapt', description: 'AI-First process automation with large multimodal models' },
-    { name: 'openadapt-agent', description: 'Production execution engine for OpenAdapt GUI automation agents' },
-    { name: 'openadapt-bootstrap', description: 'Self-hosting infrastructure for OpenAdapt recursive development' },
-    { name: 'openadapt-capture', description: 'GUI interaction capture with time-aligned media' },
-    { name: 'openadapt-consilium', description: 'Multi-LLM council for consensus-driven AI responses with cross-model review' },
-    { name: 'openadapt-crier', description: 'Event-driven social media approval bot with Telegram' },
-    { name: 'openadapt-evals', description: 'Evaluation infrastructure for GUI agent benchmarks' },
-    { name: 'openadapt-grounding', description: 'Temporal smoothing for UI element detection with OmniParser integration' },
-    { name: 'openadapt-herald', description: 'LLM-powered social media announcements from your git history' },
-    { name: 'openadapt-ml', description: 'ML toolkit for training and evaluating multimodal GUI-action models' },
-    { name: 'openadapt-new', description: 'New sandbox' },
-    { name: 'openadapt-privacy', description: 'PII/PHI detection and redaction for GUI automation data' },
-    { name: 'openadapt-retrieval', description: 'Multimodal demo retrieval for GUI automation' },
-    { name: 'openadapt-telemetry', description: 'Unified error tracking and usage analytics for OpenAdapt packages' },
-    { name: 'openadapt-tray', description: 'System tray application for OpenAdapt' },
-    { name: 'openadapt-viewer', description: 'HTML viewer components for ML dashboards and benchmarks' },
-    { name: 'openadapt-web', description: 'Marketing website for OpenAdapt.AI' },
-    { name: 'openadapt-wright', description: 'AI-powered dev automation: iterative code generation, testing, and PR creation' },
+    { name: 'openadapt', description: 'AI-First process automation with large multimodal models', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-agent', description: 'Production execution engine for OpenAdapt GUI automation agents', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-capture', description: 'GUI interaction capture with time-aligned media', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-consilium', description: 'Multi-LLM council for consensus-driven AI responses with cross-model review', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
+    { name: 'openadapt-crier', description: 'Event-driven social media approval bot with Telegram', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
+    { name: 'openadapt-desktop', description: 'Cross-platform system tray app for continuous screen recording and AI training data', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-evals', description: 'Evaluation infrastructure for GUI agent benchmarks', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-grounding', description: 'Temporal smoothing for UI element detection with OmniParser integration', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-herald', description: 'LLM-powered social media announcements from your git history', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
+    { name: 'openadapt-ml', description: 'ML toolkit for training and evaluating multimodal GUI-action models', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-privacy', description: 'PII/PHI detection and redaction for GUI automation data', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-retrieval', description: 'Multimodal demo retrieval for GUI automation', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-tray', description: 'System tray application for OpenAdapt', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-viewer', description: 'HTML viewer components for ML dashboards and benchmarks', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-wright', description: 'AI-powered dev automation: iterative code generation, testing, and PR creation', stars: 0, language: 'TypeScript', pushed_at: '', html_url: '', category: 'devtools' },
 ];
 
 let cachedResult = null;
@@ -111,16 +135,12 @@ export async function discoverPackages() {
     }
 
     try {
-        const results = await Promise.all(
+        const packages = await Promise.all(
             candidates.map(async (pkg) => ({
                 ...pkg,
-                exists: await packageExists(pkg.name),
+                on_pypi: await packageExists(pkg.name),
             }))
         );
-
-        const packages = results
-            .filter(({ exists }) => exists)
-            .map(({ name, description }) => ({ name, description }));
 
         cachedResult = { packages, timestamp: Date.now() };
         cacheTimestamp = cachedResult.timestamp;

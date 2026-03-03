@@ -37,6 +37,8 @@
     border-radius: 16px;
     padding: 20px 24px;
     transition: background-color 0.3s, border-color 0.3s;
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
@@ -69,7 +71,24 @@
     color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
     line-height: 1.5;
-    margin: 0;
+    margin: 0 0 8px 0;
+    flex: 1;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 8px;
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
 }
 
 .loading {
