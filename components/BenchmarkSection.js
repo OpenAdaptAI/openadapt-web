@@ -64,18 +64,18 @@ export default function BenchmarkSection() {
                 {/* Part B: Research Approach */}
                 <div className={styles.research}>
                     <h3 className={styles.researchHeading}>
-                        Demo-Conditioned Agents
+                        What we&apos;re researching
                     </h3>
                     <p className={styles.researchText}>
-                        Most AI agents start from scratch every time.
-                        OpenAdapt&apos;s demo-conditioned approach retrieves
-                        relevant past demonstrations to guide the agent —
-                        like giving it a worked example before the test.
+                        Can showing an AI agent a recording of a human
+                        doing a task help it do the task better? We call
+                        this demo conditioning, and we&apos;re running
+                        experiments on real Windows desktop tasks to find
+                        out.
                     </p>
                     <p className={styles.researchText}>
-                        We&apos;re building evaluation infrastructure to
-                        measure this systematically across real Windows
-                        desktop tasks.
+                        Early results are mixed. We&apos;re sharing
+                        everything openly as we go.
                     </p>
 
                     <a
@@ -84,7 +84,7 @@ export default function BenchmarkSection() {
                         rel="noopener noreferrer"
                         className={styles.researchLink}
                     >
-                        Learn more about our evaluation framework &rarr;
+                        Follow our progress on GitHub &rarr;
                     </a>
                 </div>
             </div>
