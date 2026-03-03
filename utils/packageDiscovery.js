@@ -48,18 +48,27 @@ async function fetchGitHubRepos() {
 }
 
 // FALLBACK - only used when both GitHub and PyPI discovery fail
-// Last updated: 2026-03-02
+// Must include ALL public openadapt-* repos from the OpenAdaptAI org
+// Last updated: 2026-03-03
 const FALLBACK_PACKAGES = [
     { name: 'openadapt', description: 'AI-First process automation with large multimodal models' },
-    { name: 'openadapt-ml', description: 'ML toolkit for training and evaluating multimodal GUI-action models' },
+    { name: 'openadapt-agent', description: 'Production execution engine for OpenAdapt GUI automation agents' },
+    { name: 'openadapt-bootstrap', description: 'Self-hosting infrastructure for OpenAdapt recursive development' },
     { name: 'openadapt-capture', description: 'GUI interaction capture with time-aligned media' },
+    { name: 'openadapt-consilium', description: 'Multi-LLM council for consensus-driven AI responses with cross-model review' },
+    { name: 'openadapt-crier', description: 'Event-driven social media approval bot with Telegram' },
     { name: 'openadapt-evals', description: 'Evaluation infrastructure for GUI agent benchmarks' },
-    { name: 'openadapt-consilium', description: 'Multi-LLM council for consensus-driven AI responses' },
-    { name: 'openadapt-viewer', description: 'HTML viewer components for ML dashboards and benchmarks' },
-    { name: 'openadapt-grounding', description: 'Temporal smoothing for UI element detection' },
-    { name: 'openadapt-retrieval', description: 'Multimodal demo retrieval for GUI automation' },
+    { name: 'openadapt-grounding', description: 'Temporal smoothing for UI element detection with OmniParser integration' },
+    { name: 'openadapt-herald', description: 'LLM-powered social media announcements from your git history' },
+    { name: 'openadapt-ml', description: 'ML toolkit for training and evaluating multimodal GUI-action models' },
+    { name: 'openadapt-new', description: 'New sandbox' },
     { name: 'openadapt-privacy', description: 'PII/PHI detection and redaction for GUI automation data' },
+    { name: 'openadapt-retrieval', description: 'Multimodal demo retrieval for GUI automation' },
+    { name: 'openadapt-telemetry', description: 'Unified error tracking and usage analytics for OpenAdapt packages' },
     { name: 'openadapt-tray', description: 'System tray application for OpenAdapt' },
+    { name: 'openadapt-viewer', description: 'HTML viewer components for ML dashboards and benchmarks' },
+    { name: 'openadapt-web', description: 'Marketing website for OpenAdapt.AI' },
+    { name: 'openadapt-wright', description: 'AI-powered dev automation: iterative code generation, testing, and PR creation' },
 ];
 
 let cachedResult = null;
