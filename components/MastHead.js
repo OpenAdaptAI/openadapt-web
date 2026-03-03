@@ -157,7 +157,7 @@ export default function Home() {
                     </div>
                 </div>
                 {/* <AnimatedBackground /> */}
-                <div className="fixed top-0 right-0 z-50 flex flex-wrap items-center justify-end gap-2 p-2 max-w-full">
+                <div className="fixed top-0 right-0 z-50 flex flex-nowrap items-center justify-end gap-2 p-2">
                     {/* Docs Icon */}
                     <div className="relative z-50">
                         <a href="https://docs.openadapt.ai" aria-label="Read our Documentation" title="Read our Documentation">
@@ -206,8 +206,8 @@ export default function Home() {
                             />
                         </a>
                     </div>
-                    {/* Github Fork/Star buttons - wrapped with flex */}
-                    <div className="relative z-50 inline-block">
+                    {/* Github Fork/Star buttons - hidden on small screens to prevent overflow */}
+                    <div className="relative z-50 hidden sm:inline-block">
                         <a
                             className="github-button mr-2"
                             href="https://github.com/OpenAdaptAI/OpenAdapt/fork"
@@ -220,7 +220,7 @@ export default function Home() {
                             Fork
                         </a>
                     </div>
-                    <div className="relative z-50 inline-block">
+                    <div className="relative z-50 hidden sm:inline-block">
                         <a
                             className="github-button"
                             href="https://github.com/OpenAdaptAI/OpenAdapt"
