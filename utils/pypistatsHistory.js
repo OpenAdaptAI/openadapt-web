@@ -10,38 +10,37 @@ let cacheTimestamp = null;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
- * Fetches the list of all openadapt-* packages from PyPI
- * Uses the discover-packages API as the single source of truth with client-side caching
+ * Fetches discovered packages from the API with client-side caching.
  * @returns {Promise<string[]>} - Array of package names
  */
 async function getPackageList() {
-    // Return cached result if still valid
     if (cachedPackages && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_DURATION) {
         return cachedPackages;
     }
 
     try {
-        // Fetch from the discover-packages API - the single source of truth
         const response = await fetch('/api/discover-packages');
         if (!response.ok) {
             throw new Error(`Failed to discover packages: ${response.status}`);
         }
 
         const data = await response.json();
-        cachedPackages = data.packages || [];
+        // packages are now {name, description} objects — extract names for stats
+        const packages = (data.packages || []).map((p) =>
+            typeof p === 'string' ? p : p.name
+        );
+        cachedPackages = packages;
         cacheTimestamp = Date.now();
 
         return cachedPackages;
     } catch (error) {
         console.error('Error fetching package list from discover-packages API:', error);
 
-        // If we have a stale cache, use it instead of failing completely
         if (cachedPackages) {
             console.warn('Using stale package cache due to API failure');
             return cachedPackages;
         }
 
-        // If no cache exists, throw error - the discover-packages API has its own fallback
         throw new Error('Unable to fetch package list and no cache available');
     }
 }

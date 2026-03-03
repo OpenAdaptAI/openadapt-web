@@ -7,18 +7,16 @@ let cacheTimestamp = null;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
- * Fetches the list of all openadapt-* packages from PyPI
- * Uses the discover-packages API as the single source of truth with client-side caching
- * @returns {Promise<string[]>} - Array of package names
+ * Fetches the discovered packages from the API.
+ * Returns the full objects ({ name, description }) and caches them.
+ * @returns {Promise<Array<{name: string, description: string}>>}
  */
-async function getPackageList() {
-    // Return cached result if still valid
+async function getPackageData() {
     if (cachedPackages && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_DURATION) {
         return cachedPackages;
     }
 
     try {
-        // Fetch from the discover-packages API - the single source of truth
         const response = await fetch('/api/discover-packages');
         if (!response.ok) {
             throw new Error(`Failed to discover packages: ${response.status}`);
@@ -32,15 +30,22 @@ async function getPackageList() {
     } catch (error) {
         console.error('Error fetching package list from discover-packages API:', error);
 
-        // If we have a stale cache, use it instead of failing completely
         if (cachedPackages) {
             console.warn('Using stale package cache due to API failure');
             return cachedPackages;
         }
 
-        // If no cache exists, throw error - the discover-packages API has its own fallback
         throw new Error('Unable to fetch package list and no cache available');
     }
+}
+
+/**
+ * Gets just the package names (for backward compatibility with stats fetching).
+ * @returns {Promise<string[]>}
+ */
+async function getPackageList() {
+    const packages = await getPackageData();
+    return packages.map((p) => (typeof p === 'string' ? p : p.name));
 }
 
 /**
@@ -115,6 +120,12 @@ export async function getPyPIDownloadStats() {
  * @param {number} count - The download count
  * @returns {string} - Formatted string
  */
+/**
+ * Gets discovered packages with descriptions.
+ * @returns {Promise<Array<{name: string, description: string}>>}
+ */
+export { getPackageData };
+
 export function formatDownloadCount(count) {
     if (count >= 1000000) {
         return `${(count / 1000000).toFixed(1)}M`;

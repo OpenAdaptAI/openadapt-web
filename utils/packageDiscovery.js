@@ -1,26 +1,27 @@
 /**
- * Shared utility for discovering openadapt-* packages from PyPI
+ * Shared utility for discovering openadapt-* packages
  *
  * *** SINGLE SOURCE OF TRUTH FOR PACKAGE DISCOVERY LOGIC ***
- * This module contains the core package discovery logic used by both:
- * - /api/discover-packages.js (the API endpoint)
- * - /api/pypistats.js (for direct access to avoid HTTP calls between serverless functions)
+ * Used by:
+ * - /api/discover-packages.js (HTTP endpoint)
+ * - /api/pypistats.js (server-side direct import)
  *
  * Discovery flow:
  * 1. Fetch all public openadapt-* repos from the OpenAdaptAI GitHub org
+ *    (includes name + description for free)
  * 2. Verify each repo name exists as a package on PyPI
- * 3. Cache the results for 24 hours
+ * 3. Cache results for 24 hours
  * 4. Fall back to a static list if GitHub + PyPI discovery both fail
  */
 
 const GITHUB_ORG = 'OpenAdaptAI';
 
 /**
- * Fetches all public openadapt-* repo names from the GitHub org.
+ * Fetches all public openadapt-* repos from the GitHub org.
  * Uses the unauthenticated API (60 req/hr limit, fine with 24h cache).
- * @returns {Promise<string[]>} - Lowercase repo names matching openadapt-*
+ * @returns {Promise<Array<{name: string, description: string}>>}
  */
-async function fetchGitHubRepoNames() {
+async function fetchGitHubRepos() {
     const repos = [];
     let page = 1;
     while (true) {
@@ -36,33 +37,39 @@ async function fetchGitHubRepoNames() {
     }
     return repos
         .filter((r) => !r.private)
-        .map((r) => r.name.toLowerCase())
-        .filter((name) => name === 'openadapt' || name.startsWith('openadapt-'));
+        .filter((r) => {
+            const name = r.name.toLowerCase();
+            return name === 'openadapt' || name.startsWith('openadapt-');
+        })
+        .map((r) => ({
+            name: r.name.toLowerCase(),
+            description: r.description || '',
+        }));
 }
 
-// FALLBACK LIST - Only returned if both GitHub and PyPI discovery fail
+// FALLBACK - only used when both GitHub and PyPI discovery fail
 // Last updated: 2026-03-02
 const FALLBACK_PACKAGES = [
-    'openadapt',
-    'openadapt-ml',
-    'openadapt-capture',
-    'openadapt-evals',
-    'openadapt-consilium',
-    'openadapt-viewer',
-    'openadapt-grounding',
-    'openadapt-retrieval',
-    'openadapt-privacy',
-    'openadapt-tray',
+    { name: 'openadapt', description: 'AI-First process automation with large multimodal models' },
+    { name: 'openadapt-ml', description: 'ML toolkit for training and evaluating multimodal GUI-action models' },
+    { name: 'openadapt-capture', description: 'GUI interaction capture with time-aligned media' },
+    { name: 'openadapt-evals', description: 'Evaluation infrastructure for GUI agent benchmarks' },
+    { name: 'openadapt-consilium', description: 'Multi-LLM council for consensus-driven AI responses' },
+    { name: 'openadapt-viewer', description: 'HTML viewer components for ML dashboards and benchmarks' },
+    { name: 'openadapt-grounding', description: 'Temporal smoothing for UI element detection' },
+    { name: 'openadapt-retrieval', description: 'Multimodal demo retrieval for GUI automation' },
+    { name: 'openadapt-privacy', description: 'PII/PHI detection and redaction for GUI automation data' },
+    { name: 'openadapt-tray', description: 'System tray application for OpenAdapt' },
 ];
 
-let cachedPackages = null;
+let cachedResult = null;
 let cacheTimestamp = null;
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
  * Checks if a package exists on PyPI
- * @param {string} packageName - The package name to check
- * @returns {Promise<boolean>} - True if package exists
+ * @param {string} packageName
+ * @returns {Promise<boolean>}
  */
 async function packageExists(packageName) {
     try {
@@ -77,67 +84,48 @@ async function packageExists(packageName) {
 }
 
 /**
- * Discovers all existing openadapt-* packages
- * This is the core discovery logic used by all package-related endpoints
- * @returns {Promise<{packages: string[], timestamp: number, fallback?: boolean}>}
+ * Discovers all openadapt-* packages with descriptions.
+ * @returns {Promise<{packages: Array<{name: string, description: string}>, timestamp: number, cached?: boolean, stale?: boolean, fallback?: boolean}>}
  */
 export async function discoverPackages() {
-    // Return cached result if still valid
-    if (cachedPackages && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_DURATION) {
-        return {
-            packages: cachedPackages,
-            timestamp: cacheTimestamp,
-            cached: true,
-        };
+    if (cachedResult && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_DURATION) {
+        return { ...cachedResult, cached: true };
     }
 
-    // Build candidate list: prefer GitHub org discovery, fall back to static list
+    // Build candidate list: prefer GitHub, fall back to static
     let candidates;
     try {
-        candidates = await fetchGitHubRepoNames();
+        candidates = await fetchGitHubRepos();
     } catch (error) {
         console.warn('GitHub discovery failed, using static list:', error.message);
         candidates = FALLBACK_PACKAGES;
     }
 
     try {
-        // Check all candidates against PyPI in parallel
         const results = await Promise.all(
             candidates.map(async (pkg) => ({
-                name: pkg,
-                exists: await packageExists(pkg),
+                ...pkg,
+                exists: await packageExists(pkg.name),
             }))
         );
 
-        // Filter to only existing packages
-        const existingPackages = results
+        const packages = results
             .filter(({ exists }) => exists)
-            .map(({ name }) => name);
+            .map(({ name, description }) => ({ name, description }));
 
-        // Update cache
-        cachedPackages = existingPackages;
-        cacheTimestamp = Date.now();
+        cachedResult = { packages, timestamp: Date.now() };
+        cacheTimestamp = cachedResult.timestamp;
 
-        return {
-            packages: existingPackages,
-            timestamp: cacheTimestamp,
-            cached: false,
-        };
+        return { ...cachedResult, cached: false };
     } catch (error) {
         console.error('Error discovering packages:', error);
 
-        // If we have a stale cache, use it
-        if (cachedPackages) {
-            console.warn('Using stale package cache due to discovery error');
-            return {
-                packages: cachedPackages,
-                timestamp: cacheTimestamp,
-                stale: true,
-            };
+        if (cachedResult) {
+            console.warn('Using stale cache due to discovery error');
+            return { ...cachedResult, stale: true };
         }
 
-        // If no cache exists, return fallback
-        console.warn('No cache available, using fallback package list');
+        console.warn('No cache available, using fallback');
         return {
             packages: FALLBACK_PACKAGES,
             timestamp: Date.now(),
@@ -147,15 +135,12 @@ export async function discoverPackages() {
 }
 
 /**
- * Gets the list of discovered packages (packages only, for backward compatibility)
- * @returns {Promise<string[]>} - Array of package names
+ * Gets just the package names (backward compatibility).
+ * @returns {Promise<string[]>}
  */
 export async function getDiscoveredPackages() {
     const result = await discoverPackages();
-    return result.packages;
+    return result.packages.map((p) => p.name);
 }
 
-/**
- * Exports for direct access to constants
- */
 export { FALLBACK_PACKAGES, CACHE_DURATION };
