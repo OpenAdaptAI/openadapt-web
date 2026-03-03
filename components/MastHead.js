@@ -58,7 +58,7 @@ const CarouselSection = () => {
                             }
                         `}
                     >
-                        <span className="inline-block py-1.5 px-3 w-full text-center text-white/60 text-sm">
+                        <span className="inline-block py-1.5 px-3 w-full text-center text-white/75 text-sm">
                             {item}
                         </span>
                     </div>
@@ -110,7 +110,7 @@ export default function Home() {
                                 <span className="font-extralight">Open</span><span className="font-semibold">Adapt</span>
                                 <span className="font-extralight">.AI</span>
                             </h1>
-                            <h2 className="text-2xl md:text-3xl mt-0 mb-6 font-light text-white/70">
+                            <h2 className="text-2xl md:text-3xl mt-0 mb-6 font-light text-white/80">
                                 Teach AI to use any software.
                             </h2>
                             <div className="flex flex-col align-center justify-center">
