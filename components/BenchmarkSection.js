@@ -78,27 +78,6 @@ export default function BenchmarkSection() {
                         desktop tasks.
                     </p>
 
-                    <div className={styles.screenshotWrap}>
-                        <div className={styles.windowFrame}>
-                            <div className={styles.windowFrameInner}>
-                                <div className={styles.windowTitleBar}>
-                                    <span className={`${styles.windowDot} ${styles.windowDotRed}`} />
-                                    <span className={`${styles.windowDot} ${styles.windowDotYellow}`} />
-                                    <span className={`${styles.windowDot} ${styles.windowDotGreen}`} />
-                                    <span className={styles.windowTitle}>
-                                        Task Detail — Step Replay
-                                    </span>
-                                </div>
-                                <img
-                                    src="/images/benchmarks/desktop-task-detail.png"
-                                    alt="Benchmark viewer task detail showing step-by-step screenshot replay with actions and execution logs"
-                                    className={styles.screenshot}
-                                    loading="lazy"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
                     <a
                         href={EVALS_REPO_URL}
                         target="_blank"
