@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFlask, faDesktop, faListCheck } from '@fortawesome/free-solid-svg-icons'
 
 import styles from './BenchmarkSection.module.css'
 
@@ -13,8 +15,45 @@ export default function BenchmarkSection() {
                 <h2 className={styles.heading}>
                     Evaluation &amp; Benchmarks
                 </h2>
+                <p className={styles.intro}>
+                    We evaluate AI agents on real Windows desktop tasks —
+                    spreadsheets, file management, system settings — running
+                    in actual VMs, not simulated environments.
+                    Every screenshot, click, and keystroke is captured for
+                    step-by-step inspection.
+                </p>
 
-                {/* Part A: Benchmark Viewer */}
+                <div className={styles.highlights}>
+                    <div className={styles.highlight}>
+                        <FontAwesomeIcon icon={faDesktop} className={styles.highlightIcon} />
+                        <div>
+                            <span className={styles.highlightTitle}>Real desktop tasks</span>
+                            <span className={styles.highlightDesc}>
+                                Windows VMs running LibreOffice, Notepad, Settings, and more
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.highlight}>
+                        <FontAwesomeIcon icon={faListCheck} className={styles.highlightIcon} />
+                        <div>
+                            <span className={styles.highlightTitle}>Step-by-step replay</span>
+                            <span className={styles.highlightDesc}>
+                                Inspect every action the agent took, not just pass/fail
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.highlight}>
+                        <FontAwesomeIcon icon={faFlask} className={styles.highlightIcon} />
+                        <div>
+                            <span className={styles.highlightTitle}>Active development</span>
+                            <span className={styles.highlightDesc}>
+                                Expanding task suite and publishing results as they're validated
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Benchmark Viewer */}
                 <div className={styles.viewer}>
                     <div className={styles.windowFrame}>
                         <div className={styles.windowFrameInner}>
@@ -49,8 +88,8 @@ export default function BenchmarkSection() {
                         </div>
                     </div>
                     <p className={styles.caption}>
-                        Replay every step of an evaluation — screenshots,
-                        actions, and execution logs.{' '}
+                        The benchmark viewer lets you replay every step of an
+                        evaluation — screenshots, actions, and execution logs.{' '}
                         <a
                             href={EVALS_REPO_URL}
                             target="_blank"
@@ -59,6 +98,12 @@ export default function BenchmarkSection() {
                             View on GitHub
                         </a>
                     </p>
+                </div>
+
+                <div className={styles.status}>
+                    <span className={styles.statusDot} />
+                    Results coming soon — we're running evaluations now and
+                    will publish scores as they're validated.
                 </div>
             </div>
         </div>
