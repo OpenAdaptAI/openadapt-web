@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 
 import BenchmarkSection from '@components/BenchmarkSection'
 import Developers from '@components/Developers'
+import DevToolsSection from '@components/DevToolsSection'
 import EcosystemSection from '@components/EcosystemSection'
 import EmailForm from '@components/EmailForm'
 import FeedbackForm from '@components/FeedbackForm'
@@ -23,6 +24,7 @@ export default function Home() {
             <MastHead />
             <Developers />
             <EcosystemSection />
+            <DevToolsSection />
             <BenchmarkSection />
             <IndustriesGrid
                 feedbackData={feedbackData}

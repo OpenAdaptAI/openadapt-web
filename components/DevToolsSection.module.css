@@ -1,0 +1,83 @@
+.background {
+    background: rgba(0, 0, 30, 1);
+    padding: 40px 20px 60px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.heading {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+}
+
+.card {
+    background: rgba(40, 50, 80, 0.35);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.card:hover {
+    background: rgba(40, 50, 80, 0.55);
+    border-color: rgba(96, 165, 250, 0.4);
+}
+
+.packageName {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    color: #93c5fd;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.packageName a {
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+.packageName a:hover {
+    color: #bfdbfe;
+    text-decoration: underline;
+}
+
+.description {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0;
+    flex: 1;
+}
+
+.metaItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-right: 10px;
+}

@@ -28,7 +28,10 @@ export default function EcosystemSection() {
     useEffect(() => {
         getPackageData()
             .then((data) => {
-                const sorted = [...data].sort(
+                const core = data.filter(
+                    (pkg) => pkg.category === 'core'
+                )
+                const sorted = [...core].sort(
                     (a, b) => (b.stars || 0) - (a.stars || 0)
                 )
                 setPackages(sorted)

@@ -73,12 +73,15 @@ async function getPackageData() {
 }
 
 /**
- * Gets just the package names (for backward compatibility with stats fetching).
+ * Gets just the core package names (for backward compatibility with stats fetching).
+ * Filters to core packages only (excludes hidden and devtools).
  * @returns {Promise<string[]>}
  */
 async function getPackageList() {
     const packages = await getPackageData();
-    return packages.map((p) => (typeof p === 'string' ? p : p.name));
+    return packages
+        .filter((p) => typeof p === 'string' || p.category === 'core')
+        .map((p) => (typeof p === 'string' ? p : p.name));
 }
 
 /**
