@@ -124,7 +124,6 @@
         0 0 0 1px rgba(255, 255, 255, 0.06);
     transform: rotateX(1deg);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
-    will-change: transform, box-shadow;
 }
 
 .windowFrameInner:hover {
@@ -132,6 +131,19 @@
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.6),
         0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .windowFrame {
+        perspective: none;
+    }
+    .windowFrameInner {
+        transform: none;
+        transition: none;
+    }
+    .windowFrameInner:hover {
+        transform: none;
+    }
 }
 
 .windowTitleBar {
