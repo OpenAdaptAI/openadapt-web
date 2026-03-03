@@ -231,7 +231,7 @@ export default function Developers() {
                                 className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt#installation"
                             >
-                                View README on GitHub
+                                View README
                             </a>
                         </li>
                     </ul>
