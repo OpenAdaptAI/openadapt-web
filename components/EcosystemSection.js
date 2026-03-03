@@ -1,9 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBoxOpen } from '@fortawesome/free-solid-svg-icons'
+import { faBoxOpen, faStar } from '@fortawesome/free-solid-svg-icons'
 
 import { getPackageData } from 'utils/pypiStats'
 import styles from './EcosystemSection.module.css'
+
+function timeAgo(dateString) {
+    if (!dateString) return ''
+    const seconds = Math.floor((Date.now() - new Date(dateString)) / 1000)
+    if (seconds < 60) return 'just now'
+    const minutes = Math.floor(seconds / 60)
+    if (minutes < 60) return `${minutes}m ago`
+    const hours = Math.floor(minutes / 60)
+    if (hours < 24) return `${hours}h ago`
+    const days = Math.floor(hours / 24)
+    if (days < 30) return `${days}d ago`
+    const months = Math.floor(days / 30)
+    if (months < 12) return `${months}mo ago`
+    return `${Math.floor(months / 12)}y ago`
+}
 
 export default function EcosystemSection() {
     const [packages, setPackages] = useState([])
@@ -13,7 +28,10 @@ export default function EcosystemSection() {
     useEffect(() => {
         getPackageData()
             .then((data) => {
-                setPackages(data)
+                const sorted = [...data].sort(
+                    (a, b) => (b.stars || 0) - (a.stars || 0)
+                )
+                setPackages(sorted)
                 setLoading(false)
             })
             .catch((err) => {
@@ -30,8 +48,8 @@ export default function EcosystemSection() {
             <h2 className={styles.heading}>The OpenAdapt Ecosystem</h2>
             <p className={styles.subtitle}>
                 {packageCount > 0
-                    ? `A modular toolkit of ${packageCount} packages on PyPI`
-                    : 'A modular toolkit of packages on PyPI'}
+                    ? `${packageCount} open-source repositories`
+                    : 'Open-source repositories'}
             </p>
 
             {loading && (
@@ -49,7 +67,12 @@ export default function EcosystemSection() {
                             typeof pkg === 'string'
                                 ? ''
                                 : pkg.description || ''
-                        const repoUrl = `https://github.com/OpenAdaptAI/${name}`
+                        const stars = pkg.stars || 0
+                        const language = pkg.language || ''
+                        const pushedAt = pkg.pushed_at || ''
+                        const repoUrl =
+                            pkg.html_url ||
+                            `https://github.com/OpenAdaptAI/${name}`
 
                         return (
                             <div key={name} className={styles.card}>
@@ -74,6 +97,27 @@ export default function EcosystemSection() {
                                         {description}
                                     </p>
                                 )}
+                                <div className={styles.meta}>
+                                    {stars > 0 && (
+                                        <span className={styles.metaItem}>
+                                            <FontAwesomeIcon
+                                                icon={faStar}
+                                                style={{ fontSize: '11px' }}
+                                            />
+                                            {stars.toLocaleString()}
+                                        </span>
+                                    )}
+                                    {language && (
+                                        <span className={styles.metaItem}>
+                                            {language}
+                                        </span>
+                                    )}
+                                    {pushedAt && (
+                                        <span className={styles.metaItem}>
+                                            {timeAgo(pushedAt)}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         )
                     })}
