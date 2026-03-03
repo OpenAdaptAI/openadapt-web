@@ -60,33 +60,6 @@ export default function BenchmarkSection() {
                         </a>
                     </p>
                 </div>
-
-                {/* Part B: Research Approach */}
-                <div className={styles.research}>
-                    <h3 className={styles.researchHeading}>
-                        What we&apos;re researching
-                    </h3>
-                    <p className={styles.researchText}>
-                        Can showing an AI agent a recording of a human
-                        doing a task help it do the task better? We call
-                        this demo conditioning, and we&apos;re running
-                        experiments on real Windows desktop tasks to find
-                        out.
-                    </p>
-                    <p className={styles.researchText}>
-                        Early results are mixed. We&apos;re sharing
-                        everything openly as we go.
-                    </p>
-
-                    <a
-                        href={EVALS_REPO_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.researchLink}
-                    >
-                        Follow our progress on GitHub &rarr;
-                    </a>
-                </div>
             </div>
         </div>
     )
