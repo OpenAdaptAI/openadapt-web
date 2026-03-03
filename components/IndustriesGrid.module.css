@@ -43,13 +43,13 @@
     margin-bottom: 10px;
     padding: 0;
     font-size: 15px;
-    color: rgb(204, 194, 194);
+    color: rgba(255, 255, 255, 0.75);
 }
 .p {
     padding: 20px;
     font-size: 18px;
     text-align: center;
-    color: rgb(204, 194, 194);
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .specialSection {
@@ -78,7 +78,7 @@
 }
 
 .descriptionsSpecial {
-    color: #d0d0d0;
+    color: rgba(255, 255, 255, 0.75);
     font-size: 15px;
     margin-bottom: 20px;
 }
