@@ -208,8 +208,8 @@ export default function Home() {
                             />
                         </a>
                     </div>
-                    {/* Github Fork/Star buttons - hidden on small screens to prevent overflow */}
-                    <div className="relative z-50 hidden sm:inline-block">
+                    {/* Github Fork/Star buttons */}
+                    <div className="relative z-50">
                         <a
                             className="github-button mr-2"
                             href="https://github.com/OpenAdaptAI/OpenAdapt/fork"
@@ -222,7 +222,7 @@ export default function Home() {
                             Fork
                         </a>
                     </div>
-                    <div className="relative z-50 hidden sm:inline-block">
+                    <div className="relative z-50">
                         <a
                             className="github-button"
                             href="https://github.com/OpenAdaptAI/OpenAdapt"
