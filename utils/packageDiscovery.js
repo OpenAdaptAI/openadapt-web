@@ -6,46 +6,53 @@
  * - /api/discover-packages.js (the API endpoint)
  * - /api/pypistats.js (for direct access to avoid HTTP calls between serverless functions)
  *
- * Since PyPI no longer has a search API, we use a hybrid approach:
- * 1. Check a list of known/potential package names (POTENTIAL_PACKAGES)
- * 2. Verify each package exists via PyPI's JSON API
+ * Discovery flow:
+ * 1. Fetch all public openadapt-* repos from the OpenAdaptAI GitHub org
+ * 2. Verify each repo name exists as a package on PyPI
  * 3. Cache the results for 24 hours
- * 4. Return a fallback list only if discovery fails
+ * 4. Fall back to a static list if GitHub + PyPI discovery both fail
  */
 
-// Known and potential openadapt packages to check
-// This list can include packages that don't exist yet - they'll be filtered out during discovery
-const POTENTIAL_PACKAGES = [
-    'openadapt',
-    'openadapt-ml',
-    'openadapt-capture',
-    'openadapt-evals',
-    'openadapt-viewer',
-    'openadapt-grounding',
-    'openadapt-retrieval',
-    'openadapt-privacy',
-    'openadapt-tray',
-    'openadapt-telemetry',
-    'openadapt-agent',
-    'openadapt-web',
-    'openadapt-api',
-    'openadapt-core',
-    'openadapt-server',
-    'openadapt-client',
-];
+const GITHUB_ORG = 'OpenAdaptAI';
 
-// FALLBACK LIST - Only returned if PyPI discovery completely fails
-// This is the single source of truth for the fallback package list
-// Last updated: 2025-01-18
+/**
+ * Fetches all public openadapt-* repo names from the GitHub org.
+ * Uses the unauthenticated API (60 req/hr limit, fine with 24h cache).
+ * @returns {Promise<string[]>} - Lowercase repo names matching openadapt-*
+ */
+async function fetchGitHubRepoNames() {
+    const repos = [];
+    let page = 1;
+    while (true) {
+        const response = await fetch(
+            `https://api.github.com/orgs/${GITHUB_ORG}/repos?per_page=100&page=${page}`,
+            { headers: { Accept: 'application/vnd.github.v3+json' } }
+        );
+        if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+        const batch = await response.json();
+        if (batch.length === 0) break;
+        repos.push(...batch);
+        page++;
+    }
+    return repos
+        .filter((r) => !r.private)
+        .map((r) => r.name.toLowerCase())
+        .filter((name) => name === 'openadapt' || name.startsWith('openadapt-'));
+}
+
+// FALLBACK LIST - Only returned if both GitHub and PyPI discovery fail
+// Last updated: 2026-03-02
 const FALLBACK_PACKAGES = [
     'openadapt',
     'openadapt-ml',
     'openadapt-capture',
     'openadapt-evals',
+    'openadapt-consilium',
     'openadapt-viewer',
     'openadapt-grounding',
     'openadapt-retrieval',
     'openadapt-privacy',
+    'openadapt-tray',
 ];
 
 let cachedPackages = null;
@@ -84,10 +91,19 @@ export async function discoverPackages() {
         };
     }
 
+    // Build candidate list: prefer GitHub org discovery, fall back to static list
+    let candidates;
     try {
-        // Check all potential packages in parallel
+        candidates = await fetchGitHubRepoNames();
+    } catch (error) {
+        console.warn('GitHub discovery failed, using static list:', error.message);
+        candidates = FALLBACK_PACKAGES;
+    }
+
+    try {
+        // Check all candidates against PyPI in parallel
         const results = await Promise.all(
-            POTENTIAL_PACKAGES.map(async (pkg) => ({
+            candidates.map(async (pkg) => ({
                 name: pkg,
                 exists: await packageExists(pkg),
             }))
@@ -142,4 +158,4 @@ export async function getDiscoveredPackages() {
 /**
  * Exports for direct access to constants
  */
-export { POTENTIAL_PACKAGES, FALLBACK_PACKAGES, CACHE_DURATION };
+export { FALLBACK_PACKAGES, CACHE_DURATION };

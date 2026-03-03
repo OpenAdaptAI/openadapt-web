@@ -1,215 +1,68 @@
-# Package List Architecture - Single Source of Truth
+# Package List Architecture - Auto-Discovery
 
 ## Overview
 
-This document describes the architecture for managing the list of OpenAdapt packages across the codebase. The design ensures a single source of truth to avoid duplication and inconsistencies.
+Package discovery automatically finds all `openadapt-*` repos from the OpenAdaptAI GitHub org and verifies them against PyPI. No manual list maintenance needed.
 
-## Architecture Diagram
+## Discovery Flow
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│         /pages/api/discover-packages.js                     │
-│         *** SINGLE SOURCE OF TRUTH ***                       │
-│                                                               │
-│  1. POTENTIAL_PACKAGES list (packages to check)             │
-│  2. Verifies each against PyPI API                          │
-│  3. Returns only packages that exist                        │
-│  4. Falls back to FALLBACK list if discovery fails          │
-│  5. 24-hour server-side cache                               │
-└───────────────────────┬─────────────────────────────────────┘
-                        │
-                        │ API Call: /api/discover-packages
-                        │
-        ┌───────────────┴───────────────┐
-        │                               │
-        ▼                               ▼
-┌───────────────────┐          ┌──────────────────────┐
-│ utils/pypiStats.js│          │ utils/pypistats      │
-│                   │          │ History.js           │
-│ - getPackageList()│          │                      │
-│ - 24h client cache│          │ - getPackageList()   │
-└───────┬───────────┘          │ - 24h client cache   │
-        │                      └──────────┬───────────┘
-        │                                 │
-        │                                 │
-        └────────┬────────────────────────┘
-                 │
-                 │ Called by client-side code
-                 │
-                 ▼
-        ┌────────────────────┐
-        │ components/        │
-        │ PyPIDownloadChart  │
-        └────────────────────┘
+1. Fetch all public repos from github.com/OpenAdaptAI
+2. Filter to names matching openadapt or openadapt-*
+3. Verify each exists on PyPI (HEAD request)
+4. Cache results for 24 hours
+5. If GitHub fails → use static FALLBACK_PACKAGES
+6. If PyPI fails → use stale cache or fallback
 ```
 
-## Key Principles
+## Architecture
 
-### 1. Single Source of Truth
-- **ONLY** `/pages/api/discover-packages.js` defines package lists
-- All other code fetches from this API endpoint
-- No duplicate hardcoded lists elsewhere in the codebase
-
-### 2. Two-Level Caching
-- **Server-side cache**: 24 hours (in `discover-packages.js`)
-- **Client-side cache**: 24 hours (in utility functions)
-- Minimizes API calls while keeping data fresh
-
-### 3. Graceful Degradation
 ```
-1. Try to fetch from /api/discover-packages
-2. If API succeeds → use fresh data
-3. If API fails → use stale client-side cache (if exists)
-4. If no cache → API returns its own fallback list
+GitHub API (orgs/OpenAdaptAI/repos)
+        │
+        ▼
+utils/packageDiscovery.js  ← SINGLE SOURCE OF TRUTH
+  - fetchGitHubRepoNames()   (auto-discover candidates)
+  - packageExists()           (verify on PyPI)
+  - discoverPackages()        (orchestrate + cache)
+  - FALLBACK_PACKAGES         (last resort)
+        │
+        ▼
+/pages/api/discover-packages.js  (HTTP endpoint)
+        │
+        ├──► utils/pypiStats.js
+        ├──► utils/pypistatsHistory.js
+        └──► components/PyPIDownloadChart.js
 ```
-
-### 4. Fallback Strategy
-The fallback list in `discover-packages.js` is only returned when:
-- PyPI API is completely unreachable
-- Network issues prevent discovery
-- Critical errors during package verification
-
-## File Responsibilities
-
-### `/pages/api/discover-packages.js`
-**Single source of truth for package lists**
-- Maintains `POTENTIAL_PACKAGES` list (packages to check)
-- Maintains `FALLBACK_PACKAGES` list (only used if discovery fails)
-- Verifies packages exist on PyPI
-- 24-hour server-side cache
-- Returns JSON: `{ packages: [...], count: N, timestamp: ... }`
-
-### `/pages/api/pypistats.js`
-**PyPI stats proxy API**
-- Calls `/api/discover-packages` to get package list
-- Uses list to validate incoming package name requests
-- No hardcoded package lists
-- 24-hour server-side cache for package list
-
-### `/utils/pypiStats.js`
-**Client-side utility for Shields.io stats**
-- Calls `/api/discover-packages` to get package list
-- 24-hour client-side cache
-- Falls back to stale cache if API unavailable
-- No hardcoded package lists
-
-### `/utils/pypistatsHistory.js`
-**Client-side utility for historical stats**
-- Calls `/api/discover-packages` to get package list
-- 24-hour client-side cache
-- Falls back to stale cache if API unavailable
-- No hardcoded package lists
-
-### `/components/PyPIDownloadChart.js`
-**UI component**
-- Uses utilities from `utils/pypistatsHistory.js`
-- Never directly fetches package list
-- Relies entirely on utility functions
 
 ## Adding a New Package
 
-To add a new OpenAdapt package to the system:
+**No code changes needed.** Just:
+1. Create a repo named `openadapt-*` under `OpenAdaptAI` on GitHub
+2. Publish it to PyPI
 
-1. **Add to POTENTIAL_PACKAGES** in `/pages/api/discover-packages.js`:
-   ```javascript
-   const POTENTIAL_PACKAGES = [
-       'openadapt',
-       'openadapt-ml',
-       // ... existing packages
-       'openadapt-newpackage', // Add here
-   ];
-   ```
+It will appear automatically after the 24-hour cache expires (or on next deployment).
 
-2. **Optionally add to FALLBACK list** (if package already exists on PyPI):
-   ```javascript
-   const fallbackPackages = [
-       'openadapt',
-       'openadapt-ml',
-       // ... existing packages
-       'openadapt-newpackage', // Add here if already published
-   ];
-   ```
+If you want it in the fallback list (shown when both GitHub and PyPI are down), add it to `FALLBACK_PACKAGES` in `utils/packageDiscovery.js`.
 
-3. **That's it!** All other code will automatically pick up the new package after cache expires (max 24 hours) or on next deployment.
+## File Responsibilities
+
+| File | Role |
+|------|------|
+| `utils/packageDiscovery.js` | Core discovery logic (GitHub + PyPI) |
+| `pages/api/discover-packages.js` | HTTP endpoint for client code |
+| `utils/pypiStats.js` | Shields.io download stats |
+| `utils/pypistatsHistory.js` | Historical stats |
+| `components/PyPIDownloadChart.js` | UI chart component |
 
 ## Testing
 
-### Test Package Discovery
 ```bash
 curl https://openadapt.ai/api/discover-packages
 ```
 
-Expected response:
-```json
-{
-  "packages": ["openadapt", "openadapt-ml", ...],
-  "count": 8,
-  "timestamp": 1705612800000,
-  "cacheExpiresAt": "2025-01-19T12:00:00.000Z"
-}
-```
+## Caching
 
-### Test with Fallback
-If discovery fails, you'll see:
-```json
-{
-  "packages": ["openadapt", ...],
-  "count": 8,
-  "fallback": true,
-  "error": "Failed to discover packages, using fallback list"
-}
-```
-
-## Migration Notes
-
-### What Changed (PR #123)
-
-**Before:**
-- Package lists duplicated in 4+ files
-- Each file had its own fallback logic
-- Inconsistent package lists across codebase
-- Hard to maintain and update
-
-**After:**
-- Single source of truth in `discover-packages.js`
-- All code fetches from one API endpoint
-- Consistent package lists everywhere
-- Easy to add new packages (one file)
-
-### Removed Duplication
-The following duplicate lists were removed:
-- ❌ Fallback list in `/pages/api/pypistats.js`
-- ❌ Fallback list in `/utils/pypiStats.js`
-- ❌ Fallback list in `/utils/pypistatsHistory.js`
-
-### Updated Error Handling
-- Client utilities now rely on stale cache if API fails
-- Better error messages and logging
-- Graceful degradation instead of hard failures
-
-## Benefits
-
-1. **Maintainability**: Update package list in ONE place
-2. **Consistency**: All code uses same package list
-3. **Reliability**: Multiple levels of caching and fallbacks
-4. **Performance**: Efficient caching reduces API calls
-5. **Debugging**: Clear data flow and error messages
-
-## Future Improvements
-
-Potential enhancements:
-- Add webhook to refresh cache when new packages published
-- Implement package metadata caching (versions, descriptions)
-- Add monitoring for package discovery failures
-- Consider Redis for distributed cache in production
-
-## Questions?
-
-For questions or issues with package list management, refer to:
-- This document
-- Code comments in `/pages/api/discover-packages.js`
-- PR #123 discussion
-
----
-
-Last updated: 2025-01-18
+- **Server-side**: 24 hours in `packageDiscovery.js`
+- **Client-side**: 24 hours in utility functions
+- **GitHub API**: 60 req/hr unauthenticated (one call per 24h = fine)
