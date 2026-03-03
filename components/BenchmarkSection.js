@@ -16,8 +16,16 @@ export default function BenchmarkSection() {
 
                 {/* Part A: Benchmark Viewer */}
                 <div className={styles.viewer}>
-                    <div className={styles.floatingCard}>
-                        <div className={styles.floatingCardInner}>
+                    <div className={styles.windowFrame}>
+                        <div className={styles.windowFrameInner}>
+                            <div className={styles.windowTitleBar}>
+                                <span className={`${styles.windowDot} ${styles.windowDotRed}`} />
+                                <span className={`${styles.windowDot} ${styles.windowDotYellow}`} />
+                                <span className={`${styles.windowDot} ${styles.windowDotGreen}`} />
+                                <span className={styles.windowTitle}>
+                                    Benchmark Viewer
+                                </span>
+                            </div>
                             {!animLoaded && (
                                 <div className={styles.gifPlaceholder}>
                                     Loading benchmark viewer...
@@ -71,13 +79,23 @@ export default function BenchmarkSection() {
                     </p>
 
                     <div className={styles.screenshotWrap}>
-                        <div className={styles.screenshotContainer}>
-                            <img
-                                src="/images/benchmarks/desktop-task-detail.png"
-                                alt="Benchmark viewer task detail showing step-by-step screenshot replay with actions and execution logs"
-                                className={styles.screenshot}
-                                loading="lazy"
-                            />
+                        <div className={styles.windowFrame}>
+                            <div className={styles.windowFrameInner}>
+                                <div className={styles.windowTitleBar}>
+                                    <span className={`${styles.windowDot} ${styles.windowDotRed}`} />
+                                    <span className={`${styles.windowDot} ${styles.windowDotYellow}`} />
+                                    <span className={`${styles.windowDot} ${styles.windowDotGreen}`} />
+                                    <span className={styles.windowTitle}>
+                                        Task Detail — Step Replay
+                                    </span>
+                                </div>
+                                <img
+                                    src="/images/benchmarks/desktop-task-detail.png"
+                                    alt="Benchmark viewer task detail showing step-by-step screenshot replay with actions and execution logs"
+                                    className={styles.screenshot}
+                                    loading="lazy"
+                                />
+                            </div>
                         </div>
                     </div>
 
