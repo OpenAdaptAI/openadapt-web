@@ -44,6 +44,18 @@ The site is automatically deployed to Netlify on push to the main branch.
 | [openadapt-capture](https://github.com/OpenAdaptAI/openadapt-capture) | GUI interaction capture library |
 | [openadapt-ml](https://github.com/OpenAdaptAI/openadapt-ml) | Machine learning models and training |
 | [openadapt-evals](https://github.com/OpenAdaptAI/openadapt-evals) | Benchmark evaluation framework |
+| [openadapt-consilium](https://github.com/OpenAdaptAI/openadapt-consilium) | Multi-model consensus library |
+| [openadapt-herald](https://github.com/OpenAdaptAI/openadapt-herald) | Git history to social media automation |
+| [openadapt-crier](https://github.com/OpenAdaptAI/openadapt-crier) | Event-driven Telegram approval bot |
+| [openadapt-wright](https://github.com/OpenAdaptAI/openadapt-wright) | Dev automation worker (Ralph Loop) |
+| [openadapt-grounding](https://github.com/OpenAdaptAI/openadapt-grounding) | UI grounding models |
+| [openadapt-viewer](https://github.com/OpenAdaptAI/openadapt-viewer) | Recording visualization |
+| [openadapt-privacy](https://github.com/OpenAdaptAI/openadapt-privacy) | PII scrubbing |
+| [openadapt-retrieval](https://github.com/OpenAdaptAI/openadapt-retrieval) | Demo retrieval |
+| [openadapt-tray](https://github.com/OpenAdaptAI/openadapt-tray) | System tray app |
+| [openadapt-telemetry](https://github.com/OpenAdaptAI/openadapt-telemetry) | Usage telemetry |
+
+The website automatically discovers new `openadapt-*` repos from the [OpenAdaptAI](https://github.com/OpenAdaptAI) GitHub org.
 
 ## License
 

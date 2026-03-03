@@ -165,7 +165,7 @@ const PyPIDownloadChart = () => {
     const [error, setError] = useState(null);
     const [chartType, setChartType] = useState('cumulative'); // 'cumulative', 'combined', or 'packages'
     const [period, setPeriod] = useState('month');
-    const [timeRange, setTimeRange] = useState('all'); // '2y' for 2 years, 'all' for all time
+    const [timeRange, setTimeRange] = useState('all'); // 'all' for all available (~6 months), '3m' for 3 months
     const [growthStats, setGrowthStats] = useState(null);
     const [recentStats, setRecentStats] = useState(null);
     const [githubStats, setGithubStats] = useState(null);
@@ -177,12 +177,13 @@ const PyPIDownloadChart = () => {
             setError(null);
             try {
                 // Determine limit based on time range
+                // Note: pypistats.org retains only ~180 days of data
                 let limit;
                 if (timeRange === 'all') {
-                    limit = 9999; // Effectively unlimited - get all available data
+                    limit = 9999; // Get all available data (~6 months from pypistats.org)
                 } else {
-                    // 2 years worth of data
-                    limit = period === 'day' ? 730 : period === 'week' ? 104 : 24;
+                    // 3 months of data
+                    limit = period === 'day' ? 90 : period === 'week' ? 13 : 3;
                 }
                 const data = await getPyPIDownloadHistoryLimited(period, limit);
 
@@ -329,8 +330,10 @@ const PyPIDownloadChart = () => {
         responsive: true,
         maintainAspectRatio: false,
         interaction: {
+            // For "packages" view, use 'nearest' so the tooltip focuses on one series.
+            // For other views (single dataset), 'index' is fine.
             intersect: false,
-            mode: 'index',
+            mode: chartType === 'packages' ? 'nearest' : 'index',
         },
         plugins: {
             legend: {
@@ -379,24 +382,26 @@ const PyPIDownloadChart = () => {
                 },
             },
             tooltip: {
-                backgroundColor: 'rgba(26, 26, 46, 0.98)',
-                titleColor: 'white',
+                backgroundColor: 'rgba(6, 6, 20, 0.95)',
+                titleColor: 'rgba(255, 255, 255, 0.9)',
                 titleFont: {
-                    size: 13,
-                    weight: 'bold',
-                },
-                bodyColor: 'rgba(255, 255, 255, 0.9)',
-                bodyFont: {
                     size: 12,
+                    weight: '600',
                 },
-                borderColor: 'rgba(86, 13, 248, 0.5)',
-                borderWidth: 2,
-                padding: 14,
+                bodyColor: 'rgba(255, 255, 255, 0.7)',
+                bodyFont: {
+                    size: 11,
+                },
+                borderColor: 'rgba(255, 255, 255, 0.08)',
+                borderWidth: 1,
+                padding: 12,
                 displayColors: true,
                 boxWidth: 15,
                 boxHeight: 15,
                 boxPadding: 6,
                 usePointStyle: true,
+                // For packages view, only show the nearest (hovered) dataset
+                // plus a compact summary of others
                 callbacks: {
                     title: function(context) {
                         // Show date in tooltip title
@@ -416,37 +421,79 @@ const PyPIDownloadChart = () => {
                         };
                     },
                     afterBody: function(context) {
-                        if (!historyData || !versionHistory.length) return '';
+                        const lines = [];
 
-                        // Get the date for this data point
-                        const dataIndex = context[0].dataIndex;
-                        const dateStr = historyData.combined[dataIndex]?.date;
+                        // For packages view, show a compact summary of other packages
+                        if (chartType === 'packages' && historyData && context.length > 0) {
+                            const hoveredIndex = context[0].datasetIndex;
+                            const dataIndex = context[0].dataIndex;
+                            const chart = context[0].chart;
 
-                        if (!dateStr) return '';
+                            // Collect other visible packages' values at this data point
+                            const others = [];
+                            chart.data.datasets.forEach((dataset, i) => {
+                                if (i !== hoveredIndex && chart.isDatasetVisible(i)) {
+                                    const val = dataset.data[dataIndex] || 0;
+                                    if (val > 0) {
+                                        others.push({ name: dataset.label, downloads: val });
+                                    }
+                                }
+                            });
 
-                        // Check if a version was released on this date
-                        const releasedVersion = getVersionReleasedOnDate(versionHistory, dateStr);
+                            if (others.length > 0) {
+                                // Sort by downloads descending, show top 3
+                                others.sort((a, b) => b.downloads - a.downloads);
+                                const shown = others.slice(0, 3);
+                                const remaining = others.length - shown.length;
 
-                        if (releasedVersion) {
-                            const emoji = releasedVersion.type === 'major' ? '🎉' :
-                                         releasedVersion.type === 'minor' ? '🚀' : '📦';
-                            return `\n${emoji} Version ${releasedVersion.version} released!`;
+                                lines.push(''); // blank line separator
+                                lines.push('Others:');
+                                shown.forEach(o => {
+                                    lines.push(`  ${o.name}: ${o.downloads.toLocaleString()}`);
+                                });
+                                if (remaining > 0) {
+                                    lines.push(`  +${remaining} more`);
+                                }
+                            }
                         }
 
-                        // Otherwise, show the current version for this date
-                        const currentVersion = getVersionForDate(versionHistory, dateStr);
+                        // Version info (for non-packages views or as additional context)
+                        if (historyData && versionHistory.length && context.length > 0) {
+                            const dataIndex = context[0].dataIndex;
+                            const dateStr = historyData.combined[dataIndex]?.date;
 
-                        if (currentVersion) {
-                            return `\nCurrent version: ${currentVersion.version}`;
+                            if (dateStr) {
+                                const releasedVersion = getVersionReleasedOnDate(versionHistory, dateStr);
+
+                                if (releasedVersion) {
+                                    const emoji = releasedVersion.type === 'major' ? '**' :
+                                                 releasedVersion.type === 'minor' ? '>>' : '::';
+                                    lines.push('');
+                                    lines.push(`${emoji} Version ${releasedVersion.version} released!`);
+                                } else {
+                                    const currentVersion = getVersionForDate(versionHistory, dateStr);
+                                    if (currentVersion) {
+                                        lines.push('');
+                                        lines.push(`Current version: ${currentVersion.version}`);
+                                    }
+                                }
+                            }
                         }
 
-                        return '';
+                        return lines.length > 0 ? lines.join('\n') : '';
                     },
                     footer: function(context) {
-                        if (chartType !== 'packages') return '';
+                        if (chartType !== 'packages' || !context.length) return '';
 
-                        // Show total across all packages for this time point
-                        const total = context.reduce((sum, item) => sum + item.parsed.y, 0);
+                        // Show total across all visible packages for this time point
+                        const dataIndex = context[0].dataIndex;
+                        const chart = context[0].chart;
+                        let total = 0;
+                        chart.data.datasets.forEach((dataset, i) => {
+                            if (chart.isDatasetVisible(i)) {
+                                total += dataset.data[dataIndex] || 0;
+                            }
+                        });
                         return `\nTotal: ${total.toLocaleString()} downloads`;
                     },
                 },
@@ -584,7 +631,10 @@ const PyPIDownloadChart = () => {
                             </span>
                         </div>
                     )}
-                    <div className={styles.statItem}>
+                    <div
+                        className={styles.statItem}
+                        title={historyData?.packageNames?.join('\n') || ''}
+                    >
                         <span className={styles.statValue}>
                             <FontAwesomeIcon icon={faCube} className={styles.statIcon} />
                             {historyData?.packageNames?.length || 8}
@@ -681,14 +731,15 @@ const PyPIDownloadChart = () => {
                         <button
                             className={`${styles.toggleBtn} ${timeRange === 'all' ? styles.active : ''}`}
                             onClick={() => setTimeRange('all')}
+                            title="pypistats.org retains ~180 days of data"
                         >
-                            All Time
+                            All Available
                         </button>
                         <button
-                            className={`${styles.toggleBtn} ${timeRange === '2y' ? styles.active : ''}`}
-                            onClick={() => setTimeRange('2y')}
+                            className={`${styles.toggleBtn} ${timeRange === '3m' ? styles.active : ''}`}
+                            onClick={() => setTimeRange('3m')}
                         >
-                            2 Years
+                            3 Months
                         </button>
                     </div>
                 </div>
@@ -727,7 +778,7 @@ const PyPIDownloadChart = () => {
                         >
                             PyPI OpenAdapt packages
                         </a>
-                        {' '}via pypistats.org API
+                        {' '}via pypistats.org API (data retained for ~180 days)
                     </span>
                 </div>
             </div>

@@ -94,9 +94,9 @@ export default function Developers() {
 
     return (
         <div className={styles.row} id="start">
-            <div className="relative flex items-center justify-center mx-4 sm:mx-8 md:mx-12 lg:mx-20">
-                <div className="grid grid-cols-1 break-words">
-                    <h2 id="start" className="text-2xl mt-10 mb-5 font-light text-center">
+            <div className="relative flex items-center justify-center mx-4 sm:mx-8 md:mx-12 lg:mx-20 max-w-5xl">
+                <div className="grid grid-cols-1 break-words w-full">
+                    <h2 id="start" className="text-xl mt-8 mb-4 font-medium text-center tracking-tight">
                         Getting Started
                     </h2>
                     {buildWarnings.length > 0 && (
@@ -118,7 +118,7 @@ export default function Developers() {
                             . Please check back later for updates.
                         </div>
                     )}
-                    <p className="font-light mt-3 mb-6 mx-auto text-center max-w-2xl">
+                    <p className="font-light mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-white/60">
                         OpenAdapt is an open-source platform for GUI automation with ML.
                         Record human demonstrations, train models, and deploy agents that can operate any software.
                     </p>
@@ -216,69 +216,41 @@ export default function Developers() {
                     */}
                     <EmailForm />
 
-                    <h2 className="text-2xl mt-10 font-light text-center">What's Next?</h2>
-                    <ul className={`${styles.noBullets} mt-2 font-light text-center`}>
-                        <li className="mt-2 font-light">
+                    <h2 className="text-xl mt-8 font-medium text-center tracking-tight">What's Next?</h2>
+                    <ul className={`${styles.noBullets} mt-3 font-light text-center`}>
+                        <li className="mt-2">
                             <a
-                                className="font-medium hover:underline"
+                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://docs.openadapt.ai"
-                                style={{
-                                    color: '#FFF',
-                                    backgroundColor: '#560DF8',
-                                    padding: '10px',
-                                    display: 'inline-block',
-                                    margin: '5px',
-                                }}
                             >
                                 Read the Documentation
                             </a>
                         </li>
-                        <li className="mt-2 font-light">
+                        <li className="mt-2">
                             <a
-                                className="font-medium hover:underline"
+                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://discord.gg/yF527cQbDG"
-                                style={{
-                                    color: '#FFF',
-                                    backgroundColor: '#560DF8',
-                                    padding: '10px',
-                                    display: 'inline-block',
-                                    margin: '5px',
-                                }}
                             >
                                 Join our Discord
                             </a>
                         </li>
-                        <li className="mt-2 font-light">
+                        <li className="mt-2">
                             <a
-                                className="font-medium hover:underline"
+                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt#installation"
-                                style={{
-                                    color: '#FFF',
-                                    backgroundColor: '#560DF8',
-                                    padding: '10px',
-                                    display: 'inline-block',
-                                    margin: '5px',
-                                }}
                             >
                                 View README on GitHub
                             </a>
                         </li>
                     </ul>
-                    <h2 className="text-2xl mt-10 font-light text-center">
+                    <h2 className="text-xl mt-8 font-medium text-center tracking-tight">
                         Troubleshooting
                     </h2>
-                    <ul className={`${styles.noBullets} mt-2 font-light text-center`}>
-                        <li className="mt-2 font-light">
+                    <ul className={`${styles.noBullets} mt-3 font-light text-center`}>
+                        <li className="mt-2">
                             <a
-                                className="font-medium hover:underline"
+                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose"
-                                style={{
-                                    color: '#FFF',
-                                    backgroundColor: '#560DF8',
-                                    padding: '10px',
-                                    display: 'inline-block',
-                                    margin: '5px',
-                                }}
                             >
                                 Please submit a GitHub Issue
                             </a>

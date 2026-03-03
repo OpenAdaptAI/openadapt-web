@@ -3,20 +3,10 @@
     flex-direction: column;
 }
 .section:first-of-type {
-    /*min-height: 100vh;*/
     padding: 0;
 }
-.section:first-of-type
-/*, .section:last-of-type*/ {
+.section:first-of-type {
     color: #eee;
-    /*
-  background: #000033;
-  background: radial-gradient(circle,
-    rgba(0,0,75,1) 0%,
-    rgba(0,0,60,1) 75%,
-    rgba(0,0,45,1) 100%
-  );
-  */
     background: radial-gradient(
         circle,
         rgba(10, 27, 96, 1) 19%,

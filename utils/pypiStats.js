@@ -7,18 +7,49 @@ let cacheTimestamp = null;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
- * Fetches the list of all openadapt-* packages from PyPI
- * Uses the discover-packages API as the single source of truth with client-side caching
- * @returns {Promise<string[]>} - Array of package names
+ * Fetches a URL with retry logic and exponential backoff.
+ * Returns null if all retries fail.
+ * @param {string} url - The URL to fetch
+ * @param {number} maxRetries - Maximum number of retry attempts (default: 3)
+ * @param {number} baseDelayMs - Base delay in ms before first retry (default: 500)
+ * @returns {Promise<Response|null>} - The fetch Response, or null if all retries failed
  */
-async function getPackageList() {
-    // Return cached result if still valid
+async function fetchWithRetry(url, maxRetries = 3, baseDelayMs = 500) {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                return response;
+            }
+            if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+                console.warn(`fetchWithRetry: ${url} returned ${response.status}, not retrying`);
+                return null;
+            }
+            console.warn(`fetchWithRetry: ${url} returned ${response.status}, attempt ${attempt + 1}/${maxRetries + 1}`);
+        } catch (error) {
+            console.warn(`fetchWithRetry: ${url} threw error, attempt ${attempt + 1}/${maxRetries + 1}:`, error.message);
+        }
+
+        if (attempt < maxRetries) {
+            const delay = baseDelayMs * Math.pow(2, attempt);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+    console.error(`fetchWithRetry: ${url} failed after ${maxRetries + 1} attempts`);
+    return null;
+}
+
+/**
+ * Fetches the discovered packages from the API.
+ * Returns the full objects ({ name, description }) and caches them.
+ * @returns {Promise<Array<{name: string, description: string}>>}
+ */
+async function getPackageData() {
     if (cachedPackages && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_DURATION) {
         return cachedPackages;
     }
 
     try {
-        // Fetch from the discover-packages API - the single source of truth
         const response = await fetch('/api/discover-packages');
         if (!response.ok) {
             throw new Error(`Failed to discover packages: ${response.status}`);
@@ -32,15 +63,22 @@ async function getPackageList() {
     } catch (error) {
         console.error('Error fetching package list from discover-packages API:', error);
 
-        // If we have a stale cache, use it instead of failing completely
         if (cachedPackages) {
             console.warn('Using stale package cache due to API failure');
             return cachedPackages;
         }
 
-        // If no cache exists, throw error - the discover-packages API has its own fallback
         throw new Error('Unable to fetch package list and no cache available');
     }
+}
+
+/**
+ * Gets just the package names (for backward compatibility with stats fetching).
+ * @returns {Promise<string[]>}
+ */
+async function getPackageList() {
+    const packages = await getPackageData();
+    return packages.map((p) => (typeof p === 'string' ? p : p.name));
 }
 
 /**
@@ -50,12 +88,11 @@ async function getPackageList() {
  */
 async function getPackageDownloads(packageName) {
     try {
-        const response = await fetch(
-            `https://img.shields.io/pypi/dm/${packageName}.json`
-        );
+        const url = `https://img.shields.io/pypi/dm/${packageName}.json`;
+        const response = await fetchWithRetry(url);
 
-        if (!response.ok) {
-            console.warn(`Failed to fetch stats for ${packageName}: ${response.status}`);
+        if (!response) {
+            console.warn(`Failed to fetch stats for ${packageName} after retries`);
             return 0;
         }
 
@@ -109,6 +146,12 @@ export async function getPyPIDownloadStats() {
 
     return { total, packages };
 }
+
+/**
+ * Gets discovered packages with descriptions.
+ * @returns {Promise<Array<{name: string, description: string}>>}
+ */
+export { getPackageData };
 
 /**
  * Formats download count for display (e.g., 1500 -> "1,500")

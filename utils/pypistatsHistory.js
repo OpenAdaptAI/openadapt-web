@@ -10,38 +10,76 @@ let cacheTimestamp = null;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
+<<<<<<< HEAD
+ * Fetches discovered packages from the API with client-side caching.
+=======
+ * Fetches a URL with retry logic and exponential backoff.
+ * Returns null if all retries fail.
+ * @param {string} url - The URL to fetch
+ * @param {number} maxRetries - Maximum number of retry attempts (default: 3)
+ * @param {number} baseDelayMs - Base delay in ms before first retry (default: 500)
+ * @returns {Promise<Response|null>} - The fetch Response, or null if all retries failed
+ */
+async function fetchWithRetry(url, maxRetries = 3, baseDelayMs = 500) {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                return response;
+            }
+            // Don't retry 4xx client errors (except 429 rate limit)
+            if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+                console.warn(`fetchWithRetry: ${url} returned ${response.status}, not retrying`);
+                return null;
+            }
+            console.warn(`fetchWithRetry: ${url} returned ${response.status}, attempt ${attempt + 1}/${maxRetries + 1}`);
+        } catch (error) {
+            console.warn(`fetchWithRetry: ${url} threw error, attempt ${attempt + 1}/${maxRetries + 1}:`, error.message);
+        }
+
+        if (attempt < maxRetries) {
+            const delay = baseDelayMs * Math.pow(2, attempt);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+    console.error(`fetchWithRetry: ${url} failed after ${maxRetries + 1} attempts`);
+    return null;
+}
+
+/**
  * Fetches the list of all openadapt-* packages from PyPI
  * Uses the discover-packages API as the single source of truth with client-side caching
+>>>>>>> 0c1df2e (fix: improve PyPI Download Trends chart reliability, date ranges, and tooltip)
  * @returns {Promise<string[]>} - Array of package names
  */
 async function getPackageList() {
-    // Return cached result if still valid
     if (cachedPackages && cacheTimestamp && Date.now() - cacheTimestamp < CACHE_DURATION) {
         return cachedPackages;
     }
 
     try {
-        // Fetch from the discover-packages API - the single source of truth
         const response = await fetch('/api/discover-packages');
         if (!response.ok) {
             throw new Error(`Failed to discover packages: ${response.status}`);
         }
 
         const data = await response.json();
-        cachedPackages = data.packages || [];
+        // packages are now {name, description} objects — extract names for stats
+        const packages = (data.packages || []).map((p) =>
+            typeof p === 'string' ? p : p.name
+        );
+        cachedPackages = packages;
         cacheTimestamp = Date.now();
 
         return cachedPackages;
     } catch (error) {
         console.error('Error fetching package list from discover-packages API:', error);
 
-        // If we have a stale cache, use it instead of failing completely
         if (cachedPackages) {
             console.warn('Using stale package cache due to API failure');
             return cachedPackages;
         }
 
-        // If no cache exists, throw error - the discover-packages API has its own fallback
         throw new Error('Unable to fetch package list and no cache available');
     }
 }
@@ -54,21 +92,20 @@ async function getPackageList() {
  */
 async function getPackageHistory(packageName, period = 'month') {
     try {
-        // Use local API route to avoid CORS issues
-        const response = await fetch(
-            `/api/pypistats?package=${packageName}&endpoint=overall&period=${period}`
-        );
+        // Use local API route to avoid CORS issues, with retry logic
+        const url = `/api/pypistats?package=${packageName}&endpoint=overall&period=${period}`;
+        const response = await fetchWithRetry(url);
 
-        if (!response.ok) {
-            console.warn(`Failed to fetch history for ${packageName}: ${response.status}`);
-            return [];
+        if (!response) {
+            console.warn(`Failed to fetch history for ${packageName} after retries`);
+            return null; // null signals a failed fetch (distinct from empty data [])
         }
 
         const data = await response.json();
 
         if (!data.data || !Array.isArray(data.data)) {
             console.warn(`Unexpected data format for ${packageName}:`, data);
-            return [];
+            return null;
         }
 
         // Filter to only include 'with_mirrors' category and sort by date
@@ -83,7 +120,7 @@ async function getPackageHistory(packageName, period = 'month') {
         return history;
     } catch (error) {
         console.error(`Error fetching pypistats history for ${packageName}:`, error);
-        return [];
+        return null;
     }
 }
 
@@ -94,15 +131,14 @@ async function getPackageHistory(packageName, period = 'month') {
  */
 async function getPackageRecentHistory(packageName) {
     try {
-        // Use local API route to avoid CORS issues
+        // Use local API route to avoid CORS issues, with retry logic
         // Note: Do NOT pass period parameter - without it, the API returns all three:
         // last_day, last_week, and last_month. With period=month, only last_month is returned.
-        const response = await fetch(
-            `/api/pypistats?package=${packageName}&endpoint=recent`
-        );
+        const url = `/api/pypistats?package=${packageName}&endpoint=recent`;
+        const response = await fetchWithRetry(url);
 
-        if (!response.ok) {
-            console.warn(`Failed to fetch recent history for ${packageName}: ${response.status}`);
+        if (!response) {
+            console.warn(`Failed to fetch recent history for ${packageName} after retries`);
             return null;
         }
 
@@ -128,11 +164,23 @@ export async function getPyPIDownloadHistory(period = 'month') {
         }))
     );
 
+    // Filter out packages whose fetch failed (null), keeping only successful results.
+    // This prevents failed requests from corrupting the graph with missing/zero data.
+    const successfulResults = results.filter(({ name, history }) => {
+        if (history === null) {
+            console.warn(`Excluding ${name} from chart due to fetch failure`);
+            return false;
+        }
+        return true;
+    });
+
+    const successfulPackageNames = successfulResults.map(r => r.name);
+
     // Create a map of date -> downloads for combined data
     const combinedMap = new Map();
     const packageHistories = {};
 
-    results.forEach(({ name, history }) => {
+    successfulResults.forEach(({ name, history }) => {
         packageHistories[name] = history;
 
         history.forEach(({ date, downloads }) => {
@@ -157,7 +205,7 @@ export async function getPyPIDownloadHistory(period = 'month') {
         combined,
         cumulativeHistory,
         packages: packageHistories,
-        packageNames: packageList,
+        packageNames: successfulPackageNames,
     };
 }
 

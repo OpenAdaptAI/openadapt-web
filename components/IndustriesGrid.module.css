@@ -55,24 +55,24 @@
 .specialSection {
     display: flex;
     justify-content: center;
-    padding: 20px 0 40px; /* Extra padding for spacing */
+    padding: 20px 0 40px;
     width: 100%;
 }
 
 .cardSpecial {
-    width: 350px; /* Same width as grid items */
-    height: 350px; /* Same height as grid items */
-    margin: 20px; /* Consistent margin */
+    width: 350px;
+    height: 350px;
+    margin: 20px;
     padding: 20px;
     border-radius: 30px;
-    background: rgba(80, 50, 120, 0.9); /* Background color matching other items */
+    background: rgba(80, 50, 120, 0.9);
     text-align: center;
     color: white;
     font-size: 1.2em;
 }
 
 .titleSpecial {
-    color: #ffd700; /* Brighter yellow for contrast */
+    color: #ffd700;
     font-size: 22px;
     margin-bottom: 10px;
 }
@@ -94,7 +94,7 @@
 
 .buttonContainer {
     display: flex;
-    justify-content: center; /* Center-align the button */
+    justify-content: center;
     margin-top: 20px;
 }
 
@@ -112,9 +112,3 @@
 .btn:hover {
     background-color: #7132d4;
 }
-
-
-.btn:hover {
-    background-color: #7132d4; /* Slightly lighter on hover */
-}
-
