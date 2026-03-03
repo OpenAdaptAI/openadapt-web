@@ -1,0 +1,118 @@
+.background {
+    background: rgba(0, 0, 30, 1);
+    padding: 60px 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.heading {
+    text-align: center;
+    color: whitesmoke;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+/* Part A: Benchmark Viewer */
+.viewer {
+    margin-bottom: 50px;
+}
+
+.gifContainer {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(86, 13, 248, 0.3);
+    background: rgba(62, 48, 103, 0.2);
+}
+
+.gif {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gifPlaceholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: rgba(62, 48, 103, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+}
+
+.caption {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+.caption a {
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+.caption a:hover {
+    color: #82c0ff;
+    text-decoration: underline;
+}
+
+/* Part B: Research Approach */
+.research {
+    background: rgba(62, 48, 103, 0.25);
+    border: 1px solid rgba(86, 13, 248, 0.25);
+    border-radius: 16px;
+    padding: 32px;
+}
+
+.researchHeading {
+    color: whitesmoke;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.researchText {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.researchText:last-of-type {
+    margin-bottom: 0;
+}
+
+.researchLink {
+    display: inline-block;
+    margin-top: 16px;
+    color: #60a5fa;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.researchLink:hover {
+    color: #82c0ff;
+    text-decoration: underline;
+}
+
+/* Screenshot */
+.screenshotContainer {
+    margin-top: 24px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(86, 13, 248, 0.2);
+}
+
+.screenshot {
+    width: 100%;
+    height: auto;
+    display: block;
+}

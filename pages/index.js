@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react'
 
+import BenchmarkSection from '@components/BenchmarkSection'
 import Developers from '@components/Developers'
+import EcosystemSection from '@components/EcosystemSection'
 import EmailForm from '@components/EmailForm'
 import FeedbackForm from '@components/FeedbackForm'
 import Footer from '@components/Footer'
@@ -20,6 +22,8 @@ export default function Home() {
         <div>
             <MastHead />
             <Developers />
+            <EcosystemSection />
+            <BenchmarkSection />
             <IndustriesGrid
                 feedbackData={feedbackData}
                 setFeedbackData={setFeedbackData}
