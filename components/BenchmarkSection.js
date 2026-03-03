@@ -16,27 +16,29 @@ export default function BenchmarkSection() {
 
                 {/* Part A: Benchmark Viewer */}
                 <div className={styles.viewer}>
-                    <div className={styles.gifContainer}>
-                        {!animLoaded && (
-                            <div className={styles.gifPlaceholder}>
-                                Loading benchmark viewer...
-                            </div>
-                        )}
-                        <img
-                            src="/images/benchmarks/benchmark-viewer.webp"
-                            alt="Benchmark viewer showing multi-task evaluation with step-by-step screenshot replay, actions, and success rates"
-                            className={styles.gif}
-                            loading="lazy"
-                            onLoad={() => setAnimLoaded(true)}
-                            style={
-                                animLoaded
-                                    ? {}
-                                    : {
-                                          position: 'absolute',
-                                          opacity: 0,
-                                      }
-                            }
-                        />
+                    <div className={styles.floatingCard}>
+                        <div className={styles.floatingCardInner}>
+                            {!animLoaded && (
+                                <div className={styles.gifPlaceholder}>
+                                    Loading benchmark viewer...
+                                </div>
+                            )}
+                            <img
+                                src="/images/benchmarks/benchmark-viewer.webp"
+                                alt="Benchmark viewer showing multi-task evaluation with step-by-step screenshot replay, actions, and success rates"
+                                className={styles.gif}
+                                loading="lazy"
+                                onLoad={() => setAnimLoaded(true)}
+                                style={
+                                    animLoaded
+                                        ? {}
+                                        : {
+                                              position: 'absolute',
+                                              opacity: 0,
+                                          }
+                                }
+                            />
+                        </div>
                     </div>
                     <p className={styles.caption}>
                         Replay every step of an evaluation — screenshots,
@@ -68,13 +70,15 @@ export default function BenchmarkSection() {
                         desktop tasks.
                     </p>
 
-                    <div className={styles.screenshotContainer}>
-                        <img
-                            src="/images/benchmarks/desktop-task-detail.png"
-                            alt="Benchmark viewer task detail showing step-by-step screenshot replay with actions and execution logs"
-                            className={styles.screenshot}
-                            loading="lazy"
-                        />
+                    <div className={styles.screenshotWrap}>
+                        <div className={styles.screenshotContainer}>
+                            <img
+                                src="/images/benchmarks/desktop-task-detail.png"
+                                alt="Benchmark viewer task detail showing step-by-step screenshot replay with actions and execution logs"
+                                className={styles.screenshot}
+                                loading="lazy"
+                            />
+                        </div>
                     </div>
 
                     <a
