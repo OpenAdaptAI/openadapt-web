@@ -65,6 +65,18 @@ export default function Footer() {
                     </div>
                     <div className={styles.footerLinks}>
                         <a
+                            href="https://docs.openadapt.ai"
+                            className={styles.link}
+                        >
+                            Docs
+                        </a>
+                        <a
+                            href="https://blog.openadapt.ai"
+                            className={styles.link}
+                        >
+                            Blog
+                        </a>
+                        <a
                             href="https://github.com/OpenAdaptAI"
                             className={styles.link}
                         >
