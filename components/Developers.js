@@ -220,7 +220,7 @@ export default function Developers() {
                     <ul className={`${styles.noBullets} mt-3 font-light text-center`}>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white text-sm font-medium transition-all duration-200"
+                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://docs.openadapt.ai"
                             >
                                 Read the Documentation
@@ -228,7 +228,7 @@ export default function Developers() {
                         </li>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white text-sm font-medium transition-all duration-200"
+                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://discord.gg/yF527cQbDG"
                             >
                                 Join our Discord
@@ -236,7 +236,7 @@ export default function Developers() {
                         </li>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white text-sm font-medium transition-all duration-200"
+                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt#installation"
                             >
                                 View README on GitHub
@@ -249,7 +249,7 @@ export default function Developers() {
                     <ul className={`${styles.noBullets} mt-3 font-light text-center`}>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white text-sm font-medium transition-all duration-200"
+                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose"
                             >
                                 Please submit a GitHub Issue

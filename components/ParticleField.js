@@ -46,7 +46,7 @@ export default function ParticleField() {
 
                 ctx.beginPath()
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(129, 140, 248, ${p.opacity})`
+                ctx.fillStyle = `rgba(86, 13, 248, ${p.opacity})`
                 ctx.fill()
             }
 
@@ -60,7 +60,7 @@ export default function ParticleField() {
                         ctx.beginPath()
                         ctx.moveTo(particles[i].x, particles[i].y)
                         ctx.lineTo(particles[j].x, particles[j].y)
-                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.04 * (1 - dist / 100)})`
+                        ctx.strokeStyle = `rgba(86, 13, 248, ${0.04 * (1 - dist / 100)})`
                         ctx.lineWidth = 0.5
                         ctx.stroke()
                     }

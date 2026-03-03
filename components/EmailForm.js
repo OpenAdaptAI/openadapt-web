@@ -84,14 +84,14 @@ export default function EmailForm() {
                                 name="email"
                                 type="email"
                                 placeholder="your@email.com"
-                                className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/90 text-sm placeholder-white/30 focus:border-indigo-400/50 focus:outline-none focus:ring-1 focus:ring-indigo-400/30 transition-all duration-200 w-56 max-w-xs"
+                                className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/90 text-sm placeholder-white/30 focus:border-[#560df8]/50 focus:outline-none focus:ring-1 focus:ring-[#560df8]/30 transition-all duration-200 w-56 max-w-xs"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
                             <button
                                 type="submit"
-                                className="px-4 py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-500 text-white text-sm font-medium transition-all duration-200 disabled:opacity-50"
+                                className="px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200 disabled:opacity-50"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Sending...' : 'Register'}

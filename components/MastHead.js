@@ -141,13 +141,13 @@ export default function Home() {
                             <div id="register">
                                 <div className="flex items-center justify-center gap-3 mt-6 mb-4">
                                     <Link
-                                        className="px-5 py-2.5 rounded-lg border border-indigo-400/50 text-indigo-300 hover:border-indigo-300 hover:text-indigo-200 hover:bg-indigo-500/10 transition-all duration-200 text-sm font-medium"
+                                        className="px-5 py-2.5 rounded-lg border border-[#560df8]/50 text-[#60a5fa] hover:border-[#60a5fa] hover:text-white hover:bg-[#560df8]/10 transition-all duration-200 text-sm font-medium"
                                         href="#industries"
                                     >
                                         Learn How
                                     </Link>
                                     <Link
-                                        className="px-5 py-2.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 transition-all duration-200 text-sm font-medium"
+                                        className="px-5 py-2.5 rounded-lg bg-[#560df8] text-white hover:bg-[#7132d4] transition-all duration-200 text-sm font-medium"
                                         href="#start"
                                     >
                                         Get Started

@@ -9,14 +9,14 @@
 }
 
 .background {
-    background: transparent;
-    padding: 32px 20px;
+    background: rgba(0, 0, 30, 1);
+    padding: 80px 20px;
     text-align: center;
     width: 100%;
 }
 
 @media (max-width: 640px) {
     .background {
-        padding: 24px 16px;
+        padding: 60px 20px;
     }
 }

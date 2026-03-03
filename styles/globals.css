@@ -9,24 +9,39 @@ html {
 }
 
 body {
-    color: rgba(255, 255, 255, 0.9);
-    background-color: #050510;
+    color: whitesmoke;
+    background-color: rgba(0, 0, 30, 1);
     width: 100%;
     overflow-x: hidden;
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+body * {
+    color: inherit;
 }
 
 a {
-    color: #818cf8;
+    color: #4d9ef6;
     text-decoration: none;
-    transition: color 0.2s ease;
 }
 
 a:hover {
-    color: #a5b4fc;
+    color: #82c0ff;
+    text-decoration: underline;
+}
+
+/* TODO: figure out why this doesn't work */
+html body a,
+html body a *,
+html body a:hover,
+html body a:hover *,
+html body a:focus,
+html body a:focus *,
+html body a:active,
+html body a:active * {
+    cursor: pointer !important;
 }
 
 button:not(:disabled),
@@ -35,21 +50,19 @@ button:not(:disabled),
 }
 
 .fade-in {
-    animation: fadeInAnimation 0.4s ease-out forwards;
+    animation: fadeInAnimation 1s forwards;
 }
 
 .fade-out {
-    animation: fadeOutAnimation 0.4s ease-out forwards;
+    animation: fadeOutAnimation 1s forwards;
 }
 
 @keyframes fadeInAnimation {
     from {
         opacity: 0;
-        transform: translateY(4px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
     }
 }
 

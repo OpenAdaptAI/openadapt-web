@@ -14,9 +14,6 @@ module.exports = {
             fontFamily: {
                 sans: ['var(--font-raleway)', ...fontFamily.sans],
             },
-            colors: {
-                void: '#060614',
-            },
         },
     },
     plugins: [require('daisyui'), require('@tailwindcss/typography')],

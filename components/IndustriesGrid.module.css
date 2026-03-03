@@ -1,146 +1,114 @@
 .background {
     background: radial-gradient(
-        ellipse at 50% 30%,
-        rgba(15, 23, 72, 0.6) 0%,
-        rgba(8, 12, 36, 1) 50%,
-        #050510 100%
+        circle,
+        rgba(10, 27, 96, 1) 19%,
+        rgba(12, 16, 46, 1) 44%,
+        rgba(0, 0, 30, 1) 66%
     );
 }
 .row {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding-bottom: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 16px;
+    padding-bottom: 50px;
 }
 .card {
     font-size: medium;
-    width: 320px;
-    height: auto;
-    min-height: 300px;
-    margin: 0;
-    padding: 24px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    width: 350px;
+    height: 350px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(62, 48, 103, 0.6);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
 }
 .card:hover {
-    border-color: rgba(129, 140, 248, 0.3);
-    background: rgba(255, 255, 255, 0.06);
-    transform: translateY(-2px);
+    outline: 2px solid rgba(122, 105, 175, 0.6);
+    background: rgba(107, 84, 176, 0.6);
+    transition:
+        background-color 0.5s,
+        color 0.5s;
 }
 .title {
-    margin: 8px 0 4px;
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 18px;
-    font-weight: 600;
+    margin: 5px;
+    color: whitesmoke;
+    font-size: 22px;
     text-align: center;
-    letter-spacing: -0.01em;
 }
 .descriptions {
     text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     padding: 0;
-    font-size: 13px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 15px;
+    color: rgb(204, 194, 194);
 }
 .p {
-    padding: 16px 20px;
-    font-size: 16px;
+    padding: 20px;
+    font-size: 18px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.6;
+    color: rgb(204, 194, 194);
 }
 
 .specialSection {
     display: flex;
     justify-content: center;
-    padding: 16px 0 32px;
+    padding: 20px 0 40px;
     width: 100%;
 }
 
 .cardSpecial {
-    width: 320px;
-    height: auto;
-    min-height: 300px;
-    margin: 0;
-    padding: 24px;
-    border-radius: 12px;
-    background: rgba(129, 140, 248, 0.06);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(129, 140, 248, 0.15);
+    width: 350px;
+    height: 350px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(80, 50, 120, 0.9);
     text-align: center;
     color: white;
-    font-size: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.cardSpecial:hover {
-    border-color: rgba(129, 140, 248, 0.35);
-    background: rgba(129, 140, 248, 0.1);
-    transform: translateY(-2px);
+    font-size: 1.2em;
 }
 
 .titleSpecial {
-    color: #fbbf24;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
+    color: #ffd700;
+    font-size: 22px;
+    margin-bottom: 10px;
 }
 
 .descriptionsSpecial {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 16px;
+    color: #d0d0d0;
+    font-size: 15px;
+    margin-bottom: 20px;
 }
 
 .logoSpecial {
-    margin: 12px 0;
+    margin: 15px 0;
 }
 
 .logoSpecial img {
-    height: 48px;
-    width: 48px;
+    height: 60px;
+    width: 60px;
 }
 
 .buttonContainer {
     display: flex;
     justify-content: center;
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 .btn {
-    padding: 8px 20px;
-    border-radius: 8px;
-    background-color: rgba(99, 102, 241, 0.8);
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #5a1eac;
     color: white;
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: bold;
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
+    transition: background-color 0.3s;
 }
 
 .btn:hover {
-    background-color: rgba(99, 102, 241, 1);
-    transform: translateY(-1px);
+    background-color: #7132d4;
 }
-
