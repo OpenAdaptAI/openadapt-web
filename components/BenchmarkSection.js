@@ -108,8 +108,7 @@ export default function BenchmarkSection() {
 
                 <div className={styles.status}>
                     <span className={styles.statusDot} />
-                    Results coming soon — we're running evaluations on
-                    Windows Agent Arena and will publish scores once validated.
+                    Evaluating on Windows Agent Arena.
                 </div>
             </div>
         </div>
