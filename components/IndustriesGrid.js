@@ -5,16 +5,29 @@ import { createNoise3D } from 'simplex-noise'
 
 import styles from './IndustriesGrid.module.css'
 
-/* Generate an SVG gear path centered at origin */
+/* Generate an SVG gear path with flat-topped trapezoidal teeth */
 function gearPath(teeth, innerR, outerR) {
-    const step = Math.PI / teeth
+    const step = (2 * Math.PI) / teeth
+    // Proportions within each tooth period
+    const gap = 0.30      // fraction for valley between teeth
+    const rise = 0.10     // fraction for rising edge
+    const flat = 0.30     // fraction for flat tooth top
+    const fall = 0.10     // fraction for falling edge
+    // remaining 0.20 is second half of gap (auto-closed)
+    const pt = (angle, r) => `${(r * Math.cos(angle)).toFixed(2)} ${(r * Math.sin(angle)).toFixed(2)}`
     let d = ''
-    for (let i = 0; i < teeth * 2; i++) {
-        const r = i % 2 === 0 ? outerR : innerR
-        const angle = i * step - Math.PI / 2
-        const x = r * Math.cos(angle)
-        const y = r * Math.sin(angle)
-        d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' '
+    for (let i = 0; i < teeth; i++) {
+        const base = i * step - Math.PI / 2
+        const a0 = base                                            // gap start
+        const a1 = base + gap * step                               // gap end / rise start
+        const a2 = base + (gap + rise) * step                     // rise end / flat top start
+        const a3 = base + (gap + rise + flat) * step              // flat top end / fall start
+        const a4 = base + (gap + rise + flat + fall) * step       // fall end / next gap
+        if (i === 0) d += `M${pt(a0, innerR)} `
+        d += `L${pt(a1, innerR)} `  // along inner radius (gap)
+        d += `L${pt(a2, outerR)} `  // rise to outer
+        d += `L${pt(a3, outerR)} `  // flat top
+        d += `L${pt(a4, innerR)} `  // fall to inner
     }
     return d + 'Z'
 }
@@ -114,12 +127,15 @@ function BuildForYouSection() {
             }
         }
 
-        // Circuit node positions (in canvas-relative %) mapped to SVG scene
-        // These are approximate screen positions for the 3 nodes
         let time = 0
 
-        // Energy pulse tracking — compute from cycle timing
-        const CYCLE_DUR = 12 // seconds
+        // Energy pulse tracking — synced to SMIL heartbeat cycle
+        // Lub (strong): D glow → D→L pulse (1.5s)
+        // Processing: Learn glows + gears spin (1.5s)
+        // Dub (snappy): L→A pulse (1.0s) → A glow
+        // Return: faint A→D (1.5s) + pause (0.5s)
+        // Total: 1.5 + 1.5 + 1.0 + 0.5 + 1.5 + 0.5 = 6.5s
+        const CYCLE_DUR = 6.5
         let pulseX = 0, pulseY = 0, pulseActive = false
 
         function getNodeScreenPositions(w, h) {
@@ -161,57 +177,92 @@ function BuildForYouSection() {
             const nodes = getNodeScreenPositions(w, h)
             const [attrL, attrC, attrR] = nodes
 
-            // Compute energy pulse position from cycle time
-            const cycleTime = (time * 0.016) % CYCLE_DUR  // ~60fps, time in frames → seconds
+            // Compute cycle phase (heartbeat rhythm)
+            const ct = (time / 60) % CYCLE_DUR  // frames → approx seconds
             pulseActive = false
-            if (cycleTime < 3) {
-                // D → L
-                const t = cycleTime / 3
+
+            // Pulse position tracks the energy comet
+            if (ct < 1.5) {
+                // Lub: D→L pulse
+                const t = ct / 1.5
                 const pt = quadBezier(t, attrL.x, attrL.y, (attrL.x + attrC.x) / 2, Math.min(attrL.y, attrC.y) - 30, attrC.x, attrC.y)
                 pulseX = pt.x; pulseY = pt.y; pulseActive = true
-            } else if (cycleTime >= 5.5 && cycleTime < 8.5) {
-                // L → A
-                const t = (cycleTime - 5.5) / 3
+            } else if (ct >= 3.0 && ct < 4.0) {
+                // Dub: L→A pulse (faster/snappier)
+                const t = (ct - 3.0) / 1.0
                 const pt = quadBezier(t, attrC.x, attrC.y, (attrC.x + attrR.x) / 2, Math.min(attrC.y, attrR.y) - 30, attrR.x, attrR.y)
                 pulseX = pt.x; pulseY = pt.y; pulseActive = true
-            } else if (cycleTime >= 8.5 && cycleTime < 11.5) {
-                // Return A → D
-                const t = (cycleTime - 8.5) / 3
+            } else if (ct >= 4.5 && ct < 6.0) {
+                // Return: faint A→D
+                const t = (ct - 4.5) / 1.5
                 const pt = quadBezier(t, attrR.x, attrR.y + 20, (attrL.x + attrR.x) / 2, Math.max(attrL.y, attrR.y) + 60, attrL.x, attrL.y + 20)
                 pulseX = pt.x; pulseY = pt.y; pulseActive = true
+            }
+
+            // ── Heartbeat global displacement ──
+            // Lub: strong pulse at cycle start, Dub: lighter pulse at t≈3
+            let heartbeat = 0
+            if (ct < 1.0) {
+                heartbeat = Math.sin(ct * Math.PI) * Math.exp(-ct * 2.5) * 12
+            }
+            const dubT = ct - 3.0
+            if (dubT > 0 && dubT < 0.7) {
+                heartbeat += Math.sin(dubT * Math.PI / 0.7) * Math.exp(-dubT * 3) * 7
+            }
+
+            // ── Sequential node glow ──
+            // Track which nodes are "lit" at this moment
+            const nodeGlow = [0, 0, 0] // [Demonstrate, Learn, Automate]
+            if (ct < 1.5) {
+                nodeGlow[0] = ct < 0.5 ? Math.sin(ct * Math.PI / 0.5) : Math.max(0, 1 - (ct - 0.5) / 1.0)
+            }
+            if (ct >= 1.5 && ct < 3.0) {
+                const lt = (ct - 1.5) / 1.5
+                nodeGlow[1] = Math.sin(lt * Math.PI) // Learn peaks during processing
+            }
+            if (ct >= 3.0 && ct < 4.0) {
+                nodeGlow[1] = Math.max(0, 1 - (ct - 3.0) / 0.5) // Learn fading
+            }
+            if (ct >= 4.0 && ct < 5.0) {
+                const at = (ct - 4.0) / 1.0
+                nodeGlow[2] = Math.sin(at * Math.PI * 0.5) // Automate peaks
             }
 
             // Update grid heights
             for (let i = 0; i < grid.length; i++) {
                 const p = grid[i]
-                // Base noise deformation
-                p.wy = noise3D(p.wx * 0.008, p.wz * 0.008, time * 0.005) * 12
+                // Base noise deformation + heartbeat throb
+                p.wy = noise3D(p.wx * 0.008, p.wz * 0.008, time * 0.005) * 12 - heartbeat
 
-                // Project first to get screen coords for reactive zones
+                // Project to get screen coords
                 const proj = project(p.wx, p.wy, p.wz, w / 2, h * 0.6)
                 p.projX = proj.x
                 p.projY = proj.y
                 p.depth = proj.scale
             }
 
-            // Second pass: apply reactive zones using projected positions
+            // Second pass: reactive zones + pulse ripple
             for (let i = 0; i < grid.length; i++) {
                 const p = grid[i]
                 let uplift = 0
 
-                // Uplift near circuit nodes
-                for (const attr of [attrL, attrC, attrR]) {
+                // Uplift near active circuit nodes (stronger when node is glowing)
+                const nodesArr = [attrL, attrC, attrR]
+                for (let n = 0; n < 3; n++) {
+                    const attr = nodesArr[n]
                     const dx = p.projX - attr.x, dy = p.projY - attr.y
                     const dist = Math.sqrt(dx * dx + dy * dy)
-                    if (dist < 100) uplift += (1 - dist / 100) * 8
+                    const baseUplift = dist < 100 ? (1 - dist / 100) * 5 : 0
+                    const glowUplift = dist < 120 ? (1 - dist / 120) * nodeGlow[n] * 10 : 0
+                    uplift += baseUplift + glowUplift
                 }
 
-                // Energy pulse ripple
+                // Energy pulse ripple (stronger, wider)
                 if (pulseActive) {
                     const dx = p.projX - pulseX, dy = p.projY - pulseY
                     const dist = Math.sqrt(dx * dx + dy * dy)
-                    if (dist < 200) {
-                        const wave = Math.sin(dist * 0.05 - time * 0.15) * (1 - dist / 200) * 6
+                    if (dist < 250) {
+                        const wave = Math.sin(dist * 0.04 - time * 0.2) * (1 - dist / 250) * 10
                         uplift += wave
                     }
                 }
@@ -225,6 +276,9 @@ function BuildForYouSection() {
                 }
             }
 
+            // Store node brightness per grid point for rendering
+            const nodesArr = [attrL, attrC, attrR]
+
             // Draw grid lines
             for (let r = 0; r < ROWS; r++) {
                 for (let c = 0; c < COLS; c++) {
@@ -232,21 +286,34 @@ function BuildForYouSection() {
                     const p = grid[i]
                     const baseAlpha = Math.min(p.depth * 0.5, 0.4)
 
-                    // Brighten near nodes
-                    let nearNode = false
-                    for (const attr of [attrL, attrC, attrR]) {
-                        const dx = p.projX - attr.x, dy = p.projY - attr.y
-                        if (dx * dx + dy * dy < 80 * 80) { nearNode = true; break }
+                    // Compute glow brightness from active nodes
+                    let brightness = 0
+                    for (let n = 0; n < 3; n++) {
+                        if (nodeGlow[n] > 0.01) {
+                            const dx = p.projX - nodesArr[n].x, dy = p.projY - nodesArr[n].y
+                            const dist = Math.sqrt(dx * dx + dy * dy)
+                            if (dist < 120) {
+                                brightness += nodeGlow[n] * (1 - dist / 120)
+                            }
+                        }
                     }
-                    const alpha = nearNode ? Math.min(baseAlpha * 2.5, 0.6) : baseAlpha
+                    // Pulse proximity brightness
+                    if (pulseActive) {
+                        const dx = p.projX - pulseX, dy = p.projY - pulseY
+                        const dist = Math.sqrt(dx * dx + dy * dy)
+                        if (dist < 100) brightness += (1 - dist / 100) * 0.6
+                    }
+                    brightness = Math.min(brightness, 1)
 
-                    // Color: purple (near) → blue (far) based on row
+                    const alpha = baseAlpha + brightness * 0.5
+
+                    // Color: purple → blue by depth, shifting toward cyan when bright
                     const rowT = r / ROWS
-                    const cr = Math.round(86 + (96 - 86) * rowT)
-                    const cg = Math.round(13 + (165 - 13) * rowT)
-                    const cb = Math.round(248 + (250 - 248) * rowT)
-                    const lineColor = `rgba(${cr}, ${cg}, ${cb}, ${alpha})`
-                    const lineWidth = 0.5 + p.depth * 0.5
+                    const cr = Math.round(86 + (96 - 86) * rowT + brightness * (0 - 86))
+                    const cg = Math.round(13 + (165 - 13) * rowT + brightness * (220 - 13 - 152 * rowT))
+                    const cb = Math.round(248 + (250 - 248) * rowT + brightness * (255 - 248))
+                    const lineColor = `rgba(${Math.max(0, Math.min(255, cr))}, ${Math.max(0, Math.min(255, cg))}, ${Math.max(0, Math.min(255, cb))}, ${Math.min(alpha, 0.8)})`
+                    const lineWidth = 0.5 + p.depth * 0.5 + brightness * 0.5
 
                     // Horizontal line to right neighbor
                     if (c < COLS - 1) {
@@ -271,12 +338,28 @@ function BuildForYouSection() {
                 }
             }
 
-            // Draw intersection dots
+            // Draw intersection dots (brighter near active nodes / pulse)
             for (const p of grid) {
-                const dotAlpha = Math.min(p.depth * 0.3, 0.35)
+                let dotBrightness = 0
+                for (let n = 0; n < 3; n++) {
+                    if (nodeGlow[n] > 0.01) {
+                        const dx = p.projX - nodesArr[n].x, dy = p.projY - nodesArr[n].y
+                        const dist = Math.sqrt(dx * dx + dy * dy)
+                        if (dist < 100) dotBrightness += nodeGlow[n] * (1 - dist / 100)
+                    }
+                }
+                if (pulseActive) {
+                    const dx = p.projX - pulseX, dy = p.projY - pulseY
+                    const dist = Math.sqrt(dx * dx + dy * dy)
+                    if (dist < 80) dotBrightness += (1 - dist / 80) * 0.8
+                }
+                dotBrightness = Math.min(dotBrightness, 1)
+                const dotAlpha = Math.min(p.depth * 0.3 + dotBrightness * 0.5, 0.8)
+                const dotR = p.depth * 1.5 + dotBrightness * 1.5
+                const dotG = Math.round(165 + dotBrightness * 55)
                 ctx.beginPath()
-                ctx.arc(p.projX, p.projY, p.depth * 1.5, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(96, 165, 250, ${dotAlpha})`
+                ctx.arc(p.projX, p.projY, dotR, 0, Math.PI * 2)
+                ctx.fillStyle = `rgba(${Math.round(96 - dotBrightness * 96)}, ${dotG}, 250, ${dotAlpha})`
                 ctx.fill()
             }
 
@@ -392,31 +475,31 @@ function BuildForYouSection() {
                 <use href="#pathLA" className={styles.pathLine} filter="url(#glow-energy)" />
                 <use href="#pathReturn" className={styles.pathLineReturn} />
 
-                {/* ── Energy pulse: D→L ── */}
-                <circle r="3" fill="cyan" opacity="0" filter="url(#glow-energy)">
-                    <animateMotion id="animDL" dur="3s" begin="0s; animReturn.end + 0.5s" fill="freeze">
+                {/* ── Energy pulse: D→L (Lub — strong, 1.5s) ── */}
+                <circle r="4" fill="cyan" opacity="0" filter="url(#glow-energy)">
+                    <animateMotion id="animDL" dur="1.5s" begin="0s; animReturn.end + 0.5s" fill="freeze">
                         <mpath href="#pathDL" />
                     </animateMotion>
-                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="3s"
+                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="1.5s"
                         begin="0s; animReturn.end + 0.5s" />
                 </circle>
 
-                {/* ── Energy pulse: L→A ── */}
+                {/* ── Energy pulse: L→A (Dub — snappy, 1.0s) ── */}
                 <circle r="3" fill="cyan" opacity="0" filter="url(#glow-energy)">
-                    <animateMotion id="animLA" dur="3s" begin="animDL.end + 2.5s" fill="freeze">
+                    <animateMotion id="animLA" dur="1s" begin="animDL.end + 1.5s" fill="freeze">
                         <mpath href="#pathLA" />
                     </animateMotion>
-                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="3s"
-                        begin="animDL.end + 2.5s" />
+                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="1s"
+                        begin="animDL.end + 1.5s" />
                 </circle>
 
-                {/* ── Return pulse: A→D (dim) ── */}
+                {/* ── Return pulse: A→D (faint, 1.5s) ── */}
                 <circle r="2" fill="rgba(86,13,248,0.6)" opacity="0">
-                    <animateMotion id="animReturn" dur="3s" begin="animLA.end" fill="freeze">
+                    <animateMotion id="animReturn" dur="1.5s" begin="animLA.end + 0.5s" fill="freeze">
                         <mpath href="#pathReturn" />
                     </animateMotion>
-                    <animate attributeName="opacity" values="0;0.4;0.4;0" keyTimes="0;0.1;0.8;1" dur="3s"
-                        begin="animLA.end" />
+                    <animate attributeName="opacity" values="0;0.3;0.3;0" keyTimes="0;0.1;0.8;1" dur="1.5s"
+                        begin="animLA.end + 0.5s" />
                 </circle>
 
                 {/* ── Demonstrate node (left cursor) ── */}
@@ -430,11 +513,18 @@ function BuildForYouSection() {
                     <circle cx="12" cy="-8" r="2.5" fill="#ef4444">
                         <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite" />
                     </circle>
+                    {/* Node glow — pulses when Demonstrate is active */}
+                    <circle r="12" fill="none" stroke="rgba(96,165,250,0.6)" strokeWidth="1.5" opacity="0">
+                        <animate attributeName="opacity" values="0;0.7;0.7;0" keyTimes="0;0.1;0.5;1" dur="1.5s"
+                            begin="0s; animReturn.end + 0.5s" />
+                        <animate attributeName="r" values="8;22" dur="1.5s"
+                            begin="0s; animReturn.end + 0.5s" />
+                    </circle>
                     {/* Click ripple synced to pulse emission */}
                     <circle r="4" fill="none" stroke="rgba(96,165,250,0.4)" strokeWidth="1">
-                        <animate attributeName="r" values="4;18;18" keyTimes="0;0.15;1" dur="12s"
+                        <animate attributeName="r" values="4;18;18" keyTimes="0;0.3;1" dur="1.5s"
                             begin="0s; animReturn.end + 0.5s" />
-                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.15;1" dur="12s"
+                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.3;1" dur="1.5s"
                             begin="0s; animReturn.end + 0.5s" />
                     </circle>
                 </g>
@@ -456,20 +546,30 @@ function BuildForYouSection() {
                         <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(96,165,250,0.5)" strokeWidth="1" />
                         <circle cx="0" cy="-15" r="2" fill="rgba(96,165,250,0.7)" className={styles.antennaPulse} />
                     </g>
-                    {/* Gear 1 (8 teeth, CW) */}
-                    <g transform="translate(-13, 0)" className={styles.gearCW}>
-                        <path d={gear1} fill="rgba(96, 165, 250, 0.25)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="0.5" />
+                    {/* Gear 1 (8 teeth, CW) — spins when Learn is active */}
+                    <g transform="translate(-13, 0)">
+                        <g>
+                            <animateTransform attributeName="transform" type="rotate"
+                                from="0" to="360" dur="1.5s" begin="animDL.end" fill="remove" />
+                            <path d={gear1} fill="rgba(96, 165, 250, 0.25)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="0.6" />
+                            <circle r="3" fill="rgba(86, 13, 248, 0.3)" stroke="rgba(96, 165, 250, 0.4)" strokeWidth="0.4" />
+                        </g>
                     </g>
                     {/* Gear 2 (6 teeth, CCW, interlocking) */}
-                    <g transform="translate(11, 9)" className={styles.gearCCW}>
-                        <path d={gear2} fill="rgba(96, 165, 250, 0.25)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="0.5" />
+                    <g transform="translate(11, 9)">
+                        <g>
+                            <animateTransform attributeName="transform" type="rotate"
+                                from="0" to="-360" dur="1.5s" begin="animDL.end" fill="remove" />
+                            <path d={gear2} fill="rgba(96, 165, 250, 0.25)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="0.6" />
+                            <circle r="2.5" fill="rgba(86, 13, 248, 0.3)" stroke="rgba(96, 165, 250, 0.4)" strokeWidth="0.4" />
+                        </g>
                     </g>
-                    {/* Processing glow ring — fades in when pulse arrives at Learn */}
-                    <circle r="30" fill="none" stroke="cyan" strokeWidth="1" opacity="0">
-                        <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.1;0.8;1" dur="2.5s"
-                            begin="animDL.end" fill="freeze" />
-                        <animate attributeName="r" values="25;35" dur="2.5s"
-                            begin="animDL.end" fill="freeze" />
+                    {/* Processing glow ring — fades in when pulse arrives, out when it leaves */}
+                    <circle r="25" fill="none" stroke="cyan" strokeWidth="1.5" opacity="0">
+                        <animate attributeName="opacity" values="0;0.6;0.6;0" keyTimes="0;0.1;0.8;1" dur="1.5s"
+                            begin="animDL.end" fill="remove" />
+                        <animate attributeName="r" values="22;35" dur="1.5s"
+                            begin="animDL.end" fill="remove" />
                     </circle>
                 </g>
 
@@ -484,11 +584,18 @@ function BuildForYouSection() {
                     <g transform="translate(12, -8)">
                         <path d="M-1.5 -3 L2 0 L-1.5 3 Z" fill="rgba(96,165,250,0.9)" stroke="none" />
                     </g>
+                    {/* Node glow — pulses when Automate receives */}
+                    <circle r="12" fill="none" stroke="rgba(86,13,248,0.6)" strokeWidth="1.5" opacity="0">
+                        <animate attributeName="opacity" values="0;0.7;0.7;0" keyTimes="0;0.1;0.5;1" dur="1s"
+                            begin="animLA.end" />
+                        <animate attributeName="r" values="8;22" dur="1s"
+                            begin="animLA.end" />
+                    </circle>
                     {/* Click ripple synced to pulse arrival */}
                     <circle r="4" fill="none" stroke="rgba(86,13,248,0.4)" strokeWidth="1">
-                        <animate attributeName="r" values="4;18;18" keyTimes="0;0.15;1" dur="12s"
+                        <animate attributeName="r" values="4;18;18" keyTimes="0;0.3;1" dur="1s"
                             begin="animLA.end" />
-                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.15;1" dur="12s"
+                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.3;1" dur="1s"
                             begin="animLA.end" />
                     </circle>
                 </g>

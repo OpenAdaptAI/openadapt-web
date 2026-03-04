@@ -52,7 +52,7 @@
     color: rgba(255, 255, 255, 0.75);
 }
 
-/* ========== Build For You — 3-Node Energy Circuit ========== */
+/* ========== Build For You — 3-Node Energy Circuit (Heartbeat) ========== */
 
 .buildSection {
     position: relative;
@@ -135,27 +135,6 @@
 
 @keyframes dashFlow {
     to { stroke-dashoffset: -42; }
-}
-
-/* ── Gear rotation ── */
-.gearCW {
-    animation: rotateCW 8s linear infinite;
-    transform-origin: center;
-}
-
-.gearCCW {
-    animation: rotateCCW 6s linear infinite;
-    transform-origin: center;
-}
-
-@keyframes rotateCW {
-    from { transform: translate(-13px, 0) rotate(0deg); }
-    to { transform: translate(-13px, 0) rotate(360deg); }
-}
-
-@keyframes rotateCCW {
-    from { transform: translate(11px, 9px) rotate(0deg); }
-    to { transform: translate(11px, 9px) rotate(-360deg); }
 }
 
 /* ── Blink animation for Learn mascot ── */
@@ -254,7 +233,6 @@
     .pathLine, .pathLineReturn { animation: none; }
     .blinkC { animation: none; }
     .antennaPulse { animation: none; }
-    .gearCW, .gearCCW { animation: none; }
     .buildBtn { transition: none; }
     /* Disable SVG SMIL animations */
     .buildSvg feGaussianBlur animate { display: none; }
