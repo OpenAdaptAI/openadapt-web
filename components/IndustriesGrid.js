@@ -85,15 +85,15 @@ function BuildForYouSection() {
             vy: (Math.random() - 0.5) * 0.15,
             size: 0.8 + Math.random() * 0.7,
         }))
-        const CONNECT_THRESHOLD = 120
+        const CONNECT_THRESHOLD = 140
         const CONNECT_THRESHOLD_SQ = CONNECT_THRESHOLD * CONNECT_THRESHOLD
 
         let wispTime = 0
 
         const wisps = [
-            { baseY: 0.25, color: [86, 13, 248],  alpha: 0.06, freqs: [0.003, 0.007], amps: [40, 20], speeds: [0.002, 0.003],  offset: 0   },
-            { baseY: 0.30, color: [96, 165, 250],  alpha: 0.05, freqs: [0.004, 0.005], amps: [35, 25], speeds: [0.0015, 0.0025], offset: 1.5 },
-            { baseY: 0.22, color: [120, 40, 220],  alpha: 0.04, freqs: [0.002, 0.009], amps: [50, 15], speeds: [0.001, 0.004],  offset: 3.0 },
+            { baseY: 0.25, color: [86, 13, 248],  alpha: 0.14, freqs: [0.003, 0.007], amps: [40, 20], speeds: [0.002, 0.003],  offset: 0   },
+            { baseY: 0.30, color: [96, 165, 250],  alpha: 0.12, freqs: [0.004, 0.005], amps: [35, 25], speeds: [0.0015, 0.0025], offset: 1.5 },
+            { baseY: 0.22, color: [120, 40, 220],  alpha: 0.10, freqs: [0.002, 0.009], amps: [50, 15], speeds: [0.001, 0.004],  offset: 3.0 },
         ]
 
         // ── Flow field (Perlin noise cosmic dust) ──
@@ -184,14 +184,14 @@ function BuildForYouSection() {
                     const distSq = dx * dx + dy * dy
                     if (distSq < CONNECT_THRESHOLD_SQ) {
                         const dist = Math.sqrt(distSq)
-                        const alpha = 0.06 * (1 - dist / CONNECT_THRESHOLD)
+                        const alpha = 0.15 * (1 - dist / CONNECT_THRESHOLD)
                         const mx = (a.x + b.x) / 2
                         const my = (a.y + b.y) / 2 - dist * 0.1 // slight upward arc
                         ctx.beginPath()
                         ctx.moveTo(a.x, a.y)
                         ctx.quadraticCurveTo(mx, my, b.x, b.y)
                         ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`
-                        ctx.lineWidth = 0.5
+                        ctx.lineWidth = 0.7
                         ctx.stroke()
                     }
                 }
@@ -201,7 +201,7 @@ function BuildForYouSection() {
             for (const n of constellationNodes) {
                 ctx.beginPath()
                 ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(180, 200, 255, 0.08)'
+                ctx.fillStyle = 'rgba(180, 200, 255, 0.2)'
                 ctx.fill()
             }
 
@@ -230,7 +230,7 @@ function BuildForYouSection() {
 
                 ctx.beginPath()
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(${p.color[0]}, ${p.color[1]}, ${p.color[2]}, 0.12)`
+                ctx.fillStyle = `rgba(${p.color[0]}, ${p.color[1]}, ${p.color[2]}, 0.2)`
                 ctx.fill()
             }
             flowTime += 0.0008
@@ -255,14 +255,14 @@ function BuildForYouSection() {
                     const distSq = dx * dx + dy * dy
                     if (distSq < CONNECT_THRESHOLD_SQ) {
                         const dist = Math.sqrt(distSq)
-                        const alpha = 0.06 * (1 - dist / CONNECT_THRESHOLD)
+                        const alpha = 0.15 * (1 - dist / CONNECT_THRESHOLD)
                         const mx = (a.x + b.x) / 2
                         const my = (a.y + b.y) / 2 - dist * 0.1
                         ctx.beginPath()
                         ctx.moveTo(a.x, a.y)
                         ctx.quadraticCurveTo(mx, my, b.x, b.y)
                         ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`
-                        ctx.lineWidth = 0.5
+                        ctx.lineWidth = 0.7
                         ctx.stroke()
                     }
                 }
@@ -270,7 +270,7 @@ function BuildForYouSection() {
             for (const n of constellationNodes) {
                 ctx.beginPath()
                 ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(180, 200, 255, 0.08)'
+                ctx.fillStyle = 'rgba(180, 200, 255, 0.2)'
                 ctx.fill()
             }
         }
