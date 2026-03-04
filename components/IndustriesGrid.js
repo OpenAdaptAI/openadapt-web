@@ -15,10 +15,9 @@ function BuildForYouSection() {
     const svgRef = useRef(null)
     const canvasRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
-    const [time, setTime] = useState(0)
-    const [eyeTarget, setEyeTarget] = useState({ x: 400, y: 100 })
+    const [frame, setFrame] = useState({ t: 0, eyes: [{ x: 0, y: 0 }, { x: 0, y: 0 }] })
     const animFrameRef = useRef(null)
-    const timeRef = useRef(0)
+    const startTimeRef = useRef(null)
     const mouseRef = useRef(null) // null = no mouse yet, use autonomous gaze
     const eyeSmoothRef = useRef([{ x: 0, y: 0 }, { x: 0, y: 0 }])
 
@@ -50,71 +49,52 @@ function BuildForYouSection() {
         mouseRef.current = null // revert to autonomous gaze
     }, [])
 
-    /* ── Main animation loop ── */
+    /* ── Main animation loop — uses real wall-clock time ── */
     useEffect(() => {
         if (!isVisible) return
         const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+        if (mq.matches) { setFrame({ t: 0, eyes: [{ x: 0, y: 0 }, { x: 0, y: 0 }] }); return }
 
-        const tick = () => {
-            timeRef.current += 0.016 // ~60fps
-            const t = timeRef.current
+        const tick = (now) => {
+            if (!startTimeRef.current) startTimeRef.current = now
+            const t = (now - startTimeRef.current) / 1000 // seconds
 
-            // Compute dance positions
+            // Compute dance positions for eye tracking
             const speed = 0.7
-            const angleL = t * speed
-            const angleR = -t * speed * 0.85 // counter-rotate, slightly different speed
+            const aL = t * speed, aR = -t * speed * 0.85
+            const cursorLx = pairL.cx + Math.cos(aL) * pairL.radius
+            const cursorLy = pairL.cy + Math.sin(aL) * pairL.radius * 0.6
+            const cursorRx = pairR.cx + Math.cos(aR + Math.PI) * pairR.radius
+            const cursorRy = pairR.cy + Math.sin(aR + Math.PI) * pairR.radius * 0.6
+            const mascotLx = pairL.cx + Math.cos(aL + Math.PI) * pairL.radius
+            const mascotLy = pairL.cy + Math.sin(aL + Math.PI) * pairL.radius * 0.6
+            const mascotRx = pairR.cx + Math.cos(aR) * pairR.radius
+            const mascotRy = pairR.cy + Math.sin(aR) * pairR.radius * 0.6
 
-            // Eye target: mouse if present, otherwise the partner's position
-            const mascotLx = pairL.cx + Math.cos(angleL + Math.PI) * pairL.radius
-            const mascotLy = pairL.cy + Math.sin(angleL + Math.PI) * pairL.radius * 0.6
-            const mascotRx = pairR.cx + Math.cos(angleR) * pairR.radius
-            const mascotRy = pairR.cy + Math.sin(angleR) * pairR.radius * 0.6
-
-            const cursorLx = pairL.cx + Math.cos(angleL) * pairL.radius
-            const cursorLy = pairL.cy + Math.sin(angleL) * pairL.radius * 0.6
-            const cursorRx = pairR.cx + Math.cos(angleR + Math.PI) * pairR.radius
-            const cursorRy = pairR.cy + Math.sin(angleR + Math.PI) * pairR.radius * 0.6
-
-            // Eye direction: toward mouse if hovering, otherwise toward partner cursor
             const gazeTargets = mouseRef.current
                 ? [mouseRef.current, mouseRef.current]
                 : [{ x: cursorLx, y: cursorLy }, { x: cursorRx, y: cursorRy }]
 
-            const mascotPositions = [
+            const newEyes = [
                 { x: mascotLx, y: mascotLy },
                 { x: mascotRx, y: mascotRy },
-            ]
-
-            const newEyes = mascotPositions.map((pos, i) => {
-                const target = gazeTargets[i]
-                const dx = target.x - pos.x
-                const dy = target.y - pos.y
+            ].map((pos, i) => {
+                const g = gazeTargets[i]
+                const dx = g.x - pos.x, dy = g.y - pos.y
                 const dist = Math.sqrt(dx * dx + dy * dy) || 1
-                const nx = Math.max(-1, Math.min(1, dx / dist))
-                const ny = Math.max(-1, Math.min(1, dy / dist))
                 const prev = eyeSmoothRef.current[i]
                 return {
-                    x: prev.x + (nx - prev.x) * 0.06,
-                    y: prev.y + (ny - prev.y) * 0.06,
+                    x: prev.x + (Math.max(-1, Math.min(1, dx / dist)) - prev.x) * 0.08,
+                    y: prev.y + (Math.max(-1, Math.min(1, dy / dist)) - prev.y) * 0.08,
                 }
             })
             eyeSmoothRef.current = newEyes
 
-            setTime(t)
-
-            if (!mq.matches) {
-                animFrameRef.current = requestAnimationFrame(tick)
-            }
-        }
-
-        if (mq.matches) {
-            // One static frame
-            timeRef.current = 0
-            setTime(0)
-        } else {
+            setFrame({ t, eyes: newEyes })
             animFrameRef.current = requestAnimationFrame(tick)
         }
 
+        animFrameRef.current = requestAnimationFrame(tick)
         return () => { if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current) }
     }, [isVisible])
 
@@ -184,13 +164,13 @@ function BuildForYouSection() {
         return () => { window.removeEventListener('resize', resize); if (raf) cancelAnimationFrame(raf) }
     }, [isVisible])
 
-    // Compute positions from time
-    const t = time
+    // Compute positions from frame time
+    const t = frame.t
     const speed = 0.7
     const aL = t * speed
     const aR = -t * speed * 0.85
 
-    // Left pair: cursor leads (top of orbit), mascot follows (bottom)
+    // Left pair: cursor leads, mascot follows
     const cursorL = { x: pairL.cx + Math.cos(aL) * pairL.radius, y: pairL.cy + Math.sin(aL) * pairL.radius * 0.6 }
     const mascotL = { x: pairL.cx + Math.cos(aL + Math.PI) * pairL.radius, y: pairL.cy + Math.sin(aL + Math.PI) * pairL.radius * 0.6 }
 
@@ -198,7 +178,7 @@ function BuildForYouSection() {
     const mascotR = { x: pairR.cx + Math.cos(aR) * pairR.radius, y: pairR.cy + Math.sin(aR) * pairR.radius * 0.6 }
     const cursorR = { x: pairR.cx + Math.cos(aR + Math.PI) * pairR.radius, y: pairR.cy + Math.sin(aR + Math.PI) * pairR.radius * 0.6 }
 
-    const eyes = eyeSmoothRef.current
+    const eyes = frame.eyes
 
     // Click ripple: cursor "clicks" every few seconds
     const clickCycleL = 3.5, clickCycleR = 4.2
