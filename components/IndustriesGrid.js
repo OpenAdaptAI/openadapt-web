@@ -4,8 +4,10 @@ import Link from 'next/link'
 
 import styles from './IndustriesGrid.module.css'
 
-/* ── The OpenAdapt mascot as an SVG group (derived from favicon.svg) ── */
-function Mascot({ x, y, scale = 1, delay = 0, className = '' }) {
+/* ── The OpenAdapt mascot with living eyes ── */
+function Mascot({ x, y, scale = 1, delay = 0, className = '', eyeOffset = { x: 0, y: 0 }, blinkClass = '' }) {
+    const ex = eyeOffset.x * 1.5  // max ~1.5px shift
+    const ey = eyeOffset.y * 1.0
     return (
         <g
             transform={`translate(${x}, ${y}) scale(${scale})`}
@@ -19,10 +21,11 @@ function Mascot({ x, y, scale = 1, delay = 0, className = '' }) {
                 stroke="rgba(96, 165, 250, 0.5)"
                 strokeWidth="1"
             />
-            {/* Left eye */}
-            <rect x="-8" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
-            {/* Right eye */}
-            <rect x="4" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+            {/* Eyes — shift with cursor, blink independently */}
+            <g className={blinkClass}>
+                <rect x={-8 + ex} y={-2 + ey} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                <rect x={4 + ex} y={-2 + ey} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+            </g>
             {/* Smile */}
             <path
                 d="M-5 6 Q0 10 5 6"
@@ -31,9 +34,9 @@ function Mascot({ x, y, scale = 1, delay = 0, className = '' }) {
                 strokeWidth="1.2"
                 strokeLinecap="round"
             />
-            {/* Antenna */}
+            {/* Antenna with pulse */}
             <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="1" />
-            <circle cx="0" cy="-15" r="2" fill="rgba(96, 165, 250, 0.7)" />
+            <circle cx="0" cy="-15" r="2" fill="rgba(96, 165, 250, 0.7)" className={styles.antennaPulse} style={{ animationDelay: `${delay * 2}s` }} />
         </g>
     )
 }
@@ -58,9 +61,22 @@ function Cursor({ x, y, scale = 0.6, delay = 0, className = '' }) {
 
 function BuildForYouSection() {
     const sectionRef = useRef(null)
+    const svgRef = useRef(null)
     const canvasRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
+    const [eyeOffsets, setEyeOffsets] = useState([
+        { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }
+    ])
     const animFrameRef = useRef(null)
+    const mouseRef = useRef({ x: 0, y: 0 })
+    const smoothRef = useRef([{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }])
+
+    // Mascot positions in SVG coords
+    const mascots = [
+        { x: 120, y: 100 },
+        { x: 400, y: 75 },
+        { x: 680, y: 90 },
+    ]
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -70,6 +86,45 @@ function BuildForYouSection() {
         if (sectionRef.current) observer.observe(sectionRef.current)
         return () => observer.disconnect()
     }, [])
+
+    /* ── Eye tracking ── */
+    const handleMouseMove = useCallback((e) => {
+        const svg = svgRef.current
+        if (!svg) return
+        const rect = svg.getBoundingClientRect()
+        // Convert mouse to SVG coordinate space (viewBox 0 0 800 200)
+        const svgX = ((e.clientX - rect.left) / rect.width) * 800
+        const svgY = ((e.clientY - rect.top) / rect.height) * 200
+        mouseRef.current = { x: svgX, y: svgY }
+    }, [])
+
+    useEffect(() => {
+        if (!isVisible) return
+        let raf
+        const tick = () => {
+            const m = mouseRef.current
+            const next = mascots.map((pos, i) => {
+                const dx = m.x - pos.x
+                const dy = m.y - pos.y
+                const dist = Math.sqrt(dx * dx + dy * dy) || 1
+                const maxShift = 1
+                const nx = Math.max(-maxShift, Math.min(maxShift, dx / dist))
+                const ny = Math.max(-maxShift, Math.min(maxShift, dy / dist))
+                // Smooth damping
+                const prev = smoothRef.current[i]
+                const lerp = 0.08
+                return {
+                    x: prev.x + (nx - prev.x) * lerp,
+                    y: prev.y + (ny - prev.y) * lerp,
+                }
+            })
+            smoothRef.current = next
+            setEyeOffsets(next)
+            raf = requestAnimationFrame(tick)
+        }
+        raf = requestAnimationFrame(tick)
+        return () => cancelAnimationFrame(raf)
+    }, [isVisible])
 
     /* ── Starfield canvas ── */
     const initStarfield = useCallback(() => {
@@ -165,12 +220,12 @@ function BuildForYouSection() {
     }, [isVisible, initStarfield])
 
     return (
-        <div ref={sectionRef} className={`${styles.buildSection} ${isVisible ? styles.buildVisible : ''}`}>
+        <div ref={sectionRef} className={`${styles.buildSection} ${isVisible ? styles.buildVisible : ''}`} onMouseMove={handleMouseMove}>
             <canvas ref={canvasRef} className={styles.starfield} />
             <div className={styles.buildGlow} />
 
             {/* Characters floating in space */}
-            <svg className={styles.buildSvg} viewBox="0 0 800 200" fill="none" preserveAspectRatio="xMidYMid meet">
+            <svg ref={svgRef} className={styles.buildSvg} viewBox="0 0 800 200" fill="none" preserveAspectRatio="xMidYMid meet">
                 {/* Energy trails connecting characters */}
                 <path id="trailA" d="M120 100 Q260 30 400 80" className={styles.pathLine} />
                 <path id="trailB" d="M400 80 Q540 130 680 90" className={styles.pathLine} />
@@ -192,9 +247,9 @@ function BuildForYouSection() {
                 ))}
 
                 {/* Three mascots floating with gentle bob animation */}
-                <Mascot x={120} y={100} scale={1.4} delay={0} className={styles.floatA} />
-                <Mascot x={400} y={75} scale={1.6} delay={0.3} className={styles.floatB} />
-                <Mascot x={680} y={90} scale={1.4} delay={0.6} className={styles.floatC} />
+                <Mascot x={120} y={100} scale={1.4} delay={0} className={styles.floatA} eyeOffset={eyeOffsets[0]} blinkClass={styles.blinkA} />
+                <Mascot x={400} y={75} scale={1.6} delay={0.3} className={styles.floatB} eyeOffset={eyeOffsets[1]} blinkClass={styles.blinkB} />
+                <Mascot x={680} y={90} scale={1.4} delay={0.6} className={styles.floatC} eyeOffset={eyeOffsets[2]} blinkClass={styles.blinkC} />
 
                 {/* Cursors orbiting around mascots */}
                 <Cursor x={170} y={78} scale={0.7} delay={0} className={styles.orbitA} />

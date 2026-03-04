@@ -191,6 +191,26 @@
     100% { transform: rotate(360deg) translate(40px, 0) rotate(-360deg); }
 }
 
+/* ── Blink animations — each mascot blinks independently ── */
+.blinkA { animation: blink 4s ease-in-out infinite; }
+.blinkB { animation: blink 5.5s ease-in-out infinite 2s; }
+.blinkC { animation: blink 3.8s ease-in-out infinite 1.2s; }
+
+@keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.05); }
+}
+
+/* Antenna tip glow pulse */
+.antennaPulse {
+    animation: antGlow 3s ease-in-out infinite;
+}
+
+@keyframes antGlow {
+    0%, 100% { r: 2; opacity: 0.7; filter: drop-shadow(0 0 2px rgba(96, 165, 250, 0.3)); }
+    50% { r: 3; opacity: 1; filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.8)); }
+}
+
 /* Labels */
 .nodeLabel {
     fill: rgba(255, 255, 255, 0.75);
@@ -269,6 +289,8 @@
     .pathLine { animation: none; }
     .floatA, .floatB, .floatC { animation: none; opacity: 1; }
     .orbitA, .orbitB, .orbitC { animation: none; }
+    .blinkA, .blinkB, .blinkC { animation: none; }
+    .antennaPulse { animation: none; }
     .particle { display: none; }
     .buildBtn { transition: none; }
 }
