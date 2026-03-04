@@ -5,21 +5,33 @@ import { createNoise3D } from 'simplex-noise'
 
 import styles from './IndustriesGrid.module.css'
 
+/* Generate an SVG gear path centered at origin */
+function gearPath(teeth, innerR, outerR) {
+    const step = Math.PI / teeth
+    let d = ''
+    for (let i = 0; i < teeth * 2; i++) {
+        const r = i % 2 === 0 ? outerR : innerR
+        const angle = i * step - Math.PI / 2
+        const x = r * Math.cos(angle)
+        const y = r * Math.sin(angle)
+        d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' '
+    }
+    return d + 'Z'
+}
+
 /*
- * BuildForYouSection — Two dancing pairs in hyperspace.
- * Uses SVG <animateMotion> for orbital motion — native browser animation,
- * immune to React re-render interference. Eyes track mouse via DOM refs.
+ * BuildForYouSection — 3-node energy circuit: Demonstrate → Learn → Automate
+ * Canvas: perspective wireframe mesh with noise deformation
+ * SVG: SMIL-animated energy pulse traveling the circuit
  */
 function BuildForYouSection() {
     const sectionRef = useRef(null)
     const canvasRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
 
-    // Eye tracking refs
-    const eyeL0Ref = useRef(null)
-    const eyeL1Ref = useRef(null)
-    const eyeR0Ref = useRef(null)
-    const eyeR1Ref = useRef(null)
+    // Eye tracking refs for Learn mascot only
+    const eyeC0Ref = useRef(null)
+    const eyeC1Ref = useRef(null)
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -30,29 +42,25 @@ function BuildForYouSection() {
         return () => observer.disconnect()
     }, [])
 
-    /* ── Mouse → eye tracking (direct DOM, no re-render) ── */
+    /* Mouse → eye tracking for Learn mascot */
     const handleMouseMove = useCallback((e) => {
         const svg = e.currentTarget
         const rect = svg.getBoundingClientRect()
         const mx = ((e.clientX - rect.left) / rect.width) * 800
         const my = ((e.clientY - rect.top) / rect.height) * 220
-        const update = (cx, cy, r0, r1) => {
-            const dx = mx - cx, dy = my - cy
-            const d = Math.sqrt(dx * dx + dy * dy) || 1
-            const ex = (dx / d) * 1.5, ey = (dy / d)
-            if (r0.current) { r0.current.setAttribute('x', -8 + ex); r0.current.setAttribute('y', -2 + ey) }
-            if (r1.current) { r1.current.setAttribute('x', 4 + ex); r1.current.setAttribute('y', -2 + ey) }
-        }
-        update(240, 100, eyeL0Ref, eyeL1Ref)
-        update(560, 100, eyeR0Ref, eyeR1Ref)
+        const dx = mx - 400, dy = my - 100
+        const d = Math.sqrt(dx * dx + dy * dy) || 1
+        const ex = (dx / d) * 1.5, ey = (dy / d)
+        if (eyeC0Ref.current) { eyeC0Ref.current.setAttribute('x', -8 + ex); eyeC0Ref.current.setAttribute('y', -2 + ey) }
+        if (eyeC1Ref.current) { eyeC1Ref.current.setAttribute('x', 4 + ex); eyeC1Ref.current.setAttribute('y', -2 + ey) }
     }, [])
 
     const handleMouseLeave = useCallback(() => {
-        [eyeL0Ref, eyeR0Ref].forEach(r => { if (r.current) { r.current.setAttribute('x', -8); r.current.setAttribute('y', -2) } })
-        ;[eyeL1Ref, eyeR1Ref].forEach(r => { if (r.current) { r.current.setAttribute('x', 4); r.current.setAttribute('y', -2) } })
+        if (eyeC0Ref.current) { eyeC0Ref.current.setAttribute('x', -8); eyeC0Ref.current.setAttribute('y', -2) }
+        if (eyeC1Ref.current) { eyeC1Ref.current.setAttribute('x', 4); eyeC1Ref.current.setAttribute('y', -2) }
     }, [])
 
-    /* ── Starfield canvas ── */
+    /* Wireframe mesh canvas */
     useEffect(() => {
         if (!isVisible) return
         const canvas = canvasRef.current
@@ -73,257 +81,255 @@ function BuildForYouSection() {
         resize()
         window.addEventListener('resize', resize)
 
-        const stars = Array.from({ length: 100 }, () => ({
-            x: Math.random(), y: Math.random(), z: Math.random(),
-            speed: 0.0002 + Math.random() * 0.0006,
-        }))
-
-        const constellationNodes = Array.from({ length: 50 }, () => ({
-            x: Math.random() * (canvas.width / dpr),
-            y: Math.random() * (canvas.height / dpr),
-            vx: (Math.random() - 0.5) * 0.2,
-            vy: (Math.random() - 0.5) * 0.2,
-            size: 1.0 + Math.random() * 1.0,
-        }))
-        const CONNECT_THRESHOLD = 160
-        const CONNECT_THRESHOLD_SQ = CONNECT_THRESHOLD * CONNECT_THRESHOLD
-
-        let wispTime = 0
-
-        const wisps = [
-            { baseY: 0.20, color: [86, 13, 248],  alpha: 0.22, freqs: [0.003, 0.007], amps: [50, 25], speeds: [0.002, 0.003],  offset: 0   },
-            { baseY: 0.45, color: [96, 165, 250],  alpha: 0.18, freqs: [0.004, 0.005], amps: [40, 30], speeds: [0.0015, 0.0025], offset: 1.5 },
-            { baseY: 0.65, color: [120, 40, 220],  alpha: 0.15, freqs: [0.002, 0.009], amps: [55, 20], speeds: [0.001, 0.004],  offset: 3.0 },
-        ]
-
-        // ── Flow field (Perlin noise cosmic dust) ──
         const noise3D = createNoise3D()
-        const FLOW_PARTICLE_COUNT = 150
-        const flowParticles = Array.from({ length: FLOW_PARTICLE_COUNT }, () => ({
-            x: Math.random() * 800,
-            y: Math.random() * 220,
-            speed: 0.3 + Math.random() * 0.5,
-            size: 0.4 + Math.random() * 0.8,
-            color: Math.random() > 0.5
-                ? [86, 13, 248]   // purple
-                : [96, 165, 250], // blue
-        }))
-        let flowTime = 0
-        let flowInitialized = false
+
+        // Grid parameters — reduce on mobile
+        const isMobile = window.innerWidth < 640
+        const COLS = isMobile ? 20 : 40
+        const ROWS = isMobile ? 8 : 15
+        const SPACING = 25
+
+        // Perspective
+        const PERSPECTIVE = 300
+        const TILT = 0.3
+
+        function project(wx, wy, wz, centerX, centerY) {
+            const cosT = Math.cos(TILT), sinT = Math.sin(TILT)
+            const ry = wy * cosT - wz * sinT
+            const rz = wy * sinT + wz * cosT
+            const scale = PERSPECTIVE / (rz + PERSPECTIVE)
+            return { x: centerX + wx * scale, y: centerY + ry * scale, scale }
+        }
+
+        // Build grid points
+        const grid = []
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                grid.push({
+                    wx: (c - COLS / 2) * SPACING,
+                    wz: r * SPACING + 50,
+                    wy: 0,
+                    projX: 0, projY: 0, depth: 0,
+                })
+            }
+        }
+
+        // Circuit node positions (in canvas-relative %) mapped to SVG scene
+        // These are approximate screen positions for the 3 nodes
+        let time = 0
+
+        // Energy pulse tracking — compute from cycle timing
+        const CYCLE_DUR = 12 // seconds
+        let pulseX = 0, pulseY = 0, pulseActive = false
+
+        function getNodeScreenPositions(w, h) {
+            // Map SVG viewBox positions to canvas coords
+            const svgEl = canvas.parentElement?.querySelector('svg')
+            if (svgEl) {
+                const svgRect = svgEl.getBoundingClientRect()
+                const secRect = canvas.parentElement.getBoundingClientRect()
+                const sx = svgRect.width / 800
+                const sy = svgRect.height / 220
+                const offX = svgRect.left - secRect.left
+                const offY = svgRect.top - secRect.top
+                return [
+                    { x: offX + 150 * sx, y: offY + 110 * sy },  // Demonstrate
+                    { x: offX + 400 * sx, y: offY + 100 * sy },  // Learn
+                    { x: offX + 650 * sx, y: offY + 110 * sy },  // Automate
+                ]
+            }
+            return [
+                { x: w * 0.2, y: h * 0.3 },
+                { x: w * 0.5, y: h * 0.28 },
+                { x: w * 0.8, y: h * 0.3 },
+            ]
+        }
+
+        // Quadratic bezier point interpolation
+        function quadBezier(t, p0x, p0y, cpx, cpy, p1x, p1y) {
+            const u = 1 - t
+            return {
+                x: u * u * p0x + 2 * u * t * cpx + t * t * p1x,
+                y: u * u * p0y + 2 * u * t * cpy + t * t * p1y,
+            }
+        }
 
         const draw = () => {
             const w = canvas.width / dpr, h = canvas.height / dpr
             ctx.clearRect(0, 0, w, h)
 
-            // ── Aurora wisps (drawn before stars so stars appear on top) ──
-            for (const wisp of wisps) {
-                const baseY = wisp.baseY * h
-                const [r, g, b] = wisp.color
-                const ribbonHeight = (wisp.amps[0] + wisp.amps[1]) * 2
+            const nodes = getNodeScreenPositions(w, h)
+            const [attrL, attrC, attrR] = nodes
 
-                ctx.beginPath()
-                for (let x = 0; x <= w; x += 3) {
-                    const y = baseY
-                        + wisp.amps[0] * Math.sin(wisp.freqs[0] * x + wisp.offset + wispTime * wisp.speeds[0])
-                        + wisp.amps[1] * Math.sin(wisp.freqs[1] * x + wisp.offset + wispTime * wisp.speeds[1])
-                    if (x === 0) ctx.moveTo(x, y)
-                    else ctx.lineTo(x, y)
+            // Compute energy pulse position from cycle time
+            const cycleTime = (time * 0.016) % CYCLE_DUR  // ~60fps, time in frames → seconds
+            pulseActive = false
+            if (cycleTime < 3) {
+                // D → L
+                const t = cycleTime / 3
+                const pt = quadBezier(t, attrL.x, attrL.y, (attrL.x + attrC.x) / 2, Math.min(attrL.y, attrC.y) - 30, attrC.x, attrC.y)
+                pulseX = pt.x; pulseY = pt.y; pulseActive = true
+            } else if (cycleTime >= 5.5 && cycleTime < 8.5) {
+                // L → A
+                const t = (cycleTime - 5.5) / 3
+                const pt = quadBezier(t, attrC.x, attrC.y, (attrC.x + attrR.x) / 2, Math.min(attrC.y, attrR.y) - 30, attrR.x, attrR.y)
+                pulseX = pt.x; pulseY = pt.y; pulseActive = true
+            } else if (cycleTime >= 8.5 && cycleTime < 11.5) {
+                // Return A → D
+                const t = (cycleTime - 8.5) / 3
+                const pt = quadBezier(t, attrR.x, attrR.y + 20, (attrL.x + attrR.x) / 2, Math.max(attrL.y, attrR.y) + 60, attrL.x, attrL.y + 20)
+                pulseX = pt.x; pulseY = pt.y; pulseActive = true
+            }
+
+            // Update grid heights
+            for (let i = 0; i < grid.length; i++) {
+                const p = grid[i]
+                // Base noise deformation
+                p.wy = noise3D(p.wx * 0.008, p.wz * 0.008, time * 0.005) * 12
+
+                // Project first to get screen coords for reactive zones
+                const proj = project(p.wx, p.wy, p.wz, w / 2, h * 0.6)
+                p.projX = proj.x
+                p.projY = proj.y
+                p.depth = proj.scale
+            }
+
+            // Second pass: apply reactive zones using projected positions
+            for (let i = 0; i < grid.length; i++) {
+                const p = grid[i]
+                let uplift = 0
+
+                // Uplift near circuit nodes
+                for (const attr of [attrL, attrC, attrR]) {
+                    const dx = p.projX - attr.x, dy = p.projY - attr.y
+                    const dist = Math.sqrt(dx * dx + dy * dy)
+                    if (dist < 100) uplift += (1 - dist / 100) * 8
                 }
-                // Close path downward to fill below the wave
-                ctx.lineTo(w, baseY + ribbonHeight)
-                ctx.lineTo(0, baseY + ribbonHeight)
-                ctx.closePath()
 
-                const grad = ctx.createLinearGradient(0, baseY - ribbonHeight, 0, baseY + ribbonHeight)
-                grad.addColorStop(0,   `rgba(${r},${g},${b},0)`)
-                grad.addColorStop(0.3, `rgba(${r},${g},${b},${wisp.alpha})`)
-                grad.addColorStop(1,   `rgba(${r},${g},${b},0)`)
+                // Energy pulse ripple
+                if (pulseActive) {
+                    const dx = p.projX - pulseX, dy = p.projY - pulseY
+                    const dist = Math.sqrt(dx * dx + dy * dy)
+                    if (dist < 200) {
+                        const wave = Math.sin(dist * 0.05 - time * 0.15) * (1 - dist / 200) * 6
+                        uplift += wave
+                    }
+                }
 
-                ctx.fillStyle = grad
-                ctx.fill()
+                if (uplift !== 0) {
+                    p.wy -= uplift
+                    const proj = project(p.wx, p.wy, p.wz, w / 2, h * 0.6)
+                    p.projX = proj.x
+                    p.projY = proj.y
+                    p.depth = proj.scale
+                }
             }
 
-            wispTime++
+            // Draw grid lines
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const i = r * COLS + c
+                    const p = grid[i]
+                    const baseAlpha = Math.min(p.depth * 0.5, 0.4)
 
-            for (const s of stars) {
-                s.z -= s.speed
-                if (s.z <= 0) { s.z = 1; s.x = Math.random(); s.y = Math.random() }
-                const sx = (s.x - 0.5) / s.z * w * 0.4 + w * 0.5
-                const sy = (s.y - 0.5) / s.z * h * 0.4 + h * 0.5
-                const r = (1 - s.z) * 1.5, a = (1 - s.z) * 0.6
-                const len = (1 - s.z) * 6
-                const dx = (s.x - 0.5), dy = (s.y - 0.5)
-                const mag = Math.sqrt(dx * dx + dy * dy) || 1
-                ctx.beginPath()
-                ctx.moveTo(sx, sy)
-                ctx.lineTo(sx + dx / mag * len, sy + dy / mag * len)
-                ctx.strokeStyle = `rgba(180, 200, 255, ${a})`
-                ctx.lineWidth = r * 0.5
-                ctx.stroke()
-                ctx.beginPath()
-                ctx.arc(sx, sy, r, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(200, 220, 255, ${a})`
-                ctx.fill()
-            }
-            // Move constellation nodes
-            for (const n of constellationNodes) {
-                n.x += n.vx
-                n.y += n.vy
-                // Bounce off edges gently
-                if (n.x < 0 || n.x > w) n.vx *= -1
-                if (n.y < 0 || n.y > h) n.vy *= -1
-                n.x = Math.max(0, Math.min(w, n.x))
-                n.y = Math.max(0, Math.min(h, n.y))
-            }
+                    // Brighten near nodes
+                    let nearNode = false
+                    for (const attr of [attrL, attrC, attrR]) {
+                        const dx = p.projX - attr.x, dy = p.projY - attr.y
+                        if (dx * dx + dy * dy < 80 * 80) { nearNode = true; break }
+                    }
+                    const alpha = nearNode ? Math.min(baseAlpha * 2.5, 0.6) : baseAlpha
 
-            // Draw connections (quadratic Bezier curves)
-            for (let i = 0; i < constellationNodes.length; i++) {
-                for (let j = i + 1; j < constellationNodes.length; j++) {
-                    const a = constellationNodes[i], b = constellationNodes[j]
-                    const dx = a.x - b.x, dy = a.y - b.y
-                    const distSq = dx * dx + dy * dy
-                    if (distSq < CONNECT_THRESHOLD_SQ) {
-                        const dist = Math.sqrt(distSq)
-                        const alpha = 0.25 * (1 - dist / CONNECT_THRESHOLD)
-                        const mx = (a.x + b.x) / 2
-                        const my = (a.y + b.y) / 2 - dist * 0.1 // slight upward arc
+                    // Color: purple (near) → blue (far) based on row
+                    const rowT = r / ROWS
+                    const cr = Math.round(86 + (96 - 86) * rowT)
+                    const cg = Math.round(13 + (165 - 13) * rowT)
+                    const cb = Math.round(248 + (250 - 248) * rowT)
+                    const lineColor = `rgba(${cr}, ${cg}, ${cb}, ${alpha})`
+                    const lineWidth = 0.5 + p.depth * 0.5
+
+                    // Horizontal line to right neighbor
+                    if (c < COLS - 1) {
+                        const right = grid[i + 1]
                         ctx.beginPath()
-                        ctx.moveTo(a.x, a.y)
-                        ctx.quadraticCurveTo(mx, my, b.x, b.y)
-                        ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`
-                        ctx.lineWidth = 1.0
+                        ctx.moveTo(p.projX, p.projY)
+                        ctx.lineTo(right.projX, right.projY)
+                        ctx.strokeStyle = lineColor
+                        ctx.lineWidth = lineWidth
+                        ctx.stroke()
+                    }
+                    // Vertical line to next row
+                    if (r < ROWS - 1) {
+                        const below = grid[i + COLS]
+                        ctx.beginPath()
+                        ctx.moveTo(p.projX, p.projY)
+                        ctx.lineTo(below.projX, below.projY)
+                        ctx.strokeStyle = lineColor
+                        ctx.lineWidth = lineWidth
                         ctx.stroke()
                     }
                 }
             }
 
-            // Draw nodes with subtle glow
-            for (const n of constellationNodes) {
+            // Draw intersection dots
+            for (const p of grid) {
+                const dotAlpha = Math.min(p.depth * 0.3, 0.35)
                 ctx.beginPath()
-                ctx.arc(n.x, n.y, n.size * 2.5, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(96, 165, 250, 0.06)'
-                ctx.fill()
-                ctx.beginPath()
-                ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(200, 220, 255, 0.4)'
+                ctx.arc(p.projX, p.projY, p.depth * 1.5, 0, Math.PI * 2)
+                ctx.fillStyle = `rgba(96, 165, 250, ${dotAlpha})`
                 ctx.fill()
             }
 
-            // ── Flow field particles with mascot gravity ──
-            // On first frame, scatter particles across actual canvas dimensions
-            if (!flowInitialized) {
-                for (const p of flowParticles) {
-                    p.x = Math.random() * w
-                    p.y = Math.random() * h
-                }
-                flowInitialized = true
-            }
-
-            // Map SVG mascot orbit centers to canvas coords
-            // SVG viewBox is 800x220, rendered centered with max-width 650px
-            // The SVG sits roughly in the upper portion of the section
-            const svgEl = canvasRef.current?.parentElement?.querySelector('svg')
-            let attrL = { x: w * 0.3, y: h * 0.3 }
-            let attrR = { x: w * 0.7, y: h * 0.3 }
-            if (svgEl) {
-                const svgRect = svgEl.getBoundingClientRect()
-                const secRect = canvas.parentElement.getBoundingClientRect()
-                // Map SVG viewBox coords (240,100) and (560,100) to canvas coords
-                const sx = svgRect.width / 800
-                const offX = svgRect.left - secRect.left
-                const offY = svgRect.top - secRect.top
-                attrL = { x: offX + 240 * sx, y: offY + 100 * (svgRect.height / 220) }
-                attrR = { x: offX + 560 * sx, y: offY + 100 * (svgRect.height / 220) }
-            }
-            const ATTRACT_RADIUS = 120
-            const ATTRACT_STRENGTH = 0.4
-
-            const particleCount = w < 640 ? Math.floor(FLOW_PARTICLE_COUNT / 2) : FLOW_PARTICLE_COUNT
-            const FLOW_SCALE = 0.003
-            for (let i = 0; i < particleCount; i++) {
-                const p = flowParticles[i]
-                const angle = noise3D(p.x * FLOW_SCALE, p.y * FLOW_SCALE, flowTime) * Math.PI * 2
-                let vx = Math.cos(angle) * p.speed
-                let vy = Math.sin(angle) * p.speed
-
-                // Gravitational orbit around mascot centers
-                for (const attr of [attrL, attrR]) {
-                    const dx = attr.x - p.x
-                    const dy = attr.y - p.y
-                    const dist = Math.sqrt(dx * dx + dy * dy)
-                    if (dist < ATTRACT_RADIUS && dist > 5) {
-                        const force = ATTRACT_STRENGTH * (1 - dist / ATTRACT_RADIUS)
-                        // Tangential force (orbit) + slight inward pull
-                        vx += (-dy / dist * force * 0.8) + (dx / dist * force * 0.2)
-                        vy += (dx / dist * force * 0.8) + (dy / dist * force * 0.2)
-                    }
-                }
-
-                p.x += vx
-                p.y += vy
-
-                // Wrap around edges
-                if (p.x < 0) p.x = w
-                if (p.x > w) p.x = 0
-                if (p.y < 0) p.y = h
-                if (p.y > h) p.y = 0
-
-                // Brighter near attractors
-                let nearAttr = false
-                for (const attr of [attrL, attrR]) {
-                    const dx = attr.x - p.x, dy = attr.y - p.y
-                    if (dx * dx + dy * dy < ATTRACT_RADIUS * ATTRACT_RADIUS) { nearAttr = true; break }
-                }
-                const pAlpha = nearAttr ? 0.35 : 0.2
-                ctx.beginPath()
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(${p.color[0]}, ${p.color[1]}, ${p.color[2]}, ${pAlpha})`
-                ctx.fill()
-            }
-            flowTime += 0.0008
-
+            time++
             raf = requestAnimationFrame(draw)
         }
 
-        if (!mq.matches) draw()
-        else {
+        if (!mq.matches) {
+            draw()
+        } else {
+            // Reduced motion: draw one static frame of the mesh
             const w = canvas.width / dpr, h = canvas.height / dpr
-            for (const s of stars) {
-                ctx.beginPath()
-                ctx.arc(s.x * w, s.y * h, 0.7, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(200, 220, 255, 0.25)'
-                ctx.fill()
+            for (let i = 0; i < grid.length; i++) {
+                const p = grid[i]
+                p.wy = noise3D(p.wx * 0.008, p.wz * 0.008, 0) * 12
+                const proj = project(p.wx, p.wy, p.wz, w / 2, h * 0.6)
+                p.projX = proj.x; p.projY = proj.y; p.depth = proj.scale
             }
-            // Static constellation (no animation for reduced-motion)
-            for (let i = 0; i < constellationNodes.length; i++) {
-                for (let j = i + 1; j < constellationNodes.length; j++) {
-                    const a = constellationNodes[i], b = constellationNodes[j]
-                    const dx = a.x - b.x, dy = a.y - b.y
-                    const distSq = dx * dx + dy * dy
-                    if (distSq < CONNECT_THRESHOLD_SQ) {
-                        const dist = Math.sqrt(distSq)
-                        const alpha = 0.25 * (1 - dist / CONNECT_THRESHOLD)
-                        const mx = (a.x + b.x) / 2
-                        const my = (a.y + b.y) / 2 - dist * 0.1
-                        ctx.beginPath()
-                        ctx.moveTo(a.x, a.y)
-                        ctx.quadraticCurveTo(mx, my, b.x, b.y)
-                        ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`
-                        ctx.lineWidth = 1.0
-                        ctx.stroke()
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const i = r * COLS + c
+                    const p = grid[i]
+                    const alpha = Math.min(p.depth * 0.4, 0.3)
+                    const rowT = r / ROWS
+                    const cr = Math.round(86 + 10 * rowT)
+                    const cg = Math.round(13 + 152 * rowT)
+                    const cb = Math.round(248 + 2 * rowT)
+                    const col = `rgba(${cr}, ${cg}, ${cb}, ${alpha})`
+                    if (c < COLS - 1) {
+                        const right = grid[i + 1]
+                        ctx.beginPath(); ctx.moveTo(p.projX, p.projY); ctx.lineTo(right.projX, right.projY)
+                        ctx.strokeStyle = col; ctx.lineWidth = 0.6; ctx.stroke()
+                    }
+                    if (r < ROWS - 1) {
+                        const below = grid[i + COLS]
+                        ctx.beginPath(); ctx.moveTo(p.projX, p.projY); ctx.lineTo(below.projX, below.projY)
+                        ctx.strokeStyle = col; ctx.lineWidth = 0.6; ctx.stroke()
                     }
                 }
             }
-            for (const n of constellationNodes) {
+            for (const p of grid) {
                 ctx.beginPath()
-                ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(200, 220, 255, 0.4)'
+                ctx.arc(p.projX, p.projY, p.depth * 1.2, 0, Math.PI * 2)
+                ctx.fillStyle = `rgba(96, 165, 250, ${p.depth * 0.25})`
                 ctx.fill()
             }
         }
 
         return () => { window.removeEventListener('resize', resize); if (raf) cancelAnimationFrame(raf) }
     }, [isVisible])
+
+    const gear1 = gearPath(8, 6, 10)
+    const gear2 = gearPath(6, 4.5, 7)
 
     return (
         <div ref={sectionRef} className={`${styles.buildSection} ${isVisible ? styles.buildVisible : ''}`}>
@@ -333,203 +339,170 @@ function BuildForYouSection() {
             <svg className={styles.buildSvg} viewBox="0 0 800 220" fill="none"
                 onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                 <defs>
-                    {/* Elliptical orbit paths — rx=40 ry=22, gentle and unhurried */}
-                    <path id="orbitL" d="M280 100 A40 22 0 0 1 200 100 A40 22 0 0 1 280 100" />
-                    <path id="orbitR" d="M600 100 A40 22 0 0 0 520 100 A40 22 0 0 0 600 100" />
-                    {/* Energy trail path */}
-                    <path id="trailPath" d="M240 100 Q400 70 560 100" />
+                    {/* Circuit paths */}
+                    <path id="pathDL" d="M170 110 Q285 55 400 95" />
+                    <path id="pathLA" d="M400 95 Q515 55 630 110" />
+                    <path id="pathReturn" d="M630 130 Q400 185 170 130" />
 
-                    {/* ── Glow / bloom filters ── */}
-
-                    {/* Blue glow for left (Demonstrate) pair */}
-                    <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
-                        {/* Wide outer halo */}
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blurWide">
-                            <animate attributeName="stdDeviation" values="7;10;7" dur="4s" repeatCount="indefinite" />
-                        </feGaussianBlur>
-                        <feColorMatrix in="blurWide" type="matrix"
-                            values="0 0 0 0 0.376
-                                    0 0 0 0 0.647
-                                    0 0 0 0 0.980
-                                    0 0 0 0.2 0"
-                            result="colorWide" />
-                        {/* Tight inner glow */}
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blurTight">
-                            <animate attributeName="stdDeviation" values="2;4;2" dur="4s" repeatCount="indefinite" />
-                        </feGaussianBlur>
-                        <feColorMatrix in="blurTight" type="matrix"
-                            values="0 0 0 0 0.376
-                                    0 0 0 0 0.647
-                                    0 0 0 0 0.980
-                                    0 0 0 0.45 0"
-                            result="colorTight" />
-                        <feMerge>
-                            <feMergeNode in="colorWide" />
-                            <feMergeNode in="colorTight" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                    </filter>
-
-                    {/* Purple glow for right (Automate) pair */}
-                    <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%">
-                        {/* Wide outer halo */}
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blurWide">
-                            <animate attributeName="stdDeviation" values="6;9;6" dur="3.5s" repeatCount="indefinite" />
-                        </feGaussianBlur>
-                        <feColorMatrix in="blurWide" type="matrix"
-                            values="0 0 0 0 0.337
-                                    0 0 0 0 0.051
-                                    0 0 0 0 0.973
-                                    0 0 0 0.18 0"
-                            result="colorWide" />
-                        {/* Tight inner glow */}
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blurTight">
-                            <animate attributeName="stdDeviation" values="2;4;2" dur="3.5s" repeatCount="indefinite" />
-                        </feGaussianBlur>
-                        <feColorMatrix in="blurTight" type="matrix"
-                            values="0 0 0 0 0.337
-                                    0 0 0 0 0.051
-                                    0 0 0 0 0.973
-                                    0 0 0 0.5 0"
-                            result="colorTight" />
-                        <feMerge>
-                            <feMergeNode in="colorWide" />
-                            <feMergeNode in="colorTight" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                    </filter>
-
-                    {/* Trail glow */}
-                    <filter id="glow-trail" x="-20%" y="-200%" width="140%" height="500%">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur">
-                            <animate attributeName="stdDeviation" values="2;3.5;2" dur="4s" repeatCount="indefinite" />
+                    {/* Energy glow filter */}
+                    <filter id="glow-energy" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur">
+                            <animate attributeName="stdDeviation" values="3;5;3" dur="4s" repeatCount="indefinite" />
                         </feGaussianBlur>
                         <feColorMatrix in="blur" type="matrix"
-                            values="0 0 0 0 0.376
-                                    0 0 0 0 0.647
-                                    0 0 0 0 0.980
-                                    0 0 0 0.35 0"
+                            values="0 0 0 0 0
+                                    0 0 0 0 0.9
+                                    0 0 0 0 1
+                                    0 0 0 0.5 0"
                             result="colorBlur" />
                         <feMerge>
                             <feMergeNode in="colorBlur" />
                             <feMergeNode in="SourceGraphic" />
                         </feMerge>
                     </filter>
+
+                    {/* Mascot glow filter */}
+                    <filter id="glow-mascot" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blurWide">
+                            <animate attributeName="stdDeviation" values="5;8;5" dur="4s" repeatCount="indefinite" />
+                        </feGaussianBlur>
+                        <feColorMatrix in="blurWide" type="matrix"
+                            values="0 0 0 0 0.337
+                                    0 0 0 0 0.051
+                                    0 0 0 0 0.973
+                                    0 0 0 0.2 0"
+                            result="colorWide" />
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blurTight" />
+                        <feColorMatrix in="blurTight" type="matrix"
+                            values="0 0 0 0 0.376
+                                    0 0 0 0 0.647
+                                    0 0 0 0 0.980
+                                    0 0 0 0.4 0"
+                            result="colorTight" />
+                        <feMerge>
+                            <feMergeNode in="colorWide" />
+                            <feMergeNode in="colorTight" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
                 </defs>
 
-                {/* Energy trail with flowing dashes */}
-                <use href="#trailPath" className={styles.pathLine} filter="url(#glow-trail)" />
+                {/* ── Circuit paths with flowing dashes ── */}
+                <use href="#pathDL" className={styles.pathLine} filter="url(#glow-energy)" />
+                <use href="#pathLA" className={styles.pathLine} filter="url(#glow-energy)" />
+                <use href="#pathReturn" className={styles.pathLineReturn} />
 
-                {/* Particles flowing along the trail */}
-                <g filter="url(#glow-trail)">
-                {[0, 1, 2].map(i => (
-                    <circle key={i} r="1.5" className={styles.particle}>
-                        <animateMotion dur="7s" repeatCount="indefinite" begin={`${i * -2.33}s`}>
-                            <mpath href="#trailPath" />
-                        </animateMotion>
-                    </circle>
-                ))}
-                </g>
-
-                {/* ── Left pair: Demonstrate ── */}
-                <g filter="url(#glow-blue)">
-
-                {/* Cursor (leader) — orbits CW, 16s period */}
-                <g>
-                    <animateMotion dur="16s" repeatCount="indefinite">
-                        <mpath href="#orbitL" />
+                {/* ── Energy pulse: D→L ── */}
+                <circle r="3" fill="cyan" opacity="0" filter="url(#glow-energy)">
+                    <animateMotion id="animDL" dur="3s" begin="0s; animReturn.end + 0.5s" fill="freeze">
+                        <mpath href="#pathDL" />
                     </animateMotion>
-                    <g transform="scale(0.8)">
+                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="3s"
+                        begin="0s; animReturn.end + 0.5s" />
+                </circle>
+
+                {/* ── Energy pulse: L→A ── */}
+                <circle r="3" fill="cyan" opacity="0" filter="url(#glow-energy)">
+                    <animateMotion id="animLA" dur="3s" begin="animDL.end + 2.5s" fill="freeze">
+                        <mpath href="#pathLA" />
+                    </animateMotion>
+                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="3s"
+                        begin="animDL.end + 2.5s" />
+                </circle>
+
+                {/* ── Return pulse: A→D (dim) ── */}
+                <circle r="2" fill="rgba(86,13,248,0.6)" opacity="0">
+                    <animateMotion id="animReturn" dur="3s" begin="animLA.end" fill="freeze">
+                        <mpath href="#pathReturn" />
+                    </animateMotion>
+                    <animate attributeName="opacity" values="0;0.4;0.4;0" keyTimes="0;0.1;0.8;1" dur="3s"
+                        begin="animLA.end" />
+                </circle>
+
+                {/* ── Demonstrate node (left cursor) ── */}
+                <g transform="translate(150, 110)">
+                    <animateTransform attributeName="transform" type="translate" values="150,110; 150,107; 150,110" dur="5s" repeatCount="indefinite" />
+                    <g transform="scale(1.0)">
                         <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
-                            fill="rgba(255,255,255,0.85)" stroke="rgba(86,13,248,0.5)" strokeWidth="0.8" />
+                            fill="rgba(255,255,255,0.9)" stroke="rgba(86,13,248,0.6)" strokeWidth="0.8" />
                     </g>
-                    {/* Click ripple pulses every 6s */}
-                    <circle r="4" fill="none" stroke="rgba(96,165,250,0.3)" strokeWidth="1">
-                        <animate attributeName="r" values="4;14;14" keyTimes="0;0.08;1" dur="6s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.4;0;0" keyTimes="0;0.08;1" dur="6s" repeatCount="indefinite" />
+                    {/* REC dot */}
+                    <circle cx="12" cy="-8" r="2.5" fill="#ef4444">
+                        <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                    {/* Click ripple synced to pulse emission */}
+                    <circle r="4" fill="none" stroke="rgba(96,165,250,0.4)" strokeWidth="1">
+                        <animate attributeName="r" values="4;18;18" keyTimes="0;0.15;1" dur="12s"
+                            begin="0s; animReturn.end + 0.5s" />
+                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.15;1" dur="12s"
+                            begin="0s; animReturn.end + 0.5s" />
                     </circle>
                 </g>
 
-                {/* Mascot (follower) — same orbit, 180° offset */}
-                <g>
-                    <animateMotion dur="16s" repeatCount="indefinite" begin="-8s">
-                        <mpath href="#orbitL" />
-                    </animateMotion>
-                    <g transform="scale(1.5)">
+                {/* ── Learn node (center mascot with gears) ── */}
+                <g transform="translate(400, 100)" filter="url(#glow-mascot)">
+                    {/* Mascot body */}
+                    <g transform="scale(1.8)">
                         <path d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
-                            fill="rgba(96,165,250,0.15)" stroke="rgba(96,165,250,0.5)" strokeWidth="1" />
-                        <g className={styles.blinkA}>
-                            <rect ref={eyeL0Ref} x="-8" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
-                            <rect ref={eyeL1Ref} x="4" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                            fill="rgba(86, 13, 248, 0.15)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="0.8" />
+                        {/* Eyes */}
+                        <g className={styles.blinkC}>
+                            <rect ref={eyeC0Ref} x="-8" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                            <rect ref={eyeC1Ref} x="4" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
                         </g>
+                        {/* Smile */}
                         <path d="M-5 6 Q0 10 5 6" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.2" strokeLinecap="round" />
+                        {/* Antenna */}
                         <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(96,165,250,0.5)" strokeWidth="1" />
                         <circle cx="0" cy="-15" r="2" fill="rgba(96,165,250,0.7)" className={styles.antennaPulse} />
                     </g>
-                </g>
-
-                </g>{/* end glow-blue */}
-
-                <text x="240" y="170" className={styles.nodeLabel}>Demonstrate</text>
-
-                {/* ── Right pair: Automate ── */}
-                <g filter="url(#glow-purple)">
-
-                {/* Mascot (leader) — orbits CCW, 18.5s period */}
-                <g>
-                    <animateMotion dur="18.5s" repeatCount="indefinite">
-                        <mpath href="#orbitR" />
-                    </animateMotion>
-                    <g transform="scale(1.5)">
-                        <path d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
-                            fill="rgba(86,13,248,0.2)" stroke="rgba(86,13,248,0.6)" strokeWidth="1" />
-                        <g className={styles.blinkB}>
-                            <rect ref={eyeR0Ref} x="-8" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
-                            <rect ref={eyeR1Ref} x="4" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
-                        </g>
-                        <path d="M-5 6 Q0 10 5 6" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.2" strokeLinecap="round" />
-                        <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(86,13,248,0.6)" strokeWidth="1" />
-                        <circle cx="0" cy="-15" r="2" fill="rgba(86,13,248,0.8)" className={styles.antennaPulse} style={{ animationDelay: '1.5s' }} />
+                    {/* Gear 1 (8 teeth, CW) */}
+                    <g transform="translate(-13, 0)" className={styles.gearCW}>
+                        <path d={gear1} fill="rgba(96, 165, 250, 0.25)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="0.5" />
                     </g>
-                </g>
-
-                {/* Cursor (follower) — same orbit, 180° offset */}
-                <g>
-                    <animateMotion dur="18.5s" repeatCount="indefinite" begin="-9.25s">
-                        <mpath href="#orbitR" />
-                    </animateMotion>
-                    <g transform="scale(0.8)">
-                        <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
-                            fill="rgba(255,255,255,0.85)" stroke="rgba(86,13,248,0.5)" strokeWidth="0.8" />
+                    {/* Gear 2 (6 teeth, CCW, interlocking) */}
+                    <g transform="translate(11, 9)" className={styles.gearCCW}>
+                        <path d={gear2} fill="rgba(96, 165, 250, 0.25)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="0.5" />
                     </g>
-                    {/* Click ripple pulses every 7s */}
-                    <circle r="4" fill="none" stroke="rgba(86,13,248,0.3)" strokeWidth="1">
-                        <animate attributeName="r" values="4;14;14" keyTimes="0;0.07;1" dur="7s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.4;0;0" keyTimes="0;0.07;1" dur="7s" repeatCount="indefinite" />
+                    {/* Processing glow ring — fades in when pulse arrives at Learn */}
+                    <circle r="30" fill="none" stroke="cyan" strokeWidth="1" opacity="0">
+                        <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.1;0.8;1" dur="2.5s"
+                            begin="animDL.end" fill="freeze" />
+                        <animate attributeName="r" values="25;35" dur="2.5s"
+                            begin="animDL.end" fill="freeze" />
                     </circle>
                 </g>
 
-                </g>{/* end glow-purple */}
+                {/* ── Automate node (right cursor) ── */}
+                <g transform="translate(650, 110)">
+                    <animateTransform attributeName="transform" type="translate" values="650,110; 650,107; 650,110" dur="4.5s" repeatCount="indefinite" />
+                    <g transform="scale(1.0)">
+                        <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
+                            fill="rgba(255,255,255,0.9)" stroke="rgba(96,165,250,0.6)" strokeWidth="0.8" />
+                    </g>
+                    {/* Play/lightning icon */}
+                    <g transform="translate(12, -8)">
+                        <path d="M-1.5 -3 L2 0 L-1.5 3 Z" fill="rgba(96,165,250,0.9)" stroke="none" />
+                    </g>
+                    {/* Click ripple synced to pulse arrival */}
+                    <circle r="4" fill="none" stroke="rgba(86,13,248,0.4)" strokeWidth="1">
+                        <animate attributeName="r" values="4;18;18" keyTimes="0;0.15;1" dur="12s"
+                            begin="animLA.end" />
+                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.15;1" dur="12s"
+                            begin="animLA.end" />
+                    </circle>
+                </g>
 
-                <text x="560" y="170" className={styles.nodeLabel}>Automate</text>
+                {/* ── Labels ── */}
+                <text x="150" y="175" className={styles.nodeLabel}>Demonstrate</text>
+                <text x="400" y="180" className={styles.nodeLabel}>Learn</text>
+                <text x="650" y="175" className={styles.nodeLabel}>Automate</text>
             </svg>
 
-            <svg width="0" height="0" style={{ position: 'absolute' }}>
-                <defs>
-                    <filter id="shimmer" x="-5%" y="-5%" width="110%" height="110%">
-                        <feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="2" seed="1" result="noise">
-                            <animate attributeName="baseFrequency" values="0.012;0.018;0.012" dur="8s" repeatCount="indefinite" />
-                        </feTurbulence>
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G">
-                            <animate attributeName="scale" values="2;4;2" dur="6s" repeatCount="indefinite" />
-                        </feDisplacementMap>
-                    </filter>
-                </defs>
-            </svg>
             <div className={styles.buildContent}>
                 <h2 className={styles.buildTitle}>Let us build for you</h2>
                 <p className={styles.buildDesc}>
-                    If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.
+                    If OpenAdapt doesn&#39;t fully automate your workflow out of the box, we&#39;ll work with you to fix that.
                 </p>
                 <Link
                     className={styles.buildBtn}
