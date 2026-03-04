@@ -126,7 +126,7 @@
 
 /* Return path — dimmer */
 .pathLineReturn {
-    stroke: rgba(86, 13, 248, 0.12);
+    stroke: rgba(86, 13, 248, 0.18);
     stroke-width: 1;
     fill: none;
     stroke-dasharray: 6 8;

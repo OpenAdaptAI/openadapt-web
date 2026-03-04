@@ -338,6 +338,43 @@ function BuildForYouSection() {
                 }
             }
 
+            // ── Energy drip: vertical beams from active nodes into the mesh ──
+            for (let n = 0; n < 3; n++) {
+                if (nodeGlow[n] > 0.05) {
+                    const nx = nodesArr[n].x
+                    const ny = nodesArr[n].y
+                    const beamAlpha = nodeGlow[n] * 0.3
+                    const grad = ctx.createLinearGradient(nx, ny, nx, ny + h * 0.4)
+                    grad.addColorStop(0, `rgba(0, 220, 255, ${beamAlpha})`)
+                    grad.addColorStop(0.3, `rgba(96, 165, 250, ${beamAlpha * 0.5})`)
+                    grad.addColorStop(1, 'rgba(96, 165, 250, 0)')
+                    ctx.beginPath()
+                    ctx.moveTo(nx - 3, ny)
+                    ctx.lineTo(nx + 3, ny)
+                    ctx.lineTo(nx + 1, ny + h * 0.4)
+                    ctx.lineTo(nx - 1, ny + h * 0.4)
+                    ctx.closePath()
+                    ctx.fillStyle = grad
+                    ctx.fill()
+                }
+            }
+            // Energy drip from traveling pulse
+            if (pulseActive) {
+                const beamAlpha = 0.2
+                const grad = ctx.createLinearGradient(pulseX, pulseY, pulseX, pulseY + h * 0.3)
+                grad.addColorStop(0, `rgba(0, 220, 255, ${beamAlpha})`)
+                grad.addColorStop(0.5, `rgba(96, 165, 250, ${beamAlpha * 0.3})`)
+                grad.addColorStop(1, 'rgba(96, 165, 250, 0)')
+                ctx.beginPath()
+                ctx.moveTo(pulseX - 2, pulseY)
+                ctx.lineTo(pulseX + 2, pulseY)
+                ctx.lineTo(pulseX + 0.5, pulseY + h * 0.3)
+                ctx.lineTo(pulseX - 0.5, pulseY + h * 0.3)
+                ctx.closePath()
+                ctx.fillStyle = grad
+                ctx.fill()
+            }
+
             // Draw intersection dots (brighter near active nodes / pulse)
             for (const p of grid) {
                 let dotBrightness = 0
@@ -468,6 +505,60 @@ function BuildForYouSection() {
                             <feMergeNode in="SourceGraphic" />
                         </feMerge>
                     </filter>
+
+                    {/* Blue glow for Demonstrate cursor */}
+                    <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blurWide">
+                            <animate attributeName="stdDeviation" values="5;8;5" dur="4s" repeatCount="indefinite" />
+                        </feGaussianBlur>
+                        <feColorMatrix in="blurWide" type="matrix"
+                            values="0 0 0 0 0.376
+                                    0 0 0 0 0.647
+                                    0 0 0 0 0.980
+                                    0 0 0 0.25 0"
+                            result="colorWide" />
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blurTight">
+                            <animate attributeName="stdDeviation" values="2;3.5;2" dur="4s" repeatCount="indefinite" />
+                        </feGaussianBlur>
+                        <feColorMatrix in="blurTight" type="matrix"
+                            values="0 0 0 0 0.376
+                                    0 0 0 0 0.647
+                                    0 0 0 0 0.980
+                                    0 0 0 0.5 0"
+                            result="colorTight" />
+                        <feMerge>
+                            <feMergeNode in="colorWide" />
+                            <feMergeNode in="colorTight" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+
+                    {/* Purple glow for Automate cursor */}
+                    <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blurWide">
+                            <animate attributeName="stdDeviation" values="4;7;4" dur="3.5s" repeatCount="indefinite" />
+                        </feGaussianBlur>
+                        <feColorMatrix in="blurWide" type="matrix"
+                            values="0 0 0 0 0.337
+                                    0 0 0 0 0.051
+                                    0 0 0 0 0.973
+                                    0 0 0 0.22 0"
+                            result="colorWide" />
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blurTight">
+                            <animate attributeName="stdDeviation" values="2;3.5;2" dur="3.5s" repeatCount="indefinite" />
+                        </feGaussianBlur>
+                        <feColorMatrix in="blurTight" type="matrix"
+                            values="0 0 0 0 0.337
+                                    0 0 0 0 0.051
+                                    0 0 0 0 0.973
+                                    0 0 0 0.55 0"
+                            result="colorTight" />
+                        <feMerge>
+                            <feMergeNode in="colorWide" />
+                            <feMergeNode in="colorTight" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
                 </defs>
 
                 {/* ── Circuit paths with flowing dashes ── */}
@@ -503,7 +594,7 @@ function BuildForYouSection() {
                 </circle>
 
                 {/* ── Demonstrate node (left cursor) ── */}
-                <g transform="translate(150, 110)">
+                <g transform="translate(150, 110)" filter="url(#glow-blue)">
                     <animateTransform attributeName="transform" type="translate" values="150,110; 150,107; 150,110" dur="5s" repeatCount="indefinite" />
                     <g transform="scale(1.0)">
                         <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
@@ -574,7 +665,7 @@ function BuildForYouSection() {
                 </g>
 
                 {/* ── Automate node (right cursor) ── */}
-                <g transform="translate(650, 110)">
+                <g transform="translate(650, 110)" filter="url(#glow-purple)">
                     <animateTransform attributeName="transform" type="translate" values="650,110; 650,107; 650,110" dur="4.5s" repeatCount="indefinite" />
                     <g transform="scale(1.0)">
                         <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
