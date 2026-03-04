@@ -45,12 +45,6 @@ export default function Footer() {
                 ></iframe>
                 <div className={styles.footerContent}>
                     <div className={`${styles.footerLinks} pt-4`}>
-                        <a
-                            href="https://github.com/OpenAdaptAI/OpenAdapt?tab=readme-ov-file#-open-contract-positions-at-openadaptai"
-                            className={styles.link}
-                        >
-                            Careers
-                        </a>
                         <a onClick={revealEmail} className={styles.link}>
                             Contact
                         </a>
