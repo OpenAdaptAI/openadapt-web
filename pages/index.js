@@ -22,6 +22,22 @@ export default function Home() {
     return (
         <div>
             <MastHead />
+            <div style={{
+                background: 'rgba(0, 0, 30, 1)',
+                textAlign: 'center',
+                padding: '10px 16px',
+                borderTop: '1px solid rgba(86, 13, 248, 0.2)',
+                borderBottom: '1px solid rgba(86, 13, 248, 0.2)',
+            }}>
+                <p style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontSize: '13px',
+                    margin: 0,
+                    letterSpacing: '0.02em',
+                }}>
+                    Warning: OpenAdapt is alpha software and comes with absolutely no warranty of any kind.
+                </p>
+            </div>
             <Developers />
             <EcosystemSection />
             <DevToolsSection />
