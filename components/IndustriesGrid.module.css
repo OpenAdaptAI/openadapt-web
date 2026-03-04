@@ -176,6 +176,17 @@
     max-width: 480px;
 }
 
+.buildContent::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    border: 1px solid rgba(86, 13, 248, 0.3);
+    filter: url(#shimmer);
+    pointer-events: none;
+    z-index: -1;
+}
+
 .buildTitle {
     color: white;
     font-size: 30px;
@@ -237,6 +248,10 @@
     .antennaPulse { animation: none; }
     .particle { display: none; }
     .buildBtn { transition: none; }
+    .buildContent::before { filter: none; }
+    /* Disable SVG filter breathing pulses — static glow only, no SMIL */
+    .buildSvg feGaussianBlur animate,
+    .buildSvg feTurbulence animate { display: none; }
 }
 
 /* Mobile */
