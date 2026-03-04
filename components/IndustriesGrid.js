@@ -203,11 +203,11 @@ function BuildForYouSection() {
             // Lub: strong pulse at cycle start, Dub: lighter pulse at t≈3
             let heartbeat = 0
             if (ct < 1.0) {
-                heartbeat = Math.sin(ct * Math.PI) * Math.exp(-ct * 2.5) * 22
+                heartbeat = Math.sin(ct * Math.PI) * Math.exp(-ct * 2.5) * 12
             }
             const dubT = ct - 3.0
             if (dubT > 0 && dubT < 0.7) {
-                heartbeat += Math.sin(dubT * Math.PI / 0.7) * Math.exp(-dubT * 3) * 15
+                heartbeat += Math.sin(dubT * Math.PI / 0.7) * Math.exp(-dubT * 3) * 7
             }
 
             // ── Sequential node glow ──
@@ -252,8 +252,8 @@ function BuildForYouSection() {
                     const attr = nodesArr[n]
                     const dx = p.projX - attr.x, dy = p.projY - attr.y
                     const dist = Math.sqrt(dx * dx + dy * dy)
-                    const baseUplift = dist < 120 ? (1 - dist / 120) * 8 : 0
-                    const glowUplift = dist < 160 ? (1 - dist / 160) * nodeGlow[n] * 20 : 0
+                    const baseUplift = dist < 100 ? (1 - dist / 100) * 5 : 0
+                    const glowUplift = dist < 120 ? (1 - dist / 120) * nodeGlow[n] * 10 : 0
                     uplift += baseUplift + glowUplift
                 }
 
@@ -261,8 +261,8 @@ function BuildForYouSection() {
                 if (pulseActive) {
                     const dx = p.projX - pulseX, dy = p.projY - pulseY
                     const dist = Math.sqrt(dx * dx + dy * dy)
-                    if (dist < 350) {
-                        const wave = Math.sin(dist * 0.04 - time * 0.2) * (1 - dist / 350) * 22
+                    if (dist < 250) {
+                        const wave = Math.sin(dist * 0.04 - time * 0.2) * (1 - dist / 250) * 10
                         uplift += wave
                     }
                 }
@@ -284,7 +284,7 @@ function BuildForYouSection() {
                 for (let c = 0; c < COLS; c++) {
                     const i = r * COLS + c
                     const p = grid[i]
-                    const baseAlpha = Math.min(p.depth * 0.6, 0.5)
+                    const baseAlpha = Math.min(p.depth * 0.5, 0.4)
 
                     // Compute glow brightness from active nodes
                     let brightness = 0
@@ -292,8 +292,8 @@ function BuildForYouSection() {
                         if (nodeGlow[n] > 0.01) {
                             const dx = p.projX - nodesArr[n].x, dy = p.projY - nodesArr[n].y
                             const dist = Math.sqrt(dx * dx + dy * dy)
-                            if (dist < 160) {
-                                brightness += nodeGlow[n] * (1 - dist / 160) * 1.4
+                            if (dist < 120) {
+                                brightness += nodeGlow[n] * (1 - dist / 120)
                             }
                         }
                     }
@@ -301,7 +301,7 @@ function BuildForYouSection() {
                     if (pulseActive) {
                         const dx = p.projX - pulseX, dy = p.projY - pulseY
                         const dist = Math.sqrt(dx * dx + dy * dy)
-                        if (dist < 160) brightness += (1 - dist / 160) * 1.0
+                        if (dist < 100) brightness += (1 - dist / 100) * 0.6
                     }
                     brightness = Math.min(brightness, 1)
 
@@ -351,7 +351,7 @@ function BuildForYouSection() {
                 if (pulseActive) {
                     const dx = p.projX - pulseX, dy = p.projY - pulseY
                     const dist = Math.sqrt(dx * dx + dy * dy)
-                    if (dist < 130) dotBrightness += (1 - dist / 130) * 1.2
+                    if (dist < 80) dotBrightness += (1 - dist / 80) * 0.8
                 }
                 dotBrightness = Math.min(dotBrightness, 1)
                 const dotAlpha = Math.min(p.depth * 0.3 + dotBrightness * 0.5, 0.8)
@@ -444,7 +444,27 @@ function BuildForYouSection() {
                         </feMerge>
                     </filter>
 
+                    {/* Radial glow gradient for node spotlights */}
+                    <radialGradient id="nodeSpot">
+                        <stop offset="0%" stopColor="white" stopOpacity="0.5" />
+                        <stop offset="50%" stopColor="white" stopOpacity="0.15" />
+                        <stop offset="100%" stopColor="white" stopOpacity="0" />
+                    </radialGradient>
                 </defs>
+
+                {/* ── Node glow spotlights (white, behind everything) ── */}
+                <ellipse cx="150" cy="140" rx="55" ry="50" fill="url(#nodeSpot)" opacity="0.06">
+                    <animate attributeName="opacity" values="0.06;0.22;0.22;0.06" keyTimes="0;0.1;0.6;1" dur="1.5s"
+                        begin="0s; animReturn.end + 0.5s" />
+                </ellipse>
+                <ellipse cx="400" cy="138" rx="60" ry="55" fill="url(#nodeSpot)" opacity="0.06">
+                    <animate attributeName="opacity" values="0.06;0.25;0.25;0.06" keyTimes="0;0.1;0.8;1" dur="1.5s"
+                        begin="animDL.end" />
+                </ellipse>
+                <ellipse cx="650" cy="140" rx="55" ry="50" fill="url(#nodeSpot)" opacity="0.06">
+                    <animate attributeName="opacity" values="0.06;0.22;0.22;0.06" keyTimes="0;0.1;0.5;1" dur="1s"
+                        begin="animLA.end" />
+                </ellipse>
 
                 {/* ── Circuit paths with flowing dashes ── */}
                 <use href="#pathDL" className={styles.pathLine} filter="url(#glow-energy)" />
@@ -481,17 +501,6 @@ function BuildForYouSection() {
                 {/* ── Demonstrate node (left cursor) ── */}
                 <g>
                     <animateTransform attributeName="transform" type="translate" values="150,110; 150,107; 150,110" dur="5s" repeatCount="indefinite" />
-                    {/* Ambient glow halo */}
-                    <circle r="22" fill="rgba(96,165,250,0.12)">
-                        <animate attributeName="opacity" values="0.08;0.2;0.08" dur="6.5s" repeatCount="indefinite" />
-                    </circle>
-                    {/* Bright pulse glow when active */}
-                    <circle r="18" fill="rgba(96,165,250,0.25)" opacity="0">
-                        <animate attributeName="opacity" values="0;0.4;0.4;0" keyTimes="0;0.1;0.5;1" dur="1.5s"
-                            begin="0s; animReturn.end + 0.5s" />
-                        <animate attributeName="r" values="15;35" dur="1.5s"
-                            begin="0s; animReturn.end + 0.5s" />
-                    </circle>
                     <g transform="scale(1.0)">
                         <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
                             fill="rgba(255,255,255,0.9)" stroke="rgba(86,13,248,0.6)" strokeWidth="0.8" />
@@ -500,28 +509,17 @@ function BuildForYouSection() {
                     <circle cx="12" cy="-8" r="2.5" fill="#ef4444">
                         <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite" />
                     </circle>
-                    {/* Expanding ring when Demonstrate is active */}
-                    <circle r="12" fill="none" stroke="rgba(96,165,250,0.7)" strokeWidth="1.5" opacity="0">
-                        <animate attributeName="opacity" values="0;0.8;0.8;0" keyTimes="0;0.1;0.5;1" dur="1.5s"
-                            begin="0s; animReturn.end + 0.5s" />
-                        <animate attributeName="r" values="8;28" dur="1.5s"
-                            begin="0s; animReturn.end + 0.5s" />
-                    </circle>
                     {/* Click ripple synced to pulse emission */}
                     <circle r="4" fill="none" stroke="rgba(96,165,250,0.5)" strokeWidth="1">
-                        <animate attributeName="r" values="4;22;22" keyTimes="0;0.3;1" dur="1.5s"
+                        <animate attributeName="r" values="4;20;20" keyTimes="0;0.3;1" dur="1.5s"
                             begin="0s; animReturn.end + 0.5s" />
-                        <animate attributeName="opacity" values="0.6;0;0" keyTimes="0;0.3;1" dur="1.5s"
+                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.3;1" dur="1.5s"
                             begin="0s; animReturn.end + 0.5s" />
                     </circle>
                 </g>
 
                 {/* ── Learn node (center mascot with gears) ── */}
                 <g transform="translate(400, 100)">
-                    {/* Ambient glow halo */}
-                    <circle r="32" fill="rgba(86,13,248,0.1)">
-                        <animate attributeName="opacity" values="0.06;0.18;0.06" dur="6.5s" repeatCount="indefinite" />
-                    </circle>
                     {/* Mascot body */}
                     <g transform="scale(1.8)">
                         <path d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
@@ -555,18 +553,11 @@ function BuildForYouSection() {
                             <circle r="2.5" fill="rgba(86, 13, 248, 0.3)" stroke="rgba(96, 165, 250, 0.4)" strokeWidth="0.4" />
                         </g>
                     </g>
-                    {/* Processing glow ring — fades in when pulse arrives, out when it leaves */}
-                    <circle r="25" fill="rgba(0,220,255,0.08)" stroke="cyan" strokeWidth="2" opacity="0">
-                        <animate attributeName="opacity" values="0;0.8;0.8;0" keyTimes="0;0.1;0.8;1" dur="1.5s"
+                    {/* Processing glow ring */}
+                    <circle r="25" fill="none" stroke="cyan" strokeWidth="1.5" opacity="0">
+                        <animate attributeName="opacity" values="0;0.6;0.6;0" keyTimes="0;0.1;0.8;1" dur="1.5s"
                             begin="animDL.end" fill="remove" />
-                        <animate attributeName="r" values="22;42" dur="1.5s"
-                            begin="animDL.end" fill="remove" />
-                    </circle>
-                    {/* Outer processing ripple */}
-                    <circle r="20" fill="none" stroke="rgba(96,165,250,0.5)" strokeWidth="1" opacity="0">
-                        <animate attributeName="opacity" values="0;0.5;0;0" keyTimes="0;0.15;0.7;1" dur="1.5s"
-                            begin="animDL.end" fill="remove" />
-                        <animate attributeName="r" values="20;48" dur="1.5s"
+                        <animate attributeName="r" values="22;35" dur="1.5s"
                             begin="animDL.end" fill="remove" />
                     </circle>
                 </g>
@@ -574,17 +565,6 @@ function BuildForYouSection() {
                 {/* ── Automate node (right cursor) ── */}
                 <g>
                     <animateTransform attributeName="transform" type="translate" values="650,110; 650,107; 650,110" dur="4.5s" repeatCount="indefinite" />
-                    {/* Ambient glow halo */}
-                    <circle r="22" fill="rgba(86,13,248,0.12)">
-                        <animate attributeName="opacity" values="0.08;0.2;0.08" dur="6.5s" repeatCount="indefinite" />
-                    </circle>
-                    {/* Bright pulse glow when active */}
-                    <circle r="18" fill="rgba(86,13,248,0.25)" opacity="0">
-                        <animate attributeName="opacity" values="0;0.4;0.4;0" keyTimes="0;0.1;0.5;1" dur="1s"
-                            begin="animLA.end" />
-                        <animate attributeName="r" values="15;35" dur="1s"
-                            begin="animLA.end" />
-                    </circle>
                     <g transform="scale(1.0)">
                         <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
                             fill="rgba(255,255,255,0.9)" stroke="rgba(96,165,250,0.6)" strokeWidth="0.8" />
@@ -593,18 +573,11 @@ function BuildForYouSection() {
                     <g transform="translate(12, -8)">
                         <path d="M-1.5 -3 L2 0 L-1.5 3 Z" fill="rgba(96,165,250,0.9)" stroke="none" />
                     </g>
-                    {/* Expanding ring when Automate receives */}
-                    <circle r="12" fill="none" stroke="rgba(86,13,248,0.7)" strokeWidth="1.5" opacity="0">
-                        <animate attributeName="opacity" values="0;0.8;0.8;0" keyTimes="0;0.1;0.5;1" dur="1s"
-                            begin="animLA.end" />
-                        <animate attributeName="r" values="8;28" dur="1s"
-                            begin="animLA.end" />
-                    </circle>
                     {/* Click ripple synced to pulse arrival */}
-                    <circle r="4" fill="none" stroke="rgba(86,13,248,0.5)" strokeWidth="1">
-                        <animate attributeName="r" values="4;22;22" keyTimes="0;0.3;1" dur="1s"
+                    <circle r="4" fill="none" stroke="rgba(96,165,250,0.5)" strokeWidth="1">
+                        <animate attributeName="r" values="4;20;20" keyTimes="0;0.3;1" dur="1s"
                             begin="animLA.end" />
-                        <animate attributeName="opacity" values="0.6;0;0" keyTimes="0;0.3;1" dur="1s"
+                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.3;1" dur="1s"
                             begin="animLA.end" />
                     </circle>
                 </g>
