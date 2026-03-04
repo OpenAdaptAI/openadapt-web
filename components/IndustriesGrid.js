@@ -23,8 +23,8 @@ function BuildForYouSection() {
     const eyeSmoothRef = useRef([{ x: 0, y: 0 }, { x: 0, y: 0 }])
 
     // Pair centers in SVG space (viewBox 0 0 800 220)
-    const pairL = { cx: 240, cy: 100, radius: 45 }
-    const pairR = { cx: 560, cy: 100, radius: 45 }
+    const pairL = { cx: 240, cy: 100, radius: 80 }
+    const pairR = { cx: 560, cy: 100, radius: 80 }
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -60,20 +60,20 @@ function BuildForYouSection() {
             const t = timeRef.current
 
             // Compute dance positions
-            const speed = 0.4
+            const speed = 0.7
             const angleL = t * speed
             const angleR = -t * speed * 0.85 // counter-rotate, slightly different speed
 
             // Eye target: mouse if present, otherwise the partner's position
             const mascotLx = pairL.cx + Math.cos(angleL + Math.PI) * pairL.radius
-            const mascotLy = pairL.cy + Math.sin(angleL + Math.PI) * pairL.radius * 0.5
+            const mascotLy = pairL.cy + Math.sin(angleL + Math.PI) * pairL.radius * 0.6
             const mascotRx = pairR.cx + Math.cos(angleR) * pairR.radius
-            const mascotRy = pairR.cy + Math.sin(angleR) * pairR.radius * 0.5
+            const mascotRy = pairR.cy + Math.sin(angleR) * pairR.radius * 0.6
 
             const cursorLx = pairL.cx + Math.cos(angleL) * pairL.radius
-            const cursorLy = pairL.cy + Math.sin(angleL) * pairL.radius * 0.5
+            const cursorLy = pairL.cy + Math.sin(angleL) * pairL.radius * 0.6
             const cursorRx = pairR.cx + Math.cos(angleR + Math.PI) * pairR.radius
-            const cursorRy = pairR.cy + Math.sin(angleR + Math.PI) * pairR.radius * 0.5
+            const cursorRy = pairR.cy + Math.sin(angleR + Math.PI) * pairR.radius * 0.6
 
             // Eye direction: toward mouse if hovering, otherwise toward partner cursor
             const gazeTargets = mouseRef.current
@@ -186,17 +186,17 @@ function BuildForYouSection() {
 
     // Compute positions from time
     const t = time
-    const speed = 0.4
+    const speed = 0.7
     const aL = t * speed
     const aR = -t * speed * 0.85
 
     // Left pair: cursor leads (top of orbit), mascot follows (bottom)
-    const cursorL = { x: pairL.cx + Math.cos(aL) * pairL.radius, y: pairL.cy + Math.sin(aL) * pairL.radius * 0.5 }
-    const mascotL = { x: pairL.cx + Math.cos(aL + Math.PI) * pairL.radius, y: pairL.cy + Math.sin(aL + Math.PI) * pairL.radius * 0.5 }
+    const cursorL = { x: pairL.cx + Math.cos(aL) * pairL.radius, y: pairL.cy + Math.sin(aL) * pairL.radius * 0.6 }
+    const mascotL = { x: pairL.cx + Math.cos(aL + Math.PI) * pairL.radius, y: pairL.cy + Math.sin(aL + Math.PI) * pairL.radius * 0.6 }
 
     // Right pair: mascot leads, cursor follows
-    const mascotR = { x: pairR.cx + Math.cos(aR) * pairR.radius, y: pairR.cy + Math.sin(aR) * pairR.radius * 0.5 }
-    const cursorR = { x: pairR.cx + Math.cos(aR + Math.PI) * pairR.radius, y: pairR.cy + Math.sin(aR + Math.PI) * pairR.radius * 0.5 }
+    const mascotR = { x: pairR.cx + Math.cos(aR) * pairR.radius, y: pairR.cy + Math.sin(aR) * pairR.radius * 0.6 }
+    const cursorR = { x: pairR.cx + Math.cos(aR + Math.PI) * pairR.radius, y: pairR.cy + Math.sin(aR + Math.PI) * pairR.radius * 0.6 }
 
     const eyes = eyeSmoothRef.current
 
