@@ -41,6 +41,9 @@ function BuildForYouSection() {
     const sectionRef = useRef(null)
     const canvasRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
+    const [isMeshActive, setIsMeshActive] = useState(false)
+    const meshActivityRef = useRef(0)
+    const meshPhaseRef = useRef(0)
 
     // Eye tracking refs for Learn mascot only
     const eyeC0Ref = useRef(null)
@@ -49,19 +52,25 @@ function BuildForYouSection() {
     useEffect(() => {
         // Fallback visibility unlock in case IntersectionObserver misses this section
         // (e.g. reduced-motion/preview environments).
-        const fallbackTimer = window.setTimeout(() => setIsVisible(true), 1200)
+        const fallbackTimer = window.setTimeout(() => {
+            setIsVisible(true)
+            setIsMeshActive(true)
+        }, 1200)
         if (!('IntersectionObserver' in window)) {
             setIsVisible(true)
+            setIsMeshActive(true)
             return () => window.clearTimeout(fallbackTimer)
         }
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
+                const inView = entry.isIntersecting && entry.intersectionRatio > 0.08
+                setIsMeshActive(inView)
+                if (inView) {
                     setIsVisible(true)
                     window.clearTimeout(fallbackTimer)
                 }
             },
-            { threshold: 0.15 }
+            { threshold: [0, 0.08, 0.2], rootMargin: '120px 0px 120px 0px' }
         )
         if (sectionRef.current) observer.observe(sectionRef.current)
         return () => {
@@ -91,18 +100,19 @@ function BuildForYouSection() {
     /* Wireframe mesh canvas */
     useEffect(() => {
         const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-        // In reduced-motion mode the section can still render as visible via CSS.
-        // Keep a gentle mesh animation running so the preview never looks frozen.
-        if (!isVisible && !mq.matches) return
         const canvas = canvasRef.current
         if (!canvas) return
         const ctx = canvas.getContext('2d')
         const dpr = window.devicePixelRatio || 1
-        const motionScale = mq.matches ? 0.35 : 1
         let raf
+        let activity = meshActivityRef.current
+        let phase = meshPhaseRef.current
+        let lastTs = performance.now()
 
         const resize = () => {
-            const rect = canvas.parentElement.getBoundingClientRect()
+            const host = canvas.parentElement || sectionRef.current
+            if (!host) return
+            const rect = host.getBoundingClientRect()
             canvas.width = rect.width * dpr
             canvas.height = rect.height * dpr
             canvas.style.width = rect.width + 'px'
@@ -145,8 +155,6 @@ function BuildForYouSection() {
             }
         }
 
-        let time = 0
-
         // Energy pulse tracking — synced to SMIL heartbeat cycle
         // Lub (strong): D glow → D→L pulse (1.5s)
         // Processing: Learn glows + gears spin (1.5s)
@@ -188,7 +196,20 @@ function BuildForYouSection() {
             }
         }
 
-        const draw = () => {
+        const draw = (ts = performance.now()) => {
+            const dt = Math.min(0.05, Math.max(0.008, (ts - lastTs) / 1000))
+            lastTs = ts
+
+            const targetActivity = isMeshActive ? 1 : 0
+            const springRate = targetActivity > activity ? 5.5 : 2.4
+            activity += (targetActivity - activity) * (1 - Math.exp(-springRate * dt))
+            meshActivityRef.current = activity
+
+            const reducedMotion = mq.matches
+            const motionScale = (reducedMotion ? 0.35 : 1) * (0.2 + activity * 0.8)
+            phase += dt * (0.7 + activity * 0.95) * (reducedMotion ? 0.6 : 1)
+            meshPhaseRef.current = phase
+
             const w = canvas.width / dpr, h = canvas.height / dpr
             ctx.clearRect(0, 0, w, h)
 
@@ -196,7 +217,7 @@ function BuildForYouSection() {
             const [attrL, attrC, attrR] = nodes
 
             // Compute cycle phase (heartbeat rhythm)
-            const ct = (time / 60) % CYCLE_DUR  // frames → approx seconds
+            const ct = phase % CYCLE_DUR
             pulseActive = false
 
             // Pulse position tracks the energy comet
@@ -249,8 +270,11 @@ function BuildForYouSection() {
             // Update grid heights
             for (let i = 0; i < grid.length; i++) {
                 const p = grid[i]
-                // Base noise deformation + heartbeat throb
-                p.wy = noise3D(p.wx * 0.008, p.wz * 0.008, time * 0.005) * (12 * motionScale) - heartbeat
+                // Two octaves of noise + a slow longitudinal swell for smoother, more organic motion.
+                const n1 = noise3D(p.wx * 0.008, p.wz * 0.008, phase * 0.45)
+                const n2 = noise3D(p.wx * 0.003 + 37, p.wz * 0.003 - 53, phase * 0.2)
+                const flow = Math.sin(p.wz * 0.015 + phase * 1.7 + p.wx * 0.002) * 1.4
+                p.wy = ((n1 * 0.68 + n2 * 0.32) * 12 + flow - heartbeat) * motionScale
 
                 // Project to get screen coords
                 const proj = project(p.wx, p.wy, p.wz, w / 2, h * 0.6)
@@ -280,7 +304,7 @@ function BuildForYouSection() {
                     const dx = p.projX - pulseX, dy = p.projY - pulseY
                     const dist = Math.sqrt(dx * dx + dy * dy)
                     if (dist < 250) {
-                        const wave = Math.sin(dist * 0.04 - time * 0.2) * (1 - dist / 250) * 10
+                        const wave = Math.sin(dist * 0.038 - phase * 8.5) * (1 - dist / 250) * 8 * motionScale
                         uplift += wave
                     }
                 }
@@ -323,7 +347,8 @@ function BuildForYouSection() {
                     }
                     brightness = Math.min(brightness, 1)
 
-                    const alpha = baseAlpha + brightness * 0.5
+                    const presence = 0.35 + activity * 0.65
+                    const alpha = (baseAlpha + brightness * 0.5) * presence
 
                     // Color: purple → blue by depth, shifting toward cyan when bright
                     const rowT = r / ROWS
@@ -372,8 +397,9 @@ function BuildForYouSection() {
                     if (dist < 80) dotBrightness += (1 - dist / 80) * 0.8
                 }
                 dotBrightness = Math.min(dotBrightness, 1)
-                const dotAlpha = Math.min(p.depth * 0.3 + dotBrightness * 0.5, 0.8)
-                const dotR = p.depth * 1.5 + dotBrightness * 1.5
+                const presence = 0.35 + activity * 0.65
+                const dotAlpha = Math.min((p.depth * 0.3 + dotBrightness * 0.5) * presence, 0.8)
+                const dotR = p.depth * (1.2 + 0.6 * presence) + dotBrightness * (1.1 + 0.7 * presence)
                 const dotG = Math.round(165 + dotBrightness * 55)
                 ctx.beginPath()
                 ctx.arc(p.projX, p.projY, dotR, 0, Math.PI * 2)
@@ -381,14 +407,19 @@ function BuildForYouSection() {
                 ctx.fill()
             }
 
-            time += motionScale
+            if (!isMeshActive && activity < 0.012) return
             raf = requestAnimationFrame(draw)
         }
 
         draw()
 
-        return () => { window.removeEventListener('resize', resize); if (raf) cancelAnimationFrame(raf) }
-    }, [isVisible])
+        return () => {
+            meshActivityRef.current = activity
+            meshPhaseRef.current = phase
+            window.removeEventListener('resize', resize)
+            if (raf) cancelAnimationFrame(raf)
+        }
+    }, [isMeshActive])
 
     const gear1 = gearPath(8, 6, 10)
     const gear2 = gearPath(6, 4.5, 7)
