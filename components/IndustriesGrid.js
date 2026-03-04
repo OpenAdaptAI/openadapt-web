@@ -4,79 +4,27 @@ import Link from 'next/link'
 
 import styles from './IndustriesGrid.module.css'
 
-/* ── The OpenAdapt mascot with living eyes ── */
-function Mascot({ x, y, scale = 1, delay = 0, className = '', eyeOffset = { x: 0, y: 0 }, blinkClass = '' }) {
-    const ex = eyeOffset.x * 1.5  // max ~1.5px shift
-    const ey = eyeOffset.y * 1.0
-    return (
-        <g
-            transform={`translate(${x}, ${y}) scale(${scale})`}
-            className={className}
-            style={{ animationDelay: `${delay}s` }}
-        >
-            {/* Body / speech-bubble shape */}
-            <path
-                d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
-                fill="rgba(96, 165, 250, 0.15)"
-                stroke="rgba(96, 165, 250, 0.5)"
-                strokeWidth="1"
-            />
-            {/* Eyes — shift with cursor, blink independently */}
-            <g className={blinkClass}>
-                <rect x={-8 + ex} y={-2 + ey} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
-                <rect x={4 + ex} y={-2 + ey} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
-            </g>
-            {/* Smile */}
-            <path
-                d="M-5 6 Q0 10 5 6"
-                fill="none"
-                stroke="rgba(255,255,255,0.8)"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-            />
-            {/* Antenna with pulse */}
-            <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="1" />
-            <circle cx="0" cy="-15" r="2" fill="rgba(96, 165, 250, 0.7)" className={styles.antennaPulse} style={{ animationDelay: `${delay * 2}s` }} />
-        </g>
-    )
-}
-
-/* ── Small cursor arrow SVG ── */
-function Cursor({ x, y, scale = 0.6, delay = 0, className = '' }) {
-    return (
-        <g
-            transform={`translate(${x}, ${y}) scale(${scale})`}
-            className={className}
-            style={{ animationDelay: `${delay}s` }}
-        >
-            <path
-                d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
-                fill="rgba(255,255,255,0.85)"
-                stroke="rgba(86, 13, 248, 0.5)"
-                strokeWidth="0.8"
-            />
-        </g>
-    )
-}
-
+/*
+ * BuildForYouSection — Two dancing pairs in hyperspace.
+ * Left pair:  cursor leads, mascot follows (Demonstrate)
+ * Right pair: mascot leads, cursor follows (Automate)
+ * Everything moves autonomously. Eyes track the user's mouse as a bonus.
+ */
 function BuildForYouSection() {
     const sectionRef = useRef(null)
     const svgRef = useRef(null)
     const canvasRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
-    const [eyeOffsets, setEyeOffsets] = useState([
-        { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }
-    ])
+    const [time, setTime] = useState(0)
+    const [eyeTarget, setEyeTarget] = useState({ x: 400, y: 100 })
     const animFrameRef = useRef(null)
-    const mouseRef = useRef({ x: 0, y: 0 })
-    const smoothRef = useRef([{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }])
+    const timeRef = useRef(0)
+    const mouseRef = useRef(null) // null = no mouse yet, use autonomous gaze
+    const eyeSmoothRef = useRef([{ x: 0, y: 0 }, { x: 0, y: 0 }])
 
-    // Mascot positions in SVG coords
-    const mascots = [
-        { x: 120, y: 100 },
-        { x: 400, y: 75 },
-        { x: 680, y: 90 },
-    ]
+    // Pair centers in SVG space (viewBox 0 0 800 220)
+    const pairL = { cx: 240, cy: 100, radius: 45 }
+    const pairR = { cx: 560, cy: 100, radius: 45 }
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -87,51 +35,98 @@ function BuildForYouSection() {
         return () => observer.disconnect()
     }, [])
 
-    /* ── Eye tracking ── */
+    /* ── Mouse tracking for eyes ── */
     const handleMouseMove = useCallback((e) => {
         const svg = svgRef.current
         if (!svg) return
         const rect = svg.getBoundingClientRect()
-        // Convert mouse to SVG coordinate space (viewBox 0 0 800 200)
-        const svgX = ((e.clientX - rect.left) / rect.width) * 800
-        const svgY = ((e.clientY - rect.top) / rect.height) * 200
-        mouseRef.current = { x: svgX, y: svgY }
+        mouseRef.current = {
+            x: ((e.clientX - rect.left) / rect.width) * 800,
+            y: ((e.clientY - rect.top) / rect.height) * 220,
+        }
     }, [])
 
+    const handleMouseLeave = useCallback(() => {
+        mouseRef.current = null // revert to autonomous gaze
+    }, [])
+
+    /* ── Main animation loop ── */
     useEffect(() => {
         if (!isVisible) return
-        let raf
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+
         const tick = () => {
-            const m = mouseRef.current
-            const next = mascots.map((pos, i) => {
-                const dx = m.x - pos.x
-                const dy = m.y - pos.y
+            timeRef.current += 0.016 // ~60fps
+            const t = timeRef.current
+
+            // Compute dance positions
+            const speed = 0.4
+            const angleL = t * speed
+            const angleR = -t * speed * 0.85 // counter-rotate, slightly different speed
+
+            // Eye target: mouse if present, otherwise the partner's position
+            const mascotLx = pairL.cx + Math.cos(angleL + Math.PI) * pairL.radius
+            const mascotLy = pairL.cy + Math.sin(angleL + Math.PI) * pairL.radius * 0.5
+            const mascotRx = pairR.cx + Math.cos(angleR) * pairR.radius
+            const mascotRy = pairR.cy + Math.sin(angleR) * pairR.radius * 0.5
+
+            const cursorLx = pairL.cx + Math.cos(angleL) * pairL.radius
+            const cursorLy = pairL.cy + Math.sin(angleL) * pairL.radius * 0.5
+            const cursorRx = pairR.cx + Math.cos(angleR + Math.PI) * pairR.radius
+            const cursorRy = pairR.cy + Math.sin(angleR + Math.PI) * pairR.radius * 0.5
+
+            // Eye direction: toward mouse if hovering, otherwise toward partner cursor
+            const gazeTargets = mouseRef.current
+                ? [mouseRef.current, mouseRef.current]
+                : [{ x: cursorLx, y: cursorLy }, { x: cursorRx, y: cursorRy }]
+
+            const mascotPositions = [
+                { x: mascotLx, y: mascotLy },
+                { x: mascotRx, y: mascotRy },
+            ]
+
+            const newEyes = mascotPositions.map((pos, i) => {
+                const target = gazeTargets[i]
+                const dx = target.x - pos.x
+                const dy = target.y - pos.y
                 const dist = Math.sqrt(dx * dx + dy * dy) || 1
-                const maxShift = 1
-                const nx = Math.max(-maxShift, Math.min(maxShift, dx / dist))
-                const ny = Math.max(-maxShift, Math.min(maxShift, dy / dist))
-                // Smooth damping
-                const prev = smoothRef.current[i]
-                const lerp = 0.08
+                const nx = Math.max(-1, Math.min(1, dx / dist))
+                const ny = Math.max(-1, Math.min(1, dy / dist))
+                const prev = eyeSmoothRef.current[i]
                 return {
-                    x: prev.x + (nx - prev.x) * lerp,
-                    y: prev.y + (ny - prev.y) * lerp,
+                    x: prev.x + (nx - prev.x) * 0.06,
+                    y: prev.y + (ny - prev.y) * 0.06,
                 }
             })
-            smoothRef.current = next
-            setEyeOffsets(next)
-            raf = requestAnimationFrame(tick)
+            eyeSmoothRef.current = newEyes
+
+            setTime(t)
+
+            if (!mq.matches) {
+                animFrameRef.current = requestAnimationFrame(tick)
+            }
         }
-        raf = requestAnimationFrame(tick)
-        return () => cancelAnimationFrame(raf)
+
+        if (mq.matches) {
+            // One static frame
+            timeRef.current = 0
+            setTime(0)
+        } else {
+            animFrameRef.current = requestAnimationFrame(tick)
+        }
+
+        return () => { if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current) }
     }, [isVisible])
 
     /* ── Starfield canvas ── */
-    const initStarfield = useCallback(() => {
+    useEffect(() => {
+        if (!isVisible) return
         const canvas = canvasRef.current
         if (!canvas) return
         const ctx = canvas.getContext('2d')
         const dpr = window.devicePixelRatio || 1
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+        let raf
 
         const resize = () => {
             const rect = canvas.parentElement.getBoundingClientRect()
@@ -144,122 +139,147 @@ function BuildForYouSection() {
         resize()
         window.addEventListener('resize', resize)
 
-        // Stars
-        const stars = Array.from({ length: 120 }, () => ({
-            x: Math.random(),
-            y: Math.random(),
-            z: Math.random(),
-            speed: 0.0002 + Math.random() * 0.0008,
+        const stars = Array.from({ length: 100 }, () => ({
+            x: Math.random(), y: Math.random(), z: Math.random(),
+            speed: 0.0002 + Math.random() * 0.0006,
         }))
 
         const draw = () => {
-            const w = canvas.width / dpr
-            const h = canvas.height / dpr
+            const w = canvas.width / dpr, h = canvas.height / dpr
             ctx.clearRect(0, 0, w, h)
-
-            for (const star of stars) {
-                star.z -= star.speed
-                if (star.z <= 0) { star.z = 1; star.x = Math.random(); star.y = Math.random() }
-
-                const sx = (star.x - 0.5) / star.z * w * 0.5 + w * 0.5
-                const sy = (star.y - 0.5) / star.z * h * 0.5 + h * 0.5
-                const r = (1 - star.z) * 1.8
-                const a = (1 - star.z) * 0.7
-
-                // Streak effect
-                const streakLen = (1 - star.z) * 8
-                const dx = (star.x - 0.5)
-                const dy = (star.y - 0.5)
+            for (const s of stars) {
+                s.z -= s.speed
+                if (s.z <= 0) { s.z = 1; s.x = Math.random(); s.y = Math.random() }
+                const sx = (s.x - 0.5) / s.z * w * 0.4 + w * 0.5
+                const sy = (s.y - 0.5) / s.z * h * 0.4 + h * 0.5
+                const r = (1 - s.z) * 1.5, a = (1 - s.z) * 0.6
+                const len = (1 - s.z) * 6
+                const dx = (s.x - 0.5), dy = (s.y - 0.5)
                 const mag = Math.sqrt(dx * dx + dy * dy) || 1
-                const nx = dx / mag * streakLen
-                const ny = dy / mag * streakLen
-
                 ctx.beginPath()
                 ctx.moveTo(sx, sy)
-                ctx.lineTo(sx + nx, sy + ny)
+                ctx.lineTo(sx + dx / mag * len, sy + dy / mag * len)
                 ctx.strokeStyle = `rgba(180, 200, 255, ${a})`
-                ctx.lineWidth = r * 0.6
+                ctx.lineWidth = r * 0.5
                 ctx.stroke()
-
                 ctx.beginPath()
                 ctx.arc(sx, sy, r, 0, Math.PI * 2)
                 ctx.fillStyle = `rgba(200, 220, 255, ${a})`
                 ctx.fill()
             }
-
-            animFrameRef.current = requestAnimationFrame(draw)
+            raf = requestAnimationFrame(draw)
         }
 
-        // Respect reduced motion
-        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-        if (!mq.matches) {
-            draw()
-        } else {
-            // Draw one static frame
-            const w = canvas.width / dpr
-            const h = canvas.height / dpr
-            ctx.clearRect(0, 0, w, h)
-            for (const star of stars) {
-                const sx = star.x * w
-                const sy = star.y * h
+        if (!mq.matches) draw()
+        else {
+            const w = canvas.width / dpr, h = canvas.height / dpr
+            for (const s of stars) {
                 ctx.beginPath()
-                ctx.arc(sx, sy, 0.8, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(200, 220, 255, 0.3)'
+                ctx.arc(s.x * w, s.y * h, 0.7, 0, Math.PI * 2)
+                ctx.fillStyle = 'rgba(200, 220, 255, 0.25)'
                 ctx.fill()
             }
         }
 
-        return () => {
-            window.removeEventListener('resize', resize)
-            if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
-        }
-    }, [])
+        return () => { window.removeEventListener('resize', resize); if (raf) cancelAnimationFrame(raf) }
+    }, [isVisible])
 
-    useEffect(() => {
-        if (isVisible) return initStarfield()
-    }, [isVisible, initStarfield])
+    // Compute positions from time
+    const t = time
+    const speed = 0.4
+    const aL = t * speed
+    const aR = -t * speed * 0.85
+
+    // Left pair: cursor leads (top of orbit), mascot follows (bottom)
+    const cursorL = { x: pairL.cx + Math.cos(aL) * pairL.radius, y: pairL.cy + Math.sin(aL) * pairL.radius * 0.5 }
+    const mascotL = { x: pairL.cx + Math.cos(aL + Math.PI) * pairL.radius, y: pairL.cy + Math.sin(aL + Math.PI) * pairL.radius * 0.5 }
+
+    // Right pair: mascot leads, cursor follows
+    const mascotR = { x: pairR.cx + Math.cos(aR) * pairR.radius, y: pairR.cy + Math.sin(aR) * pairR.radius * 0.5 }
+    const cursorR = { x: pairR.cx + Math.cos(aR + Math.PI) * pairR.radius, y: pairR.cy + Math.sin(aR + Math.PI) * pairR.radius * 0.5 }
+
+    const eyes = eyeSmoothRef.current
+
+    // Click ripple: cursor "clicks" every few seconds
+    const clickCycleL = 3.5, clickCycleR = 4.2
+    const clickPhaseL = (t % clickCycleL) / clickCycleL
+    const clickPhaseR = (t % clickCycleR) / clickCycleR
 
     return (
-        <div ref={sectionRef} className={`${styles.buildSection} ${isVisible ? styles.buildVisible : ''}`} onMouseMove={handleMouseMove}>
+        <div ref={sectionRef} className={`${styles.buildSection} ${isVisible ? styles.buildVisible : ''}`} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <canvas ref={canvasRef} className={styles.starfield} />
             <div className={styles.buildGlow} />
 
-            {/* Characters floating in space */}
-            <svg ref={svgRef} className={styles.buildSvg} viewBox="0 0 800 200" fill="none" preserveAspectRatio="xMidYMid meet">
-                {/* Energy trails connecting characters */}
-                <path id="trailA" d="M120 100 Q260 30 400 80" className={styles.pathLine} />
-                <path id="trailB" d="M400 80 Q540 130 680 90" className={styles.pathLine} />
+            <svg ref={svgRef} className={styles.buildSvg} viewBox="0 0 800 220" fill="none" preserveAspectRatio="xMidYMid meet">
+                {/* Energy trail between pairs */}
+                <path
+                    d={`M${mascotL.x} ${mascotL.y} Q400 ${60 + Math.sin(t * 0.3) * 20} ${mascotR.x} ${mascotR.y}`}
+                    className={styles.pathLine}
+                />
 
-                {/* Flowing particles */}
-                {[0, 1, 2].map(i => (
-                    <React.Fragment key={i}>
-                        <circle r="2.5" className={styles.particle}>
-                            <animateMotion dur={`${2.5 + i * 0.5}s`} repeatCount="indefinite" begin={`${i * 0.7}s`}>
-                                <mpath href="#trailA" />
-                            </animateMotion>
-                        </circle>
-                        <circle r="2.5" className={styles.particle}>
-                            <animateMotion dur={`${2.5 + i * 0.5}s`} repeatCount="indefinite" begin={`${i * 0.7}s`}>
-                                <mpath href="#trailB" />
-                            </animateMotion>
-                        </circle>
-                    </React.Fragment>
-                ))}
+                {/* Flowing particles along the energy trail */}
+                {[0, 1, 2].map(i => {
+                    const pt = ((t * 0.15 + i * 0.33) % 1)
+                    const px = mascotL.x + (mascotR.x - mascotL.x) * pt
+                    const py = mascotL.y + (mascotR.y - mascotL.y) * pt + Math.sin(pt * Math.PI) * (Math.sin(t * 0.3) * 20 - 20)
+                    return <circle key={i} cx={px} cy={py} r="2" className={styles.particle} />
+                })}
 
-                {/* Three mascots floating with gentle bob animation */}
-                <Mascot x={120} y={100} scale={1.4} delay={0} className={styles.floatA} eyeOffset={eyeOffsets[0]} blinkClass={styles.blinkA} />
-                <Mascot x={400} y={75} scale={1.6} delay={0.3} className={styles.floatB} eyeOffset={eyeOffsets[1]} blinkClass={styles.blinkB} />
-                <Mascot x={680} y={90} scale={1.4} delay={0.6} className={styles.floatC} eyeOffset={eyeOffsets[2]} blinkClass={styles.blinkC} />
+                {/* ── Left pair: Demonstrate ── */}
+                {/* Cursor (leader) */}
+                <g transform={`translate(${cursorL.x}, ${cursorL.y}) scale(0.8)`}>
+                    <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
+                        fill="rgba(255,255,255,0.85)" stroke="rgba(86, 13, 248, 0.5)" strokeWidth="0.8" />
+                </g>
+                {/* Click ripple from cursor */}
+                {clickPhaseL < 0.4 && (
+                    <circle cx={cursorL.x} cy={cursorL.y} r={4 + clickPhaseL * 30}
+                        fill="none" stroke="rgba(96, 165, 250, 0.4)"
+                        strokeWidth={1.5 * (1 - clickPhaseL / 0.4)}
+                        opacity={1 - clickPhaseL / 0.4} />
+                )}
+                {/* Mascot (follower) */}
+                <g transform={`translate(${mascotL.x}, ${mascotL.y}) scale(1.5)`}>
+                    <path d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
+                        fill="rgba(96, 165, 250, 0.15)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="1" />
+                    <g className={styles.blinkA}>
+                        <rect x={-8 + eyes[0].x * 1.5} y={-2 + eyes[0].y} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                        <rect x={4 + eyes[0].x * 1.5} y={-2 + eyes[0].y} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                    </g>
+                    <path d="M-5 6 Q0 10 5 6" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.2" strokeLinecap="round" />
+                    <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="1" />
+                    <circle cx="0" cy="-15" r="2" fill="rgba(96, 165, 250, 0.7)" className={styles.antennaPulse} />
+                </g>
+                {/* Label */}
+                <text x={pairL.cx} y="170" className={styles.nodeLabel}>Demonstrate</text>
 
-                {/* Cursors orbiting around mascots */}
-                <Cursor x={170} y={78} scale={0.7} delay={0} className={styles.orbitA} />
-                <Cursor x={450} y={55} scale={0.8} delay={0.4} className={styles.orbitB} />
-                <Cursor x={730} y={68} scale={0.7} delay={0.8} className={styles.orbitC} />
-
-                {/* Labels under each mascot */}
-                <text x="120" y="140" className={styles.nodeLabel}>Demonstrate</text>
-                <text x="400" y="118" className={styles.nodeLabel}>Learn</text>
-                <text x="680" y="130" className={styles.nodeLabel}>Automate</text>
+                {/* ── Right pair: Automate ── */}
+                {/* Mascot (leader) */}
+                <g transform={`translate(${mascotR.x}, ${mascotR.y}) scale(1.5)`}>
+                    <path d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
+                        fill="rgba(86, 13, 248, 0.2)" stroke="rgba(86, 13, 248, 0.6)" strokeWidth="1" />
+                    <g className={styles.blinkB}>
+                        <rect x={-8 + eyes[1].x * 1.5} y={-2 + eyes[1].y} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                        <rect x={4 + eyes[1].x * 1.5} y={-2 + eyes[1].y} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                    </g>
+                    <path d="M-5 6 Q0 10 5 6" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.2" strokeLinecap="round" />
+                    <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(86, 13, 248, 0.6)" strokeWidth="1" />
+                    <circle cx="0" cy="-15" r="2" fill="rgba(86, 13, 248, 0.8)" className={styles.antennaPulse} style={{ animationDelay: '1.5s' }} />
+                </g>
+                {/* Cursor (follower) */}
+                <g transform={`translate(${cursorR.x}, ${cursorR.y}) scale(0.8)`}>
+                    <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
+                        fill="rgba(255,255,255,0.85)" stroke="rgba(86, 13, 248, 0.5)" strokeWidth="0.8" />
+                </g>
+                {/* Click ripple from cursor */}
+                {clickPhaseR < 0.4 && (
+                    <circle cx={cursorR.x} cy={cursorR.y} r={4 + clickPhaseR * 30}
+                        fill="none" stroke="rgba(86, 13, 248, 0.4)"
+                        strokeWidth={1.5 * (1 - clickPhaseR / 0.4)}
+                        opacity={1 - clickPhaseR / 0.4} />
+                )}
+                {/* Label */}
+                <text x={pairR.cx} y="170" className={styles.nodeLabel}>Automate</text>
             </svg>
 
             <div className={styles.buildContent}>
