@@ -6,24 +6,33 @@ import styles from './IndustriesGrid.module.css'
 
 /*
  * BuildForYouSection — Two dancing pairs in hyperspace.
- * Left pair:  cursor leads, mascot follows (Demonstrate)
- * Right pair: mascot leads, cursor follows (Automate)
- * Everything moves autonomously. Eyes track the user's mouse as a bonus.
+ * Uses direct DOM manipulation (refs) for smooth 60fps — no React state in the loop.
  */
 function BuildForYouSection() {
     const sectionRef = useRef(null)
     const svgRef = useRef(null)
     const canvasRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
-    const [frame, setFrame] = useState({ t: 0, eyes: [{ x: 0, y: 0 }, { x: 0, y: 0 }] })
     const animFrameRef = useRef(null)
-    const startTimeRef = useRef(null)
-    const mouseRef = useRef(null) // null = no mouse yet, use autonomous gaze
+    const mouseRef = useRef(null)
     const eyeSmoothRef = useRef([{ x: 0, y: 0 }, { x: 0, y: 0 }])
 
-    // Pair centers in SVG space (viewBox 0 0 800 220)
-    const pairL = { cx: 240, cy: 100, radius: 80 }
-    const pairR = { cx: 560, cy: 100, radius: 80 }
+    // DOM refs for animated SVG elements
+    const cursorLRef = useRef(null)
+    const cursorRRef = useRef(null)
+    const mascotLRef = useRef(null)
+    const mascotRRef = useRef(null)
+    const eyeL0Ref = useRef(null)
+    const eyeL1Ref = useRef(null)
+    const eyeR0Ref = useRef(null)
+    const eyeR1Ref = useRef(null)
+    const trailRef = useRef(null)
+    const particleRefs = useRef([])
+    const rippleLRef = useRef(null)
+    const rippleRRef = useRef(null)
+
+    const L = { cx: 240, cy: 100, radius: 80 }
+    const R = { cx: 560, cy: 100, radius: 80 }
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -34,7 +43,6 @@ function BuildForYouSection() {
         return () => observer.disconnect()
     }, [])
 
-    /* ── Mouse tracking for eyes ── */
     const handleMouseMove = useCallback((e) => {
         const svg = svgRef.current
         if (!svg) return
@@ -45,55 +53,84 @@ function BuildForYouSection() {
         }
     }, [])
 
-    const handleMouseLeave = useCallback(() => {
-        mouseRef.current = null // revert to autonomous gaze
-    }, [])
+    const handleMouseLeave = useCallback(() => { mouseRef.current = null }, [])
 
-    /* ── Main animation loop — uses real wall-clock time ── */
+    /* ── Animation loop — direct DOM setAttribute, no React re-render ── */
     useEffect(() => {
         if (!isVisible) return
         const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-        if (mq.matches) { setFrame({ t: 0, eyes: [{ x: 0, y: 0 }, { x: 0, y: 0 }] }); return }
+        if (mq.matches) return
 
+        let startTime = null
         const tick = (now) => {
-            if (!startTimeRef.current) startTimeRef.current = now
-            const t = (now - startTimeRef.current) / 1000 // seconds
-
-            // Compute dance positions for eye tracking
+            if (!startTime) startTime = now
+            const t = (now - startTime) / 1000
             const speed = 0.7
             const aL = t * speed, aR = -t * speed * 0.85
-            const cursorLx = pairL.cx + Math.cos(aL) * pairL.radius
-            const cursorLy = pairL.cy + Math.sin(aL) * pairL.radius * 0.6
-            const cursorRx = pairR.cx + Math.cos(aR + Math.PI) * pairR.radius
-            const cursorRy = pairR.cy + Math.sin(aR + Math.PI) * pairR.radius * 0.6
-            const mascotLx = pairL.cx + Math.cos(aL + Math.PI) * pairL.radius
-            const mascotLy = pairL.cy + Math.sin(aL + Math.PI) * pairL.radius * 0.6
-            const mascotRx = pairR.cx + Math.cos(aR) * pairR.radius
-            const mascotRy = pairR.cy + Math.sin(aR) * pairR.radius * 0.6
 
+            const clx = L.cx + Math.cos(aL) * L.radius
+            const cly = L.cy + Math.sin(aL) * L.radius * 0.6
+            const mlx = L.cx + Math.cos(aL + Math.PI) * L.radius
+            const mly = L.cy + Math.sin(aL + Math.PI) * L.radius * 0.6
+            const mrx = R.cx + Math.cos(aR) * R.radius
+            const mry = R.cy + Math.sin(aR) * R.radius * 0.6
+            const crx = R.cx + Math.cos(aR + Math.PI) * R.radius
+            const cry = R.cy + Math.sin(aR + Math.PI) * R.radius * 0.6
+
+            // Move elements directly
+            if (cursorLRef.current) cursorLRef.current.setAttribute('transform', `translate(${clx}, ${cly}) scale(0.8)`)
+            if (cursorRRef.current) cursorRRef.current.setAttribute('transform', `translate(${crx}, ${cry}) scale(0.8)`)
+            if (mascotLRef.current) mascotLRef.current.setAttribute('transform', `translate(${mlx}, ${mly}) scale(1.5)`)
+            if (mascotRRef.current) mascotRRef.current.setAttribute('transform', `translate(${mrx}, ${mry}) scale(1.5)`)
+
+            if (trailRef.current) trailRef.current.setAttribute('d',
+                `M${mlx} ${mly} Q400 ${60 + Math.sin(t * 0.3) * 20} ${mrx} ${mry}`)
+
+            particleRefs.current.forEach((el, i) => {
+                if (!el) return
+                const pt = ((t * 0.15 + i * 0.33) % 1)
+                el.setAttribute('cx', mlx + (mrx - mlx) * pt)
+                el.setAttribute('cy', mly + (mry - mly) * pt + Math.sin(pt * Math.PI) * (Math.sin(t * 0.3) * 20 - 20))
+            })
+
+            // Click ripples
+            const cpL = (t % 3.5) / 3.5, cpR = (t % 4.2) / 4.2
+            if (rippleLRef.current) {
+                if (cpL < 0.4) {
+                    rippleLRef.current.setAttribute('cx', clx); rippleLRef.current.setAttribute('cy', cly)
+                    rippleLRef.current.setAttribute('r', 4 + cpL * 30)
+                    rippleLRef.current.setAttribute('stroke-width', 1.5 * (1 - cpL / 0.4))
+                    rippleLRef.current.setAttribute('opacity', 1 - cpL / 0.4)
+                } else { rippleLRef.current.setAttribute('opacity', 0) }
+            }
+            if (rippleRRef.current) {
+                if (cpR < 0.4) {
+                    rippleRRef.current.setAttribute('cx', crx); rippleRRef.current.setAttribute('cy', cry)
+                    rippleRRef.current.setAttribute('r', 4 + cpR * 30)
+                    rippleRRef.current.setAttribute('stroke-width', 1.5 * (1 - cpR / 0.4))
+                    rippleRRef.current.setAttribute('opacity', 1 - cpR / 0.4)
+                } else { rippleRRef.current.setAttribute('opacity', 0) }
+            }
+
+            // Eye tracking
             const gazeTargets = mouseRef.current
                 ? [mouseRef.current, mouseRef.current]
-                : [{ x: cursorLx, y: cursorLy }, { x: cursorRx, y: cursorRy }]
-
-            const newEyes = [
-                { x: mascotLx, y: mascotLy },
-                { x: mascotRx, y: mascotRy },
-            ].map((pos, i) => {
+                : [{ x: clx, y: cly }, { x: crx, y: cry }]
+            const eyeRefPairs = [[eyeL0Ref, eyeL1Ref], [eyeR0Ref, eyeR1Ref]]
+            ;[{ x: mlx, y: mly }, { x: mrx, y: mry }].forEach((pos, i) => {
                 const g = gazeTargets[i]
                 const dx = g.x - pos.x, dy = g.y - pos.y
                 const dist = Math.sqrt(dx * dx + dy * dy) || 1
                 const prev = eyeSmoothRef.current[i]
-                return {
-                    x: prev.x + (Math.max(-1, Math.min(1, dx / dist)) - prev.x) * 0.08,
-                    y: prev.y + (Math.max(-1, Math.min(1, dy / dist)) - prev.y) * 0.08,
-                }
+                const ex = prev.x + (Math.max(-1, Math.min(1, dx / dist)) - prev.x) * 0.08
+                const ey = prev.y + (Math.max(-1, Math.min(1, dy / dist)) - prev.y) * 0.08
+                eyeSmoothRef.current[i] = { x: ex, y: ey }
+                if (eyeRefPairs[i][0].current) { eyeRefPairs[i][0].current.setAttribute('x', -8 + ex * 1.5); eyeRefPairs[i][0].current.setAttribute('y', -2 + ey) }
+                if (eyeRefPairs[i][1].current) { eyeRefPairs[i][1].current.setAttribute('x', 4 + ex * 1.5); eyeRefPairs[i][1].current.setAttribute('y', -2 + ey) }
             })
-            eyeSmoothRef.current = newEyes
 
-            setFrame({ t, eyes: newEyes })
             animFrameRef.current = requestAnimationFrame(tick)
         }
-
         animFrameRef.current = requestAnimationFrame(tick)
         return () => { if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current) }
     }, [isVisible])
@@ -164,102 +201,60 @@ function BuildForYouSection() {
         return () => { window.removeEventListener('resize', resize); if (raf) cancelAnimationFrame(raf) }
     }, [isVisible])
 
-    // Compute positions from frame time
-    const t = frame.t
-    const speed = 0.7
-    const aL = t * speed
-    const aR = -t * speed * 0.85
-
-    // Left pair: cursor leads, mascot follows
-    const cursorL = { x: pairL.cx + Math.cos(aL) * pairL.radius, y: pairL.cy + Math.sin(aL) * pairL.radius * 0.6 }
-    const mascotL = { x: pairL.cx + Math.cos(aL + Math.PI) * pairL.radius, y: pairL.cy + Math.sin(aL + Math.PI) * pairL.radius * 0.6 }
-
-    // Right pair: mascot leads, cursor follows
-    const mascotR = { x: pairR.cx + Math.cos(aR) * pairR.radius, y: pairR.cy + Math.sin(aR) * pairR.radius * 0.6 }
-    const cursorR = { x: pairR.cx + Math.cos(aR + Math.PI) * pairR.radius, y: pairR.cy + Math.sin(aR + Math.PI) * pairR.radius * 0.6 }
-
-    const eyes = frame.eyes
-
-    // Click ripple: cursor "clicks" every few seconds
-    const clickCycleL = 3.5, clickCycleR = 4.2
-    const clickPhaseL = (t % clickCycleL) / clickCycleL
-    const clickPhaseR = (t % clickCycleR) / clickCycleR
-
     return (
         <div ref={sectionRef} className={`${styles.buildSection} ${isVisible ? styles.buildVisible : ''}`} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <canvas ref={canvasRef} className={styles.starfield} />
             <div className={styles.buildGlow} />
 
             <svg ref={svgRef} className={styles.buildSvg} viewBox="0 0 800 220" fill="none" preserveAspectRatio="xMidYMid meet">
-                {/* Energy trail between pairs */}
-                <path
-                    d={`M${mascotL.x} ${mascotL.y} Q400 ${60 + Math.sin(t * 0.3) * 20} ${mascotR.x} ${mascotR.y}`}
-                    className={styles.pathLine}
-                />
+                {/* Energy trail */}
+                <path ref={trailRef} d={`M${L.cx - L.radius} ${L.cy} Q400 60 ${R.cx + R.radius} ${R.cy}`} className={styles.pathLine} />
 
-                {/* Flowing particles along the energy trail */}
-                {[0, 1, 2].map(i => {
-                    const pt = ((t * 0.15 + i * 0.33) % 1)
-                    const px = mascotL.x + (mascotR.x - mascotL.x) * pt
-                    const py = mascotL.y + (mascotR.y - mascotL.y) * pt + Math.sin(pt * Math.PI) * (Math.sin(t * 0.3) * 20 - 20)
-                    return <circle key={i} cx={px} cy={py} r="2" className={styles.particle} />
-                })}
+                {/* Particles */}
+                {[0, 1, 2].map(i => (
+                    <circle key={i} ref={el => particleRefs.current[i] = el} cx={L.cx} cy={L.cy} r="2" className={styles.particle} />
+                ))}
 
-                {/* ── Left pair: Demonstrate ── */}
-                {/* Cursor (leader) */}
-                <g transform={`translate(${cursorL.x}, ${cursorL.y}) scale(0.8)`}>
-                    <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
-                        fill="rgba(255,255,255,0.85)" stroke="rgba(86, 13, 248, 0.5)" strokeWidth="0.8" />
+                {/* Left cursor (leader) */}
+                <g ref={cursorLRef} transform={`translate(${L.cx + L.radius}, ${L.cy}) scale(0.8)`}>
+                    <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z" fill="rgba(255,255,255,0.85)" stroke="rgba(86,13,248,0.5)" strokeWidth="0.8" />
                 </g>
-                {/* Click ripple from cursor */}
-                {clickPhaseL < 0.4 && (
-                    <circle cx={cursorL.x} cy={cursorL.y} r={4 + clickPhaseL * 30}
-                        fill="none" stroke="rgba(96, 165, 250, 0.4)"
-                        strokeWidth={1.5 * (1 - clickPhaseL / 0.4)}
-                        opacity={1 - clickPhaseL / 0.4} />
-                )}
-                {/* Mascot (follower) */}
-                <g transform={`translate(${mascotL.x}, ${mascotL.y}) scale(1.5)`}>
+                <circle ref={rippleLRef} cx="0" cy="0" r="4" fill="none" stroke="rgba(96,165,250,0.4)" strokeWidth="1.5" opacity="0" />
+
+                {/* Left mascot (follower) */}
+                <g ref={mascotLRef} transform={`translate(${L.cx - L.radius}, ${L.cy}) scale(1.5)`}>
                     <path d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
-                        fill="rgba(96, 165, 250, 0.15)" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="1" />
+                        fill="rgba(96,165,250,0.15)" stroke="rgba(96,165,250,0.5)" strokeWidth="1" />
                     <g className={styles.blinkA}>
-                        <rect x={-8 + eyes[0].x * 1.5} y={-2 + eyes[0].y} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
-                        <rect x={4 + eyes[0].x * 1.5} y={-2 + eyes[0].y} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                        <rect ref={eyeL0Ref} x="-8" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                        <rect ref={eyeL1Ref} x="4" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
                     </g>
                     <path d="M-5 6 Q0 10 5 6" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.2" strokeLinecap="round" />
-                    <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="1" />
-                    <circle cx="0" cy="-15" r="2" fill="rgba(96, 165, 250, 0.7)" className={styles.antennaPulse} />
+                    <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(96,165,250,0.5)" strokeWidth="1" />
+                    <circle cx="0" cy="-15" r="2" fill="rgba(96,165,250,0.7)" className={styles.antennaPulse} />
                 </g>
-                {/* Label */}
-                <text x={pairL.cx} y="170" className={styles.nodeLabel}>Demonstrate</text>
+                <text x={L.cx} y="170" className={styles.nodeLabel}>Demonstrate</text>
 
-                {/* ── Right pair: Automate ── */}
-                {/* Mascot (leader) */}
-                <g transform={`translate(${mascotR.x}, ${mascotR.y}) scale(1.5)`}>
+                {/* Right mascot (leader) */}
+                <g ref={mascotRRef} transform={`translate(${R.cx + R.radius}, ${R.cy}) scale(1.5)`}>
                     <path d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
-                        fill="rgba(86, 13, 248, 0.2)" stroke="rgba(86, 13, 248, 0.6)" strokeWidth="1" />
+                        fill="rgba(86,13,248,0.2)" stroke="rgba(86,13,248,0.6)" strokeWidth="1" />
                     <g className={styles.blinkB}>
-                        <rect x={-8 + eyes[1].x * 1.5} y={-2 + eyes[1].y} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
-                        <rect x={4 + eyes[1].x * 1.5} y={-2 + eyes[1].y} width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                        <rect ref={eyeR0Ref} x="-8" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+                        <rect ref={eyeR1Ref} x="4" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
                     </g>
                     <path d="M-5 6 Q0 10 5 6" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.2" strokeLinecap="round" />
-                    <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(86, 13, 248, 0.6)" strokeWidth="1" />
-                    <circle cx="0" cy="-15" r="2" fill="rgba(86, 13, 248, 0.8)" className={styles.antennaPulse} style={{ animationDelay: '1.5s' }} />
+                    <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(86,13,248,0.6)" strokeWidth="1" />
+                    <circle cx="0" cy="-15" r="2" fill="rgba(86,13,248,0.8)" className={styles.antennaPulse} style={{ animationDelay: '1.5s' }} />
                 </g>
-                {/* Cursor (follower) */}
-                <g transform={`translate(${cursorR.x}, ${cursorR.y}) scale(0.8)`}>
-                    <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
-                        fill="rgba(255,255,255,0.85)" stroke="rgba(86, 13, 248, 0.5)" strokeWidth="0.8" />
+
+                {/* Right cursor (follower) */}
+                <g ref={cursorRRef} transform={`translate(${R.cx - R.radius}, ${R.cy}) scale(0.8)`}>
+                    <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z" fill="rgba(255,255,255,0.85)" stroke="rgba(86,13,248,0.5)" strokeWidth="0.8" />
                 </g>
-                {/* Click ripple from cursor */}
-                {clickPhaseR < 0.4 && (
-                    <circle cx={cursorR.x} cy={cursorR.y} r={4 + clickPhaseR * 30}
-                        fill="none" stroke="rgba(86, 13, 248, 0.4)"
-                        strokeWidth={1.5 * (1 - clickPhaseR / 0.4)}
-                        opacity={1 - clickPhaseR / 0.4} />
-                )}
-                {/* Label */}
-                <text x={pairR.cx} y="170" className={styles.nodeLabel}>Automate</text>
+                <circle ref={rippleRRef} cx="0" cy="0" r="4" fill="none" stroke="rgba(86,13,248,0.4)" strokeWidth="1.5" opacity="0" />
+
+                <text x={R.cx} y="170" className={styles.nodeLabel}>Automate</text>
             </svg>
 
             <div className={styles.buildContent}>
