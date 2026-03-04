@@ -1,8 +1,78 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import styles from './IndustriesGrid.module.css'
+
+function BuildForYouSection() {
+    const sectionRef = useRef(null)
+    const [isVisible, setIsVisible] = useState(false)
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) setIsVisible(true) },
+            { threshold: 0.2 }
+        )
+        if (sectionRef.current) observer.observe(sectionRef.current)
+        return () => observer.disconnect()
+    }, [])
+
+    const nodes = [
+        { id: 'demo', label: 'Demonstrate', x: 160, y: 90 },
+        { id: 'learn', label: 'Learn', x: 400, y: 90 },
+        { id: 'auto', label: 'Automate', x: 640, y: 90 },
+    ]
+
+    return (
+        <div ref={sectionRef} className={`${styles.buildSection} ${isVisible ? styles.buildVisible : ''}`}>
+            <div className={styles.buildGlow} />
+            <svg className={styles.buildSvg} viewBox="0 0 800 180" fill="none" preserveAspectRatio="xMidYMid meet">
+                {/* Flowing path lines */}
+                <path d="M200 90 Q300 40 360 90" className={styles.pathLine} />
+                <path d="M440 90 Q540 140 600 90" className={styles.pathLine} />
+                {/* Flowing particles along paths */}
+                {[0, 1, 2].map(i => (
+                    <React.Fragment key={i}>
+                        <circle r="3" className={styles.particle}>
+                            <animateMotion dur={`${2 + i * 0.4}s`} repeatCount="indefinite" begin={`${i * 0.6}s`}>
+                                <mpath href="#pathA" />
+                            </animateMotion>
+                        </circle>
+                        <circle r="3" className={styles.particle}>
+                            <animateMotion dur={`${2 + i * 0.4}s`} repeatCount="indefinite" begin={`${i * 0.6}s`}>
+                                <mpath href="#pathB" />
+                            </animateMotion>
+                        </circle>
+                    </React.Fragment>
+                ))}
+                {/* Hidden paths for animateMotion */}
+                <path id="pathA" d="M200 90 Q300 40 360 90" fill="none" />
+                <path id="pathB" d="M440 90 Q540 140 600 90" fill="none" />
+                {/* Nodes */}
+                {nodes.map((node, i) => (
+                    <g key={node.id} className={styles.nodeGroup} style={{ animationDelay: `${i * 0.15}s` }}>
+                        <circle cx={node.x} cy={node.y} r="36" className={styles.nodeRing} />
+                        <circle cx={node.x} cy={node.y} r="28" className={styles.nodeCore} />
+                        <circle cx={node.x} cy={node.y} r="28" className={styles.nodePulse} style={{ animationDelay: `${i * 0.5}s` }} />
+                        <text x={node.x} y={node.y + 4} className={styles.nodeLabel}>{node.label}</text>
+                    </g>
+                ))}
+            </svg>
+            <div className={styles.buildContent}>
+                <h2 className={styles.buildTitle}>Let us build for you</h2>
+                <p className={styles.buildDesc}>
+                    If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.
+                </p>
+                <Link
+                    className={styles.buildBtn}
+                    href="mailto:sales@openadapt.ai?subject=OpenAdapt%20Inquiry%3A%20Assistance%20with%20Automating%20%5BYour%20Use%20Case%5D"
+                >
+                    Contact Sales
+                </Link>
+            </div>
+        </div>
+    )
+}
 
 export default function IndustriesGrid({
     feedbackData,
@@ -143,33 +213,8 @@ export default function IndustriesGrid({
                 ))}
             </div>
 
-            {/* Special Section for "Let us build for you" */}
-            <div className={styles.specialSection}>
-                <div className={styles.cardSpecial}>
-                    <div className={styles.logoSpecial}>
-                        <Image
-                            className="invert text-center inline"
-                            priority
-                            src="/images/noun-build.svg"
-                            height={60}
-                            width={60}
-                            alt="Let us build for you"
-                        />
-                    </div>
-                    <h2 className={styles.titleSpecial}>Let us build for you</h2>
-                    <p className={styles.descriptionsSpecial}>
-                        If OpenAdapt doesn't fully automate your workflow out of the box, we'll work with you to fix that.
-                    </p>
-                    <div className={styles.buttonContainer}>
-                        <Link
-                            className={styles.btn}
-                            href="mailto:sales@openadapt.ai?subject=OpenAdapt%20Inquiry%3A%20Assistance%20with%20Automating%20%5BYour%20Use%20Case%5D"
-                        >
-                            Contact Sales
-                        </Link>
-                    </div>
-                </div>
-            </div>                     
+            {/* Special Section: "Let us build for you" with neural pathway viz */}
+            <BuildForYouSection />                     
         </div>
     )
 }
