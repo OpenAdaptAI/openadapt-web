@@ -24,12 +24,14 @@
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 14px;
 }
 
 .card {
+    flex: 0 1 240px;
     background: rgba(40, 50, 80, 0.35);
     border: 1px solid rgba(96, 165, 250, 0.2);
     border-radius: 12px;
