@@ -135,61 +135,7 @@
     filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.8));
 }
 
-/* ── Character floating animations ── */
-.floatA {
-    animation: bobA 4s ease-in-out infinite, fadeIn 0.8s ease forwards;
-}
-.floatB {
-    animation: bobB 5s ease-in-out infinite, fadeIn 0.8s ease forwards;
-}
-.floatC {
-    animation: bobC 4.5s ease-in-out infinite, fadeIn 0.8s ease forwards;
-}
-
-@keyframes bobA {
-    0%, 100% { transform: translate(120px, 100px) scale(1.4); }
-    50% { transform: translate(120px, 92px) scale(1.4); }
-}
-@keyframes bobB {
-    0%, 100% { transform: translate(400px, 75px) scale(1.6); }
-    50% { transform: translate(400px, 66px) scale(1.6); }
-}
-@keyframes bobC {
-    0%, 100% { transform: translate(680px, 90px) scale(1.4); }
-    50% { transform: translate(680px, 82px) scale(1.4); }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* ── Cursor orbiting animations ── */
-.orbitA {
-    animation: orbitCursorA 6s linear infinite;
-    transform-origin: 120px 100px;
-}
-.orbitB {
-    animation: orbitCursorB 7s linear infinite;
-    transform-origin: 400px 75px;
-}
-.orbitC {
-    animation: orbitCursorC 6.5s linear infinite;
-    transform-origin: 680px 90px;
-}
-
-@keyframes orbitCursorA {
-    0% { transform: rotate(0deg) translate(40px, 0) rotate(0deg); }
-    100% { transform: rotate(360deg) translate(40px, 0) rotate(-360deg); }
-}
-@keyframes orbitCursorB {
-    0% { transform: rotate(0deg) translate(45px, 0) rotate(0deg); }
-    100% { transform: rotate(360deg) translate(45px, 0) rotate(-360deg); }
-}
-@keyframes orbitCursorC {
-    0% { transform: rotate(0deg) translate(40px, 0) rotate(0deg); }
-    100% { transform: rotate(360deg) translate(40px, 0) rotate(-360deg); }
-}
+/* (Dance positions are computed in JS — no CSS orbit/float needed) */
 
 /* ── Blink animations — each mascot blinks independently ── */
 .blinkA { animation: blink 4s ease-in-out infinite; }
@@ -287,8 +233,6 @@
     .buildSection { transition: none; opacity: 1; transform: none; }
     .buildGlow { animation: none; }
     .pathLine { animation: none; }
-    .floatA, .floatB, .floatC { animation: none; opacity: 1; }
-    .orbitA, .orbitB, .orbitC { animation: none; }
     .blinkA, .blinkB, .blinkC { animation: none; }
     .antennaPulse { animation: none; }
     .particle { display: none; }
