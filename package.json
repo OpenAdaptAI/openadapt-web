@@ -34,7 +34,8 @@
         "react-chartjs-2": "^5.2.0",
         "react-dom": "^18.2.0",
         "react-fontawesome": "^1.7.1",
-        "react-slick": "^0.30.2"
+        "react-slick": "^0.30.2",
+        "simplex-noise": "^4.0.3"
     },
     "devDependencies": {
         "@netlify/plugin-nextjs": "^5.15.5",
