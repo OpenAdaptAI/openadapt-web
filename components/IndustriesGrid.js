@@ -1,63 +1,212 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import styles from './IndustriesGrid.module.css'
 
+/* ── The OpenAdapt mascot as an SVG group (derived from favicon.svg) ── */
+function Mascot({ x, y, scale = 1, delay = 0, className = '' }) {
+    return (
+        <g
+            transform={`translate(${x}, ${y}) scale(${scale})`}
+            className={className}
+            style={{ animationDelay: `${delay}s` }}
+        >
+            {/* Body / speech-bubble shape */}
+            <path
+                d="M-12 -8 L12 -8 Q16 -8 16 -4 L16 8 Q16 12 12 12 L4 12 L-2 16 L-2 12 L-12 12 Q-16 12 -16 8 L-16 -4 Q-16 -8 -12 -8 Z"
+                fill="rgba(96, 165, 250, 0.15)"
+                stroke="rgba(96, 165, 250, 0.5)"
+                strokeWidth="1"
+            />
+            {/* Left eye */}
+            <rect x="-8" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+            {/* Right eye */}
+            <rect x="4" y="-2" width="4" height="4" rx="0.5" fill="rgba(255,255,255,0.9)" />
+            {/* Smile */}
+            <path
+                d="M-5 6 Q0 10 5 6"
+                fill="none"
+                stroke="rgba(255,255,255,0.8)"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+            />
+            {/* Antenna */}
+            <line x1="0" y1="-8" x2="0" y2="-14" stroke="rgba(96, 165, 250, 0.5)" strokeWidth="1" />
+            <circle cx="0" cy="-15" r="2" fill="rgba(96, 165, 250, 0.7)" />
+        </g>
+    )
+}
+
+/* ── Small cursor arrow SVG ── */
+function Cursor({ x, y, scale = 0.6, delay = 0, className = '' }) {
+    return (
+        <g
+            transform={`translate(${x}, ${y}) scale(${scale})`}
+            className={className}
+            style={{ animationDelay: `${delay}s` }}
+        >
+            <path
+                d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
+                fill="rgba(255,255,255,0.85)"
+                stroke="rgba(86, 13, 248, 0.5)"
+                strokeWidth="0.8"
+            />
+        </g>
+    )
+}
+
 function BuildForYouSection() {
     const sectionRef = useRef(null)
+    const canvasRef = useRef(null)
     const [isVisible, setIsVisible] = useState(false)
+    const animFrameRef = useRef(null)
 
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => { if (entry.isIntersecting) setIsVisible(true) },
-            { threshold: 0.2 }
+            { threshold: 0.15 }
         )
         if (sectionRef.current) observer.observe(sectionRef.current)
         return () => observer.disconnect()
     }, [])
 
-    const nodes = [
-        { id: 'demo', label: 'Demonstrate', x: 160, y: 90 },
-        { id: 'learn', label: 'Learn', x: 400, y: 90 },
-        { id: 'auto', label: 'Automate', x: 640, y: 90 },
-    ]
+    /* ── Starfield canvas ── */
+    const initStarfield = useCallback(() => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+        const ctx = canvas.getContext('2d')
+        const dpr = window.devicePixelRatio || 1
+
+        const resize = () => {
+            const rect = canvas.parentElement.getBoundingClientRect()
+            canvas.width = rect.width * dpr
+            canvas.height = rect.height * dpr
+            canvas.style.width = rect.width + 'px'
+            canvas.style.height = rect.height + 'px'
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+        }
+        resize()
+        window.addEventListener('resize', resize)
+
+        // Stars
+        const stars = Array.from({ length: 120 }, () => ({
+            x: Math.random(),
+            y: Math.random(),
+            z: Math.random(),
+            speed: 0.0002 + Math.random() * 0.0008,
+        }))
+
+        const draw = () => {
+            const w = canvas.width / dpr
+            const h = canvas.height / dpr
+            ctx.clearRect(0, 0, w, h)
+
+            for (const star of stars) {
+                star.z -= star.speed
+                if (star.z <= 0) { star.z = 1; star.x = Math.random(); star.y = Math.random() }
+
+                const sx = (star.x - 0.5) / star.z * w * 0.5 + w * 0.5
+                const sy = (star.y - 0.5) / star.z * h * 0.5 + h * 0.5
+                const r = (1 - star.z) * 1.8
+                const a = (1 - star.z) * 0.7
+
+                // Streak effect
+                const streakLen = (1 - star.z) * 8
+                const dx = (star.x - 0.5)
+                const dy = (star.y - 0.5)
+                const mag = Math.sqrt(dx * dx + dy * dy) || 1
+                const nx = dx / mag * streakLen
+                const ny = dy / mag * streakLen
+
+                ctx.beginPath()
+                ctx.moveTo(sx, sy)
+                ctx.lineTo(sx + nx, sy + ny)
+                ctx.strokeStyle = `rgba(180, 200, 255, ${a})`
+                ctx.lineWidth = r * 0.6
+                ctx.stroke()
+
+                ctx.beginPath()
+                ctx.arc(sx, sy, r, 0, Math.PI * 2)
+                ctx.fillStyle = `rgba(200, 220, 255, ${a})`
+                ctx.fill()
+            }
+
+            animFrameRef.current = requestAnimationFrame(draw)
+        }
+
+        // Respect reduced motion
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+        if (!mq.matches) {
+            draw()
+        } else {
+            // Draw one static frame
+            const w = canvas.width / dpr
+            const h = canvas.height / dpr
+            ctx.clearRect(0, 0, w, h)
+            for (const star of stars) {
+                const sx = star.x * w
+                const sy = star.y * h
+                ctx.beginPath()
+                ctx.arc(sx, sy, 0.8, 0, Math.PI * 2)
+                ctx.fillStyle = 'rgba(200, 220, 255, 0.3)'
+                ctx.fill()
+            }
+        }
+
+        return () => {
+            window.removeEventListener('resize', resize)
+            if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (isVisible) return initStarfield()
+    }, [isVisible, initStarfield])
 
     return (
         <div ref={sectionRef} className={`${styles.buildSection} ${isVisible ? styles.buildVisible : ''}`}>
+            <canvas ref={canvasRef} className={styles.starfield} />
             <div className={styles.buildGlow} />
-            <svg className={styles.buildSvg} viewBox="0 0 800 180" fill="none" preserveAspectRatio="xMidYMid meet">
-                {/* Flowing path lines */}
-                <path d="M200 90 Q300 40 360 90" className={styles.pathLine} />
-                <path d="M440 90 Q540 140 600 90" className={styles.pathLine} />
-                {/* Flowing particles along paths */}
+
+            {/* Characters floating in space */}
+            <svg className={styles.buildSvg} viewBox="0 0 800 200" fill="none" preserveAspectRatio="xMidYMid meet">
+                {/* Energy trails connecting characters */}
+                <path id="trailA" d="M120 100 Q260 30 400 80" className={styles.pathLine} />
+                <path id="trailB" d="M400 80 Q540 130 680 90" className={styles.pathLine} />
+
+                {/* Flowing particles */}
                 {[0, 1, 2].map(i => (
                     <React.Fragment key={i}>
-                        <circle r="3" className={styles.particle}>
-                            <animateMotion dur={`${2 + i * 0.4}s`} repeatCount="indefinite" begin={`${i * 0.6}s`}>
-                                <mpath href="#pathA" />
+                        <circle r="2.5" className={styles.particle}>
+                            <animateMotion dur={`${2.5 + i * 0.5}s`} repeatCount="indefinite" begin={`${i * 0.7}s`}>
+                                <mpath href="#trailA" />
                             </animateMotion>
                         </circle>
-                        <circle r="3" className={styles.particle}>
-                            <animateMotion dur={`${2 + i * 0.4}s`} repeatCount="indefinite" begin={`${i * 0.6}s`}>
-                                <mpath href="#pathB" />
+                        <circle r="2.5" className={styles.particle}>
+                            <animateMotion dur={`${2.5 + i * 0.5}s`} repeatCount="indefinite" begin={`${i * 0.7}s`}>
+                                <mpath href="#trailB" />
                             </animateMotion>
                         </circle>
                     </React.Fragment>
                 ))}
-                {/* Hidden paths for animateMotion */}
-                <path id="pathA" d="M200 90 Q300 40 360 90" fill="none" />
-                <path id="pathB" d="M440 90 Q540 140 600 90" fill="none" />
-                {/* Nodes */}
-                {nodes.map((node, i) => (
-                    <g key={node.id} className={styles.nodeGroup} style={{ animationDelay: `${i * 0.15}s` }}>
-                        <circle cx={node.x} cy={node.y} r="36" className={styles.nodeRing} />
-                        <circle cx={node.x} cy={node.y} r="28" className={styles.nodeCore} />
-                        <circle cx={node.x} cy={node.y} r="28" className={styles.nodePulse} style={{ animationDelay: `${i * 0.5}s` }} />
-                        <text x={node.x} y={node.y + 4} className={styles.nodeLabel}>{node.label}</text>
-                    </g>
-                ))}
+
+                {/* Three mascots floating with gentle bob animation */}
+                <Mascot x={120} y={100} scale={1.4} delay={0} className={styles.floatA} />
+                <Mascot x={400} y={75} scale={1.6} delay={0.3} className={styles.floatB} />
+                <Mascot x={680} y={90} scale={1.4} delay={0.6} className={styles.floatC} />
+
+                {/* Cursors orbiting around mascots */}
+                <Cursor x={170} y={78} scale={0.7} delay={0} className={styles.orbitA} />
+                <Cursor x={450} y={55} scale={0.8} delay={0.4} className={styles.orbitB} />
+                <Cursor x={730} y={68} scale={0.7} delay={0.8} className={styles.orbitC} />
+
+                {/* Labels under each mascot */}
+                <text x="120" y="140" className={styles.nodeLabel}>Demonstrate</text>
+                <text x="400" y="118" className={styles.nodeLabel}>Learn</text>
+                <text x="680" y="130" className={styles.nodeLabel}>Automate</text>
             </svg>
+
             <div className={styles.buildContent}>
                 <h2 className={styles.buildTitle}>Let us build for you</h2>
                 <p className={styles.buildDesc}>
@@ -213,8 +362,7 @@ export default function IndustriesGrid({
                 ))}
             </div>
 
-            {/* Special Section: "Let us build for you" with neural pathway viz */}
-            <BuildForYouSection />                     
+            <BuildForYouSection />
         </div>
     )
 }

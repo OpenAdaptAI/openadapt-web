@@ -52,18 +52,18 @@
     color: rgba(255, 255, 255, 0.75);
 }
 
-/* ========== Build For You Section ========== */
+/* ========== Build For You — Hyperspace Characters ========== */
 
 .buildSection {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 60px 20px 70px;
+    padding: 80px 20px 90px;
     overflow: hidden;
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 1s ease, transform 1s ease;
 }
 
 .buildVisible {
@@ -71,92 +71,138 @@
     transform: translateY(0);
 }
 
+/* Starfield canvas */
+.starfield {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Ambient glow behind characters */
 .buildGlow {
     position: absolute;
-    top: 50%;
+    top: 35%;
     left: 50%;
-    width: 500px;
-    height: 500px;
+    width: 600px;
+    height: 400px;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(86, 13, 248, 0.12) 0%, transparent 70%);
+    background: radial-gradient(
+        ellipse,
+        rgba(86, 13, 248, 0.1) 0%,
+        rgba(96, 165, 250, 0.05) 40%,
+        transparent 70%
+    );
     pointer-events: none;
-    animation: glowPulse 6s ease-in-out infinite;
+    animation: glowPulse 8s ease-in-out infinite;
+    z-index: 0;
 }
 
 @keyframes glowPulse {
-    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
 }
 
+/* SVG scene */
 .buildSvg {
     width: 100%;
-    max-width: 600px;
+    max-width: 650px;
     height: auto;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
     position: relative;
     z-index: 1;
 }
 
+/* Energy trails */
 .pathLine {
-    stroke: rgba(96, 165, 250, 0.25);
-    stroke-width: 2;
+    stroke: rgba(96, 165, 250, 0.2);
+    stroke-width: 1.5;
     fill: none;
-    stroke-dasharray: 6 4;
-    animation: dashFlow 3s linear infinite;
+    stroke-dasharray: 8 6;
+    animation: dashFlow 4s linear infinite;
 }
 
 @keyframes dashFlow {
-    to { stroke-dashoffset: -30; }
+    to { stroke-dashoffset: -42; }
 }
 
+/* Flowing energy particles */
 .particle {
     fill: #60a5fa;
-    opacity: 0.8;
-    filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.6));
+    opacity: 0.7;
+    filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.8));
 }
 
-.nodeGroup {
-    opacity: 0;
-    animation: nodeIn 0.6s ease forwards;
+/* ── Character floating animations ── */
+.floatA {
+    animation: bobA 4s ease-in-out infinite, fadeIn 0.8s ease forwards;
+}
+.floatB {
+    animation: bobB 5s ease-in-out infinite, fadeIn 0.8s ease forwards;
+}
+.floatC {
+    animation: bobC 4.5s ease-in-out infinite, fadeIn 0.8s ease forwards;
 }
 
-@keyframes nodeIn {
+@keyframes bobA {
+    0%, 100% { transform: translate(120px, 100px) scale(1.4); }
+    50% { transform: translate(120px, 92px) scale(1.4); }
+}
+@keyframes bobB {
+    0%, 100% { transform: translate(400px, 75px) scale(1.6); }
+    50% { transform: translate(400px, 66px) scale(1.6); }
+}
+@keyframes bobC {
+    0%, 100% { transform: translate(680px, 90px) scale(1.4); }
+    50% { transform: translate(680px, 82px) scale(1.4); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
     to { opacity: 1; }
 }
 
-.nodeRing {
-    fill: none;
-    stroke: rgba(86, 13, 248, 0.3);
-    stroke-width: 1;
+/* ── Cursor orbiting animations ── */
+.orbitA {
+    animation: orbitCursorA 6s linear infinite;
+    transform-origin: 120px 100px;
+}
+.orbitB {
+    animation: orbitCursorB 7s linear infinite;
+    transform-origin: 400px 75px;
+}
+.orbitC {
+    animation: orbitCursorC 6.5s linear infinite;
+    transform-origin: 680px 90px;
 }
 
-.nodeCore {
-    fill: rgba(86, 13, 248, 0.15);
-    stroke: rgba(96, 165, 250, 0.4);
-    stroke-width: 1.5;
+@keyframes orbitCursorA {
+    0% { transform: rotate(0deg) translate(40px, 0) rotate(0deg); }
+    100% { transform: rotate(360deg) translate(40px, 0) rotate(-360deg); }
+}
+@keyframes orbitCursorB {
+    0% { transform: rotate(0deg) translate(45px, 0) rotate(0deg); }
+    100% { transform: rotate(360deg) translate(45px, 0) rotate(-360deg); }
+}
+@keyframes orbitCursorC {
+    0% { transform: rotate(0deg) translate(40px, 0) rotate(0deg); }
+    100% { transform: rotate(360deg) translate(40px, 0) rotate(-360deg); }
 }
 
-.nodePulse {
-    fill: none;
-    stroke: rgba(96, 165, 250, 0.3);
-    stroke-width: 1;
-    animation: ringPulse 3s ease-in-out infinite;
-}
-
-@keyframes ringPulse {
-    0%, 100% { r: 28; opacity: 0.3; }
-    50% { r: 38; opacity: 0; }
-}
-
+/* Labels */
 .nodeLabel {
-    fill: rgba(255, 255, 255, 0.9);
+    fill: rgba(255, 255, 255, 0.75);
     font-size: 13px;
     font-weight: 500;
     text-anchor: middle;
     dominant-baseline: central;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: 0.03em;
 }
 
+/* CTA content */
 .buildContent {
     text-align: center;
     position: relative;
@@ -166,39 +212,54 @@
 
 .buildTitle {
     color: white;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 600;
-    margin: 0 0 12px;
+    margin: 0 0 14px;
     letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 50%, #60a5fa 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .buildDesc {
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.6);
     font-size: 16px;
-    line-height: 1.6;
-    margin: 0 0 28px;
+    line-height: 1.65;
+    margin: 0 0 32px;
 }
 
 .buildBtn {
     display: inline-block;
-    padding: 12px 32px;
-    border-radius: 10px;
+    padding: 14px 36px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #560df8 0%, #4d9ef6 100%);
     color: white;
     font-weight: 600;
     font-size: 15px;
     text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 20px rgba(86, 13, 248, 0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 24px rgba(86, 13, 248, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.buildBtn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 .buildBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(86, 13, 248, 0.45);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 36px rgba(86, 13, 248, 0.5);
+}
+
+.buildBtn:hover::after {
+    opacity: 1;
 }
 
 /* Reduced motion */
@@ -206,17 +267,17 @@
     .buildSection { transition: none; opacity: 1; transform: none; }
     .buildGlow { animation: none; }
     .pathLine { animation: none; }
-    .nodePulse { animation: none; }
-    .nodeGroup { animation: none; opacity: 1; }
+    .floatA, .floatB, .floatC { animation: none; opacity: 1; }
+    .orbitA, .orbitB, .orbitC { animation: none; }
     .particle { display: none; }
     .buildBtn { transition: none; }
 }
 
 /* Mobile */
 @media (max-width: 640px) {
-    .buildSection { padding: 40px 16px 50px; }
-    .buildTitle { font-size: 22px; }
+    .buildSection { padding: 50px 16px 60px; }
+    .buildTitle { font-size: 24px; }
     .buildDesc { font-size: 14px; }
     .buildSvg { max-width: 100%; }
-    .buildGlow { width: 300px; height: 300px; }
+    .buildGlow { width: 300px; height: 250px; }
 }
