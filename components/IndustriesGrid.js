@@ -125,11 +125,11 @@ function BuildForYouSection() {
             <svg className={styles.buildSvg} viewBox="0 0 800 220" fill="none"
                 onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                 <defs>
-                    {/* Elliptical orbit paths for animateMotion */}
-                    <path id="orbitL" d="M320 100 A80 48 0 0 1 160 100 A80 48 0 0 1 320 100" />
-                    <path id="orbitR" d="M640 100 A80 48 0 0 0 480 100 A80 48 0 0 0 640 100" />
+                    {/* Elliptical orbit paths — rx=40 ry=22, gentle and unhurried */}
+                    <path id="orbitL" d="M280 100 A40 22 0 0 1 200 100 A40 22 0 0 1 280 100" />
+                    <path id="orbitR" d="M600 100 A40 22 0 0 0 520 100 A40 22 0 0 0 600 100" />
                     {/* Energy trail path */}
-                    <path id="trailPath" d="M240 100 Q400 60 560 100" />
+                    <path id="trailPath" d="M240 100 Q400 70 560 100" />
                 </defs>
 
                 {/* Energy trail with flowing dashes */}
@@ -137,8 +137,8 @@ function BuildForYouSection() {
 
                 {/* Particles flowing along the trail */}
                 {[0, 1, 2].map(i => (
-                    <circle key={i} r="2" className={styles.particle}>
-                        <animateMotion dur="4s" repeatCount="indefinite" begin={`${i * -1.33}s`}>
+                    <circle key={i} r="1.5" className={styles.particle}>
+                        <animateMotion dur="7s" repeatCount="indefinite" begin={`${i * -2.33}s`}>
                             <mpath href="#trailPath" />
                         </animateMotion>
                     </circle>
@@ -146,25 +146,25 @@ function BuildForYouSection() {
 
                 {/* ── Left pair: Demonstrate ── */}
 
-                {/* Cursor (leader) — orbits CW, 9s period */}
+                {/* Cursor (leader) — orbits CW, 16s period */}
                 <g>
-                    <animateMotion dur="9s" repeatCount="indefinite">
+                    <animateMotion dur="16s" repeatCount="indefinite">
                         <mpath href="#orbitL" />
                     </animateMotion>
                     <g transform="scale(0.8)">
                         <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
                             fill="rgba(255,255,255,0.85)" stroke="rgba(86,13,248,0.5)" strokeWidth="0.8" />
                     </g>
-                    {/* Click ripple pulses every 3.5s */}
-                    <circle r="4" fill="none" stroke="rgba(96,165,250,0.4)" strokeWidth="1.5">
-                        <animate attributeName="r" values="4;20;20" keyTimes="0;0.12;1" dur="3.5s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.12;1" dur="3.5s" repeatCount="indefinite" />
+                    {/* Click ripple pulses every 6s */}
+                    <circle r="4" fill="none" stroke="rgba(96,165,250,0.3)" strokeWidth="1">
+                        <animate attributeName="r" values="4;14;14" keyTimes="0;0.08;1" dur="6s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.4;0;0" keyTimes="0;0.08;1" dur="6s" repeatCount="indefinite" />
                     </circle>
                 </g>
 
                 {/* Mascot (follower) — same orbit, 180° offset */}
                 <g>
-                    <animateMotion dur="9s" repeatCount="indefinite" begin="-4.5s">
+                    <animateMotion dur="16s" repeatCount="indefinite" begin="-8s">
                         <mpath href="#orbitL" />
                     </animateMotion>
                     <g transform="scale(1.5)">
@@ -184,9 +184,9 @@ function BuildForYouSection() {
 
                 {/* ── Right pair: Automate ── */}
 
-                {/* Mascot (leader) — orbits CCW, 10.5s period */}
+                {/* Mascot (leader) — orbits CCW, 18.5s period */}
                 <g>
-                    <animateMotion dur="10.5s" repeatCount="indefinite">
+                    <animateMotion dur="18.5s" repeatCount="indefinite">
                         <mpath href="#orbitR" />
                     </animateMotion>
                     <g transform="scale(1.5)">
@@ -204,17 +204,17 @@ function BuildForYouSection() {
 
                 {/* Cursor (follower) — same orbit, 180° offset */}
                 <g>
-                    <animateMotion dur="10.5s" repeatCount="indefinite" begin="-5.25s">
+                    <animateMotion dur="18.5s" repeatCount="indefinite" begin="-9.25s">
                         <mpath href="#orbitR" />
                     </animateMotion>
                     <g transform="scale(0.8)">
                         <path d="M0 -10 L0 10 L4 6 L8 14 L10 13 L6 5 L11 5 Z"
                             fill="rgba(255,255,255,0.85)" stroke="rgba(86,13,248,0.5)" strokeWidth="0.8" />
                     </g>
-                    {/* Click ripple pulses every 4.2s */}
-                    <circle r="4" fill="none" stroke="rgba(86,13,248,0.4)" strokeWidth="1.5">
-                        <animate attributeName="r" values="4;20;20" keyTimes="0;0.1;1" dur="4.2s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.5;0;0" keyTimes="0;0.1;1" dur="4.2s" repeatCount="indefinite" />
+                    {/* Click ripple pulses every 7s */}
+                    <circle r="4" fill="none" stroke="rgba(86,13,248,0.3)" strokeWidth="1">
+                        <animate attributeName="r" values="4;14;14" keyTimes="0;0.07;1" dur="7s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.4;0;0" keyTimes="0;0.07;1" dur="7s" repeatCount="indefinite" />
                     </circle>
                 </g>
 
