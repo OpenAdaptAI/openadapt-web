@@ -177,14 +177,7 @@
 }
 
 .buildContent::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 14px;
-    border: 1px solid rgba(86, 13, 248, 0.3);
-    filter: url(#shimmer);
-    pointer-events: none;
-    z-index: -1;
+    display: none;
 }
 
 .buildTitle {

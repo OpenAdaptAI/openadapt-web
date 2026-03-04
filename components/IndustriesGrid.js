@@ -78,22 +78,22 @@ function BuildForYouSection() {
             speed: 0.0002 + Math.random() * 0.0006,
         }))
 
-        const constellationNodes = Array.from({ length: 35 }, () => ({
+        const constellationNodes = Array.from({ length: 50 }, () => ({
             x: Math.random() * (canvas.width / dpr),
             y: Math.random() * (canvas.height / dpr),
-            vx: (Math.random() - 0.5) * 0.15,
-            vy: (Math.random() - 0.5) * 0.15,
-            size: 0.8 + Math.random() * 0.7,
+            vx: (Math.random() - 0.5) * 0.2,
+            vy: (Math.random() - 0.5) * 0.2,
+            size: 1.0 + Math.random() * 1.0,
         }))
-        const CONNECT_THRESHOLD = 140
+        const CONNECT_THRESHOLD = 160
         const CONNECT_THRESHOLD_SQ = CONNECT_THRESHOLD * CONNECT_THRESHOLD
 
         let wispTime = 0
 
         const wisps = [
-            { baseY: 0.25, color: [86, 13, 248],  alpha: 0.14, freqs: [0.003, 0.007], amps: [40, 20], speeds: [0.002, 0.003],  offset: 0   },
-            { baseY: 0.30, color: [96, 165, 250],  alpha: 0.12, freqs: [0.004, 0.005], amps: [35, 25], speeds: [0.0015, 0.0025], offset: 1.5 },
-            { baseY: 0.22, color: [120, 40, 220],  alpha: 0.10, freqs: [0.002, 0.009], amps: [50, 15], speeds: [0.001, 0.004],  offset: 3.0 },
+            { baseY: 0.20, color: [86, 13, 248],  alpha: 0.22, freqs: [0.003, 0.007], amps: [50, 25], speeds: [0.002, 0.003],  offset: 0   },
+            { baseY: 0.45, color: [96, 165, 250],  alpha: 0.18, freqs: [0.004, 0.005], amps: [40, 30], speeds: [0.0015, 0.0025], offset: 1.5 },
+            { baseY: 0.65, color: [120, 40, 220],  alpha: 0.15, freqs: [0.002, 0.009], amps: [55, 20], speeds: [0.001, 0.004],  offset: 3.0 },
         ]
 
         // ── Flow field (Perlin noise cosmic dust) ──
@@ -184,28 +184,32 @@ function BuildForYouSection() {
                     const distSq = dx * dx + dy * dy
                     if (distSq < CONNECT_THRESHOLD_SQ) {
                         const dist = Math.sqrt(distSq)
-                        const alpha = 0.15 * (1 - dist / CONNECT_THRESHOLD)
+                        const alpha = 0.25 * (1 - dist / CONNECT_THRESHOLD)
                         const mx = (a.x + b.x) / 2
                         const my = (a.y + b.y) / 2 - dist * 0.1 // slight upward arc
                         ctx.beginPath()
                         ctx.moveTo(a.x, a.y)
                         ctx.quadraticCurveTo(mx, my, b.x, b.y)
                         ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`
-                        ctx.lineWidth = 0.7
+                        ctx.lineWidth = 1.0
                         ctx.stroke()
                     }
                 }
             }
 
-            // Draw nodes as tiny dots
+            // Draw nodes with subtle glow
             for (const n of constellationNodes) {
                 ctx.beginPath()
+                ctx.arc(n.x, n.y, n.size * 2.5, 0, Math.PI * 2)
+                ctx.fillStyle = 'rgba(96, 165, 250, 0.06)'
+                ctx.fill()
+                ctx.beginPath()
                 ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(180, 200, 255, 0.2)'
+                ctx.fillStyle = 'rgba(200, 220, 255, 0.4)'
                 ctx.fill()
             }
 
-            // ── Flow field particles (cosmic dust, drawn on top of stars) ──
+            // ── Flow field particles with mascot gravity ──
             // On first frame, scatter particles across actual canvas dimensions
             if (!flowInitialized) {
                 for (const p of flowParticles) {
@@ -214,13 +218,49 @@ function BuildForYouSection() {
                 }
                 flowInitialized = true
             }
+
+            // Map SVG mascot orbit centers to canvas coords
+            // SVG viewBox is 800x220, rendered centered with max-width 650px
+            // The SVG sits roughly in the upper portion of the section
+            const svgEl = canvasRef.current?.parentElement?.querySelector('svg')
+            let attrL = { x: w * 0.3, y: h * 0.3 }
+            let attrR = { x: w * 0.7, y: h * 0.3 }
+            if (svgEl) {
+                const svgRect = svgEl.getBoundingClientRect()
+                const secRect = canvas.parentElement.getBoundingClientRect()
+                // Map SVG viewBox coords (240,100) and (560,100) to canvas coords
+                const sx = svgRect.width / 800
+                const offX = svgRect.left - secRect.left
+                const offY = svgRect.top - secRect.top
+                attrL = { x: offX + 240 * sx, y: offY + 100 * (svgRect.height / 220) }
+                attrR = { x: offX + 560 * sx, y: offY + 100 * (svgRect.height / 220) }
+            }
+            const ATTRACT_RADIUS = 120
+            const ATTRACT_STRENGTH = 0.4
+
             const particleCount = w < 640 ? Math.floor(FLOW_PARTICLE_COUNT / 2) : FLOW_PARTICLE_COUNT
             const FLOW_SCALE = 0.003
             for (let i = 0; i < particleCount; i++) {
                 const p = flowParticles[i]
                 const angle = noise3D(p.x * FLOW_SCALE, p.y * FLOW_SCALE, flowTime) * Math.PI * 2
-                p.x += Math.cos(angle) * p.speed
-                p.y += Math.sin(angle) * p.speed
+                let vx = Math.cos(angle) * p.speed
+                let vy = Math.sin(angle) * p.speed
+
+                // Gravitational orbit around mascot centers
+                for (const attr of [attrL, attrR]) {
+                    const dx = attr.x - p.x
+                    const dy = attr.y - p.y
+                    const dist = Math.sqrt(dx * dx + dy * dy)
+                    if (dist < ATTRACT_RADIUS && dist > 5) {
+                        const force = ATTRACT_STRENGTH * (1 - dist / ATTRACT_RADIUS)
+                        // Tangential force (orbit) + slight inward pull
+                        vx += (-dy / dist * force * 0.8) + (dx / dist * force * 0.2)
+                        vy += (dx / dist * force * 0.8) + (dy / dist * force * 0.2)
+                    }
+                }
+
+                p.x += vx
+                p.y += vy
 
                 // Wrap around edges
                 if (p.x < 0) p.x = w
@@ -228,9 +268,16 @@ function BuildForYouSection() {
                 if (p.y < 0) p.y = h
                 if (p.y > h) p.y = 0
 
+                // Brighter near attractors
+                let nearAttr = false
+                for (const attr of [attrL, attrR]) {
+                    const dx = attr.x - p.x, dy = attr.y - p.y
+                    if (dx * dx + dy * dy < ATTRACT_RADIUS * ATTRACT_RADIUS) { nearAttr = true; break }
+                }
+                const pAlpha = nearAttr ? 0.35 : 0.2
                 ctx.beginPath()
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(${p.color[0]}, ${p.color[1]}, ${p.color[2]}, 0.2)`
+                ctx.fillStyle = `rgba(${p.color[0]}, ${p.color[1]}, ${p.color[2]}, ${pAlpha})`
                 ctx.fill()
             }
             flowTime += 0.0008
@@ -255,14 +302,14 @@ function BuildForYouSection() {
                     const distSq = dx * dx + dy * dy
                     if (distSq < CONNECT_THRESHOLD_SQ) {
                         const dist = Math.sqrt(distSq)
-                        const alpha = 0.15 * (1 - dist / CONNECT_THRESHOLD)
+                        const alpha = 0.25 * (1 - dist / CONNECT_THRESHOLD)
                         const mx = (a.x + b.x) / 2
                         const my = (a.y + b.y) / 2 - dist * 0.1
                         ctx.beginPath()
                         ctx.moveTo(a.x, a.y)
                         ctx.quadraticCurveTo(mx, my, b.x, b.y)
                         ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`
-                        ctx.lineWidth = 0.7
+                        ctx.lineWidth = 1.0
                         ctx.stroke()
                     }
                 }
@@ -270,7 +317,7 @@ function BuildForYouSection() {
             for (const n of constellationNodes) {
                 ctx.beginPath()
                 ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2)
-                ctx.fillStyle = 'rgba(180, 200, 255, 0.2)'
+                ctx.fillStyle = 'rgba(200, 220, 255, 0.4)'
                 ctx.fill()
             }
         }
