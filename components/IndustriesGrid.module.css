@@ -52,7 +52,7 @@
     color: rgba(255, 255, 255, 0.75);
 }
 
-/* ========== Build For You — Hyperspace Characters ========== */
+/* ========== Build For You — 3-Node Energy Circuit ========== */
 
 .buildSection {
     position: relative;
@@ -71,7 +71,7 @@
     transform: translateY(0);
 }
 
-/* Starfield canvas */
+/* Wireframe mesh canvas */
 .starfield {
     position: absolute;
     inset: 0;
@@ -81,7 +81,7 @@
     z-index: 0;
 }
 
-/* Ambient glow behind characters */
+/* Ambient glow behind circuit */
 .buildGlow {
     position: absolute;
     top: 35%;
@@ -115,7 +115,7 @@
     z-index: 1;
 }
 
-/* Energy trails */
+/* Circuit paths — forward */
 .pathLine {
     stroke: rgba(96, 165, 250, 0.2);
     stroke-width: 1.5;
@@ -124,22 +124,41 @@
     animation: dashFlow 4s linear infinite;
 }
 
+/* Return path — dimmer */
+.pathLineReturn {
+    stroke: rgba(86, 13, 248, 0.12);
+    stroke-width: 1;
+    fill: none;
+    stroke-dasharray: 6 8;
+    animation: dashFlow 5s linear infinite;
+}
+
 @keyframes dashFlow {
     to { stroke-dashoffset: -42; }
 }
 
-/* Flowing energy particles */
-.particle {
-    fill: #60a5fa;
-    opacity: 0.7;
-    filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.8));
+/* ── Gear rotation ── */
+.gearCW {
+    animation: rotateCW 8s linear infinite;
+    transform-origin: center;
 }
 
-/* (Dance positions are computed in JS — no CSS orbit/float needed) */
+.gearCCW {
+    animation: rotateCCW 6s linear infinite;
+    transform-origin: center;
+}
 
-/* ── Blink animations — each mascot blinks independently ── */
-.blinkA { animation: blink 4s ease-in-out infinite; }
-.blinkB { animation: blink 5.5s ease-in-out infinite 2s; }
+@keyframes rotateCW {
+    from { transform: translate(-13px, 0) rotate(0deg); }
+    to { transform: translate(-13px, 0) rotate(360deg); }
+}
+
+@keyframes rotateCCW {
+    from { transform: translate(11px, 9px) rotate(0deg); }
+    to { transform: translate(11px, 9px) rotate(-360deg); }
+}
+
+/* ── Blink animation for Learn mascot ── */
 .blinkC { animation: blink 3.8s ease-in-out infinite 1.2s; }
 
 @keyframes blink {
@@ -174,10 +193,6 @@
     position: relative;
     z-index: 1;
     max-width: 480px;
-}
-
-.buildContent::before {
-    display: none;
 }
 
 .buildTitle {
@@ -236,15 +251,13 @@
 @media (prefers-reduced-motion: reduce) {
     .buildSection { transition: none; opacity: 1; transform: none; }
     .buildGlow { animation: none; }
-    .pathLine { animation: none; }
-    .blinkA, .blinkB, .blinkC { animation: none; }
+    .pathLine, .pathLineReturn { animation: none; }
+    .blinkC { animation: none; }
     .antennaPulse { animation: none; }
-    .particle { display: none; }
+    .gearCW, .gearCCW { animation: none; }
     .buildBtn { transition: none; }
-    .buildContent::before { filter: none; }
-    /* Disable SVG filter breathing pulses — static glow only, no SMIL */
-    .buildSvg feGaussianBlur animate,
-    .buildSvg feTurbulence animate { display: none; }
+    /* Disable SVG SMIL animations */
+    .buildSvg feGaussianBlur animate { display: none; }
 }
 
 /* Mobile */
