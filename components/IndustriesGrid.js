@@ -47,12 +47,27 @@ function BuildForYouSection() {
     const eyeC1Ref = useRef(null)
 
     useEffect(() => {
+        // Fallback visibility unlock in case IntersectionObserver misses this section
+        // (e.g. reduced-motion/preview environments).
+        const fallbackTimer = window.setTimeout(() => setIsVisible(true), 1200)
+        if (!('IntersectionObserver' in window)) {
+            setIsVisible(true)
+            return () => window.clearTimeout(fallbackTimer)
+        }
         const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) setIsVisible(true) },
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true)
+                    window.clearTimeout(fallbackTimer)
+                }
+            },
             { threshold: 0.15 }
         )
         if (sectionRef.current) observer.observe(sectionRef.current)
-        return () => observer.disconnect()
+        return () => {
+            window.clearTimeout(fallbackTimer)
+            observer.disconnect()
+        }
     }, [])
 
     /* Mouse → eye tracking for Learn mascot */
@@ -75,12 +90,15 @@ function BuildForYouSection() {
 
     /* Wireframe mesh canvas */
     useEffect(() => {
-        if (!isVisible) return
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+        // In reduced-motion mode the section can still render as visible via CSS.
+        // Keep a gentle mesh animation running so the preview never looks frozen.
+        if (!isVisible && !mq.matches) return
         const canvas = canvasRef.current
         if (!canvas) return
         const ctx = canvas.getContext('2d')
         const dpr = window.devicePixelRatio || 1
-        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+        const motionScale = mq.matches ? 0.35 : 1
         let raf
 
         const resize = () => {
@@ -203,11 +221,11 @@ function BuildForYouSection() {
             // Lub: strong pulse at cycle start, Dub: lighter pulse at t≈3
             let heartbeat = 0
             if (ct < 1.0) {
-                heartbeat = Math.sin(ct * Math.PI) * Math.exp(-ct * 2.5) * 12
+                heartbeat = Math.sin(ct * Math.PI) * Math.exp(-ct * 2.5) * 12 * motionScale
             }
             const dubT = ct - 3.0
             if (dubT > 0 && dubT < 0.7) {
-                heartbeat += Math.sin(dubT * Math.PI / 0.7) * Math.exp(-dubT * 3) * 7
+                heartbeat += Math.sin(dubT * Math.PI / 0.7) * Math.exp(-dubT * 3) * 7 * motionScale
             }
 
             // ── Sequential node glow ──
@@ -232,7 +250,7 @@ function BuildForYouSection() {
             for (let i = 0; i < grid.length; i++) {
                 const p = grid[i]
                 // Base noise deformation + heartbeat throb
-                p.wy = noise3D(p.wx * 0.008, p.wz * 0.008, time * 0.005) * 12 - heartbeat
+                p.wy = noise3D(p.wx * 0.008, p.wz * 0.008, time * 0.005) * (12 * motionScale) - heartbeat
 
                 // Project to get screen coords
                 const proj = project(p.wx, p.wy, p.wz, w / 2, h * 0.6)
@@ -363,50 +381,11 @@ function BuildForYouSection() {
                 ctx.fill()
             }
 
-            time++
+            time += motionScale
             raf = requestAnimationFrame(draw)
         }
 
-        if (!mq.matches) {
-            draw()
-        } else {
-            // Reduced motion: draw one static frame of the mesh
-            const w = canvas.width / dpr, h = canvas.height / dpr
-            for (let i = 0; i < grid.length; i++) {
-                const p = grid[i]
-                p.wy = noise3D(p.wx * 0.008, p.wz * 0.008, 0) * 12
-                const proj = project(p.wx, p.wy, p.wz, w / 2, h * 0.6)
-                p.projX = proj.x; p.projY = proj.y; p.depth = proj.scale
-            }
-            for (let r = 0; r < ROWS; r++) {
-                for (let c = 0; c < COLS; c++) {
-                    const i = r * COLS + c
-                    const p = grid[i]
-                    const alpha = Math.min(p.depth * 0.4, 0.3)
-                    const rowT = r / ROWS
-                    const cr = Math.round(86 + 10 * rowT)
-                    const cg = Math.round(13 + 152 * rowT)
-                    const cb = Math.round(248 + 2 * rowT)
-                    const col = `rgba(${cr}, ${cg}, ${cb}, ${alpha})`
-                    if (c < COLS - 1) {
-                        const right = grid[i + 1]
-                        ctx.beginPath(); ctx.moveTo(p.projX, p.projY); ctx.lineTo(right.projX, right.projY)
-                        ctx.strokeStyle = col; ctx.lineWidth = 0.6; ctx.stroke()
-                    }
-                    if (r < ROWS - 1) {
-                        const below = grid[i + COLS]
-                        ctx.beginPath(); ctx.moveTo(p.projX, p.projY); ctx.lineTo(below.projX, below.projY)
-                        ctx.strokeStyle = col; ctx.lineWidth = 0.6; ctx.stroke()
-                    }
-                }
-            }
-            for (const p of grid) {
-                ctx.beginPath()
-                ctx.arc(p.projX, p.projY, p.depth * 1.2, 0, Math.PI * 2)
-                ctx.fillStyle = `rgba(96, 165, 250, ${p.depth * 0.25})`
-                ctx.fill()
-            }
-        }
+        draw()
 
         return () => { window.removeEventListener('resize', resize); if (raf) cancelAnimationFrame(raf) }
     }, [isVisible])
