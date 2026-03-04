@@ -30,6 +30,7 @@ const DEV_TOOL_REPOS = new Set([
     'openadapt-herald',     // social media announcements from git
     'openadapt-crier',      // Telegram approval bot
     'openadapt-consilium',  // multi-LLM consensus
+    'openadapt-ops',        // ecosystem docs aggregator (formerly openadapt-maintenance)
 ]);
 
 function categorizeRepo(name) {
@@ -88,6 +89,7 @@ const FALLBACK_PACKAGES = [
     { name: 'openadapt-grounding', description: 'Temporal smoothing for UI element detection with OmniParser integration', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
     { name: 'openadapt-herald', description: 'LLM-powered social media announcements from your git history', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
     { name: 'openadapt-ml', description: 'ML toolkit for training and evaluating multimodal GUI-action models', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-ops', description: 'Ecosystem documentation aggregator and repository maintenance tools', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
     { name: 'openadapt-privacy', description: 'PII/PHI detection and redaction for GUI automation data', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
     { name: 'openadapt-retrieval', description: 'Multimodal demo retrieval for GUI automation', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
     { name: 'openadapt-tray', description: 'System tray application for OpenAdapt', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
