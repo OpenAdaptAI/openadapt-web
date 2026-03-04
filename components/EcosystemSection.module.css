@@ -24,14 +24,16 @@
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
     max-width: 1100px;
     margin: 0 auto;
 }
 
 .card {
+    flex: 0 1 280px;
     background: rgba(62, 48, 103, 0.4);
     border: 1px solid rgba(86, 13, 248, 0.3);
     border-radius: 16px;
