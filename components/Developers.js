@@ -9,6 +9,7 @@ import EmailForm from '@components/EmailForm';
 import InstallSection from '@components/InstallSection';
 import DownloadGraph from './DownloadGraph';
 import PyPIDownloadChart from './PyPIDownloadChart';
+import AdoptionSignals from './AdoptionSignals';
 
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
@@ -125,6 +126,9 @@ export default function Developers() {
 
                     {/* New uv-first Installation Section */}
                     <InstallSection />
+
+                    {/* Primary trust signals: GitHub + usage telemetry */}
+                    <AdoptionSignals />
 
                     {/* PyPI Download Statistics */}
                     <PyPIDownloadChart />
