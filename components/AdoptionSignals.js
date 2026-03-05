@@ -13,6 +13,20 @@ const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v1'
 const METRICS_CACHE_TTL_MS = 6 * 60 * 60 * 1000
 const FETCH_TIMEOUT_MS = 10000
 
+function hasUsableUsageMetrics(payload) {
+    const usage = payload?.usage
+    if (!usage || usage.available !== true) return false
+    const candidates = [
+        usage.agentRuns30d,
+        usage.guiActions30d,
+        usage.demosRecorded30d,
+        usage.agentRunsAllTime,
+        usage.guiActionsAllTime,
+        usage.demosRecordedAllTime,
+    ]
+    return candidates.some((value) => typeof value === 'number')
+}
+
 function formatMetric(value) {
     if (value === null || value === undefined || Number.isNaN(value)) return '—'
     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`
@@ -69,6 +83,7 @@ export default function AdoptionSignals() {
                 if (!parsed?.payload || !parsed?.savedAt) return false
                 const ageMs = Date.now() - parsed.savedAt
                 if (ageMs > METRICS_CACHE_TTL_MS) return false
+                if (!hasUsableUsageMetrics(parsed.payload)) return false
                 if (!cancelled) {
                     setData(parsed.payload)
                     setShowStaleNotice(true)
@@ -98,7 +113,7 @@ export default function AdoptionSignals() {
                 if (!cancelled) {
                     setData(payload)
                     setShowStaleNotice(false)
-                    if (typeof window !== 'undefined') {
+                    if (typeof window !== 'undefined' && hasUsableUsageMetrics(payload)) {
                         window.localStorage.setItem(
                             METRICS_CACHE_KEY,
                             JSON.stringify({ payload, savedAt: Date.now() })
