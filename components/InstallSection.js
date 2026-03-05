@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindows, faApple, faLinux, faPython } from '@fortawesome/free-brands-svg-icons';
-import { faCopy, faCheck, faTerminal, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faCheck, faTerminal } from '@fortawesome/free-solid-svg-icons';
 import styles from './InstallSection.module.css';
 import { getPyPIDownloadStats, formatDownloadCount } from 'utils/pypiStats';
 
 const platforms = {
     'macOS': {
+        oneLiner: '(command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh) && (uv tool install openadapt || ~/.local/bin/uv tool install openadapt) && (openadapt --help || ~/.local/bin/openadapt --help)',
         icon: faApple,
         commands: [
             'curl -LsSf https://astral.sh/uv/install.sh | sh',
@@ -16,6 +17,7 @@ const platforms = {
         note: 'Works on Intel and Apple Silicon Macs'
     },
     'Linux': {
+        oneLiner: '(command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh) && (uv tool install openadapt || ~/.local/bin/uv tool install openadapt) && (openadapt --help || ~/.local/bin/openadapt --help)',
         icon: faLinux,
         commands: [
             'curl -LsSf https://astral.sh/uv/install.sh | sh',
@@ -25,6 +27,7 @@ const platforms = {
         note: 'Works on most modern Linux distributions'
     },
     'Windows': {
+        oneLiner: 'powershell -NoProfile -ExecutionPolicy Bypass -Command "if (-not (Get-Command uv -ErrorAction SilentlyContinue)) { irm https://astral.sh/uv/install.ps1 | iex }; uv tool install openadapt; openadapt --help"',
         icon: faWindows,
         commands: [
             'powershell -c "irm https://astral.sh/uv/install.ps1 | iex"',
@@ -86,7 +89,7 @@ export default function InstallSection() {
     }, []);
 
     const currentPlatform = platforms[selectedPlatform];
-    const allCommands = currentPlatform.commands.join('\n');
+    const fallbackCommands = currentPlatform.commands.join('\n');
 
     return (
         <div className={styles.installSection}>
@@ -132,8 +135,24 @@ export default function InstallSection() {
             {/* Code Block */}
             <div className={styles.codeContainer}>
                 <div className={styles.codeHeader}>
-                    <span className={styles.codeTitle}>Terminal</span>
-                    <CopyButton text={allCommands} />
+                    <span className={styles.codeTitle}>One-liner (recommended)</span>
+                    <CopyButton text={currentPlatform.oneLiner} />
+                </div>
+                <pre className={styles.codeBlock}>
+                    <div className={styles.commandLine}>
+                        <span className={styles.prompt}>$</span>
+                        <code className={styles.command}>{currentPlatform.oneLiner}</code>
+                    </div>
+                </pre>
+                <div className={styles.codeFooter}>
+                    <span className={styles.note}>{currentPlatform.note}</span>
+                </div>
+            </div>
+
+            <div className={styles.fallbackSection}>
+                <div className={styles.codeHeader}>
+                    <span className={styles.codeTitle}>Fallback (step-by-step)</span>
+                    <CopyButton text={fallbackCommands} />
                 </div>
                 <pre className={styles.codeBlock}>
                     {currentPlatform.commands.map((cmd, index) => (
@@ -143,9 +162,6 @@ export default function InstallSection() {
                         </div>
                     ))}
                 </pre>
-                <div className={styles.codeFooter}>
-                    <span className={styles.note}>{currentPlatform.note}</span>
-                </div>
             </div>
 
             {/* What is uv? */}

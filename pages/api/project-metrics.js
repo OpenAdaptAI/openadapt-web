@@ -9,6 +9,73 @@
 
 const DEFAULT_POSTHOG_HOST = 'https://us.posthog.com'
 const MAX_EVENT_DEFINITION_PAGES = 5
+const FALLBACK_PATTERN_LIMIT = 30
+
+// Canonical event names from OpenAdapt codebases (legacy PostHog + shared telemetry conventions).
+const EVENT_CLASSIFICATION = {
+    demos: {
+        exact: [
+            'recording_finished',
+            'recording_completed',
+            'demo_recorded',
+            'demo_completed',
+            'recording.stopped',
+            'recording.saved',
+            'record.stopped',
+            'capture.completed',
+            'capture.saved',
+        ],
+        fallbackPatterns: [
+            /(?:^|[._:-])(demo|record|recording|capture)(?:[._:-]|$)/i,
+            /(?:finished|completed|saved|recorded|stopped)$/i,
+            /^command:(capture|record)/i,
+            /^operation:(capture|record)/i,
+        ],
+    },
+    runs: {
+        exact: [
+            'automation_run',
+            'agent_run',
+            'benchmark_run',
+            'replay_started',
+            'episode_started',
+            'replay.started',
+        ],
+        fallbackPatterns: [
+            /(?:^|[._:-])(replay|benchmark|eval|episode|agent_run|automation_run)(?:[._:-]|$)/i,
+            /^command:(replay|run|eval|benchmark|execute|agent)/i,
+            /^operation:(replay|run|eval|benchmark|execute|agent)/i,
+        ],
+    },
+    actions: {
+        exact: [
+            'action_executed',
+            'step_executed',
+            'mouse_click',
+            'keyboard_input',
+            'ui_action',
+            'action_triggered',
+        ],
+        fallbackPatterns: [
+            /(?:^|[._:-])(action|step|click|keyboard|mouse|scroll|key|keypress|type|drag)(?:[._:-]|$)/i,
+            /^operation:.*(?:action|step|click|type|scroll|press|key|mouse)/i,
+        ],
+    },
+}
+
+const IGNORED_EVENT_NAMES = new Set([
+    'function_trace',
+    'get_events.started',
+    'get_events.completed',
+    'visualize.started',
+    'visualize.completed',
+])
+
+const IGNORED_EVENT_PATTERNS = [
+    /^error[:._-]/i,
+    /^exception[:._-]/i,
+    /(?:^|[._:-])(startup|shutdown)(?:[._:-]|$)/i,
+]
 
 function parseIntEnv(name) {
     const raw = process.env[name]
@@ -79,20 +146,73 @@ function valueFromDefinition(definition) {
     return Number.isFinite(maybeNumber) ? maybeNumber : 0
 }
 
-function sumByEventNames(definitions, candidateNames) {
+function normalizeEventName(name) {
+    return String(name || '').trim().toLowerCase()
+}
+
+function shouldIgnoreEvent(name) {
+    if (IGNORED_EVENT_NAMES.has(name)) return true
+    return IGNORED_EVENT_PATTERNS.some((pattern) => pattern.test(name))
+}
+
+function toEventEntries(definitions) {
+    return definitions
+        .map((definition) => ({
+            definition,
+            name: normalizeEventName(definition?.name),
+            volume_30_day: valueFromDefinition(definition),
+        }))
+        .filter((entry) => entry.name && entry.volume_30_day > 0 && !shouldIgnoreEvent(entry.name))
+}
+
+function sumByEventNames(entries, candidateNames) {
     const target = new Set(candidateNames.map((name) => name.toLowerCase()))
     let total = 0
     const matched = []
 
-    for (const definition of definitions) {
-        const name = String(definition?.name || '').toLowerCase()
-        if (!target.has(name)) continue
-        const value = valueFromDefinition(definition)
-        total += value
-        matched.push({ name: definition.name, volume_30_day: value })
+    for (const entry of entries) {
+        if (!target.has(entry.name)) continue
+        total += entry.volume_30_day
+        matched.push({ name: entry.definition.name, volume_30_day: entry.volume_30_day })
     }
 
-    return { total, matched }
+    return { total, matched, strategy: 'exact' }
+}
+
+function sumByFallbackPatterns(entries, patterns, excludedNames = new Set()) {
+    let total = 0
+    const matched = []
+
+    for (const entry of entries) {
+        if (excludedNames.has(entry.name)) continue
+        if (!patterns.some((pattern) => pattern.test(entry.name))) continue
+        total += entry.volume_30_day
+        matched.push({ name: entry.definition.name, volume_30_day: entry.volume_30_day })
+    }
+
+    matched.sort((a, b) => b.volume_30_day - a.volume_30_day)
+    const sliced = matched.slice(0, FALLBACK_PATTERN_LIMIT)
+
+    return {
+        total,
+        matched: sliced,
+        strategy: 'pattern_fallback',
+        truncated: matched.length > FALLBACK_PATTERN_LIMIT,
+    }
+}
+
+function buildCategoryMetrics(entries, config) {
+    const exact = sumByEventNames(entries, config.exact)
+    if (exact.total > 0) {
+        return exact
+    }
+
+    const fallback = sumByFallbackPatterns(entries, config.fallbackPatterns || [])
+    if (fallback.total > 0) {
+        return fallback
+    }
+
+    return { total: 0, matched: [], strategy: 'none' }
 }
 
 async function fetchPosthogUsageMetrics() {
@@ -107,26 +227,10 @@ async function fetchPosthogUsageMetrics() {
 
     const definitions = await fetchAllEventDefinitions(config)
 
-    const demos = sumByEventNames(definitions, [
-        'recording_finished',
-        'recording_completed',
-        'demo_recorded',
-        'demo_completed',
-    ])
-    const runs = sumByEventNames(definitions, [
-        'automation_run',
-        'agent_run',
-        'benchmark_run',
-        'replay_started',
-        'episode_started',
-    ])
-    const actions = sumByEventNames(definitions, [
-        'action_executed',
-        'step_executed',
-        'mouse_click',
-        'keyboard_input',
-        'ui_action',
-    ])
+    const entries = toEventEntries(definitions)
+    const demos = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.demos)
+    const runs = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.runs)
+    const actions = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.actions)
 
     return {
         available: demos.total > 0 || runs.total > 0 || actions.total > 0,
@@ -139,9 +243,15 @@ async function fetchPosthogUsageMetrics() {
             runs: runs.matched,
             actions: actions.matched,
         },
+        strategies: {
+            demos: demos.strategy,
+            runs: runs.strategy,
+            actions: actions.strategy,
+        },
+        classificationVersion: '2026-03-05',
         caveats: [
-            'Derived from PostHog volume_30_day on matched event names',
-            'Event naming consistency affects metric completeness',
+            'Derived from PostHog volume_30_day by exact event-name classification',
+            'Falls back to guarded pattern matching only when exact mapping has no data',
         ],
     }
 }
