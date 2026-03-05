@@ -1,0 +1,106 @@
+.container {
+    background: linear-gradient(135deg, rgba(86, 13, 248, 0.11) 0%, rgba(0, 0, 30, 0.95) 100%);
+    border: 1px solid rgba(86, 13, 248, 0.28);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px auto;
+    max-width: 1100px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.title {
+    margin: 0 0 6px 0;
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.subtitle {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+}
+
+.metricsGrid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.metricCard {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+}
+
+.metricValue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #93c5fd;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.metricIcon {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.metricLabel {
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.67);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.message {
+    margin-top: 12px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+}
+
+.error {
+    margin-top: 8px;
+    text-align: center;
+    color: #fca5a5;
+    font-size: 13px;
+}
+
+.source {
+    margin-top: 10px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    letter-spacing: 0.2px;
+}
+
+@media (max-width: 1024px) {
+    .metricsGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 16px;
+    }
+
+    .metricsGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .title {
+        font-size: 18px;
+    }
+}

@@ -588,10 +588,10 @@ const PyPIDownloadChart = () => {
             <div className={styles.header}>
                 <div className={styles.titleRow}>
                     <FontAwesomeIcon icon={faPython} className={styles.icon} />
-                    <h3 className={styles.title}>PyPI Download Trends</h3>
+                    <h3 className={styles.title}>PyPI Download Trends (Secondary Signal)</h3>
                 </div>
                 <p className={styles.subtitle}>
-                    Historical download statistics for OpenAdapt packages
+                    Useful for package momentum, but can be inflated by CI and dependency installs.
                 </p>
             </div>
 
@@ -778,7 +778,7 @@ const PyPIDownloadChart = () => {
                         >
                             PyPI OpenAdapt packages
                         </a>
-                        {' '}via pypistats.org API (data retained for ~180 days)
+                        {' '}via pypistats.org API (data retained for ~180 days). Treat as directional alongside usage metrics.
                     </span>
                 </div>
             </div>
