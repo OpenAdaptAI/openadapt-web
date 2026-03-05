@@ -33,12 +33,17 @@ Use:
 - `OPENADAPT_METRIC_GUI_ACTIONS_30D`
 - `OPENADAPT_METRIC_APPS_AUTOMATED`
 
-## Current event-name mapping
+## Current event-name mapping (exact-first)
 ### Demos
 - `recording_finished`
 - `recording_completed`
 - `demo_recorded`
 - `demo_completed`
+- `recording.stopped`
+- `recording.saved`
+- `record.stopped`
+- `capture.completed`
+- `capture.saved`
 
 ### Runs
 - `automation_run`
@@ -46,6 +51,7 @@ Use:
 - `benchmark_run`
 - `replay_started`
 - `episode_started`
+- `replay.started`
 
 ### Actions
 - `action_executed`
@@ -53,19 +59,28 @@ Use:
 - `mouse_click`
 - `keyboard_input`
 - `ui_action`
+- `action_triggered`
 
-If telemetry names differ, update mapping in `pages/api/project-metrics.js`.
+Ignored low-signal events:
+- `function_trace`
+- `get_events.started`
+- `get_events.completed`
+- `visualize.started`
+- `visualize.completed`
+
+If exact mappings return zero for a category, the API automatically falls back to guarded pattern matching. This keeps counters populated for new event families (for example `command:*` / `operation:*`) without relying on env overrides.
 
 ## Tradeoffs
-### PostHog event_definitions approach
+### PostHog event_definitions approach (exact-first + fallback)
 Pros:
 - no client auth exposure
 - lightweight implementation
 - easy to keep server-cached
+- uses real event names already emitted by OpenAdapt repos
 
 Cons:
-- depends on naming consistency
-- may undercount if instrumentation uses different event names
+- still depends on naming consistency for best precision
+- fallback regex can overcount if external events use similar names
 
 ### Env override approach
 Pros:
@@ -77,4 +92,4 @@ Cons:
 - risk of stale numbers without process discipline
 
 ## Recommended next step
-Standardize instrumentation event names in product repos to match this mapping, then remove env overrides once PostHog is complete.
+Standardize new instrumentation to preserve one of the existing exact-name families to minimize reliance on fallback matching.
