@@ -156,7 +156,7 @@ export default function AdoptionSignals() {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h3 className={styles.title}>OpenAdapt Adoption Signals</h3>
+                <h3 className={styles.title}>Adoption Signals</h3>
                 <p className={styles.subtitle}>
                     Prioritizing product usage and GitHub traction; package downloads are shown separately.
                 </p>
