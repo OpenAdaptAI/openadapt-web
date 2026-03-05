@@ -11,6 +11,7 @@ const DEFAULT_POSTHOG_HOST = 'https://us.posthog.com'
 const DEFAULT_POSTHOG_PROJECT_ID = '68185'
 const MAX_EVENT_DEFINITION_PAGES = 5
 const FALLBACK_PATTERN_LIMIT = 30
+const GITHUB_ORG = 'OpenAdaptAI'
 
 // Canonical event names from OpenAdapt codebases (legacy PostHog + shared telemetry conventions).
 const EVENT_CLASSIFICATION = {
@@ -107,18 +108,36 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
 }
 
 async function fetchGitHubStats() {
-    const response = await fetchWithTimeout('https://api.github.com/repos/OpenAdaptAI/OpenAdapt', {
-        headers: { 'User-Agent': 'OpenAdapt-Web/1.0 (https://openadapt.ai)' },
-    })
-    if (!response.ok) {
-        throw new Error(`GitHub API returned ${response.status}`)
+    const repos = []
+    let page = 1
+    while (true) {
+        const response = await fetchWithTimeout(
+            `https://api.github.com/orgs/${GITHUB_ORG}/repos?per_page=100&page=${page}&type=public`,
+            {
+                headers: { 'User-Agent': 'OpenAdapt-Web/1.0 (https://openadapt.ai)' },
+            }
+        )
+        if (!response.ok) {
+            throw new Error(`GitHub API returned ${response.status}`)
+        }
+        const batch = await response.json()
+        if (!Array.isArray(batch) || batch.length === 0) break
+        repos.push(...batch)
+        page += 1
     }
-    const data = await response.json()
+
+    const openadaptRepos = repos.filter((repo) => {
+        const name = String(repo?.name || '').toLowerCase()
+        return !repo?.private && !repo?.archived && (name === 'openadapt' || name.startsWith('openadapt-'))
+    })
+
+    const stars = openadaptRepos.reduce((sum, repo) => sum + (repo?.stargazers_count || 0), 0)
+    const forks = openadaptRepos.reduce((sum, repo) => sum + (repo?.forks_count || 0), 0)
+
     return {
-        stars: data.stargazers_count || 0,
-        forks: data.forks_count || 0,
-        watchers: data.subscribers_count || 0,
-        issues: data.open_issues_count || 0,
+        stars,
+        forks,
+        repoCount: openadaptRepos.length,
     }
 }
 
