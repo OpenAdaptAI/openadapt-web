@@ -91,8 +91,23 @@ function formatError(error) {
     return error.message || String(error)
 }
 
+async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
+    try {
+        return await fetch(url, { ...options, signal: controller.signal })
+    } catch (error) {
+        if (error?.name === 'AbortError') {
+            throw new Error(`Request timed out after ${timeoutMs}ms`)
+        }
+        throw error
+    } finally {
+        clearTimeout(timeoutId)
+    }
+}
+
 async function fetchGitHubStats() {
-    const response = await fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt', {
+    const response = await fetchWithTimeout('https://api.github.com/repos/OpenAdaptAI/OpenAdapt', {
         headers: { 'User-Agent': 'OpenAdapt-Web/1.0 (https://openadapt.ai)' },
     })
     if (!response.ok) {
@@ -129,7 +144,7 @@ function normalizePosthogApiHost(host) {
 async function resolveProjectId({ host, projectId, apiKey }) {
     if (projectId) return projectId
 
-    const response = await fetch(`${host}/api/projects/?limit=100`, {
+    const response = await fetchWithTimeout(`${host}/api/projects/?limit=100`, {
         headers: {
             Authorization: `Bearer ${apiKey}`,
             'Content-Type': 'application/json',
@@ -169,16 +184,7 @@ function toSqlInList(names) {
 }
 
 async function runHogQLCount({ host, projectId, apiKey, eventNames, days }) {
-    const whereDays = Number.isFinite(days) && days > 0
-        ? ` AND timestamp >= now() - INTERVAL ${Math.floor(days)} DAY`
-        : ''
-    const query = `
-        SELECT count()
-        FROM events
-        WHERE event IN (${toSqlInList(eventNames)})${whereDays}
-    `.trim()
-
-    const response = await fetch(`${host}/api/projects/${projectId}/query/`, {
+    const response = await fetchWithTimeout(`${host}/api/projects/${projectId}/query/`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${apiKey}`,
@@ -188,7 +194,12 @@ async function runHogQLCount({ host, projectId, apiKey, eventNames, days }) {
         body: JSON.stringify({
             query: {
                 kind: 'HogQLQuery',
-                query,
+                query: `
+                    SELECT
+                        countIf(event IN (${toSqlInList(eventNames)}) AND timestamp >= now() - INTERVAL ${Math.floor(days)} DAY),
+                        countIf(event IN (${toSqlInList(eventNames)}))
+                    FROM events
+                `.trim(),
             },
         }),
     })
@@ -205,8 +216,12 @@ async function runHogQLCount({ host, projectId, apiKey, eventNames, days }) {
         throw new Error(`PostHog query API returned ${response.status}: ${detail}`)
     }
 
-    const value = Number(payload?.results?.[0]?.[0])
-    return Number.isFinite(value) ? value : 0
+    const value30d = Number(payload?.results?.[0]?.[0])
+    const valueAllTime = Number(payload?.results?.[0]?.[1])
+    return {
+        value30d: Number.isFinite(value30d) ? value30d : 0,
+        valueAllTime: Number.isFinite(valueAllTime) ? valueAllTime : 0,
+    }
 }
 
 async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
@@ -214,32 +229,22 @@ async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
     const runsNames = uniqueNames(EVENT_CLASSIFICATION.runs.exact)
     const actionsNames = uniqueNames(EVENT_CLASSIFICATION.actions.exact)
 
-    const [
-        demos30d,
-        runs30d,
-        actions30d,
-        demosAllTime,
-        runsAllTime,
-        actionsAllTime,
-    ] = await Promise.all([
+    const [demos, runs, actions] = await Promise.all([
         runHogQLCount({ host, projectId, apiKey, eventNames: demosNames, days: 30 }),
         runHogQLCount({ host, projectId, apiKey, eventNames: runsNames, days: 30 }),
         runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames, days: 30 }),
-        runHogQLCount({ host, projectId, apiKey, eventNames: demosNames }),
-        runHogQLCount({ host, projectId, apiKey, eventNames: runsNames }),
-        runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames }),
     ])
 
     return {
         available: true,
         source: 'posthog_query_api',
-        demosRecorded30d: demos30d,
-        agentRuns30d: runs30d,
-        guiActions30d: actions30d,
-        demosRecordedAllTime: demosAllTime,
-        agentRunsAllTime: runsAllTime,
-        guiActionsAllTime: actionsAllTime,
-        hasAnyVolume: demos30d > 0 || runs30d > 0 || actions30d > 0,
+        demosRecorded30d: demos.value30d,
+        agentRuns30d: runs.value30d,
+        guiActions30d: actions.value30d,
+        demosRecordedAllTime: demos.valueAllTime,
+        agentRunsAllTime: runs.valueAllTime,
+        guiActionsAllTime: actions.valueAllTime,
+        hasAnyVolume: demos.value30d > 0 || runs.value30d > 0 || actions.value30d > 0,
         caveats: ['Derived from PostHog query API (exact event-name families)'],
     }
 }
@@ -250,7 +255,7 @@ async function fetchAllEventDefinitions({ host, projectId, apiKey }) {
     let pages = 0
 
     while (nextUrl && pages < MAX_EVENT_DEFINITION_PAGES) {
-        const response = await fetch(nextUrl, {
+        const response = await fetchWithTimeout(nextUrl, {
             headers: {
                 Authorization: `Bearer ${apiKey}`,
                 'Content-Type': 'application/json',
@@ -545,18 +550,22 @@ export default async function handler(req, res) {
         warnings: [],
     }
 
-    try {
-        response.github = await fetchGitHubStats()
-    } catch (error) {
-        response.warnings.push(`github_fetch_failed:${formatError(error)}`)
+    const envUsage = getEnvOverrideUsageMetrics()
+    const [githubResult, posthogResult] = await Promise.allSettled([
+        fetchGitHubStats(),
+        fetchPosthogUsageMetrics(),
+    ])
+
+    if (githubResult.status === 'fulfilled') {
+        response.github = githubResult.value
+    } else {
+        response.warnings.push(`github_fetch_failed:${formatError(githubResult.reason)}`)
     }
 
-    const envUsage = getEnvOverrideUsageMetrics()
-    try {
-        const posthogUsage = await fetchPosthogUsageMetrics()
-        response.usage = mergeUsageMetrics(posthogUsage, envUsage)
-    } catch (error) {
-        response.warnings.push(`posthog_fetch_failed:${formatError(error)}`)
+    if (posthogResult.status === 'fulfilled') {
+        response.usage = mergeUsageMetrics(posthogResult.value, envUsage)
+    } else {
+        response.warnings.push(`posthog_fetch_failed:${formatError(posthogResult.reason)}`)
         response.usage = mergeUsageMetrics(
             {
                 available: false,
