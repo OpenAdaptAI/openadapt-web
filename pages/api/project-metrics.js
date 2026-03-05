@@ -251,6 +251,16 @@ async function fetchPosthogUsageMetrics() {
             caveats: ['PostHog personal API key not configured on server'],
         }
     }
+    if (String(config.apiKey).startsWith('phc_')) {
+        return {
+            available: false,
+            source: 'posthog_not_configured',
+            caveats: [
+                'POSTHOG_PERSONAL_API_KEY (phx_) is required for metrics reads',
+                'Legacy POSTHOG_PUBLIC_KEY (phc_) is ingestion-only and cannot query event definitions',
+            ],
+        }
+    }
 
     const resolvedProjectId = await resolveProjectId(config)
     const definitions = await fetchAllEventDefinitions({
