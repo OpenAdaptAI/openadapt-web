@@ -21,7 +21,7 @@ Returns:
 ### Source A: PostHog (preferred)
 If server env vars are set:
 - `POSTHOG_PERSONAL_API_KEY` (or `POSTHOG_API_KEY`)
-- optional `POSTHOG_PROJECT_ID` (auto-resolved from API key if omitted)
+- optional `POSTHOG_PROJECT_ID` (defaults to `68185`, auto-resolved from API key if omitted)
 - optional `POSTHOG_HOST` (defaults to `https://us.posthog.com`)
 
 The API reads PostHog `event_definitions` and sums `volume_30_day` for matched events.

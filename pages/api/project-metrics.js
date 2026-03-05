@@ -8,6 +8,7 @@
  */
 
 const DEFAULT_POSTHOG_HOST = 'https://us.posthog.com'
+const DEFAULT_POSTHOG_PROJECT_ID = '68185'
 const MAX_EVENT_DEFINITION_PAGES = 5
 const FALLBACK_PATTERN_LIMIT = 30
 
@@ -108,7 +109,10 @@ async function fetchGitHubStats() {
 
 function getPosthogConfig() {
     const host = process.env.POSTHOG_HOST || process.env.NEXT_PUBLIC_POSTHOG_HOST || DEFAULT_POSTHOG_HOST
-    const projectId = process.env.POSTHOG_PROJECT_ID || process.env.NEXT_PUBLIC_POSTHOG_PROJECT_ID
+    const projectId =
+        process.env.POSTHOG_PROJECT_ID ||
+        process.env.NEXT_PUBLIC_POSTHOG_PROJECT_ID ||
+        DEFAULT_POSTHOG_PROJECT_ID
     const apiKey = process.env.POSTHOG_PERSONAL_API_KEY || process.env.POSTHOG_API_KEY
 
     if (!apiKey) return null
