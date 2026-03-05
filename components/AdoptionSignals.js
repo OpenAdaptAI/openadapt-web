@@ -168,14 +168,14 @@ export default function AdoptionSignals() {
                         <MetricCard
                             icon={faStar}
                             value={data?.github?.stars}
-                            label="GitHub Stars"
-                            title="Repository stars from GitHub API"
+                            label="Ecosystem Stars"
+                            title="Total stars across public OpenAdaptAI openadapt* repositories"
                         />
                         <MetricCard
                             icon={faCodeBranch}
                             value={data?.github?.forks}
-                            label="GitHub Forks"
-                            title="Repository forks from GitHub API"
+                            label="Ecosystem Forks"
+                            title="Total forks across public OpenAdaptAI openadapt* repositories"
                         />
                         <MetricCard
                             icon={faChartLine}

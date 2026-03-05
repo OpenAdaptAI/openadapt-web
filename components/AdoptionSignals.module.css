@@ -27,8 +27,9 @@
 
 .metricsGrid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(160px, 1fr));
     gap: 12px;
+    align-items: stretch;
 }
 
 .metricCard {
@@ -37,6 +38,9 @@
     border-radius: 12px;
     padding: 14px 10px;
     text-align: center;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .metricValue {
@@ -168,7 +172,7 @@
 
 @media (max-width: 1024px) {
     .metricsGrid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
     }
 }
 
@@ -178,7 +182,7 @@
     }
 
     .metricsGrid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
     }
 
     .title {
