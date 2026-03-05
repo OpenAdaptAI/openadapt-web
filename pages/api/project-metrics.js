@@ -116,7 +116,14 @@ function getPosthogConfig() {
     const apiKey = process.env.POSTHOG_PERSONAL_API_KEY || process.env.POSTHOG_API_KEY
 
     if (!apiKey) return null
-    return { host, projectId, apiKey }
+    return { host: normalizePosthogApiHost(host), projectId, apiKey }
+}
+
+function normalizePosthogApiHost(host) {
+    if (!host) return DEFAULT_POSTHOG_HOST
+    // Private API endpoints should target app domains, not ingestion domains.
+    // e.g. us.i.posthog.com -> us.posthog.com
+    return String(host).replace('.i.posthog.com', '.posthog.com')
 }
 
 async function resolveProjectId({ host, projectId, apiKey }) {
@@ -146,6 +153,97 @@ async function resolveProjectId({ host, projectId, apiKey }) {
     return String(selected.id)
 }
 
+function uniqueNames(input) {
+    const out = new Set()
+    for (const raw of input || []) {
+        const name = String(raw || '').trim().toLowerCase()
+        if (name) out.add(name)
+    }
+    return [...out]
+}
+
+function toSqlInList(names) {
+    return names
+        .map((name) => `'${name.replaceAll("'", "''")}'`)
+        .join(', ')
+}
+
+async function runHogQLCount({ host, projectId, apiKey, eventNames, days }) {
+    const whereDays = Number.isFinite(days) && days > 0
+        ? ` AND timestamp >= now() - INTERVAL ${Math.floor(days)} DAY`
+        : ''
+    const query = `
+        SELECT count()
+        FROM events
+        WHERE event IN (${toSqlInList(eventNames)})${whereDays}
+    `.trim()
+
+    const response = await fetch(`${host}/api/projects/${projectId}/query/`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'User-Agent': 'OpenAdapt-Web/1.0',
+        },
+        body: JSON.stringify({
+            query: {
+                kind: 'HogQLQuery',
+                query,
+            },
+        }),
+    })
+
+    let payload = {}
+    try {
+        payload = await response.json()
+    } catch {
+        payload = {}
+    }
+
+    if (!response.ok) {
+        const detail = payload?.detail || payload?.code || `HTTP ${response.status}`
+        throw new Error(`PostHog query API returned ${response.status}: ${detail}`)
+    }
+
+    const value = Number(payload?.results?.[0]?.[0])
+    return Number.isFinite(value) ? value : 0
+}
+
+async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
+    const demosNames = uniqueNames(EVENT_CLASSIFICATION.demos.exact)
+    const runsNames = uniqueNames(EVENT_CLASSIFICATION.runs.exact)
+    const actionsNames = uniqueNames(EVENT_CLASSIFICATION.actions.exact)
+
+    const [
+        demos30d,
+        runs30d,
+        actions30d,
+        demosAllTime,
+        runsAllTime,
+        actionsAllTime,
+    ] = await Promise.all([
+        runHogQLCount({ host, projectId, apiKey, eventNames: demosNames, days: 30 }),
+        runHogQLCount({ host, projectId, apiKey, eventNames: runsNames, days: 30 }),
+        runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames, days: 30 }),
+        runHogQLCount({ host, projectId, apiKey, eventNames: demosNames }),
+        runHogQLCount({ host, projectId, apiKey, eventNames: runsNames }),
+        runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames }),
+    ])
+
+    return {
+        available: true,
+        source: 'posthog_query_api',
+        demosRecorded30d: demos30d,
+        agentRuns30d: runs30d,
+        guiActions30d: actions30d,
+        demosRecordedAllTime: demosAllTime,
+        agentRunsAllTime: runsAllTime,
+        guiActionsAllTime: actionsAllTime,
+        hasAnyVolume: demos30d > 0 || runs30d > 0 || actions30d > 0,
+        caveats: ['Derived from PostHog query API (exact event-name families)'],
+    }
+}
+
 async function fetchAllEventDefinitions({ host, projectId, apiKey }) {
     const all = []
     let nextUrl = `${host}/api/projects/${projectId}/event_definitions/?limit=100`
@@ -173,8 +271,10 @@ async function fetchAllEventDefinitions({ host, projectId, apiKey }) {
 }
 
 function valueFromDefinition(definition) {
-    const maybeNumber = Number(definition?.volume_30_day)
-    return Number.isFinite(maybeNumber) ? maybeNumber : 0
+    const rawValue = definition?.volume_30_day
+    if (rawValue === null || rawValue === undefined) return null
+    const maybeNumber = Number(rawValue)
+    return Number.isFinite(maybeNumber) ? maybeNumber : null
 }
 
 function normalizeEventName(name) {
@@ -193,7 +293,7 @@ function toEventEntries(definitions) {
             name: normalizeEventName(definition?.name),
             volume_30_day: valueFromDefinition(definition),
         }))
-        .filter((entry) => entry.name && entry.volume_30_day > 0 && !shouldIgnoreEvent(entry.name))
+        .filter((entry) => entry.name && entry.volume_30_day !== null && !shouldIgnoreEvent(entry.name))
 }
 
 function sumByEventNames(entries, candidateNames) {
@@ -267,10 +367,74 @@ async function fetchPosthogUsageMetrics() {
     }
 
     const resolvedProjectId = await resolveProjectId(config)
+    try {
+        const queryUsage = await fetchPosthogQueryUsageMetrics({
+            ...config,
+            projectId: resolvedProjectId,
+        })
+        return {
+            ...queryUsage,
+            caveats: [
+                ...(queryUsage.caveats || []),
+                config.projectId ? 'Using configured POSTHOG_PROJECT_ID' : 'POSTHOG_PROJECT_ID auto-resolved from API key',
+            ],
+        }
+    } catch (error) {
+        const errorMessage = formatError(error)
+        const missingQueryScope = errorMessage.includes("scope 'query:read'")
+        const fallbackCaveats = missingQueryScope
+            ? ["PostHog key missing 'query:read'; falling back to event definitions"]
+            : [`PostHog query API unavailable (${errorMessage}); falling back to event definitions`]
+
+        const fallbackUsage = await fetchPosthogUsageFromEventDefinitions({
+            ...config,
+            projectId: resolvedProjectId,
+        })
+        return {
+            ...fallbackUsage,
+            caveats: [...fallbackCaveats, ...(fallbackUsage.caveats || [])],
+        }
+    }
+}
+
+async function fetchPosthogUsageFromEventDefinitions(config) {
     const definitions = await fetchAllEventDefinitions({
         ...config,
-        projectId: resolvedProjectId,
+        projectId: config.projectId,
     })
+
+    const hasAny30dVolumeData = definitions.some((definition) => {
+        const value = valueFromDefinition(definition)
+        return value !== null
+    })
+
+    if (!hasAny30dVolumeData) {
+        return {
+            available: false,
+            source: 'posthog_event_definitions_unavailable',
+            demosRecorded30d: null,
+            agentRuns30d: null,
+            guiActions30d: null,
+            demosRecordedAllTime: null,
+            agentRunsAllTime: null,
+            guiActionsAllTime: null,
+            hasAnyVolume: false,
+            matchedEvents: {
+                demos: [],
+                runs: [],
+                actions: [],
+            },
+            strategies: {
+                demos: 'none',
+                runs: 'none',
+                actions: 'none',
+            },
+            caveats: [
+                'PostHog event_definitions API did not return usable volume_30_day values',
+                "Grant 'query:read' to POSTHOG_PERSONAL_API_KEY for accurate usage counters",
+            ],
+        }
+    }
 
     const entries = toEventEntries(definitions)
     const demos = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.demos)
@@ -286,6 +450,9 @@ async function fetchPosthogUsageMetrics() {
         demosRecorded30d: demos.total,
         agentRuns30d: runs.total,
         guiActions30d: actions.total,
+        demosRecordedAllTime: null,
+        agentRunsAllTime: null,
+        guiActionsAllTime: null,
         hasAnyVolume,
         matchedEvents: {
             demos: demos.matched,
@@ -301,7 +468,6 @@ async function fetchPosthogUsageMetrics() {
         caveats: [
             'Derived from PostHog volume_30_day by exact event-name classification',
             'Falls back to guarded pattern matching only when exact mapping has no data',
-            config.projectId ? 'Using configured POSTHOG_PROJECT_ID' : 'POSTHOG_PROJECT_ID auto-resolved from API key',
         ],
     }
 }
@@ -310,15 +476,22 @@ function getEnvOverrideUsageMetrics() {
     const demos = parseIntEnv('OPENADAPT_METRIC_DEMOS_RECORDED_30D')
     const runs = parseIntEnv('OPENADAPT_METRIC_AGENT_RUNS_30D')
     const actions = parseIntEnv('OPENADAPT_METRIC_GUI_ACTIONS_30D')
+    const demosAllTime = parseIntEnv('OPENADAPT_METRIC_DEMOS_RECORDED_ALL_TIME')
+    const runsAllTime = parseIntEnv('OPENADAPT_METRIC_AGENT_RUNS_ALL_TIME')
+    const actionsAllTime = parseIntEnv('OPENADAPT_METRIC_GUI_ACTIONS_ALL_TIME')
     const apps = parseIntEnv('OPENADAPT_METRIC_APPS_AUTOMATED')
 
-    const hasAny = [demos, runs, actions, apps].some((value) => value !== null)
+    const hasAny = [demos, runs, actions, demosAllTime, runsAllTime, actionsAllTime, apps]
+        .some((value) => value !== null)
     return {
         available: hasAny,
         source: hasAny ? 'env_override' : 'env_override_not_set',
         demosRecorded30d: demos,
         agentRuns30d: runs,
         guiActions30d: actions,
+        demosRecordedAllTime: demosAllTime,
+        agentRunsAllTime: runsAllTime,
+        guiActionsAllTime: actionsAllTime,
         appsAutomated: apps,
         caveats: hasAny
             ? ['Values supplied via OPENADAPT_METRIC_* environment variables']
@@ -334,16 +507,30 @@ function mergeUsageMetrics(primary, fallback) {
             primary.agentRuns30d ?? fallback.agentRuns30d ?? null,
         guiActions30d:
             primary.guiActions30d ?? fallback.guiActions30d ?? null,
+        demosRecordedAllTime:
+            primary.demosRecordedAllTime ?? fallback.demosRecordedAllTime ?? null,
+        agentRunsAllTime:
+            primary.agentRunsAllTime ?? fallback.agentRunsAllTime ?? null,
+        guiActionsAllTime:
+            primary.guiActionsAllTime ?? fallback.guiActionsAllTime ?? null,
         appsAutomated:
             primary.appsAutomated ?? fallback.appsAutomated ?? null,
     }
 
     return {
-        available: [merged.demosRecorded30d, merged.agentRuns30d, merged.guiActions30d, merged.appsAutomated]
-            .some((value) => typeof value === 'number'),
+        available: [
+            merged.demosRecorded30d,
+            merged.agentRuns30d,
+            merged.guiActions30d,
+            merged.demosRecordedAllTime,
+            merged.agentRunsAllTime,
+            merged.guiActionsAllTime,
+            merged.appsAutomated,
+        ].some((value) => typeof value === 'number'),
         source: primary.available ? primary.source : fallback.source,
         caveats: [...(primary.caveats || []), ...(fallback.caveats || [])],
         matchedEvents: primary.matchedEvents || null,
+        strategies: primary.strategies || null,
         ...merged,
     }
 }
@@ -378,6 +565,9 @@ export default async function handler(req, res) {
                 demosRecorded30d: null,
                 agentRuns30d: null,
                 guiActions30d: null,
+                demosRecordedAllTime: null,
+                agentRunsAllTime: null,
+                guiActionsAllTime: null,
                 appsAutomated: null,
             },
             envUsage
