@@ -111,8 +111,35 @@ function getPosthogConfig() {
     const projectId = process.env.POSTHOG_PROJECT_ID || process.env.NEXT_PUBLIC_POSTHOG_PROJECT_ID
     const apiKey = process.env.POSTHOG_PERSONAL_API_KEY || process.env.POSTHOG_API_KEY
 
-    if (!projectId || !apiKey) return null
+    if (!apiKey) return null
     return { host, projectId, apiKey }
+}
+
+async function resolveProjectId({ host, projectId, apiKey }) {
+    if (projectId) return projectId
+
+    const response = await fetch(`${host}/api/projects/?limit=100`, {
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'User-Agent': 'OpenAdapt-Web/1.0',
+        },
+    })
+    if (!response.ok) {
+        throw new Error(`PostHog API returned ${response.status} for projects`)
+    }
+    const payload = await response.json()
+    const projects = Array.isArray(payload) ? payload : payload?.results || []
+
+    if (!projects.length) {
+        throw new Error('No PostHog projects returned for API key')
+    }
+
+    const preferred = projects.find((project) =>
+        String(project?.name || '').toLowerCase().includes('openadapt')
+    )
+    const selected = preferred || projects[0]
+    return String(selected.id)
 }
 
 async function fetchAllEventDefinitions({ host, projectId, apiKey }) {
@@ -221,11 +248,15 @@ async function fetchPosthogUsageMetrics() {
         return {
             available: false,
             source: 'posthog_not_configured',
-            caveats: ['PostHog credentials not configured on server'],
+            caveats: ['PostHog personal API key not configured on server'],
         }
     }
 
-    const definitions = await fetchAllEventDefinitions(config)
+    const resolvedProjectId = await resolveProjectId(config)
+    const definitions = await fetchAllEventDefinitions({
+        ...config,
+        projectId: resolvedProjectId,
+    })
 
     const entries = toEventEntries(definitions)
     const demos = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.demos)
@@ -252,6 +283,7 @@ async function fetchPosthogUsageMetrics() {
         caveats: [
             'Derived from PostHog volume_30_day by exact event-name classification',
             'Falls back to guarded pattern matching only when exact mapping has no data',
+            config.projectId ? 'Using configured POSTHOG_PROJECT_ID' : 'POSTHOG_PROJECT_ID auto-resolved from API key',
         ],
     }
 }
