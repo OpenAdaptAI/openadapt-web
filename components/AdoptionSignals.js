@@ -9,6 +9,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import styles from './AdoptionSignals.module.css'
 
+const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v1'
+const METRICS_CACHE_TTL_MS = 6 * 60 * 60 * 1000
+const FETCH_TIMEOUT_MS = 10000
+
 function formatMetric(value) {
     if (value === null || value === undefined || Number.isNaN(value)) return '—'
     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`
@@ -16,7 +20,7 @@ function formatMetric(value) {
     return value.toLocaleString()
 }
 
-function MetricCard({ icon, value, label, title }) {
+function MetricCard({ icon, value, label, title, secondaryValue, secondaryLabel }) {
     return (
         <div className={styles.metricCard} title={title || ''}>
             <div className={styles.metricValue}>
@@ -24,36 +28,101 @@ function MetricCard({ icon, value, label, title }) {
                 {formatMetric(value)}
             </div>
             <div className={styles.metricLabel}>{label}</div>
+            {secondaryValue !== null && secondaryValue !== undefined && (
+                <div className={styles.metricSecondary}>
+                    {formatMetric(secondaryValue)} {secondaryLabel}
+                </div>
+            )}
+        </div>
+    )
+}
+
+function MetricSkeletonCard() {
+    return (
+        <div className={`${styles.metricCard} ${styles.metricCardSkeleton}`} aria-hidden="true">
+            <div className={styles.metricValue}>
+                <span className={styles.skeletonBarLarge} />
+            </div>
+            <div className={styles.metricLabel}>
+                <span className={styles.skeletonBarSmall} />
+            </div>
         </div>
     )
 }
 
 export default function AdoptionSignals() {
     const [loading, setLoading] = useState(true)
+    const [refreshing, setRefreshing] = useState(false)
+    const [showStaleNotice, setShowStaleNotice] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
 
     useEffect(() => {
         let cancelled = false
 
-        async function fetchMetrics() {
-            setLoading(true)
-            setError(null)
+        function loadCachedMetrics() {
+            if (typeof window === 'undefined') return false
             try {
-                const response = await fetch('/api/project-metrics')
+                const raw = window.localStorage.getItem(METRICS_CACHE_KEY)
+                if (!raw) return false
+                const parsed = JSON.parse(raw)
+                if (!parsed?.payload || !parsed?.savedAt) return false
+                const ageMs = Date.now() - parsed.savedAt
+                if (ageMs > METRICS_CACHE_TTL_MS) return false
+                if (!cancelled) {
+                    setData(parsed.payload)
+                    setShowStaleNotice(true)
+                    setLoading(false)
+                }
+                return true
+            } catch {
+                return false
+            }
+        }
+
+        async function fetchMetrics({ initial }) {
+            if (initial) setLoading(true)
+            setRefreshing(true)
+            setError(null)
+            const controller = new AbortController()
+            const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+            try {
+                const response = await fetch(`/api/project-metrics?ts=${Date.now()}`, {
+                    signal: controller.signal,
+                    cache: 'no-store',
+                })
                 if (!response.ok) {
                     throw new Error(`API returned ${response.status}`)
                 }
                 const payload = await response.json()
-                if (!cancelled) setData(payload)
+                if (!cancelled) {
+                    setData(payload)
+                    setShowStaleNotice(false)
+                    if (typeof window !== 'undefined') {
+                        window.localStorage.setItem(
+                            METRICS_CACHE_KEY,
+                            JSON.stringify({ payload, savedAt: Date.now() })
+                        )
+                    }
+                }
             } catch (fetchError) {
-                if (!cancelled) setError(fetchError.message || 'Failed to load metrics')
+                if (!cancelled) {
+                    const message = fetchError?.name === 'AbortError'
+                        ? `Timed out after ${FETCH_TIMEOUT_MS / 1000}s`
+                        : fetchError.message || 'Failed to load metrics'
+                    setError(message)
+                }
             } finally {
-                if (!cancelled) setLoading(false)
+                clearTimeout(timeoutId)
+                if (!cancelled) {
+                    setLoading(false)
+                    setRefreshing(false)
+                }
             }
         }
 
-        fetchMetrics()
+        const hasCachedData = loadCachedMetrics()
+        fetchMetrics({ initial: !hasCachedData })
         return () => {
             cancelled = true
         }
@@ -67,6 +136,8 @@ export default function AdoptionSignals() {
         return `Usage metrics source: ${data.usage.source}`
     }, [data])
 
+    const showSkeleton = loading && !data
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -76,10 +147,22 @@ export default function AdoptionSignals() {
                 </p>
             </div>
 
-            {loading && <div className={styles.message}>Loading adoption metrics...</div>}
-            {error && <div className={styles.error}>Unable to load adoption metrics: {error}</div>}
+            {showSkeleton && (
+                <>
+                    <div className={styles.loadingRow}>
+                        <span className={styles.spinner} />
+                        Loading adoption metrics...
+                    </div>
+                    <div className={styles.metricsGrid}>
+                        {Array.from({ length: 5 }).map((_, index) => (
+                            <MetricSkeletonCard key={index} />
+                        ))}
+                    </div>
+                </>
+            )}
+            {error && !data && <div className={styles.error}>Unable to load adoption metrics: {error}</div>}
 
-            {!loading && !error && (
+            {!showSkeleton && data && (
                 <>
                     <div className={styles.metricsGrid}>
                         <MetricCard
@@ -99,18 +182,24 @@ export default function AdoptionSignals() {
                             value={data?.usage?.agentRuns30d}
                             label="Agent Runs (30d)"
                             title="Derived from usage telemetry event volumes"
+                            secondaryValue={data?.usage?.agentRunsAllTime}
+                            secondaryLabel="all-time"
                         />
                         <MetricCard
                             icon={faComputerMouse}
                             value={data?.usage?.guiActions30d}
                             label="GUI Actions (30d)"
                             title="Derived from usage telemetry event volumes"
+                            secondaryValue={data?.usage?.guiActionsAllTime}
+                            secondaryLabel="all-time"
                         />
                         <MetricCard
                             icon={faWindowRestore}
                             value={data?.usage?.demosRecorded30d}
                             label="Demos Recorded (30d)"
                             title="Derived from usage telemetry event volumes"
+                            secondaryValue={data?.usage?.demosRecordedAllTime}
+                            secondaryLabel="all-time"
                         />
                     </div>
 
@@ -121,6 +210,17 @@ export default function AdoptionSignals() {
                     )}
 
                     {sourceLabel && <div className={styles.source}>{sourceLabel}</div>}
+                    {refreshing && <div className={styles.message}>Refreshing latest metrics...</div>}
+                    {showStaleNotice && !refreshing && (
+                        <div className={styles.message}>
+                            Showing cached snapshot while background refresh completes.
+                        </div>
+                    )}
+                    {error && (
+                        <div className={styles.error}>
+                            Live refresh failed: {error}
+                        </div>
+                    )}
                 </>
             )}
         </div>
