@@ -276,13 +276,17 @@ async function fetchPosthogUsageMetrics() {
     const demos = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.demos)
     const runs = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.runs)
     const actions = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.actions)
+    const hasAnyVolume = demos.total > 0 || runs.total > 0 || actions.total > 0
 
     return {
-        available: demos.total > 0 || runs.total > 0 || actions.total > 0,
+        // "available" means PostHog data source is configured/reachable, not
+        // necessarily that recent event volume is non-zero.
+        available: true,
         source: 'posthog_event_definitions',
         demosRecorded30d: demos.total,
         agentRuns30d: runs.total,
         guiActions30d: actions.total,
+        hasAnyVolume,
         matchedEvents: {
             demos: demos.matched,
             runs: runs.matched,
