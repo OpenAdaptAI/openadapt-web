@@ -588,7 +588,7 @@ const PyPIDownloadChart = () => {
             <div className={styles.header}>
                 <div className={styles.titleRow}>
                     <FontAwesomeIcon icon={faPython} className={styles.icon} />
-                    <h3 className={styles.title}>PyPI Download Trends (Secondary Signal)</h3>
+                    <h3 className={styles.title}>PyPI Download Trends</h3>
                 </div>
                 <p className={styles.subtitle}>
                     Useful for package momentum, but can be inflated by CI and dependency installs.

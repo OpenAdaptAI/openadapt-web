@@ -3,8 +3,10 @@
     border: 1px solid rgba(86, 13, 248, 0.28);
     border-radius: 16px;
     padding: 24px;
-    margin: 24px auto;
-    max-width: 1100px;
+    margin: 24px 0;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
 }
 
 .header {
