@@ -5,6 +5,7 @@
 [build.environment]
   # Cache buster - change this to force fresh build
   CACHE_BUSTER = "2026-01-18-fix-cdn-cache"
+  NEXT_PUBLIC_CALENDLY_URL = "https://calendly.com/openadapt/30min"
 
 ## Next.js plugin for Netlify
 ## This handles API routes, middleware, and SSR automatically
