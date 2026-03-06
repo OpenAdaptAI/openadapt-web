@@ -48,6 +48,16 @@ function formatCoverageDate(value) {
     })
 }
 
+function formatCoverageShortDate(value) {
+    if (!value) return null
+    const parsed = new Date(value)
+    if (Number.isNaN(parsed.getTime())) return null
+    return parsed.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+    })
+}
+
 function shouldShowSecondary(primaryValue, secondaryValue) {
     if (secondaryValue === null || secondaryValue === undefined || Number.isNaN(secondaryValue)) return false
     if (primaryValue === null || primaryValue === undefined || Number.isNaN(primaryValue)) return true
@@ -55,7 +65,16 @@ function shouldShowSecondary(primaryValue, secondaryValue) {
     return formatMetric(primaryValue) !== formatMetric(secondaryValue)
 }
 
-function MetricCard({ icon, value, label, title, secondaryValue, secondaryLabel, showSecondary = true }) {
+function MetricCard({
+    icon,
+    value,
+    label,
+    title,
+    secondaryValue,
+    secondaryLabel,
+    showSecondary = true,
+    chipLabel = null,
+}) {
     return (
         <div className={styles.metricCard} title={title || ''}>
             <div className={styles.metricValue}>
@@ -68,6 +87,7 @@ function MetricCard({ icon, value, label, title, secondaryValue, secondaryLabel,
                     {formatMetric(secondaryValue)} {secondaryLabel}
                 </div>
             )}
+            {chipLabel && <div className={styles.metricChip}>{chipLabel}</div>}
         </div>
     )
 }
@@ -205,12 +225,19 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
         }
         return 'Usage metrics are currently unavailable.'
     }, [usageAvailable, usageSource])
-    const coverageStartLabel = useMemo(() => {
+    const coverageShortLabel = useMemo(
+        () => formatCoverageShortDate(data?.usage?.telemetryCoverageStartDate),
+        [data]
+    )
+    const telemetryWindowLabel = useMemo(() => {
         if (!usageSource.startsWith('posthog')) return null
         const formatted = formatCoverageDate(data?.usage?.telemetryCoverageStartDate)
         if (!formatted) return null
-        return `Telemetry coverage starts ${formatted}.`
+        return `Telemetry window: ${formatted} - present`
     }, [data, usageSource])
+    const telemetryCardSuffix = coverageShortLabel ? ` (since ${coverageShortLabel})` : ''
+    const demosAllTime = data?.usage?.demosRecordedAllTime
+    const demosEarlyData = typeof demosAllTime === 'number' && demosAllTime < 25
 
     const showSkeleton = loading && !data
 
@@ -221,6 +248,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                 <p className={styles.subtitle}>
                     Track OpenAdapt&apos;s all-time footprint and 90-day momentum.
                 </p>
+                {telemetryWindowLabel && <div className={styles.windowBadge}>{telemetryWindowLabel}</div>}
             </div>
 
             {showSkeleton && (
@@ -256,7 +284,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                         <MetricCard
                             icon={faChartLine}
                             value={runsPrimary}
-                            label="Agent Runs"
+                            label={`Agent Runs${telemetryCardSuffix}`}
                             title="Derived from usage telemetry event volumes"
                             secondaryValue={runsSecondary}
                             secondaryLabel={secondaryLabel}
@@ -265,7 +293,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                         <MetricCard
                             icon={faComputerMouse}
                             value={actionsPrimary}
-                            label="GUI Actions"
+                            label={`GUI Actions${telemetryCardSuffix}`}
                             title="Derived from usage telemetry event volumes"
                             secondaryValue={actionsSecondary}
                             secondaryLabel={secondaryLabel}
@@ -274,18 +302,18 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                         <MetricCard
                             icon={faWindowRestore}
                             value={demosPrimary}
-                            label="Demos Recorded"
+                            label={`Demos Recorded${telemetryCardSuffix}`}
                             title="Derived from usage telemetry event volumes"
                             secondaryValue={demosSecondary}
                             secondaryLabel={secondaryLabel}
                             showSecondary={demosShowSecondary}
+                            chipLabel={demosEarlyData ? 'Early data' : null}
                         />
                     </div>
 
                     {usageStatusMessage && <div className={styles.message}>{usageStatusMessage}</div>}
 
                     {sourceLabel && <div className={styles.source}>{sourceLabel}</div>}
-                    {coverageStartLabel && <div className={styles.source}>{coverageStartLabel}</div>}
                     {refreshing && <div className={styles.message}>Refreshing latest metrics...</div>}
                     {showStaleNotice && !refreshing && (
                         <div className={styles.message}>
