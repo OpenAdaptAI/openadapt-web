@@ -603,17 +603,12 @@ function BuildForYouSection() {
                 <p className={styles.buildDesc}>
                     If OpenAdapt doesn&#39;t fully automate your workflow out of the box, we&#39;ll work with you to fix that.
                 </p>
-                <div className={styles.buildActions}>
-                    <Link
-                        className={styles.buildBtn}
-                        href="/book"
-                    >
-                        Book a Call
-                    </Link>
-                    <Link className={styles.buildSecondary} href="/contact">
-                        Prefer a written intake? Contact us.
-                    </Link>
-                </div>
+                <Link
+                    className={styles.buildBtn}
+                    href="#book"
+                >
+                    Start Intake
+                </Link>
             </div>
         </div>
     )

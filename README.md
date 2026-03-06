@@ -10,6 +10,7 @@ This is the Next.js-based landing page for OpenAdapt, featuring:
 - **Industries grid** showing use cases across different sectors
 - **Developer resources** and contribution information
 - **Email signup** for updates and early access
+- **Single-page contact + booking flow** on landing (`#book`)
 - **Booking page** for intro calls (`/book`)
 - **Contact intake form** for sales workflows (`/contact`)
 
