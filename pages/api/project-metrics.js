@@ -12,6 +12,7 @@ const DEFAULT_POSTHOG_PROJECT_ID = '68185'
 const MAX_EVENT_DEFINITION_PAGES = 5
 const FALLBACK_PATTERN_LIMIT = 30
 const GITHUB_ORG = 'OpenAdaptAI'
+const COVERAGE_START_EVENT_NAMES = ['demo_recorded', 'agent_run', 'action_executed']
 
 // Canonical event names from OpenAdapt codebases (legacy PostHog + shared telemetry conventions).
 const EVENT_CLASSIFICATION = {
@@ -287,13 +288,13 @@ async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
     const demosNames = uniqueNames(EVENT_CLASSIFICATION.demos.exact)
     const runsNames = uniqueNames(EVENT_CLASSIFICATION.runs.exact)
     const actionsNames = uniqueNames(EVENT_CLASSIFICATION.actions.exact)
-    const allNames = uniqueNames([...demosNames, ...runsNames, ...actionsNames])
+    const coverageStartNames = uniqueNames(COVERAGE_START_EVENT_NAMES)
 
     const [demos, runs, actions, telemetryCoverageStartDate] = await Promise.all([
         runHogQLCount({ host, projectId, apiKey, eventNames: demosNames }),
         runHogQLCount({ host, projectId, apiKey, eventNames: runsNames }),
         runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames }),
-        runHogQLFirstSeen({ host, projectId, apiKey, eventNames: allNames }),
+        runHogQLFirstSeen({ host, projectId, apiKey, eventNames: coverageStartNames }),
     ])
 
     return {

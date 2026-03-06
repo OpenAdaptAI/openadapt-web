@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import styles from './AdoptionSignals.module.css'
 
-const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v2'
+const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v3'
 const METRICS_CACHE_TTL_MS = 6 * 60 * 60 * 1000
 const FETCH_TIMEOUT_MS = 10000
 
