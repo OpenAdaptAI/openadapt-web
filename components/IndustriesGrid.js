@@ -605,9 +605,9 @@ function BuildForYouSection() {
                 </p>
                 <Link
                     className={styles.buildBtn}
-                    href="mailto:sales@openadapt.ai?subject=OpenAdapt%20Inquiry%3A%20Assistance%20with%20Automating%20%5BYour%20Use%20Case%5D"
+                    href="#book"
                 >
-                    Contact Sales
+                    Start Intake
                 </Link>
             </div>
         </div>

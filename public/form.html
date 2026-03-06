@@ -3,8 +3,21 @@
 <!-- A little help for the Netlify post-processing bots -->
 <form name="email" data-netlify="true" method="POST" netlify netlify-honeypot="bot-field">
   <input type="hidden" name="form-name" value="email" />
+  <input type="text" name="bot-field" />
   <input type="email" name="email" />
   <button type="submit">Register</button>
+</form>
+
+<form name="contact" data-netlify="true" method="POST" netlify netlify-honeypot="bot-field">
+  <input type="hidden" name="form-name" value="contact" />
+  <input type="text" name="bot-field" />
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <input type="text" name="company" />
+  <input type="text" name="role" />
+  <input type="text" name="workflows" />
+  <textarea name="message"></textarea>
+  <button type="submit">Contact</button>
 </form>
 </body>
 </html>

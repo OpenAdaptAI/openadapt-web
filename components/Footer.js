@@ -1,12 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 
 import styles from './Footer.module.css'
 
 export default function Footer() {
+    const router = useRouter()
     const currentYear = new Date().getFullYear()
+    const isHome = router.pathname === '/'
+    const bookHref = isHome ? '#book' : '/book'
+    const contactHref = isHome ? '#book' : '/contact'
 
     // Function to handle the reveal of the email address
     const revealEmail = () => {
@@ -45,8 +50,14 @@ export default function Footer() {
                 ></iframe>
                 <div className={styles.footerContent}>
                     <div className={`${styles.footerLinks} pt-4`}>
-                        <a onClick={revealEmail} className={styles.link}>
+                        <a href={bookHref} className={styles.link}>
+                            Book a Call
+                        </a>
+                        <a href={contactHref} className={styles.link}>
                             Contact
+                        </a>
+                        <a onClick={revealEmail} className={styles.link}>
+                            Email
                         </a>
                     </div>
                     <div className={styles.footerLinks}>
