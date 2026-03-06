@@ -642,13 +642,22 @@ function mergeUsageMetrics(primary, fallback) {
     }
 }
 
-function cacheControlForUsageSource(source) {
+function isCacheableUsageSource(source) {
     const normalized = String(source || '')
-    // Cache successful PostHog-backed payloads briefly.
-    if (normalized === 'posthog_query_api' || normalized === 'posthog_event_definitions') {
+    return normalized === 'posthog_query_api' || normalized === 'posthog_event_definitions'
+}
+
+function hasUsableGithubPayload(github) {
+    return typeof github?.stars === 'number' && typeof github?.forks === 'number'
+}
+
+function cacheControlForResponse(response) {
+    const posthogOk = isCacheableUsageSource(response?.usage?.source)
+    const githubOk = hasUsableGithubPayload(response?.github)
+    // Only cache when both sources are healthy to avoid caching partial dashboards.
+    if (posthogOk && githubOk) {
         return 'public, max-age=30, s-maxage=120, stale-while-revalidate=300'
     }
-    // Do not cache degraded/unconfigured payloads at the edge.
     return 'no-store, max-age=0'
 }
 
@@ -697,7 +706,7 @@ export default async function handler(req, res) {
         )
     }
 
-    res.setHeader('Cache-Control', cacheControlForUsageSource(response?.usage?.source))
+    res.setHeader('Cache-Control', cacheControlForResponse(response))
     res.setHeader('X-OpenAdapt-Metrics-Source', String(response?.usage?.source || 'unknown'))
     return res.status(200).json(response)
 }

@@ -30,6 +30,14 @@ function hasUsableUsageMetrics(payload) {
     return candidates.some((value) => typeof value === 'number')
 }
 
+function hasUsableGithubMetrics(payload) {
+    return typeof payload?.github?.stars === 'number' && typeof payload?.github?.forks === 'number'
+}
+
+function hasUsableCachedSnapshot(payload) {
+    return hasUsableUsageMetrics(payload) && hasUsableGithubMetrics(payload)
+}
+
 function formatMetric(value) {
     if (value === null || value === undefined || Number.isNaN(value)) return '—'
     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`
@@ -56,6 +64,15 @@ function formatCoverageShortDate(value) {
         month: 'short',
         day: 'numeric',
     })
+}
+
+function getDaysSince(value) {
+    if (!value) return null
+    const parsed = new Date(value)
+    if (Number.isNaN(parsed.getTime())) return null
+    const diffMs = Date.now() - parsed.getTime()
+    if (!Number.isFinite(diffMs) || diffMs < 0) return 0
+    return Math.floor(diffMs / (24 * 60 * 60 * 1000))
 }
 
 function shouldShowSecondary(primaryValue, secondaryValue) {
@@ -111,6 +128,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     const [showStaleNotice, setShowStaleNotice] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
+    const [lastGoodGithub, setLastGoodGithub] = useState(null)
 
     useEffect(() => {
         let cancelled = false
@@ -124,9 +142,10 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                 if (!parsed?.payload || !parsed?.savedAt) return false
                 const ageMs = Date.now() - parsed.savedAt
                 if (ageMs > METRICS_CACHE_TTL_MS) return false
-                if (!hasUsableUsageMetrics(parsed.payload)) return false
+                if (!hasUsableCachedSnapshot(parsed.payload)) return false
                 if (!cancelled) {
                     setData(parsed.payload)
+                    setLastGoodGithub(parsed.payload.github)
                     setShowStaleNotice(true)
                     setLoading(false)
                 }
@@ -152,9 +171,12 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                 }
                 const payload = await response.json()
                 if (!cancelled) {
+                    if (hasUsableGithubMetrics(payload)) {
+                        setLastGoodGithub(payload.github)
+                    }
                     setData(payload)
                     setShowStaleNotice(false)
-                    if (typeof window !== 'undefined' && hasUsableUsageMetrics(payload)) {
+                    if (typeof window !== 'undefined' && hasUsableCachedSnapshot(payload)) {
                         window.localStorage.setItem(
                             METRICS_CACHE_KEY,
                             JSON.stringify({ payload, savedAt: Date.now() })
@@ -186,6 +208,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
 
     const usageAvailable = Boolean(data?.usage?.available)
     const usageSource = String(data?.usage?.source || '')
+    const githubStats = hasUsableGithubMetrics(data) ? data.github : lastGoodGithub
     const isAllTime = timeRange === 'all'
     const runsPrimary = isAllTime
         ? data?.usage?.agentRunsAllTime
@@ -205,7 +228,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     const demosSecondary = isAllTime
         ? (data?.usage?.demosRecorded90d ?? data?.usage?.demosRecorded30d)
         : data?.usage?.demosRecordedAllTime
-    const secondaryLabel = isAllTime ? '90d' : 'all-time'
+    const secondaryLabel = isAllTime ? 'in last 90d' : 'all-time total'
     const runsShowSecondary = shouldShowSecondary(runsPrimary, runsSecondary)
     const actionsShowSecondary = shouldShowSecondary(actionsPrimary, actionsSecondary)
     const demosShowSecondary = shouldShowSecondary(demosPrimary, demosSecondary)
@@ -236,8 +259,8 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
         return `Telemetry window: ${formatted} - present`
     }, [data, usageSource])
     const telemetryCardSuffix = coverageShortLabel ? ` (since ${coverageShortLabel})` : ''
-    const demosAllTime = data?.usage?.demosRecordedAllTime
-    const demosEarlyData = typeof demosAllTime === 'number' && demosAllTime < 25
+    const coverageAgeDays = getDaysSince(data?.usage?.telemetryCoverageStartDate)
+    const showEarlyDataChip = coverageAgeDays !== null && coverageAgeDays < 30
 
     const showSkeleton = loading && !data
 
@@ -271,13 +294,13 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                     <div className={styles.metricsGrid}>
                         <MetricCard
                             icon={faStar}
-                            value={data?.github?.stars}
+                            value={githubStats?.stars}
                             label="Ecosystem Stars"
                             title="Total stars across public OpenAdaptAI openadapt* repositories"
                         />
                         <MetricCard
                             icon={faCodeBranch}
-                            value={data?.github?.forks}
+                            value={githubStats?.forks}
                             label="Ecosystem Forks"
                             title="Total forks across public OpenAdaptAI openadapt* repositories"
                         />
@@ -289,6 +312,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                             secondaryValue={runsSecondary}
                             secondaryLabel={secondaryLabel}
                             showSecondary={runsShowSecondary}
+                            chipLabel={showEarlyDataChip ? 'Early data' : null}
                         />
                         <MetricCard
                             icon={faComputerMouse}
@@ -298,6 +322,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                             secondaryValue={actionsSecondary}
                             secondaryLabel={secondaryLabel}
                             showSecondary={actionsShowSecondary}
+                            chipLabel={showEarlyDataChip ? 'Early data' : null}
                         />
                         <MetricCard
                             icon={faWindowRestore}
@@ -307,7 +332,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                             secondaryValue={demosSecondary}
                             secondaryLabel={secondaryLabel}
                             showSecondary={demosShowSecondary}
-                            chipLabel={demosEarlyData ? 'Early data' : null}
+                            chipLabel={showEarlyDataChip ? 'Early data' : null}
                         />
                     </div>
 
