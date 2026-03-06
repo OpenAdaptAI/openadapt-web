@@ -15,6 +15,7 @@ export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
     const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
     const [buildWarnings, setBuildWarnings] = useState([]);
+    const [insightRange, setInsightRange] = useState('all');
     const macURL = latestRelease.version
         ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.dmg`
         : '';
@@ -128,10 +129,34 @@ export default function Developers() {
                     <InstallSection />
 
                     {/* Primary trust signals: GitHub + usage telemetry */}
-                    <AdoptionSignals />
+                    <div className={styles.insightControls}>
+                        <span className={styles.insightLabel}>Window:</span>
+                        <div className={styles.insightToggleGroup}>
+                            <button
+                                className={`${styles.insightToggleBtn} ${insightRange === 'all' ? styles.insightToggleBtnActive : ''}`}
+                                onClick={() => setInsightRange('all')}
+                                type="button"
+                            >
+                                All time
+                            </button>
+                            <button
+                                className={`${styles.insightToggleBtn} ${insightRange === '90d' ? styles.insightToggleBtnActive : ''}`}
+                                onClick={() => setInsightRange('90d')}
+                                type="button"
+                            >
+                                90 days
+                            </button>
+                        </div>
+                    </div>
+
+                    <AdoptionSignals timeRange={insightRange} />
 
                     {/* PyPI Download Statistics */}
-                    <PyPIDownloadChart />
+                    <PyPIDownloadChart
+                        timeRange={insightRange}
+                        onTimeRangeChange={setInsightRange}
+                        hideRangeControl
+                    />
 
                     {/* Legacy Desktop App Downloads - Disabled during transition to new architecture
                     <div className="mt-12">

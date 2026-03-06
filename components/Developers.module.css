@@ -64,3 +64,54 @@
     border: 1px solid rgba(86, 13, 248, 0.5);
     z-index: 1000;
 }
+
+.insightControls {
+    margin: 8px auto 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.insightLabel {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.insightToggleGroup {
+    display: inline-flex;
+    gap: 8px;
+}
+
+.insightToggleBtn {
+    background: rgba(0, 0, 0, 0.22);
+    color: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(86, 13, 248, 0.45);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+}
+
+.insightToggleBtn:hover {
+    color: #fff;
+    border-color: rgba(127, 76, 255, 0.7);
+}
+
+.insightToggleBtnActive {
+    background: rgba(86, 13, 248, 0.32);
+    color: #fff;
+    border-color: rgba(127, 76, 255, 0.85);
+    box-shadow: 0 0 0 1px rgba(127, 76, 255, 0.25) inset;
+}
+
+@media (max-width: 640px) {
+    .insightControls {
+        justify-content: center;
+    }
+}

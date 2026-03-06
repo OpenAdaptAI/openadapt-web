@@ -202,7 +202,7 @@ function toSqlInList(names) {
         .join(', ')
 }
 
-async function runHogQLCount({ host, projectId, apiKey, eventNames, days }) {
+async function runHogQLCount({ host, projectId, apiKey, eventNames }) {
     const response = await fetchWithTimeout(`${host}/api/projects/${projectId}/query/`, {
         method: 'POST',
         headers: {
@@ -215,7 +215,8 @@ async function runHogQLCount({ host, projectId, apiKey, eventNames, days }) {
                 kind: 'HogQLQuery',
                 query: `
                     SELECT
-                        countIf(event IN (${toSqlInList(eventNames)}) AND timestamp >= now() - INTERVAL ${Math.floor(days)} DAY),
+                        countIf(event IN (${toSqlInList(eventNames)}) AND timestamp >= now() - INTERVAL 30 DAY),
+                        countIf(event IN (${toSqlInList(eventNames)}) AND timestamp >= now() - INTERVAL 90 DAY),
                         countIf(event IN (${toSqlInList(eventNames)}))
                     FROM events
                 `.trim(),
@@ -236,9 +237,11 @@ async function runHogQLCount({ host, projectId, apiKey, eventNames, days }) {
     }
 
     const value30d = Number(payload?.results?.[0]?.[0])
-    const valueAllTime = Number(payload?.results?.[0]?.[1])
+    const value90d = Number(payload?.results?.[0]?.[1])
+    const valueAllTime = Number(payload?.results?.[0]?.[2])
     return {
         value30d: Number.isFinite(value30d) ? value30d : 0,
+        value90d: Number.isFinite(value90d) ? value90d : 0,
         valueAllTime: Number.isFinite(valueAllTime) ? valueAllTime : 0,
     }
 }
@@ -249,21 +252,30 @@ async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
     const actionsNames = uniqueNames(EVENT_CLASSIFICATION.actions.exact)
 
     const [demos, runs, actions] = await Promise.all([
-        runHogQLCount({ host, projectId, apiKey, eventNames: demosNames, days: 30 }),
-        runHogQLCount({ host, projectId, apiKey, eventNames: runsNames, days: 30 }),
-        runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames, days: 30 }),
+        runHogQLCount({ host, projectId, apiKey, eventNames: demosNames }),
+        runHogQLCount({ host, projectId, apiKey, eventNames: runsNames }),
+        runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames }),
     ])
 
     return {
         available: true,
         source: 'posthog_query_api',
         demosRecorded30d: demos.value30d,
+        demosRecorded90d: demos.value90d,
         agentRuns30d: runs.value30d,
+        agentRuns90d: runs.value90d,
         guiActions30d: actions.value30d,
+        guiActions90d: actions.value90d,
         demosRecordedAllTime: demos.valueAllTime,
         agentRunsAllTime: runs.valueAllTime,
         guiActionsAllTime: actions.valueAllTime,
-        hasAnyVolume: demos.value30d > 0 || runs.value30d > 0 || actions.value30d > 0,
+        hasAnyVolume:
+            demos.value30d > 0 ||
+            runs.value30d > 0 ||
+            actions.value30d > 0 ||
+            demos.value90d > 0 ||
+            runs.value90d > 0 ||
+            actions.value90d > 0,
         caveats: ['Derived from PostHog query API (exact event-name families)'],
     }
 }
@@ -437,8 +449,11 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
             available: false,
             source: 'posthog_event_definitions_unavailable',
             demosRecorded30d: null,
+            demosRecorded90d: null,
             agentRuns30d: null,
+            agentRuns90d: null,
             guiActions30d: null,
+            guiActions90d: null,
             demosRecordedAllTime: null,
             agentRunsAllTime: null,
             guiActionsAllTime: null,
@@ -472,8 +487,11 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
         available: true,
         source: 'posthog_event_definitions',
         demosRecorded30d: demos.total,
+        demosRecorded90d: null,
         agentRuns30d: runs.total,
+        agentRuns90d: null,
         guiActions30d: actions.total,
+        guiActions90d: null,
         demosRecordedAllTime: null,
         agentRunsAllTime: null,
         guiActionsAllTime: null,
@@ -498,21 +516,27 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
 
 function getEnvOverrideUsageMetrics() {
     const demos = parseIntEnv('OPENADAPT_METRIC_DEMOS_RECORDED_30D')
+    const demos90d = parseIntEnv('OPENADAPT_METRIC_DEMOS_RECORDED_90D')
     const runs = parseIntEnv('OPENADAPT_METRIC_AGENT_RUNS_30D')
+    const runs90d = parseIntEnv('OPENADAPT_METRIC_AGENT_RUNS_90D')
     const actions = parseIntEnv('OPENADAPT_METRIC_GUI_ACTIONS_30D')
+    const actions90d = parseIntEnv('OPENADAPT_METRIC_GUI_ACTIONS_90D')
     const demosAllTime = parseIntEnv('OPENADAPT_METRIC_DEMOS_RECORDED_ALL_TIME')
     const runsAllTime = parseIntEnv('OPENADAPT_METRIC_AGENT_RUNS_ALL_TIME')
     const actionsAllTime = parseIntEnv('OPENADAPT_METRIC_GUI_ACTIONS_ALL_TIME')
     const apps = parseIntEnv('OPENADAPT_METRIC_APPS_AUTOMATED')
 
-    const hasAny = [demos, runs, actions, demosAllTime, runsAllTime, actionsAllTime, apps]
+    const hasAny = [demos, demos90d, runs, runs90d, actions, actions90d, demosAllTime, runsAllTime, actionsAllTime, apps]
         .some((value) => value !== null)
     return {
         available: hasAny,
         source: hasAny ? 'env_override' : 'env_override_not_set',
         demosRecorded30d: demos,
+        demosRecorded90d: demos90d ?? demos,
         agentRuns30d: runs,
+        agentRuns90d: runs90d ?? runs,
         guiActions30d: actions,
+        guiActions90d: actions90d ?? actions,
         demosRecordedAllTime: demosAllTime,
         agentRunsAllTime: runsAllTime,
         guiActionsAllTime: actionsAllTime,
@@ -527,10 +551,16 @@ function mergeUsageMetrics(primary, fallback) {
     const merged = {
         demosRecorded30d:
             primary.demosRecorded30d ?? fallback.demosRecorded30d ?? null,
+        demosRecorded90d:
+            primary.demosRecorded90d ?? fallback.demosRecorded90d ?? null,
         agentRuns30d:
             primary.agentRuns30d ?? fallback.agentRuns30d ?? null,
+        agentRuns90d:
+            primary.agentRuns90d ?? fallback.agentRuns90d ?? null,
         guiActions30d:
             primary.guiActions30d ?? fallback.guiActions30d ?? null,
+        guiActions90d:
+            primary.guiActions90d ?? fallback.guiActions90d ?? null,
         demosRecordedAllTime:
             primary.demosRecordedAllTime ?? fallback.demosRecordedAllTime ?? null,
         agentRunsAllTime:
@@ -544,8 +574,11 @@ function mergeUsageMetrics(primary, fallback) {
     return {
         available: [
             merged.demosRecorded30d,
+            merged.demosRecorded90d,
             merged.agentRuns30d,
+            merged.agentRuns90d,
             merged.guiActions30d,
+            merged.guiActions90d,
             merged.demosRecordedAllTime,
             merged.agentRunsAllTime,
             merged.guiActionsAllTime,
@@ -591,8 +624,11 @@ export default async function handler(req, res) {
                 source: 'posthog_error',
                 caveats: ['PostHog request failed'],
                 demosRecorded30d: null,
+                demosRecorded90d: null,
                 agentRuns30d: null,
+                agentRuns90d: null,
                 guiActions30d: null,
+                guiActions90d: null,
                 demosRecordedAllTime: null,
                 agentRunsAllTime: null,
                 guiActionsAllTime: null,
