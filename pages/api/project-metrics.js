@@ -246,15 +246,54 @@ async function runHogQLCount({ host, projectId, apiKey, eventNames }) {
     }
 }
 
+async function runHogQLFirstSeen({ host, projectId, apiKey, eventNames }) {
+    const response = await fetchWithTimeout(`${host}/api/projects/${projectId}/query/`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'User-Agent': 'OpenAdapt-Web/1.0',
+        },
+        body: JSON.stringify({
+            query: {
+                kind: 'HogQLQuery',
+                query: `
+                    SELECT
+                        min(timestamp)
+                    FROM events
+                    WHERE event IN (${toSqlInList(eventNames)})
+                `.trim(),
+            },
+        }),
+    })
+
+    let payload = {}
+    try {
+        payload = await response.json()
+    } catch {
+        payload = {}
+    }
+
+    if (!response.ok) {
+        const detail = payload?.detail || payload?.code || `HTTP ${response.status}`
+        throw new Error(`PostHog first-seen query returned ${response.status}: ${detail}`)
+    }
+
+    const raw = payload?.results?.[0]?.[0]
+    return raw ? String(raw) : null
+}
+
 async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
     const demosNames = uniqueNames(EVENT_CLASSIFICATION.demos.exact)
     const runsNames = uniqueNames(EVENT_CLASSIFICATION.runs.exact)
     const actionsNames = uniqueNames(EVENT_CLASSIFICATION.actions.exact)
+    const allNames = uniqueNames([...demosNames, ...runsNames, ...actionsNames])
 
-    const [demos, runs, actions] = await Promise.all([
+    const [demos, runs, actions, telemetryCoverageStartDate] = await Promise.all([
         runHogQLCount({ host, projectId, apiKey, eventNames: demosNames }),
         runHogQLCount({ host, projectId, apiKey, eventNames: runsNames }),
         runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames }),
+        runHogQLFirstSeen({ host, projectId, apiKey, eventNames: allNames }),
     ])
 
     return {
@@ -269,6 +308,7 @@ async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
         demosRecordedAllTime: demos.valueAllTime,
         agentRunsAllTime: runs.valueAllTime,
         guiActionsAllTime: actions.valueAllTime,
+        telemetryCoverageStartDate,
         hasAnyVolume:
             demos.value30d > 0 ||
             runs.value30d > 0 ||
@@ -457,6 +497,7 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
             demosRecordedAllTime: null,
             agentRunsAllTime: null,
             guiActionsAllTime: null,
+            telemetryCoverageStartDate: null,
             hasAnyVolume: false,
             matchedEvents: {
                 demos: [],
@@ -495,6 +536,7 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
         demosRecordedAllTime: null,
         agentRunsAllTime: null,
         guiActionsAllTime: null,
+        telemetryCoverageStartDate: null,
         hasAnyVolume,
         matchedEvents: {
             demos: demos.matched,
@@ -525,6 +567,7 @@ function getEnvOverrideUsageMetrics() {
     const runsAllTime = parseIntEnv('OPENADAPT_METRIC_AGENT_RUNS_ALL_TIME')
     const actionsAllTime = parseIntEnv('OPENADAPT_METRIC_GUI_ACTIONS_ALL_TIME')
     const apps = parseIntEnv('OPENADAPT_METRIC_APPS_AUTOMATED')
+    const telemetryCoverageStartDate = process.env.OPENADAPT_METRIC_USAGE_START_DATE || null
 
     const hasAny = [demos, demos90d, runs, runs90d, actions, actions90d, demosAllTime, runsAllTime, actionsAllTime, apps]
         .some((value) => value !== null)
@@ -541,6 +584,7 @@ function getEnvOverrideUsageMetrics() {
         agentRunsAllTime: runsAllTime,
         guiActionsAllTime: actionsAllTime,
         appsAutomated: apps,
+        telemetryCoverageStartDate,
         caveats: hasAny
             ? ['Values supplied via OPENADAPT_METRIC_* environment variables']
             : ['No OPENADAPT_METRIC_* overrides configured'],
@@ -569,6 +613,8 @@ function mergeUsageMetrics(primary, fallback) {
             primary.guiActionsAllTime ?? fallback.guiActionsAllTime ?? null,
         appsAutomated:
             primary.appsAutomated ?? fallback.appsAutomated ?? null,
+        telemetryCoverageStartDate:
+            primary.telemetryCoverageStartDate ?? fallback.telemetryCoverageStartDate ?? null,
     }
 
     return {
@@ -633,6 +679,7 @@ export default async function handler(req, res) {
                 agentRunsAllTime: null,
                 guiActionsAllTime: null,
                 appsAutomated: null,
+                telemetryCoverageStartDate: null,
             },
             envUsage
         )
