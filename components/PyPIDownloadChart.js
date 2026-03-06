@@ -159,17 +159,34 @@ const packageColors = {
     },
 };
 
-const PyPIDownloadChart = () => {
+const PyPIDownloadChart = ({ timeRange: controlledTimeRange = null, onTimeRangeChange = null, hideRangeControl = false }) => {
     const [historyData, setHistoryData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [chartType, setChartType] = useState('cumulative'); // 'cumulative', 'combined', or 'packages'
     const [period, setPeriod] = useState('month');
-    const [timeRange, setTimeRange] = useState('all'); // 'all' for all available (~6 months), '3m' for 3 months
+    const [internalTimeRange, setInternalTimeRange] = useState(controlledTimeRange || 'all');
     const [growthStats, setGrowthStats] = useState(null);
     const [recentStats, setRecentStats] = useState(null);
     const [githubStats, setGithubStats] = useState(null);
     const [versionHistory, setVersionHistory] = useState([]);
+
+    const isRangeControlled = controlledTimeRange === 'all' || controlledTimeRange === '90d'
+    const timeRange = isRangeControlled ? controlledTimeRange : internalTimeRange
+
+    const setTimeRange = (nextRange) => {
+        if (isRangeControlled) {
+            onTimeRangeChange?.(nextRange)
+            return
+        }
+        setInternalTimeRange(nextRange)
+    }
+
+    useEffect(() => {
+        if (isRangeControlled && controlledTimeRange !== internalTimeRange) {
+            setInternalTimeRange(controlledTimeRange)
+        }
+    }, [controlledTimeRange, internalTimeRange, isRangeControlled])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -182,7 +199,7 @@ const PyPIDownloadChart = () => {
                 if (timeRange === 'all') {
                     limit = 9999; // Get all available data (~6 months from pypistats.org)
                 } else {
-                    // 3 months of data
+                    // 90 days of data
                     limit = period === 'day' ? 90 : period === 'week' ? 13 : 3;
                 }
                 const data = await getPyPIDownloadHistoryLimited(period, limit);
@@ -725,24 +742,26 @@ const PyPIDownloadChart = () => {
                         </button>
                     </div>
                 </div>
-                <div className={styles.controlGroup}>
-                    <span className={styles.controlLabel}>Range:</span>
-                    <div className={styles.toggleGroup}>
-                        <button
-                            className={`${styles.toggleBtn} ${timeRange === 'all' ? styles.active : ''}`}
-                            onClick={() => setTimeRange('all')}
-                            title="pypistats.org retains ~180 days of data"
-                        >
-                            All Available
-                        </button>
-                        <button
-                            className={`${styles.toggleBtn} ${timeRange === '3m' ? styles.active : ''}`}
-                            onClick={() => setTimeRange('3m')}
-                        >
-                            3 Months
-                        </button>
+                {!hideRangeControl && (
+                    <div className={styles.controlGroup}>
+                        <span className={styles.controlLabel}>Range:</span>
+                        <div className={styles.toggleGroup}>
+                            <button
+                                className={`${styles.toggleBtn} ${timeRange === 'all' ? styles.active : ''}`}
+                                onClick={() => setTimeRange('all')}
+                                title="PyPI trend source retains a limited historical window."
+                            >
+                                All time
+                            </button>
+                            <button
+                                className={`${styles.toggleBtn} ${timeRange === '90d' ? styles.active : ''}`}
+                                onClick={() => setTimeRange('90d')}
+                            >
+                                90 days
+                            </button>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
 
             {/* Chart */}

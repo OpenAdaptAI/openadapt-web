@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import styles from './AdoptionSignals.module.css'
 
-const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v1'
+const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v2'
 const METRICS_CACHE_TTL_MS = 6 * 60 * 60 * 1000
 const FETCH_TIMEOUT_MS = 10000
 
@@ -18,8 +18,11 @@ function hasUsableUsageMetrics(payload) {
     if (!usage || usage.available !== true) return false
     const candidates = [
         usage.agentRuns30d,
+        usage.agentRuns90d,
         usage.guiActions30d,
+        usage.guiActions90d,
         usage.demosRecorded30d,
+        usage.demosRecorded90d,
         usage.agentRunsAllTime,
         usage.guiActionsAllTime,
         usage.demosRecordedAllTime,
@@ -64,7 +67,7 @@ function MetricSkeletonCard() {
     )
 }
 
-export default function AdoptionSignals() {
+export default function AdoptionSignals({ timeRange = 'all' }) {
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     const [showStaleNotice, setShowStaleNotice] = useState(false)
@@ -144,6 +147,26 @@ export default function AdoptionSignals() {
     }, [])
 
     const usageAvailable = Boolean(data?.usage?.available)
+    const isAllTime = timeRange === 'all'
+    const runsPrimary = isAllTime
+        ? data?.usage?.agentRunsAllTime
+        : (data?.usage?.agentRuns90d ?? data?.usage?.agentRuns30d)
+    const actionsPrimary = isAllTime
+        ? data?.usage?.guiActionsAllTime
+        : (data?.usage?.guiActions90d ?? data?.usage?.guiActions30d)
+    const demosPrimary = isAllTime
+        ? data?.usage?.demosRecordedAllTime
+        : (data?.usage?.demosRecorded90d ?? data?.usage?.demosRecorded30d)
+    const runsSecondary = isAllTime
+        ? (data?.usage?.agentRuns90d ?? data?.usage?.agentRuns30d)
+        : data?.usage?.agentRunsAllTime
+    const actionsSecondary = isAllTime
+        ? (data?.usage?.guiActions90d ?? data?.usage?.guiActions30d)
+        : data?.usage?.guiActionsAllTime
+    const demosSecondary = isAllTime
+        ? (data?.usage?.demosRecorded90d ?? data?.usage?.demosRecorded30d)
+        : data?.usage?.demosRecordedAllTime
+    const secondaryLabel = isAllTime ? '90d' : 'all-time'
     const sourceLabel = useMemo(() => {
         if (!data?.usage?.source) return null
         if (String(data.usage.source).startsWith('posthog')) return 'Usage metrics source: PostHog'
@@ -158,7 +181,7 @@ export default function AdoptionSignals() {
             <div className={styles.header}>
                 <h3 className={styles.title}>Adoption Signals</h3>
                 <p className={styles.subtitle}>
-                    Prioritizing product usage and GitHub traction; package downloads are shown separately.
+                    Track OpenAdapt&apos;s all-time footprint and 90-day momentum.
                 </p>
             </div>
 
@@ -194,27 +217,27 @@ export default function AdoptionSignals() {
                         />
                         <MetricCard
                             icon={faChartLine}
-                            value={data?.usage?.agentRuns30d}
-                            label="Agent Runs (30d)"
+                            value={runsPrimary}
+                            label={isAllTime ? 'Agent Runs (All time)' : 'Agent Runs (90d)'}
                             title="Derived from usage telemetry event volumes"
-                            secondaryValue={data?.usage?.agentRunsAllTime}
-                            secondaryLabel="all-time"
+                            secondaryValue={runsSecondary}
+                            secondaryLabel={secondaryLabel}
                         />
                         <MetricCard
                             icon={faComputerMouse}
-                            value={data?.usage?.guiActions30d}
-                            label="GUI Actions (30d)"
+                            value={actionsPrimary}
+                            label={isAllTime ? 'GUI Actions (All time)' : 'GUI Actions (90d)'}
                             title="Derived from usage telemetry event volumes"
-                            secondaryValue={data?.usage?.guiActionsAllTime}
-                            secondaryLabel="all-time"
+                            secondaryValue={actionsSecondary}
+                            secondaryLabel={secondaryLabel}
                         />
                         <MetricCard
                             icon={faWindowRestore}
-                            value={data?.usage?.demosRecorded30d}
-                            label="Demos Recorded (30d)"
+                            value={demosPrimary}
+                            label={isAllTime ? 'Demos Recorded (All time)' : 'Demos Recorded (90d)'}
                             title="Derived from usage telemetry event volumes"
-                            secondaryValue={data?.usage?.demosRecordedAllTime}
-                            secondaryLabel="all-time"
+                            secondaryValue={demosSecondary}
+                            secondaryLabel={secondaryLabel}
                         />
                     </div>
 
