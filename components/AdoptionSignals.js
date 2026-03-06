@@ -165,6 +165,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     }, [])
 
     const usageAvailable = Boolean(data?.usage?.available)
+    const usageSource = String(data?.usage?.source || '')
     const isAllTime = timeRange === 'all'
     const runsPrimary = isAllTime
         ? data?.usage?.agentRunsAllTime
@@ -189,18 +190,27 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     const actionsShowSecondary = shouldShowSecondary(actionsPrimary, actionsSecondary)
     const demosShowSecondary = shouldShowSecondary(demosPrimary, demosSecondary)
     const sourceLabel = useMemo(() => {
-        if (!data?.usage?.source) return null
-        if (String(data.usage.source).startsWith('posthog')) return 'Usage metrics source: PostHog'
-        if (String(data.usage.source).startsWith('env_override')) return 'Usage metrics source: configured counters'
-        return `Usage metrics source: ${data.usage.source}`
-    }, [data])
+        if (!usageSource) return null
+        if (usageSource.startsWith('posthog')) return 'Usage metrics source: PostHog'
+        if (usageSource.startsWith('env_override')) return 'Usage metrics source: configured counters'
+        return `Usage metrics source: ${usageSource}`
+    }, [usageSource])
+    const usageStatusMessage = useMemo(() => {
+        if (usageAvailable) return null
+        if (usageSource === 'posthog_not_configured' || usageSource === 'env_override_not_set') {
+            return 'Usage metrics are not configured yet. Set PostHog credentials or OPENADAPT_METRIC_* overrides.'
+        }
+        if (usageSource.startsWith('posthog')) {
+            return 'Usage metrics are temporarily unavailable. We will retry automatically.'
+        }
+        return 'Usage metrics are currently unavailable.'
+    }, [usageAvailable, usageSource])
     const coverageStartLabel = useMemo(() => {
-        const source = String(data?.usage?.source || '')
-        if (!source.startsWith('posthog')) return null
+        if (!usageSource.startsWith('posthog')) return null
         const formatted = formatCoverageDate(data?.usage?.telemetryCoverageStartDate)
         if (!formatted) return null
         return `Telemetry coverage starts ${formatted}.`
-    }, [data])
+    }, [data, usageSource])
 
     const showSkeleton = loading && !data
 
@@ -272,11 +282,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                         />
                     </div>
 
-                    {!usageAvailable && (
-                        <div className={styles.message}>
-                            Usage metrics are not configured yet. Set PostHog credentials or OPENADAPT_METRIC_* overrides.
-                        </div>
-                    )}
+                    {usageStatusMessage && <div className={styles.message}>{usageStatusMessage}</div>}
 
                     {sourceLabel && <div className={styles.source}>{sourceLabel}</div>}
                     {coverageStartLabel && <div className={styles.source}>{coverageStartLabel}</div>}
