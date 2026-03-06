@@ -34,13 +34,19 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 
 ### Booking configuration
 
-Set a public booking URL in `.env.local`:
+Set Calendly for inline booking in `.env.local`:
+
+```bash
+NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/your-org/intro-call
+```
+
+Optional backward-compatible fallback:
 
 ```bash
 NEXT_PUBLIC_BOOKING_URL=https://calendly.com/your-org/intro-call
 ```
 
-You can also point this at a Clockwise scheduling link.
+Clockwise links are supported as link-only fallback and are not iframed.
 
 ## Deployment
 
