@@ -10,6 +10,9 @@ This is the Next.js-based landing page for OpenAdapt, featuring:
 - **Industries grid** showing use cases across different sectors
 - **Developer resources** and contribution information
 - **Email signup** for updates and early access
+- **Single-page contact + booking flow** on landing (`#book`)
+- **Booking page** for intro calls (`/book`)
+- **Contact intake form** for sales workflows (`/contact`)
 
 ## Tech Stack
 
@@ -29,6 +32,22 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
+
+### Booking configuration
+
+Set Calendly for inline booking in `.env.local`:
+
+```bash
+NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/your-org/intro-call
+```
+
+Optional backward-compatible fallback:
+
+```bash
+NEXT_PUBLIC_BOOKING_URL=https://calendly.com/your-org/intro-call
+```
+
+Clockwise links are supported as link-only fallback and are not iframed.
 
 ## Deployment
 
