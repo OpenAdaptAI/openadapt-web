@@ -1,15 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faCodeBranch,
-    faStar,
     faChartLine,
     faComputerMouse,
     faWindowRestore,
 } from '@fortawesome/free-solid-svg-icons'
 import styles from './AdoptionSignals.module.css'
 
-const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v3'
+const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v4'
 const METRICS_CACHE_TTL_MS = 6 * 60 * 60 * 1000
 const FETCH_TIMEOUT_MS = 10000
 
@@ -28,14 +26,6 @@ function hasUsableUsageMetrics(payload) {
         usage.demosRecordedAllTime,
     ]
     return candidates.some((value) => typeof value === 'number')
-}
-
-function hasUsableGithubMetrics(payload) {
-    return typeof payload?.github?.stars === 'number' && typeof payload?.github?.forks === 'number'
-}
-
-function hasUsableCachedSnapshot(payload) {
-    return hasUsableUsageMetrics(payload) && hasUsableGithubMetrics(payload)
 }
 
 function formatMetric(value) {
@@ -128,7 +118,6 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     const [showStaleNotice, setShowStaleNotice] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
-    const [lastGoodGithub, setLastGoodGithub] = useState(null)
 
     useEffect(() => {
         let cancelled = false
@@ -142,10 +131,9 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                 if (!parsed?.payload || !parsed?.savedAt) return false
                 const ageMs = Date.now() - parsed.savedAt
                 if (ageMs > METRICS_CACHE_TTL_MS) return false
-                if (!hasUsableCachedSnapshot(parsed.payload)) return false
+                if (!hasUsableUsageMetrics(parsed.payload)) return false
                 if (!cancelled) {
                     setData(parsed.payload)
-                    setLastGoodGithub(parsed.payload.github)
                     setShowStaleNotice(true)
                     setLoading(false)
                 }
@@ -171,12 +159,9 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                 }
                 const payload = await response.json()
                 if (!cancelled) {
-                    if (hasUsableGithubMetrics(payload)) {
-                        setLastGoodGithub(payload.github)
-                    }
                     setData(payload)
                     setShowStaleNotice(false)
-                    if (typeof window !== 'undefined' && hasUsableCachedSnapshot(payload)) {
+                    if (typeof window !== 'undefined' && hasUsableUsageMetrics(payload)) {
                         window.localStorage.setItem(
                             METRICS_CACHE_KEY,
                             JSON.stringify({ payload, savedAt: Date.now() })
@@ -208,7 +193,6 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
 
     const usageAvailable = Boolean(data?.usage?.available)
     const usageSource = String(data?.usage?.source || '')
-    const githubStats = hasUsableGithubMetrics(data) ? data.github : lastGoodGithub
     const isAllTime = timeRange === 'all'
     const runsPrimary = isAllTime
         ? data?.usage?.agentRunsAllTime
@@ -267,9 +251,9 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h3 className={styles.title}>Adoption Signals</h3>
+                <h3 className={styles.title}>Product Telemetry</h3>
                 <p className={styles.subtitle}>
-                    Track OpenAdapt&apos;s all-time footprint and 90-day momentum.
+                    Privacy-preserving usage telemetry from OpenAdapt clients, shown as all-time and 90-day totals.
                 </p>
                 {telemetryWindowLabel && <div className={styles.windowBadge}>{telemetryWindowLabel}</div>}
             </div>
@@ -278,32 +262,20 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                 <>
                     <div className={styles.loadingRow}>
                         <span className={styles.spinner} />
-                        Loading adoption metrics...
+                        Loading telemetry metrics...
                     </div>
                     <div className={styles.metricsGrid}>
-                        {Array.from({ length: 5 }).map((_, index) => (
+                        {Array.from({ length: 3 }).map((_, index) => (
                             <MetricSkeletonCard key={index} />
                         ))}
                     </div>
                 </>
             )}
-            {error && !data && <div className={styles.error}>Unable to load adoption metrics: {error}</div>}
+            {error && !data && <div className={styles.error}>Unable to load telemetry metrics: {error}</div>}
 
             {!showSkeleton && data && (
                 <>
                     <div className={styles.metricsGrid}>
-                        <MetricCard
-                            icon={faStar}
-                            value={githubStats?.stars}
-                            label="Ecosystem Stars"
-                            title="Total stars across public OpenAdaptAI openadapt* repositories"
-                        />
-                        <MetricCard
-                            icon={faCodeBranch}
-                            value={githubStats?.forks}
-                            label="Ecosystem Forks"
-                            title="Total forks across public OpenAdaptAI openadapt* repositories"
-                        />
                         <MetricCard
                             icon={faChartLine}
                             value={runsPrimary}
