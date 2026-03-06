@@ -45,8 +45,14 @@ export default function Footer() {
                 ></iframe>
                 <div className={styles.footerContent}>
                     <div className={`${styles.footerLinks} pt-4`}>
-                        <a onClick={revealEmail} className={styles.link}>
+                        <a href="/book" className={styles.link}>
+                            Book a Call
+                        </a>
+                        <a href="/contact" className={styles.link}>
                             Contact
+                        </a>
+                        <a onClick={revealEmail} className={styles.link}>
+                            Email
                         </a>
                     </div>
                     <div className={styles.footerLinks}>

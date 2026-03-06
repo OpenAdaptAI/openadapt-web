@@ -10,6 +10,8 @@ This is the Next.js-based landing page for OpenAdapt, featuring:
 - **Industries grid** showing use cases across different sectors
 - **Developer resources** and contribution information
 - **Email signup** for updates and early access
+- **Booking page** for intro calls (`/book`)
+- **Contact intake form** for sales workflows (`/contact`)
 
 ## Tech Stack
 
@@ -29,6 +31,16 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
+
+### Booking configuration
+
+Set a public booking URL in `.env.local`:
+
+```bash
+NEXT_PUBLIC_BOOKING_URL=https://calendly.com/your-org/intro-call
+```
+
+You can also point this at a Clockwise scheduling link.
 
 ## Deployment
 
