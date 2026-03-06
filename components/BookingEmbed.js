@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useMemo } from 'react'
 
 import {
@@ -14,11 +15,25 @@ export default function BookingEmbed({ name = '', email = '' }) {
 
     if (!bookingUrl) {
         return (
-            <div className="rounded-xl border border-yellow-300/30 bg-yellow-500/10 px-4 py-4 text-yellow-100">
+            <div className="rounded-xl border border-amber-300/30 bg-amber-500/10 px-4 py-5 text-amber-100">
                 <p className="text-sm">
-                    Booking is not configured yet. Set `NEXT_PUBLIC_BOOKING_URL`
-                    in `openadapt-web/.env.local` and redeploy.
+                    Live booking is temporarily unavailable. Use the contact form
+                    and we will send available time options directly.
                 </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                    <Link
+                        href="/contact"
+                        className="rounded-lg bg-[#5a1eac] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#7132d4]"
+                    >
+                        Go to Contact Form
+                    </Link>
+                    <a
+                        href="mailto:sales@openadapt.ai?subject=OpenAdapt%20Booking%20Request"
+                        className="rounded-lg border border-amber-200/40 px-4 py-2 text-sm text-amber-100 transition hover:border-amber-100/70 hover:bg-amber-200/10"
+                    >
+                        Email Sales
+                    </a>
+                </div>
             </div>
         )
     }
@@ -48,4 +63,3 @@ export default function BookingEmbed({ name = '', email = '' }) {
         </div>
     )
 }
-
