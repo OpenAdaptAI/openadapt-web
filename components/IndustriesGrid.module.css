@@ -226,24 +226,6 @@
     opacity: 1;
 }
 
-.buildActions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.buildSecondary {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 13px;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-.buildSecondary:hover {
-    color: rgba(255, 255, 255, 0.9);
-}
-
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .buildSection { transition: none; opacity: 1; transform: none; }

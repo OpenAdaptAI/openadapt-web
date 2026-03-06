@@ -148,13 +148,13 @@ export default function Home() {
                                     </Link>
                                     <Link
                                         className="px-5 py-2.5 rounded-lg bg-[#560df8] text-white hover:bg-[#7132d4] transition-all duration-200 text-sm font-medium"
-                                        href="/book"
+                                        href="#book"
                                     >
                                         Book a Call
                                     </Link>
                                     <Link
                                         className="px-5 py-2.5 rounded-lg border border-white/20 text-white/90 hover:border-white/40 hover:bg-white/5 transition-all duration-200 text-sm font-medium"
-                                        href="/contact"
+                                        href="#book"
                                     >
                                         Contact
                                     </Link>
