@@ -37,7 +37,25 @@ function formatMetric(value) {
     return value.toLocaleString()
 }
 
-function MetricCard({ icon, value, label, title, secondaryValue, secondaryLabel }) {
+function formatCoverageDate(value) {
+    if (!value) return null
+    const parsed = new Date(value)
+    if (Number.isNaN(parsed.getTime())) return null
+    return parsed.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    })
+}
+
+function shouldShowSecondary(primaryValue, secondaryValue) {
+    if (secondaryValue === null || secondaryValue === undefined || Number.isNaN(secondaryValue)) return false
+    if (primaryValue === null || primaryValue === undefined || Number.isNaN(primaryValue)) return true
+    if (Number(primaryValue) === Number(secondaryValue)) return false
+    return formatMetric(primaryValue) !== formatMetric(secondaryValue)
+}
+
+function MetricCard({ icon, value, label, title, secondaryValue, secondaryLabel, showSecondary = true }) {
     return (
         <div className={styles.metricCard} title={title || ''}>
             <div className={styles.metricValue}>
@@ -45,7 +63,7 @@ function MetricCard({ icon, value, label, title, secondaryValue, secondaryLabel 
                 {formatMetric(value)}
             </div>
             <div className={styles.metricLabel}>{label}</div>
-            {secondaryValue !== null && secondaryValue !== undefined && (
+            {showSecondary && secondaryValue !== null && secondaryValue !== undefined && (
                 <div className={styles.metricSecondary}>
                     {formatMetric(secondaryValue)} {secondaryLabel}
                 </div>
@@ -167,11 +185,21 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
         ? (data?.usage?.demosRecorded90d ?? data?.usage?.demosRecorded30d)
         : data?.usage?.demosRecordedAllTime
     const secondaryLabel = isAllTime ? '90d' : 'all-time'
+    const runsShowSecondary = shouldShowSecondary(runsPrimary, runsSecondary)
+    const actionsShowSecondary = shouldShowSecondary(actionsPrimary, actionsSecondary)
+    const demosShowSecondary = shouldShowSecondary(demosPrimary, demosSecondary)
     const sourceLabel = useMemo(() => {
         if (!data?.usage?.source) return null
         if (String(data.usage.source).startsWith('posthog')) return 'Usage metrics source: PostHog'
         if (String(data.usage.source).startsWith('env_override')) return 'Usage metrics source: configured counters'
         return `Usage metrics source: ${data.usage.source}`
+    }, [data])
+    const coverageStartLabel = useMemo(() => {
+        const source = String(data?.usage?.source || '')
+        if (!source.startsWith('posthog')) return null
+        const formatted = formatCoverageDate(data?.usage?.telemetryCoverageStartDate)
+        if (!formatted) return null
+        return `Telemetry coverage starts ${formatted}.`
     }, [data])
 
     const showSkeleton = loading && !data
@@ -218,26 +246,29 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                         <MetricCard
                             icon={faChartLine}
                             value={runsPrimary}
-                            label={isAllTime ? 'Agent Runs (All time)' : 'Agent Runs (90d)'}
+                            label="Agent Runs"
                             title="Derived from usage telemetry event volumes"
                             secondaryValue={runsSecondary}
                             secondaryLabel={secondaryLabel}
+                            showSecondary={runsShowSecondary}
                         />
                         <MetricCard
                             icon={faComputerMouse}
                             value={actionsPrimary}
-                            label={isAllTime ? 'GUI Actions (All time)' : 'GUI Actions (90d)'}
+                            label="GUI Actions"
                             title="Derived from usage telemetry event volumes"
                             secondaryValue={actionsSecondary}
                             secondaryLabel={secondaryLabel}
+                            showSecondary={actionsShowSecondary}
                         />
                         <MetricCard
                             icon={faWindowRestore}
                             value={demosPrimary}
-                            label={isAllTime ? 'Demos Recorded (All time)' : 'Demos Recorded (90d)'}
+                            label="Demos Recorded"
                             title="Derived from usage telemetry event volumes"
                             secondaryValue={demosSecondary}
                             secondaryLabel={secondaryLabel}
+                            showSecondary={demosShowSecondary}
                         />
                     </div>
 
@@ -248,6 +279,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                     )}
 
                     {sourceLabel && <div className={styles.source}>{sourceLabel}</div>}
+                    {coverageStartLabel && <div className={styles.source}>{coverageStartLabel}</div>}
                     {refreshing && <div className={styles.message}>Refreshing latest metrics...</div>}
                     {showStaleNotice && !refreshing && (
                         <div className={styles.message}>
