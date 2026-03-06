@@ -631,7 +631,10 @@ function mergeUsageMetrics(primary, fallback) {
             merged.guiActionsAllTime,
             merged.appsAutomated,
         ].some((value) => typeof value === 'number'),
-        source: primary.available ? primary.source : fallback.source,
+        source:
+            primary.available
+                ? primary.source
+                : (fallback.available ? fallback.source : (primary.source || fallback.source)),
         caveats: [...(primary.caveats || []), ...(fallback.caveats || [])],
         matchedEvents: primary.matchedEvents || null,
         strategies: primary.strategies || null,
@@ -639,9 +642,17 @@ function mergeUsageMetrics(primary, fallback) {
     }
 }
 
-export default async function handler(req, res) {
-    res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=900')
+function cacheControlForUsageSource(source) {
+    const normalized = String(source || '')
+    // Cache successful PostHog-backed payloads briefly.
+    if (normalized === 'posthog_query_api' || normalized === 'posthog_event_definitions') {
+        return 'public, max-age=30, s-maxage=120, stale-while-revalidate=300'
+    }
+    // Do not cache degraded/unconfigured payloads at the edge.
+    return 'no-store, max-age=0'
+}
 
+export default async function handler(req, res) {
     const response = {
         github: null,
         usage: null,
@@ -686,5 +697,7 @@ export default async function handler(req, res) {
         )
     }
 
+    res.setHeader('Cache-Control', cacheControlForUsageSource(response?.usage?.source))
+    res.setHeader('X-OpenAdapt-Metrics-Source', String(response?.usage?.source || 'unknown'))
     return res.status(200).json(response)
 }
