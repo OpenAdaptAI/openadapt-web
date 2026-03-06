@@ -603,12 +603,17 @@ function BuildForYouSection() {
                 <p className={styles.buildDesc}>
                     If OpenAdapt doesn&#39;t fully automate your workflow out of the box, we&#39;ll work with you to fix that.
                 </p>
-                <Link
-                    className={styles.buildBtn}
-                    href="mailto:sales@openadapt.ai?subject=OpenAdapt%20Inquiry%3A%20Assistance%20with%20Automating%20%5BYour%20Use%20Case%5D"
-                >
-                    Contact Sales
-                </Link>
+                <div className={styles.buildActions}>
+                    <Link
+                        className={styles.buildBtn}
+                        href="/book"
+                    >
+                        Book a Call
+                    </Link>
+                    <Link className={styles.buildSecondary} href="/contact">
+                        Prefer a written intake? Contact us.
+                    </Link>
+                </div>
             </div>
         </div>
     )
