@@ -1,22 +1,45 @@
-export function getConfiguredBookingUrl() {
-    const primary = process.env.NEXT_PUBLIC_BOOKING_URL
-    const legacyCalendly = process.env.NEXT_PUBLIC_CALENDLY_URL
-    const raw = (primary || legacyCalendly || '').trim()
-
-    return raw.length > 0 ? raw : ''
-}
-
-export function isCalendlyUrl(url) {
+export function detectBookingProvider(url) {
     if (!url) {
-        return false
+        return 'none'
     }
 
     try {
         const parsed = new URL(url)
-        return parsed.hostname.includes('calendly.com')
+        const host = parsed.hostname.toLowerCase()
+        if (host.includes('calendly.com')) {
+            return 'calendly'
+        }
+        if (host.includes('clockwise.com')) {
+            return 'clockwise'
+        }
+        return 'other'
     } catch (error) {
-        return false
+        return 'other'
     }
+}
+
+export function getBookingConfig() {
+    const calendlyUrl = (process.env.NEXT_PUBLIC_CALENDLY_URL || '').trim()
+    const genericUrl = (process.env.NEXT_PUBLIC_BOOKING_URL || '').trim()
+    const url = calendlyUrl || genericUrl
+
+    return {
+        url,
+        provider: detectBookingProvider(url),
+        source: calendlyUrl
+            ? 'NEXT_PUBLIC_CALENDLY_URL'
+            : genericUrl
+                ? 'NEXT_PUBLIC_BOOKING_URL'
+                : '',
+    }
+}
+
+export function getConfiguredBookingUrl() {
+    return getBookingConfig().url
+}
+
+export function isCalendlyUrl(url) {
+    return detectBookingProvider(url) === 'calendly'
 }
 
 export function buildBookingUrlWithPrefill(url, prefill = {}) {
@@ -53,4 +76,3 @@ export function buildBookingUrlWithPrefill(url, prefill = {}) {
 
     return parsed.toString()
 }
-
