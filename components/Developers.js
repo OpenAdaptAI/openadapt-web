@@ -149,14 +149,14 @@ export default function Developers() {
                         </div>
                     </div>
 
-                    <AdoptionSignals timeRange={insightRange} />
-
                     {/* PyPI Download Statistics */}
                     <PyPIDownloadChart
                         timeRange={insightRange}
                         onTimeRangeChange={setInsightRange}
                         hideRangeControl
                     />
+
+                    <AdoptionSignals timeRange={insightRange} />
 
                     {/* Legacy Desktop App Downloads - Disabled during transition to new architecture
                     <div className="mt-12">
