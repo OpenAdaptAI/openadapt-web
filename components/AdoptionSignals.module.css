@@ -27,6 +27,19 @@
     font-size: 14px;
 }
 
+.windowBadge {
+    margin: 10px auto 0 auto;
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(147, 197, 253, 0.4);
+    background: rgba(147, 197, 253, 0.12);
+    color: #dbeafe;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
 .metricsGrid {
     display: grid;
     grid-template-columns: repeat(5, minmax(160px, 1fr));
@@ -75,6 +88,20 @@
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+}
+
+.metricChip {
+    margin-top: 6px;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    background: rgba(251, 191, 36, 0.15);
+    color: #fde68a;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
 
 .message {
