@@ -42,7 +42,7 @@
 
 .metricsGrid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(160px, 1fr));
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
     gap: 12px;
     align-items: stretch;
 }
@@ -201,7 +201,7 @@
 
 @media (max-width: 1024px) {
     .metricsGrid {
-        grid-template-columns: repeat(3, minmax(160px, 1fr));
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
     }
 }
 
@@ -216,5 +216,11 @@
 
     .title {
         font-size: 18px;
+    }
+}
+
+@media (max-width: 460px) {
+    .metricsGrid {
+        grid-template-columns: 1fr;
     }
 }
