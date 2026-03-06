@@ -80,7 +80,6 @@ function MetricCard({
     secondaryValue,
     secondaryLabel,
     showSecondary = true,
-    chipLabel = null,
 }) {
     return (
         <div className={styles.metricCard} title={title || ''}>
@@ -94,7 +93,6 @@ function MetricCard({
                     {formatMetric(secondaryValue)} {secondaryLabel}
                 </div>
             )}
-            {chipLabel && <div className={styles.metricChip}>{chipLabel}</div>}
         </div>
     )
 }
@@ -244,7 +242,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     }, [data, usageSource])
     const telemetryCardSuffix = coverageShortLabel ? ` (since ${coverageShortLabel})` : ''
     const coverageAgeDays = getDaysSince(data?.usage?.telemetryCoverageStartDate)
-    const showEarlyDataChip = coverageAgeDays !== null && coverageAgeDays < 30
+    const showEarlyDataNotice = coverageAgeDays !== null && coverageAgeDays < 30
 
     const showSkeleton = loading && !data
 
@@ -256,6 +254,11 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                     Privacy-preserving usage telemetry from OpenAdapt clients, shown as all-time and 90-day totals.
                 </p>
                 {telemetryWindowLabel && <div className={styles.windowBadge}>{telemetryWindowLabel}</div>}
+                {showEarlyDataNotice && (
+                    <div className={styles.earlyNotice}>
+                        Early data: telemetry collection started recently, so counts are still ramping.
+                    </div>
+                )}
             </div>
 
             {showSkeleton && (
@@ -284,7 +287,6 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                             secondaryValue={runsSecondary}
                             secondaryLabel={secondaryLabel}
                             showSecondary={runsShowSecondary}
-                            chipLabel={showEarlyDataChip ? 'Early data' : null}
                         />
                         <MetricCard
                             icon={faComputerMouse}
@@ -294,7 +296,6 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                             secondaryValue={actionsSecondary}
                             secondaryLabel={secondaryLabel}
                             showSecondary={actionsShowSecondary}
-                            chipLabel={showEarlyDataChip ? 'Early data' : null}
                         />
                         <MetricCard
                             icon={faWindowRestore}
@@ -304,7 +305,6 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                             secondaryValue={demosSecondary}
                             secondaryLabel={secondaryLabel}
                             showSecondary={demosShowSecondary}
-                            chipLabel={showEarlyDataChip ? 'Early data' : null}
                         />
                     </div>
 
