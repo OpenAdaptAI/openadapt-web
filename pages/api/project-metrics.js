@@ -12,11 +12,6 @@ const DEFAULT_POSTHOG_PROJECT_ID = '68185'
 const MAX_EVENT_DEFINITION_PAGES = 5
 const FALLBACK_PATTERN_LIMIT = 30
 const GITHUB_ORG = 'OpenAdaptAI'
-const CANONICAL_USAGE_EVENTS = {
-    demos: ['demo_recorded'],
-    runs: ['agent_run'],
-    actions: ['action_executed'],
-}
 
 // Canonical event names from OpenAdapt codebases (legacy PostHog + shared telemetry conventions).
 const EVENT_CLASSIFICATION = {
@@ -251,6 +246,54 @@ async function runHogQLCount({ host, projectId, apiKey, eventNames }) {
     }
 }
 
+async function runHogQLTotalCounts({ host, projectId, apiKey }) {
+    const ignoredNames = uniqueNames(Array.from(IGNORED_EVENT_NAMES))
+    const ignoredClause = ignoredNames.length > 0
+        ? `event NOT IN (${toSqlInList(ignoredNames)})`
+        : '1 = 1'
+    const response = await fetchWithTimeout(`${host}/api/projects/${projectId}/query/`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'User-Agent': 'OpenAdapt-Web/1.0',
+        },
+        body: JSON.stringify({
+            query: {
+                kind: 'HogQLQuery',
+                query: `
+                    SELECT
+                        countIf(${ignoredClause} AND timestamp >= now() - INTERVAL 30 DAY),
+                        countIf(${ignoredClause} AND timestamp >= now() - INTERVAL 90 DAY),
+                        countIf(${ignoredClause})
+                    FROM events
+                `.trim(),
+            },
+        }),
+    })
+
+    let payload = {}
+    try {
+        payload = await response.json()
+    } catch {
+        payload = {}
+    }
+
+    if (!response.ok) {
+        const detail = payload?.detail || payload?.code || `HTTP ${response.status}`
+        throw new Error(`PostHog total-events query returned ${response.status}: ${detail}`)
+    }
+
+    const value30d = Number(payload?.results?.[0]?.[0])
+    const value90d = Number(payload?.results?.[0]?.[1])
+    const valueAllTime = Number(payload?.results?.[0]?.[2])
+    return {
+        value30d: Number.isFinite(value30d) ? value30d : 0,
+        value90d: Number.isFinite(value90d) ? value90d : 0,
+        valueAllTime: Number.isFinite(valueAllTime) ? valueAllTime : 0,
+    }
+}
+
 async function runHogQLFirstSeen({ host, projectId, apiKey, eventNames }) {
     const response = await fetchWithTimeout(`${host}/api/projects/${projectId}/query/`, {
         method: 'POST',
@@ -289,15 +332,16 @@ async function runHogQLFirstSeen({ host, projectId, apiKey, eventNames }) {
 }
 
 async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
-    const demosNames = uniqueNames(CANONICAL_USAGE_EVENTS.demos)
-    const runsNames = uniqueNames(CANONICAL_USAGE_EVENTS.runs)
-    const actionsNames = uniqueNames(CANONICAL_USAGE_EVENTS.actions)
+    const demosNames = uniqueNames(EVENT_CLASSIFICATION.demos.exact)
+    const runsNames = uniqueNames(EVENT_CLASSIFICATION.runs.exact)
+    const actionsNames = uniqueNames(EVENT_CLASSIFICATION.actions.exact)
     const coverageStartNames = uniqueNames([...demosNames, ...runsNames, ...actionsNames])
 
-    const [demos, runs, actions, telemetryCoverageStartDate] = await Promise.all([
+    const [demos, runs, actions, totals, telemetryCoverageStartDate] = await Promise.all([
         runHogQLCount({ host, projectId, apiKey, eventNames: demosNames }),
         runHogQLCount({ host, projectId, apiKey, eventNames: runsNames }),
         runHogQLCount({ host, projectId, apiKey, eventNames: actionsNames }),
+        runHogQLTotalCounts({ host, projectId, apiKey }),
         runHogQLFirstSeen({ host, projectId, apiKey, eventNames: coverageStartNames }),
     ])
 
@@ -313,6 +357,9 @@ async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
         demosRecordedAllTime: demos.valueAllTime,
         agentRunsAllTime: runs.valueAllTime,
         guiActionsAllTime: actions.valueAllTime,
+        totalEvents30d: totals.value30d,
+        totalEvents90d: totals.value90d,
+        totalEventsAllTime: totals.valueAllTime,
         telemetryCoverageStartDate,
         hasAnyVolume:
             demos.value30d > 0 ||
@@ -320,8 +367,10 @@ async function fetchPosthogQueryUsageMetrics({ host, projectId, apiKey }) {
             actions.value30d > 0 ||
             demos.value90d > 0 ||
             runs.value90d > 0 ||
-            actions.value90d > 0,
-        caveats: ['Derived from PostHog query API (strict canonical events only)'],
+            actions.value90d > 0 ||
+            totals.value30d > 0 ||
+            totals.value90d > 0,
+        caveats: ['Derived from PostHog query API (exact event-name classification + non-ignored totals)'],
     }
 }
 
@@ -502,6 +551,9 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
             demosRecordedAllTime: null,
             agentRunsAllTime: null,
             guiActionsAllTime: null,
+            totalEvents30d: null,
+            totalEvents90d: null,
+            totalEventsAllTime: null,
             telemetryCoverageStartDate: null,
             hasAnyVolume: false,
             matchedEvents: {
@@ -525,7 +577,12 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
     const demos = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.demos)
     const runs = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.runs)
     const actions = buildCategoryMetrics(entries, EVENT_CLASSIFICATION.actions)
-    const hasAnyVolume = demos.total > 0 || runs.total > 0 || actions.total > 0
+    const totalEvents30d = entries.reduce((sum, entry) => sum + entry.volume_30_day, 0)
+    const hasAnyVolume =
+        demos.total > 0 ||
+        runs.total > 0 ||
+        actions.total > 0 ||
+        totalEvents30d > 0
 
     return {
         // "available" means PostHog data source is configured/reachable, not
@@ -541,6 +598,9 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
         demosRecordedAllTime: null,
         agentRunsAllTime: null,
         guiActionsAllTime: null,
+        totalEvents30d,
+        totalEvents90d: null,
+        totalEventsAllTime: null,
         telemetryCoverageStartDate: null,
         hasAnyVolume,
         matchedEvents: {
@@ -571,10 +631,18 @@ function getEnvOverrideUsageMetrics() {
     const demosAllTime = parseIntEnv('OPENADAPT_METRIC_DEMOS_RECORDED_ALL_TIME')
     const runsAllTime = parseIntEnv('OPENADAPT_METRIC_AGENT_RUNS_ALL_TIME')
     const actionsAllTime = parseIntEnv('OPENADAPT_METRIC_GUI_ACTIONS_ALL_TIME')
+    const totalEvents30d = parseIntEnv('OPENADAPT_METRIC_TOTAL_EVENTS_30D')
+    const totalEvents90d = parseIntEnv('OPENADAPT_METRIC_TOTAL_EVENTS_90D')
+    const totalEventsAllTime = parseIntEnv('OPENADAPT_METRIC_TOTAL_EVENTS_ALL_TIME')
     const apps = parseIntEnv('OPENADAPT_METRIC_APPS_AUTOMATED')
     const telemetryCoverageStartDate = process.env.OPENADAPT_METRIC_USAGE_START_DATE || null
 
-    const hasAny = [demos, demos90d, runs, runs90d, actions, actions90d, demosAllTime, runsAllTime, actionsAllTime, apps]
+    const hasAny = [
+        demos, demos90d, runs, runs90d, actions, actions90d,
+        demosAllTime, runsAllTime, actionsAllTime,
+        totalEvents30d, totalEvents90d, totalEventsAllTime,
+        apps,
+    ]
         .some((value) => value !== null)
     return {
         available: hasAny,
@@ -588,6 +656,9 @@ function getEnvOverrideUsageMetrics() {
         demosRecordedAllTime: demosAllTime,
         agentRunsAllTime: runsAllTime,
         guiActionsAllTime: actionsAllTime,
+        totalEvents30d,
+        totalEvents90d: totalEvents90d ?? totalEvents30d,
+        totalEventsAllTime,
         appsAutomated: apps,
         telemetryCoverageStartDate,
         caveats: hasAny
@@ -616,6 +687,12 @@ function mergeUsageMetrics(primary, fallback) {
             primary.agentRunsAllTime ?? fallback.agentRunsAllTime ?? null,
         guiActionsAllTime:
             primary.guiActionsAllTime ?? fallback.guiActionsAllTime ?? null,
+        totalEvents30d:
+            primary.totalEvents30d ?? fallback.totalEvents30d ?? null,
+        totalEvents90d:
+            primary.totalEvents90d ?? fallback.totalEvents90d ?? null,
+        totalEventsAllTime:
+            primary.totalEventsAllTime ?? fallback.totalEventsAllTime ?? null,
         appsAutomated:
             primary.appsAutomated ?? fallback.appsAutomated ?? null,
         telemetryCoverageStartDate:
@@ -633,6 +710,9 @@ function mergeUsageMetrics(primary, fallback) {
             merged.demosRecordedAllTime,
             merged.agentRunsAllTime,
             merged.guiActionsAllTime,
+            merged.totalEvents30d,
+            merged.totalEvents90d,
+            merged.totalEventsAllTime,
             merged.appsAutomated,
         ].some((value) => typeof value === 'number'),
         source:
@@ -703,6 +783,9 @@ export default async function handler(req, res) {
                 demosRecordedAllTime: null,
                 agentRunsAllTime: null,
                 guiActionsAllTime: null,
+                totalEvents30d: null,
+                totalEvents90d: null,
+                totalEventsAllTime: null,
                 appsAutomated: null,
                 telemetryCoverageStartDate: null,
             },

@@ -14,7 +14,7 @@ PyPI remains useful, but should not be the lead signal by itself.
 
 Returns:
 - `github`: stars/forks/watchers/issues
-- `usage`: demos/runs/actions (30d), source metadata, caveats
+- `usage`: total events + demos/runs/actions (30d/90d/all-time when available), source metadata, caveats
 - `warnings`: non-fatal fetch warnings
 
 ## Usage metric sources
@@ -31,7 +31,17 @@ Use:
 - `OPENADAPT_METRIC_DEMOS_RECORDED_30D`
 - `OPENADAPT_METRIC_AGENT_RUNS_30D`
 - `OPENADAPT_METRIC_GUI_ACTIONS_30D`
+- `OPENADAPT_METRIC_TOTAL_EVENTS_30D`
+- `OPENADAPT_METRIC_TOTAL_EVENTS_90D`
+- `OPENADAPT_METRIC_TOTAL_EVENTS_ALL_TIME`
 - `OPENADAPT_METRIC_APPS_AUTOMATED`
+
+## UI behavior
+- The telemetry panel always shows **Total Events** first.
+- Detailed breakdown cards (Demos / Agent Runs / GUI Actions) are shown when telemetry has enough depth.
+- Current unlock gate:
+  - at least `100` total events in last 90 days, and
+  - at least `14` days of telemetry coverage (if coverage date is available).
 
 ## Current event-name mapping (exact-first)
 ### Demos
