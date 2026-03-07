@@ -214,3 +214,122 @@
         grid-template-columns: 1fr;
     }
 }
+
+.transparencyPanel {
+    margin-top: 14px;
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.transparencySummary {
+    cursor: pointer;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    list-style: none;
+}
+
+.transparencySummary::-webkit-details-marker {
+    display: none;
+}
+
+.transparencySummary::before {
+    content: '▸';
+    display: inline-block;
+    margin-right: 8px;
+    color: rgba(255, 255, 255, 0.72);
+    transform: translateY(-1px);
+    transition: transform 0.15s ease;
+}
+
+.transparencyPanel[open] .transparencySummary::before {
+    transform: rotate(90deg);
+}
+
+.transparencyBody {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 14px 14px 14px;
+}
+
+.transparencyIntro {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.transparencyMeta {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 11px;
+    letter-spacing: 0.2px;
+}
+
+.transparencySection {
+    margin-top: 12px;
+}
+
+.transparencyHeading {
+    margin: 0 0 6px 0;
+    color: #dbeafe;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.transparencySubheading {
+    margin: 0 0 4px 0;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.transparencyColumns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px 12px;
+}
+
+.transparencyList {
+    margin: 0;
+    padding-left: 18px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.transparencyListCompact {
+    margin: 0;
+    padding-left: 18px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.transparencyList code,
+.transparencyListCompact code {
+    color: #bfdbfe;
+    font-size: 11px;
+    word-break: break-word;
+}
+
+.transparencyLinks {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.transparencyLink {
+    color: #93c5fd;
+    font-size: 12px;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(147, 197, 253, 0.7);
+}
+
+.transparencyLink:hover {
+    color: #dbeafe;
+    border-bottom-color: rgba(219, 234, 254, 0.85);
+}

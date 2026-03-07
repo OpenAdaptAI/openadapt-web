@@ -116,6 +116,245 @@ function MetricSkeletonCard() {
     )
 }
 
+function asArray(value) {
+    return Array.isArray(value) ? value : []
+}
+
+function TelemetryTransparencyPanel({ transparency }) {
+    if (!transparency) return null
+
+    const included = transparency?.includedEventNames || {}
+    const metricFamilies = asArray(transparency?.metricScope?.includedMetricFamilies)
+    const ignoredNames = asArray(transparency?.ignoredEventNames)
+    const ignoredPatterns = asArray(transparency?.ignoredEventPatterns)
+    const fallbackPatterns = transparency?.fallbackPatterns || {}
+    const model = transparency?.telemetryDataModel || {}
+    const privacy = transparency?.privacyControls || {}
+    const links = transparency?.sourceLinks || {}
+    const version = transparency?.classificationVersion || 'unknown'
+
+    return (
+        <details className={styles.transparencyPanel}>
+            <summary className={styles.transparencySummary}>
+                Telemetry details (what we collect)
+            </summary>
+            <div className={styles.transparencyBody}>
+                <p className={styles.transparencyIntro}>
+                    {transparency?.metricScope?.summary || 'Telemetry metric details.'}
+                </p>
+                <div className={styles.transparencyMeta}>
+                    Classification version: {version}
+                </div>
+
+                <div className={styles.transparencySection}>
+                    <h4 className={styles.transparencyHeading}>Metric Families</h4>
+                    <ul className={styles.transparencyList}>
+                        {metricFamilies.map((name) => (
+                            <li key={name}>
+                                <code>{name}</code>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div className={styles.transparencySection}>
+                    <h4 className={styles.transparencyHeading}>Included Event Names</h4>
+                    <div className={styles.transparencyColumns}>
+                        <div>
+                            <div className={styles.transparencySubheading}>Demos</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(included.demos).map((name) => (
+                                    <li key={`demo-${name}`}>
+                                        <code>{name}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>Agent Runs</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(included.runs).map((name) => (
+                                    <li key={`run-${name}`}>
+                                        <code>{name}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>GUI Actions</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(included.actions).map((name) => (
+                                    <li key={`action-${name}`}>
+                                        <code>{name}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.transparencySection}>
+                    <h4 className={styles.transparencyHeading}>Excluded / Ignored</h4>
+                    <div className={styles.transparencyColumns}>
+                        <div>
+                            <div className={styles.transparencySubheading}>Ignored Event Names</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {ignoredNames.map((name) => (
+                                    <li key={`ignored-name-${name}`}>
+                                        <code>{name}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>Ignored Name Patterns</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {ignoredPatterns.map((pattern) => (
+                                    <li key={`ignored-pattern-${pattern}`}>
+                                        <code>{pattern}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.transparencySection}>
+                    <h4 className={styles.transparencyHeading}>Fallback Matching Patterns</h4>
+                    <div className={styles.transparencyColumns}>
+                        <div>
+                            <div className={styles.transparencySubheading}>Demos</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(fallbackPatterns.demos).map((pattern) => (
+                                    <li key={`fallback-demo-${pattern}`}>
+                                        <code>{pattern}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>Agent Runs</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(fallbackPatterns.runs).map((pattern) => (
+                                    <li key={`fallback-run-${pattern}`}>
+                                        <code>{pattern}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>GUI Actions</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(fallbackPatterns.actions).map((pattern) => (
+                                    <li key={`fallback-action-${pattern}`}>
+                                        <code>{pattern}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.transparencySection}>
+                    <h4 className={styles.transparencyHeading}>Common Telemetry Fields</h4>
+                    <div className={styles.transparencyColumns}>
+                        <div>
+                            <div className={styles.transparencySubheading}>Dashboard Reads</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(model.metricsDashboardReadsOnly).map((field) => (
+                                    <li key={`dashboard-field-${field}`}>
+                                        {field}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>Common Event Fields</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(model.commonEventFields).map((field) => (
+                                    <li key={`event-field-${field}`}>
+                                        <code>{field}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>Common Tags</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(model.commonTags).map((tag) => (
+                                    <li key={`tag-${tag}`}>
+                                        <code>{tag}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.transparencySection}>
+                    <h4 className={styles.transparencyHeading}>Privacy Controls</h4>
+                    <div className={styles.transparencyColumns}>
+                        <div>
+                            <div className={styles.transparencySubheading}>Never Collected</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(privacy.neverCollect).map((item) => (
+                                    <li key={`never-${item}`}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>Automatic Scrubbing</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(privacy.scrubPolicy).map((item) => (
+                                    <li key={`scrub-${item}`}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <div className={styles.transparencySubheading}>Opt-Out</div>
+                            <ul className={styles.transparencyListCompact}>
+                                {asArray(privacy.optOutEnvVars).map((item) => (
+                                    <li key={`optout-${item}`}>
+                                        <code>{item}</code>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.transparencyLinks}>
+                    {links.privacyPolicy && (
+                        <a href={links.privacyPolicy} className={styles.transparencyLink}>
+                            Privacy policy
+                        </a>
+                    )}
+                    {links.telemetryReadme && (
+                        <a
+                            href={links.telemetryReadme}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.transparencyLink}
+                        >
+                            Telemetry README
+                        </a>
+                    )}
+                    {links.telemetryPrivacyCode && (
+                        <a
+                            href={links.telemetryPrivacyCode}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.transparencyLink}
+                        >
+                            Privacy scrubber code
+                        </a>
+                    )}
+                </div>
+            </div>
+        </details>
+    )
+}
+
 export default function AdoptionSignals({ timeRange = 'all' }) {
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
@@ -286,6 +525,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     }, [usageAvailable, showBreakdownCards, breakdownGateEvents, coverageAgeDays])
 
     const showSkeleton = loading && !data
+    const transparency = data?.usage?.transparency || null
 
     return (
         <div className={styles.container}>
@@ -377,6 +617,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                             Live refresh failed: {error}
                         </div>
                     )}
+                    <TelemetryTransparencyPanel transparency={transparency} />
                 </>
             )}
         </div>
