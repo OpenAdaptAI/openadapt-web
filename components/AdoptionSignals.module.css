@@ -1,0 +1,335 @@
+.container {
+    background: linear-gradient(135deg, rgba(86, 13, 248, 0.11) 0%, rgba(0, 0, 30, 0.95) 100%);
+    border: 1px solid rgba(86, 13, 248, 0.28);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.title {
+    margin: 0 0 6px 0;
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.subtitle {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+}
+
+.windowBadge {
+    margin: 10px auto 0 auto;
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(147, 197, 253, 0.4);
+    background: rgba(147, 197, 253, 0.12);
+    color: #dbeafe;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.earlyNotice {
+    margin-top: 8px;
+    color: #fde68a;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.metricsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+}
+
+.metricCard {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.metricValue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #93c5fd;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.metricIcon {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.metricLabel {
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.67);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.metricSecondary {
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.message {
+    margin-top: 12px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+}
+
+.loadingRow {
+    margin: 10px 0 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 13px;
+}
+
+.spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.22);
+    border-top-color: #93c5fd;
+    border-radius: 50%;
+    animation: adoptionSpin 0.9s linear infinite;
+}
+
+@keyframes adoptionSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error {
+    margin-top: 8px;
+    text-align: center;
+    color: #fca5a5;
+    font-size: 13px;
+}
+
+.source {
+    margin-top: 10px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    letter-spacing: 0.2px;
+}
+
+.metricCardSkeleton {
+    position: relative;
+    overflow: hidden;
+}
+
+.metricCardSkeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.06) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: translateX(-100%);
+    animation: skeletonSweep 1.4s ease-in-out infinite;
+}
+
+.skeletonBarLarge {
+    width: 68px;
+    height: 18px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.skeletonBarSmall {
+    display: inline-block;
+    width: 88px;
+    height: 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes skeletonSweep {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@media (max-width: 1024px) {
+    .metricsGrid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 16px;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 760px) {
+    .metricsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.transparencyPanel {
+    margin-top: 14px;
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.transparencySummary {
+    cursor: pointer;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    list-style: none;
+}
+
+.transparencySummary::-webkit-details-marker {
+    display: none;
+}
+
+.transparencySummary::before {
+    content: '▸';
+    display: inline-block;
+    margin-right: 8px;
+    color: rgba(255, 255, 255, 0.72);
+    transform: translateY(-1px);
+    transition: transform 0.15s ease;
+}
+
+.transparencyPanel[open] .transparencySummary::before {
+    transform: rotate(90deg);
+}
+
+.transparencyBody {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 14px 14px 14px;
+}
+
+.transparencyIntro {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.transparencyMeta {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 11px;
+    letter-spacing: 0.2px;
+}
+
+.transparencySection {
+    margin-top: 12px;
+}
+
+.transparencyHeading {
+    margin: 0 0 6px 0;
+    color: #dbeafe;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.transparencySubheading {
+    margin: 0 0 4px 0;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.transparencyColumns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px 12px;
+}
+
+.transparencyList {
+    margin: 0;
+    padding-left: 18px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.transparencyListCompact {
+    margin: 0;
+    padding-left: 18px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.transparencyList code,
+.transparencyListCompact code {
+    color: #bfdbfe;
+    font-size: 11px;
+    word-break: break-word;
+}
+
+.transparencyLinks {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.transparencyLink {
+    color: #93c5fd;
+    font-size: 12px;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(147, 197, 253, 0.7);
+}
+
+.transparencyLink:hover {
+    color: #dbeafe;
+    border-bottom-color: rgba(219, 234, 254, 0.85);
+}

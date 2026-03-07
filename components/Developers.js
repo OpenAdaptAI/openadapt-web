@@ -9,11 +9,13 @@ import EmailForm from '@components/EmailForm';
 import InstallSection from '@components/InstallSection';
 import DownloadGraph from './DownloadGraph';
 import PyPIDownloadChart from './PyPIDownloadChart';
+import AdoptionSignals from './AdoptionSignals';
 
 export default function Developers() {
     const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
     const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
     const [buildWarnings, setBuildWarnings] = useState([]);
+    const [insightRange, setInsightRange] = useState('all');
     const macURL = latestRelease.version
         ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.dmg`
         : '';
@@ -126,8 +128,35 @@ export default function Developers() {
                     {/* New uv-first Installation Section */}
                     <InstallSection />
 
+                    {/* Primary trust signals: GitHub + usage telemetry */}
+                    <div className={styles.insightControls}>
+                        <span className={styles.insightLabel}>Window:</span>
+                        <div className={styles.insightToggleGroup}>
+                            <button
+                                className={`${styles.insightToggleBtn} ${insightRange === 'all' ? styles.insightToggleBtnActive : ''}`}
+                                onClick={() => setInsightRange('all')}
+                                type="button"
+                            >
+                                All time
+                            </button>
+                            <button
+                                className={`${styles.insightToggleBtn} ${insightRange === '90d' ? styles.insightToggleBtnActive : ''}`}
+                                onClick={() => setInsightRange('90d')}
+                                type="button"
+                            >
+                                90 days
+                            </button>
+                        </div>
+                    </div>
+
                     {/* PyPI Download Statistics */}
-                    <PyPIDownloadChart />
+                    <PyPIDownloadChart
+                        timeRange={insightRange}
+                        onTimeRangeChange={setInsightRange}
+                        hideRangeControl
+                    />
+
+                    <AdoptionSignals timeRange={insightRange} />
 
                     {/* Legacy Desktop App Downloads - Disabled during transition to new architecture
                     <div className="mt-12">
