@@ -50,7 +50,7 @@
 
 .metricsGrid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 12px;
     align-items: stretch;
 }
@@ -195,7 +195,7 @@
 
 @media (max-width: 1024px) {
     .metricsGrid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     }
 }
 

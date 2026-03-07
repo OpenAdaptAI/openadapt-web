@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+    faBolt,
     faChartLine,
     faComputerMouse,
     faWindowRestore,
@@ -10,6 +11,8 @@ import styles from './AdoptionSignals.module.css'
 const METRICS_CACHE_KEY = 'openadapt:adoption-signals:v4'
 const METRICS_CACHE_TTL_MS = 6 * 60 * 60 * 1000
 const FETCH_TIMEOUT_MS = 10000
+const BREAKDOWN_MIN_EVENTS_90D = 100
+const BREAKDOWN_MIN_DAYS = 14
 
 function hasUsableUsageMetrics(payload) {
     const usage = payload?.usage
@@ -24,6 +27,9 @@ function hasUsableUsageMetrics(payload) {
         usage.agentRunsAllTime,
         usage.guiActionsAllTime,
         usage.demosRecordedAllTime,
+        usage.totalEvents30d,
+        usage.totalEvents90d,
+        usage.totalEventsAllTime,
     ]
     return candidates.some((value) => typeof value === 'number')
 }
@@ -201,6 +207,9 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     const demosPrimary = isAllTime
         ? data?.usage?.demosRecordedAllTime
         : (data?.usage?.demosRecorded90d ?? data?.usage?.demosRecorded30d)
+    const totalEventsPrimary = isAllTime
+        ? data?.usage?.totalEventsAllTime
+        : (data?.usage?.totalEvents90d ?? data?.usage?.totalEvents30d)
     const runsSecondary = isAllTime
         ? (data?.usage?.agentRuns90d ?? data?.usage?.agentRuns30d)
         : data?.usage?.agentRunsAllTime
@@ -210,10 +219,14 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     const demosSecondary = isAllTime
         ? (data?.usage?.demosRecorded90d ?? data?.usage?.demosRecorded30d)
         : data?.usage?.demosRecordedAllTime
+    const totalEventsSecondary = isAllTime
+        ? (data?.usage?.totalEvents90d ?? data?.usage?.totalEvents30d)
+        : data?.usage?.totalEventsAllTime
     const secondaryLabel = isAllTime ? 'in last 90d' : 'all-time total'
     const runsShowSecondary = shouldShowSecondary(runsPrimary, runsSecondary)
     const actionsShowSecondary = shouldShowSecondary(actionsPrimary, actionsSecondary)
     const demosShowSecondary = shouldShowSecondary(demosPrimary, demosSecondary)
+    const totalEventsShowSecondary = shouldShowSecondary(totalEventsPrimary, totalEventsSecondary)
     const sourceLabel = useMemo(() => {
         if (!usageSource) return null
         if (usageSource.startsWith('posthog')) return 'Usage metrics source: PostHog'
@@ -243,6 +256,34 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
     const telemetryCardSuffix = coverageShortLabel ? ` (since ${coverageShortLabel})` : ''
     const coverageAgeDays = getDaysSince(data?.usage?.telemetryCoverageStartDate)
     const showEarlyDataNotice = coverageAgeDays !== null && coverageAgeDays < 30
+    const breakdownGateEvents = data?.usage?.totalEvents90d ?? data?.usage?.totalEvents30d
+    const hasBreakdownEventDepth = typeof breakdownGateEvents !== 'number'
+        ? true
+        : breakdownGateEvents >= BREAKDOWN_MIN_EVENTS_90D
+    const hasBreakdownCoverageDepth = coverageAgeDays === null
+        ? true
+        : coverageAgeDays >= BREAKDOWN_MIN_DAYS
+    const showBreakdownCards = usageAvailable && hasBreakdownEventDepth && hasBreakdownCoverageDepth
+    const breakdownGateMessage = useMemo(() => {
+        if (!usageAvailable || showBreakdownCards) return null
+        const requirements = []
+        if (
+            typeof breakdownGateEvents === 'number' &&
+            breakdownGateEvents < BREAKDOWN_MIN_EVENTS_90D
+        ) {
+            requirements.push(`${BREAKDOWN_MIN_EVENTS_90D.toLocaleString()}+ events in the last 90 days`)
+        }
+        if (
+            typeof coverageAgeDays === 'number' &&
+            coverageAgeDays < BREAKDOWN_MIN_DAYS
+        ) {
+            requirements.push(`${BREAKDOWN_MIN_DAYS}+ days of telemetry coverage`)
+        }
+        if (requirements.length === 0) {
+            return 'Detailed telemetry breakdown is temporarily hidden while we validate signal quality.'
+        }
+        return `Detailed telemetry breakdown unlocks after ${requirements.join(' and ')}.`
+    }, [usageAvailable, showBreakdownCards, breakdownGateEvents, coverageAgeDays])
 
     const showSkeleton = loading && !data
 
@@ -268,7 +309,7 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                         Loading telemetry metrics...
                     </div>
                     <div className={styles.metricsGrid}>
-                        {Array.from({ length: 3 }).map((_, index) => (
+                        {Array.from({ length: 4 }).map((_, index) => (
                             <MetricSkeletonCard key={index} />
                         ))}
                     </div>
@@ -281,34 +322,48 @@ export default function AdoptionSignals({ timeRange = 'all' }) {
                     <div className={styles.metricsGrid}>
                         <MetricCard
                             icon={faChartLine}
-                            value={runsPrimary}
-                            label={`Agent Runs${telemetryCardSuffix}`}
-                            title="Derived from usage telemetry event volumes"
-                            secondaryValue={runsSecondary}
+                            value={totalEventsPrimary}
+                            label={`Total Events${telemetryCardSuffix}`}
+                            title="All non-ignored telemetry events"
+                            secondaryValue={totalEventsSecondary}
                             secondaryLabel={secondaryLabel}
-                            showSecondary={runsShowSecondary}
+                            showSecondary={totalEventsShowSecondary}
                         />
-                        <MetricCard
-                            icon={faComputerMouse}
-                            value={actionsPrimary}
-                            label={`GUI Actions${telemetryCardSuffix}`}
-                            title="Derived from usage telemetry event volumes"
-                            secondaryValue={actionsSecondary}
-                            secondaryLabel={secondaryLabel}
-                            showSecondary={actionsShowSecondary}
-                        />
-                        <MetricCard
-                            icon={faWindowRestore}
-                            value={demosPrimary}
-                            label={`Demos Recorded${telemetryCardSuffix}`}
-                            title="Derived from usage telemetry event volumes"
-                            secondaryValue={demosSecondary}
-                            secondaryLabel={secondaryLabel}
-                            showSecondary={demosShowSecondary}
-                        />
+                        {showBreakdownCards && (
+                            <>
+                                <MetricCard
+                                    icon={faBolt}
+                                    value={runsPrimary}
+                                    label={`Agent Runs${telemetryCardSuffix}`}
+                                    title="Derived from usage telemetry event volumes"
+                                    secondaryValue={runsSecondary}
+                                    secondaryLabel={secondaryLabel}
+                                    showSecondary={runsShowSecondary}
+                                />
+                                <MetricCard
+                                    icon={faComputerMouse}
+                                    value={actionsPrimary}
+                                    label={`GUI Actions${telemetryCardSuffix}`}
+                                    title="Derived from usage telemetry event volumes"
+                                    secondaryValue={actionsSecondary}
+                                    secondaryLabel={secondaryLabel}
+                                    showSecondary={actionsShowSecondary}
+                                />
+                                <MetricCard
+                                    icon={faWindowRestore}
+                                    value={demosPrimary}
+                                    label={`Demos Recorded${telemetryCardSuffix}`}
+                                    title="Derived from usage telemetry event volumes"
+                                    secondaryValue={demosSecondary}
+                                    secondaryLabel={secondaryLabel}
+                                    showSecondary={demosShowSecondary}
+                                />
+                            </>
+                        )}
                     </div>
 
                     {usageStatusMessage && <div className={styles.message}>{usageStatusMessage}</div>}
+                    {breakdownGateMessage && <div className={styles.message}>{breakdownGateMessage}</div>}
 
                     {sourceLabel && <div className={styles.source}>{sourceLabel}</div>}
                     {refreshing && <div className={styles.message}>Refreshing latest metrics...</div>}
