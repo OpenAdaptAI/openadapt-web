@@ -12,6 +12,7 @@ const DEFAULT_POSTHOG_PROJECT_ID = '68185'
 const MAX_EVENT_DEFINITION_PAGES = 5
 const FALLBACK_PATTERN_LIMIT = 30
 const GITHUB_ORG = 'OpenAdaptAI'
+const CLASSIFICATION_VERSION = '2026-03-06'
 
 // Canonical event names from OpenAdapt codebases (legacy PostHog + shared telemetry conventions).
 const EVENT_CLASSIFICATION = {
@@ -79,6 +80,55 @@ const IGNORED_EVENT_PATTERNS = [
     /(?:^|[._:-])(startup|shutdown)(?:[._:-]|$)/i,
 ]
 
+const TELEMETRY_DATA_MODEL = {
+    sdk: 'openadapt-telemetry',
+    sdkVersion: '0.1.0',
+    metricsDashboardReadsOnly: [
+        'event name',
+        'event timestamp (aggregated windows: 30d/90d/all-time)',
+        'aggregated event count',
+    ],
+    commonEventFields: [
+        'category',
+        'timestamp',
+        'package_name',
+        'success',
+        'duration_ms',
+        'item_count',
+        'command',
+        'operation',
+    ],
+    commonTags: [
+        'internal',
+        'package',
+        'package_version',
+        'python_version',
+        'os',
+        'os_version',
+        'ci',
+    ],
+}
+
+const TELEMETRY_PRIVACY_CONTROLS = {
+    neverCollect: [
+        'screenshots or images',
+        'raw text or file contents',
+        'API keys or passwords',
+        'PII user profile fields (name/email/IP)',
+    ],
+    scrubPolicy: [
+        'PII-like keys are redacted (password/token/api_key/etc.)',
+        'emails/phones/secrets are pattern-scrubbed',
+        'file paths are sanitized to remove usernames',
+        'user IDs are anonymized before upload',
+        'send_default_pii is enforced false',
+    ],
+    optOutEnvVars: [
+        'DO_NOT_TRACK=1',
+        'OPENADAPT_TELEMETRY_ENABLED=false',
+    ],
+}
+
 function parseIntEnv(name) {
     const raw = process.env[name]
     if (raw === undefined || raw === null || raw === '') return null
@@ -90,6 +140,43 @@ function formatError(error) {
     if (!error) return 'unknown'
     if (typeof error === 'string') return error
     return error.message || String(error)
+}
+
+function _serializePattern(pattern) {
+    if (pattern instanceof RegExp) {
+        return pattern.toString()
+    }
+    return String(pattern)
+}
+
+function buildTransparencyMetadata() {
+    return {
+        classificationVersion: CLASSIFICATION_VERSION,
+        metricScope: {
+            summary: 'Homepage metrics use aggregate telemetry counts (no raw event payloads are displayed).',
+            includedMetricFamilies: ['total_events', 'agent_runs', 'gui_actions', 'demos_recorded'],
+        },
+        includedEventNames: {
+            demos: [...EVENT_CLASSIFICATION.demos.exact],
+            runs: [...EVENT_CLASSIFICATION.runs.exact],
+            actions: [...EVENT_CLASSIFICATION.actions.exact],
+        },
+        ignoredEventNames: Array.from(IGNORED_EVENT_NAMES).sort(),
+        ignoredEventPatterns: IGNORED_EVENT_PATTERNS.map(_serializePattern),
+        fallbackPatterns: {
+            demos: EVENT_CLASSIFICATION.demos.fallbackPatterns.map(_serializePattern),
+            runs: EVENT_CLASSIFICATION.runs.fallbackPatterns.map(_serializePattern),
+            actions: EVENT_CLASSIFICATION.actions.fallbackPatterns.map(_serializePattern),
+        },
+        telemetryDataModel: TELEMETRY_DATA_MODEL,
+        privacyControls: TELEMETRY_PRIVACY_CONTROLS,
+        sourceLinks: {
+            privacyPolicy: '/privacy-policy',
+            telemetryReadme: 'https://github.com/OpenAdaptAI/openadapt-telemetry#readme',
+            telemetryPrivacyCode:
+                'https://github.com/OpenAdaptAI/openadapt-telemetry/blob/main/src/openadapt_telemetry/privacy.py',
+        },
+    }
 }
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
@@ -613,7 +700,7 @@ async function fetchPosthogUsageFromEventDefinitions(config) {
             runs: runs.strategy,
             actions: actions.strategy,
         },
-        classificationVersion: '2026-03-05',
+        classificationVersion: CLASSIFICATION_VERSION,
         caveats: [
             'Derived from PostHog volume_30_day by exact event-name classification',
             'Falls back to guarded pattern matching only when exact mapping has no data',
@@ -722,6 +809,7 @@ function mergeUsageMetrics(primary, fallback) {
         caveats: [...(primary.caveats || []), ...(fallback.caveats || [])],
         matchedEvents: primary.matchedEvents || null,
         strategies: primary.strategies || null,
+        transparency: buildTransparencyMetadata(),
         ...merged,
     }
 }
