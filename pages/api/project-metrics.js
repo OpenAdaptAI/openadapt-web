@@ -12,9 +12,10 @@ const DEFAULT_POSTHOG_PROJECT_ID = '68185'
 const MAX_EVENT_DEFINITION_PAGES = 5
 const FALLBACK_PATTERN_LIMIT = 30
 const GITHUB_ORG = 'OpenAdaptAI'
-const CLASSIFICATION_VERSION = '2026-03-06'
+const CLASSIFICATION_VERSION = '2026-03-29'
 
-// Canonical event names from OpenAdapt codebases (legacy PostHog + shared telemetry conventions).
+// Canonical event names from OpenAdapt codebases.
+// Updated to include openadapt-evals training, DemoExecutor, and correction events.
 const EVENT_CLASSIFICATION = {
     demos: {
         exact: [
@@ -27,9 +28,12 @@ const EVENT_CLASSIFICATION = {
             'record.stopped',
             'capture.completed',
             'capture.saved',
+            // Correction flywheel
+            'correction_captured',
+            'correction_stored',
         ],
         fallbackPatterns: [
-            /(?:^|[._:-])(demo|record|recording|capture)(?:[._:-]|$)/i,
+            /(?:^|[._:-])(demo|record|recording|capture|correction)(?:[._:-]|$)/i,
             /(?:finished|completed|saved|recorded|stopped)$/i,
             /^command:(capture|record)/i,
             /^operation:(capture|record)/i,
@@ -43,11 +47,18 @@ const EVENT_CLASSIFICATION = {
             'replay_started',
             'episode_started',
             'replay.started',
+            // GRPO training (openadapt-evals standalone trainer)
+            'training_run',
+            'training_step_completed',
+            'rollout_collected',
+            'checkpoint_saved',
+            // DemoExecutor (tiered demo execution)
+            'demo_execution',
         ],
         fallbackPatterns: [
-            /(?:^|[._:-])(replay|benchmark|eval|episode|agent_run|automation_run)(?:[._:-]|$)/i,
-            /^command:(replay|run|eval|benchmark|execute|agent)/i,
-            /^operation:(replay|run|eval|benchmark|execute|agent)/i,
+            /(?:^|[._:-])(replay|benchmark|eval|episode|agent_run|automation_run|training|rollout|checkpoint)(?:[._:-]|$)/i,
+            /^command:(replay|run|eval|benchmark|execute|agent|train)/i,
+            /^operation:(replay|run|eval|benchmark|execute|agent|train)/i,
         ],
     },
     actions: {

@@ -54,6 +54,8 @@ Use:
 - `record.stopped`
 - `capture.completed`
 - `capture.saved`
+- `correction_captured` (correction flywheel)
+- `correction_stored` (correction flywheel)
 
 ### Runs
 - `automation_run`
@@ -62,6 +64,11 @@ Use:
 - `replay_started`
 - `episode_started`
 - `replay.started`
+- `training_run` (GRPO training start/complete)
+- `training_step_completed` (per-step training metrics)
+- `rollout_collected` (RL rollout collection)
+- `checkpoint_saved` (model checkpoint saves)
+- `demo_execution` (DemoExecutor tiered execution)
 
 ### Actions
 - `action_executed`
