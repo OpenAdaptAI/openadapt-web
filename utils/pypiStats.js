@@ -80,7 +80,10 @@ async function getPackageData() {
 async function getPackageList() {
     const packages = await getPackageData();
     return packages
-        .filter((p) => typeof p === 'string' || p.category === 'core')
+        .filter((p) => {
+            if (typeof p === 'string') return true;
+            return p.category === 'core' && p.on_pypi !== false;
+        })
         .map((p) => (typeof p === 'string' ? p : p.name));
 }
 

@@ -62,7 +62,11 @@ async function getPackageList() {
         const data = await response.json();
         // Filter to core packages only, extract names for stats
         const packages = (data.packages || [])
-            .filter((p) => typeof p === 'string' || p.category === 'core')
+            .filter((p) => {
+                if (typeof p === 'string') return true;
+                // Only include core packages that are actually on PyPI
+                return p.category === 'core' && p.on_pypi !== false;
+            })
             .map((p) => (typeof p === 'string' ? p : p.name));
         cachedPackages = packages;
         cacheTimestamp = Date.now();
