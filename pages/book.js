@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import BookingEmbed from '@components/BookingEmbed'
@@ -11,6 +12,17 @@ export default function BookPage() {
 
     return (
         <div className="min-h-screen bg-[#06061f] text-white">
+            <Head>
+                <title>Book a Call | OpenAdapt.AI</title>
+                <meta
+                    name="description"
+                    content="Book a 15-minute automation fit call with the OpenAdapt team. Share your highest-friction workflow and we'll map what can be automated."
+                />
+                <link rel="canonical" href="https://openadapt.ai/book" />
+                <meta property="og:title" content="Book a Call | OpenAdapt.AI" />
+                <meta property="og:description" content="Book a 15-minute automation fit call with OpenAdapt. We'll map what can be automated." />
+                <meta property="og:url" content="https://openadapt.ai/book" />
+            </Head>
             <div className="mx-auto max-w-4xl px-4 py-10">
                 <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
                     Book a 15-minute automation fit call

@@ -1,0 +1,28 @@
+# OpenAdapt.AI
+
+> Open-source AI-powered desktop automation platform. Record human demonstrations, train vision-language models, deploy AI agents that operate any desktop or web software. No programming required. MIT licensed.
+
+## Documentation
+- [Getting Started](https://docs.openadapt.ai): Installation, quick start, and CLI reference
+- [GitHub Repository](https://github.com/OpenAdaptAI/OpenAdapt): Source code, README, and contribution guide
+
+## Core Concepts
+- [How It Works](https://openadapt.ai): Demonstration-conditioned AI agents learn from screen recordings of human workflows
+- [Privacy & Security](https://openadapt.ai/privacy-policy): Built-in PII/PHI scrubbing, local-first data processing
+- [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
+
+## Use Cases
+- [Industry Applications](https://openadapt.ai): HR, Law, Insurance, Healthcare, Finance, Logistics, Pharmacy, Customer Support, Sales Development
+
+## Source Code
+- [GitHub](https://github.com/OpenAdaptAI/OpenAdapt): MIT licensed, open source
+- [PyPI Package](https://pypi.org/project/openadapt/): Install via pip or uv
+- [Evaluations](https://github.com/OpenAdaptAI/openadapt-evals): Benchmark tooling with Windows Agent Arena integration
+
+## Blog
+- [Updates & Guides](https://blog.openadapt.ai): Technical posts and automation recipes
+
+## Community
+- [Discord](https://discord.gg/yF527cQbDG): Community support and discussion
+- [LinkedIn](https://www.linkedin.com/company/openadapt-ai): Company updates
+- [X/Twitter](https://x.com/OpenAdaptAI): Project news
