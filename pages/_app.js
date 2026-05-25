@@ -13,6 +13,7 @@ const raleway = Raleway({
 export default function MyApp({ Component, pageProps }) {
     return (
         <>
+            {/* New pages must add their own <Head> with unique title, description, canonical, and og:* tags */}
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>OpenAdapt.AI — AI-Powered Desktop Automation Platform</title>
