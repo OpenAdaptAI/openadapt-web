@@ -1,5 +1,7 @@
 .frame {
+    width: 100%;
     max-width: 640px;
+    min-width: 0;
     margin: 0 auto;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 12px;
@@ -58,6 +60,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* contain:inline-size keeps these nowrap rows from propagating their
+       min-content width up the grid and pushing the page past the viewport
+       on mobile. */
+    contain: inline-size;
     opacity: 0;
     animation: rowIn 0.35s ease forwards;
     color: rgba(255, 255, 255, 0.85);
@@ -76,6 +82,7 @@
 .target {
     color: rgba(255, 255, 255, 0.9);
     flex: 1;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -124,6 +131,31 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@media (max-width: 640px) {
+    .body {
+        font-size: 0.68rem;
+        padding: 10px 10px 12px;
+    }
+
+    .row {
+        gap: 0.45em;
+    }
+
+    .rung {
+        display: none;
+    }
+
+    .drift .rung {
+        display: inline;
+    }
+
+    .healText,
+    .doneText {
+        white-space: normal;
+        padding-left: 1.2em;
     }
 }
 

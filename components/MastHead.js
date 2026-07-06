@@ -91,7 +91,7 @@ export default function Home() {
                                 source, auditable, and running entirely on your
                                 own machines.
                             </h3>
-                            <div className="flex flex-col align-center justify-center px-4">
+                            <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
                             </div>
                             <div className="mt-6 font-light text-base md:text-lg">
