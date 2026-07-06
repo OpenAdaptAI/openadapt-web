@@ -6,6 +6,7 @@ import ContactBookingSection from '@components/ContactBookingSection'
 import Developers from '@components/Developers'
 import DevToolsSection from '@components/DevToolsSection'
 import EcosystemSection from '@components/EcosystemSection'
+import Faq, { faqItems } from '@components/Faq'
 import Footer from '@components/Footer'
 import HowItWorks from '@components/HowItWorks'
 import IndustriesGrid from '@components/IndustriesGrid'
@@ -96,6 +97,19 @@ const websiteSchema = {
     inLanguage: 'en',
 }
 
+const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+        },
+    })),
+}
+
 export default function Home() {
     const [feedbackData, setFeedbackData] = useState({
         email: '',
@@ -124,6 +138,12 @@ export default function Home() {
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify(websiteSchema),
+                    }}
+                />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(faqSchema),
                     }}
                 />
             </Head>
@@ -155,6 +175,7 @@ export default function Home() {
                 sectionRef={sectionRef}
             />
             {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
+            <Faq />
             <ContactBookingSection prefill={feedbackData} />
             <Footer />
         </div>
