@@ -1,9 +1,21 @@
 import React from 'react'
+import Head from 'next/head'
 import styles from '@styles/LegalPages.module.css'
 
 const PrivacyPolicy = () => {
     return (
         <div className={styles.container}>
+            <Head>
+                <title>Privacy Policy | OpenAdapt.AI</title>
+                <meta
+                    name="description"
+                    content="OpenAdapt.AI privacy policy. Learn how we collect, use, and safeguard your data. All recordings are scrubbed of PII/PHI before upload."
+                />
+                <link rel="canonical" href="https://openadapt.ai/privacy-policy" />
+                <meta property="og:title" content="Privacy Policy | OpenAdapt.AI" />
+                <meta property="og:description" content="OpenAdapt.AI privacy policy. Learn how we collect, use, and safeguard your data." />
+                <meta property="og:url" content="https://openadapt.ai/privacy-policy" />
+            </Head>
             <h1 className={styles.heading}>Privacy Policy</h1>
             <p className={styles.paragraph}>
                 At OpenAdapt.AI, we are committed to protecting your privacy and

@@ -1,9 +1,21 @@
 import React from 'react'
+import Head from 'next/head'
 import styles from '@styles/LegalPages.module.css'
 
 const TermsOfService = () => {
     return (
         <div className={styles.container}>
+            <Head>
+                <title>Terms of Service | OpenAdapt.AI</title>
+                <meta
+                    name="description"
+                    content="OpenAdapt.AI terms of service. Alpha software disclaimer, warranty, liability, intellectual property, and governing law (Ontario, Canada)."
+                />
+                <link rel="canonical" href="https://openadapt.ai/terms-of-service" />
+                <meta property="og:title" content="Terms of Service | OpenAdapt.AI" />
+                <meta property="og:description" content="OpenAdapt.AI terms of service covering software usage, warranty, and liability." />
+                <meta property="og:url" content="https://openadapt.ai/terms-of-service" />
+            </Head>
             <h1 className={styles.heading}>Terms of Service</h1>
             <p className={styles.paragraph}>
                 By using OpenAdapt, you agree to the following terms and

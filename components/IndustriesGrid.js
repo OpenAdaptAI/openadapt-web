@@ -700,13 +700,13 @@ export default function IndustriesGrid({
                     rel="nofollow"
                     className="opacity-70 hover:opacity-100 transition-opacity duration-200"
                 >
-                    <img width="240" src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600"></img>
+                    <img width="240" height="52" src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600" alt="Featured on There's An AI For That"></img>
                 </a>
             </div>
             <div className="mt-12">
-                <h1 className="text-center text-xl font-medium text-white/95 mb-3 tracking-tight">
+                <h2 className="text-center text-xl font-medium text-white/95 mb-3 tracking-tight">
                     Transform Your Industry with OpenAdapt
-                </h1>
+                </h2>
                 <p className={styles.p}>
                     From demonstration to automation in minutes. Just do the task once and OpenAdapt learns from watching.
                     No prompt engineering. No scripting. No brittle selectors.
