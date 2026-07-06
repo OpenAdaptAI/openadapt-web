@@ -1,0 +1,136 @@
+.frame {
+    max-width: 640px;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: rgba(8, 6, 24, 0.85);
+    box-shadow: 0 8px 40px rgba(86, 13, 248, 0.15);
+    overflow: hidden;
+    text-align: left;
+}
+
+.titlebar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.title {
+    margin-left: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.badge {
+    margin-left: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6ee7b7;
+    border: 1px solid rgba(110, 231, 183, 0.35);
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+.body {
+    padding: 14px 16px 16px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8rem;
+    line-height: 1.9;
+}
+
+.row {
+    display: flex;
+    gap: 0.9em;
+    align-items: baseline;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0;
+    animation: rowIn 0.35s ease forwards;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.num {
+    color: rgba(255, 255, 255, 0.4);
+    min-width: 2.2em;
+}
+
+.action {
+    color: #a78bfa;
+    min-width: 3.2em;
+}
+
+.target {
+    color: rgba(255, 255, 255, 0.9);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rung {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.ms {
+    color: rgba(255, 255, 255, 0.45);
+    min-width: 3em;
+    text-align: right;
+}
+
+.check {
+    color: #6ee7b7;
+    min-width: 1em;
+}
+
+.drift .rung {
+    color: #fbbf24;
+}
+
+.healText {
+    color: #6ee7b7;
+    padding-left: 2.2em;
+}
+
+.doneText {
+    color: rgba(255, 255, 255, 0.6);
+    padding-left: 2.2em;
+}
+
+.summary {
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.55);
+}
+
+@keyframes rowIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .row {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}

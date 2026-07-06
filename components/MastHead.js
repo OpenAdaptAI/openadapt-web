@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import React from 'react'
 import Link from 'next/link'
@@ -15,6 +15,7 @@ import Image from 'next/image'
 
 import AnimatedBackground from '@components/AnimatedBackground'
 import AnimatedLogo from '@components/AnimatedLogo'
+import ReplayHero from '@components/ReplayHero'
 import EmailForm from '@components/EmailForm'
 import ParticleField from '@components/ParticleField'
 
@@ -70,8 +71,6 @@ const CarouselSection = () => {
 };
 
 export default function Home() {
-    const videoRef = useRef(null)
-
     return (
         <div className={styles.section}>
             <ParticleField />
@@ -92,19 +91,8 @@ export default function Home() {
                                 source, auditable, and running entirely on your
                                 own machines.
                             </h3>
-                            <div className="flex flex-col align-center justify-center">
-                                <div className="relative inline-block">
-                                    {/* <AnimatedLogo /> */}
-                                    <video
-                                        ref={videoRef}
-                                        controls
-                                        preload="metadata"
-                                        className="demo-video w-full max-w-[85%] sm:max-w-[75%] mx-auto rounded-xl border border-white/10"
-                                    >
-                                        <source src="./hero.mp4" type="video/mp4" />
-                                        Your browser does not support the video tag.
-                                    </video>
-                                </div>
+                            <div className="flex flex-col align-center justify-center px-4">
+                                <ReplayHero />
                             </div>
                             <div className="mt-6 font-light text-base md:text-lg">
                                 <CarouselSection />
