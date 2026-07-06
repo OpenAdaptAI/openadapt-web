@@ -9,7 +9,7 @@ const TermsOfService = () => {
                 <title>Terms of Service | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="OpenAdapt.AI terms of service. Alpha software disclaimer, warranty, liability, intellectual property, and governing law (Ontario, Canada)."
+                    content="OpenAdapt.AI terms of service. Development status, warranty disclaimer, liability, intellectual property, and governing law (Ontario, Canada)."
                 />
                 <link rel="canonical" href="https://openadapt.ai/terms-of-service" />
                 <meta property="og:title" content="Terms of Service | OpenAdapt.AI" />
@@ -22,16 +22,13 @@ const TermsOfService = () => {
                 conditions:
             </p>
 
-            <h2 className={styles.subheading}>1. Alpha Software</h2>
+            <h2 className={styles.subheading}>1. Software Under Active Development</h2>
             <p className={styles.paragraph}>
-                OpenAdapt is currently in an alpha stage of development. This
-                means that the software is still in an early phase of testing
-                and may not be fully optimized for performance, reliability, or
-                functionality. As an alpha user, you acknowledge that the
+                OpenAdapt is under active development. You acknowledge that the
                 software may have bugs, issues, or limitations that could impact
                 its performance or the quality of the process automation. We
                 continuously work to improve OpenAdapt, but we cannot guarantee
-                a flawless experience or perfect results during the alpha stage.
+                a flawless experience or perfect results.
             </p>
 
             <h2 className={styles.subheading}>2. Disclaimer of Warranty</h2>
