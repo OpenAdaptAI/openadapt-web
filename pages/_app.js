@@ -16,10 +16,10 @@ export default function MyApp({ Component, pageProps }) {
             {/* New pages must add their own <Head> with unique title, description, canonical, and og:* tags */}
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>OpenAdapt.AI — AI-Powered Desktop Automation Platform</title>
+                <title>OpenAdapt — Record once. Compiled, self-healing desktop automation that runs on your premises.</title>
                 <meta
                     name="description"
-                    content="Open-source platform for GUI automation with AI. Record human demonstrations, train models, and deploy agents that operate any desktop software. Works with Claude, GPT-4V, Gemini. MIT licensed."
+                    content="OpenAdapt compiles a recorded demonstration into a deterministic, self-healing automation. Healthy runs make no cloud model calls; your data never leaves your machines. Open source, MIT licensed."
                 />
                 <link
                     rel="apple-touch-icon"
@@ -50,8 +50,8 @@ export default function MyApp({ Component, pageProps }) {
                 {/* Open Graph */}
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="OpenAdapt.AI" />
-                <meta property="og:title" content="OpenAdapt.AI — Teach AI to Use Any Software" />
-                <meta property="og:description" content="Open-source AI-powered desktop automation. Record demonstrations, train models, deploy agents. Works with Claude, GPT-4V, Gemini. MIT licensed." />
+                <meta property="og:title" content="OpenAdapt — Show it once. It runs forever. On your premises." />
+                <meta property="og:description" content="OpenAdapt compiles a recorded demonstration into a deterministic, self-healing automation that runs on your own machines. Open source, MIT licensed." />
                 <meta property="og:image" content="https://openadapt.ai/og.png" />
                 <meta property="og:image:type" content="image/png" />
                 <meta property="og:image:width" content="1024" />
@@ -61,8 +61,8 @@ export default function MyApp({ Component, pageProps }) {
                 {/* Twitter Card */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@OpenAdaptAI" />
-                <meta name="twitter:title" content="OpenAdapt.AI — Teach AI to Use Any Software" />
-                <meta name="twitter:description" content="Open-source AI-powered desktop automation. Record demonstrations, train models, deploy agents. MIT licensed." />
+                <meta name="twitter:title" content="OpenAdapt — Show it once. It runs forever. On your premises." />
+                <meta name="twitter:description" content="Record a workflow once. OpenAdapt compiles it into a deterministic, self-healing automation that runs on your own machines. MIT licensed." />
                 <meta name="twitter:image" content="https://openadapt.ai/og.png" />
 
                 {/* Google tag (gtag.js) */}

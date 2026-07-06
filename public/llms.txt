@@ -1,18 +1,21 @@
 # OpenAdapt.AI
 
-> Open-source AI-powered desktop automation platform. Record human demonstrations, train vision-language models, deploy AI agents that operate any desktop or web software. No programming required. MIT licensed.
+> Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a deterministic, self-healing automation that runs entirely on your own machines. Healthy runs make no cloud model calls; a model is only used to heal the script when the UI drifts, and the fix is proposed as a reviewable diff. MIT licensed.
 
 ## Documentation
 - [Getting Started](https://docs.openadapt.ai): Installation, quick start, and CLI reference
 - [GitHub Repository](https://github.com/OpenAdaptAI/OpenAdapt): Source code, README, and contribution guide
 
 ## Core Concepts
-- [How It Works](https://openadapt.ai): Demonstration-conditioned AI agents learn from screen recordings of human workflows
-- [Privacy & Security](https://openadapt.ai/privacy-policy): Built-in PII/PHI scrubbing, local-first data processing
+- [How It Works](https://openadapt.ai/#how-it-works): Record, Compile, Run, Self-heal, Audit — a recorded demonstration becomes an editable script with visual anchors, per-step assertions, and parameters
+- [FAQ](https://openadapt.ai/#faq): How OpenAdapt differs from RPA tools and AI computer-use agents, data locality, licensing
+- [Privacy & Security](https://openadapt.ai/privacy-policy): Local-first by architecture — recordings and replays stay on your infrastructure
 - [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
 
 ## Use Cases
-- [Industry Applications](https://openadapt.ai): HR, Law, Insurance, Healthcare, Finance, Logistics, Pharmacy, Customer Support, Sales Development
+- [Healthcare Clinics](https://openadapt.ai/solutions/healthcare): Referral and fax intake, EMR data entry and extraction — desktop and VDI EMRs included, PHI stays fully local
+- [Mortgage & Lending Ops](https://openadapt.ai/solutions/lending): Loan-file data extraction and entry in desktop LOS software like Encompass
+- [Other Regulated Back-Offices](https://openadapt.ai/#industries): Document-heavy, compliance-bound workflows
 
 ## Source Code
 - [GitHub](https://github.com/OpenAdaptAI/OpenAdapt): MIT licensed, open source

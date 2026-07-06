@@ -26,7 +26,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'Open-source platform for GUI automation with AI. Record human demonstrations, train models, and deploy agents that can operate any software.',
+        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a deterministic, self-healing automation that runs entirely on your own machines.',
     foundingDate: '2023',
     sameAs: [
         'https://github.com/OpenAdaptAI/OpenAdapt',
@@ -43,7 +43,7 @@ const organizationSchema = {
         'Machine Learning',
         'Large Language Models',
     ],
-    slogan: 'Teach AI to use any software',
+    slogan: 'Show it once. It runs forever.',
 }
 
 const softwareSchema = {
@@ -54,7 +54,7 @@ const softwareSchema = {
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Windows, macOS, Linux',
     description:
-        'Open-source AI-powered desktop automation platform. Record human demonstrations of GUI workflows, train models, and deploy AI agents that replicate those workflows autonomously. Compatible with Claude, GPT-4V, and Gemini.',
+        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a deterministic, self-healing script that replays locally with no per-run model calls. A model is only used to heal the script when the UI drifts, and the fix is proposed as a reviewable diff.',
     url: 'https://openadapt.ai',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     author: {
@@ -71,12 +71,13 @@ const softwareSchema = {
         priceCurrency: 'USD',
     },
     featureList: [
-        'Record human demonstrations of desktop workflows',
-        'Train AI models on recorded task data',
-        'Deploy autonomous AI agents for GUI automation',
-        'PII/PHI data scrubbing for privacy compliance',
-        'Model agnostic — works with Claude, GPT-4V, Gemini',
-        'Benchmark evaluation with Windows Agent Arena',
+        'Record a desktop workflow once as a demonstration',
+        'Compile demonstrations into deterministic, editable automation scripts',
+        'Deterministic local replay with zero per-run model cost',
+        'Self-healing: UI drift is repaired via a fallback ladder and proposed as a reviewable diff',
+        'Local-first: recordings, scripts, and replays stay on your infrastructure',
+        'PII/PHI data scrubbing for sensitive workflows',
+        'Illustrated audit report for every run',
     ],
     isAccessibleForFree: true,
 }
@@ -88,7 +89,7 @@ const websiteSchema = {
     alternateName: 'OpenAdapt',
     url: 'https://openadapt.ai',
     description:
-        'Open-source AI-powered GUI automation platform. Teach AI to use any software.',
+        'Open-source demonstration compiler: record a desktop workflow once and it compiles into a deterministic, self-healing automation that runs on your premises.',
     publisher: {
         '@type': 'Organization',
         name: 'OpenAdapt.AI',
