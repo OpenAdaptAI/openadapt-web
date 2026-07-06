@@ -44,10 +44,10 @@ const PrivacyPolicy = () => {
 
             <h2 className={styles.subheading}>2. Third-Party Services</h2>
             <p className={styles.paragraph}>
-                Our desktop software connects to third-party AI service
-                providers (e.g., OpenAI, Claude.ai) to leverage their
-                state-of-the-art language models for process automation based on
-                the prompts and instructions generated from your recorded data.
+                Our desktop software can connect to third-party AI service
+                providers (e.g., OpenAI, Claude.ai) to use their language
+                models for process automation based on the prompts and
+                instructions generated from your recorded data.
                 Any data shared with these third-party services is subject to
                 their respective privacy policies, and we encourage you to
                 review them.
