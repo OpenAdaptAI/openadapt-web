@@ -7,6 +7,7 @@ import Developers from '@components/Developers'
 import DevToolsSection from '@components/DevToolsSection'
 import EcosystemSection from '@components/EcosystemSection'
 import Footer from '@components/Footer'
+import HowItWorks from '@components/HowItWorks'
 import IndustriesGrid from '@components/IndustriesGrid'
 import MastHead from '@components/MastHead'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
@@ -127,6 +128,7 @@ export default function Home() {
                 />
             </Head>
             <MastHead />
+            <HowItWorks />
             <div style={{
                 background: 'rgba(0, 0, 30, 1)',
                 textAlign: 'center',
