@@ -96,7 +96,7 @@ export default function Developers() {
         <div className={styles.row} id="start">
             <div className="relative flex items-center justify-center mx-4 sm:mx-8 md:mx-12 lg:mx-20 max-w-5xl">
                 <div className="grid grid-cols-1 break-words w-full">
-                    <h2 id="start" className="text-xl mt-8 mb-4 font-medium text-center tracking-tight">
+                    <h2 className="text-xl mt-8 mb-4 font-medium text-center tracking-tight">
                         Getting Started
                     </h2>
                     {buildWarnings.length > 0 && (
