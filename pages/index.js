@@ -47,7 +47,7 @@ export default function Home() {
                 sectionRef={sectionRef}
             />
             {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
-            <ContactBookingSection />
+            <ContactBookingSection prefill={feedbackData} />
             <Footer />
         </div>
     )
