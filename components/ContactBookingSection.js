@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import BookingEmbed from '@components/BookingEmbed'
@@ -16,8 +16,17 @@ const INITIAL_FORM = {
 export default function ContactBookingSection({
     sectionId = 'book',
     showHomeLink = false,
+    prefill = null,
 }) {
     const [form, setForm] = useState(INITIAL_FORM)
+
+    // Seed the message from an industry card's "Get Started" click so the
+    // visitor's stated interest survives the jump to the intake form.
+    useEffect(() => {
+        if (prefill?.message) {
+            setForm((prev) => ({ ...prev, message: prefill.message }))
+        }
+    }, [prefill])
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [error, setError] = useState('')
