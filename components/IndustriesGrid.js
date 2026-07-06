@@ -741,7 +741,7 @@ export default function IndustriesGrid({
                         <div className="flex flex-row items-center justify-center mt-3 mb-2">
                             <Link
                                 className="px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
-                                href="#start"
+                                href="#book"
                                 onClick={() =>
                                     handleGetStartedButtonClick(grid.title)
                                 }
