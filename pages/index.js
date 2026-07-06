@@ -163,7 +163,9 @@ export default function Home() {
                     margin: 0,
                     letterSpacing: '0.02em',
                 }}>
-                    Warning: OpenAdapt is alpha software and comes with absolutely no warranty of any kind.
+                    OpenAdapt v1 is open source and under active development.
+                    Commercial <a href="#book">pilots</a> for healthcare and
+                    lending are open.
                 </p>
             </div>
             <Developers />
