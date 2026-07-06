@@ -621,68 +621,41 @@ export default function IndustriesGrid({
 }) {
     const gridData = [
         {
-            title: 'HR',
+            title: 'Healthcare clinics',
+            href: '/solutions/healthcare',
             descriptions:
-                'Boost team productivity in HR operations. Automate candidate sourcing using LinkedIn Recruiter, LinkedIn Talent Solutions, GetProspect, Reply.io, outreach.io, Gmail/Outlook, and more.',
-            logo: '/images/noun-human-resources.svg',
-        },
-        {
-            title: 'Law',
-            descriptions:
-                'Streamline legal procedures and case management. Automate tasks like generating legal documents, managing contracts, tracking cases, and conducting legal research with LexisNexis, Westlaw, Adobe Acrobat, Microsoft Excel, and more.',
-            logo: '/images/noun-law.svg',
-        },
-        {
-            title: 'Insurance',
-            descriptions:
-                'Optimize productivity in insurance. Automate policy management, claims processing, data analysis, and document collaboration with PolicyCenter, Xactimate, Excel, SharePoint, PowerBI, and more.',
-            logo: '/images/noun-insurance.svg',
-        },
-        {
-            title: 'Healthcare',
-            descriptions:
-                'Advance patient care and streamline operations. Automate revenue cycle management, clinical documentation, and scheduling in Cerner, Epic, and more.',
+                'Referral and fax intake, EMR data entry and extraction — desktop and VDI EMRs included. PHI handling stays fully local.',
             logo: '/images/noun-healthcare.svg',
         },
         {
-            title: 'Finance',
+            title: 'Mortgage & lending ops',
+            href: '/solutions/lending',
             descriptions:
-                'Enhance efficiency and compliance in financial services. Automate tasks like data entry, reporting, and portfolio management using tools like Excel, Bloomberg, QuickBooks, and more.',
+                'Loan-file data extraction and entry in desktop LOS software like Encompass. Borrower data stays in your environment.',
             logo: '/images/noun-finance.svg',
         },
         {
-            title: 'Logistics',
+            title: 'Other regulated back-offices',
+            href: '#book',
             descriptions:
-                'Automate tasks with Transportation Management Systems (TMS), Freight Management Systems (FMS), Load Tracking Systems, and Document Management Systems for efficient tracking, scheduling, and financial record-keeping.',
-            logo: '/images/noun-freight.svg',
-        },
-        {
-            title: 'Pharmacy',
-            descriptions:
-                'Enhance accuracy and inventory management. Automate prescription management, inventory control, medication dispensing, and patient records with Krol (Telus), Filware, Healthwatch, and more.',
-            logo: '/images/noun-pharmacy.svg',
-        },
-        {
-            title: 'Customer Support',
-            descriptions:
-                'Automate customer inquiries, ticket management, collaboration, data analysis, and communication using OracleHCM, Workday, SAP, Excel, SharePoint, Outlook, LinkedIn, Teams, PowerBI, and more.',
-            logo: '/images/noun-customer-support.svg',
-        },
-        {
-            title: 'Sales Development',
-            descriptions:
-                'Automate repetitive tasks in OracleHCM, LinkedIn, SalesForce, and Gmail for lead generation, prospecting, and communication to optimize revenue growth.',
-            logo: '/images/noun-sales-development.svg',
+                'Document-heavy, compliance-bound workflows — tell us yours.',
+            logo: '/images/noun-law.svg',
         },
     ]
+
+    const industryMessages = {
+        'Healthcare clinics':
+            "I'm interested in automating referral intake and EMR data entry at our clinic.",
+        'Mortgage & lending ops':
+            "I'm interested in automating loan-file data entry and extraction in our LOS.",
+        'Other regulated back-offices':
+            "I'm interested in automating a document-heavy workflow in a regulated back-office.",
+    }
 
     const getDataFromTitle = (title) => {
         return {
             email: '',
-            message:
-                title === 'Let us build for you'
-                    ? ''
-                    : `I'm interested in how OpenAdapt can help me make ${title} better.`,
+            message: industryMessages[title] || '',
         }
     }
 
@@ -705,11 +678,13 @@ export default function IndustriesGrid({
             </div>
             <div className="mt-12">
                 <h2 className="text-center text-xl font-medium text-white/95 mb-3 tracking-tight">
-                    Transform Your Industry with OpenAdapt
+                    Built for regulated back-offices
                 </h2>
                 <p className={styles.p}>
-                    From demonstration to automation in minutes. Just do the task once and OpenAdapt learns from watching.
-                    No prompt engineering. No scripting. No brittle selectors.
+                    Record the workflow once and OpenAdapt compiles it into an
+                    automation your team can review, run, and audit — entirely
+                    on your own machines. No brittle selectors to hand-author.
+                    No per-run model costs.
                     <br />
                     <a href="https://github.com/OpenAdaptAI/openadapt-privacy">
                         Built-in PII/PHI scrubbing
@@ -730,7 +705,13 @@ export default function IndustriesGrid({
                                 alt={grid.title}
                             />
                         </div>
-                        <h2 className={styles.title}>{grid.title}</h2>
+                        <h2 className={styles.title}>
+                            {grid.href ? (
+                                <Link href={grid.href}>{grid.title}</Link>
+                            ) : (
+                                grid.title
+                            )}
+                        </h2>
                         <ul className={styles.descriptions}>
                             {grid.descriptions
                                 .split('\n')
