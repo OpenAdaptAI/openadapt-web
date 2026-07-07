@@ -168,8 +168,12 @@ export default function InstallSection() {
                 <h4 className={styles.quickStartTitle}>Quick Start Commands</h4>
                 <div className={styles.commandGrid}>
                     <div className={styles.commandItem}>
+                        <code>openadapt doctor</code>
+                        <span>Verify your setup</span>
+                    </div>
+                    <div className={styles.commandItem}>
                         <code>openadapt capture start --name my-task</code>
-                        <span>Start recording</span>
+                        <span>Record a demonstration</span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt capture stop</code>
@@ -177,13 +181,19 @@ export default function InstallSection() {
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt capture view my-task</code>
-                        <span>View recording</span>
-                    </div>
-                    <div className={styles.commandItem}>
-                        <code>openadapt doctor</code>
-                        <span>Check system</span>
+                        <span>Review what was captured</span>
                     </div>
                 </div>
+                <p className={styles.note} style={{ marginTop: '0.75rem' }}>
+                    Recording and review ship in the open-source package today.
+                    The compiler stage — turning a recording into a
+                    deterministic, self-healing automation — is in private
+                    preview:{' '}
+                    <a href="#book" style={{ textDecoration: 'underline' }}>
+                        book a demo
+                    </a>{' '}
+                    for early access.
+                </p>
             </div>
         </div>
     );
