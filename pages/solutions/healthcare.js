@@ -6,7 +6,7 @@ import HowItWorks from '@components/HowItWorks'
 
 export default function HealthcarePage() {
     return (
-        <div className="min-h-screen bg-[#06061f] text-white">
+        <div className="min-h-screen bg-ground text-ink">
             <Head>
                 <title>Healthcare Clinic Automation — Referral Intake & EMR Data Entry | OpenAdapt</title>
                 <meta
@@ -20,14 +20,14 @@ export default function HealthcarePage() {
             </Head>
 
             <div className="mx-auto max-w-4xl px-4 py-14">
-                <p className="text-sm font-medium uppercase tracking-widest text-[#60a5fa]">
+                <p className="eyebrow">
                     OpenAdapt for healthcare clinics
                 </p>
-                <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+                <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
                     Referrals arrive by fax. Your staff retypes them into the
                     EMR. OpenAdapt does the retyping.
                 </h1>
-                <p className="mt-5 max-w-3xl text-base font-light text-white/75 md:text-lg">
+                <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     Record the intake workflow once — open the referral, read
                     the fields, enter them into the EMR — and OpenAdapt
                     compiles it into a deterministic automation your clinic
@@ -38,13 +38,13 @@ export default function HealthcarePage() {
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
                         href="/#book"
-                        className="rounded-lg bg-[#560df8] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#7132d4]"
+                        className="btn-ink"
                     >
                         Book a demo
                     </Link>
                     <Link
                         href="/"
-                        className="rounded-lg border border-white/20 px-5 py-2.5 text-sm text-white/90 transition hover:border-white/40 hover:bg-white/5"
+                        className="btn-ghost-ink"
                     >
                         Back to home
                     </Link>
@@ -54,11 +54,11 @@ export default function HealthcarePage() {
             <HowItWorks />
 
             <div className="mx-auto max-w-4xl px-4 py-12">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8">
-                    <h2 className="text-xl font-medium tracking-tight text-white/95">
+                <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
+                    <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
                         Why local matters here
                     </h2>
-                    <p className="mt-3 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         PHI never leaves the clinic. OpenAdapt is local-first
                         by architecture: recordings, compiled scripts, and
                         replays all stay on your own infrastructure, and
@@ -69,38 +69,38 @@ export default function HealthcarePage() {
                     </p>
                 </div>
 
-                <h2 className="mt-12 text-xl font-medium tracking-tight text-white/95">
+                <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     What a clinic can compile
                 </h2>
                 <ul className="mt-4 space-y-3">
-                    <li className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                    <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         Turn a recorded referral-intake session into an
                         automation that reads incoming referral documents and
                         enters the fields into your EMR.
                     </li>
-                    <li className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                    <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         Extract encounter, billing, or scheduling data out of
                         the EMR into spreadsheets and portals without
                         copy-paste.
                     </li>
-                    <li className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                    <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         Give your compliance lead an illustrated report of
                         every run: what ran, what it saw, what changed.
                     </li>
                 </ul>
 
-                <div className="mt-12 rounded-2xl border border-[#560df8]/40 bg-[#560df8]/10 p-6 text-center md:p-8">
-                    <h2 className="text-xl font-medium tracking-tight text-white/95">
+                <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
+                    <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
                         Show us one intake workflow
                     </h2>
-                    <p className="mx-auto mt-3 max-w-2xl text-sm font-light text-white/75 md:text-base">
+                    <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
                         Bring your highest-volume retyping task to a
                         15-minute call and we&#39;ll map what compiling it
                         would look like in your clinic.
                     </p>
                     <Link
                         href="/#book"
-                        className="mt-5 inline-block rounded-lg bg-[#560df8] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#7132d4]"
+                        className="btn-ink mt-5 inline-block"
                     >
                         Book a demo
                     </Link>

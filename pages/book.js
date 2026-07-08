@@ -11,7 +11,7 @@ export default function BookPage() {
     const email = typeof router.query.email === 'string' ? router.query.email : ''
 
     return (
-        <div className="min-h-screen bg-[#06061f] text-white">
+        <div className="min-h-screen bg-ground text-ink">
             <Head>
                 <title>Book a Call | OpenAdapt.AI</title>
                 <meta
@@ -24,23 +24,23 @@ export default function BookPage() {
                 <meta property="og:url" content="https://openadapt.ai/book" />
             </Head>
             <div className="mx-auto max-w-4xl px-4 py-10">
-                <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+                <h1 className="font-display text-3xl font-semibold tracking-tight text-ink md:text-4xl">
                     Book a 15-minute automation fit call
                 </h1>
-                <p className="mt-3 text-sm text-white/75 md:text-base">
+                <p className="mt-3 text-sm text-ink-2 md:text-base">
                     Share your highest-friction workflow and we will map what can
                     be automated first.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                     <Link
                         href="/contact"
-                        className="rounded-lg border border-white/20 px-4 py-2 text-sm text-white/90 transition hover:border-white/40 hover:bg-white/5"
+                        className="btn-ghost-ink"
                     >
                         Need a longer intake form first?
                     </Link>
                     <Link
                         href="/"
-                        className="rounded-lg border border-white/20 px-4 py-2 text-sm text-white/90 transition hover:border-white/40 hover:bg-white/5"
+                        className="btn-ghost-ink"
                     >
                         Back to home
                     </Link>

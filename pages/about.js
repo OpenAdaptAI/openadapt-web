@@ -54,7 +54,7 @@ const personSchema = {
 
 export default function AboutPage() {
     return (
-        <div className="min-h-screen bg-[#06061f] text-white">
+        <div className="min-h-screen bg-ground text-ink">
             <Head>
                 <title>About OpenAdapt | MLDSAI Inc.</title>
                 <meta
@@ -83,13 +83,13 @@ export default function AboutPage() {
             </Head>
 
             <div className="mx-auto max-w-4xl px-4 py-14">
-                <p className="text-sm font-medium uppercase tracking-widest text-[#60a5fa]">
+                <p className="eyebrow">
                     About
                 </p>
-                <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+                <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
                     About OpenAdapt
                 </h1>
-                <p className="mt-5 max-w-3xl text-base font-light text-white/75 md:text-lg">
+                <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     OpenAdapt is an open-source demonstration compiler for
                     desktop automation. You record yourself doing a task once,
                     and it compiles that recording into a deterministic script
@@ -100,10 +100,10 @@ export default function AboutPage() {
                     we build serves it.
                 </p>
 
-                <h2 className="mt-12 text-xl font-medium tracking-tight text-white/95">
+                <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Who&#39;s behind it
                 </h2>
-                <p className="mt-3 max-w-3xl text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
                     OpenAdapt is built by MLDSAI Inc., founded in Toronto in
                     2023. The founder is Richard Abrich, a machine learning
                     engineer who has been building OpenAdapt in the open since
@@ -112,14 +112,14 @@ export default function AboutPage() {
                     on GitHub.
                 </p>
 
-                <h2 className="mt-12 text-xl font-medium tracking-tight text-white/95">
+                <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Open source, actually
                 </h2>
-                <p className="mt-3 max-w-3xl text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
                     The code lives in the{' '}
                     <a
                         href="https://github.com/OpenAdaptAI"
-                        className="text-[#60a5fa] hover:underline"
+                        className="text-accent hover:underline"
                     >
                         OpenAdaptAI organization on GitHub
                     </a>
@@ -128,7 +128,7 @@ export default function AboutPage() {
                     scrubbing, openadapt-ml for models, and the{' '}
                     <a
                         href="https://pypi.org/project/openadapt/"
-                        className="text-[#60a5fa] hover:underline"
+                        className="text-accent hover:underline"
                     >
                         openadapt meta-package on PyPI
                     </a>{' '}
@@ -136,14 +136,14 @@ export default function AboutPage() {
                     it, fork it, ship it, no permission needed.
                 </p>
 
-                <h2 className="mt-12 text-xl font-medium tracking-tight text-white/95">
+                <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     How to reach us
                 </h2>
-                <p className="mt-3 max-w-3xl text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
                     Email{' '}
                     <a
                         href="mailto:hello@openadapt.ai"
-                        className="text-[#60a5fa] hover:underline"
+                        className="text-accent hover:underline"
                     >
                         hello@openadapt.ai
                     </a>{' '}
@@ -151,32 +151,32 @@ export default function AboutPage() {
                     open an issue on{' '}
                     <a
                         href="https://github.com/OpenAdaptAI/OpenAdapt"
-                        className="text-[#60a5fa] hover:underline"
+                        className="text-accent hover:underline"
                     >
                         GitHub
                     </a>
                     . For everything else, there&#39;s{' '}
                     <a
                         href="https://discord.gg/yF527cQbDG"
-                        className="text-[#60a5fa] hover:underline"
+                        className="text-accent hover:underline"
                     >
                         Discord
                     </a>
                     .
                 </p>
 
-                <div className="mt-12 rounded-2xl border border-[#560df8]/40 bg-[#560df8]/10 p-6 text-center md:p-8">
-                    <h2 className="text-xl font-medium tracking-tight text-white/95">
+                <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
+                    <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
                         Talk to us
                     </h2>
-                    <p className="mx-auto mt-3 max-w-2xl text-sm font-light text-white/75 md:text-base">
+                    <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
                         If you&#39;ve got a repetitive desktop workflow, bring
                         it to a 15-minute call and we&#39;ll tell you whether
                         compiling it makes sense.
                     </p>
                     <Link
                         href="/#book"
-                        className="mt-5 inline-block rounded-lg bg-[#560df8] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#7132d4]"
+                        className="btn-ink mt-5 inline-block"
                     >
                         Book a demo
                     </Link>

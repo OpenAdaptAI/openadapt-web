@@ -21,7 +21,7 @@ export default function BookingEmbed({ name = '', email = '' }) {
 
     if (!bookingUrl) {
         return (
-            <div className="rounded-xl border border-amber-300/30 bg-amber-500/10 px-4 py-5 text-amber-100">
+            <div className="rounded-xl border border-amber-700/40 bg-amber-100 px-4 py-5 text-amber-900">
                 <p className="text-sm">
                     Live booking is temporarily unavailable. Use the contact form
                     and we will send available time options directly.
@@ -29,13 +29,13 @@ export default function BookingEmbed({ name = '', email = '' }) {
                 <div className="mt-4 flex flex-wrap gap-3">
                     <Link
                         href="/contact"
-                        className="rounded-lg bg-[#5a1eac] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#7132d4]"
+                        className="btn-ink"
                     >
                         Go to Contact Form
                     </Link>
                     <a
                         href="mailto:sales@openadapt.ai?subject=OpenAdapt%20Booking%20Request"
-                        className="rounded-lg border border-amber-200/40 px-4 py-2 text-sm text-amber-100 transition hover:border-amber-100/70 hover:bg-amber-200/10"
+                        className="rounded-full border border-amber-800/50 px-4 py-2 text-sm text-amber-900 transition hover:bg-amber-200/50"
                     >
                         Email Sales
                     </a>
@@ -47,7 +47,7 @@ export default function BookingEmbed({ name = '', email = '' }) {
     if (provider !== 'calendly') {
         const providerLabel = provider === 'clockwise' ? 'Clockwise' : 'your booking provider'
         return (
-            <div className="rounded-xl border border-amber-300/30 bg-amber-500/10 px-4 py-5 text-amber-100">
+            <div className="rounded-xl border border-amber-700/40 bg-amber-100 px-4 py-5 text-amber-900">
                 <p className="text-sm">
                     {providerLabel} does not support secure inline embedding on this page.
                     Open booking in a new tab instead.
@@ -57,13 +57,13 @@ export default function BookingEmbed({ name = '', email = '' }) {
                         href={embedUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-lg bg-[#5a1eac] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#7132d4]"
+                        className="btn-ink"
                     >
                         Open Booking Link
                     </a>
                     <Link
                         href="/contact"
-                        className="rounded-lg border border-amber-200/40 px-4 py-2 text-sm text-amber-100 transition hover:border-amber-100/70 hover:bg-amber-200/10"
+                        className="rounded-full border border-amber-800/50 px-4 py-2 text-sm text-amber-900 transition hover:bg-amber-200/50"
                     >
                         Go to Contact Form
                     </Link>
@@ -74,7 +74,7 @@ export default function BookingEmbed({ name = '', email = '' }) {
 
     return (
         <div className="space-y-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+            <div className="rounded-xl border border-hairline bg-panel p-2">
                 <iframe
                     title="Book a call with OpenAdapt"
                     src={embedUrl}
@@ -82,13 +82,13 @@ export default function BookingEmbed({ name = '', email = '' }) {
                     loading="lazy"
                 />
             </div>
-            <p className="text-center text-xs text-white/60">
+            <p className="text-center text-xs text-ink-3">
                 If the inline scheduler does not load, use{' '}
                 <a
                     href={embedUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-300 underline hover:text-blue-200"
+                    className="text-accent underline hover:text-ink"
                 >
                     this direct booking link
                 </a>

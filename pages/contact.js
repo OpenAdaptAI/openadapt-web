@@ -4,7 +4,7 @@ import Footer from '@components/Footer'
 
 export default function ContactPage() {
     return (
-        <div className="min-h-screen bg-[#06061f] text-white">
+        <div className="min-h-screen bg-ground text-ink">
             <Head>
                 <title>Contact | OpenAdapt.AI</title>
                 <meta

@@ -3,10 +3,10 @@
     max-width: 640px;
     min-width: 0;
     margin: 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--inset-border);
     border-radius: 12px;
-    background: rgba(8, 6, 24, 0.85);
-    box-shadow: 0 8px 40px rgba(86, 13, 248, 0.15);
+    background: var(--inset-bg);
+    box-shadow: 0 8px 32px rgba(35, 40, 31, 0.18);
     overflow: hidden;
     text-align: left;
 }
@@ -16,39 +16,39 @@
     align-items: center;
     gap: 6px;
     padding: 10px 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--inset-border);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(217, 222, 230, 0.18);
 }
 
 .title {
     margin-left: 10px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(217, 222, 230, 0.65);
 }
 
 .badge {
     margin-left: auto;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 0.68rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #6ee7b7;
-    border: 1px solid rgba(110, 231, 183, 0.35);
+    color: #86d9a8;
+    border: 1px solid rgba(134, 217, 168, 0.35);
     border-radius: 999px;
     padding: 2px 8px;
 }
 
 .body {
     padding: 14px 16px 16px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 0.8rem;
     line-height: 1.9;
 }
@@ -66,21 +66,21 @@
     contain: inline-size;
     opacity: 0;
     animation: rowIn 0.35s ease forwards;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(217, 222, 230, 0.88);
 }
 
 .num {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(217, 222, 230, 0.4);
     min-width: 2.2em;
 }
 
 .action {
-    color: #a78bfa;
+    color: #86d9a8;
     min-width: 3.2em;
 }
 
 .target {
-    color: rgba(255, 255, 255, 0.9);
+    color: #d9dee6;
     flex: 1;
     min-width: 0;
     overflow: hidden;
@@ -88,39 +88,59 @@
 }
 
 .rung {
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(217, 222, 230, 0.45);
 }
 
 .ms {
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(217, 222, 230, 0.45);
     min-width: 3em;
     text-align: right;
 }
 
 .check {
-    color: #6ee7b7;
+    color: #86d9a8;
     min-width: 1em;
 }
 
 .drift .rung {
-    color: #fbbf24;
+    color: #e3b34f;
 }
 
 .healText {
-    color: #6ee7b7;
+    color: #86d9a8;
     padding-left: 2.2em;
 }
 
 .doneText {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(217, 222, 230, 0.6);
     padding-left: 2.2em;
 }
 
 .summary {
     margin-top: 6px;
     padding-top: 8px;
-    border-top: 1px dashed rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.55);
+    border-top: 1px dashed var(--inset-border);
+    color: rgba(217, 222, 230, 0.55);
+    align-items: center;
+}
+
+/* The one "stamp" moment: rotated bordered chip in the summary row */
+.stamp {
+    margin-left: auto;
+    flex-shrink: 0;
+    display: inline-block;
+    transform: rotate(-6deg);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    color: #86d9a8;
+    border: 1.5px solid #86d9a8;
+    border-radius: 4px;
+    padding: 2px 7px;
+    opacity: 0.9;
 }
 
 @keyframes rowIn {
@@ -156,6 +176,23 @@
     .doneText {
         white-space: normal;
         padding-left: 1.2em;
+    }
+
+    /* Let the summary wrap so the stamp stays visible on small screens */
+    .summary {
+        flex-wrap: wrap;
+        white-space: normal;
+        row-gap: 4px;
+    }
+
+    .summary > span:first-child {
+        flex: 1 1 100%;
+    }
+
+    .stamp {
+        font-size: 0.5rem;
+        padding: 1px 5px;
+        margin-left: 0;
     }
 }
 

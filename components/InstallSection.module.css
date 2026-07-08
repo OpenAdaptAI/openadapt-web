@@ -1,6 +1,6 @@
 .installSection {
-    background: linear-gradient(135deg, rgba(86, 13, 248, 0.1) 0%, rgba(0, 0, 30, 0.95) 100%);
-    border: 1px solid rgba(86, 13, 248, 0.3);
+    background: var(--panel);
+    border: 1px solid var(--hairline);
     border-radius: 16px;
     padding: 24px;
     margin: 24px 0;
@@ -21,19 +21,20 @@
 
 .terminalIcon {
     font-size: 24px;
-    color: #60a5fa;
+    color: var(--accent);
 }
 
 .title {
+    font-family: var(--font-display);
     font-size: 24px;
     font-weight: 600;
-    color: white;
+    color: var(--ink);
     margin: 0;
 }
 
 .subtitle {
     text-align: center;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--ink-2);
     margin-bottom: 24px;
     font-size: 16px;
 }
@@ -45,9 +46,9 @@
     justify-content: center;
     gap: 8px;
     margin-bottom: 24px;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(86, 13, 248, 0.2) 100%);
-    border: 1px solid rgba(52, 152, 219, 0.3);
+    padding: 10px 22px;
+    background: transparent;
+    border: 1px solid var(--accent);
     border-radius: 50px;
     width: fit-content;
     margin-left: auto;
@@ -56,18 +57,18 @@
 
 .pypiIcon {
     font-size: 20px;
-    color: #3498db;
+    color: var(--accent);
 }
 
 .pypiCount {
     font-size: 18px;
     font-weight: 700;
-    color: #60a5fa;
+    color: var(--accent);
 }
 
 .pypiLabel {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--ink-2);
 }
 
 /* Platform Tabs */
@@ -84,25 +85,29 @@
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--hairline);
+    border-radius: 9999px;
+    background: var(--ground);
+    color: var(--ink-2);
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 14px;
 }
 
 .platformTab:hover {
-    border-color: rgba(86, 13, 248, 0.5);
-    background: rgba(86, 13, 248, 0.1);
-    color: white;
+    border-color: var(--ink-3);
+    color: var(--ink);
 }
 
 .activeTab {
-    border-color: #560df8;
-    background: rgba(86, 13, 248, 0.2);
-    color: white;
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--ground);
+}
+
+.activeTab:hover {
+    border-color: var(--ink);
+    color: var(--ground);
 }
 
 .platformIcon {
@@ -112,18 +117,19 @@
 .detectedBadge {
     font-size: 10px;
     padding: 2px 6px;
-    background: rgba(96, 165, 250, 0.2);
-    border-radius: 4px;
-    color: #60a5fa;
+    border: 1px solid currentColor;
+    border-radius: 9999px;
     text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: var(--font-mono);
 }
 
-/* Code Block */
+/* Code Block — dark terminal inset */
 .codeContainer {
-    background: #1a1a2e;
+    background: var(--inset-bg);
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--inset-border);
 }
 
 .codeHeader {
@@ -131,12 +137,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background: rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--inset-border);
 }
 
 .codeTitle {
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(217, 222, 230, 0.65);
+    font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 500;
 }
@@ -146,26 +153,28 @@
     align-items: center;
     gap: 4px;
     padding: 6px 12px;
-    background: rgba(86, 13, 248, 0.3);
-    border: 1px solid rgba(86, 13, 248, 0.5);
-    border-radius: 6px;
-    color: white;
+    background: transparent;
+    border: 1px solid var(--inset-border);
+    border-radius: 9999px;
+    color: var(--inset-text);
     font-size: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .copyButton:hover {
-    background: rgba(86, 13, 248, 0.5);
+    border-color: #86d9a8;
+    color: #86d9a8;
 }
 
 .codeBlock {
     padding: 16px;
     margin: 0;
-    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-family: var(--font-mono);
     font-size: 14px;
     line-height: 1.8;
     overflow-x: auto;
+    color: var(--inset-text);
 }
 
 .commandLine {
@@ -175,24 +184,28 @@
 }
 
 .prompt {
-    color: #22c55e;
+    color: #86d9a8;
     user-select: none;
     flex-shrink: 0;
 }
 
 .command {
-    color: #e2e8f0;
+    color: var(--inset-text);
     word-break: break-all;
 }
 
 .codeFooter {
     padding: 12px 16px;
-    background: rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid var(--inset-border);
+}
+
+.codeFooter .note {
+    color: rgba(217, 222, 230, 0.6);
 }
 
 .note {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--ink-3);
     font-size: 12px;
 }
 
@@ -200,30 +213,31 @@
 .uvInfo {
     margin-top: 16px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--ink-2);
     font-size: 14px;
 }
 
 .uvLink {
-    color: #60a5fa;
+    color: var(--accent);
     text-decoration: underline;
 }
 
 .uvLink:hover {
-    color: #93c5fd;
+    color: var(--ink);
 }
 
 /* Quick Start Commands */
 .quickStart {
     margin-top: 24px;
     padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--hairline);
 }
 
 .quickStartTitle {
+    font-family: var(--font-display);
     font-size: 16px;
-    font-weight: 500;
-    color: white;
+    font-weight: 600;
+    color: var(--ink);
     margin-bottom: 16px;
     text-align: center;
 }
@@ -251,18 +265,23 @@
     flex-direction: column;
     gap: 4px;
     padding: 12px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--inset-bg);
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--inset-border);
 }
 
 .commandItem code {
-    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
-    color: #22c55e;
+    color: #86d9a8;
+    overflow-wrap: anywhere;
 }
 
 .commandItem span {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(217, 222, 230, 0.65);
+}
+
+.commandItem a {
+    color: #86d9a8;
 }

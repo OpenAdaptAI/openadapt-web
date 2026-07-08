@@ -1,5 +1,6 @@
 .background {
-    background: rgba(0, 0, 30, 1);
+    background: var(--ground);
+    border-top: 2px solid var(--rule);
     padding: 60px 20px;
 }
 
@@ -10,7 +11,8 @@
 
 .heading {
     text-align: center;
-    color: whitesmoke;
+    color: var(--ink);
+    font-family: var(--font-display);
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 12px;
@@ -18,7 +20,7 @@
 
 .intro {
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--ink-2);
     font-size: 15px;
     line-height: 1.6;
     max-width: 640px;
@@ -26,12 +28,12 @@
 }
 
 .intro a {
-    color: #60a5fa;
+    color: var(--accent);
     text-decoration: none;
 }
 
 .intro a:hover {
-    color: #82c0ff;
+    color: var(--ink);
     text-decoration: underline;
 }
 
@@ -53,13 +55,13 @@
     align-items: flex-start;
     gap: 12px;
     padding: 14px 16px;
-    background: rgba(62, 48, 103, 0.25);
-    border: 1px solid rgba(86, 13, 248, 0.15);
+    background: var(--panel);
+    border: 1px solid var(--hairline);
     border-radius: 10px;
 }
 
 .highlightIcon {
-    color: rgba(96, 165, 250, 0.7);
+    color: var(--accent);
     font-size: 16px;
     margin-top: 2px;
     flex-shrink: 0;
@@ -67,7 +69,8 @@
 
 .highlightTitle {
     display: block;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--ink);
+    font-family: var(--font-display);
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 2px;
@@ -75,7 +78,7 @@
 
 .highlightDesc {
     display: block;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--ink-3);
     font-size: 13px;
     line-height: 1.4;
 }
@@ -87,10 +90,10 @@
     gap: 10px;
     margin-top: 24px;
     padding: 14px 20px;
-    background: rgba(34, 197, 94, 0.08);
-    border: 1px solid rgba(34, 197, 94, 0.2);
+    background: var(--panel);
+    border: 1px solid var(--accent);
     border-radius: 10px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--ink-2);
     font-size: 14px;
     line-height: 1.5;
 }
@@ -99,7 +102,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #22c55e;
+    background: var(--accent);
     flex-shrink: 0;
     animation: pulse 2s ease-in-out infinite;
 }
@@ -109,28 +112,27 @@
     50% { opacity: 0.4; }
 }
 
-/* Window chrome frame — wraps screenshots to separate them from page */
+/* Window chrome frame — dark terminal inset wrapping the screenshot */
 .windowFrame {
     perspective: 1000px;
 }
 
 .windowFrameInner {
+    /* Positioned so the lazily-loading absolute <img> is contained here
+       instead of sizing against the viewport (caused mobile overflow). */
+    position: relative;
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: #1a1a2e;
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--inset-border);
+    background: var(--inset-bg);
+    box-shadow: 0 8px 32px rgba(35, 40, 31, 0.25);
     transform: rotateX(1deg);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .windowFrameInner:hover {
     transform: rotateX(-1.5deg) rotateY(1deg) translateY(-4px) scale(1.008);
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 48px rgba(35, 40, 31, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -150,8 +152,8 @@
     display: flex;
     align-items: center;
     padding: 10px 14px;
-    background: #2a2a3e;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--inset-border);
     gap: 7px;
 }
 
@@ -159,17 +161,18 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
+    background: rgba(217, 222, 230, 0.18);
 }
 
-.windowDotRed { background: #ff5f57; }
-.windowDotYellow { background: #febc2e; }
-.windowDotGreen { background: #28c840; }
+.windowDotRed { background: rgba(217, 222, 230, 0.18); }
+.windowDotYellow { background: rgba(217, 222, 230, 0.18); }
+.windowDotGreen { background: rgba(217, 222, 230, 0.18); }
 
 .windowTitle {
     margin-left: 8px;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    color: rgba(217, 222, 230, 0.55);
+    font-family: var(--font-mono);
     user-select: none;
 }
 
@@ -185,30 +188,28 @@
 .gifPlaceholder {
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: rgba(62, 48, 103, 0.3);
+    background: var(--inset-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(217, 222, 230, 0.5);
     font-size: 14px;
 }
 
 .caption {
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--ink-3);
     font-size: 14px;
     margin-top: 12px;
     line-height: 1.5;
 }
 
 .caption a {
-    color: #60a5fa;
+    color: var(--accent);
     text-decoration: none;
 }
 
 .caption a:hover {
-    color: #82c0ff;
+    color: var(--ink);
     text-decoration: underline;
 }
-
-

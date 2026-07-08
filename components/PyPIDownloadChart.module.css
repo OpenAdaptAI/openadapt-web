@@ -1,6 +1,6 @@
 .container {
-    background: linear-gradient(135deg, rgba(86, 13, 248, 0.1) 0%, rgba(0, 0, 30, 0.95) 100%);
-    border: 1px solid rgba(86, 13, 248, 0.3);
+    background: var(--panel);
+    border: 1px solid var(--hairline);
     border-radius: 16px;
     padding: 24px;
     margin: 24px 0;
@@ -26,18 +26,19 @@
 
 .icon {
     font-size: 24px;
-    color: #3498db;
+    color: var(--accent);
 }
 
 .title {
+    font-family: var(--font-display);
     font-size: 20px;
     font-weight: 600;
-    color: white;
+    color: var(--ink);
     margin: 0;
 }
 
 .subtitle {
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--ink-3);
     font-size: 14px;
     margin: 0;
 }
@@ -56,16 +57,17 @@
     flex-direction: column;
     align-items: center;
     padding: 12px 20px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--ground);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--hairline);
     min-width: 100px;
 }
 
 .statValue {
+    font-family: var(--font-mono);
     font-size: 18px;
     font-weight: 700;
-    color: #60a5fa;
+    color: var(--ink);
     display: flex;
     align-items: center;
     gap: 6px;
@@ -73,7 +75,7 @@
 
 .statLabel {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--ink-3);
     margin-top: 4px;
 }
 
@@ -82,15 +84,15 @@
 }
 
 .trendUp .statValue {
-    color: #22c55e;
+    color: var(--accent);
 }
 
 .trendDown .statValue {
-    color: #ef4444;
+    color: #a04040;
 }
 
 .trendStable .statValue {
-    color: #f59e0b;
+    color: #8a6d1f;
 }
 
 /* Stats Grid */
@@ -100,7 +102,7 @@
 
 .statPrimary .statValue {
     font-size: 24px;
-    color: #22c55e;
+    color: var(--accent);
 }
 
 .statIcon {
@@ -111,7 +113,7 @@
 .statIconGold {
     font-size: 16px;
     margin-right: 4px;
-    color: #fbbf24;
+    color: #8a6d1f;
 }
 
 /* Secondary Stats Row */
@@ -122,7 +124,7 @@
     margin-top: 12px;
     flex-wrap: wrap;
     padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px dotted var(--hairline-dotted);
 }
 
 .statItemSmall {
@@ -130,15 +132,16 @@
     flex-direction: column;
     align-items: center;
     padding: 8px 12px;
-    background: rgba(0, 0, 0, 0.15);
+    background: var(--ground);
     border-radius: 8px;
     min-width: 70px;
 }
 
 .statValueSmall {
+    font-family: var(--font-mono);
     font-size: 14px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--ink);
     display: flex;
     align-items: center;
     gap: 4px;
@@ -146,7 +149,7 @@
 
 .statLabelSmall {
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--ink-3);
     margin-top: 2px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
@@ -154,7 +157,7 @@
 
 .statIconSmall {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--ink-3);
 }
 
 /* Controls */
@@ -173,59 +176,59 @@
 }
 
 .controlLabel {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.12em;
 }
 
 .toggleGroup {
     display: flex;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    background: var(--ground);
+    border-radius: 9999px;
     padding: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--hairline);
 }
 
 .toggleBtn {
     padding: 6px 12px;
     border: none;
     background: transparent;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--ink-3);
     font-size: 12px;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 9999px;
     transition: all 0.2s ease;
 }
 
 .toggleBtn:hover {
-    color: white;
-    background: rgba(86, 13, 248, 0.2);
+    color: var(--ink);
 }
 
 .toggleBtn.active {
-    color: white;
-    background: rgba(86, 13, 248, 0.5);
+    color: var(--ground);
+    background: var(--ink);
 }
 
 /* Chart Container */
 .chartContainer {
     position: relative;
     height: 350px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--ground);
     border-radius: 12px;
     padding: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--hairline);
 }
 
 /* Taller container for packages view with side legend */
 .chartContainerPackages {
     position: relative;
     height: 400px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--ground);
     border-radius: 12px;
     padding: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--hairline);
 }
 
 /* Loading Overlay */
@@ -241,17 +244,17 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(242, 241, 236, 0.7);
     border-radius: 12px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--ink-3);
     font-size: 14px;
 }
 
 .spinner {
     width: 32px;
     height: 32px;
-    border: 3px solid rgba(86, 13, 248, 0.3);
-    border-top-color: #560df8;
+    border: 3px solid var(--hairline);
+    border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -264,16 +267,16 @@
 
 .errorIcon {
     font-size: 32px;
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--ink-3);
 }
 
 /* Attribution */
 .attribution {
     margin-top: 16px;
     padding: 12px 16px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--ground);
     border-radius: 8px;
-    border: 1px solid rgba(86, 13, 248, 0.2);
+    border: 1px solid var(--hairline);
 }
 
 .attributionContent {
@@ -282,23 +285,70 @@
     justify-content: center;
     gap: 8px;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--ink-2);
 }
 
 .attributionIcon {
     font-size: 16px;
-    color: #3498db;
+    color: var(--accent);
 }
 
 .attributionLink {
-    color: #60a5fa;
+    color: var(--accent);
     text-decoration: none;
     font-weight: 500;
 }
 
 .attributionLink:hover {
     text-decoration: underline;
-    color: #93c5fd;
+    color: var(--ink);
+}
+
+/* Source Link (data-source tooltip anchor) */
+.sourceLink {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 6px;
+    color: var(--ink-3);
+    font-size: 12px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    position: relative;
+    vertical-align: super;
+    line-height: 1;
+}
+
+.sourceLink:hover {
+    color: var(--accent);
+}
+
+.sourceLink:hover .sourceLinkTooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sourceLinkIcon {
+    font-size: 10px;
+}
+
+.sourceLinkTooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--inset-bg);
+    color: var(--inset-text);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+    margin-bottom: 4px;
+    border: 1px solid var(--inset-border);
+    z-index: 1000;
 }
 
 /* Responsive */

@@ -70,7 +70,7 @@ const rows = [
 
 export default function ComparePage() {
     return (
-        <div className="min-h-screen bg-[#06061f] text-white">
+        <div className="min-h-screen bg-ground text-ink">
             <Head>
                 <title>How OpenAdapt compares to RPA, AI agents, and browser recorders | OpenAdapt</title>
                 <meta
@@ -93,13 +93,13 @@ export default function ComparePage() {
             </Head>
 
             <div className="mx-auto max-w-4xl px-4 py-14">
-                <p className="text-sm font-medium uppercase tracking-widest text-[#60a5fa]">
+                <p className="eyebrow">
                     Compare
                 </p>
-                <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+                <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
                     How OpenAdapt compares
                 </h1>
-                <p className="mt-5 max-w-3xl text-base font-light text-white/75 md:text-lg">
+                <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     There are three common ways to automate desktop work today:
                     traditional RPA platforms, AI agents that operate a
                     computer with a large model, and browser recording tools.
@@ -109,10 +109,10 @@ export default function ComparePage() {
                     wins somewhere, so here&#39;s the honest version.
                 </p>
 
-                <h2 className="mt-12 text-xl font-medium tracking-tight text-white/95">
+                <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Versus traditional RPA platforms
                 </h2>
-                <p className="mt-3 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                     Platforms like UiPath, Automation Anywhere, and Blue Prism
                     ask you to build the automation by hand. You author
                     selectors, arrange flowcharts in a studio, and maintain
@@ -123,7 +123,7 @@ export default function ComparePage() {
                     typically per robot or per seat, and the platforms are
                     proprietary.
                 </p>
-                <p className="mt-3 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                     OpenAdapt skips the authoring step entirely. You record
                     yourself doing the task once, and the compiler turns that
                     demonstration into a script. When the UI drifts, OpenAdapt
@@ -132,10 +132,10 @@ export default function ComparePage() {
                     your own machines and it&#39;s MIT-licensed open source.
                 </p>
 
-                <h2 className="mt-12 text-xl font-medium tracking-tight text-white/95">
+                <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Versus AI computer-use agents
                 </h2>
-                <p className="mt-3 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                     Cloud agents in the OpenAI Operator and Claude
                     computer-use family re-reason through your task with a
                     large model on every single run. On tasks nobody has seen
@@ -145,17 +145,17 @@ export default function ComparePage() {
                     last. Every run is billed. And most of these services work
                     by sending screenshots of your screen to the cloud.
                 </p>
-                <p className="mt-3 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                     OpenAdapt uses a model at compile time and at heal time,
                     never on a healthy run. A healthy run is a deterministic
                     local replay: same steps, same order, no model calls, no
                     per-run bill. Your screen stays on your machines.
                 </p>
 
-                <h2 className="mt-12 text-xl font-medium tracking-tight text-white/95">
+                <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Versus browser recording tools
                 </h2>
-                <p className="mt-3 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                     Tools like Skyvern and browser-use record or drive
                     workflows inside the browser, using DOM selectors or model
                     inference. If your whole workflow lives in a browser tab,
@@ -164,7 +164,7 @@ export default function ComparePage() {
                     Windows loan origination system, or anything delivered
                     over Citrix.
                 </p>
-                <p className="mt-3 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                     OpenAdapt works from pixels and inputs rather than the
                     DOM, so the same approach extends past the browser to
                     desktop applications and VDI/RDP sessions (adapters for
@@ -172,24 +172,24 @@ export default function ComparePage() {
                     replaying all happen on your infrastructure.
                 </p>
 
-                <h2 className="mt-12 text-xl font-medium tracking-tight text-white/95">
+                <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Side by side
                 </h2>
-                <div className="mt-4 overflow-x-auto rounded-2xl border border-white/10">
+                <div className="mt-4 overflow-x-auto rounded-2xl border border-hairline bg-panel">
                     <table className="w-full min-w-[720px] text-left text-sm">
                         <thead>
-                            <tr className="border-b border-white/10 bg-white/5">
-                                <th className="p-4 font-medium text-white/60"></th>
-                                <th className="p-4 font-semibold text-white/95">
+                            <tr className="border-b border-hairline bg-ground">
+                                <th className="p-4 font-medium text-ink-3"></th>
+                                <th className="p-4 font-semibold text-ink">
                                     OpenAdapt
                                 </th>
-                                <th className="p-4 font-medium text-white/80">
+                                <th className="p-4 font-medium text-ink-2">
                                     Traditional RPA
                                 </th>
-                                <th className="p-4 font-medium text-white/80">
+                                <th className="p-4 font-medium text-ink-2">
                                     Computer-use agents
                                 </th>
-                                <th className="p-4 font-medium text-white/80">
+                                <th className="p-4 font-medium text-ink-2">
                                     Browser recorders
                                 </th>
                             </tr>
@@ -198,21 +198,21 @@ export default function ComparePage() {
                             {rows.map((row) => (
                                 <tr
                                     key={row.dimension}
-                                    className="border-b border-white/10 last:border-b-0"
+                                    className="border-b border-dotted border-[#C9CCC2] last:border-b-0"
                                 >
-                                    <td className="p-4 align-top font-medium text-white/90">
+                                    <td className="p-4 align-top font-medium text-ink">
                                         {row.dimension}
                                     </td>
-                                    <td className="bg-[#560df8]/10 p-4 align-top font-light text-white/90">
+                                    <td className="bg-accent/10 p-4 align-top text-ink">
                                         {row.openadapt}
                                     </td>
-                                    <td className="p-4 align-top font-light text-white/70">
+                                    <td className="p-4 align-top text-ink-2">
                                         {row.rpa}
                                     </td>
-                                    <td className="p-4 align-top font-light text-white/70">
+                                    <td className="p-4 align-top text-ink-2">
                                         {row.agents}
                                     </td>
-                                    <td className="p-4 align-top font-light text-white/70">
+                                    <td className="p-4 align-top text-ink-2">
                                         {row.browser}
                                     </td>
                                 </tr>
@@ -221,11 +221,11 @@ export default function ComparePage() {
                     </table>
                 </div>
 
-                <div className="mt-12 rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8">
-                    <h2 className="text-xl font-medium tracking-tight text-white/95">
+                <div className="mt-12 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
+                    <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
                         Where agents beat us
                     </h2>
-                    <p className="mt-3 text-sm font-light leading-relaxed text-white/75 md:text-base">
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         We&#39;d rather tell you this than have you find out
                         mid-pilot. Computer-use agents are the better tool for
                         novel one-off tasks, since compiling a demonstration
@@ -239,24 +239,24 @@ export default function ComparePage() {
                     </p>
                 </div>
 
-                <div className="mt-12 rounded-2xl border border-[#560df8]/40 bg-[#560df8]/10 p-6 text-center md:p-8">
-                    <h2 className="text-xl font-medium tracking-tight text-white/95">
+                <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
+                    <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
                         See it on your workflow
                     </h2>
-                    <p className="mx-auto mt-3 max-w-2xl text-sm font-light text-white/75 md:text-base">
+                    <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
                         The fastest way to compare is to bring a real task.
                         Book 15 minutes, or read the code first.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
                         <Link
                             href="/#book"
-                            className="rounded-lg bg-[#560df8] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#7132d4]"
+                            className="btn-ink"
                         >
                             Book a demo
                         </Link>
                         <a
                             href="https://github.com/OpenAdaptAI/OpenAdapt"
-                            className="rounded-lg border border-white/20 px-6 py-2.5 text-sm text-white/90 transition hover:border-white/40 hover:bg-white/5"
+                            className="btn-ghost-ink"
                         >
                             View on GitHub
                         </a>
