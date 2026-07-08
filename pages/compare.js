@@ -152,6 +152,51 @@ export default function ComparePage() {
                     per-run bill. Your screen stays on your machines.
                 </p>
 
+                <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
+                    <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
+                        We measured it
+                    </h3>
+                    <div className="mt-5 grid gap-6 sm:grid-cols-3">
+                        <div>
+                            <p className="font-display text-2xl font-semibold text-ink">
+                                7.7&times; faster
+                            </p>
+                            <p className="mt-1 text-sm text-ink-2">
+                                median run: 4.9s compiled vs 37.5s agent
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-display text-2xl font-semibold text-ink">
+                                $0 vs $0.27
+                            </p>
+                            <p className="mt-1 text-sm text-ink-2">
+                                model cost per run, at list price
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-display text-2xl font-semibold text-ink">
+                                5.1s vs 43.4s
+                            </p>
+                            <p className="mt-1 text-sm text-ink-2">
+                                95th-percentile latency
+                            </p>
+                        </div>
+                    </div>
+                    <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
+                        Same task, same success check, 100 compiled replays
+                        against 20 runs of a Claude computer-use agent: both
+                        arms passed 100% on our simple demo app, so the
+                        difference isn&#39;t success rate, it&#39;s what
+                        repetition costs.
+                    </p>
+                    <a
+                        href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
+                        className="mt-3 inline-block text-sm text-accent hover:underline"
+                    >
+                        Methodology and raw data
+                    </a>
+                </div>
+
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Versus browser recording tools
                 </h2>
