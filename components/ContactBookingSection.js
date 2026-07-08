@@ -199,6 +199,10 @@ export default function ContactBookingSection({
                             </p>
                         )}
 
+                        <p className="text-sm text-white/70">
+                            You&apos;ll hear back from a founder within one
+                            business day.
+                        </p>
                         <div className="flex flex-wrap gap-3">
                             <button
                                 type="submit"
@@ -228,7 +232,9 @@ export default function ContactBookingSection({
                     <div className="mt-8 space-y-4">
                         <div className="rounded-xl border border-emerald-300/30 bg-emerald-500/10 px-4 py-4">
                             <p className="text-sm text-emerald-50/95">
-                                Thanks, you can now select a time directly below.
+                                Thanks — you&apos;ll hear from a founder within
+                                one business day. Or skip the wait and book a
+                                time directly below.
                             </p>
                         </div>
                         <BookingEmbed name={form.name} email={form.email} />

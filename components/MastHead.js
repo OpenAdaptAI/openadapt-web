@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import React from 'react'
 import Link from 'next/link'
@@ -15,6 +15,7 @@ import Image from 'next/image'
 
 import AnimatedBackground from '@components/AnimatedBackground'
 import AnimatedLogo from '@components/AnimatedLogo'
+import ReplayHero from '@components/ReplayHero'
 import EmailForm from '@components/EmailForm'
 import ParticleField from '@components/ParticleField'
 
@@ -28,9 +29,10 @@ const SketchNoSSR = dynamic(() => import('./Sketch'), {
 const CarouselSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselItems = [
-        "Show it once. Let it handle the rest.",
-        "Perform, don't prompt.",
-        "Works with Claude, GPT-4V, Gemini, and more.",
+        "Show it once. It runs forever. On your premises.",
+        "Deterministic replay. Zero per-run model cost.",
+        "Self-healing: UI drift becomes a reviewable diff.",
+        "Your data never leaves the building.",
     ];
 
     useEffect(() => {
@@ -69,36 +71,6 @@ const CarouselSection = () => {
 };
 
 export default function Home() {
-    const videoRef = useRef(null)
-    const [poster, setPoster] = useState('')
-
-    useEffect(() => {
-        const videoElement = videoRef.current
-
-        if (videoElement) {
-            // Create a separate video element just for poster generation
-            const posterVideo = document.createElement('video')
-            posterVideo.src = './demo.mp4'
-
-            // When poster video loads, seek to desired timestamp and capture frame
-            posterVideo.addEventListener('loadeddata', () => {
-                posterVideo.currentTime = 80 // Keep poster timestamp at 80 seconds
-                posterVideo.addEventListener('seeked', () => {
-                    const canvas = document.createElement('canvas')
-                    canvas.width = posterVideo.videoWidth
-                    canvas.height = posterVideo.videoHeight
-                    const ctx = canvas.getContext('2d')
-                    ctx.drawImage(posterVideo, 0, 0, canvas.width, canvas.height)
-                    const dataURI = canvas.toDataURL('image/jpeg')
-                    setPoster(dataURI)
-
-                    // Clean up the poster video element
-                    posterVideo.remove()
-                })
-            })
-        }
-    }, [])
-
     return (
         <div className={styles.section}>
             <ParticleField />
@@ -110,53 +82,34 @@ export default function Home() {
                                 <span className="font-extralight">Open</span><span className="font-semibold">Adapt</span>
                                 <span className="font-extralight">.AI</span>
                             </h1>
-                            <h2 className="text-2xl md:text-3xl mt-0 mb-6 font-light text-white/80">
-                                Teach AI to use any software.
+                            <h2 className="text-2xl md:text-3xl mt-0 mb-4 font-light text-white/90">
+                                Show it once. It runs forever. On your premises.
                             </h2>
-                            <div className="flex flex-col align-center justify-center">
-                                <div className="relative inline-block">
-                                    {/* <AnimatedLogo /> */}
-                                    {/* Set poster image dynamically */}
-                                    <video
-                                        ref={videoRef}
-                                        controls
-                                        className="demo-video w-full max-w-[85%] sm:max-w-[75%] mx-auto rounded-xl border border-white/10"
-                                        poster={poster} // Use the captured frame as the poster
-                                    >
-                                        <source src="./demo.mp4" type="video/mp4" />
-                                        Your browser does not support the video tag.
-                                    </video>
-                                </div>
-                            </div>
-                            <h3 className="mt-6 font-light text-base md:text-lg">
-                                <span className="bg-white/10 backdrop-blur-sm inline-block px-4 py-1.5 rounded-lg text-white/90">
-                                    <b>Record demonstrations. Train models. Deploy agents.</b>
-                                </span>
-                                <br />
-                                <CarouselSection />
-                                <span className="bg-white/10 backdrop-blur-sm inline-block px-4 py-1.5 rounded-lg text-white/90">
-                                    <b>Open source. Model agnostic. Run anywhere.</b>
-                                </span>
+                            <h3 className="mt-0 mb-6 mx-auto max-w-3xl font-light text-base md:text-lg text-white/70">
+                                OpenAdapt compiles a recorded demonstration into
+                                a deterministic, self-healing automation — open
+                                source, auditable, and running entirely on your
+                                own machines.
                             </h3>
+                            <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
+                                <ReplayHero />
+                            </div>
+                            <div className="mt-6 font-light text-base md:text-lg">
+                                <CarouselSection />
+                            </div>
                             <div id="register">
                                 <div className="flex items-center justify-center gap-3 mt-6 mb-4">
-                                    <Link
-                                        className="px-5 py-2.5 rounded-lg border border-[#560df8]/50 text-[#60a5fa] hover:border-[#60a5fa] hover:text-white hover:bg-[#560df8]/10 transition-all duration-200 text-sm font-medium"
-                                        href="#industries"
-                                    >
-                                        Learn How
-                                    </Link>
                                     <Link
                                         className="px-5 py-2.5 rounded-lg bg-[#560df8] text-white hover:bg-[#7132d4] transition-all duration-200 text-sm font-medium"
                                         href="#book"
                                     >
-                                        Book a Call
+                                        Book a demo
                                     </Link>
                                     <Link
-                                        className="px-5 py-2.5 rounded-lg border border-white/20 text-white/90 hover:border-white/40 hover:bg-white/5 transition-all duration-200 text-sm font-medium"
-                                        href="#book"
+                                        className="px-5 py-2.5 rounded-lg border border-[#560df8]/50 text-[#60a5fa] hover:border-[#60a5fa] hover:text-white hover:bg-[#560df8]/10 transition-all duration-200 text-sm font-medium"
+                                        href="#how-it-works"
                                     >
-                                        Contact
+                                        See how it works
                                     </Link>
                                 </div>
                             </div>
@@ -195,7 +148,7 @@ export default function Home() {
                     </div>
                     {/* Discord Icon */}
                     <div className="relative z-50">
-                        <a href="https://discord.gg/fEEBqRryep" aria-label="Join us on Discord" title="Join us on Discord">
+                        <a href="https://discord.gg/yF527cQbDG" aria-label="Join us on Discord" title="Join us on Discord">
                             <FontAwesomeIcon
                                 icon={faDiscord}
                                 className="text-xl sm:text-2xl"

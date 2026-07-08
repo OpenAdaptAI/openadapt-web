@@ -163,27 +163,62 @@ export default function InstallSection() {
                 </p>
             </div>
 
-            {/* Quick Start Commands */}
+            {/* Quick Start: the full loop */}
             <div className={styles.quickStart}>
-                <h4 className={styles.quickStartTitle}>Quick Start Commands</h4>
+                <h4 className={styles.quickStartTitle}>
+                    The full loop, in five commands
+                </h4>
+                <p className={styles.note} style={{ marginBottom: '0.75rem' }}>
+                    Try record → compile → replay → heal right now against the
+                    bundled demo app — no account, no cloud, nothing leaves
+                    your machine.
+                </p>
                 <div className={styles.commandGrid}>
                     <div className={styles.commandItem}>
-                        <code>openadapt capture start --name my-task</code>
-                        <span>Start recording</span>
+                        <code>
+                            pip install openadapt-flow && playwright install
+                            chromium
+                        </code>
+                        <span>Install the demonstration compiler</span>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt capture stop</code>
-                        <span>Stop recording</span>
+                        <code>openadapt-flow demo-record --out rec</code>
+                        <span>Record a demonstration</span>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt capture view my-task</code>
-                        <span>View recording</span>
+                        <code>
+                            openadapt-flow compile rec --out bundle --name
+                            my-task
+                        </code>
+                        <span>Compile it into an editable workflow</span>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt doctor</code>
-                        <span>Check system</span>
+                        <code>openadapt-flow replay bundle</code>
+                        <span>Replay: deterministic, local, zero model calls</span>
+                    </div>
+                    <div className={styles.commandItem}>
+                        <code>openadapt-flow replay bundle --drift theme</code>
+                        <span>Drift the UI and watch it heal itself</span>
                     </div>
                 </div>
+                <p className={styles.note} style={{ marginTop: '0.75rem' }}>
+                    Every replay writes an illustrated run report: what ran,
+                    what it saw, what healed. Source on{' '}
+                    <a
+                        href="https://github.com/OpenAdaptAI/openadapt-flow"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ textDecoration: 'underline' }}
+                    >
+                        GitHub
+                    </a>
+                    . Running this on your own desktop workflows in a regulated
+                    environment?{' '}
+                    <a href="#book" style={{ textDecoration: 'underline' }}>
+                        Book a demo
+                    </a>
+                    .
+                </p>
             </div>
         </div>
     );
