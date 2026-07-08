@@ -1,51 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindows, faApple } from '@fortawesome/free-brands-svg-icons';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
 import styles from './Developers.module.css';
-import { getReleasesDownloadCount } from 'utils/githubStats';
-import EmailForm from '@components/EmailForm';
 import InstallSection from '@components/InstallSection';
-import DownloadGraph from './DownloadGraph';
 import PyPIDownloadChart from './PyPIDownloadChart';
 
+const ecosystemLinks = [
+    {
+        label: 'All repositories',
+        href: 'https://github.com/OpenAdaptAI',
+    },
+    {
+        label: 'openadapt-flow',
+        href: 'https://github.com/OpenAdaptAI/openadapt-flow',
+    },
+    {
+        label: 'Docs',
+        href: 'https://docs.openadapt.ai',
+    },
+    {
+        label: 'Blog',
+        href: 'https://blog.openadapt.ai',
+    },
+    {
+        label: 'Discord',
+        href: 'https://discord.gg/yF527cQbDG',
+    },
+    {
+        label: 'Report an issue',
+        href: 'https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose',
+    },
+];
+
 export default function Developers() {
-    const [latestRelease, setLatestRelease] = useState({ version: null, date: null });
-    const [downloadCount, setDownloadCount] = useState({ windows: 0, mac: 0 });
     const [buildWarnings, setBuildWarnings] = useState([]);
-    const macURL = latestRelease.version
-        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt-${latestRelease.version}.dmg`
-        : '';
-    const windowsURL = latestRelease.version
-        ? `https://github.com/OpenAdaptAI/OpenAdapt/releases/download/${latestRelease.version}/OpenAdapt_Installer-${latestRelease.version}.exe`
-        : '';
 
     useEffect(() => {
-        // Fetch the latest release information
-        fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt/releases/latest')
-            .then(response => response.json())
-            .then(data => {
-                const releaseDate = new Date(data.published_at).toLocaleString('en-US', {
-                    year: 'numeric', month: 'numeric', day: 'numeric',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit',
-                    hour12: false, timeZoneName: 'short'
-                });
-                setLatestRelease({
-                    version: data.name,
-                    date: releaseDate
-                });
-            });
-
-        // Fetch download counts
-        getReleasesDownloadCount().then(({ windowsDownloadCount, macDownloadCount }) => {
-            setDownloadCount({
-                windows: windowsDownloadCount,
-                mac: macDownloadCount,
-            });
-            console.log("Download counts:", { windowsDownloadCount, macDownloadCount });
-        });
-
         // Fetch issues labeled "main-broken"
         fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt/issues?state=open&labels=main-broken')
             .then(response => response.json())
@@ -57,48 +45,16 @@ export default function Developers() {
             });
     }, []);
 
-    const handleDownloadClick = (os, url) => {
-        const fileName = url.split('/').pop();
-        window.gtag('event', 'download_start', {
-            event_category: 'Software Downloads',
-            event_action: `Download Initiated ${os}`,
-            event_label: fileName,
-            value: 1
-        });
-        downloadFile(url, os, fileName);
-    }
-
-    const downloadFile = async (url, os, fileName) => {
-        try {
-            const response = await fetch(url);
-            if (response.ok) {
-                window.gtag('event', 'download_success', {
-                    event_category: 'Software Downloads',
-                    event_action: `Download Successful ${os}`,
-                    event_label: fileName,
-                    value: 1
-                });
-            } else {
-                throw new Error('Network response was not ok.');
-            }
-        } catch (error) {
-            console.error('Download failed:', error);
-            window.gtag('event', 'download_failure', {
-                event_category: 'Software Downloads',
-                event_action: `Download Failed ${os}`,
-                event_label: fileName,
-                value: 0
-            });
-        }
-    }
-
     return (
-        <div className={styles.row} id="start">
+        <div className={styles.row} id="open-source">
+            {/* Legacy anchors kept for existing inbound links */}
+            <span id="start" />
+            <span id="developers" />
             <div className="relative flex items-center justify-center mx-4 sm:mx-8 md:mx-12 lg:mx-20 max-w-5xl">
                 <div className="grid grid-cols-1 break-words w-full">
-                    <p className="eyebrow text-center mt-8 mb-2">Developers</p>
+                    <p className="eyebrow text-center mt-8 mb-2">Open source</p>
                     <h2 className="font-display text-xl mb-4 font-semibold text-center tracking-tight text-ink">
-                        Getting Started
+                        MIT licensed. Install it and read the code.
                     </h2>
                     {buildWarnings.length > 0 && (
                         <div className="bg-amber-100 border border-amber-700/40 text-amber-900 text-center p-4 rounded-lg">
@@ -124,147 +80,25 @@ export default function Developers() {
                         Record a workflow once and it compiles into a deterministic, self-healing automation that runs on your own machines.
                     </p>
 
-                    {/* New uv-first Installation Section */}
+                    {/* uv-first Installation Section */}
                     <InstallSection />
 
                     {/* PyPI Download Statistics */}
                     <PyPIDownloadChart />
 
-                    {/* Legacy Desktop App Downloads - Disabled during transition to new architecture
-                    <div className="mt-12">
-                        <h3 className="text-xl font-light text-center mb-2">
-                            Or Download Desktop App (Legacy)
-                        </h3>
-                        <p className="text-sm text-center text-gray-400 mb-4">
-                            A new desktop app is in development. For now, we recommend using the CLI above.
-                        </p>
-                        {latestRelease.version && (
-                            <div className="text-center mb-4">
-                                <div className="inline-block bg-transparent p-3 shadow-lg rounded-lg">
-                                    <table className="table-auto border-separate border-spacing-y-2">
-                                        <tbody>
-                                            <tr>
-                                                <td className="bg-gray-800 px-4 py-2 rounded-l text-sm font-semibold text-white w-40 border-r border-gray-800">Current Version:</td>
-                                                <td className="bg-white bg-opacity-50 px-4 py-2 rounded-r text-lg font-bold text-white border-l border-transparent">{latestRelease.version}</td>
-                                            </tr>
-                                            <tr className="mt-2">
-                                                <td className="bg-gray-800 px-4 py-2 rounded-l text-sm font-semibold text-white w-40 border-r border-gray-800">Released on:</td>
-                                                <td className="bg-white bg-opacity-50 px-4 py-2 rounded-r text-lg text-white border-l border-transparent">{latestRelease.date}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        )}
-                        <div className="flex flex-col gap-10 justify-center items-center sm:flex-row">
-                            <Link
-                                className="w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8"
-                                href={windowsURL}
-                                onClick={() => handleDownloadClick('Windows', windowsURL)}
+                    <div className="mt-8 mb-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
+                        {ecosystemLinks.map((link) => (
+                            <a
+                                key={link.label}
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm"
                             >
-                                <FontAwesomeIcon
-                                    icon={faWindows}
-                                    className="text-[96px]"
-                                />
-                                <span className="text-2xl">
-                                    Download for Windows
-                                </span>
-                                {downloadCount.windows > 0 && (
-                                    <span className="text-lg">
-                                        {downloadCount.windows.toLocaleString()} downloads
-                                        <a
-                                            href="https://github.com/OpenAdaptAI/OpenAdapt/releases"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={styles.sourceLink}
-                                            aria-label="View GitHub releases"
-                                        >
-                                            <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                            <span className={styles.sourceLinkTooltip}>View data source</span>
-                                        </a>
-                                    </span>
-                                )}
-                            </Link>
-                            <Link
-                                className="px-8 w-fit flex flex-col gap-y-6 h-fit btn btn-primary hover:no-underline mb-6 py-8 sm:px-6"
-                                href={macURL}
-                                onClick={() => handleDownloadClick('MacOS', macURL)}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faApple}
-                                    style={{ fontSize: 96 }}
-                                />
-                                <span className="text-2xl">Download for MacOS</span>
-                                {downloadCount.mac > 0 && (
-                                    <span className="text-lg">
-                                        {downloadCount.mac.toLocaleString()} downloads
-                                        <a
-                                            href="https://github.com/OpenAdaptAI/OpenAdapt/releases"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={styles.sourceLink}
-                                            aria-label="View GitHub releases"
-                                        >
-                                            <FontAwesomeIcon icon={faLink} className={styles.sourceLinkIcon} />
-                                            <span className={styles.sourceLinkTooltip}>View data source</span>
-                                        </a>
-                                    </span>
-                                )}
-                            </Link>
-                        </div>
+                                {link.label}
+                            </a>
+                        ))}
                     </div>
-                    <DownloadGraph />
-                    */}
-                    <EmailForm />
-
-                    <h2 className="font-display text-xl mt-8 font-semibold text-center tracking-tight text-ink">What's Next?</h2>
-                    <ul className={`${styles.noBullets} mt-3 font-light text-center`}>
-                        <li className="mt-2">
-                            <a
-                                className="btn-ghost-ink"
-                                href="https://docs.openadapt.ai"
-                            >
-                                Read the Docs
-                            </a>
-                        </li>
-                        <li className="mt-2">
-                            <a
-                                className="btn-ghost-ink"
-                                href="https://blog.openadapt.ai"
-                            >
-                                Read the Blog
-                            </a>
-                        </li>
-                        <li className="mt-2">
-                            <a
-                                className="btn-ghost-ink"
-                                href="https://discord.gg/yF527cQbDG"
-                            >
-                                Join our Discord
-                            </a>
-                        </li>
-                        <li className="mt-2">
-                            <a
-                                className="btn-ghost-ink"
-                                href="https://github.com/OpenAdaptAI/OpenAdapt#installation"
-                            >
-                                View README
-                            </a>
-                        </li>
-                    </ul>
-                    <h2 className="font-display text-xl mt-8 font-semibold text-center tracking-tight text-ink">
-                        Troubleshooting
-                    </h2>
-                    <ul className={`${styles.noBullets} mt-3 font-light text-center`}>
-                        <li className="mt-2">
-                            <a
-                                className="btn-ghost-ink"
-                                href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose"
-                            >
-                                Please submit a GitHub Issue
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>

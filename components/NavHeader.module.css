@@ -1,0 +1,127 @@
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--panel);
+    border-bottom: 1px solid var(--hairline);
+}
+
+.inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 60px;
+    padding: 0 16px;
+}
+
+.wordmark {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.wordmark:hover {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-left: auto;
+}
+
+.link {
+    font-size: 13.5px;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.link:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.cta {
+    display: inline-block;
+    padding: 7px 16px;
+    border-radius: 9999px;
+    background: var(--ink);
+    color: var(--ground);
+    border: 1.5px solid var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.cta:hover {
+    background: #3a4133;
+    border-color: #3a4133;
+    color: var(--ground);
+    text-decoration: none;
+}
+
+.menuButton {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1;
+}
+
+.mobilePanel {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .links {
+        display: none;
+    }
+
+    .menuButton {
+        display: inline-block;
+        margin-left: auto;
+    }
+
+    .cta {
+        margin-left: 0;
+    }
+
+    .mobilePanel {
+        display: flex;
+        flex-direction: column;
+        background: var(--panel);
+        border-bottom: 1px solid var(--hairline);
+        padding: 6px 16px 12px;
+    }
+
+    .mobileLink {
+        font-size: 15px;
+        color: var(--ink);
+        text-decoration: none;
+        padding: 10px 0;
+        border-bottom: 1px dotted var(--hairline-dotted);
+    }
+
+    .mobileLink:last-child {
+        border-bottom: none;
+    }
+
+    .mobileLink:hover {
+        color: var(--accent);
+        text-decoration: none;
+    }
+}

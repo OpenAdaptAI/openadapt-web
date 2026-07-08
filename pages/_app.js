@@ -4,6 +4,8 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import Head from 'next/head'
 import Script from 'next/script'
 
+import NavHeader from '@components/NavHeader'
+
 export default function MyApp({ Component, pageProps }) {
     return (
         <>
@@ -75,6 +77,7 @@ export default function MyApp({ Component, pageProps }) {
                     }}
                 />
             </Head>
+            <NavHeader />
             <main className="font-sans">
                 <Component {...pageProps} />
             </main>

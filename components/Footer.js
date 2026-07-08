@@ -40,14 +40,37 @@ export default function Footer() {
                         />
                     </div>
                 </div>
-                <iframe
-                    src="https://github.com/sponsors/OpenAdaptAI/button"
-                    title="Sponsor OpenAdaptAI"
-                    height="32"
-                    width="114"
-                    style={{ border: '0', borderRadius: '6px' }}
-                    className="mx-auto mb-4"
-                ></iframe>
+                <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
+                    <iframe
+                        src="https://github.com/sponsors/OpenAdaptAI/button"
+                        title="Sponsor OpenAdaptAI"
+                        height="32"
+                        width="114"
+                        style={{ border: '0', borderRadius: '6px' }}
+                    ></iframe>
+                    <a
+                        className="github-button"
+                        href="https://github.com/OpenAdaptAI/OpenAdapt"
+                        data-color-scheme="no-preference: light; light: light; dark: light;"
+                        data-icon="octicon-star"
+                        data-size="large"
+                        data-show-count="true"
+                        aria-label="Star OpenAdaptAI/OpenAdapt on GitHub"
+                    >
+                        Star
+                    </a>
+                    <a
+                        className="github-button"
+                        href="https://github.com/OpenAdaptAI/OpenAdapt/fork"
+                        data-color-scheme="no-preference: light; light: light; dark: light;"
+                        data-icon="octicon-repo-forked"
+                        data-size="large"
+                        data-show-count="true"
+                        aria-label="Fork OpenAdaptAI/OpenAdapt on GitHub"
+                    >
+                        Fork
+                    </a>
+                </div>
                 <div className={styles.footerContent}>
                     <div className={`${styles.footerLinks} pt-4`}>
                         <a href={bookHref} className={styles.link}>
