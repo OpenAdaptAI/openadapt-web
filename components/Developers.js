@@ -96,7 +96,7 @@ export default function Developers() {
         <div className={styles.row} id="start">
             <div className="relative flex items-center justify-center mx-4 sm:mx-8 md:mx-12 lg:mx-20 max-w-5xl">
                 <div className="grid grid-cols-1 break-words w-full">
-                    <h2 id="start" className="text-xl mt-8 mb-4 font-medium text-center tracking-tight">
+                    <h2 className="text-xl mt-8 mb-4 font-medium text-center tracking-tight">
                         Getting Started
                     </h2>
                     {buildWarnings.length > 0 && (
@@ -119,8 +119,8 @@ export default function Developers() {
                         </div>
                     )}
                     <p className="font-light mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-white/75">
-                        OpenAdapt is an open-source platform for GUI automation with ML.
-                        Record human demonstrations, train models, and deploy agents that can operate any software.
+                        OpenAdapt is an open-source demonstration compiler for desktop automation.
+                        Record a workflow once and it compiles into a deterministic, self-healing automation that runs on your own machines.
                     </p>
 
                     {/* New uv-first Installation Section */}

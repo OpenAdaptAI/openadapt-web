@@ -61,6 +61,14 @@ export default function Footer() {
                         </a>
                     </div>
                     <div className={styles.footerLinks}>
+                        <a href="/solutions/healthcare" className={styles.link}>
+                            Healthcare
+                        </a>
+                        <a href="/solutions/lending" className={styles.link}>
+                            Lending
+                        </a>
+                    </div>
+                    <div className={styles.footerLinks}>
                         <a href="/privacy-policy" className={styles.link}>
                             Privacy Policy
                         </a>{' '}
