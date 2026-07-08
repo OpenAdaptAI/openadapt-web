@@ -206,7 +206,11 @@ export default function ComparePage() {
                         resets daily, so this is a field result, not a
                         CI-reproducible one. The agent arm is N=10 (agent runs
                         cost real money and real load on a shared service), so
-                        its 100% carries wide error bars. Results are pinned
+                        its 100% carries wide error bars. One compiled run
+                        self-flagged postcondition drift on the final step and
+                        was verified saved by OCR; success is judged by the
+                        arm-independent check for both arms, never
+                        self-report. Results are pinned
                         to claude-sonnet-5 with the computer_20251124 tool on
                         2026-07-08; newer models will differ. The OCR success
                         check errs conservative on dense EMR text and is
