@@ -151,20 +151,20 @@ export default function Home() {
             <MastHead />
             <HowItWorks />
             <div style={{
-                background: 'rgba(0, 0, 30, 1)',
+                background: 'var(--panel)',
                 textAlign: 'center',
                 padding: '10px 16px',
-                borderTop: '1px solid rgba(86, 13, 248, 0.2)',
-                borderBottom: '1px solid rgba(86, 13, 248, 0.2)',
+                borderTop: '1px solid var(--hairline)',
+                borderBottom: '1px solid var(--hairline)',
             }}>
                 <p style={{
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    color: 'var(--ink-3)',
                     fontSize: '13px',
                     margin: 0,
                     letterSpacing: '0.02em',
                 }}>
                     OpenAdapt v1 is open source and under active development.
-                    Commercial <a href="#book">pilots</a> for healthcare and
+                    Commercial <a href="#book" style={{ color: 'var(--accent)' }}>pilots</a> for healthcare and
                     lending are open.
                 </p>
             </div>

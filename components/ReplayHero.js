@@ -80,8 +80,13 @@ export default function ReplayHero() {
                     className={`${styles.row} ${styles.summary}`}
                     style={{ animationDelay: `${0.5 + ROWS.length * 1.15}s` }}
                 >
-                    total 2.4s &nbsp;·&nbsp; model calls: 0 &nbsp;·&nbsp; cost
-                    per run: $0.00
+                    <span>
+                        total 2.4s &nbsp;·&nbsp; model calls: 0 &nbsp;·&nbsp;
+                        cost per run: $0.00
+                    </span>
+                    <span className={styles.stamp}>
+                        VERIFIED · 0 MODEL CALLS
+                    </span>
                 </div>
             </div>
         </div>

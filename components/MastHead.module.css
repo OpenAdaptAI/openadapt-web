@@ -4,13 +4,21 @@
 }
 .section:first-of-type {
     padding: 0;
+    color: var(--ink);
+    background: var(--ground);
+    border-bottom: 1px solid var(--hairline);
 }
-.section:first-of-type {
-    color: #eee;
-    background: radial-gradient(
-        circle,
-        rgba(10, 27, 96, 1) 19%,
-        rgba(12, 16, 46, 1) 44%,
-        rgba(0, 0, 30, 1) 66%
-    );
+
+/* Mono green bordered pill above the H2 */
+.heroPill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 9999px;
+    padding: 4px 14px;
 }

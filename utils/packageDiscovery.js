@@ -79,7 +79,9 @@ async function fetchGitHubRepos() {
 // Must include ALL public openadapt-* repos from the OpenAdaptAI org
 // Last updated: 2026-03-03
 const FALLBACK_PACKAGES = [
-    { name: 'openadapt', description: 'AI-First process automation with large multimodal models', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt', description: 'Demonstration compiler for desktop automation: record once, replay deterministically, self-heal on drift', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-flow', description: 'Record a workflow once, compile it into a deterministic, self-healing, locally-run script', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
+    { name: 'openadapt-types', description: 'Canonical action and episode schemas shared across the ecosystem', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
     { name: 'openadapt-agent', description: 'Production execution engine for OpenAdapt GUI automation agents', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
     { name: 'openadapt-capture', description: 'GUI interaction capture with time-aligned media', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
     { name: 'openadapt-consilium', description: 'Multi-LLM council for consensus-driven AI responses with cross-model review', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },

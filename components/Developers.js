@@ -96,11 +96,12 @@ export default function Developers() {
         <div className={styles.row} id="start">
             <div className="relative flex items-center justify-center mx-4 sm:mx-8 md:mx-12 lg:mx-20 max-w-5xl">
                 <div className="grid grid-cols-1 break-words w-full">
-                    <h2 className="text-xl mt-8 mb-4 font-medium text-center tracking-tight">
+                    <p className="eyebrow text-center mt-8 mb-2">Developers</p>
+                    <h2 className="font-display text-xl mb-4 font-semibold text-center tracking-tight text-ink">
                         Getting Started
                     </h2>
                     {buildWarnings.length > 0 && (
-                        <div className="bg-yellow-600 text-white text-center p-4">
+                        <div className="bg-amber-100 border border-amber-700/40 text-amber-900 text-center p-4 rounded-lg">
                             Warning: The current version has a known issue{buildWarnings.length > 1 ? 's' : ''}:
                             {buildWarnings.map((issue, index) => (
                                 <React.Fragment key={issue.id}>
@@ -118,7 +119,7 @@ export default function Developers() {
                             . Please check back later for updates.
                         </div>
                     )}
-                    <p className="font-light mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-white/75">
+                    <p className="mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-ink-2">
                         OpenAdapt is an open-source demonstration compiler for desktop automation.
                         Record a workflow once and it compiles into a deterministic, self-healing automation that runs on your own machines.
                     </p>
@@ -216,11 +217,11 @@ export default function Developers() {
                     */}
                     <EmailForm />
 
-                    <h2 className="text-xl mt-8 font-medium text-center tracking-tight">What's Next?</h2>
+                    <h2 className="font-display text-xl mt-8 font-semibold text-center tracking-tight text-ink">What's Next?</h2>
                     <ul className={`${styles.noBullets} mt-3 font-light text-center`}>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
+                                className="btn-ghost-ink"
                                 href="https://docs.openadapt.ai"
                             >
                                 Read the Docs
@@ -228,7 +229,7 @@ export default function Developers() {
                         </li>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
+                                className="btn-ghost-ink"
                                 href="https://blog.openadapt.ai"
                             >
                                 Read the Blog
@@ -236,7 +237,7 @@ export default function Developers() {
                         </li>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
+                                className="btn-ghost-ink"
                                 href="https://discord.gg/yF527cQbDG"
                             >
                                 Join our Discord
@@ -244,20 +245,20 @@ export default function Developers() {
                         </li>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
+                                className="btn-ghost-ink"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt#installation"
                             >
                                 View README
                             </a>
                         </li>
                     </ul>
-                    <h2 className="text-xl mt-8 font-medium text-center tracking-tight">
+                    <h2 className="font-display text-xl mt-8 font-semibold text-center tracking-tight text-ink">
                         Troubleshooting
                     </h2>
                     <ul className={`${styles.noBullets} mt-3 font-light text-center`}>
                         <li className="mt-2">
                             <a
-                                className="inline-block px-4 py-2 rounded-lg bg-[#5a1eac] hover:bg-[#7132d4] text-white text-sm font-medium transition-all duration-200"
+                                className="btn-ghost-ink"
                                 href="https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose"
                             >
                                 Please submit a GitHub Issue
