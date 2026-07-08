@@ -1,5 +1,6 @@
 .section {
-    background: rgba(0, 0, 30, 1);
+    background: var(--ground);
+    border-top: 2px solid var(--rule);
     padding: 72px 20px 80px;
     scroll-margin-top: 24px;
 }
@@ -9,19 +10,31 @@
     margin: 0 auto;
 }
 
-.heading {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 24px;
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    text-align: center;
+    margin: 0 0 10px;
+}
+
+.heading {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
     letter-spacing: -0.01em;
     text-align: center;
     margin: 0 0 8px;
 }
 
 .subheading {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--ink-3);
     font-size: 15px;
-    font-weight: 300;
+    font-weight: 400;
     text-align: center;
     margin: 0 0 44px;
 }
@@ -30,7 +43,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid rgba(86, 13, 248, 0.25);
+    border-top: 1px solid var(--hairline);
 }
 
 .step {
@@ -38,13 +51,13 @@
     align-items: baseline;
     gap: 22px;
     padding: 22px 8px;
-    border-bottom: 1px solid rgba(86, 13, 248, 0.25);
+    border-bottom: 1px solid var(--hairline);
 }
 
 .number {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-family: var(--font-mono);
     font-size: 15px;
-    color: #60a5fa;
+    color: var(--accent);
     min-width: 42px;
     text-align: right;
     flex-shrink: 0;
@@ -56,7 +69,8 @@
 
 .name {
     display: inline;
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--ink);
+    font-family: var(--font-display);
     font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.01em;
@@ -65,15 +79,15 @@
 
 .name::after {
     content: ' — ';
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--ink-3);
     font-weight: 300;
 }
 
 .description {
     display: inline;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--ink-2);
     font-size: 15px;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.6;
     margin: 0;
 }

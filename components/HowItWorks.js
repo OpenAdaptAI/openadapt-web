@@ -37,6 +37,7 @@ export default function HowItWorks() {
     return (
         <section id="how-it-works" className={styles.section}>
             <div className={styles.inner}>
+                <p className={styles.eyebrow}>Process</p>
                 <h2 className={styles.heading}>How it works</h2>
                 <p className={styles.subheading}>
                     A demonstration compiler: one recording in, a deterministic
