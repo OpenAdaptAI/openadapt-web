@@ -67,6 +67,12 @@ export default function Footer() {
                         <a href="/solutions/lending" className={styles.link}>
                             Lending
                         </a>
+                        <a href="/compare" className={styles.link}>
+                            Compare
+                        </a>
+                        <a href="/about" className={styles.link}>
+                            About
+                        </a>
                     </div>
                     <div className={styles.footerLinks}>
                         <a href="/privacy-policy" className={styles.link}>
