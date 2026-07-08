@@ -154,20 +154,29 @@ export default function ComparePage() {
 
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                     <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
-                        We measured it
+                        We measured it on a real EMR
                     </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        An 18-step add-patient-note workflow on the official
+                        OpenEMR public demo, run both ways and judged by one
+                        arm-independent OCR check, with a distinct
+                        parameterized note per run. Both arms succeeded every
+                        time: 20/20 compiled, 10/10 for a Claude computer-use
+                        agent. The agent doesn&#39;t fail here &mdash; the
+                        difference is what each run costs.
+                    </p>
                     <div className="mt-5 grid gap-6 sm:grid-cols-3">
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                7.7&times; faster
+                                1.8&times; faster
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                median run: 4.9s compiled vs 37.5s agent
+                                median run: 39.2s compiled vs 70.4s agent
                             </p>
                         </div>
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                $0 vs $0.27
+                                $0 vs $0.55
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
                                 model cost per run, at list price
@@ -175,25 +184,61 @@ export default function ComparePage() {
                         </div>
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                5.1s vs 43.4s
+                                0 vs ~24
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                95th-percentile latency
+                                model calls per run
                             </p>
                         </div>
                     </div>
                     <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Same task, same success check, 100 compiled replays
-                        against 20 runs of a Claude computer-use agent: both
-                        arms passed 100% on our simple demo app, so the
-                        difference isn&#39;t success rate, it&#39;s what
-                        repetition costs.
+                        Run the task 500 times and the ratios compound: about
+                        $275 and ten hours of wall clock through the agent,
+                        versus $0 and about five and a half hours compiled,
+                        with every action auditable against the demonstrated
+                        script. The compiled arm&#39;s price of entry is a
+                        one-minute human demonstration; the agent needs only a
+                        prompt.
+                    </p>
+                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                        Caveats, disclosed up front: the OpenEMR demo is a
+                        shared public instance that anyone can modify and that
+                        resets daily, so this is a field result, not a
+                        CI-reproducible one. The agent arm is N=10 (agent runs
+                        cost real money and real load on a shared service), so
+                        its 100% carries wide error bars. Results are pinned
+                        to claude-sonnet-5 with the computer_20251124 tool on
+                        2026-07-08; newer models will differ. The OCR success
+                        check errs conservative on dense EMR text and is
+                        identical for both arms.
+                    </p>
+                    <a
+                        href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/openemr/BENCHMARK.md"
+                        className="mt-3 inline-block text-sm text-accent hover:underline"
+                    >
+                        OpenEMR methodology and raw data
+                    </a>
+                </div>
+
+                <div className="mt-4 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
+                    <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
+                        The reproducible anchor
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        Because the OpenEMR numbers depend on a live shared
+                        instance, we keep the same head-to-head on MockMed,
+                        the demo clinic app that ships with openadapt-flow,
+                        as the benchmark anyone can rerun deterministically:
+                        100 compiled replays against 20 agent runs, both arms
+                        100%, 4.9s vs 37.5s median, $0 vs $0.27 per run at
+                        list price. Same orchestrator, same agent harness,
+                        same style of OCR check.
                     </p>
                     <a
                         href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
                         className="mt-3 inline-block text-sm text-accent hover:underline"
                     >
-                        Methodology and raw data
+                        MockMed methodology and raw data
                     </a>
                 </div>
 
