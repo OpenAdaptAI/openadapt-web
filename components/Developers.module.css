@@ -4,14 +4,15 @@
     justify-content: center;
     padding-top: 50px;
     padding-bottom: 50px;
-    background-color: rgba(0, 0, 30, 1);
-    color: white;
+    background: var(--ground);
+    border-top: 2px solid var(--rule);
+    color: var(--ink);
 }
 .p {
     padding: 20px;
     font-size: 18px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--ink-2);
 }
 .no-bullets {
     list-style-type: none;
@@ -23,7 +24,7 @@
     display: inline-flex;
     align-items: center;
     margin-left: 6px;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--ink-3);
     font-size: 12px;
     text-decoration: none;
     transition: color 0.2s ease;
@@ -33,7 +34,7 @@
 }
 
 .sourceLink:hover {
-    color: #60a5fa;
+    color: var(--accent);
 }
 
 .sourceLink:hover .sourceLinkTooltip {
@@ -50,8 +51,8 @@
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
+    background: var(--inset-bg);
+    color: var(--inset-text);
     padding: 6px 10px;
     border-radius: 6px;
     font-size: 11px;
@@ -61,6 +62,6 @@
     transition: opacity 0.2s ease, visibility 0.2s ease;
     pointer-events: none;
     margin-bottom: 4px;
-    border: 1px solid rgba(86, 13, 248, 0.5);
+    border: 1px solid var(--inset-border);
     z-index: 1000;
 }

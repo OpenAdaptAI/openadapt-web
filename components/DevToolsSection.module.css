@@ -1,5 +1,5 @@
 .background {
-    background: rgba(0, 0, 30, 1);
+    background: var(--ground);
     padding: 40px 20px 60px;
 }
 
@@ -10,7 +10,8 @@
 
 .heading {
     text-align: center;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--ink);
+    font-family: var(--font-display);
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 4px;
@@ -18,7 +19,7 @@
 
 .subtitle {
     text-align: center;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--ink-3);
     font-size: 14px;
     margin-bottom: 20px;
 }
@@ -32,24 +33,23 @@
 
 .card {
     flex: 0 1 240px;
-    background: rgba(40, 50, 80, 0.35);
-    border: 1px solid rgba(96, 165, 250, 0.2);
+    background: var(--panel);
+    border: 1px solid var(--hairline);
     border-radius: 12px;
     padding: 16px 18px;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    transition: background-color 0.3s, border-color 0.3s;
+    transition: border-color 0.3s;
 }
 
 .card:hover {
-    background: rgba(40, 50, 80, 0.55);
-    border-color: rgba(96, 165, 250, 0.4);
+    border-color: var(--ink-3);
 }
 
 .packageName {
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-    color: #93c5fd;
+    font-family: var(--font-mono);
+    color: var(--accent);
     font-size: 14px;
     font-weight: 600;
     display: flex;
@@ -58,17 +58,17 @@
 }
 
 .packageName a {
-    color: #93c5fd;
+    color: var(--accent);
     text-decoration: none;
 }
 
 .packageName a:hover {
-    color: #bfdbfe;
+    color: var(--ink);
     text-decoration: underline;
 }
 
 .description {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--ink-2);
     font-size: 13px;
     line-height: 1.45;
     margin: 0;
@@ -80,6 +80,6 @@
     align-items: center;
     gap: 4px;
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--ink-3);
     margin-right: 10px;
 }

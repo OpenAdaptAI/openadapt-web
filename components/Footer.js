@@ -25,9 +25,9 @@ export default function Footer() {
         <div className={styles.footerContainer}>
             <footer className="grid grid-flow-row auto-rows-max gap-3 max-w-4xl mx-auto">
                 <div className="m-auto pb-4">
-                    <div className="flex items-center justify-center z-10 opacity-60">
+                    <div className="flex items-center justify-center z-10 opacity-70">
                         <Image
-                            className="invert"
+                            className=""
                             priority
                             src="/images/favicon.svg"
                             height={24}
@@ -36,7 +36,7 @@ export default function Footer() {
                         />
                         <FontAwesomeIcon
                             icon={faArrowPointer}
-                            className="ml-1 text-white/65 text-sm"
+                            className="ml-1 text-ink-3 text-sm"
                         />
                     </div>
                 </div>
@@ -120,11 +120,11 @@ export default function Footer() {
                             LinkedIn
                         </a>
                     </div>
-                    <p className="mt-6 text-white/60 text-xs">
+                    <p className="mt-6 text-ink-3 text-xs">
                         © 2023–{currentYear} OpenAdapt.AI and MLDSAI Inc. All
                         rights reserved.
                     </p>
-                    <p className="text-white/60 text-xs">
+                    <p className="text-ink-3 text-xs">
                         Our software is open source and licensed under the MIT
                         License.
                     </p>

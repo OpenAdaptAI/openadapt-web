@@ -28,19 +28,20 @@ export const faqItems = [
 export default function Faq() {
     return (
         <section id="faq" className="mx-auto max-w-3xl px-4 py-12">
-            <h2 className="text-center text-xl font-medium text-white/95 mb-8 tracking-tight">
+            <p className="eyebrow text-center mb-2">FAQ</p>
+            <h2 className="font-display text-center text-xl font-semibold text-ink mb-8 tracking-tight">
                 Frequently asked questions
             </h2>
             <dl className="space-y-6">
                 {faqItems.map((item) => (
                     <div
                         key={item.question}
-                        className="rounded-xl border border-white/10 bg-white/5 p-5"
+                        className="rounded-xl border border-hairline bg-panel p-5"
                     >
-                        <dt className="text-base font-semibold text-white/95">
+                        <dt className="font-display text-base font-semibold text-ink">
                             {item.question}
                         </dt>
-                        <dd className="mt-2 text-sm font-light leading-relaxed text-white/75">
+                        <dd className="mt-2 text-sm leading-relaxed text-ink-2">
                             {item.answer}
                         </dd>
                     </div>

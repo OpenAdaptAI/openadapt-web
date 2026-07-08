@@ -341,7 +341,7 @@ const PyPIDownloadChart = () => {
                 position: 'right',
                 align: 'start',
                 labels: {
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: '#4C523F',
                     font: {
                         size: 11,
                         weight: '500',
@@ -382,17 +382,17 @@ const PyPIDownloadChart = () => {
                 },
             },
             tooltip: {
-                backgroundColor: 'rgba(6, 6, 20, 0.95)',
-                titleColor: 'rgba(255, 255, 255, 0.9)',
+                backgroundColor: 'rgba(20, 23, 26, 0.96)',
+                titleColor: '#D9DEE6',
                 titleFont: {
                     size: 12,
                     weight: '600',
                 },
-                bodyColor: 'rgba(255, 255, 255, 0.7)',
+                bodyColor: 'rgba(217, 222, 230, 0.75)',
                 bodyFont: {
                     size: 11,
                 },
-                borderColor: 'rgba(255, 255, 255, 0.08)',
+                borderColor: '#262B30',
                 borderWidth: 1,
                 padding: 12,
                 displayColors: true,
@@ -502,10 +502,10 @@ const PyPIDownloadChart = () => {
         scales: {
             x: {
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.05)',
+                    color: 'rgba(35, 40, 31, 0.08)',
                 },
                 ticks: {
-                    color: 'rgba(255, 255, 255, 0.6)',
+                    color: '#5A6050',
                     font: {
                         size: 11,
                     },
@@ -516,10 +516,10 @@ const PyPIDownloadChart = () => {
             y: {
                 beginAtZero: true,
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.05)',
+                    color: 'rgba(35, 40, 31, 0.08)',
                 },
                 ticks: {
-                    color: 'rgba(255, 255, 255, 0.6)',
+                    color: '#5A6050',
                     font: {
                         size: 11,
                     },

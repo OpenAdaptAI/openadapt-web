@@ -86,11 +86,12 @@ export default function ContactBookingSection({
 
     return (
         <section id={sectionId} className="mx-auto max-w-5xl px-4 py-12">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8">
-                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+            <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
+                <p className="eyebrow mb-2">Book</p>
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
                     Book a 15-minute automation fit call
                 </h2>
-                <p className="mt-3 text-sm text-white/75 md:text-base">
+                <p className="mt-3 text-sm text-ink-2 md:text-base">
                     Tell us your highest-friction workflow and we will map what
                     can be automated first.
                 </p>
@@ -129,7 +130,7 @@ export default function ContactBookingSection({
                                     required
                                     value={form.name}
                                     onChange={handleChange}
-                                    className="rounded-lg border border-white/15 bg-[#0a0a2d] px-3 py-2 text-white placeholder-white/40 focus:border-[#60a5fa] focus:outline-none"
+                                    className="rounded-lg border border-ink/30 bg-panel px-3 py-2 text-ink placeholder-ink-3/60 focus:border-accent focus:outline-none"
                                     placeholder="Your Name"
                                 />
                             </label>
@@ -141,7 +142,7 @@ export default function ContactBookingSection({
                                     required
                                     value={form.email}
                                     onChange={handleChange}
-                                    className="rounded-lg border border-white/15 bg-[#0a0a2d] px-3 py-2 text-white placeholder-white/40 focus:border-[#60a5fa] focus:outline-none"
+                                    className="rounded-lg border border-ink/30 bg-panel px-3 py-2 text-ink placeholder-ink-3/60 focus:border-accent focus:outline-none"
                                     placeholder="name@company.com"
                                 />
                             </label>
@@ -152,7 +153,7 @@ export default function ContactBookingSection({
                                     name="company"
                                     value={form.company}
                                     onChange={handleChange}
-                                    className="rounded-lg border border-white/15 bg-[#0a0a2d] px-3 py-2 text-white placeholder-white/40 focus:border-[#60a5fa] focus:outline-none"
+                                    className="rounded-lg border border-ink/30 bg-panel px-3 py-2 text-ink placeholder-ink-3/60 focus:border-accent focus:outline-none"
                                     placeholder="Acme Inc"
                                 />
                             </label>
@@ -163,7 +164,7 @@ export default function ContactBookingSection({
                                     name="role"
                                     value={form.role}
                                     onChange={handleChange}
-                                    className="rounded-lg border border-white/15 bg-[#0a0a2d] px-3 py-2 text-white placeholder-white/40 focus:border-[#60a5fa] focus:outline-none"
+                                    className="rounded-lg border border-ink/30 bg-panel px-3 py-2 text-ink placeholder-ink-3/60 focus:border-accent focus:outline-none"
                                     placeholder="Operations Manager"
                                 />
                             </label>
@@ -176,7 +177,7 @@ export default function ContactBookingSection({
                                 name="workflows"
                                 value={form.workflows}
                                 onChange={handleChange}
-                                className="rounded-lg border border-white/15 bg-[#0a0a2d] px-3 py-2 text-white placeholder-white/40 focus:border-[#60a5fa] focus:outline-none"
+                                className="rounded-lg border border-ink/30 bg-panel px-3 py-2 text-ink placeholder-ink-3/60 focus:border-accent focus:outline-none"
                                 placeholder="Leasing, maintenance triage, delinquency"
                             />
                         </label>
@@ -188,18 +189,18 @@ export default function ContactBookingSection({
                                 rows={5}
                                 value={form.message}
                                 onChange={handleChange}
-                                className="rounded-lg border border-white/15 bg-[#0a0a2d] px-3 py-2 text-white placeholder-white/40 focus:border-[#60a5fa] focus:outline-none"
+                                className="rounded-lg border border-ink/30 bg-panel px-3 py-2 text-ink placeholder-ink-3/60 focus:border-accent focus:outline-none"
                                 placeholder="What systems are involved? Approximate monthly volume?"
                             />
                         </label>
 
                         {error && (
-                            <p className="rounded-lg border border-red-300/30 bg-red-500/10 px-3 py-2 text-sm text-red-100">
+                            <p className="rounded-lg border border-red-800/40 bg-red-100 px-3 py-2 text-sm text-red-900">
                                 {error}
                             </p>
                         )}
 
-                        <p className="text-sm text-white/70">
+                        <p className="text-sm text-ink-2">
                             You&apos;ll hear back from a founder within one
                             business day.
                         </p>
@@ -207,21 +208,21 @@ export default function ContactBookingSection({
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="rounded-lg bg-[#5a1eac] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#7132d4] disabled:cursor-not-allowed disabled:opacity-60"
+                                className="btn-ink disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 {isSubmitting ? 'Submitting...' : 'Submit and Continue'}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setIsSubmitted(true)}
-                                className="rounded-lg border border-white/20 px-4 py-2 text-sm text-white/90 transition hover:border-white/40 hover:bg-white/5"
+                                className="btn-ghost-ink"
                             >
                                 Skip form and book now
                             </button>
                             {showHomeLink && (
                                 <Link
                                     href="/"
-                                    className="rounded-lg border border-white/20 px-4 py-2 text-sm text-white/90 transition hover:border-white/40 hover:bg-white/5"
+                                    className="btn-ghost-ink"
                                 >
                                     Back to home
                                 </Link>
@@ -230,8 +231,8 @@ export default function ContactBookingSection({
                     </form>
                 ) : (
                     <div className="mt-8 space-y-4">
-                        <div className="rounded-xl border border-emerald-300/30 bg-emerald-500/10 px-4 py-4">
-                            <p className="text-sm text-emerald-50/95">
+                        <div className="rounded-xl border border-accent/40 bg-accent/10 px-4 py-4">
+                            <p className="text-sm text-accent">
                                 Thanks — you&apos;ll hear from a founder within
                                 one business day. Or skip the wait and book a
                                 time directly below.
