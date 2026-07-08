@@ -1,16 +1,15 @@
 import { useRef, useState } from 'react'
 import Head from 'next/head'
 
-import BenchmarkSection from '@components/BenchmarkSection'
 import ContactBookingSection from '@components/ContactBookingSection'
 import Developers from '@components/Developers'
-import DevToolsSection from '@components/DevToolsSection'
-import EcosystemSection from '@components/EcosystemSection'
+import EmailForm from '@components/EmailForm'
 import Faq, { faqItems } from '@components/Faq'
 import Footer from '@components/Footer'
 import HowItWorks from '@components/HowItWorks'
 import IndustriesGrid from '@components/IndustriesGrid'
 import MastHead from '@components/MastHead'
+import ProofBand from '@components/ProofBand'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
 
 const organizationSchema = {
@@ -150,6 +149,12 @@ export default function Home() {
             </Head>
             <MastHead />
             <HowItWorks />
+            <ProofBand />
+            <IndustriesGrid
+                feedbackData={feedbackData}
+                setFeedbackData={setFeedbackData}
+                sectionRef={sectionRef}
+            />
             <div style={{
                 background: 'var(--panel)',
                 textAlign: 'center',
@@ -169,17 +174,10 @@ export default function Home() {
                 </p>
             </div>
             <Developers />
-            <EcosystemSection />
-            <DevToolsSection />
-            <BenchmarkSection />
-            <IndustriesGrid
-                feedbackData={feedbackData}
-                setFeedbackData={setFeedbackData}
-                sectionRef={sectionRef}
-            />
             {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
             <Faq />
             <ContactBookingSection prefill={feedbackData} />
+            <EmailForm />
             <Footer />
         </div>
     )
