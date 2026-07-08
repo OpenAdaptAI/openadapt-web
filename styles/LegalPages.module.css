@@ -1,9 +1,13 @@
 /* LegalPages.module.css */
 .container {
     padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--ink);
 }
 
 .heading {
+    font-family: var(--font-display);
     font-size: 2rem;
     margin-bottom: 1rem;
 }
