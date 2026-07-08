@@ -1,6 +1,7 @@
 .footerContainer {
-    background-color: rgba(0, 0, 30, 1);
-    color: rgba(255, 255, 255, 0.75);
+    background: var(--ground);
+    border-top: 1px solid var(--hairline);
+    color: var(--ink-2);
     padding: 2rem;
 }
 
@@ -19,12 +20,12 @@
 }
 
 .link {
-    color: #4d9ef6;
+    color: var(--accent);
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .link:hover,
 .link:focus {
-    color: #82c0ff;
+    color: var(--ink);
 }
