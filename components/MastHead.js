@@ -66,7 +66,7 @@ export default function Home() {
                 <div className="relative z-30 py-4 px-4 text-xl w-full max-w-5xl mx-auto">
                     <div className="text-center pt-6">
                         <div className="grid grid-flow-row auto-rows-max gap-0">
-                            <h1 className="font-display text-5xl mb-4 md:text-6xl tracking-tight text-ink">
+                            <h1 className="font-display text-4xl mb-4 sm:text-5xl md:text-6xl tracking-tight text-ink">
                                 <span className="font-extralight">Open</span><span className="font-semibold">Adapt</span>
                                 <span className="font-extralight">.AI</span>
                             </h1>

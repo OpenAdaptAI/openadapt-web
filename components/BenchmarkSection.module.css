@@ -118,6 +118,9 @@
 }
 
 .windowFrameInner {
+    /* Positioned so the lazily-loading absolute <img> is contained here
+       instead of sizing against the viewport (caused mobile overflow). */
+    position: relative;
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--inset-border);
