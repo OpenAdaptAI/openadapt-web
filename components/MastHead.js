@@ -1,30 +1,19 @@
 import { useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import React from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowPointer, faBook, faPen } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faPen } from '@fortawesome/free-solid-svg-icons'
 import {
     faLinkedin,
     faDiscord,
     faGithub,
     faXTwitter,
 } from '@fortawesome/free-brands-svg-icons'
-import { motion } from 'framer-motion'
-import Image from 'next/image'
 
-import AnimatedBackground from '@components/AnimatedBackground'
-import AnimatedLogo from '@components/AnimatedLogo'
 import ReplayHero from '@components/ReplayHero'
 import EmailForm from '@components/EmailForm'
-import ParticleField from '@components/ParticleField'
 
 import styles from './MastHead.module.css'
-
-// Import the Sketch component dynamically and set ssr to false
-const SketchNoSSR = dynamic(() => import('./Sketch'), {
-    ssr: false,
-})
 
 const CarouselSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,7 +26,7 @@ const CarouselSection = () => {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setCurrentIndex((prevIndex) => 
+            setCurrentIndex((prevIndex) =>
                 prevIndex === carouselItems.length - 1 ? 0 : prevIndex + 1
             );
         }, 4000);
@@ -60,7 +49,7 @@ const CarouselSection = () => {
                             }
                         `}
                     >
-                        <span className="inline-block py-1.5 px-3 w-full text-center text-white/75 text-sm">
+                        <span className="inline-block py-1.5 px-3 w-full text-center text-ink-3 text-sm">
                             {item}
                         </span>
                     </div>
@@ -73,19 +62,23 @@ const CarouselSection = () => {
 export default function Home() {
     return (
         <div className={styles.section}>
-            <ParticleField />
             <div className="relative flex items-center justify-center">
                 <div className="relative z-30 py-4 px-4 text-xl w-full max-w-5xl mx-auto">
                     <div className="text-center pt-6">
                         <div className="grid grid-flow-row auto-rows-max gap-0">
-                            <h1 className="text-5xl mb-4 md:text-6xl tracking-tight">
+                            <h1 className="font-display text-5xl mb-4 md:text-6xl tracking-tight text-ink">
                                 <span className="font-extralight">Open</span><span className="font-semibold">Adapt</span>
                                 <span className="font-extralight">.AI</span>
                             </h1>
-                            <h2 className="text-2xl md:text-3xl mt-0 mb-4 font-light text-white/90">
+                            <div className="mb-4">
+                                <span className={styles.heroPill}>
+                                    LOCAL-FIRST · MIT OPEN SOURCE
+                                </span>
+                            </div>
+                            <h2 className="font-display text-2xl md:text-3xl mt-0 mb-4 font-semibold tracking-tight text-ink">
                                 Show it once. It runs forever. On your premises.
                             </h2>
-                            <h3 className="mt-0 mb-6 mx-auto max-w-3xl font-light text-base md:text-lg text-white/70">
+                            <h3 className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 OpenAdapt compiles a recorded demonstration into
                                 a deterministic, self-healing automation — open
                                 source, auditable, and running entirely on your
@@ -99,14 +92,11 @@ export default function Home() {
                             </div>
                             <div id="register">
                                 <div className="flex items-center justify-center gap-3 mt-6 mb-4">
-                                    <Link
-                                        className="px-5 py-2.5 rounded-lg bg-[#560df8] text-white hover:bg-[#7132d4] transition-all duration-200 text-sm font-medium"
-                                        href="#book"
-                                    >
+                                    <Link className="btn-ink" href="#book">
                                         Book a demo
                                     </Link>
                                     <Link
-                                        className="px-5 py-2.5 rounded-lg border border-[#560df8]/50 text-[#60a5fa] hover:border-[#60a5fa] hover:text-white hover:bg-[#560df8]/10 transition-all duration-200 text-sm font-medium"
+                                        className="btn-ghost-ink"
                                         href="#how-it-works"
                                     >
                                         See how it works
@@ -117,11 +107,10 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                {/* <AnimatedBackground /> */}
                 <div className="fixed top-0 right-0 z-50 flex flex-nowrap items-center justify-end gap-2 p-2">
                     {/* Docs Icon */}
                     <div className="relative z-50">
-                        <a href="https://docs.openadapt.ai" aria-label="Documentation" title="Documentation">
+                        <a href="https://docs.openadapt.ai" aria-label="Documentation" title="Documentation" className="text-ink hover:text-accent">
                             <FontAwesomeIcon
                                 icon={faBook}
                                 className="text-xl sm:text-2xl"
@@ -130,7 +119,7 @@ export default function Home() {
                     </div>
                     {/* Blog Icon */}
                     <div className="relative z-50">
-                        <a href="https://blog.openadapt.ai" aria-label="Blog" title="Blog">
+                        <a href="https://blog.openadapt.ai" aria-label="Blog" title="Blog" className="text-ink hover:text-accent">
                             <FontAwesomeIcon
                                 icon={faPen}
                                 className="text-xl sm:text-2xl"
@@ -139,7 +128,7 @@ export default function Home() {
                     </div>
                     {/* Github Icon */}
                     <div className="relative z-50">
-                        <a href="https://github.com/OpenAdaptAI/OpenAdapt" aria-label="Join us on Github" title="Join us on Github">
+                        <a href="https://github.com/OpenAdaptAI/OpenAdapt" aria-label="Join us on Github" title="Join us on Github" className="text-ink hover:text-accent">
                             <FontAwesomeIcon
                                 icon={faGithub}
                                 className="text-xl sm:text-2xl"
@@ -148,7 +137,7 @@ export default function Home() {
                     </div>
                     {/* Discord Icon */}
                     <div className="relative z-50">
-                        <a href="https://discord.gg/yF527cQbDG" aria-label="Join us on Discord" title="Join us on Discord">
+                        <a href="https://discord.gg/yF527cQbDG" aria-label="Join us on Discord" title="Join us on Discord" className="text-ink hover:text-accent">
                             <FontAwesomeIcon
                                 icon={faDiscord}
                                 className="text-xl sm:text-2xl"
@@ -157,7 +146,7 @@ export default function Home() {
                     </div>
                     {/* X Icon */}
                     <div className="relative z-50">
-                        <a href="https://x.com/OpenAdaptAI" aria-label="Join us on X" title="Join us on X">
+                        <a href="https://x.com/OpenAdaptAI" aria-label="Join us on X" title="Join us on X" className="text-ink hover:text-accent">
                             <FontAwesomeIcon
                                 icon={faXTwitter}
                                 className="text-xl sm:text-2xl"
@@ -169,6 +158,7 @@ export default function Home() {
                         <a
                             href="https://www.linkedin.com/company/95677624"
                             aria-label="Join us on LinkedIn" title="Join us on LinkedIn"
+                            className="text-ink hover:text-accent"
                         >
                             <FontAwesomeIcon
                                 icon={faLinkedin}
@@ -181,7 +171,7 @@ export default function Home() {
                         <a
                             className="github-button mr-2"
                             href="https://github.com/OpenAdaptAI/OpenAdapt/fork"
-                            data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;"
+                            data-color-scheme="no-preference: light; light: light; dark: light;"
                             data-icon="octicon-repo-forked"
                             data-size="large"
                             data-show-count="true"
@@ -194,7 +184,7 @@ export default function Home() {
                         <a
                             className="github-button"
                             href="https://github.com/OpenAdaptAI/OpenAdapt"
-                            data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark;"
+                            data-color-scheme="no-preference: light; light: light; dark: light;"
                             data-icon="octicon-star"
                             data-size="large"
                             data-show-count="true"
