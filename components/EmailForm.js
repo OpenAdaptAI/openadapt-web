@@ -78,7 +78,7 @@ export default function EmailForm() {
                                 <input name="bot-field" />
                             </label>
                         </p>
-                        <div className="flex justify-center gap-2">
+                        <div className="flex flex-wrap justify-center gap-2">
                             <input
                                 id="emailInput"
                                 name="email"

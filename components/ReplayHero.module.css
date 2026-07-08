@@ -178,9 +178,21 @@
         padding-left: 1.2em;
     }
 
+    /* Let the summary wrap so the stamp stays visible on small screens */
+    .summary {
+        flex-wrap: wrap;
+        white-space: normal;
+        row-gap: 4px;
+    }
+
+    .summary > span:first-child {
+        flex: 1 1 100%;
+    }
+
     .stamp {
         font-size: 0.5rem;
         padding: 1px 5px;
+        margin-left: 0;
     }
 }
 
