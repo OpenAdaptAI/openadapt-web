@@ -9,7 +9,7 @@ const webPageSchema = {
     name: 'How OpenAdapt compares',
     url: 'https://openadapt.ai/compare',
     description:
-        'An honest comparison of OpenAdapt with traditional RPA platforms, AI computer-use agents, and browser recording tools: how automations are built, what each run costs, and what happens when the UI changes.',
+        'Every self-healing GUI automation tool can silently write to the wrong record under UI drift. We built the harness that measures it, red-teamed our own engine five times until it stopped, and pointed it at the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -75,13 +75,13 @@ export default function ComparePage() {
                 <title>How OpenAdapt compares to RPA, AI agents, and browser recorders | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt vs. traditional RPA, AI computer-use agents, and browser recording tools: who authors the automation, what each run costs, what happens when the UI changes, and where your data goes."
+                    content="Self-healing GUI automation tools silently write wrong state under UI drift and report success. Nobody measures it. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders — on measured silent wrong-action rate first, then cost, coverage, and where your data goes."
                 />
                 <link rel="canonical" href="https://openadapt.ai/compare" />
                 <meta property="og:title" content="How OpenAdapt compares | OpenAdapt" />
                 <meta
                     property="og:description"
-                    content="An honest three-way comparison: traditional RPA, AI computer-use agents, and browser recording tools, next to a demonstration compiler."
+                    content="Self-healing GUI bots silently write to the wrong record under UI drift. We measured it — across our own engine and shipping competitors — and compare on safety first, then cost and coverage."
                 />
                 <meta property="og:url" content="https://openadapt.ai/compare" />
                 <script
@@ -100,14 +100,136 @@ export default function ComparePage() {
                     How OpenAdapt compares
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
+                    Start with the failure mode nobody in this category
+                    publishes a number for. Every self-healing replay tool
+                    &mdash; record a workflow, replay it, let it repair itself
+                    when the UI moves &mdash; can resolve the wrong on-screen
+                    target under data drift, act on it, and report success. In
+                    an EMR that is a note saved to the wrong patient&#39;s
+                    chart, with a green checkmark. The tools verify that{' '}
+                    <em>something</em> saved; almost none verify <em>whose</em>{' '}
+                    record it landed in. So we built the harness that measures
+                    it, red-teamed our own engine five times until it stopped,
+                    and pointed the same harness at shipping competitors. That
+                    measurement &mdash; not speed &mdash; is how we think this
+                    comparison should be led.
+                </p>
+                <p className="mt-4 max-w-3xl text-base text-ink-2 md:text-lg">
                     There are three common ways to automate desktop work today:
                     traditional RPA platforms, AI agents that operate a
                     computer with a large model, and browser recording tools.
                     OpenAdapt takes a fourth approach. It compiles a recorded
                     demonstration into a deterministic script that replays for
-                    free and heals itself when the UI drifts. Each approach
-                    wins somewhere, so here&#39;s the honest version.
+                    free, heals itself when the UI drifts, and{' '}
+                    <strong>halts instead of guessing</strong> when it cannot
+                    verify the target&#39;s identity. Each approach wins
+                    somewhere, so here&#39;s the honest version &mdash; safety
+                    first, then cost and coverage.
                 </p>
+
+                <div className="mt-10 rounded-2xl border-2 border-ink bg-panel p-6 md:p-8">
+                    <p className="eyebrow">The measurement</p>
+                    <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
+                        Silent wrong-action rate under UI drift
+                    </h2>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        The single most dangerous thing a GUI replayer can do
+                        is the wrong write, silently. So we tried to make ours
+                        do exactly that. It reopened five times &mdash;
+                        pixel-lookalike rows, residue-blind coverage,
+                        near-name siblings (&ldquo;Belford, Phil&rdquo; vs
+                        &ldquo;Belford, Philip&rdquo;), a blind spot shared by
+                        our own test corpus and matcher, and an
+                        identifier letter/digit confusion
+                        (&ldquo;A01234&rdquo; vs &ldquo;AO1234&rdquo;). Each
+                        was fixed and pinned as a permanent test on a frozen,
+                        SHA-manifested held-out corpus (~6,900 pairs, committed
+                        before each fix).
+                    </p>
+                    <div className="mt-5 grid gap-6 sm:grid-cols-3">
+                        <div>
+                            <p className="font-display text-2xl font-semibold text-ink">
+                                0.000%
+                            </p>
+                            <p className="mt-1 text-sm text-ink-2">
+                                wrong-patient verify (false-accept) across the
+                                frozen corpus + 18 out-of-corpus probes
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-display text-2xl font-semibold text-ink">
+                                ~26&ndash;28%
+                            </p>
+                            <p className="mt-1 text-sm text-ink-2">
+                                the honest cost: safe-halt rate on noisy
+                                identifier rows &mdash; a fallback or retry,
+                                never a wrong write
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-display text-2xl font-semibold text-ink">
+                                3/3 &amp; 3/3
+                            </p>
+                            <p className="mt-1 text-sm text-ink-2">
+                                two shipping competitors silently wrote to the
+                                wrong patient under identity drift and reported
+                                success
+                            </p>
+                        </div>
+                    </div>
+                    <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
+                        Pointed at the category on the same task and drift, with
+                        a ground-truth check of which patient the note actually
+                        landed on: two self-healing tools whose replay path
+                        could run the task each wrote to the wrong patient in
+                        3/3 row-identity drift modes and reported success. The
+                        gap is structural &mdash; their verification is
+                        conditioned on the goal, not on the recorded
+                        entity&#39;s identity. Total study spend: $0.94.
+                    </p>
+                    <p className="mt-4 text-sm leading-relaxed text-ink-2 md:text-base">
+                        The honest exception, published against ourselves: on a
+                        stable browser DOM, an identity-keyed selector matches
+                        our safety (0 wrong-actions) and beats us on
+                        availability &mdash; while a positional selector wrote
+                        the wrong patient 8/8. The wrong-action vector is spec
+                        underspecification, and a demonstration captures target
+                        identity for free. That comparison exists only where a
+                        DOM does; on desktop, VDI, or Citrix there is no
+                        selector to write.
+                    </p>
+                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                        &ldquo;Provably zero&rdquo; is an asymptote &mdash; each
+                        of those five rounds began from a system we believed was
+                        correct. The product is not &ldquo;we don&#39;t make
+                        mistakes&rdquo;; it is measured, disclosed, and
+                        fail-closed, with the adversary log public. The open
+                        problems that remain &mdash; cosmetic zoom/display-scale
+                        drift is 0% replayability today, icon-only targets
+                        proceed flagged rather than verified, small sample sizes
+                        on the agent arms &mdash; are written down, not hidden.
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/LIMITS.md"
+                            className="inline-block text-sm font-medium text-accent hover:underline"
+                        >
+                            Read the honest limitations (LIMITS.md)
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/validation/IDENTITY_ROC.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            The five-round adversary log &amp; ROC
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/validation/COMPETITOR_STUDY.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            The competitor drift study
+                        </a>
+                    </div>
+                </div>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Versus traditional RPA platforms
@@ -153,13 +275,15 @@ export default function ComparePage() {
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
-                    <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
-                        We measured it on a real EMR
+                    <p className="eyebrow">The support act: what repetition costs</p>
+                    <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink">
+                        We also measured it on a real EMR
                     </h3>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        An 18-step add-patient-note workflow on the official
-                        OpenEMR public demo, run both ways and judged by one
-                        arm-independent OCR check, with a distinct
+                        With the safety story established above, here is the
+                        efficiency case. An 18-step add-patient-note workflow on
+                        the official OpenEMR public demo, run both ways and
+                        judged by one arm-independent OCR check, with a distinct
                         parameterized note per run. Both arms succeeded every
                         time: 20/20 compiled, 10/10 for a Claude computer-use
                         agent. The agent doesn&#39;t fail here &mdash; the
