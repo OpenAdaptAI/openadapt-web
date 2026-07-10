@@ -238,12 +238,29 @@ export default function ComparePage() {
                         list price. Same orchestrator, same agent harness,
                         same style of OCR check.
                     </p>
-                    <a
-                        href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
-                        className="mt-3 inline-block text-sm text-accent hover:underline"
-                    >
-                        MockMed methodology and raw data
-                    </a>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        On the same harness under injected UI drift, a hybrid
+                        mode &mdash; compiled replay first, agent fallback
+                        only on a detected halt &mdash; matched agent
+                        reliability (20/20) at roughly one-eighth the
+                        agent&#39;s cost per successful run. Details and
+                        caveats (synthetic detected-halt drift, assumed drift
+                        mix) in the repo.
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            MockMed methodology and raw data
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/hybrid/BENCHMARK.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            Hybrid methodology and caveats
+                        </a>
+                    </div>
                 </div>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
