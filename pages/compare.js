@@ -9,7 +9,7 @@ const webPageSchema = {
     name: 'How OpenAdapt compares',
     url: 'https://openadapt.ai/compare',
     description:
-        'Every self-healing GUI automation tool can silently write to the wrong record under UI drift. We built the harness that measures it, red-teamed our own engine five times until it stopped, and pointed it at the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
+        'We built a harness that measures how often self-healing GUI automation tools silently write to the wrong record under UI drift, red-teamed our own engine five times until it stopped, then ran the same instrument across the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -75,7 +75,7 @@ export default function ComparePage() {
                 <title>How OpenAdapt compares to RPA, AI agents, and browser recorders | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="Self-healing GUI automation tools silently write wrong state under UI drift and report success. Nobody measures it. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders — on measured silent wrong-action rate first, then cost, coverage, and where your data goes."
+                    content="We built the harness that measures how often self-healing GUI automation tools silently write wrong state under UI drift — pointed at our own engine first, then the category. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders — on measured silent wrong-action rate first, then cost, coverage, and where your data goes."
                 />
                 <link rel="canonical" href="https://openadapt.ai/compare" />
                 <meta property="og:title" content="How OpenAdapt compares | OpenAdapt" />
