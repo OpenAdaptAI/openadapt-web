@@ -3,20 +3,20 @@ import Link from 'next/link'
 import styles from './ProofBand.module.css'
 
 const BENCHMARK_URL =
-    'https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md'
+    'https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/openemr/BENCHMARK.md'
 
 const stats = [
     {
-        figure: '4.9s vs 37.5s',
-        caption: 'median run, compiled vs computer-use agent',
+        figure: '39s vs 70s',
+        caption: 'median run, compiled replay vs computer-use agent',
     },
     {
-        figure: '$0 vs $0.27',
+        figure: '$0 vs $0.55',
         caption: 'model cost per run',
     },
     {
-        figure: '100/100',
-        caption: 'compiled replays succeeded (agent: 20/20)',
+        figure: '0 vs ~24',
+        caption: 'model calls per run — the replay is deterministic',
     },
 ]
 
@@ -24,7 +24,7 @@ export default function ProofBand() {
     return (
         <section className={styles.section}>
             <div className={styles.inner}>
-                <p className="eyebrow">Measured 2026-07-08</p>
+                <p className="eyebrow">Real EMR · measured 2026-07-08</p>
                 <div className={styles.grid}>
                     {stats.map((stat) => (
                         <div key={stat.figure} className={styles.card}>
@@ -33,7 +33,11 @@ export default function ProofBand() {
                         </div>
                     ))}
                 </div>
-                <p className={styles.note}>Same task, same success check.</p>
+                <p className={styles.note}>
+                    Same 18-step task on the live OpenEMR demo, one success
+                    check for both. Both finished every run; the difference is
+                    what each run costs you.
+                </p>
                 <div className={styles.links}>
                     <Link href="/compare">How we measured it →</Link>
                     <a
