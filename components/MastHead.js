@@ -50,7 +50,10 @@ const CarouselSection = () => {
     );
 };
 
-export default function Home() {
+const formatStars = (n) =>
+    n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k` : String(n)
+
+export default function Home({ githubStats }) {
     return (
         <div className={styles.section}>
             <div className="relative flex items-center justify-center">
@@ -61,10 +64,25 @@ export default function Home() {
                                 <span className="font-extralight">Open</span><span className="font-semibold">Adapt</span>
                                 <span className="font-extralight">.AI</span>
                             </div>
-                            <div className="mb-4">
+                            <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
                                 <span className={styles.heroPill}>
                                     LOCAL-FIRST · MIT OPEN SOURCE
                                 </span>
+                                {githubStats && githubStats.stars > 0 && (
+                                    <a
+                                        href="https://github.com/OpenAdaptAI/OpenAdapt"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm text-ink-2 no-underline"
+                                        style={{ border: '1px solid var(--hairline)' }}
+                                    >
+                                        <span aria-hidden="true">★</span>
+                                        {formatStars(githubStats.stars)} on GitHub
+                                        <span className="text-ink-3">
+                                            · {githubStats.forks} forks
+                                        </span>
+                                    </a>
+                                )}
                             </div>
                             <h1 className="font-display text-2xl md:text-3xl mt-0 mb-4 font-semibold tracking-tight text-ink">
                                 Show it once. It runs forever. On your premises.

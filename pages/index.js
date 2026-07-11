@@ -10,6 +10,7 @@ import HowItWorks from '@components/HowItWorks'
 import IndustriesGrid from '@components/IndustriesGrid'
 import MastHead from '@components/MastHead'
 import ProofBand from '@components/ProofBand'
+import SafetyBand from '@components/SafetyBand'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
 
 const organizationSchema = {
@@ -110,7 +111,32 @@ const faqSchema = {
     })),
 }
 
-export default function Home() {
+export async function getStaticProps() {
+    // Fetch real GitHub social proof at build time so the number is accurate
+    // on each deploy without a client-side request. Falls back to a known-good
+    // floor if the build host has no network.
+    let githubStats = { stars: 1636, forks: 257 }
+    try {
+        const res = await fetch(
+            'https://api.github.com/repos/OpenAdaptAI/OpenAdapt',
+            { headers: { Accept: 'application/vnd.github+json' } }
+        )
+        if (res.ok) {
+            const data = await res.json()
+            if (typeof data.stargazers_count === 'number') {
+                githubStats = {
+                    stars: data.stargazers_count,
+                    forks: data.forks_count,
+                }
+            }
+        }
+    } catch (err) {
+        // keep the fallback floor
+    }
+    return { props: { githubStats }, revalidate: 86400 }
+}
+
+export default function Home({ githubStats }) {
     const [feedbackData, setFeedbackData] = useState({
         email: '',
         message: '',
@@ -147,9 +173,10 @@ export default function Home() {
                     }}
                 />
             </Head>
-            <MastHead />
+            <MastHead githubStats={githubStats} />
             <HowItWorks />
             <ProofBand />
+            <SafetyBand />
             <IndustriesGrid
                 feedbackData={feedbackData}
                 setFeedbackData={setFeedbackData}
@@ -158,20 +185,42 @@ export default function Home() {
             <div style={{
                 background: 'var(--panel)',
                 textAlign: 'center',
-                padding: '10px 16px',
+                padding: '28px 16px',
                 borderTop: '1px solid var(--hairline)',
                 borderBottom: '1px solid var(--hairline)',
             }}>
                 <p style={{
-                    color: 'var(--ink-3)',
-                    fontSize: '13px',
-                    margin: 0,
-                    letterSpacing: '0.02em',
+                    color: 'var(--ink)',
+                    fontSize: '17px',
+                    fontWeight: 600,
+                    margin: '0 auto 6px',
+                    maxWidth: '640px',
                 }}>
-                    OpenAdapt v1 is open source and under active development.
-                    Commercial <a href="#book" style={{ color: 'var(--accent)' }}>pilots</a> for healthcare and
-                    lending are open.
+                    Running the same workflow hundreds of times on software you
+                    can&apos;t API into?
                 </p>
+                <p style={{
+                    color: 'var(--ink-2)',
+                    fontSize: '14px',
+                    margin: '0 auto 14px',
+                    maxWidth: '560px',
+                }}>
+                    We&apos;re taking a small number of healthcare and lending
+                    pilots. OpenAdapt v1 is open source and under active
+                    development.
+                </p>
+                <a href="#book" style={{
+                    display: 'inline-block',
+                    background: 'var(--accent)',
+                    color: 'var(--on-accent, #fff)',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    padding: '10px 22px',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                }}>
+                    Book a pilot →
+                </a>
             </div>
             <Developers />
             {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
