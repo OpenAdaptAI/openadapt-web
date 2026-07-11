@@ -9,7 +9,7 @@ const webPageSchema = {
     name: 'How OpenAdapt compares',
     url: 'https://openadapt.ai/compare',
     description:
-        'An honest comparison of OpenAdapt with traditional RPA platforms, AI computer-use agents, and browser recording tools: how automations are built, what each run costs, and what happens when the UI changes.',
+        'We built a harness that measures how often self-healing GUI automation tools silently write to the wrong record under UI drift, red-teamed our own engine five times until it stopped, then ran the same instrument across the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -75,13 +75,13 @@ export default function ComparePage() {
                 <title>How OpenAdapt compares to RPA, AI agents, and browser recorders | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt vs. traditional RPA, AI computer-use agents, and browser recording tools: who authors the automation, what each run costs, what happens when the UI changes, and where your data goes."
+                    content="We built the harness that measures how often self-healing GUI automation tools silently write wrong state under UI drift — pointed at our own engine first, then the category. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders — on measured silent wrong-action rate first, then cost, coverage, and where your data goes."
                 />
                 <link rel="canonical" href="https://openadapt.ai/compare" />
                 <meta property="og:title" content="How OpenAdapt compares | OpenAdapt" />
                 <meta
                     property="og:description"
-                    content="An honest three-way comparison: traditional RPA, AI computer-use agents, and browser recording tools, next to a demonstration compiler."
+                    content="Self-healing GUI bots can silently write to the wrong record under UI drift. We measured it on our own engine — five adversarial rounds — and compare on safety first, then cost and coverage."
                 />
                 <meta property="og:url" content="https://openadapt.ai/compare" />
                 <script
@@ -100,14 +100,109 @@ export default function ComparePage() {
                     How OpenAdapt compares
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
+                    Start with the failure mode nobody in this category
+                    publishes a number for. Every self-healing replay tool
+                    &mdash; record a workflow, replay it, let it repair itself
+                    when the UI moves &mdash; can resolve the wrong on-screen
+                    target under data drift, act on it, and report success. In
+                    an EMR that is a note saved to the wrong patient&#39;s
+                    chart, with a green checkmark. The tools verify that{' '}
+                    <em>something</em> saved; almost none verify <em>whose</em>{' '}
+                    record it landed in. So we built the harness that measures
+                    it, and red-teamed our own engine five times until it
+                    stopped. That measurement &mdash; not speed &mdash; is how
+                    we think this comparison should be led.
+                </p>
+                <p className="mt-4 max-w-3xl text-base text-ink-2 md:text-lg">
                     There are three common ways to automate desktop work today:
                     traditional RPA platforms, AI agents that operate a
                     computer with a large model, and browser recording tools.
                     OpenAdapt takes a fourth approach. It compiles a recorded
                     demonstration into a deterministic script that replays for
-                    free and heals itself when the UI drifts. Each approach
-                    wins somewhere, so here&#39;s the honest version.
+                    free, heals itself when the UI drifts, and{' '}
+                    <strong>halts instead of guessing</strong> when it cannot
+                    verify the target&#39;s identity. Each approach wins
+                    somewhere, so here&#39;s the honest version &mdash; safety
+                    first, then cost and coverage.
                 </p>
+
+                <div className="mt-10 rounded-2xl border-2 border-ink bg-panel p-6 md:p-8">
+                    <p className="eyebrow">The measurement</p>
+                    <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
+                        Silent wrong-action rate under UI drift
+                    </h2>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        The single most dangerous thing a GUI replayer can do
+                        is the wrong write, silently. So we tried to make ours
+                        do exactly that. It reopened five times &mdash;
+                        pixel-lookalike rows, residue-blind coverage,
+                        near-name siblings (&ldquo;Belford, Phil&rdquo; vs
+                        &ldquo;Belford, Philip&rdquo;), a blind spot shared by
+                        our own test corpus and matcher, and an
+                        identifier letter/digit confusion
+                        (&ldquo;A01234&rdquo; vs &ldquo;AO1234&rdquo;). Each
+                        was fixed and pinned as a permanent test on a frozen,
+                        SHA-manifested held-out corpus (~6,900 pairs, committed
+                        before each fix).
+                    </p>
+                    <div className="mt-5 grid gap-6 sm:grid-cols-2">
+                        <div>
+                            <p className="font-display text-2xl font-semibold text-ink">
+                                0.000%
+                            </p>
+                            <p className="mt-1 text-sm text-ink-2">
+                                wrong-patient verify (false-accept) across the
+                                frozen corpus + 18 out-of-corpus probes
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-display text-2xl font-semibold text-ink">
+                                ~26&ndash;28%
+                            </p>
+                            <p className="mt-1 text-sm text-ink-2">
+                                the honest cost: safe-halt rate on noisy
+                                identifier rows &mdash; a fallback or retry,
+                                never a wrong write
+                            </p>
+                        </div>
+                    </div>
+                    <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
+                        The honest exception, published against ourselves: on a
+                        stable browser DOM, an identity-keyed selector matches
+                        our safety (0 wrong-actions) and beats us on
+                        availability &mdash; while a positional selector wrote
+                        the wrong patient 8/8. The wrong-action vector is spec
+                        underspecification, and a demonstration captures target
+                        identity for free. That comparison exists only where a
+                        DOM does; on desktop, VDI, or Citrix there is no
+                        selector to write.
+                    </p>
+                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                        &ldquo;Provably zero&rdquo; is an asymptote &mdash; each
+                        of those five rounds began from a system we believed was
+                        correct. The product is not &ldquo;we don&#39;t make
+                        mistakes&rdquo;; it is measured, disclosed, and
+                        fail-closed, with the adversary log public. The open
+                        problems that remain &mdash; cosmetic zoom/display-scale
+                        drift is 0% replayability today, icon-only targets
+                        proceed flagged rather than verified, small sample sizes
+                        on the agent arms &mdash; are written down, not hidden.
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/LIMITS.md"
+                            className="inline-block text-sm font-medium text-accent hover:underline"
+                        >
+                            Read the honest limitations (LIMITS.md)
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/validation/IDENTITY_ROC.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            The five-round adversary log &amp; ROC
+                        </a>
+                    </div>
+                </div>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Versus traditional RPA platforms
@@ -153,21 +248,32 @@ export default function ComparePage() {
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
-                    <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
-                        We measured it
+                    <p className="eyebrow">The support act: what repetition costs</p>
+                    <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink">
+                        We also measured it on a real EMR
                     </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        With the safety story established above, here is the
+                        efficiency case. An 18-step add-patient-note workflow on
+                        the official OpenEMR public demo, run both ways and
+                        judged by one arm-independent OCR check, with a distinct
+                        parameterized note per run. Both arms succeeded every
+                        time: 20/20 compiled, 10/10 for a Claude computer-use
+                        agent. The agent doesn&#39;t fail here &mdash; the
+                        difference is what each run costs.
+                    </p>
                     <div className="mt-5 grid gap-6 sm:grid-cols-3">
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                7.7&times; faster
+                                1.8&times; faster
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                median run: 4.9s compiled vs 37.5s agent
+                                median run: 39.2s compiled vs 70.4s agent
                             </p>
                         </div>
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                $0 vs $0.27
+                                $0 vs $0.55
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
                                 model cost per run, at list price
@@ -175,26 +281,83 @@ export default function ComparePage() {
                         </div>
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                5.1s vs 43.4s
+                                0 vs ~24
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                95th-percentile latency
+                                model calls per run
                             </p>
                         </div>
                     </div>
                     <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Same task, same success check, 100 compiled replays
-                        against 20 runs of a Claude computer-use agent: both
-                        arms passed 100% on our simple demo app, so the
-                        difference isn&#39;t success rate, it&#39;s what
-                        repetition costs.
+                        Run the task 500 times and the ratios compound: about
+                        $275 and ten hours of wall clock through the agent,
+                        versus $0 and about five and a half hours compiled,
+                        with every action auditable against the demonstrated
+                        script. The compiled arm&#39;s price of entry is a
+                        one-minute human demonstration; the agent needs only a
+                        prompt.
+                    </p>
+                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                        Caveats, disclosed up front: the OpenEMR demo is a
+                        shared public instance that anyone can modify and that
+                        resets daily, so this is a field result, not a
+                        CI-reproducible one. The agent arm is N=10 (agent runs
+                        cost real money and real load on a shared service), so
+                        its 100% carries wide error bars. One compiled run
+                        self-flagged postcondition drift on the final step and
+                        was verified saved by OCR; success is judged by the
+                        arm-independent check for both arms, never
+                        self-report. Results are pinned
+                        to claude-sonnet-5 with the computer_20251124 tool on
+                        2026-07-08; newer models will differ. The OCR success
+                        check errs conservative on dense EMR text and is
+                        identical for both arms.
                     </p>
                     <a
-                        href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
+                        href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/openemr/BENCHMARK.md"
                         className="mt-3 inline-block text-sm text-accent hover:underline"
                     >
-                        Methodology and raw data
+                        OpenEMR methodology and raw data
                     </a>
+                </div>
+
+                <div className="mt-4 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
+                    <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
+                        The reproducible anchor
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        Because the OpenEMR numbers depend on a live shared
+                        instance, we keep the same head-to-head on MockMed,
+                        the demo clinic app that ships with openadapt-flow,
+                        as the benchmark anyone can rerun deterministically:
+                        100 compiled replays against 20 agent runs, both arms
+                        100%, 4.9s vs 37.5s median, $0 vs $0.27 per run at
+                        list price. Same orchestrator, same agent harness,
+                        same style of OCR check.
+                    </p>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        On the same harness under injected UI drift, a hybrid
+                        mode &mdash; compiled replay first, agent fallback
+                        only on a detected halt &mdash; matched agent
+                        reliability (20/20) at roughly one-eighth the
+                        agent&#39;s cost per successful run. Details and
+                        caveats (synthetic detected-halt drift, assumed drift
+                        mix) in the repo.
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            MockMed methodology and raw data
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/hybrid/BENCHMARK.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            Hybrid methodology and caveats
+                        </a>
+                    </div>
                 </div>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
