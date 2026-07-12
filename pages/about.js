@@ -16,7 +16,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for desktop automation: record a workflow once and it compiles into a deterministic, self-healing script that runs on your own machines.',
+        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for desktop automation: record a workflow once and it compiles into a self-healing script that runs on your own machines with no per-run model calls.',
     foundingDate: '2023',
     address: {
         '@type': 'PostalAddress',
@@ -92,8 +92,8 @@ export default function AboutPage() {
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     OpenAdapt is an open-source demonstration compiler for
                     desktop automation. You record yourself doing a task once,
-                    and it compiles that recording into a deterministic script
-                    that replays on your own machines. Healthy runs make no
+                    and it compiles that recording into a script that replays
+                    on your own machines. Healthy runs make no
                     cloud model calls; a model is only invoked to heal the
                     script when the UI drifts, and the fix is proposed as a
                     reviewable diff. That&#39;s the whole idea, and everything

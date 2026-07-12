@@ -9,7 +9,7 @@ const webPageSchema = {
     name: 'How OpenAdapt compares',
     url: 'https://openadapt.ai/compare',
     description:
-        'We built a harness that measures how often self-healing GUI automation tools silently write to the wrong record under UI drift, red-teamed our own engine seven times, then ran the same instrument across the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
+        'We built the tooling that measures how often self-healing GUI automation tools silently write to the wrong record under UI drift, red-teamed our own engine seven times, then ran the same test across the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -33,7 +33,7 @@ const rows = [
     },
     {
         dimension: 'Cost per run',
-        openadapt: 'None on healthy runs (deterministic local replay)',
+        openadapt: 'None on healthy runs (model-free on the hot path)',
         rpa: 'Licensed per robot or per seat',
         agents: 'Metered model calls on every run',
         browser: 'Varies; cloud inference is metered',
@@ -75,13 +75,13 @@ export default function ComparePage() {
                 <title>How OpenAdapt compares to RPA, AI agents, and browser recorders | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="We built the harness that measures how often self-healing GUI automation tools silently write wrong state under UI drift — pointed at our own engine first, then the category. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders — on measured silent wrong-action rate first, then cost, coverage, and where your data goes."
+                    content="We built the tooling that measures how often self-healing GUI automation tools silently write wrong state under UI drift, and pointed it at our own engine first, then the category. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders on measured silent wrong-action rate first, then cost, coverage, and where your data goes."
                 />
                 <link rel="canonical" href="https://openadapt.ai/compare" />
                 <meta property="og:title" content="How OpenAdapt compares | OpenAdapt" />
                 <meta
                     property="og:description"
-                    content="Self-healing GUI bots can silently write to the wrong record under UI drift. We measured it on our own engine — five adversarial rounds — and compare on safety first, then cost and coverage."
+                    content="Self-healing GUI bots can silently write to the wrong record under UI drift. We measured it on our own engine across seven adversarial rounds, and compare on safety first, then cost and coverage."
                 />
                 <meta property="og:url" content="https://openadapt.ai/compare" />
                 <script
@@ -102,29 +102,28 @@ export default function ComparePage() {
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     Start with the failure mode nobody in this category
                     publishes a number for. Every self-healing replay tool
-                    &mdash; record a workflow, replay it, let it repair itself
-                    when the UI moves &mdash; can resolve the wrong on-screen
-                    target under data drift, act on it, and report success. In
-                    an EMR that is a note saved to the wrong patient&#39;s
-                    chart, with a green checkmark. The tools verify that{' '}
-                    <em>something</em> saved; almost none verify <em>whose</em>{' '}
-                    record it landed in. So we built the harness that measures
-                    it, and red-teamed our own engine seven times &mdash; the
-                    last two surfacing a limit of OCR itself, not a bug we could
-                    patch. That measurement &mdash; not speed &mdash; is how
-                    we think this comparison should be led.
+                    (record a workflow, replay it, let it repair itself when the
+                    UI moves) can resolve the wrong on-screen target under data
+                    drift, act on it, and report success. In an EMR that&#39;s a
+                    note saved to the wrong patient&#39;s chart, with a green
+                    checkmark. The tools verify that <em>something</em> saved;
+                    almost none verify <em>whose</em> record it landed in. So we
+                    built the tooling that measures it, and red-teamed our own
+                    engine seven times. The last two rounds surfaced a limit of
+                    OCR itself, not a bug we could patch. That measurement, not
+                    speed, is how we think this comparison should be led.
                 </p>
                 <p className="mt-4 max-w-3xl text-base text-ink-2 md:text-lg">
                     There are three common ways to automate desktop work today:
                     traditional RPA platforms, AI agents that operate a
                     computer with a large model, and browser recording tools.
                     OpenAdapt takes a fourth approach. It compiles a recorded
-                    demonstration into a deterministic script that replays for
-                    free, heals itself when the UI drifts, and{' '}
-                    <strong>halts instead of guessing</strong> when it cannot
+                    demonstration into a script that replays for free, heals
+                    itself when the UI drifts, and{' '}
+                    <strong>halts instead of guessing</strong> when it can&#39;t
                     verify the target&#39;s identity. Each approach wins
-                    somewhere, so here&#39;s the honest version &mdash; safety
-                    first, then cost and coverage.
+                    somewhere, so here&#39;s the honest version: safety first,
+                    then cost and coverage.
                 </p>
 
                 <div className="mt-10 rounded-2xl border-2 border-ink bg-panel p-6 md:p-8">
@@ -135,7 +134,7 @@ export default function ComparePage() {
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         The single most dangerous thing a GUI replayer can do
                         is the wrong write, silently. So we tried to make ours
-                        do exactly that. It reopened seven times &mdash;
+                        do exactly that. It reopened seven times:
                         pixel-lookalike rows, residue-blind coverage,
                         near-name siblings (&ldquo;Belford, Phil&rdquo; vs
                         &ldquo;Belford, Philip&rdquo;), a blind spot shared by
@@ -151,10 +150,10 @@ export default function ComparePage() {
                         the same glyph before any check runs, so at the text
                         layer a wrong-patient match on an identifier alone
                         can&#39;t be caught at all. That&#39;s a limit of the
-                        substrate, not a bug to patch &mdash; which is why we
-                        verify identity on the fields OCR reads reliably (the
-                        patient&#39;s name and date of birth) and halt when
-                        identity would rest on a look-alike identifier alone.
+                        substrate, not a bug to patch. So we verify identity on
+                        the fields OCR reads reliably (the patient&#39;s name and
+                        date of birth), and halt when identity would rest on a
+                        look-alike identifier alone.
                     </p>
                     <div className="mt-5 grid gap-6 sm:grid-cols-2">
                         <div>
@@ -163,8 +162,8 @@ export default function ComparePage() {
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
                                 identity is verified on the signal OCR reads
-                                reliably &mdash; names and dates carry redundancy
-                                a single mis-read character doesn&#39;t collapse
+                                reliably: names and dates carry redundancy a
+                                single mis-read character doesn&#39;t collapse
                             </p>
                         </div>
                         <div>
@@ -174,8 +173,8 @@ export default function ComparePage() {
                             <p className="mt-1 text-sm text-ink-2">
                                 when two records differ only by a look-alike
                                 identifier OCR can&#39;t tell apart, it stops and
-                                writes nothing &mdash; a substrate limit we
-                                disclose and are closing
+                                writes nothing, a substrate limit we disclose
+                                and are closing
                             </p>
                         </div>
                     </div>
@@ -183,23 +182,23 @@ export default function ComparePage() {
                         The honest exception, published against ourselves: on a
                         stable browser DOM, an identity-keyed selector matches
                         our safety (0 wrong-actions) and beats us on
-                        availability &mdash; while a positional selector wrote
+                        availability. A positional selector, by contrast, wrote
                         the wrong patient 8/8. The wrong-action vector is spec
                         underspecification, and a demonstration captures target
                         identity for free. That comparison exists only where a
-                        DOM does; on desktop, VDI, or Citrix there is no
+                        DOM does; on desktop, VDI, or Citrix there&#39;s no
                         selector to write.
                     </p>
                     <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                        &ldquo;Provably zero&rdquo; is an asymptote &mdash; each
-                        of those seven rounds began from a system we believed was
-                        correct. The product is not &ldquo;we don&#39;t make
-                        mistakes&rdquo;; it is measured, disclosed, and
+                        &ldquo;Provably zero&rdquo; is an asymptote. Each of
+                        those seven rounds began from a system we believed was
+                        correct. The product isn&#39;t &ldquo;we don&#39;t make
+                        mistakes&rdquo;; it&#39;s measured, disclosed, and
                         fail-closed, with the adversary log public. The open
-                        problems that remain &mdash; cosmetic zoom/display-scale
-                        drift is 0% replayability today, icon-only targets
-                        proceed flagged rather than verified, small sample sizes
-                        on the agent arms &mdash; are written down, not hidden.
+                        problems that remain are written down, not hidden:
+                        cosmetic zoom/display-scale drift is 0% replayability
+                        today, icon-only targets proceed flagged rather than
+                        verified, and the agent arms run on small sample sizes.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
                         <a
@@ -255,9 +254,9 @@ export default function ComparePage() {
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                     OpenAdapt uses a model at compile time and at heal time,
-                    never on a healthy run. A healthy run is a deterministic
-                    local replay: same steps, same order, no model calls, no
-                    per-run bill. Your screen stays on your machines.
+                    never on a healthy run. A healthy run is a compiled local
+                    replay: same steps, same order, no model calls, no per-run
+                    bill. Your screen stays on your machines.
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
@@ -272,8 +271,8 @@ export default function ComparePage() {
                         judged by one arm-independent OCR check, with a distinct
                         parameterized note per run. Both arms succeeded every
                         time: 20/20 compiled, 10/10 for a Claude computer-use
-                        agent. The agent doesn&#39;t fail here &mdash; the
-                        difference is what each run costs.
+                        agent. The agent doesn&#39;t fail here. The difference
+                        is what each run costs.
                     </p>
                     <div className="mt-5 grid gap-6 sm:grid-cols-3">
                         <div>
@@ -345,17 +344,16 @@ export default function ComparePage() {
                         as the benchmark anyone can rerun deterministically:
                         100 compiled replays against 20 agent runs, both arms
                         100%, 4.9s vs 37.5s median, $0 vs $0.27 per run at
-                        list price. Same orchestrator, same agent harness,
+                        list price. Same orchestrator, same agent setup,
                         same style of OCR check.
                     </p>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        On the same harness under injected UI drift, a hybrid
-                        mode &mdash; compiled replay first, agent fallback
-                        only on a detected halt &mdash; matched agent
-                        reliability (20/20) at roughly one-eighth the
-                        agent&#39;s cost per successful run. Details and
-                        caveats (synthetic detected-halt drift, assumed drift
-                        mix) in the repo.
+                        On the same setup under injected UI drift, a hybrid
+                        mode (compiled replay first, agent fallback only on a
+                        detected halt) matched agent reliability (20/20) at
+                        roughly one-eighth the agent&#39;s cost per successful
+                        run. Details and caveats (synthetic detected-halt
+                        drift, assumed drift mix) in the repo.
                     </p>
                     <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
                         <a
@@ -455,7 +453,7 @@ export default function ComparePage() {
                         exploratory work like researching something across a
                         dozen unfamiliar sites. OpenAdapt is built for the
                         opposite case: work your team does the same way, over
-                        and over, where determinism and cost matter more than
+                        and over, where repeatability and cost matter more than
                         improvisation.
                     </p>
                 </div>
