@@ -77,7 +77,7 @@ export default function Developers() {
                     )}
                     <p className="mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-ink-2">
                         OpenAdapt is an open-source demonstration compiler for desktop automation.
-                        Record a workflow once and it compiles into a deterministic, self-healing automation that runs on your own machines.
+                        Record a workflow once and it compiles into a self-healing automation that runs on your own machines with no per-run model calls.
                     </p>
 
                     {/* uv-first Installation Section */}
