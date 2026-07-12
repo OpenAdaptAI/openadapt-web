@@ -1,0 +1,76 @@
+{
+    "_comment": "Figures copied VERBATIM from the openadapt-flow benchmark results.json files. Do NOT hand-edit values here; regenerate from source. The /compare charts render from this file so the published numbers cannot silently drift from the measured results.",
+    "provenance": {
+        "source_repo": "OpenAdaptAI/openadapt-flow",
+        "commit": "cbec44c2c2f355d5cc04a72ea9267e2d6ea68ac6",
+        "committed": "2026-07-09",
+        "model": "claude-sonnet-5",
+        "computer_tool": "computer_20251124",
+        "beta_header": "computer-use-2025-11-24",
+        "platform": "macOS-15.7.3-arm64-arm-64bit",
+        "pricing_note": "Model cost computed at list price ($3/$15 per Mtok in/out); an introductory $2/$10 rate applies through 2026-08-31.",
+        "sources": [
+            {
+                "file": "benchmark/openemr/results.json",
+                "generated_at": "2026-07-08T22:46:39Z",
+                "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/openemr/results.json"
+            },
+            {
+                "file": "benchmark/results.json",
+                "generated_at": "2026-07-08T15:46:40Z",
+                "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/results.json"
+            }
+        ]
+    },
+    "openemr": {
+        "label": "OpenEMR (real app, live demo)",
+        "task": "18-step add-patient-note workflow on the official OpenEMR public demo: log in, search the demo patient, open the chart, scroll to the Messages card, add a parameterized note, save.",
+        "workflow_steps": 18,
+        "methodology_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/openemr/BENCHMARK.md",
+        "results_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/openemr/results.json",
+        "compiled": {
+            "n": 20,
+            "success_count": 20,
+            "wall_s_p50": 39.170917561999886,
+            "wall_s_p95": 41.04867044315233,
+            "cost_usd_per_run": 0.0,
+            "model_calls_per_run": 0,
+            "actions_mean": 18.0
+        },
+        "agent": {
+            "n": 10,
+            "success_count": 10,
+            "wall_s_p50": 70.44607112499943,
+            "wall_s_p95": 82.59687604810188,
+            "cost_usd_per_run": 0.552150765,
+            "model_calls_per_run": 24,
+            "actions_mean": 23.8
+        },
+        "caveats": "The OpenEMR demo is a shared public instance that anyone can modify and that resets daily, so this is a field result, not a CI-reproducible one. The agent arm is N=10 (agent runs cost real money and load on a shared service), so its 100% carries wide error bars. Success is judged by one arm-independent OCR check for both arms, never self-report. Pinned to claude-sonnet-5 with the computer_20251124 tool on 2026-07-08; newer models will differ."
+    },
+    "mockmed": {
+        "label": "MockMed (CI-reproducible anchor)",
+        "task": "MockMed triage: log in, open the first referral, create a Triage encounter, enter the note, save. Ships with openadapt-flow, so anyone can rerun it deterministically.",
+        "methodology_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md",
+        "results_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/results.json",
+        "compiled": {
+            "n": 100,
+            "success_count": 100,
+            "wall_s_p50": 4.9309526044999075,
+            "wall_s_p95": 5.055971199399937,
+            "cost_usd_per_run": 0.0,
+            "model_calls_per_run": 0,
+            "actions_mean": 11.0
+        },
+        "agent": {
+            "n": 20,
+            "success_count": 20,
+            "wall_s_p50": 37.492187666500286,
+            "wall_s_p95": 43.44962514519993,
+            "cost_usd_per_run": 0.27155505,
+            "model_calls_per_run": 24,
+            "actions_mean": 12.0
+        },
+        "caveats": "Deterministic and CI-reproducible: 100 compiled replays vs 20 agent runs. Same orchestrator, same agent setup, same style of arm-independent OCR check as OpenEMR. Both arms succeed 100% of the time; the difference is cost and latency per run. Parity on success is not a capability claim — the agent does not fail here."
+    }
+}
