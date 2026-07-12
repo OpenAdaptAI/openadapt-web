@@ -3,10 +3,25 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import Head from 'next/head'
 import Script from 'next/script'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 import NavHeader from '@components/NavHeader'
+import { initAnalytics, capturePageview } from 'utils/analytics'
 
 export default function MyApp({ Component, pageProps }) {
+    const router = useRouter()
+
+    // Initialize privacy-conscious funnel analytics (no-op without a key)
+    // and capture a pageview on every client-side route change.
+    useEffect(() => {
+        initAnalytics()
+        capturePageview(window.location.pathname + window.location.search)
+        const handleRouteChange = (url) => capturePageview(url)
+        router.events.on('routeChangeComplete', handleRouteChange)
+        return () => router.events.off('routeChangeComplete', handleRouteChange)
+    }, [router.events])
+
     return (
         <>
             {/* New pages must add their own <Head> with unique title, description, canonical, and og:* tags */}

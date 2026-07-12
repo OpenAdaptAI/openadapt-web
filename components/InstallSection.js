@@ -4,10 +4,18 @@ import { faWindows, faApple, faLinux, faPython } from '@fortawesome/free-brands-
 import { faCopy, faCheck, faTerminal, faDownload } from '@fortawesome/free-solid-svg-icons';
 import styles from './InstallSection.module.css';
 import { getPyPIDownloadStats, formatDownloadCount } from 'utils/pypiStats';
+import { track, EVENTS } from 'utils/analytics';
+
+// One line that installs the `openadapt` tool and launches it. Assumes uv
+// is present (see the "or, step by step" fallback below to install uv in one
+// command). `uv tool install` leaves a persistent `openadapt` command, so
+// this is the true one-liner for a GUI app you relaunch.
+const ONE_LINER = 'uv tool install openadapt && openadapt';
 
 const platforms = {
     'macOS': {
         icon: faApple,
+        oneLiner: ONE_LINER,
         commands: [
             'curl -LsSf https://astral.sh/uv/install.sh | sh',
             'uv tool install openadapt',
@@ -17,6 +25,7 @@ const platforms = {
     },
     'Linux': {
         icon: faLinux,
+        oneLiner: ONE_LINER,
         commands: [
             'curl -LsSf https://astral.sh/uv/install.sh | sh',
             'uv tool install openadapt',
@@ -26,6 +35,7 @@ const platforms = {
     },
     'Windows': {
         icon: faWindows,
+        oneLiner: ONE_LINER,
         commands: [
             'powershell -c "irm https://astral.sh/uv/install.ps1 | iex"',
             'uv tool install openadapt',
@@ -35,13 +45,14 @@ const platforms = {
     }
 };
 
-function CopyButton({ text, className }) {
+function CopyButton({ text, className, onCopied }) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = async () => {
         try {
             await navigator.clipboard.writeText(text);
             setCopied(true);
+            if (onCopied) onCopied();
             setTimeout(() => setCopied(false), 2000);
         } catch (err) {
             console.error('Failed to copy:', err);
@@ -129,11 +140,57 @@ export default function InstallSection() {
                 ))}
             </div>
 
-            {/* Code Block */}
+            {/* One-liner */}
             <div className={styles.codeContainer}>
                 <div className={styles.codeHeader}>
-                    <span className={styles.codeTitle}>Terminal</span>
-                    <CopyButton text={allCommands} />
+                    <span className={styles.codeTitle}>One line</span>
+                    <CopyButton
+                        text={currentPlatform.oneLiner}
+                        onCopied={() =>
+                            track(EVENTS.INSTALL_COMMAND_COPIED, {
+                                platform: selectedPlatform,
+                                variant: 'one_liner',
+                            })
+                        }
+                    />
+                </div>
+                <pre className={styles.codeBlock}>
+                    <div className={styles.commandLine}>
+                        <span className={styles.prompt}>$</span>
+                        <code className={styles.command}>
+                            {currentPlatform.oneLiner}
+                        </code>
+                    </div>
+                </pre>
+                <div className={styles.codeFooter}>
+                    <span className={styles.note}>
+                        Installs and launches OpenAdapt. Requires{' '}
+                        <a
+                            href="https://docs.astral.sh/uv/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.uvLink}
+                        >
+                            uv
+                        </a>{' '}
+                        — install it in one command below.
+                    </span>
+                </div>
+            </div>
+
+            {/* Code Block: step-by-step fallback (installs uv first) */}
+            <div className={styles.codeContainer}>
+                <div className={styles.codeHeader}>
+                    <span className={styles.codeTitle}>or, step by step</span>
+                    <CopyButton
+                        text={allCommands}
+                        onCopied={() =>
+                            track(EVENTS.INSTALL_COMMAND_COPIED, {
+                                platform: selectedPlatform,
+                                variant: 'step_by_step',
+                            })
+                        }
+                    />
                 </div>
                 <pre className={styles.codeBlock}>
                     {currentPlatform.commands.map((cmd, index) => (

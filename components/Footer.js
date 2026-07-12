@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 
+import { track, EVENTS } from 'utils/analytics'
 import styles from './Footer.module.css'
 
 export default function Footer() {
@@ -73,7 +74,15 @@ export default function Footer() {
                 </div>
                 <div className={styles.footerContent}>
                     <div className={`${styles.footerLinks} pt-4`}>
-                        <a href={bookHref} className={styles.link}>
+                        <a
+                            href={bookHref}
+                            className={styles.link}
+                            onClick={() =>
+                                track(EVENTS.BOOK_PILOT_CLICK, {
+                                    location: 'footer',
+                                })
+                            }
+                        >
                             Book a Call
                         </a>
                         <a href={contactHref} className={styles.link}>
@@ -109,6 +118,9 @@ export default function Footer() {
                         <a
                             href="https://docs.openadapt.ai"
                             className={styles.link}
+                            onClick={() =>
+                                track(EVENTS.DOCS_CLICK, { location: 'footer' })
+                            }
                         >
                             Docs
                         </a>
@@ -121,12 +133,22 @@ export default function Footer() {
                         <a
                             href="https://github.com/OpenAdaptAI"
                             className={styles.link}
+                            onClick={() =>
+                                track(EVENTS.GITHUB_CLICK, {
+                                    location: 'footer',
+                                })
+                            }
                         >
                             GitHub
                         </a>
                         <a
                             href="https://discord.gg/yF527cQbDG"
                             className={styles.link}
+                            onClick={() =>
+                                track(EVENTS.DISCORD_CLICK, {
+                                    location: 'footer',
+                                })
+                            }
                         >
                             Discord
                         </a>

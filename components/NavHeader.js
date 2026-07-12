@@ -2,7 +2,14 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { track, EVENTS } from 'utils/analytics'
 import styles from './NavHeader.module.css'
+
+// Map an external nav link to its funnel event, if any.
+const externalEvent = (href) => {
+    if (href && href.includes('github.com')) return EVENTS.GITHUB_CLICK
+    return null
+}
 
 const NAV_LINKS = [
     { label: 'Healthcare', href: '/solutions/healthcare' },
@@ -41,6 +48,10 @@ export default function NavHeader() {
                                 className={styles.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => {
+                                    const ev = externalEvent(item.href)
+                                    if (ev) track(ev, { location: 'nav' })
+                                }}
                             >
                                 {item.label}
                             </a>
@@ -65,7 +76,13 @@ export default function NavHeader() {
                 >
                     {menuOpen ? 'CLOSE' : 'MENU'}
                 </button>
-                <Link href="/#book" className={styles.cta}>
+                <Link
+                    href="/#book"
+                    className={styles.cta}
+                    onClick={() =>
+                        track(EVENTS.BOOK_PILOT_CLICK, { location: 'nav' })
+                    }
+                >
                     Book a demo
                 </Link>
             </div>
@@ -83,6 +100,10 @@ export default function NavHeader() {
                                 className={styles.mobileLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => {
+                                    const ev = externalEvent(item.href)
+                                    if (ev) track(ev, { location: 'nav_mobile' })
+                                }}
                             >
                                 {item.label}
                             </a>
