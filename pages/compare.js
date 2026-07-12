@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
+import BenchmarkCharts from '@components/BenchmarkCharts'
+import benchmark from '../data/benchmark.json'
 
 const webPageSchema = {
     '@context': 'https://schema.org',
@@ -274,32 +276,10 @@ export default function ComparePage() {
                         agent. The agent doesn&#39;t fail here. The difference
                         is what each run costs.
                     </p>
-                    <div className="mt-5 grid gap-6 sm:grid-cols-3">
-                        <div>
-                            <p className="font-display text-2xl font-semibold text-ink">
-                                1.8&times; faster
-                            </p>
-                            <p className="mt-1 text-sm text-ink-2">
-                                median run: 39.2s compiled vs 70.4s agent
-                            </p>
-                        </div>
-                        <div>
-                            <p className="font-display text-2xl font-semibold text-ink">
-                                $0 vs $0.55
-                            </p>
-                            <p className="mt-1 text-sm text-ink-2">
-                                model cost per run, at list price
-                            </p>
-                        </div>
-                        <div>
-                            <p className="font-display text-2xl font-semibold text-ink">
-                                0 vs ~24
-                            </p>
-                            <p className="mt-1 text-sm text-ink-2">
-                                model calls per run
-                            </p>
-                        </div>
-                    </div>
+                    <BenchmarkCharts
+                        dataset={benchmark.openemr}
+                        runs={500}
+                    />
                     <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
                         Run the task 500 times and the ratios compound: about
                         $275 and ten hours of wall clock through the agent,
@@ -343,9 +323,16 @@ export default function ComparePage() {
                         the demo clinic app that ships with openadapt-flow,
                         as the benchmark anyone can rerun deterministically:
                         100 compiled replays against 20 agent runs, both arms
-                        100%, 4.9s vs 37.5s median, $0 vs $0.27 per run at
-                        list price. Same orchestrator, same agent setup,
-                        same style of OCR check.
+                        100%. Same orchestrator, same agent setup, same style
+                        of OCR check. The same shape of result, on a substrate
+                        you can reproduce:
+                    </p>
+                    <BenchmarkCharts
+                        dataset={benchmark.mockmed}
+                        runs={500}
+                    />
+                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                        {benchmark.mockmed.caveats}
                     </p>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         On the same setup under injected UI drift, a hybrid
