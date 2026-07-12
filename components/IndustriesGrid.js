@@ -34,7 +34,7 @@ export default function IndustriesGrid({
             title: 'Healthcare clinics',
             href: '/solutions/healthcare',
             descriptions:
-                'Referral and fax intake, EMR data entry and extraction — desktop and VDI EMRs included. PHI handling stays fully local.',
+                'Referral and fax intake, EMR data entry and extraction, desktop and VDI EMRs included. PHI handling stays fully local.',
             logo: '/images/noun-healthcare.svg',
         },
         {
@@ -48,7 +48,7 @@ export default function IndustriesGrid({
             title: 'Other regulated back-offices',
             href: '#book',
             descriptions:
-                'Document-heavy, compliance-bound workflows — tell us yours.',
+                'Document-heavy, compliance-bound workflows. Tell us yours.',
             logo: '/images/noun-law.svg',
         },
     ]
@@ -93,7 +93,7 @@ export default function IndustriesGrid({
                 </h2>
                 <p className={styles.p}>
                     Record the workflow once and OpenAdapt compiles it into an
-                    automation your team can review, run, and audit — entirely
+                    automation your team can review, run, and audit, entirely
                     on your own machines. No brittle selectors to hand-author.
                     No per-run model costs.
                     <br />

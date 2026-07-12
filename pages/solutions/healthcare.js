@@ -28,12 +28,12 @@ export default function HealthcarePage() {
                     EMR. OpenAdapt does the retyping.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    Record the intake workflow once — open the referral, read
-                    the fields, enter them into the EMR — and OpenAdapt
-                    compiles it into a deterministic automation your clinic
-                    runs on its own machines. Healthy runs make no cloud model
-                    calls, and when the EMR&#39;s screens change, the fix
-                    arrives as a reviewable diff, not a support ticket.
+                    Record the intake workflow once (open the referral, read
+                    the fields, enter them into the EMR) and OpenAdapt
+                    compiles it into an automation your clinic runs on its own
+                    machines. Healthy runs make no cloud model calls, and when
+                    the EMR&#39;s screens change, the fix arrives as a
+                    reviewable diff, not a support ticket.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link

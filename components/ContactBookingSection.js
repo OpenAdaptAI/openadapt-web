@@ -92,8 +92,8 @@ export default function ContactBookingSection({
                     Book a 15-minute automation fit call
                 </h2>
                 <p className="mt-3 text-sm text-ink-2 md:text-base">
-                    Tell us your highest-friction workflow and we will map what
-                    can be automated first.
+                    Tell us your highest-friction workflow and we&apos;ll map
+                    what can be automated first.
                 </p>
 
                 {!isSubmitted ? (

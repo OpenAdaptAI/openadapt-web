@@ -30,7 +30,7 @@ export default function MyApp({ Component, pageProps }) {
                 <title>OpenAdapt — Record once. Compiled, self-healing desktop automation that runs on your premises.</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles a recorded demonstration into a deterministic, self-healing automation. Healthy runs make no cloud model calls; your data never leaves your machines. Open source, MIT licensed."
+                    content="OpenAdapt compiles a recorded demonstration into a self-healing automation that replays on your own machines. Healthy runs make no cloud model calls; your data never leaves your machines. Open source, MIT licensed."
                 />
                 <link
                     rel="apple-touch-icon"
@@ -62,7 +62,7 @@ export default function MyApp({ Component, pageProps }) {
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="OpenAdapt.AI" />
                 <meta property="og:title" content="OpenAdapt — Show it once. It runs forever. On your premises." />
-                <meta property="og:description" content="OpenAdapt compiles a recorded demonstration into a deterministic, self-healing automation that runs on your own machines. Open source, MIT licensed." />
+                <meta property="og:description" content="OpenAdapt compiles a recorded demonstration into a self-healing automation that runs on your own machines. Open source, MIT licensed." />
                 <meta property="og:image" content="https://openadapt.ai/og.png" />
                 <meta property="og:image:type" content="image/png" />
                 <meta property="og:image:width" content="1024" />
@@ -73,7 +73,7 @@ export default function MyApp({ Component, pageProps }) {
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@OpenAdaptAI" />
                 <meta name="twitter:title" content="OpenAdapt — Show it once. It runs forever. On your premises." />
-                <meta name="twitter:description" content="Record a workflow once. OpenAdapt compiles it into a deterministic, self-healing automation that runs on your own machines. MIT licensed." />
+                <meta name="twitter:description" content="Record a workflow once. OpenAdapt compiles it into a self-healing automation that runs on your own machines. MIT licensed." />
                 <meta name="twitter:image" content="https://openadapt.ai/og.png" />
 
                 {/* Google tag (gtag.js) */}
