@@ -24,7 +24,7 @@ export default function SafetyBand() {
                     stops and flags a person rather than writing to the wrong
                     record. We built an adversarial test suite to measure how
                     often it could still pick the wrong target, put our own
-                    engine through five rounds of it, and publish every
+                    engine through seven rounds of it, and publish every
                     result — including what it gets wrong today.
                 </p>
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
