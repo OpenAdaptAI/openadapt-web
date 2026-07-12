@@ -9,7 +9,7 @@ const webPageSchema = {
     name: 'How OpenAdapt compares',
     url: 'https://openadapt.ai/compare',
     description:
-        'We built a harness that measures how often self-healing GUI automation tools silently write to the wrong record under UI drift, red-teamed our own engine five times until it stopped, then ran the same instrument across the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
+        'We built a harness that measures how often self-healing GUI automation tools silently write to the wrong record under UI drift, red-teamed our own engine seven times, then ran the same instrument across the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -109,8 +109,9 @@ export default function ComparePage() {
                     chart, with a green checkmark. The tools verify that{' '}
                     <em>something</em> saved; almost none verify <em>whose</em>{' '}
                     record it landed in. So we built the harness that measures
-                    it, and red-teamed our own engine five times until it
-                    stopped. That measurement &mdash; not speed &mdash; is how
+                    it, and red-teamed our own engine seven times &mdash; the
+                    last two surfacing a limit of OCR itself, not a bug we could
+                    patch. That measurement &mdash; not speed &mdash; is how
                     we think this comparison should be led.
                 </p>
                 <p className="mt-4 max-w-3xl text-base text-ink-2 md:text-lg">
@@ -134,7 +135,7 @@ export default function ComparePage() {
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         The single most dangerous thing a GUI replayer can do
                         is the wrong write, silently. So we tried to make ours
-                        do exactly that. It reopened five times &mdash;
+                        do exactly that. It reopened seven times &mdash;
                         pixel-lookalike rows, residue-blind coverage,
                         near-name siblings (&ldquo;Belford, Phil&rdquo; vs
                         &ldquo;Belford, Philip&rdquo;), a blind spot shared by
@@ -143,26 +144,38 @@ export default function ComparePage() {
                         (&ldquo;A01234&rdquo; vs &ldquo;AO1234&rdquo;). Each
                         was fixed and pinned as a permanent test on a frozen,
                         SHA-manifested held-out corpus (~6,900 pairs, committed
-                        before each fix).
+                        before each fix). Then testing on a realistic dense
+                        record list surfaced the two deepest ones: OCR itself
+                        reads look-alike characters (&ldquo;O&rdquo; vs
+                        &ldquo;0&rdquo;, &ldquo;l&rdquo; vs &ldquo;1&rdquo;) as
+                        the same glyph before any check runs, so at the text
+                        layer a wrong-patient match on an identifier alone
+                        can&#39;t be caught at all. That&#39;s a limit of the
+                        substrate, not a bug to patch &mdash; which is why we
+                        verify identity on the fields OCR reads reliably (the
+                        patient&#39;s name and date of birth) and halt when
+                        identity would rest on a look-alike identifier alone.
                     </p>
                     <div className="mt-5 grid gap-6 sm:grid-cols-2">
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                0.000%
+                                name + DOB
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                wrong-patient verify (false-accept) across the
-                                frozen corpus + 18 out-of-corpus probes
+                                identity is verified on the signal OCR reads
+                                reliably &mdash; names and dates carry redundancy
+                                a single mis-read character doesn&#39;t collapse
                             </p>
                         </div>
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                ~26&ndash;28%
+                                it halts
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                the honest cost: safe-halt rate on noisy
-                                identifier rows &mdash; a fallback or retry,
-                                never a wrong write
+                                when two records differ only by a look-alike
+                                identifier OCR can&#39;t tell apart, it stops and
+                                writes nothing &mdash; a substrate limit we
+                                disclose and are closing
                             </p>
                         </div>
                     </div>
@@ -179,7 +192,7 @@ export default function ComparePage() {
                     </p>
                     <p className="mt-4 text-xs leading-relaxed text-ink-3">
                         &ldquo;Provably zero&rdquo; is an asymptote &mdash; each
-                        of those five rounds began from a system we believed was
+                        of those seven rounds began from a system we believed was
                         correct. The product is not &ldquo;we don&#39;t make
                         mistakes&rdquo;; it is measured, disclosed, and
                         fail-closed, with the adversary log public. The open
@@ -199,7 +212,7 @@ export default function ComparePage() {
                             href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/validation/IDENTITY_ROC.md"
                             className="inline-block text-sm text-accent hover:underline"
                         >
-                            The five-round adversary log &amp; ROC
+                            The adversary log &amp; ROC
                         </a>
                     </div>
                 </div>
