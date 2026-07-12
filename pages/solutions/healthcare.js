@@ -11,7 +11,7 @@ export default function HealthcarePage() {
                 <title>Healthcare Clinic Automation — Referral Intake & EMR Data Entry | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles a recorded demonstration of referral intake or EMR data entry into a self-healing automation that runs inside your clinic. PHI never leaves your machines; desktop and VDI EMRs included."
+                    content="OpenAdapt compiles a recorded demonstration of referral intake or EMR data entry into a self-healing automation that runs inside your clinic. PHI never leaves your machines. Web EMRs today, with desktop and VDI adapters in progress."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/healthcare" />
                 <meta property="og:title" content="Healthcare Clinic Automation | OpenAdapt" />
@@ -64,8 +64,10 @@ export default function HealthcarePage() {
                         replays all stay on your own infrastructure, and
                         PII/PHI scrubbing tooling is included. Because it
                         works from the screen rather than browser internals,
-                        it operates desktop and VDI EMRs that cloud automation
-                        tools can&#39;t reach.
+                        the same vision-based approach is designed to reach the
+                        desktop and VDI EMRs that cloud automation tools
+                        can&#39;t. Web EMRs are supported today, and those
+                        desktop and VDI adapters are in progress.
                     </p>
                 </div>
 

@@ -8,10 +8,10 @@ export default function LendingPage() {
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
-                <title>Mortgage & Lending Automation — Loan-File Data Entry in Encompass | OpenAdapt</title>
+                <title>Mortgage & Lending Automation — Loan-File Data Entry | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles a recorded demonstration of loan-file data entry into a self-healing automation that runs in your own environment. Works with desktop LOS software like Encompass; borrower data stays with you."
+                    content="OpenAdapt compiles a recorded demonstration of loan-file data entry into a self-healing automation that runs in your own environment. Vision-based and designed to reach desktop LOS software like Encompass; borrower data stays with you."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/lending" />
                 <meta property="og:title" content="Mortgage & Lending Automation | OpenAdapt" />
@@ -25,8 +25,8 @@ export default function LendingPage() {
                 </p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
                     Your team copies the same loan-file data between documents
-                    and Encompass all day. OpenAdapt compiles that workflow
-                    once.
+                    and Encompass all day. OpenAdapt is built to compile that
+                    workflow once.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     Record one pass of the task (open the loan documents,
@@ -64,9 +64,11 @@ export default function LendingPage() {
                         local-first by architecture: recordings, compiled
                         scripts, and replays never leave your infrastructure,
                         and PII scrubbing tooling is included. Because it
-                        works from the screen, it operates desktop LOS
-                        software like Encompass directly, with no API
-                        integration project required.
+                        works from the screen rather than an API, the same
+                        vision-based approach is designed to reach desktop LOS
+                        software like Encompass without an API integration
+                        project. Web workflows are supported today, and that
+                        desktop adapter is in progress.
                     </p>
                 </div>
 
@@ -80,8 +82,8 @@ export default function LendingPage() {
                         LOS screens.
                     </li>
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Extract fields from loan documents into Encompass —
-                        and pull data back out for disclosures, portals, and
+                        Extract fields from loan documents into your LOS — and
+                        pull data back out for disclosures, portals, and
                         spreadsheets.
                     </li>
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
