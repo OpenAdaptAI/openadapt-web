@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 
 import ReplayHero from '@components/ReplayHero'
+import { track, EVENTS } from 'utils/analytics'
 
 import styles from './MastHead.module.css'
 
@@ -73,6 +74,11 @@ export default function Home({ githubStats }) {
                                         href="https://github.com/OpenAdaptAI/OpenAdapt"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        onClick={() =>
+                                            track(EVENTS.GITHUB_CLICK, {
+                                                location: 'hero_stars',
+                                            })
+                                        }
                                         className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm text-ink-2 no-underline"
                                         style={{ border: '1px solid var(--hairline)' }}
                                     >
@@ -101,12 +107,25 @@ export default function Home({ githubStats }) {
                             </div>
                             <div id="register">
                                 <div className="flex items-center justify-center gap-3 mt-6 mb-4">
-                                    <Link className="btn-ink" href="#book">
+                                    <Link
+                                        className="btn-ink"
+                                        href="#book"
+                                        onClick={() =>
+                                            track(EVENTS.HERO_CTA_CLICK, {
+                                                cta: 'book_a_demo',
+                                            })
+                                        }
+                                    >
                                         Book a demo
                                     </Link>
                                     <Link
                                         className="btn-ghost-ink"
                                         href="#how-it-works"
+                                        onClick={() =>
+                                            track(EVENTS.HERO_CTA_CLICK, {
+                                                cta: 'see_how_it_works',
+                                            })
+                                        }
                                     >
                                         See how it works
                                     </Link>
