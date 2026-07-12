@@ -11,7 +11,7 @@ const CarouselSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselItems = [
         "Show it once. It runs forever. On your premises.",
-        "Deterministic replay. Zero per-run model cost.",
+        "Compiled replay. Zero per-run model cost.",
         "Self-healing: UI drift becomes a reviewable diff.",
         "Your data never leaves the building.",
     ];
@@ -95,9 +95,9 @@ export default function Home({ githubStats }) {
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 OpenAdapt compiles a recorded demonstration into
-                                a deterministic, self-healing automation — open
-                                source, auditable, and running entirely on your
-                                own machines.
+                                a self-healing automation. It&apos;s open source
+                                and auditable, and it runs entirely on your own
+                                machines.
                             </p>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />

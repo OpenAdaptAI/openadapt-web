@@ -103,7 +103,7 @@ export default function InstallSection() {
         <div className={styles.installSection}>
             <div className={styles.header}>
                 <FontAwesomeIcon icon={faTerminal} className={styles.terminalIcon} />
-                <h3 className={styles.title}>Install in 30 Seconds</h3>
+                <h3 className={styles.title}>Install in 30 seconds</h3>
             </div>
 
             <p className={styles.subtitle}>
@@ -227,7 +227,7 @@ export default function InstallSection() {
                 </h4>
                 <p className={styles.note} style={{ marginBottom: '0.75rem' }}>
                     Try record → compile → replay → heal right now against the
-                    bundled demo app — no account, no cloud, nothing leaves
+                    bundled demo app. No account, no cloud, nothing leaves
                     your machine.
                 </p>
                 <div className={styles.commandGrid}>
@@ -251,7 +251,7 @@ export default function InstallSection() {
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt-flow replay bundle</code>
-                        <span>Replay: deterministic, local, zero model calls</span>
+                        <span>Replay: local, with zero model calls</span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt-flow replay bundle --drift theme</code>

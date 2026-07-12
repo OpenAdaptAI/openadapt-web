@@ -1,19 +1,19 @@
 export const faqItems = [
     {
         question: 'What is OpenAdapt?',
-        answer: 'OpenAdapt is an open-source demonstration compiler for desktop automation. You record yourself doing a task once, and OpenAdapt compiles that recording into a deterministic, self-healing script that runs on your own machines. Healthy runs make no cloud model calls, so each run costs nothing.',
+        answer: 'OpenAdapt is an open-source demonstration compiler for desktop automation. You record yourself doing a task once, and OpenAdapt compiles that recording into a self-healing script that runs on your own machines. Healthy runs make no cloud model calls, so each run costs nothing.',
     },
     {
         question: 'How is OpenAdapt different from RPA tools like UiPath?',
-        answer: 'Traditional RPA makes you hand-author brittle selectors and flowcharts, and the bot breaks when the UI changes. OpenAdapt compiles the automation from a demonstration instead — no selector authoring — and when the UI drifts it heals itself, proposing the fix as a reviewable diff. It also runs entirely on your machines.',
+        answer: 'Traditional RPA makes you hand-author brittle selectors and flowcharts, and the bot breaks when the UI changes. OpenAdapt compiles the automation from a demonstration instead, with no selector authoring, and when the UI drifts it heals itself and proposes the fix as a reviewable diff. It also runs entirely on your machines.',
     },
     {
         question: 'How is OpenAdapt different from AI computer-use agents?',
-        answer: "Computer-use agents re-reason through your task with a large model on every run, so they are slow, non-deterministic, and bill you per run. OpenAdapt compiles the task once and replays it deterministically for free. A model is only invoked to heal the script when the UI drifts.",
+        answer: "Computer-use agents re-reason through your task with a large model on every run, so they're slow, non-deterministic, and bill you per run. OpenAdapt compiles the task once and replays it locally for free, with no per-run model calls. A model is only invoked to heal the script when the UI drifts.",
     },
     {
         question: 'Does my data leave my machines?',
-        answer: 'No. OpenAdapt is local-first by architecture: recordings, compiled scripts, and replays all stay on your own infrastructure. Nothing is uploaded to run an automation. PII/PHI scrubbing tooling is included for teams that need to sanitize captured data before anyone — human or model — sees it.',
+        answer: 'No. OpenAdapt is local-first by architecture: recordings, compiled scripts, and replays all stay on your own infrastructure. Nothing is uploaded to run an automation. PII/PHI scrubbing tooling is included for teams that need to sanitize captured data before anyone (human or model) sees it.',
     },
     {
         question: 'Is OpenAdapt free?',
