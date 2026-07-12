@@ -14,6 +14,7 @@ const externalEvent = (href) => {
 const NAV_LINKS = [
     { label: 'Healthcare', href: '/solutions/healthcare' },
     { label: 'Lending', href: '/solutions/lending' },
+    { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },
     { label: 'About', href: '/about' },
     {
