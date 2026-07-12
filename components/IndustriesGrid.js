@@ -34,14 +34,14 @@ export default function IndustriesGrid({
             title: 'Healthcare clinics',
             href: '/solutions/healthcare',
             descriptions:
-                'Referral and fax intake, EMR data entry and extraction, desktop and VDI EMRs included. PHI handling stays fully local.',
+                'Referral and fax intake, EMR data entry and extraction; web EMRs today, desktop and VDI EMRs on the roadmap. PHI handling stays fully local.',
             logo: '/images/noun-healthcare.svg',
         },
         {
             title: 'Mortgage & lending ops',
             href: '/solutions/lending',
             descriptions:
-                'Loan-file data extraction and entry in desktop LOS software like Encompass. Borrower data stays in your environment.',
+                'Loan-file data extraction and entry; desktop LOS like Encompass on the roadmap. Borrower data stays in your environment.',
             logo: '/images/noun-finance.svg',
         },
         {
