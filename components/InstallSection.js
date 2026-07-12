@@ -6,43 +6,29 @@ import styles from './InstallSection.module.css';
 import { getPyPIDownloadStats, formatDownloadCount } from 'utils/pypiStats';
 import { track, EVENTS } from 'utils/analytics';
 
-// One line that installs the `openadapt` tool and launches it. Assumes uv
-// is present (see the "or, step by step" fallback below to install uv in one
-// command). `uv tool install` leaves a persistent `openadapt` command, so
-// this is the true one-liner for a GUI app you relaunch.
-const ONE_LINER = 'uv tool install openadapt && openadapt';
-
+// One self-contained line, Homebrew-style. The hosted install script
+// (public/install.sh, served at openadapt.ai/install.sh) bootstraps uv if
+// it's missing, then installs OpenAdapt as a persistent `openadapt` command —
+// so there's no separate "install uv first" step to show.
 const platforms = {
     'macOS': {
         icon: faApple,
-        oneLiner: ONE_LINER,
-        commands: [
-            'curl -LsSf https://astral.sh/uv/install.sh | sh',
-            'uv tool install openadapt',
-            'openadapt --help'
-        ],
-        note: 'Works on Intel and Apple Silicon Macs'
+        install: 'curl -fsSL https://openadapt.ai/install.sh | sh',
+        script: '/install.sh',
+        note: 'Intel and Apple Silicon Macs',
     },
     'Linux': {
         icon: faLinux,
-        oneLiner: ONE_LINER,
-        commands: [
-            'curl -LsSf https://astral.sh/uv/install.sh | sh',
-            'uv tool install openadapt',
-            'openadapt --help'
-        ],
-        note: 'Works on most modern Linux distributions'
+        install: 'curl -fsSL https://openadapt.ai/install.sh | sh',
+        script: '/install.sh',
+        note: 'Most modern Linux distributions',
     },
     'Windows': {
         icon: faWindows,
-        oneLiner: ONE_LINER,
-        commands: [
-            'powershell -c "irm https://astral.sh/uv/install.ps1 | iex"',
-            'uv tool install openadapt',
-            'openadapt --help'
-        ],
-        note: 'Run in PowerShell (not Command Prompt)'
-    }
+        install: 'powershell -c "irm https://openadapt.ai/install.ps1 | iex"',
+        script: '/install.ps1',
+        note: 'Run in PowerShell (not Command Prompt)',
+    },
 };
 
 function CopyButton({ text, className, onCopied }) {
@@ -97,7 +83,6 @@ export default function InstallSection() {
     }, []);
 
     const currentPlatform = platforms[selectedPlatform];
-    const allCommands = currentPlatform.commands.join('\n');
 
     return (
         <div className={styles.installSection}>
@@ -140,16 +125,15 @@ export default function InstallSection() {
                 ))}
             </div>
 
-            {/* One-liner */}
+            {/* One self-contained line (Homebrew-style) */}
             <div className={styles.codeContainer}>
                 <div className={styles.codeHeader}>
-                    <span className={styles.codeTitle}>One line</span>
+                    <span className={styles.codeTitle}>Install</span>
                     <CopyButton
-                        text={currentPlatform.oneLiner}
+                        text={currentPlatform.install}
                         onCopied={() =>
                             track(EVENTS.INSTALL_COMMAND_COPIED, {
                                 platform: selectedPlatform,
-                                variant: 'one_liner',
                             })
                         }
                     />
@@ -158,66 +142,24 @@ export default function InstallSection() {
                     <div className={styles.commandLine}>
                         <span className={styles.prompt}>$</span>
                         <code className={styles.command}>
-                            {currentPlatform.oneLiner}
+                            {currentPlatform.install}
                         </code>
                     </div>
                 </pre>
                 <div className={styles.codeFooter}>
                     <span className={styles.note}>
-                        Installs and launches OpenAdapt. Requires{' '}
+                        Installs uv and OpenAdapt, then you run{' '}
+                        <code>openadapt</code>. {currentPlatform.note}.{' '}
                         <a
-                            href="https://docs.astral.sh/uv/"
+                            href={currentPlatform.script}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.uvLink}
                         >
-                            uv
-                        </a>{' '}
-                        — install it in one command below.
+                            View the script
+                        </a>
                     </span>
                 </div>
-            </div>
-
-            {/* Code Block: step-by-step fallback (installs uv first) */}
-            <div className={styles.codeContainer}>
-                <div className={styles.codeHeader}>
-                    <span className={styles.codeTitle}>or, step by step</span>
-                    <CopyButton
-                        text={allCommands}
-                        onCopied={() =>
-                            track(EVENTS.INSTALL_COMMAND_COPIED, {
-                                platform: selectedPlatform,
-                                variant: 'step_by_step',
-                            })
-                        }
-                    />
-                </div>
-                <pre className={styles.codeBlock}>
-                    {currentPlatform.commands.map((cmd, index) => (
-                        <div key={index} className={styles.commandLine}>
-                            <span className={styles.prompt}>$</span>
-                            <code className={styles.command}>{cmd}</code>
-                        </div>
-                    ))}
-                </pre>
-                <div className={styles.codeFooter}>
-                    <span className={styles.note}>{currentPlatform.note}</span>
-                </div>
-            </div>
-
-            {/* What is uv? */}
-            <div className={styles.uvInfo}>
-                <p>
-                    <a
-                        href="https://docs.astral.sh/uv/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.uvLink}
-                    >
-                        What is uv?
-                    </a>
-                    {' '}- uv is a fast Python package manager that automatically installs Python and manages dependencies.
-                </p>
             </div>
 
             {/* Quick Start: the full loop */}
