@@ -16,7 +16,7 @@ const stats = [
     },
     {
         figure: '0 vs ~24',
-        caption: 'model calls per run — the replay is deterministic',
+        caption: 'model calls per run: the hot path is model-free',
     },
 ]
 

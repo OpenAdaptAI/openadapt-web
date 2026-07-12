@@ -17,7 +17,7 @@ const steps = [
         number: '3.0',
         name: 'Run',
         description:
-            'Deterministic replay in milliseconds, locally, no per-run model calls.',
+            'Compiled replay in milliseconds, locally, with no per-run model calls.',
     },
     {
         number: '4.0',
@@ -40,7 +40,7 @@ export default function HowItWorks() {
                 <p className={styles.eyebrow}>Process</p>
                 <h2 className={styles.heading}>How it works</h2>
                 <p className={styles.subheading}>
-                    A demonstration compiler: one recording in, a deterministic
+                    A demonstration compiler: one recording in, a runnable
                     automation out.
                 </p>
                 <ol className={styles.steps}>

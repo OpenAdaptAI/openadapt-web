@@ -29,12 +29,12 @@ export default function LendingPage() {
                     once.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    Record one pass of the task — open the loan documents,
-                    find the fields, enter them into the LOS — and OpenAdapt
-                    compiles it into a deterministic automation that runs on
-                    your own machines. Healthy runs make no cloud model calls,
-                    and when an LOS screen changes, the fix is proposed as a
-                    reviewable diff.
+                    Record one pass of the task (open the loan documents,
+                    find the fields, enter them into the LOS) and OpenAdapt
+                    compiles it into an automation that runs on your own
+                    machines. Healthy runs make no cloud model calls, and when
+                    an LOS screen changes, the fix is proposed as a reviewable
+                    diff.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
@@ -65,8 +65,8 @@ export default function LendingPage() {
                         scripts, and replays never leave your infrastructure,
                         and PII scrubbing tooling is included. Because it
                         works from the screen, it operates desktop LOS
-                        software like Encompass directly — no API integration
-                        project required.
+                        software like Encompass directly, with no API
+                        integration project required.
                     </p>
                 </div>
 
