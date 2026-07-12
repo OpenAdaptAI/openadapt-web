@@ -21,7 +21,7 @@ export const faqItems = [
     },
     {
         question: 'What software does OpenAdapt work with?',
-        answer: "Anything with a screen. Because OpenAdapt watches pixels and inputs rather than APIs or browser internals, it works with desktop applications, web apps, and software delivered over VDI or RDP — including EMRs and loan origination systems that cloud automation tools can't reach.",
+        answer: "OpenAdapt works from pixels and inputs rather than APIs or browser internals. Today it runs web apps, including web EMRs. Because the runtime is vision-based, the same approach extends to desktop applications and software delivered over VDI or RDP as adapters, not rewrites — and those adapters are in progress. The aim is to reach the desktop EMRs and loan origination systems that cloud automation tools can't, without an API integration project.",
     },
 ]
 
