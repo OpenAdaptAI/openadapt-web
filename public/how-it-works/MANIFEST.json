@@ -1,0 +1,163 @@
+{
+  "steps": {
+    "record": {
+      "step": "record",
+      "webm": "record.webm",
+      "mp4": "record.mp4",
+      "gif": "record.gif",
+      "poster": "record.jpg",
+      "width": 880,
+      "height": 550,
+      "source": "real",
+      "app": "mockmed",
+      "caption": "Record \u2014 real footage \u00b7 driving our MockMed demo app",
+      "alt": "Screen recording of a nurse completing an add-note task in a clinical web app while OpenAdapt captures every screen and input.",
+      "bytes": {
+        "webm": 30516,
+        "mp4": 35296,
+        "gif": 179741,
+        "jpg": 16877
+      }
+    },
+    "compile": {
+      "step": "compile",
+      "webm": "compile.webm",
+      "mp4": "compile.mp4",
+      "gif": "compile.gif",
+      "poster": "compile.jpg",
+      "width": 880,
+      "height": 550,
+      "source": "crafted",
+      "app": "mockmed",
+      "caption": "Compile \u2014 crafted annotation over a real recorded frame",
+      "alt": "The recorded demonstration compiled into an editable script: visual anchor targets, a per-step assertion, and a parameter.",
+      "bytes": {
+        "webm": 89178,
+        "mp4": 129773,
+        "gif": 692761,
+        "jpg": 34229
+      }
+    },
+    "run": {
+      "step": "run",
+      "webm": "run.webm",
+      "mp4": "run.mp4",
+      "gif": "run.gif",
+      "poster": "run.jpg",
+      "width": 880,
+      "height": 550,
+      "source": "real",
+      "app": "mockmed",
+      "caption": "Run \u2014 real footage \u00b7 driving our MockMed demo app",
+      "alt": "OpenAdapt replaying the compiled workflow automatically and locally in seconds, with no per-run model calls.",
+      "bytes": {
+        "webm": 29392,
+        "mp4": 40088,
+        "gif": 164689,
+        "jpg": 18376
+      }
+    },
+    "heal": {
+      "step": "heal",
+      "webm": "heal.webm",
+      "mp4": "heal.mp4",
+      "gif": "heal.gif",
+      "poster": "heal.jpg",
+      "width": 880,
+      "height": 550,
+      "source": "real",
+      "app": "mockmed",
+      "caption": "Self-heal \u2014 real footage \u00b7 driving our MockMed demo app",
+      "alt": "OpenAdapt replaying against a drifted UI: the fallback ladder still finds each target and proposes the anchor fix as a reviewable diff.",
+      "bytes": {
+        "webm": 60588,
+        "mp4": 70950,
+        "gif": 254518,
+        "jpg": 17265
+      }
+    },
+    "audit": {
+      "step": "audit",
+      "webm": "audit.webm",
+      "mp4": "audit.mp4",
+      "gif": "audit.gif",
+      "poster": "audit.jpg",
+      "width": 880,
+      "height": 744,
+      "source": "real",
+      "app": "mockmed",
+      "caption": "Audit \u2014 real footage \u00b7 driving our MockMed demo app",
+      "alt": "The illustrated run report OpenAdapt produces for every run: what ran, what it saw, and what changed, with per-step screenshots.",
+      "bytes": {
+        "webm": 584585,
+        "mp4": 1337199,
+        "gif": 1215838,
+        "jpg": 95670
+      }
+    },
+    "record_openemr": {
+      "step": "record",
+      "webm": "record_openemr.webm",
+      "mp4": "record_openemr.mp4",
+      "gif": "record_openemr.gif",
+      "poster": "record_openemr.jpg",
+      "width": 880,
+      "height": 550,
+      "source": "real",
+      "app": "openemr",
+      "caption": "Record \u2014 real footage \u00b7 driving a live OpenEMR instance",
+      "alt": "OpenAdapt's recorder capturing a real session in a live OpenEMR electronic health record: signing in and opening the patient workflow while every screen and input is captured.",
+      "bytes": {
+        "webm": 178091,
+        "mp4": 247343,
+        "gif": 778918,
+        "jpg": 71945
+      }
+    },
+    "run_openemr": {
+      "step": "run",
+      "webm": "run_openemr.webm",
+      "mp4": "run_openemr.mp4",
+      "gif": "run_openemr.gif",
+      "poster": "run_openemr.jpg",
+      "width": 880,
+      "height": 550,
+      "source": "real",
+      "app": "openemr",
+      "caption": "Run \u2014 real footage \u00b7 driving a live OpenEMR instance",
+      "alt": "OpenAdapt replaying a compiled workflow against a live OpenEMR electronic health record, locally and with no per-run model calls.",
+      "bytes": {
+        "webm": 148464,
+        "mp4": 251032,
+        "gif": 817188,
+        "jpg": 24980
+      }
+    }
+  },
+  "order": [
+    "record",
+    "compile",
+    "run",
+    "heal",
+    "audit"
+  ],
+  "variants": {
+    "record": [
+      "record",
+      "record_openemr"
+    ],
+    "compile": [
+      "compile"
+    ],
+    "run": [
+      "run",
+      "run_openemr"
+    ],
+    "heal": [
+      "heal"
+    ],
+    "audit": [
+      "audit"
+    ]
+  }
+}
