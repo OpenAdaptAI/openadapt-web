@@ -429,7 +429,7 @@ export default function ComparePage() {
 
                 <div className="mt-12 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-                        Where agents beat us
+                        Where another tool is the better fit
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         We&#39;d rather tell you this than have you find out
@@ -442,6 +442,15 @@ export default function ComparePage() {
                         opposite case: work your team does the same way, over
                         and over, where repeatability and cost matter more than
                         improvisation.
+                    </p>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        And where a real, stable API already exists for the
+                        system you&#39;re driving, use it &mdash; a direct
+                        integration beats driving a GUI every time. OpenAdapt is
+                        an API compiler for the API-less long tail: the legacy
+                        EMRs, Citrix estates, and desktop systems where the
+                        integration you&#39;d want was never shipped, so a
+                        recorded demonstration is the only interface you have.
                     </p>
                 </div>
 
