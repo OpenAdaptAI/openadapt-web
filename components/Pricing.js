@@ -98,10 +98,10 @@ export default function Pricing() {
                         <p className="eyebrow">Hosted</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
-                                Flat base
+                                $500
                             </span>
                             <span className="text-sm text-ink-3">
-                                + run volume
+                                /mo · up to 2,000 runs
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
@@ -111,8 +111,8 @@ export default function Pricing() {
                         <FeatureList
                             items={[
                                 'Managed cloud runner — nothing to operate',
-                                'Flat platform fee + a workflow-run volume band',
-                                'Hosted inference included',
+                                'Includes up to 2,000 workflow-runs/mo — more on request',
+                                'Hosted inference included, at zero metered cost',
                                 'No per-step, per-seat, or surprise metering',
                             ]}
                         />
