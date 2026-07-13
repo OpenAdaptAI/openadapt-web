@@ -9,6 +9,7 @@ import Footer from '@components/Footer'
 import HowItWorks from '@components/HowItWorks'
 import IndustriesGrid from '@components/IndustriesGrid'
 import MastHead from '@components/MastHead'
+import Pricing from '@components/Pricing'
 import ProofBand from '@components/ProofBand'
 import SafetyBand from '@components/SafetyBand'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
@@ -222,6 +223,7 @@ export default function Home({ githubStats }) {
                     Book a pilot →
                 </a>
             </div>
+            <Pricing />
             <Developers />
             {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
             <Faq />
