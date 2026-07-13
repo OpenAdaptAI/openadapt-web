@@ -110,10 +110,10 @@ export default function Pricing() {
                         </p>
                         <FeatureList
                             items={[
-                                'Managed cloud runner — nothing to operate',
-                                'Includes up to 10,000 workflow-runs/mo — committed bands above, never a per-run meter',
-                                'Hosted inference included, at zero metered cost',
-                                'No per-step, per-seat, or surprise metering',
+                                'Fully managed cloud runner, nothing for you to run',
+                                'Up to 10,000 workflow runs a month',
+                                'Hosted inference included at no extra cost',
+                                'No per-step or per-seat billing, no surprise charges',
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
