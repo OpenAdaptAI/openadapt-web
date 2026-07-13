@@ -89,7 +89,7 @@ export default function Pricing() {
                             View on GitHub
                         </a>
                         <p className="mt-3 text-center font-mono text-xs text-ink-3">
-                            pip install openadapt-flow
+                            pip install openadapt
                         </p>
                     </div>
 
