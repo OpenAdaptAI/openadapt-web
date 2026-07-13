@@ -6,7 +6,7 @@
 }
 
 .inner {
-    max-width: 760px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -47,11 +47,27 @@
 }
 
 .step {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: 40px;
+    padding: 32px 8px;
+    border-bottom: 1px solid var(--hairline);
+}
+
+/* Alternate the clip side for visual rhythm on desktop. */
+.step:nth-child(even) .copy {
+    order: 2;
+}
+
+.step:nth-child(even) .clip {
+    order: 1;
+}
+
+.copy {
     display: flex;
     align-items: baseline;
     gap: 22px;
-    padding: 22px 8px;
-    border-bottom: 1px solid var(--hairline);
 }
 
 .number {
@@ -92,14 +108,31 @@
     margin: 0;
 }
 
+.clip {
+    min-width: 0;
+}
+
+@media (max-width: 760px) {
+    .step {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 24px 4px;
+    }
+
+    /* Keep source order (copy then clip) on mobile regardless of nth-child. */
+    .step:nth-child(even) .copy,
+    .step:nth-child(even) .clip {
+        order: initial;
+    }
+}
+
 @media (max-width: 640px) {
     .section {
         padding: 52px 16px 60px;
     }
 
-    .step {
+    .copy {
         gap: 14px;
-        padding: 18px 4px;
     }
 
     .number {
