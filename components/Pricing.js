@@ -101,7 +101,7 @@ export default function Pricing() {
                                 $500
                             </span>
                             <span className="text-sm text-ink-3">
-                                /mo · up to 2,000 runs
+                                /mo · up to 10,000 runs
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
@@ -111,7 +111,7 @@ export default function Pricing() {
                         <FeatureList
                             items={[
                                 'Managed cloud runner — nothing to operate',
-                                'Includes up to 2,000 workflow-runs/mo — more on request',
+                                'Includes up to 10,000 workflow-runs/mo — committed bands above, never a per-run meter',
                                 'Hosted inference included, at zero metered cost',
                                 'No per-step, per-seat, or surprise metering',
                             ]}
