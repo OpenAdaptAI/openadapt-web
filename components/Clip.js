@@ -20,6 +20,7 @@ const BASE = '/how-it-works/'
  */
 export default function Clip({ clip }) {
     const wrapRef = useRef(null)
+    const videoRef = useRef(null)
     const [inView, setInView] = useState(false)
     const [reducedMotion, setReducedMotion] = useState(false)
 
@@ -55,6 +56,20 @@ export default function Clip({ clip }) {
         return () => io.disconnect()
     }, [reducedMotion])
 
+    // Force autoplay reliably. React does not always apply the muted ATTRIBUTE
+    // to the DOM node before the browser evaluates autoplay, so browsers block
+    // it and the poster shows (looks like a static image). Set muted on the
+    // node directly and call play() once it is in view.
+    useEffect(() => {
+        if (!inView || reducedMotion) return
+        const v = videoRef.current
+        if (!v) return
+        v.muted = true
+        v.defaultMuted = true
+        const p = v.play()
+        if (p && typeof p.catch === 'function') p.catch(() => {})
+    }, [inView, reducedMotion])
+
     const poster = BASE + clip.poster
     const aspectRatio = `${clip.width} / ${clip.height}`
 
@@ -77,11 +92,12 @@ export default function Clip({ clip }) {
                     />
                 ) : (
                     <video
+                        ref={videoRef}
                         className={styles.el}
                         width={clip.width}
                         height={clip.height}
                         poster={poster}
-                        preload="none"
+                        preload="auto"
                         autoPlay
                         loop
                         muted
