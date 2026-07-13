@@ -100,11 +100,12 @@ export default function Home({ githubStats }) {
                                 it runs entirely on your own machines.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
-                                Think of it as an API compiler for the API-less
-                                long tail &mdash; the legacy EMRs and Citrix
-                                estates a real integration never reached. Where a
-                                real API already exists, use it; that&apos;s the
-                                better tool.
+                                Built for the repetitive work trapped in the
+                                systems no integration ever reached &mdash;
+                                legacy EMRs, Citrix desktops, and the
+                                line-of-business apps your team still runs by
+                                hand. Where a demonstration is the only way in,
+                                that&apos;s where OpenAdapt works.
                             </p>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
