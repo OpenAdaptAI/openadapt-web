@@ -16,6 +16,7 @@ const NAV_LINKS = [
     { label: 'Lending', href: '/solutions/lending' },
     { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },
+    { label: 'Pricing', href: '/#pricing' },
     { label: 'About', href: '/about' },
     {
         label: 'Open source',
