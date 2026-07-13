@@ -1,0 +1,28 @@
+.figure {
+    margin: 0;
+    width: 100%;
+}
+
+.media {
+    width: 100%;
+    overflow: hidden;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+}
+
+.el {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.caption {
+    margin: 8px 2px 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--ink-3);
+}
