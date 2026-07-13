@@ -170,6 +170,52 @@ export default function Pricing() {
                     </div>
                 </div>
 
+                {/*
+                 * Guided setup — the on-ramp into the Enterprise lane, not a
+                 * fourth tier. A single-row band, hairline border, deliberately
+                 * secondary to the cards above: this is the done-with-you way in
+                 * for regulated buyers who will not self-serve. Flat fee is
+                 * credited toward the pilot, so it reads as proof of value, not
+                 * a standing consultancy line.
+                 */}
+                <div className="mt-6 flex flex-col gap-6 rounded-2xl border border-hairline bg-panel p-6 md:flex-row md:items-center md:justify-between md:p-7">
+                    <div className="md:max-w-2xl">
+                        <p className="eyebrow">Guided setup</p>
+                        <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink md:text-xl">
+                            Not sure where to start? We&apos;ll build your first
+                            workflow with you.
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                            Pick one well-scoped task. We record it and compile
+                            it with you, then get it running end to end with
+                            effect verification, in days. A flat fee that&apos;s
+                            credited toward your pilot if you move forward. A
+                            low-risk way to see it work on your real workflow
+                            before you commit.
+                        </p>
+                    </div>
+                    <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
+                        <div className="md:text-right">
+                            <div className="font-display text-xl font-semibold tracking-tight text-ink">
+                                from $2,500
+                            </div>
+                            <div className="font-mono text-xs text-ink-3">
+                                credited toward your pilot
+                            </div>
+                        </div>
+                        <Link
+                            href="/#book"
+                            className="btn-ink w-full text-center md:w-auto"
+                        >
+                            Book a setup call
+                        </Link>
+                    </div>
+                </div>
+                <p className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
+                    Setup pricing is a starting figure and confirmed before we
+                    begin.
+                </p>
+
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
                     We price the workflow outcome and the compliance, and bundle
                     the inference. No per-step, per-seat, or per-model-call
