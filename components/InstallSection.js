@@ -175,28 +175,27 @@ export default function InstallSection() {
                 <div className={styles.commandGrid}>
                     <div className={styles.commandItem}>
                         <code>
-                            pip install openadapt-flow && playwright install
-                            chromium
+                            pip install openadapt
                         </code>
                         <span>Install the demonstration compiler</span>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt-flow demo-record --out rec</code>
+                        <code>openadapt flow demo-record --out rec</code>
                         <span>Record a demonstration</span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>
-                            openadapt-flow compile rec --out bundle --name
+                            openadapt flow compile rec --out bundle --name
                             my-task
                         </code>
                         <span>Compile it into an editable workflow</span>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt-flow replay bundle</code>
+                        <code>openadapt flow replay bundle</code>
                         <span>Replay: local, with zero model calls</span>
                     </div>
                     <div className={styles.commandItem}>
-                        <code>openadapt-flow replay bundle --drift theme</code>
+                        <code>openadapt flow replay bundle --drift theme</code>
                         <span>Drift the UI and watch it heal itself</span>
                     </div>
                 </div>
