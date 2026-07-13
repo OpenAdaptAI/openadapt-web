@@ -4,23 +4,25 @@ import styles from './Clip.module.css'
 const BASE = '/how-it-works/'
 
 /**
- * Clip renders one product-demo media asset from the how-it-works MANIFEST.
+ * Clip renders one product-demo asset from the how-it-works MANIFEST.
+ *
+ * We display the animated GIF rather than a <video>: a GIF ALWAYS animates
+ * (it is an image, so it is not subject to the browser's video-autoplay
+ * policy, which silently blocks muted autoplay under Low Power Mode, data
+ * saver, and several browsers — the cause of the clips showing as static).
  *
  * Behavior:
- *  - Muted, looping, autoplay, playsinline <video> with webm then mp4 sources.
- *  - poster={jpg}, preload="none" and the <video> is only mounted once the
- *    element scrolls near the viewport (IntersectionObserver) — so the clips
- *    never block the landing page.
- *  - Intrinsic width/height drive an aspect-ratio box, so there is zero layout
- *    shift whether the poster or the video is showing.
- *  - Under prefers-reduced-motion: reduce, only the poster <img> renders.
- *  - GIF is a last-resort <video>-unsupported fallback, not the primary asset.
+ *  - Lazy: the (heavier) GIF is only fetched once the element nears the
+ *    viewport (IntersectionObserver); until then the small jpg poster holds
+ *    the space, so the clips never block the landing page.
+ *  - Zero layout shift: intrinsic width/height drive an aspect-ratio box.
+ *  - Under prefers-reduced-motion: reduce, the static poster is shown and the
+ *    GIF is never fetched.
  *
- * @param {object} clip - a step entry from MANIFEST.json
+ * @param {object} clip - a step (or variant) entry from MANIFEST.json
  */
 export default function Clip({ clip }) {
     const wrapRef = useRef(null)
-    const videoRef = useRef(null)
     const [inView, setInView] = useState(false)
     const [reducedMotion, setReducedMotion] = useState(false)
 
@@ -34,9 +36,8 @@ export default function Clip({ clip }) {
         return () => mq.removeEventListener?.('change', update)
     }, [])
 
-    // Lazily mount the <video> only when it nears the viewport.
+    // Lazily fetch the GIF only when it nears the viewport.
     useEffect(() => {
-        if (reducedMotion) return
         const el = wrapRef.current
         if (!el) return
         if (typeof IntersectionObserver === 'undefined') {
@@ -50,27 +51,15 @@ export default function Clip({ clip }) {
                     io.disconnect()
                 }
             },
-            { rootMargin: '200px 0px' }
+            { rootMargin: '300px 0px' }
         )
         io.observe(el)
         return () => io.disconnect()
-    }, [reducedMotion])
-
-    // Force autoplay reliably. React does not always apply the muted ATTRIBUTE
-    // to the DOM node before the browser evaluates autoplay, so browsers block
-    // it and the poster shows (looks like a static image). Set muted on the
-    // node directly and call play() once it is in view.
-    useEffect(() => {
-        if (!inView || reducedMotion) return
-        const v = videoRef.current
-        if (!v) return
-        v.muted = true
-        v.defaultMuted = true
-        const p = v.play()
-        if (p && typeof p.catch === 'function') p.catch(() => {})
-    }, [inView, reducedMotion])
+    }, [])
 
     const poster = BASE + clip.poster
+    // Show the static poster until in view, and always under reduced motion.
+    const src = reducedMotion || !inView ? poster : BASE + clip.gif
     const aspectRatio = `${clip.width} / ${clip.height}`
 
     return (
@@ -80,41 +69,14 @@ export default function Clip({ clip }) {
                 className={styles.media}
                 style={{ aspectRatio }}
             >
-                {reducedMotion || !inView ? (
-                    <img
-                        className={styles.el}
-                        src={poster}
-                        alt={clip.alt}
-                        width={clip.width}
-                        height={clip.height}
-                        loading="lazy"
-                        decoding="async"
-                    />
-                ) : (
-                    <video
-                        ref={videoRef}
-                        className={styles.el}
-                        width={clip.width}
-                        height={clip.height}
-                        poster={poster}
-                        preload="auto"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        aria-label={clip.alt}
-                    >
-                        <source src={BASE + clip.webm} type="video/webm" />
-                        <source src={BASE + clip.mp4} type="video/mp4" />
-                        {/* GIF only reached if <video> itself is unsupported. */}
-                        <img
-                            src={BASE + clip.gif}
-                            alt={clip.alt}
-                            width={clip.width}
-                            height={clip.height}
-                        />
-                    </video>
-                )}
+                <img
+                    className={styles.el}
+                    src={src}
+                    alt={clip.alt}
+                    width={clip.width}
+                    height={clip.height}
+                    decoding="async"
+                />
             </div>
             <figcaption className={styles.caption}>{clip.caption}</figcaption>
         </figure>
