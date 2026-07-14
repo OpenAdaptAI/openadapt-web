@@ -79,8 +79,10 @@ async function getPackageData() {
  */
 async function getPackageList() {
     const packages = await getPackageData();
+    // Core packages that actually exist on PyPI only. Excluding on_pypi === false
+    // avoids requesting stats for repos that were never published (404 upstream).
     return packages
-        .filter((p) => typeof p === 'string' || p.category === 'core')
+        .filter((p) => typeof p === 'string' || (p.category === 'core' && p.on_pypi !== false))
         .map((p) => (typeof p === 'string' ? p : p.name));
 }
 

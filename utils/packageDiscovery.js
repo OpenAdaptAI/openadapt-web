@@ -76,27 +76,31 @@ async function fetchGitHubRepos() {
 }
 
 // FALLBACK - only used when both GitHub and PyPI discovery fail
-// Must include ALL public openadapt-* repos from the OpenAdaptAI org
-// Last updated: 2026-03-03
+// Must include ALL public openadapt-* repos from the OpenAdaptAI org.
+// `on_pypi` records whether the repo has actually been published to PyPI. It is
+// normally recomputed live (see discoverPackages), but is pinned here so the
+// raw-fallback path (double failure) still excludes non-PyPI names from stats
+// instead of requesting download data that will 404 upstream.
+// Last verified against pypi.org/pypi/<name>/json: 2026-07-13
 const FALLBACK_PACKAGES = [
-    { name: 'openadapt', description: 'Demonstration compiler for desktop automation: record once, replay deterministically, self-heal on drift', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-flow', description: 'Record a workflow once, compile it into a deterministic, self-healing, locally-run script', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-types', description: 'Canonical action and episode schemas shared across the ecosystem', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-agent', description: 'Production execution engine for OpenAdapt GUI automation agents', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-capture', description: 'GUI interaction capture with time-aligned media', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-consilium', description: 'Multi-LLM council for consensus-driven AI responses with cross-model review', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
-    { name: 'openadapt-crier', description: 'Event-driven social media approval bot with Telegram', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
-    { name: 'openadapt-desktop', description: 'Cross-platform system tray app for continuous screen recording and AI training data', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-evals', description: 'Evaluation infrastructure for GUI agent benchmarks', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-grounding', description: 'Temporal smoothing for UI element detection with OmniParser integration', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-herald', description: 'LLM-powered social media announcements from your git history', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
-    { name: 'openadapt-ml', description: 'ML toolkit for training and evaluating multimodal GUI-action models', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-ops', description: 'Ecosystem documentation aggregator and repository maintenance tools', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools' },
-    { name: 'openadapt-privacy', description: 'PII/PHI detection and redaction for GUI automation data', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-retrieval', description: 'Multimodal demo retrieval for GUI automation', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-tray', description: 'System tray application for OpenAdapt', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-viewer', description: 'HTML viewer components for ML dashboards and benchmarks', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core' },
-    { name: 'openadapt-wright', description: 'AI-powered dev automation: iterative code generation, testing, and PR creation', stars: 0, language: 'TypeScript', pushed_at: '', html_url: '', category: 'devtools' },
+    { name: 'openadapt', description: 'Demonstration compiler for desktop automation: record once, replay deterministically, self-heal on drift', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-flow', description: 'Record a workflow once, compile it into a deterministic, self-healing, locally-run script', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-types', description: 'Canonical action and episode schemas shared across the ecosystem', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-agent', description: 'Production execution engine for OpenAdapt GUI automation agents', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: false },
+    { name: 'openadapt-capture', description: 'GUI interaction capture with time-aligned media', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-consilium', description: 'Multi-LLM council for consensus-driven AI responses with cross-model review', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools', on_pypi: true },
+    { name: 'openadapt-crier', description: 'Event-driven social media approval bot with Telegram', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools', on_pypi: false },
+    { name: 'openadapt-desktop', description: 'Cross-platform system tray app for continuous screen recording and AI training data', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-evals', description: 'Evaluation infrastructure for GUI agent benchmarks', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-grounding', description: 'Temporal smoothing for UI element detection with OmniParser integration', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-herald', description: 'LLM-powered social media announcements from your git history', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools', on_pypi: false },
+    { name: 'openadapt-ml', description: 'ML toolkit for training and evaluating multimodal GUI-action models', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-ops', description: 'Ecosystem documentation aggregator and repository maintenance tools', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'devtools', on_pypi: false },
+    { name: 'openadapt-privacy', description: 'PII/PHI detection and redaction for GUI automation data', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-retrieval', description: 'Multimodal demo retrieval for GUI automation', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-tray', description: 'System tray application for OpenAdapt', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-viewer', description: 'HTML viewer components for ML dashboards and benchmarks', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-wright', description: 'AI-powered dev automation: iterative code generation, testing, and PR creation', stars: 0, language: 'TypeScript', pushed_at: '', html_url: '', category: 'devtools', on_pypi: false },
 ];
 
 let cachedResult = null;
@@ -173,7 +177,10 @@ export async function discoverPackages() {
  */
 export async function getDiscoveredPackages() {
     const result = await discoverPackages();
-    return result.packages.map((p) => p.name);
+    // Only return names that actually exist on PyPI. Requesting download stats
+    // for a repo that was never published (on_pypi === false) makes the upstream
+    // (pypistats.org) 404 and previously crashed the serverless function (502).
+    return result.packages.filter((p) => p.on_pypi === true).map((p) => p.name);
 }
 
 export { FALLBACK_PACKAGES, CACHE_DURATION };
