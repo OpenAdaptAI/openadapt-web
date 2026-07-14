@@ -215,8 +215,16 @@ export default function Pricing() {
                     </div>
                     <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
                         <div className="md:text-right">
-                            <div className="font-display text-xl font-semibold tracking-tight text-ink">
-                                from $5,000
+                            <div className="flex items-baseline gap-2 md:justify-end">
+                                <span className="font-display text-xl font-semibold tracking-tight text-ink">
+                                    $7,000
+                                </span>
+                                <span className="text-sm text-ink-3 line-through">
+                                    $10,000
+                                </span>
+                            </div>
+                            <div className="font-mono text-xs text-accent">
+                                Founding pricing, for our first design partners
                             </div>
                             <div className="font-mono text-xs text-ink-3">
                                 credited toward your first-year license
