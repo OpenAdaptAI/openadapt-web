@@ -12,6 +12,12 @@ import Footer from '@components/Footer'
  */
 
 export default function HostedWelcome() {
+    // When the cloud app is deployed, offer a direct link into it. The cloud
+    // app links the subscription to a cloud org by email at first login, so
+    // this drops the customer into their dashboard. Unset (cloud app not live
+    // yet) keeps the concierge-only flow below.
+    const cloudAppUrl = process.env.NEXT_PUBLIC_CLOUD_APP_URL || ''
+
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
@@ -61,10 +67,28 @@ export default function HostedWelcome() {
                             </span>
                         </li>
                     </ol>
+                    {cloudAppUrl && (
+                        <div className="mt-6">
+                            <a
+                                href={cloudAppUrl}
+                                className="btn-ink w-full text-center"
+                            >
+                                Go to your dashboard
+                            </a>
+                            <p className="mt-2 text-center text-xs leading-relaxed text-ink-3">
+                                Sign in with the email you used at checkout and
+                                your subscription is already linked.
+                            </p>
+                        </div>
+                    )}
                     <div className="mt-6">
                         <Link
                             href="/#book"
-                            className="btn-ink w-full text-center"
+                            className={
+                                cloudAppUrl
+                                    ? 'btn-ghost-ink w-full text-center'
+                                    : 'btn-ink w-full text-center'
+                            }
                         >
                             Book your onboarding call
                         </Link>
