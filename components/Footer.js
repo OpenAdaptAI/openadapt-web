@@ -107,6 +107,9 @@ export default function Footer() {
                         </a>
                     </div>
                     <div className={styles.footerLinks}>
+                        <a href="/security" className={styles.link}>
+                            Security
+                        </a>{' '}
                         <a href="/privacy-policy" className={styles.link}>
                             Privacy Policy
                         </a>{' '}

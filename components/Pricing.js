@@ -93,8 +93,11 @@ export default function Pricing() {
                         </p>
                     </div>
 
-                    {/* Card 2 — Hosted */}
-                    <div className="flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
+                    {/* Card 2 — Hosted (preview / waitlist, not yet live) */}
+                    <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
+                        <span className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
+                            Preview · join the waitlist
+                        </span>
                         <p className="eyebrow">Hosted</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
@@ -106,7 +109,8 @@ export default function Pricing() {
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
                             For teams without on-prem hardware who want a managed
-                            cloud runner.
+                            cloud runner. Not live yet: this is a preview, and
+                            the price shown is what it will cost at launch.
                         </p>
                         <FeatureList
                             items={[
@@ -132,7 +136,7 @@ export default function Pricing() {
                             href="/#book"
                             className="btn-ghost-ink w-full text-center"
                         >
-                            Get early access
+                            Join the waitlist
                         </Link>
                     </div>
 
@@ -159,10 +163,22 @@ export default function Pricing() {
                                 'On-premises deployment — PHI never leaves the building',
                                 'Inference runs on your hardware at zero metered cost',
                                 'Paid pilot → annual platform license',
-                                'BAA, SOC 2, credential vault, and audit trail',
+                                'On-prem architecture built for BAA and SOC 2 requirements; formal attestation in progress',
+                                'Audit trail: every run writes an illustrated report',
                                 'Self-healing and fleet management included',
                             ]}
                         />
+                        <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
+                            Read our{' '}
+                            <Link
+                                href="/security"
+                                className="text-accent underline"
+                            >
+                                security posture
+                            </Link>
+                            : on-prem data handling, what is and isn&apos;t
+                            certified yet, and how to report a vulnerability.
+                        </div>
                         <div className="mt-6 flex-grow" />
                         <Link href="/#book" className="btn-ink w-full text-center">
                             Book a demo
