@@ -77,7 +77,7 @@ const posture = [
     {
         status: 'yes',
         title: 'BAA (Business Associate Agreement)',
-        body: 'We sign a BAA for regulated BYOC and on-prem engagements, backed by a documented HIPAA risk analysis, even though the PHI-touching data plane runs inside your environment. If your pilot needs one, we scope it as part of the engagement.',
+        body: 'We sign a BAA (US) or a PHIPA data-processing agreement (Canada) for regulated BYOC and on-prem engagements. Because the PHI-touching data plane runs inside your environment, PHI never enters our infrastructure. If your pilot needs one, we scope it as part of the engagement.',
     },
     {
         status: 'progress',

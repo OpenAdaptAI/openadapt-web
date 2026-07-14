@@ -69,7 +69,8 @@ export default function HealthcarePage() {
                         that heals them all run inside your perimeter, and PHI
                         never enters our infrastructure. We see only PHI-free
                         run metadata (status, timings, counts), and we sign a
-                        BAA for the engagement. Because OpenAdapt works from the
+                        BAA (US) or PHIPA agreement (Canada) for the engagement.
+                        Because OpenAdapt works from the
                         screen rather than browser internals, it reaches web,
                         Windows-desktop, and Citrix EMRs alike, including the
                         legacy systems cloud automation tools can&#39;t touch.
