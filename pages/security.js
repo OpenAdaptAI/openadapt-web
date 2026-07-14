@@ -37,7 +37,7 @@ const posture = [
     {
         status: 'yes',
         title: 'No AI calls on a normal run',
-        body: 'A normal replay makes no cloud AI calls, so nothing about the run leaves your machine. An AI model is only used when you first compile the recording, or when the screen changes and the script needs a repair. You can run that model on your own hardware inside your network, so your data never goes to a third party.',
+        body: 'Healthy replay makes zero model calls, so nothing about the run leaves your machine. Compilation is deterministic and model-free by default. When the screen changes, deterministic fallbacks (template, OCR, geometry) handle many UI changes; an optional model can assist unresolved changes. Any such model, like everything else, can run on your own hardware inside your network, so your data never goes to a third party.',
     },
     {
         status: 'yes',

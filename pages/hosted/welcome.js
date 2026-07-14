@@ -103,7 +103,7 @@ export default function HostedWelcome() {
                             Enterprise
                         </Link>{' '}
                         runs OpenAdapt inside your own environment, so regulated
-                        data never leaves your network.
+                        data never enters our infrastructure.
                     </p>
                 </div>
 

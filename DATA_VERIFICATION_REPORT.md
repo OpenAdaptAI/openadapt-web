@@ -349,7 +349,7 @@ Users can independently verify all data by following the links provided in the U
 ## Contact
 
 For questions about data sources or to report discrepancies:
-- File an issue: https://github.com/OpenAdaptAI/OpenAdapt.web/issues
+- File an issue: https://github.com/OpenAdaptAI/openadapt-web/issues
 - Contact: development team via GitHub
 
 ---

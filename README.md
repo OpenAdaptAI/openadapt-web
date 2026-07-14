@@ -1,4 +1,4 @@
-# OpenAdapt.web
+# openadapt-web
 
 The official website for [OpenAdapt.AI](https://openadapt.ai) - AI-first desktop automation.
 
