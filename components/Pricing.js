@@ -160,9 +160,9 @@ export default function Pricing() {
                         </p>
                         <FeatureList
                             items={[
-                                'On-premises deployment, so PHI never leaves the building',
+                                'On-prem, or managed by us inside your own cloud (single-tenant), so PHI never leaves your network',
                                 'Inference runs on your hardware at zero metered cost',
-                                'Paid pilot → annual platform license',
+                                'Pilot first, then an annual platform license',
                                 'On-prem architecture built for BAA and SOC 2 requirements; formal attestation in progress',
                                 'Audit trail: every run writes an illustrated report',
                                 'Self-healing and fleet management included',
@@ -187,49 +187,47 @@ export default function Pricing() {
                 </div>
 
                 {/*
-                 * Guided setup — the on-ramp into the Enterprise lane, not a
-                 * fourth tier. A single-row band, hairline border, deliberately
-                 * secondary to the cards above: this is the done-with-you way in
-                 * for regulated buyers who will not self-serve. Flat fee is
-                 * credited toward the pilot, so it reads as proof of value, not
-                 * a standing consultancy line.
+                 * Pilot — the paid on-ramp, not a fourth tier. One clear
+                 * engagement: we get one workflow live in 30 days against a
+                 * single agreed success measure, refunded if it misses. The fee
+                 * credits toward the first-year license (NOT "toward the pilot" —
+                 * the fee IS the pilot). Sales-led (book a call, then invoice),
+                 * so the CTA is a call, not a checkout.
                  */}
                 <div className="mt-6 flex flex-col gap-6 rounded-2xl border border-hairline bg-panel p-6 md:flex-row md:items-center md:justify-between md:p-7">
                     <div className="md:max-w-2xl">
-                        <p className="eyebrow">Guided setup</p>
+                        <p className="eyebrow">Pilot</p>
                         <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink md:text-xl">
-                            Not sure where to start? We&apos;ll build your first
-                            workflow with you.
+                            Start with one workflow, live in 30 days.
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                            Pick one well-scoped task. We record it and compile
-                            it with you, then get it running end to end, with
-                            checks that confirm it did the right thing, in days.
-                            The flat fee is credited toward your pilot if you
-                            move forward. A low-risk way to see it work on your
-                            real workflow before you commit.
+                            Pick one high-value, repetitive task. We record and
+                            compile it with you, get it running end to end with
+                            checks that confirm it did the right thing, and agree
+                            one success measure up front. If it doesn&apos;t hit
+                            that measure, you pay nothing.
                         </p>
                     </div>
                     <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
                         <div className="md:text-right">
                             <div className="font-display text-xl font-semibold tracking-tight text-ink">
-                                from $2,500
+                                from $15,000
                             </div>
                             <div className="font-mono text-xs text-ink-3">
-                                credited toward your pilot
+                                credited toward your first-year license
                             </div>
                         </div>
                         <Link
                             href="/#book"
                             className="btn-ink w-full text-center md:w-auto"
                         >
-                            Book a setup call
+                            Book a call to scope a pilot
                         </Link>
                     </div>
                 </div>
                 <p className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
-                    Setup pricing is a starting figure and confirmed before we
-                    begin.
+                    Scope and price are confirmed before we begin. Full refund if
+                    the success criteria we agree up front aren&apos;t met.
                 </p>
 
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
