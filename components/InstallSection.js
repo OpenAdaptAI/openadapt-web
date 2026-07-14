@@ -169,13 +169,17 @@ export default function InstallSection() {
                 </h4>
                 <p className={styles.note} style={{ marginBottom: '0.75rem' }}>
                     Try record → compile → replay → heal right now against the
-                    bundled demo app. No account, no cloud, nothing leaves
-                    your machine.
+                    bundled demo app. No account and no cloud service: once it is
+                    installed, your workflow data stays on your machine. One
+                    heads-up on first run: the first <code>demo-record</code> or{' '}
+                    <code>replay</code> downloads a bundled Chromium (~150&nbsp;MB)
+                    once, so that step takes a few minutes, and on Linux you may
+                    need <code>playwright install-deps</code> first.
                 </p>
                 <div className={styles.commandGrid}>
                     <div className={styles.commandItem}>
                         <code>
-                            pip install openadapt
+                            curl -fsSL https://openadapt.ai/install.sh | sh
                         </code>
                         <span>Install the demonstration compiler</span>
                     </div>

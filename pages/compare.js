@@ -264,17 +264,66 @@ export default function ComparePage() {
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                     <p className="eyebrow">The support act: what repetition costs</p>
                     <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink">
-                        We also measured it on a real EMR
+                        Start with the number anyone can reproduce
                     </h3>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         With the safety story established above, here is the
-                        efficiency case. An 18-step add-patient-note workflow on
-                        the official OpenEMR public demo, run both ways and
-                        judged by one arm-independent OCR check, with a distinct
-                        parameterized note per run. Both arms succeeded every
-                        time: 20/20 compiled, 10/10 for a Claude computer-use
-                        agent. The agent doesn&#39;t fail here. The difference
-                        is what each run costs.
+                        efficiency case, on the substrate you can rerun yourself.
+                        MockMed is the demo clinic app that ships with
+                        openadapt-flow, so this head-to-head is deterministic: 100
+                        compiled replays against 20 agent runs, judged by one
+                        arm-independent OCR check, both arms 100%. The agent does
+                        not fail here. This is a cost-and-latency gap, not a
+                        reliability gap.
+                    </p>
+                    <BenchmarkCharts
+                        dataset={benchmark.mockmed}
+                        runs={500}
+                    />
+                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                        {benchmark.mockmed.caveats} Agent cost is computed at the
+                        model&#39;s list price ($3/$15 per Mtok in/out); an
+                        introductory $2/$10 rate applies through 2026-08-31, which
+                        lowers the agent figure further.
+                    </p>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        On the same setup under injected UI drift, a hybrid
+                        mode (compiled replay first, agent fallback only on a
+                        detected halt) matched agent reliability (20/20) at
+                        roughly one-eighth the agent&#39;s cost per successful
+                        run. Details and caveats (synthetic detected-halt
+                        drift, assumed drift mix) in the repo.
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            MockMed methodology and raw data
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/hybrid/BENCHMARK.md"
+                            className="inline-block text-sm text-accent hover:underline"
+                        >
+                            Hybrid methodology and caveats
+                        </a>
+                    </div>
+                </div>
+
+                <div className="mt-4 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
+                    <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
+                        The same result on a real EMR
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        We ran the same kind of head-to-head on a real
+                        application: an 18-step add-patient-note workflow on the
+                        official OpenEMR public demo, judged by one
+                        arm-independent OCR check with a distinct parameterized
+                        note per run. Both arms succeeded every time: 20/20
+                        compiled, 10/10 for a Claude computer-use agent. Because
+                        the demo is a shared instance that resets daily, treat
+                        this as a field cross-check on cost and latency, not a
+                        reproducible number and not a reliability claim.
                     </p>
                     <BenchmarkCharts
                         dataset={benchmark.openemr}
@@ -299,7 +348,9 @@ export default function ComparePage() {
                         self-flagged postcondition drift on the final step and
                         was verified saved by OCR; success is judged by the
                         arm-independent check for both arms, never
-                        self-report. Results are pinned
+                        self-report. Agent cost is at the model&#39;s list price;
+                        the introductory rate noted above lowers it further.
+                        Results are pinned
                         to claude-sonnet-5 with the computer_20251124 tool on
                         2026-07-08; newer models will differ. The OCR success
                         check errs conservative on dense EMR text and is
@@ -311,51 +362,6 @@ export default function ComparePage() {
                     >
                         OpenEMR methodology and raw data
                     </a>
-                </div>
-
-                <div className="mt-4 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
-                    <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
-                        The reproducible anchor
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Because the OpenEMR numbers depend on a live shared
-                        instance, we keep the same head-to-head on MockMed,
-                        the demo clinic app that ships with openadapt-flow,
-                        as the benchmark anyone can rerun deterministically:
-                        100 compiled replays against 20 agent runs, both arms
-                        100%. Same orchestrator, same agent setup, same style
-                        of OCR check. The same shape of result, on a substrate
-                        you can reproduce:
-                    </p>
-                    <BenchmarkCharts
-                        dataset={benchmark.mockmed}
-                        runs={500}
-                    />
-                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                        {benchmark.mockmed.caveats}
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        On the same setup under injected UI drift, a hybrid
-                        mode (compiled replay first, agent fallback only on a
-                        detected halt) matched agent reliability (20/20) at
-                        roughly one-eighth the agent&#39;s cost per successful
-                        run. Details and caveats (synthetic detected-halt
-                        drift, assumed drift mix) in the repo.
-                    </p>
-                    <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
-                        <a
-                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
-                            className="inline-block text-sm text-accent hover:underline"
-                        >
-                            MockMed methodology and raw data
-                        </a>
-                        <a
-                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/hybrid/BENCHMARK.md"
-                            className="inline-block text-sm text-accent hover:underline"
-                        >
-                            Hybrid methodology and caveats
-                        </a>
-                    </div>
                 </div>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">

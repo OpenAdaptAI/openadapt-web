@@ -13,7 +13,7 @@ export const faqItems = [
     },
     {
         question: 'Does my data leave my machines?',
-        answer: 'No. OpenAdapt is local-first by architecture: recordings, compiled scripts, and replays all stay on your own infrastructure. Nothing is uploaded to run an automation. PII/PHI scrubbing tooling is included for teams that need to sanitize captured data before anyone (human or model) sees it.',
+        answer: 'It stays inside your network. OpenAdapt is local-first by architecture: recordings, compiled scripts, and replays live on your own infrastructure, and on the default path a healthy run makes no cloud calls at all, so nothing leaves your machine. When the UI drifts, healing calls a model; you can run that model on your own hardware or an appliance inside your network, so the data stays within your perimeter rather than going to a third party. PII/PHI scrubbing tooling is included for teams that need to sanitize captured data before anyone (human or model) sees it.',
     },
     {
         question: 'Is OpenAdapt free?',
