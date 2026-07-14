@@ -2,13 +2,19 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 /*
+ * TARGET-STATE COPY (HELD, do not publish until the product ships). Describes
+ * the deployment x substrate matrix in .private/DESIGN_hosted_matrix_2026_07_14.md.
+ * See TARGET_STATE.md.
+ *
  * Pricing — three lanes, value-priced.
  *
- * Enterprise is the primary (visually recommended) card: on-prem, PHI never
- * leaves the building, inference runs on the customer's hardware at zero
- * metered cost. Hosted is a secondary, non-PHI / evaluation on-ramp priced on
- * outcome units (workflow-runs), never per-step / per-seat / per-VLM-call. OSS
- * stays MIT and honest.
+ * Enterprise / BYOC is the primary (visually recommended) card: on-prem or
+ * managed by us inside the customer's own VPC (single-tenant), covering web and
+ * Windows/Citrix; PHI never enters our infrastructure and inference runs in the
+ * customer's environment at zero metered cost. Hosted is a secondary, non-PHI /
+ * evaluation on-ramp (web + desktop-in-cloud) priced on outcome units
+ * (workflow-runs), never per-step / per-seat / per-VLM-call. OSS stays MIT and
+ * honest. Data-residency claims are scoped per tier, never company-wide.
  *
  * Hosted (Phase 0) is a real paid sign-up via Stripe Checkout. The Sign up CTA
  * POSTs to /api/create-checkout-session and redirects to Stripe Checkout. If
@@ -101,8 +107,8 @@ export default function Pricing() {
                 <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     The engine is open source and free. When you need it in
                     production, the AI is included in the price: no per-step,
-                    per-seat, or per-call metering. On-premises keeps your data
-                    in your building.
+                    per-seat, or per-call metering. You choose where it runs, so
+                    regulated data can stay entirely in your environment.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -159,14 +165,15 @@ export default function Pricing() {
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
                             {cloudAppConfigured
-                                ? 'For teams without on-prem hardware who want a managed cloud runner. Sign up and your subscription links to your dashboard by email, so you are up and running the same day.'
-                                : 'For teams without on-prem hardware who want a managed cloud runner. We onboard you personally to start; the self-serve runner is rolling out.'}
+                                ? 'For non-regulated teams without on-prem hardware who want a managed cloud runner for web and desktop-in-cloud workflows. Sign up and your subscription links to your dashboard by email, so you are up and running the same day.'
+                                : 'For non-regulated teams without on-prem hardware who want a managed cloud runner for web and desktop-in-cloud workflows. We onboard you personally to start; the self-serve runner is rolling out.'}
                         </p>
                         <FeatureList
                             items={[
                                 cloudAppConfigured
                                     ? 'Sign up and land straight in your dashboard'
                                     : 'We set you up personally, nothing for you to run',
+                                'Web and desktop-in-cloud workflows on one runner',
                                 'Up to 10,000 workflow runs a month',
                                 'Hosted inference included at no extra cost',
                                 'No per-step or per-seat billing, no surprise charges',
@@ -180,8 +187,8 @@ export default function Pricing() {
                             >
                                 Enterprise
                             </a>{' '}
-                            runs OpenAdapt inside your own environment, so
-                            regulated data never leaves your network.
+                            runs OpenAdapt inside your own environment, so PHI
+                            never enters our infrastructure.
                         </div>
                         <div className="mt-6 flex-grow" />
                         <button
@@ -219,12 +226,14 @@ export default function Pricing() {
                         </p>
                         <FeatureList
                             items={[
-                                'On-prem, or managed by us inside your own cloud (single-tenant), so PHI never leaves your network',
-                                'Inference runs on your hardware at zero metered cost',
+                                'On-prem, or managed by us inside your own cloud (single-tenant BYOC), so PHI never enters our infrastructure',
+                                'Web, Windows desktop, and Citrix/RDP on one runner',
+                                'Inference runs in your environment at zero metered cost',
+                                'Fail-closed regulated run: refuses unless certified, identity-covered, effect-declared, signed, and version-pinned',
                                 'Pilot first, then an annual platform license',
-                                'On-prem architecture built for BAA and SOC 2 requirements; formal attestation in progress',
+                                'BAA signed for regulated engagements; SOC 2 attestation in progress',
                                 'Audit trail: every run writes an illustrated report',
-                                'Self-healing and fleet management included',
+                                'Self-healing, halt-teach-promote, and fleet management included',
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
@@ -251,13 +260,13 @@ export default function Pricing() {
                 {/*
                  * Pilot: the paid on-ramp, not a fourth tier. One clear
                  * engagement: we get one workflow live in 30 days against a
-                 * single agreed success measure, refunded if it misses. $15k
-                 * anchors the value (10-30% of a $30-75k annual license); a
-                 * founding-design-partner discount takes it to $10k to reward
-                 * and earn references from the first customers. The fee credits
-                 * toward the first-year license (NOT "toward the pilot": the fee
-                 * IS the pilot). Sales-led (book a call, then invoice), so the
-                 * CTA is a call, not a checkout.
+                 * single agreed success measure, refunded if it misses. Standard
+                 * scope is $25k-$50k (anchored to a $30-75k annual license); the
+                 * $10k figure is a brutally-narrow founding-design-partner price
+                 * to reward and earn references from the first customers. The fee
+                 * credits toward the first-year license (NOT "toward the pilot":
+                 * the fee IS the pilot). Sales-led (book a call, then invoice),
+                 * so the CTA is a call, not a checkout.
                  */}
                 <div className="mt-6 flex flex-col gap-6 rounded-2xl border border-hairline bg-panel p-6 md:flex-row md:items-center md:justify-between md:p-7">
                     <div className="md:max-w-2xl">
@@ -286,7 +295,10 @@ export default function Pricing() {
                                 </span>
                             </div>
                             <div className="font-mono text-xs text-accent">
-                                Founding pricing, for our first design partners
+                                Founding price for a narrow first workflow
+                            </div>
+                            <div className="font-mono text-xs text-ink-3">
+                                standard scope $25k-$50k
                             </div>
                             <div className="font-mono text-xs text-ink-3">
                                 credited toward your first-year license

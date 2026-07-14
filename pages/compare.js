@@ -49,14 +49,14 @@ const rows = [
     },
     {
         dimension: 'Where it runs',
-        openadapt: 'Your machines',
+        openadapt: 'Your machines, your cloud, or ours (you choose)',
         rpa: 'Your infrastructure or vendor cloud',
         agents: 'Vendor cloud, with screenshots of your screen',
         browser: 'The browser; often with a cloud backend',
     },
     {
         dimension: 'App coverage',
-        openadapt: 'Desktop, web, and VDI/RDP (vision-based; adapters in progress)',
+        openadapt: 'Web, Windows desktop, and Citrix/RDP (one vision-based runner)',
         rpa: 'Desktop and web via connectors',
         agents: 'Anything on screen',
         browser: 'Browser only',
@@ -160,7 +160,8 @@ export default function ComparePage() {
                         Honest exception, published against ourselves: inside a
                         browser, an identity-keyed competitor is just as safe. We
                         pull ahead where there is no browser to lean on, which is
-                        most of this work: desktop EMRs, Citrix, and Windows.
+                        most of this work: desktop EMRs, Citrix, and Windows,
+                        which the same runner drives directly.
                     </p>
                     <p className="mt-4 text-xs leading-relaxed text-ink-3">
                         &ldquo;Zero wrong actions&rdquo; is a target, not a boast;
@@ -208,8 +209,10 @@ export default function ComparePage() {
                     on novel work, but for repetitive work every run is slow,
                     differently-pathed, billed, and usually sends your screen to
                     the cloud. OpenAdapt uses a model only at compile and heal
-                    time. A healthy run is a local compiled replay: same steps, no
-                    model calls, no per-run bill, screen stays on your machines.
+                    time. A healthy run is a compiled replay: same steps, no
+                    model calls, no per-run bill, and on a self-hosted or
+                    in-your-VPC deployment the screen never leaves your
+                    environment.
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
@@ -308,8 +311,9 @@ export default function ComparePage() {
                     workflow lives in a browser tab, they&#39;re worth a look. The
                     structural limit: they can&#39;t reach the desktop EMR, the
                     Windows loan system, or anything over Citrix. OpenAdapt works
-                    from pixels and inputs, so the same approach extends to desktop
-                    and VDI/RDP (adapters in progress), all on your infrastructure.
+                    from pixels and inputs, so one runner reaches the browser, the
+                    Windows desktop, and Citrix/RDP alike, deployed wherever your
+                    data lives.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">

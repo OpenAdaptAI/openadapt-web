@@ -13,7 +13,7 @@ const webPageSchema = {
     name: 'Security and trust',
     url: 'https://openadapt.ai/security',
     description:
-        'How OpenAdapt handles your data: on-premises, local-first, model-free on the default replay path. What is and is not certified today, and how to report a vulnerability.',
+        'How OpenAdapt handles your data: a deployment-choice spectrum (our cloud, your VPC, or self-hosted), model-free on the default replay path, fail-closed for regulated runs. What is and is not certified today, and how to report a vulnerability.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -31,13 +31,33 @@ const webPageSchema = {
 const posture = [
     {
         status: 'yes',
-        title: 'On-premises, local-first by architecture',
-        body: 'Recordings, scripts, and replays live on your own machines. In an on-premises deployment, the AI model runs on your hardware too, so your data stays inside your network.',
+        title: 'You choose where the data lives',
+        body: 'OpenAdapt runs three ways: our cloud for non-regulated work, managed by us inside your own VPC (single-tenant BYOC), or fully self-hosted and air-gapped. The data-residency guarantee is scoped to the deployment you pick, not a single company-wide promise. For BYOC and self-hosted, PHI never enters our infrastructure.',
+    },
+    {
+        status: 'yes',
+        title: 'PHI never enters our infrastructure (BYOC and self-hosted)',
+        body: 'On a self-hosted or in-your-VPC deployment, recordings, scripts, replays, and the model that heals them all run inside your perimeter. Our control plane sees only PHI-free run metadata: status, timestamps, and aggregate counts. It never sees screenshots, field values, patient identifiers, or run report bodies.',
     },
     {
         status: 'yes',
         title: 'No AI calls on a normal run',
         body: 'A normal replay makes no cloud AI calls, so nothing about the run leaves your machine. An AI model is only used when you first compile the recording, or when the screen changes and the script needs a repair. You can run that model on your own hardware inside your network, so your data never goes to a third party.',
+    },
+    {
+        status: 'yes',
+        title: 'Fail-closed regulated execution',
+        body: 'In regulated mode, a run refuses to start unless the workflow is a certified, signed bundle, every write step declares the effect it must verify on screen, identity coverage is complete, and the configuration is pinned to a reviewed version. Missing any of these, it refuses to run rather than proceed unchecked.',
+    },
+    {
+        status: 'yes',
+        title: 'Effect verification and identity gate',
+        body: 'Each step reads its own result back off the screen and confirms it is acting on the intended record before it moves on. This is an on-screen read-back, not an independent second source of truth, and we scope its coverage honestly: it confirms name and date of birth, and halts rather than write when only a look-alike identifier separates two records.',
+    },
+    {
+        status: 'yes',
+        title: 'Halt, teach, promote',
+        body: 'When a step is ambiguous the run halts and flags a person. A reviewer teaches the fix once, and it is promoted into the compiled workflow through governed review, so the change is auditable rather than a silent edit.',
     },
     {
         status: 'yes',
@@ -55,14 +75,14 @@ const posture = [
         body: 'The engine is MIT-licensed. You can read the code, run it yourself, and verify these claims rather than take them on trust.',
     },
     {
-        status: 'progress',
-        title: 'SOC 2',
-        body: 'We do not hold a SOC 2 attestation today. The on-prem architecture is built to meet SOC 2 requirements and formal attestation is in progress. We will not claim otherwise until a report exists.',
+        status: 'yes',
+        title: 'BAA (Business Associate Agreement)',
+        body: 'We sign a BAA for regulated BYOC and on-prem engagements, backed by a documented HIPAA risk analysis, even though the PHI-touching data plane runs inside your environment. If your pilot needs one, we scope it as part of the engagement.',
     },
     {
-        status: 'planned',
-        title: 'BAA (Business Associate Agreement)',
-        body: 'We do not run a standing BAA program today. If an enterprise pilot requires a BAA, talk to us and we will scope it as part of the engagement. We would rather tell you this up front than imply a program we have not stood up.',
+        status: 'progress',
+        title: 'SOC 2',
+        body: 'We do not hold a SOC 2 attestation today. The architecture is built to meet SOC 2 requirements and formal attestation is in progress. We will not claim otherwise until a report exists.',
     },
 ]
 
@@ -85,7 +105,7 @@ export default function SecurityPage() {
                 <title>Security and trust | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="How OpenAdapt handles your data: on-premises, local-first, and model-free on the default replay path. An honest account of what is and is not certified today, and how to report a vulnerability."
+                    content="How OpenAdapt handles your data: a deployment-choice spectrum (our cloud, your VPC, or self-hosted), model-free on the default replay path, and fail-closed for regulated runs. An honest account of what is and is not certified today, and how to report a vulnerability."
                 />
                 <link rel="canonical" href="https://openadapt.ai/security" />
                 <meta
@@ -94,7 +114,7 @@ export default function SecurityPage() {
                 />
                 <meta
                     property="og:description"
-                    content="On-premises, local-first, model-free on the default path. What is and is not certified yet, stated plainly, plus how to report a vulnerability."
+                    content="A deployment-choice spectrum, model-free on the default path, fail-closed for regulated runs. What is and is not certified yet, stated plainly, plus how to report a vulnerability."
                 />
                 <meta property="og:url" content="https://openadapt.ai/security" />
                 <script
@@ -112,10 +132,13 @@ export default function SecurityPage() {
                     certified yet
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    OpenAdapt is built to run where your data already lives. This
-                    page states our posture plainly: what is in place today, what
-                    is underway, and what is still just planned. If a badge is not
-                    here, we do not have it yet.
+                    OpenAdapt runs where you choose: our cloud for non-regulated
+                    work, managed inside your own VPC, or fully self-hosted. Every
+                    data-residency claim below is scoped to the deployment you
+                    pick, never a blanket company-wide promise. This page states
+                    our posture plainly: what is in place today, what is underway,
+                    and what is still just planned. If a badge is not here, we do
+                    not have it yet.
                 </p>
 
                 <div className="mt-10 space-y-4">

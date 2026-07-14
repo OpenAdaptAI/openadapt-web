@@ -11,7 +11,7 @@ export default function HealthcarePage() {
                 <title>Healthcare Clinic Automation — Referral Intake & EMR Data Entry | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles a recorded demonstration of referral intake or EMR data entry into a self-healing automation that runs inside your clinic. PHI never leaves your machines. Web EMRs today, with desktop and VDI adapters in progress."
+                    content="OpenAdapt compiles a recorded demonstration of referral intake or EMR data entry into a self-healing automation that runs inside your environment. Web, desktop, and Citrix EMRs. Deployed on-prem or managed by us inside your own VPC, so PHI never enters our infrastructure."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/healthcare" />
                 <meta property="og:title" content="Healthcare Clinic Automation | OpenAdapt" />
@@ -30,10 +30,13 @@ export default function HealthcarePage() {
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     Record the intake workflow once (open the referral, read
                     the fields, enter them into the EMR) and OpenAdapt
-                    compiles it into an automation your clinic runs on its own
-                    machines. Healthy runs make no cloud model calls, and when
-                    the EMR&#39;s screens change, the fix arrives as a
-                    reviewable diff, not a support ticket.
+                    compiles it into an automation your clinic runs inside its
+                    own environment, whether the EMR is a web app, a Windows
+                    desktop, or delivered over Citrix. Healthy runs make no
+                    cloud model calls, and when the EMR&#39;s screens change,
+                    the automation halts, a reviewer teaches the fix, and it is
+                    promoted into the workflow as a reviewable diff, not a
+                    support ticket.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
@@ -56,18 +59,20 @@ export default function HealthcarePage() {
             <div className="mx-auto max-w-4xl px-4 py-12">
                 <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-                        Why local matters here
+                        Your data stays in your environment
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        PHI never leaves the clinic. OpenAdapt is local-first
-                        by architecture: recordings, compiled scripts, and
-                        replays all stay on your own infrastructure, and
-                        PII/PHI scrubbing tooling is included. Because it
-                        works from the screen rather than browser internals,
-                        the same vision-based approach is designed to reach the
-                        desktop and VDI EMRs that cloud automation tools
-                        can&#39;t. Web EMRs are supported today, and those
-                        desktop and VDI adapters are in progress.
+                        For regulated workloads you deploy OpenAdapt one of two
+                        ways: fully on-prem and air-gapped, or managed by us
+                        inside your own cloud (single-tenant BYOC). Either way,
+                        recordings, compiled scripts, replays, and the model
+                        that heals them all run inside your perimeter, and PHI
+                        never enters our infrastructure. We see only PHI-free
+                        run metadata (status, timings, counts), and we sign a
+                        BAA for the engagement. Because OpenAdapt works from the
+                        screen rather than browser internals, it reaches web,
+                        Windows-desktop, and Citrix EMRs alike, including the
+                        legacy systems cloud automation tools can&#39;t touch.
                     </p>
                 </div>
 
@@ -117,6 +122,21 @@ export default function HealthcarePage() {
                         every run: what ran, what it saw, what changed.
                     </li>
                 </ul>
+
+                <div className="mt-8 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
+                    <p className="eyebrow">Fail-closed by default</p>
+                    <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
+                        A regulated run refuses to start unless it is safe.
+                    </h2>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        In regulated mode, OpenAdapt will not touch a chart
+                        unless the workflow is a certified, signed bundle, every
+                        write step declares the effect it must verify on screen,
+                        identity coverage is complete, and the configuration is
+                        pinned to a reviewed version. If any of those is missing,
+                        it refuses to run rather than proceed unchecked.
+                    </p>
+                </div>
 
                 <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
