@@ -11,7 +11,7 @@ const webPageSchema = {
     name: 'How OpenAdapt compares',
     url: 'https://openadapt.ai/compare',
     description:
-        'We built the tooling that measures how often self-healing GUI automation tools silently write to the wrong record under UI drift, red-teamed our own engine seven times, then ran the same test across the category. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
+        'Automation tools can save to the wrong record and report success. We measured how often that happens, on our own tool first. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -77,13 +77,13 @@ export default function ComparePage() {
                 <title>How OpenAdapt compares to RPA, AI agents, and browser recorders | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="We built the tooling that measures how often self-healing GUI automation tools silently write wrong state under UI drift, and pointed it at our own engine first, then the category. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders on measured silent wrong-action rate first, then cost, coverage, and where your data goes."
+                    content="An automation can save to the wrong patient's chart and still show a green checkmark. We measured how often that happens, starting with our own tool. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders on safety first, then cost, coverage, and where your data stays."
                 />
                 <link rel="canonical" href="https://openadapt.ai/compare" />
                 <meta property="og:title" content="How OpenAdapt compares | OpenAdapt" />
                 <meta
                     property="og:description"
-                    content="Self-healing GUI bots can silently write to the wrong record under UI drift. We measured it on our own engine across seven adversarial rounds, and compare on safety first, then cost and coverage."
+                    content="Automation tools can save to the wrong record and report success. We spent seven rounds trying to make our own tool do it, fixed every hole, and published what's left. Compare on safety first, then cost and coverage."
                 />
                 <meta property="og:url" content="https://openadapt.ai/compare" />
                 <script
@@ -102,60 +102,51 @@ export default function ComparePage() {
                     How OpenAdapt compares
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    Start with the failure mode nobody in this category
-                    publishes a number for. Every self-healing replay tool
-                    (record a workflow, replay it, let it repair itself when the
-                    UI moves) can resolve the wrong on-screen target under data
-                    drift, act on it, and report success. In an EMR that&#39;s a
-                    note saved to the wrong patient&#39;s chart, with a green
-                    checkmark. The tools verify that <em>something</em> saved;
-                    almost none verify <em>whose</em> record it landed in. So we
-                    built the tooling that measures it, and red-teamed our own
-                    engine seven times. The last two rounds surfaced a limit of
-                    OCR itself, not a bug we could patch. That measurement, not
-                    speed, is how we think this comparison should be led.
+                    The worst thing an automation can do is quietly the wrong
+                    thing. It saves your note to the wrong patient&#39;s chart,
+                    shows a green checkmark, and moves on. Most tools confirm
+                    that something was saved. Almost none confirm{' '}
+                    <em>whose</em> record it saved to. That is the risk we think
+                    should decide this comparison, so we measured it, on our own
+                    tool first.
                 </p>
                 <p className="mt-4 max-w-3xl text-base text-ink-2 md:text-lg">
-                    There are three common ways to automate desktop work today:
-                    traditional RPA platforms, AI agents that operate a
-                    computer with a large model, and browser recording tools.
-                    OpenAdapt takes a fourth approach. It compiles a recorded
-                    demonstration into a script that replays for free, heals
-                    itself when the UI drifts, and{' '}
-                    <strong>halts instead of guessing</strong> when it can&#39;t
-                    verify the target&#39;s identity. Each approach wins
-                    somewhere, so here&#39;s the honest version: safety first,
-                    then cost and coverage.
+                    There are three common ways to automate desktop work:
+                    traditional RPA, AI agents that drive a computer with a large
+                    model, and browser recorders. OpenAdapt is a fourth. You
+                    record the task once, and it compiles that recording into a
+                    script that replays for free, repairs itself when the screen
+                    changes, and{' '}
+                    <strong>stops rather than guess</strong> when it can&#39;t
+                    confirm it&#39;s acting on the right record. Each approach
+                    wins somewhere. Here is the honest picture, safety first.
                 </p>
 
                 <div className="mt-10 rounded-2xl border-2 border-ink bg-panel p-6 md:p-8">
                     <p className="eyebrow">The measurement</p>
                     <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                        Silent wrong-action rate under UI drift
+                        How often does it act on the wrong record?
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        The single most dangerous thing a GUI replayer can do
-                        is the wrong write, silently. So we tried to make ours
-                        do exactly that. It reopened seven times:
-                        pixel-lookalike rows, residue-blind coverage,
-                        near-name siblings (&ldquo;Belford, Phil&rdquo; vs
-                        &ldquo;Belford, Philip&rdquo;), a blind spot shared by
-                        our own test corpus and matcher, and an
-                        identifier letter/digit confusion
-                        (&ldquo;A01234&rdquo; vs &ldquo;AO1234&rdquo;). Each
-                        was fixed and pinned as a permanent test on a frozen,
-                        SHA-manifested held-out corpus (~6,900 pairs, committed
-                        before each fix). Then testing on a realistic dense
-                        record list surfaced the two deepest ones: OCR itself
-                        reads look-alike characters (&ldquo;O&rdquo; vs
-                        &ldquo;0&rdquo;, &ldquo;l&rdquo; vs &ldquo;1&rdquo;) as
-                        the same glyph before any check runs, so at the text
-                        layer a wrong-patient match on an identifier alone
-                        can&#39;t be caught at all. That&#39;s a limit of the
-                        substrate, not a bug to patch. So we verify identity on
-                        the fields OCR reads reliably (the patient&#39;s name and
-                        date of birth), and halt when identity would rest on a
-                        look-alike identifier alone.
+                        We spent seven rounds trying to make our own tool save to
+                        the wrong patient. Each round found a new way it could:
+                        look-alike rows, near-identical names
+                        (&ldquo;Belford, Phil&rdquo; vs &ldquo;Belford,
+                        Philip&rdquo;), IDs that differ by a single look-alike
+                        character (&ldquo;A01234&rdquo; vs &ldquo;AO1234&rdquo;).
+                        Every hole we found, we fixed and locked behind a
+                        permanent test.
+                    </p>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
+                        The last two weren&#39;t bugs we could patch. Screen-text
+                        recognition reads an &ldquo;O&rdquo; and a
+                        &ldquo;0&rdquo; as the same character before any check can
+                        run, so if two patients differ only by that kind of ID,
+                        nothing at the text layer can tell them apart. Our answer:
+                        we confirm identity on the patient&#39;s name and date of
+                        birth, which carry enough redundancy to survive a misread,
+                        and we stop and write nothing when the only thing telling
+                        two records apart is a look-alike ID.
                     </p>
                     <div className="mt-5 grid gap-6 sm:grid-cols-2">
                         <div>
@@ -163,44 +154,42 @@ export default function ComparePage() {
                                 name + DOB
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                identity is verified on the signal OCR reads
-                                reliably: names and dates carry redundancy a
-                                single mis-read character doesn&#39;t collapse
+                                it confirms the record by name and date of birth,
+                                which a single misread character can&#39;t quietly
+                                change
                             </p>
                         </div>
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                it halts
+                                it stops
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                when two records differ only by a look-alike
-                                identifier OCR can&#39;t tell apart, it stops and
-                                writes nothing, a substrate limit we disclose
-                                and are closing
+                                when two records differ only by a look-alike ID,
+                                it writes nothing and asks for a human, rather
+                                than risk the wrong one
                             </p>
                         </div>
                     </div>
                     <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
-                        The honest exception, published against ourselves: on a
-                        stable browser DOM, an identity-keyed selector matches
-                        our safety (0 wrong-actions) and beats us on
-                        availability. A positional selector, by contrast, wrote
-                        the wrong patient 8/8. The wrong-action vector is spec
-                        underspecification, and a demonstration captures target
-                        identity for free. That comparison exists only where a
-                        DOM does; on desktop, VDI, or Citrix there&#39;s no
-                        selector to write.
+                        One honest exception, and we publish it against
+                        ourselves: inside a web browser, a competing tool that
+                        checks the record&#39;s identity is just as safe as we
+                        are, and more reliable at getting the job done. We only
+                        pull ahead where there is no browser to lean on: the
+                        desktop EMRs, Citrix sessions, and Windows systems that
+                        make up most of this work.
                     </p>
                     <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                        &ldquo;Provably zero&rdquo; is an asymptote. Each of
-                        those seven rounds began from a system we believed was
-                        correct. The product isn&#39;t &ldquo;we don&#39;t make
-                        mistakes&rdquo;; it&#39;s measured, disclosed, and
-                        fail-closed, with the adversary log public. The open
-                        problems that remain are written down, not hidden:
-                        cosmetic zoom/display-scale drift is 0% replayability
-                        today, icon-only targets proceed flagged rather than
-                        verified, and the agent arms run on small sample sizes.
+                        &ldquo;Zero wrong actions&rdquo; is a target we work
+                        toward, not a boast. Every one of those seven rounds
+                        started from a version we thought was already correct.
+                        What we promise isn&#39;t perfection; it&#39;s that the
+                        tool checks its own work, tells you plainly what it
+                        can&#39;t do, and stops rather than guess. The open
+                        problems are written down, not hidden: display-scale
+                        changes still aren&#39;t replayable, icon-only buttons
+                        proceed with a flag instead of a full check, and the
+                        agent comparisons run on small samples.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
                         <a
@@ -262,19 +251,18 @@ export default function ComparePage() {
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
-                    <p className="eyebrow">The support act: what repetition costs</p>
+                    <p className="eyebrow">What repetition costs</p>
                     <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink">
-                        Start with the number anyone can reproduce
+                        Cost, on a test you can run yourself
                     </h3>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        With the safety story established above, here is the
-                        efficiency case, on the substrate you can rerun yourself.
-                        MockMed is the demo clinic app that ships with
-                        openadapt-flow, so this head-to-head is deterministic: 100
-                        compiled replays against 20 agent runs, judged by one
-                        arm-independent OCR check, both arms 100%. The agent does
-                        not fail here. This is a cost-and-latency gap, not a
-                        reliability gap.
+                        Safety is the headline; cost is the reason repetitive work
+                        gets automated at all. MockMed is the demo clinic app that
+                        ships with openadapt-flow, so you can rerun this yourself:
+                        100 compiled replays against 20 agent runs, scored by the
+                        same independent check. Both finished every run. The agent
+                        doesn&#39;t fail here, it just costs money and time on
+                        every run where the compiled script costs neither.
                     </p>
                     <BenchmarkCharts
                         dataset={benchmark.mockmed}
@@ -450,13 +438,12 @@ export default function ComparePage() {
                         improvisation.
                     </p>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        And where a real, stable API already exists for the
-                        system you&#39;re driving, use it &mdash; a direct
-                        integration beats driving a GUI every time. OpenAdapt is
-                        an API compiler for the API-less long tail: the legacy
-                        EMRs, Citrix estates, and desktop systems where the
-                        integration you&#39;d want was never shipped, so a
-                        recorded demonstration is the only interface you have.
+                        And if the system you need to automate already has a
+                        solid API, use it; a direct integration will always beat
+                        driving a screen. OpenAdapt is for everything that
+                        doesn&#39;t: the legacy EMRs, Citrix estates, and desktop
+                        systems where that integration was never built, and a
+                        recorded demonstration is the only way in.
                     </p>
                 </div>
 
