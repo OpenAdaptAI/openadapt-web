@@ -10,12 +10,15 @@ import { useState } from 'react'
  * outcome units (workflow-runs), never per-step / per-seat / per-VLM-call. OSS
  * stays MIT and honest.
  *
- * Hosted (Phase 0) is a real paid sign-up via Stripe Checkout, but a concierge
- * one: we onboard the first customers by hand, so the card is honest that this
- * is managed onboarding, not a finished self-serve runner. The Sign up CTA
+ * Hosted (Phase 0) is a real paid sign-up via Stripe Checkout. The Sign up CTA
  * POSTs to /api/create-checkout-session and redirects to Stripe Checkout. If
  * checkout is not configured yet (no keys), the API returns 503 and we surface
  * a friendly fallback.
+ *
+ * The onboarding framing follows NEXT_PUBLIC_CLOUD_APP_URL: when it is set the
+ * cloud app is live, so checkout routes the customer into their dashboard and
+ * the card reads as self-serve. When it is unset we onboard the first
+ * customers by hand, so the card is honest that this is managed onboarding.
  *
  * Deliberately NOT shown anywhere: $/step, $/VLM-call, per-seat, or a raw
  * $/run meter. We price the outcome and the compliance; inference is bundled.
@@ -50,6 +53,11 @@ function FeatureList({ items }) {
 export default function Pricing() {
     const [hostedLoading, setHostedLoading] = useState(false)
     const [hostedError, setHostedError] = useState('')
+
+    // When the cloud app is deployed, Hosted checkout routes the customer into
+    // their dashboard (subscription linked by email at first login), so the
+    // card reads as self-serve. Unset keeps the honest concierge framing.
+    const cloudAppConfigured = Boolean(process.env.NEXT_PUBLIC_CLOUD_APP_URL)
 
     // Concierge sign-up: POST to the checkout API, then redirect to Stripe
     // Checkout. If checkout is not configured yet (no keys), the API returns
@@ -136,7 +144,9 @@ export default function Pricing() {
                     {/* Card 2 — Hosted (paid sign-up, concierge onboarding) */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
                         <span className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
-                            Managed onboarding
+                            {cloudAppConfigured
+                                ? 'Self-serve'
+                                : 'Managed onboarding'}
                         </span>
                         <p className="eyebrow">Hosted</p>
                         <div className="mt-2 flex items-baseline gap-2">
@@ -148,13 +158,15 @@ export default function Pricing() {
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            For teams without on-prem hardware who want a
-                            managed cloud runner. We onboard you personally to
-                            start; the self-serve runner is rolling out.
+                            {cloudAppConfigured
+                                ? 'For teams without on-prem hardware who want a managed cloud runner. Sign up and your subscription links to your dashboard by email, so you are up and running the same day.'
+                                : 'For teams without on-prem hardware who want a managed cloud runner. We onboard you personally to start; the self-serve runner is rolling out.'}
                         </p>
                         <FeatureList
                             items={[
-                                'We set you up personally, nothing for you to run',
+                                cloudAppConfigured
+                                    ? 'Sign up and land straight in your dashboard'
+                                    : 'We set you up personally, nothing for you to run',
                                 'Up to 10,000 workflow runs a month',
                                 'Hosted inference included at no extra cost',
                                 'No per-step or per-seat billing, no surprise charges',
