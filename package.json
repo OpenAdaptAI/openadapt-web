@@ -6,7 +6,7 @@
     "homepage": "https://openadapt.ai",
     "repository": {
         "type": "git",
-        "url": "https://github.com/OpenAdaptAI/OpenAdapt.web"
+        "url": "https://github.com/OpenAdaptAI/openadapt-web"
     },
     "scripts": {
         "dev": "next dev",

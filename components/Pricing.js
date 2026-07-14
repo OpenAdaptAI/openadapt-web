@@ -181,7 +181,7 @@ export default function Pricing() {
                                 Enterprise
                             </a>{' '}
                             runs OpenAdapt inside your own environment, so
-                            regulated data never leaves your network.
+                            regulated data never enters our infrastructure.
                         </div>
                         <div className="mt-6 flex-grow" />
                         <button
@@ -219,7 +219,7 @@ export default function Pricing() {
                         </p>
                         <FeatureList
                             items={[
-                                'On-prem, or managed by us inside your own cloud (single-tenant), so PHI never leaves your network',
+                                'On-prem, or managed by us inside your own cloud (single-tenant), so PHI never enters our infrastructure',
                                 'Inference runs on your hardware at zero metered cost',
                                 'Pilot first, then an annual platform license',
                                 'On-prem architecture built for BAA and SOC 2 requirements; formal attestation in progress',

@@ -9,11 +9,11 @@ export const faqItems = [
     },
     {
         question: 'How is OpenAdapt different from AI computer-use agents?',
-        answer: 'An AI agent works out your task from scratch on every run, so it is slow, unpredictable, and charges you each time. OpenAdapt learns the task once and replays it locally for free. It only calls an AI model when the screen changes and the script needs a repair.',
+        answer: 'An AI agent works out your task from scratch on every run, so it is slow, unpredictable, and charges you each time. OpenAdapt learns the task once and replays it locally for free. Healthy replay makes zero model calls. When the screen changes, deterministic fallbacks (template, OCR, geometry) handle many UI changes, and an optional local model assists the rest.',
     },
     {
         question: 'Does my data leave my machines?',
-        answer: 'No. It stays inside your network. Recordings, scripts, and replays all live on your own machines, and a healthy run makes no cloud calls at all. When the screen changes and the script needs a repair, that runs an AI model, but you can run that model on your own hardware inside your network, so your data never goes to a third party. Tools for scrubbing PII and PHI are included, so you can clean captured data before anyone or anything sees it.',
+        answer: 'In a self-hosted or bring-your-own-cloud deployment, no. Recordings, scripts, and replays all live on your own machines, and healthy replay makes zero model calls. When the screen changes, deterministic fallbacks (template, OCR, geometry) handle many UI changes; an optional model can assist the rest, and you can run that model on your own hardware inside your network, so PHI never enters our infrastructure. Tools for scrubbing PII and PHI are included, so you can clean captured data before anyone or anything sees it.',
     },
     {
         question: 'Is OpenAdapt free?',

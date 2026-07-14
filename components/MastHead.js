@@ -95,9 +95,10 @@ export default function Home({ githubStats }) {
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 OpenAdapt compiles a recorded demonstration into
-                                a self-healing automation that halts rather than
-                                guessing. It&apos;s open source and auditable, and
-                                it runs entirely on your own machines.
+                                a self-healing automation. Certified workflows
+                                halt when identity or effects cannot be verified.
+                                It&apos;s open source and auditable, and it runs
+                                entirely on your own machines.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
                                 Every automation tool assumes an API. The
@@ -105,7 +106,10 @@ export default function Home({ githubStats }) {
                                 don&apos;t: legacy EMRs, Citrix desktops, the
                                 internal apps your team still works by hand.
                                 OpenAdapt learns them from one demonstration and
-                                runs them where your data already lives.
+                                runs them where your data already lives. Web
+                                workflows are supported today. Windows and Citrix
+                                workflows are being validated with design
+                                partners.
                             </p>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
