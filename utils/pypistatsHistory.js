@@ -49,9 +49,11 @@ async function getPackageList() {
         }
 
         const data = await response.json();
-        // Filter to core packages only, extract names for stats
+        // Filter to core packages that actually exist on PyPI, extract names for
+        // stats. Excluding on_pypi === false stops us requesting download data for
+        // repos that were never published (which 404 upstream).
         const packages = (data.packages || [])
-            .filter((p) => typeof p === 'string' || p.category === 'core')
+            .filter((p) => typeof p === 'string' || (p.category === 'core' && p.on_pypi !== false))
             .map((p) => (typeof p === 'string' ? p : p.name));
         cachedPackages = packages;
         cacheTimestamp = Date.now();
