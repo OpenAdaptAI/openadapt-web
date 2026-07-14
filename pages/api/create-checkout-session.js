@@ -1,8 +1,15 @@
 /*
  * Creates a Stripe Checkout Session for OpenAdapt Hosted (Phase 0).
  *
- * Concierge model: this starts a $500/mo subscription. After payment we
- * onboard the customer by hand; there is no self-serve runner yet.
+ * This starts a $500/mo subscription. Where the customer lands after payment
+ * is configurable:
+ *   - NEXT_PUBLIC_CLOUD_APP_URL set: they go to the cloud app's sign-in /
+ *     onboarding, carrying the Stripe session_id. The cloud app owns Hosted
+ *     billing and matches the subscription to a cloud org by email at first
+ *     login (cloud ARCHITECTURE Decision 5), so they land in their dashboard.
+ *   - NEXT_PUBLIC_CLOUD_APP_URL unset: they return to the concierge welcome
+ *     page and we onboard by hand. This is the graceful fallback so nothing
+ *     breaks before the cloud app is deployed.
  *
  * Money + secrets safety:
  *   - Runs in whatever mode the configured keys are (TEST until the
@@ -15,6 +22,12 @@
  * Required env vars:
  *   STRIPE_SECRET_KEY   - Stripe secret key (sk_test_... in test mode)
  *   STRIPE_PRICE_ID     - the recurring $500/mo price id (price_...)
+ *
+ * Optional env vars:
+ *   NEXT_PUBLIC_CLOUD_APP_URL - base URL of the cloud app (e.g.
+ *     https://app.openadapt.ai). When set, post-checkout success routes into
+ *     the cloud app instead of the concierge welcome page. When unset, the
+ *     concierge flow is preserved.
  */
 
 // Read env at request time (not module load) so a missing key can't break
@@ -35,6 +48,26 @@ function getBaseUrl(req) {
     const proto = req.headers['x-forwarded-proto'] || 'https'
     const host = req.headers['x-forwarded-host'] || req.headers.host
     return `${proto}://${host}`
+}
+
+function getCloudAppUrl() {
+    const configured = process.env.NEXT_PUBLIC_CLOUD_APP_URL
+    if (!configured) return ''
+    return configured.replace(/\/$/, '')
+}
+
+// Where Stripe returns the customer after a successful checkout. Both branches
+// carry the Stripe session_id so the destination can look up the subscription.
+//
+//   - Cloud app configured: route into the cloud app's sign-in / onboarding.
+//     The cloud app owns Hosted billing and links the subscription to a cloud
+//     org by email at first login, so the customer lands in their dashboard.
+//   - Not configured: fall back to the concierge welcome page (today's flow).
+function getSuccessUrl(req, cloudAppUrl) {
+    if (cloudAppUrl) {
+        return `${cloudAppUrl}/signin?session_id={CHECKOUT_SESSION_ID}`
+    }
+    return `${getBaseUrl(req)}/hosted/welcome?session_id={CHECKOUT_SESSION_ID}`
 }
 
 export default async function handler(req, res) {
@@ -61,17 +94,18 @@ export default async function handler(req, res) {
         const stripe = new Stripe(secretKey)
 
         const baseUrl = getBaseUrl(req)
+        const cloudAppUrl = getCloudAppUrl()
 
         const session = await stripe.checkout.sessions.create({
             mode: 'subscription',
             line_items: [{ price: priceId, quantity: 1 }],
             allow_promotion_codes: true,
             billing_address_collection: 'auto',
-            success_url: `${baseUrl}/hosted/welcome?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: getSuccessUrl(req, cloudAppUrl),
             cancel_url: `${baseUrl}/#pricing`,
             metadata: {
                 plan: 'hosted',
-                onboarding: 'concierge',
+                onboarding: cloudAppUrl ? 'self_serve' : 'concierge',
             },
         })
 
