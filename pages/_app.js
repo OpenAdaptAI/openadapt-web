@@ -30,7 +30,7 @@ export default function MyApp({ Component, pageProps }) {
                 <title>OpenAdapt — Record once. Compiled, self-healing desktop automation that runs on your premises.</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles a recorded demonstration into a self-healing automation that replays on your own machines. Healthy runs make no cloud model calls; your data never leaves your machines. Open source, MIT licensed."
+                    content="OpenAdapt compiles a recorded demonstration into a self-healing automation that replays on your own machines. Healthy replay makes zero model calls. Self-hosted and bring-your-own-cloud deployments keep PHI out of our infrastructure. Open source, MIT licensed."
                 />
                 <link
                     rel="apple-touch-icon"

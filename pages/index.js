@@ -55,7 +55,7 @@ const softwareSchema = {
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Windows, macOS, Linux',
     description:
-        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a self-healing script that replays locally with no per-run model calls. A model is only used to heal the script when the UI drifts, and the fix is proposed as a reviewable diff.',
+        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a self-healing script that replays locally with no per-run model calls. Deterministic fallbacks (template, OCR, geometry) handle many UI changes, an optional local model assists unresolved ones, and the fix is proposed as a reviewable diff.',
     url: 'https://openadapt.ai',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     author: {

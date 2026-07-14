@@ -17,12 +17,12 @@ export default function SafetyBand() {
             <div className="mx-auto max-w-3xl px-6 py-12 text-center">
                 <p className="eyebrow mb-2">Safety</p>
                 <h2 className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-ink mb-4">
-                    It halts instead of guessing.
+                    Certified workflows halt instead of guessing.
                 </h2>
                 <p className="mx-auto max-w-2xl text-base md:text-lg text-ink-2">
-                    When the UI drifts and a step gets ambiguous, OpenAdapt
-                    stops and flags a person rather than writing to the wrong
-                    record. We built an adversarial test suite to measure how
+                    Certified workflows halt when identity or effects can&apos;t
+                    be verified, flagging a person rather than writing to the
+                    wrong record. We built an adversarial test suite to measure how
                     often it could still pick the wrong target, put our own
                     engine through seven rounds of it, and publish every
                     result, including what it gets wrong today.

@@ -116,8 +116,8 @@ export default function ComparePage() {
                     model, and browser recorders. OpenAdapt is a fourth. You
                     record the task once, and it compiles that recording into a
                     script that replays for free, repairs itself when the screen
-                    changes, and{' '}
-                    <strong>stops rather than guess</strong> when it can&#39;t
+                    changes, and, in a certified workflow,{' '}
+                    <strong>halts rather than guess</strong> when it can&#39;t
                     confirm it&#39;s acting on the right record. Each approach
                     wins somewhere. Here is the honest picture, safety first.
                 </p>
