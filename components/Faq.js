@@ -5,7 +5,7 @@ export const faqItems = [
     },
     {
         question: 'How is OpenAdapt different from RPA tools like UiPath?',
-        answer: 'With traditional RPA, someone hand-builds the automation, and it breaks when the screen changes. With OpenAdapt you just record the task once. When the screen changes, it fixes itself and shows you the change to approve. And it runs entirely on your own machines.',
+        answer: 'With traditional RPA, someone hand-builds the automation, and it breaks when the screen changes. With OpenAdapt you just record the task once. When the screen changes, it halts, a reviewer teaches the fix, and it is promoted into the workflow as a change you approve. You choose where it runs: our cloud, your own VPC, or fully self-hosted.',
     },
     {
         question: 'How is OpenAdapt different from AI computer-use agents?',
@@ -13,7 +13,7 @@ export const faqItems = [
     },
     {
         question: 'Does my data leave my machines?',
-        answer: 'No. It stays inside your network. Recordings, scripts, and replays all live on your own machines, and a healthy run makes no cloud calls at all. When the screen changes and the script needs a repair, that runs an AI model, but you can run that model on your own hardware inside your network, so your data never goes to a third party. Tools for scrubbing PII and PHI are included, so you can clean captured data before anyone or anything sees it.',
+        answer: 'That depends on the deployment you choose, and it is your choice. Non-regulated teams can use our hosted cloud. Regulated teams run OpenAdapt self-hosted and air-gapped, or managed by us inside their own VPC (single-tenant BYOC); in both of those, PHI never enters our infrastructure and we see only PHI-free run metadata. A healthy run makes no cloud calls at all, and the model that heals a drifted script can run on your own hardware. Tools for scrubbing PII and PHI are included, so you can clean captured data before anyone or anything sees it.',
     },
     {
         question: 'Is OpenAdapt free?',
@@ -21,7 +21,7 @@ export const faqItems = [
     },
     {
         question: 'What software does OpenAdapt work with?',
-        answer: "OpenAdapt works from what is on the screen, not from an API or browser internals. Today it handles web apps, including web EMRs. Because it works from the screen, the same approach can reach desktop apps and software delivered over Citrix or remote desktop. Those adapters are in progress. The goal is to automate the desktop EMRs and loan systems that cloud tools can't touch, with no API integration project.",
+        answer: "OpenAdapt works from what is on the screen, not from an API or browser internals, so one runner drives web apps, Windows desktop apps, and software delivered over Citrix or remote desktop alike. That means the desktop EMRs and loan systems cloud tools can't touch, with no API integration project. If a system already has a solid API, use that instead; OpenAdapt is for everything that doesn't.",
     },
 ]
 

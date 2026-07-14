@@ -11,7 +11,7 @@ export default function PricingPage() {
                 <title>Pricing | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="OpenAdapt pricing: the open-source engine is free (MIT), a hosted runner for non-PHI teams, and on-premises Enterprise where PHI never leaves your building and inference runs on your hardware at zero metered cost. No per-step, per-seat, or per-model-call charges."
+                    content="OpenAdapt pricing: the open-source engine is free (MIT), a hosted runner for non-PHI teams (web and desktop-in-cloud), and Enterprise on-prem or in-your-VPC where PHI never enters our infrastructure and inference runs in your environment at zero metered cost. No per-step, per-seat, or per-model-call charges."
                 />
                 <link rel="canonical" href="https://openadapt.ai/pricing" />
                 <meta property="og:title" content="Pricing | OpenAdapt.AI" />

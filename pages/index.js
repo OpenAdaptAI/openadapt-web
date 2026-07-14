@@ -27,7 +27,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a self-healing automation that runs entirely on your own machines with no per-run model calls.',
+        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a self-healing automation that verifies its own effect on screen and halts rather than guessing. One runner covers web, Windows desktop, and Citrix, deployed in our cloud, your VPC, or fully self-hosted, with no per-run model calls on a healthy run.',
     foundingDate: '2023',
     sameAs: [
         'https://github.com/OpenAdaptAI/OpenAdapt',
@@ -55,7 +55,7 @@ const softwareSchema = {
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Windows, macOS, Linux',
     description:
-        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a self-healing script that replays locally with no per-run model calls. A model is only used to heal the script when the UI drifts, and the fix is proposed as a reviewable diff.',
+        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a self-healing script that replays with no per-run model calls across web, Windows desktop, and Citrix. A model is only used to heal the script when the UI drifts; when a step is ambiguous the run halts, a reviewer teaches the fix, and it is promoted through governed review. Deploy in our cloud, your VPC, or fully self-hosted.',
     url: 'https://openadapt.ai',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     author: {
@@ -74,9 +74,13 @@ const softwareSchema = {
     featureList: [
         'Record a desktop workflow once as a demonstration',
         'Compile demonstrations into editable automation scripts',
-        'Local replay with zero per-run model cost',
+        'One runner for web, Windows desktop, and Citrix/RDP',
+        'Replay with zero per-run model cost on a healthy run',
         'Self-healing: UI drift is repaired via a fallback ladder and proposed as a reviewable diff',
-        'Local-first: recordings, scripts, and replays stay on your infrastructure',
+        'On-screen effect verification and identity gate before each write',
+        'Halts on ambiguity, then teach the fix and promote it through governed review',
+        'Fail-closed regulated execution: refuses unless certified, identity-covered, effect-declared, signed, and version-pinned',
+        'Deploy in our cloud, in your VPC, or fully self-hosted (PHI never enters our infrastructure)',
         'PII/PHI data scrubbing for sensitive workflows',
         'Illustrated audit report for every run',
     ],
@@ -90,7 +94,7 @@ const websiteSchema = {
     alternateName: 'OpenAdapt',
     url: 'https://openadapt.ai',
     description:
-        'Open-source demonstration compiler: record a desktop workflow once and it compiles into a self-healing automation that runs on your premises with no per-run model calls.',
+        'Open-source demonstration compiler: record a desktop workflow once and it compiles into a self-healing automation across web, Windows, and Citrix, deployed where you choose, with no per-run model calls on a healthy run.',
     publisher: {
         '@type': 'Organization',
         name: 'OpenAdapt.AI',

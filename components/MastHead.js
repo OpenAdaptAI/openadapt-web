@@ -1,3 +1,11 @@
+/*
+ * TARGET-STATE COPY (HELD, do not publish until the product ships).
+ * This file describes OpenAdapt as it will be once the deployment x substrate
+ * matrix in .private/DESIGN_hosted_matrix_2026_07_14.md lands (web + Windows/Citrix
+ * on one runner; our-cloud / BYOC / self-hosted deployment choice; fail-closed
+ * regulated run; halt -> teach -> promote). See TARGET_STATE.md. Data-residency
+ * claims are scoped per tier, never a blanket company-wide promise.
+ */
 import { useEffect, useState } from 'react'
 import React from 'react'
 import Link from 'next/link'
@@ -10,10 +18,11 @@ import styles from './MastHead.module.css'
 const CarouselSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselItems = [
-        "Show it once. It runs forever. On your premises.",
+        "Show it once. It runs forever.",
         "Compiled replay. Zero per-run model cost.",
         "Self-healing: UI drift becomes a reviewable diff.",
-        "On the default path, nothing leaves your machine.",
+        "Web and Windows. Citrix and legacy desktops.",
+        "You choose where the data lives.",
     ];
 
     useEffect(() => {
@@ -91,21 +100,25 @@ export default function Home({ githubStats }) {
                                 )}
                             </div>
                             <h1 className="font-display text-2xl md:text-3xl mt-0 mb-4 font-semibold tracking-tight text-ink">
-                                Show it once. It runs forever. On your premises.
+                                Show it once. It runs forever.
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 OpenAdapt compiles a recorded demonstration into
-                                a self-healing automation that halts rather than
-                                guessing. It&apos;s open source and auditable, and
-                                it runs entirely on your own machines.
+                                a self-healing automation that verifies its own
+                                effect on screen, confirms it is acting on the
+                                right record, and halts rather than guessing.
+                                It&apos;s open source and auditable, and you
+                                choose where it runs.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
                                 Every automation tool assumes an API. The
                                 systems that actually run your business
                                 don&apos;t: legacy EMRs, Citrix desktops, the
-                                internal apps your team still works by hand.
-                                OpenAdapt learns them from one demonstration and
-                                runs them where your data already lives.
+                                Windows line-of-business apps your team still
+                                works by hand. OpenAdapt learns them from one
+                                demonstration, on web and Windows alike, and runs
+                                them where your data already lives: your machines,
+                                your cloud, or ours.
                             </p>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
