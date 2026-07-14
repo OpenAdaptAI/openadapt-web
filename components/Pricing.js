@@ -187,12 +187,15 @@ export default function Pricing() {
                 </div>
 
                 {/*
-                 * Pilot — the paid on-ramp, not a fourth tier. One clear
+                 * Pilot: the paid on-ramp, not a fourth tier. One clear
                  * engagement: we get one workflow live in 30 days against a
-                 * single agreed success measure, refunded if it misses. The fee
-                 * credits toward the first-year license (NOT "toward the pilot" —
-                 * the fee IS the pilot). Sales-led (book a call, then invoice),
-                 * so the CTA is a call, not a checkout.
+                 * single agreed success measure, refunded if it misses. Priced
+                 * LOW on purpose (the software does the work, so it is a couple
+                 * hours of setup, not a multi-week integration) to reduce
+                 * friction and earn references; the value lives in the annual
+                 * license. The fee credits toward the first-year license (NOT
+                 * "toward the pilot": the fee IS the pilot). Sales-led (book a
+                 * call, then invoice), so the CTA is a call, not a checkout.
                  */}
                 <div className="mt-6 flex flex-col gap-6 rounded-2xl border border-hairline bg-panel p-6 md:flex-row md:items-center md:justify-between md:p-7">
                     <div className="md:max-w-2xl">
@@ -201,17 +204,19 @@ export default function Pricing() {
                             Start with one workflow, live in 30 days.
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                            Pick one high-value, repetitive task. We record and
-                            compile it with you, get it running end to end with
-                            checks that confirm it did the right thing, and agree
-                            one success measure up front. If it doesn&apos;t hit
-                            that measure, you pay nothing.
+                            Pick one high-value, repetitive task. You demonstrate
+                            it once and OpenAdapt compiles it, so this is a couple
+                            of hours of setup, not a multi-week integration. We
+                            agree one success measure up front and get it running
+                            end to end with checks that confirm it did the right
+                            thing. If it doesn&apos;t hit that measure, you pay
+                            nothing.
                         </p>
                     </div>
                     <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
                         <div className="md:text-right">
                             <div className="font-display text-xl font-semibold tracking-tight text-ink">
-                                from $15,000
+                                from $5,000
                             </div>
                             <div className="font-mono text-xs text-ink-3">
                                 credited toward your first-year license
