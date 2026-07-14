@@ -1,46 +1,35 @@
 /**
  * Utility functions for fetching historical PyPI download statistics
  *
- * Uses local API route to proxy pypistats.org requests (to avoid CORS issues)
+ * Uses local API route to proxy pypistats.org requests (to avoid CORS issues).
+ * Requests are spread across a bounded concurrency pool with exponential
+ * backoff + jitter on 429 (see utils/fetchPool.js) so we never burst the
+ * upstream and trip its rate limiter.
  * Original API documentation: https://pypistats.org/api/
  */
+
+import { fetchWithBackoff, mapWithConcurrency } from './fetchPool.js';
 
 let cachedPackages = null;
 let cacheTimestamp = null;
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
-/**
- * Fetches a URL with retry logic and exponential backoff.
- * Returns null if all retries fail.
- * @param {string} url - The URL to fetch
- * @param {number} maxRetries - Maximum number of retry attempts (default: 3)
- * @param {number} baseDelayMs - Base delay in ms before first retry (default: 500)
- * @returns {Promise<Response|null>} - The fetch Response, or null if all retries failed
- */
-async function fetchWithRetry(url, maxRetries = 3, baseDelayMs = 500) {
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-        try {
-            const response = await fetch(url);
-            if (response.ok) {
-                return response;
-            }
-            // Don't retry 4xx client errors (except 429 rate limit)
-            if (response.status >= 400 && response.status < 500 && response.status !== 429) {
-                console.warn(`fetchWithRetry: ${url} returned ${response.status}, not retrying`);
-                return null;
-            }
-            console.warn(`fetchWithRetry: ${url} returned ${response.status}, attempt ${attempt + 1}/${maxRetries + 1}`);
-        } catch (error) {
-            console.warn(`fetchWithRetry: ${url} threw error, attempt ${attempt + 1}/${maxRetries + 1}:`, error.message);
-        }
+// Max simultaneous requests to our /api/pypistats proxy. Kept small so the
+// upstream (pypistats.org) sees a trickle, not a burst, of requests.
+const STATS_CONCURRENCY = 3;
 
-        if (attempt < maxRetries) {
-            const delay = baseDelayMs * Math.pow(2, attempt);
-            await new Promise(resolve => setTimeout(resolve, delay));
-        }
-    }
-    console.error(`fetchWithRetry: ${url} failed after ${maxRetries + 1} attempts`);
-    return null;
+/**
+ * Builds the proxy URL for a package's stats. The package name goes in the URL
+ * PATH so Netlify's CDN caches each package under a distinct key.
+ * @param {string} packageName
+ * @param {string} endpoint - 'overall' or 'recent'
+ * @param {string} [period] - Optional period; omit for 'recent' to get day/week/month
+ * @returns {string}
+ */
+function statsUrl(packageName, endpoint, period) {
+    const query = new URLSearchParams({ endpoint });
+    if (period) query.set('period', period);
+    return `/api/pypistats/${encodeURIComponent(packageName)}?${query.toString()}`;
 }
 
 /**
@@ -88,12 +77,12 @@ async function getPackageList() {
  */
 async function getPackageHistory(packageName, period = 'month') {
     try {
-        // Use local API route to avoid CORS issues, with retry logic
-        const url = `/api/pypistats?package=${packageName}&endpoint=overall&period=${period}`;
-        const response = await fetchWithRetry(url);
+        // Use local API route to avoid CORS issues, with backoff on 429.
+        const url = statsUrl(packageName, 'overall', period);
+        const response = await fetchWithBackoff(url);
 
-        if (!response) {
-            console.warn(`Failed to fetch history for ${packageName} after retries`);
+        if (!response || !response.ok) {
+            console.warn(`Excluding ${packageName} from chart: history fetch failed`);
             return null; // null signals a failed fetch (distinct from empty data [])
         }
 
@@ -127,14 +116,14 @@ async function getPackageHistory(packageName, period = 'month') {
  */
 async function getPackageRecentHistory(packageName) {
     try {
-        // Use local API route to avoid CORS issues, with retry logic
+        // Use local API route to avoid CORS issues, with backoff on 429.
         // Note: Do NOT pass period parameter - without it, the API returns all three:
         // last_day, last_week, and last_month. With period=month, only last_month is returned.
-        const url = `/api/pypistats?package=${packageName}&endpoint=recent`;
-        const response = await fetchWithRetry(url);
+        const url = statsUrl(packageName, 'recent');
+        const response = await fetchWithBackoff(url);
 
-        if (!response) {
-            console.warn(`Failed to fetch recent history for ${packageName} after retries`);
+        if (!response || !response.ok) {
+            console.warn(`Recent stats unavailable for ${packageName}`);
             return null;
         }
 
@@ -153,11 +142,15 @@ async function getPackageRecentHistory(packageName) {
  */
 export async function getPyPIDownloadHistory(period = 'month') {
     const packageList = await getPackageList();
-    const results = await Promise.all(
-        packageList.map(async (pkg) => ({
+    // Bounded concurrency: at most STATS_CONCURRENCY requests hit the proxy
+    // (and therefore pypistats.org) at once, instead of all packages at once.
+    const results = await mapWithConcurrency(
+        packageList,
+        async (pkg) => ({
             name: pkg,
             history: await getPackageHistory(pkg, period),
-        }))
+        }),
+        STATS_CONCURRENCY,
     );
 
     // Filter out packages whose fetch failed (null), keeping only successful results.
@@ -292,12 +285,12 @@ export function calculateGrowthStats(history) {
  */
 export async function getRecentDownloadStats() {
     const packageList = await getPackageList();
-    // Use Promise.allSettled to handle individual package failures gracefully
-    const results = await Promise.allSettled(
-        packageList.map(async (pkg) => {
-            const recent = await getPackageRecentHistory(pkg);
-            return { name: pkg, recent };
-        })
+    // Bounded concurrency (same pool size as the history fetch) so recent-stats
+    // requests also trickle to the upstream rather than firing all at once.
+    const results = await mapWithConcurrency(
+        packageList,
+        async (pkg) => ({ name: pkg, recent: await getPackageRecentHistory(pkg) }),
+        STATS_CONCURRENCY,
     );
 
     const totals = {
@@ -307,28 +300,25 @@ export async function getRecentDownloadStats() {
     };
     const perPackage = {};
     let topPackage = { name: '', downloads: 0 };
+    let successCount = 0;
 
     results.forEach((result) => {
-        // Only process fulfilled promises
-        if (result.status === 'fulfilled') {
-            const { name, recent } = result.value;
-            if (recent) {
-                const day = recent.last_day || 0;
-                const week = recent.last_week || 0;
-                const month = recent.last_month || 0;
+        const recent = result && result.recent;
+        if (recent) {
+            successCount++;
+            const day = recent.last_day || 0;
+            const week = recent.last_week || 0;
+            const month = recent.last_month || 0;
 
-                totals.last_day += day;
-                totals.last_week += week;
-                totals.last_month += month;
+            totals.last_day += day;
+            totals.last_week += week;
+            totals.last_month += month;
 
-                perPackage[name] = { last_day: day, last_week: week, last_month: month };
+            perPackage[result.name] = { last_day: day, last_week: week, last_month: month };
 
-                if (month > topPackage.downloads) {
-                    topPackage = { name, downloads: month };
-                }
+            if (month > topPackage.downloads) {
+                topPackage = { name: result.name, downloads: month };
             }
-        } else {
-            console.warn('Failed to fetch stats for a package:', result.reason);
         }
     });
 
@@ -336,7 +326,7 @@ export async function getRecentDownloadStats() {
         totals,
         perPackage,
         topPackage,
-        packageCount: results.filter(r => r.status === 'fulfilled' && r.value?.recent).length,
+        packageCount: successCount,
     };
 }
 
