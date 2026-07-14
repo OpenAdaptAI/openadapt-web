@@ -44,7 +44,7 @@ export default function BookingEmbed({ name = '', email = '' }) {
         )
     }
 
-    if (provider !== 'calendly') {
+    if (provider !== 'calendly' && provider !== 'calcom') {
         const providerLabel = provider === 'clockwise' ? 'Clockwise' : 'your booking provider'
         return (
             <div className="rounded-xl border border-amber-700/40 bg-amber-100 px-4 py-5 text-amber-900">
