@@ -78,6 +78,7 @@ async function fetchFromUpstream(url) {
 }
 
 export default async function handler(req, res) {
+  try {
     const { package: packageName, endpoint = 'overall', period } = req.query;
 
     if (!packageName) {
@@ -143,8 +144,28 @@ export default async function handler(req, res) {
             res.setHeader('X-Cache', 'STALE');
             return res.status(200).json(cached.data);
         }
+        // pypistats.org has no record of this package (404). Expected for a
+        // package that exists on PyPI but has no download history yet, or any
+        // name that slipped past discovery. Degrade quietly to an empty payload
+        // so the client excludes it from the chart — never a 502.
+        if (error.status === 404) {
+            console.warn(`pypistats has no data for ${packageName}/${endpoint}; excluding from chart`);
+            return res.status(404).json({
+                error: 'Package not found on pypistats.org',
+                package: packageName,
+                data: [],
+            });
+        }
         console.warn(`pypistats upstream failed for ${packageName}/${endpoint}: ${error.message}`);
         const status = error.status === 429 ? 429 : 502;
         return res.status(status).json({ error: `pypistats.org error: ${error.message}` });
     }
+  } catch (error) {
+    // Last-resort guard: no matter what threw above, return JSON rather than
+    // letting the serverless function crash (which surfaces as a 502).
+    console.error(`Unexpected error in pypistats handler for ${req.query?.package}:`, error);
+    if (!res.headersSent) {
+      return res.status(500).json({ error: 'Internal error', message: error.message });
+    }
+  }
 }
