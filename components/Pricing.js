@@ -121,15 +121,15 @@ export default function Pricing() {
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
-                            For non-PHI / evaluation workloads. Handling PHI or
-                            PII?{' '}
+                            Working with PHI or PII?{' '}
                             <a
                                 href="#pricing-enterprise"
                                 className="text-accent underline"
                             >
-                                See Enterprise
+                                Enterprise
                             </a>{' '}
-                            and your data stays in your building.
+                            runs OpenAdapt inside your own environment, so
+                            regulated data never leaves your network.
                         </div>
                         <div className="mt-6 flex-grow" />
                         <Link
