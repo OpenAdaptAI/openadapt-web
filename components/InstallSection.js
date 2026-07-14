@@ -168,8 +168,8 @@ export default function InstallSection() {
                     The full loop, in five commands
                 </h4>
                 <p className={styles.note} style={{ marginBottom: '0.75rem' }}>
-                    Try record → compile → replay → heal right now against the
-                    bundled demo app. No account and no cloud service: once it is
+                    Try the whole loop right now against the
+                    bundled demo app: record, compile, replay, heal. No account, no cloud service. Once it is
                     installed, your workflow data stays on your machine. One
                     heads-up on first run: the first <code>demo-record</code> or{' '}
                     <code>replay</code> downloads a bundled Chromium (~150&nbsp;MB)
@@ -181,30 +181,30 @@ export default function InstallSection() {
                         <code>
                             curl -fsSL https://openadapt.ai/install.sh | sh
                         </code>
-                        <span>Install the demonstration compiler</span>
+                        <span>Install OpenAdapt</span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt flow demo-record --out rec</code>
-                        <span>Record a demonstration</span>
+                        <span>Record yourself doing the task</span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>
                             openadapt flow compile rec --out bundle --name
                             my-task
                         </code>
-                        <span>Compile it into an editable workflow</span>
+                        <span>Turn the recording into a workflow</span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt flow replay bundle</code>
-                        <span>Replay: local, with zero model calls</span>
+                        <span>Replay it locally, with zero AI calls</span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt flow replay bundle --drift theme</code>
-                        <span>Drift the UI and watch it heal itself</span>
+                        <span>Change the UI and watch it heal itself</span>
                     </div>
                 </div>
                 <p className={styles.note} style={{ marginTop: '0.75rem' }}>
-                    Every replay writes an illustrated run report: what ran,
+                    Every replay writes a step-by-step run report: what ran,
                     what it saw, what healed. Source on{' '}
                     <a
                         href="https://github.com/OpenAdaptAI/openadapt-flow"

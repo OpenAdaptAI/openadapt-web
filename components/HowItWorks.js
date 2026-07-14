@@ -7,7 +7,7 @@ const steps = [
         number: '1.0',
         name: 'Record',
         description:
-            'Do the task once while OpenAdapt captures screens and inputs.',
+            'Do the task once. OpenAdapt watches your screen and your clicks.',
         // Default to the live OpenEMR footage — the strongest wow.
         clipKey: 'record_openemr',
     },
@@ -15,14 +15,14 @@ const steps = [
         number: '2.0',
         name: 'Compile',
         description:
-            'The demonstration becomes an editable script: visual anchors, per-step assertions, parameters.',
+            'Your recording becomes a script you can read, edit, and reuse.',
         clipKey: 'compile',
     },
     {
         number: '3.0',
         name: 'Run',
         description:
-            'Compiled replay in milliseconds, locally, with no per-run model calls.',
+            'It replays in milliseconds on your own machine, with no AI cost per run.',
         // Default to the live OpenEMR footage — the strongest wow.
         clipKey: 'run_openemr',
     },
@@ -30,14 +30,14 @@ const steps = [
         number: '4.0',
         name: 'Self-heal',
         description:
-            'When the UI drifts, a fallback ladder finds the target and proposes the fix as a diff.',
+            'When the app changes, it finds the button again and shows you the fix to approve.',
         clipKey: 'heal',
     },
     {
         number: '5.0',
         name: 'Audit',
         description:
-            'Every run produces an illustrated report: what ran, what it saw, what changed.',
+            'Every run leaves a step-by-step report: what it did, what it saw, what changed.',
         clipKey: 'audit',
     },
 ]
@@ -49,8 +49,8 @@ export default function HowItWorks() {
                 <p className={styles.eyebrow}>Process</p>
                 <h2 className={styles.heading}>How it works</h2>
                 <p className={styles.subheading}>
-                    A demonstration compiler: one recording in, a runnable
-                    automation out.
+                    Record a task once, and get an automation you can run,
+                    review, and audit.
                 </p>
                 <ol className={styles.steps}>
                     {steps.map((step) => {
