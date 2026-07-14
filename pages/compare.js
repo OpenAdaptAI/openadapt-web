@@ -129,24 +129,10 @@ export default function ComparePage() {
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         We spent seven rounds trying to make our own tool save to
-                        the wrong patient. Each round found a new way it could:
-                        look-alike rows, near-identical names
-                        (&ldquo;Belford, Phil&rdquo; vs &ldquo;Belford,
-                        Philip&rdquo;), IDs that differ by a single look-alike
-                        character (&ldquo;A01234&rdquo; vs &ldquo;AO1234&rdquo;).
-                        Every hole we found, we fixed and locked behind a
-                        permanent test.
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        The last two weren&#39;t bugs we could patch. Screen-text
-                        recognition reads an &ldquo;O&rdquo; and a
-                        &ldquo;0&rdquo; as the same character before any check can
-                        run, so if two patients differ only by that kind of ID,
-                        nothing at the text layer can tell them apart. Our answer:
-                        we confirm identity on the patient&#39;s name and date of
-                        birth, which carry enough redundancy to survive a misread,
-                        and we stop and write nothing when the only thing telling
-                        two records apart is a look-alike ID.
+                        the wrong patient, and fixed every hole we found. The
+                        answer that held: confirm identity on the name and date of
+                        birth (which survive a misread), and stop and write nothing
+                        when only a look-alike ID separates two records.
                     </p>
                     <div className="mt-5 grid gap-6 sm:grid-cols-2">
                         <div>
@@ -171,25 +157,17 @@ export default function ComparePage() {
                         </div>
                     </div>
                     <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
-                        One honest exception, and we publish it against
-                        ourselves: inside a web browser, a competing tool that
-                        checks the record&#39;s identity is just as safe as we
-                        are, and more reliable at getting the job done. We only
-                        pull ahead where there is no browser to lean on: the
-                        desktop EMRs, Citrix sessions, and Windows systems that
-                        make up most of this work.
+                        Honest exception, published against ourselves: inside a
+                        browser, an identity-keyed competitor is just as safe. We
+                        pull ahead where there is no browser to lean on, which is
+                        most of this work: desktop EMRs, Citrix, and Windows.
                     </p>
                     <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                        &ldquo;Zero wrong actions&rdquo; is a target we work
-                        toward, not a boast. Every one of those seven rounds
-                        started from a version we thought was already correct.
-                        What we promise isn&#39;t perfection; it&#39;s that the
-                        tool checks its own work, tells you plainly what it
-                        can&#39;t do, and stops rather than guess. The open
-                        problems are written down, not hidden: display-scale
-                        changes still aren&#39;t replayable, icon-only buttons
-                        proceed with a flag instead of a full check, and the
-                        agent comparisons run on small samples.
+                        &ldquo;Zero wrong actions&rdquo; is a target, not a boast;
+                        every round started from a version we thought was correct.
+                        What we promise is measured, disclosed, and fail-closed,
+                        with the open problems written down (display-scale drift,
+                        icon-only targets, small agent samples).
                     </p>
                     <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
                         <a
@@ -211,43 +189,27 @@ export default function ComparePage() {
                     Versus traditional RPA platforms
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                    Platforms like UiPath, Automation Anywhere, and Blue Prism
-                    ask you to build the automation by hand. You author
-                    selectors, arrange flowcharts in a studio, and maintain
-                    both. Large enterprises run a lot of automation this way
-                    and it works, until the UI changes. A vendor ships an
-                    update, the selectors stop matching, and someone has to
-                    open the studio and repair the flow. Licensing is
-                    typically per robot or per seat, and the platforms are
-                    proprietary.
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                    OpenAdapt skips the authoring step entirely. You record
-                    yourself doing the task once, and the compiler turns that
-                    demonstration into a script. When the UI drifts, OpenAdapt
-                    heals the script and proposes the fix as a reviewable
-                    diff, not a broken bot and a support ticket. It runs on
-                    your own machines and it&#39;s MIT-licensed open source.
+                    UiPath, Automation Anywhere, and Blue Prism make you
+                    hand-author selectors and flowcharts and maintain them: a
+                    vendor UI update breaks the selectors, and someone reopens the
+                    studio. Licensing is per robot or seat, and it&#39;s
+                    proprietary. OpenAdapt skips the authoring: record the task
+                    once, it compiles to a script, and when the UI drifts it heals
+                    and proposes the fix as a reviewable diff, on your own
+                    machines, MIT open source.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
                     Versus AI computer-use agents
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                    Cloud agents in the OpenAI Operator and Claude
-                    computer-use family re-reason through your task with a
-                    large model on every single run. On tasks nobody has seen
-                    before, they&#39;re genuinely impressive. For repetitive
-                    work, though, re-reasoning is the wrong shape. Every run
-                    is slow. Every run can take a different path than the
-                    last. Every run is billed. And most of these services work
-                    by sending screenshots of your screen to the cloud.
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                    OpenAdapt uses a model at compile time and at heal time,
-                    never on a healthy run. A healthy run is a compiled local
-                    replay: same steps, same order, no model calls, no per-run
-                    bill. Your screen stays on your machines.
+                    Cloud agents (OpenAI Operator, Claude computer-use) re-reason
+                    through your task with a large model on every run: impressive
+                    on novel work, but for repetitive work every run is slow,
+                    differently-pathed, billed, and usually sends your screen to
+                    the cloud. OpenAdapt uses a model only at compile and heal
+                    time. A healthy run is a local compiled replay: same steps, no
+                    model calls, no per-run bill, screen stays on your machines.
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
@@ -256,13 +218,11 @@ export default function ComparePage() {
                         Cost, on a test you can run yourself
                     </h3>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Safety is the headline; cost is the reason repetitive work
-                        gets automated at all. MockMed is the demo clinic app that
-                        ships with openadapt-flow, so you can rerun this yourself:
-                        100 compiled replays against 20 agent runs, scored by the
-                        same independent check. Both finished every run. The agent
-                        doesn&#39;t fail here, it just costs money and time on
-                        every run where the compiled script costs neither.
+                        MockMed ships with openadapt-flow, so you can rerun this:
+                        100 compiled replays vs 20 agent runs, one independent
+                        check. Both finish every run. The agent doesn&#39;t fail
+                        here; it just costs money and time on every run where the
+                        compiled script costs neither.
                     </p>
                     <BenchmarkCharts
                         dataset={benchmark.mockmed}
@@ -303,15 +263,13 @@ export default function ComparePage() {
                         The same result on a real EMR
                     </h3>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        We ran the same kind of head-to-head on a real
-                        application: an 18-step add-patient-note workflow on the
-                        official OpenEMR public demo, judged by one
-                        arm-independent OCR check with a distinct parameterized
-                        note per run. Both arms succeeded every time: 20/20
-                        compiled, 10/10 for a Claude computer-use agent. Because
-                        the demo is a shared instance that resets daily, treat
-                        this as a field cross-check on cost and latency, not a
-                        reproducible number and not a reliability claim.
+                        The same head-to-head on a real app: an 18-step
+                        add-patient-note workflow on the official OpenEMR public
+                        demo, one independent OCR check, a distinct note per run.
+                        Both succeeded every time (20/20 compiled, 10/10 agent).
+                        The demo resets daily, so treat this as a field
+                        cross-check on cost and latency, not a reproducible number
+                        or a reliability claim.
                     </p>
                     <BenchmarkCharts
                         dataset={benchmark.openemr}
@@ -327,22 +285,11 @@ export default function ComparePage() {
                         prompt.
                     </p>
                     <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                        Caveats, disclosed up front: the OpenEMR demo is a
-                        shared public instance that anyone can modify and that
-                        resets daily, so this is a field result, not a
-                        CI-reproducible one. The agent arm is N=10 (agent runs
-                        cost real money and real load on a shared service), so
-                        its 100% carries wide error bars. One compiled run
-                        self-flagged postcondition drift on the final step and
-                        was verified saved by OCR; success is judged by the
-                        arm-independent check for both arms, never
-                        self-report. Agent cost is at the model&#39;s list price;
-                        the introductory rate noted above lowers it further.
-                        Results are pinned
-                        to claude-sonnet-5 with the computer_20251124 tool on
-                        2026-07-08; newer models will differ. The OCR success
-                        check errs conservative on dense EMR text and is
-                        identical for both arms.
+                        Caveats: a shared demo that resets daily (a field result,
+                        not CI-reproducible); the agent arm is N=10, so its 100%
+                        has wide error bars; success is the arm-independent check
+                        for both, never self-report; pinned to claude-sonnet-5 on
+                        2026-07-08. Full method and raw data below.
                     </p>
                     <a
                         href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/openemr/BENCHMARK.md"
@@ -356,20 +303,13 @@ export default function ComparePage() {
                     Versus browser recording tools
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                    Tools like Skyvern and browser-use record or drive
-                    workflows inside the browser, using DOM selectors or model
-                    inference. If your whole workflow lives in a browser tab,
-                    they&#39;re worth a look. The limit is structural:
-                    browser-only tools can&#39;t reach the desktop EMR, the
-                    Windows loan origination system, or anything delivered
-                    over Citrix.
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                    OpenAdapt works from pixels and inputs rather than the
-                    DOM, so the same approach extends past the browser to
-                    desktop applications and VDI/RDP sessions (adapters for
-                    these are in progress). Recording, compiling, and
-                    replaying all happen on your infrastructure.
+                    Skyvern and browser-use record or drive workflows inside the
+                    browser via DOM selectors or model inference. If your whole
+                    workflow lives in a browser tab, they&#39;re worth a look. The
+                    structural limit: they can&#39;t reach the desktop EMR, the
+                    Windows loan system, or anything over Citrix. OpenAdapt works
+                    from pixels and inputs, so the same approach extends to desktop
+                    and VDI/RDP (adapters in progress), all on your infrastructure.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
@@ -426,16 +366,12 @@ export default function ComparePage() {
                         Where another tool is the better fit
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        We&#39;d rather tell you this than have you find out
-                        mid-pilot. Computer-use agents are the better tool for
-                        novel one-off tasks, since compiling a demonstration
-                        is overhead when there&#39;s no second run. They win
-                        on tasks you can&#39;t demonstrate yourself, and on
-                        exploratory work like researching something across a
-                        dozen unfamiliar sites. OpenAdapt is built for the
-                        opposite case: work your team does the same way, over
-                        and over, where repeatability and cost matter more than
-                        improvisation.
+                        We&#39;d rather tell you than have you find out mid-pilot:
+                        computer-use agents are better for novel one-off tasks
+                        (compiling a demo is overhead with no second run) and for
+                        exploratory work across unfamiliar sites. OpenAdapt is for
+                        the opposite: work your team repeats, where repeatability
+                        and cost beat improvisation.
                     </p>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         And if the system you need to automate already has a
