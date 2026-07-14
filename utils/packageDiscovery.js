@@ -4,7 +4,7 @@
  * *** SINGLE SOURCE OF TRUTH FOR PACKAGE DISCOVERY LOGIC ***
  * Used by:
  * - /api/discover-packages.js (HTTP endpoint)
- * - /api/pypistats.js (server-side direct import)
+ * - /api/pypistats/[package].js (server-side direct import)
  *
  * Discovery flow:
  * 1. Fetch all public openadapt-* repos from the OpenAdaptAI GitHub org
