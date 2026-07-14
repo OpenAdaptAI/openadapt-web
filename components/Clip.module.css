@@ -4,11 +4,40 @@
 }
 
 .media {
+    position: relative;
     width: 100%;
     overflow: hidden;
     background: var(--panel);
     border: 1px solid var(--hairline);
     border-radius: 10px;
+}
+
+.play {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--ground);
+    background: var(--ink);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    opacity: 0.92;
+}
+
+.play:hover {
+    opacity: 1;
+}
+
+.playIcon {
+    font-size: 10px;
+    line-height: 1;
 }
 
 .el {

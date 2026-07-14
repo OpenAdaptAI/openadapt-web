@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './Clip.module.css'
 
 const BASE = '/how-it-works/'
@@ -6,25 +6,26 @@ const BASE = '/how-it-works/'
 /**
  * Clip renders one product-demo asset from the how-it-works MANIFEST.
  *
- * We display the animated GIF rather than a <video>: a GIF ALWAYS animates
- * (it is an image, so it is not subject to the browser's video-autoplay
- * policy, which silently blocks muted autoplay under Low Power Mode, data
- * saver, and several browsers — the cause of the clips showing as static).
+ * We display the animated GIF via an <img>: a GIF ALWAYS animates (it is an
+ * image, so it is exempt from the browser's video-autoplay policy, which
+ * silently blocks muted autoplay under Low Power Mode / data saver). The
+ * <img> points DIRECTLY at the GIF and relies on native loading="lazy" for
+ * deferral — no IntersectionObserver, no poster/gif state swap. An earlier
+ * version gated the swap on an "in view" flag that could get stuck, leaving
+ * the clip frozen on its static poster; pointing straight at the GIF removes
+ * that failure mode entirely.
  *
- * Behavior:
- *  - Lazy: the (heavier) GIF is only fetched once the element nears the
- *    viewport (IntersectionObserver); until then the small jpg poster holds
- *    the space, so the clips never block the landing page.
- *  - Zero layout shift: intrinsic width/height drive an aspect-ratio box.
- *  - Under prefers-reduced-motion: reduce, the static poster is shown and the
- *    GIF is never fetched.
+ * Accessibility: under prefers-reduced-motion: reduce we do NOT autoplay.
+ * Instead we show the static poster with an explicit Play control, so
+ * motion-sensitive visitors still get a silent page by default but can opt in
+ * to see the demonstration. (Freezing on the poster with no way to play it was
+ * the previous, worse behavior.)
  *
  * @param {object} clip - a step (or variant) entry from MANIFEST.json
  */
 export default function Clip({ clip }) {
-    const wrapRef = useRef(null)
-    const [inView, setInView] = useState(false)
     const [reducedMotion, setReducedMotion] = useState(false)
+    const [optedIn, setOptedIn] = useState(false)
 
     // Respect the user's reduced-motion preference (and react to changes).
     useEffect(() => {
@@ -36,47 +37,36 @@ export default function Clip({ clip }) {
         return () => mq.removeEventListener?.('change', update)
     }, [])
 
-    // Lazily fetch the GIF only when it nears the viewport.
-    useEffect(() => {
-        const el = wrapRef.current
-        if (!el) return
-        if (typeof IntersectionObserver === 'undefined') {
-            setInView(true)
-            return
-        }
-        const io = new IntersectionObserver(
-            (entries) => {
-                if (entries.some((e) => e.isIntersecting)) {
-                    setInView(true)
-                    io.disconnect()
-                }
-            },
-            { rootMargin: '300px 0px' }
-        )
-        io.observe(el)
-        return () => io.disconnect()
-    }, [])
-
-    const poster = BASE + clip.poster
-    // Show the static poster until in view, and always under reduced motion.
-    const src = reducedMotion || !inView ? poster : BASE + clip.gif
+    // Animate for everyone except reduced-motion visitors who haven't opted in.
+    const animate = !reducedMotion || optedIn
+    const src = BASE + (animate ? clip.gif : clip.poster)
     const aspectRatio = `${clip.width} / ${clip.height}`
 
     return (
         <figure className={styles.figure}>
-            <div
-                ref={wrapRef}
-                className={styles.media}
-                style={{ aspectRatio }}
-            >
+            <div className={styles.media} style={{ aspectRatio }}>
                 <img
                     className={styles.el}
                     src={src}
                     alt={clip.alt}
                     width={clip.width}
                     height={clip.height}
+                    loading="lazy"
                     decoding="async"
                 />
+                {reducedMotion && !optedIn && (
+                    <button
+                        type="button"
+                        className={styles.play}
+                        onClick={() => setOptedIn(true)}
+                        aria-label={`Play animation: ${clip.caption}`}
+                    >
+                        <span className={styles.playIcon} aria-hidden="true">
+                            ▶
+                        </span>
+                        Play
+                    </button>
+                )}
             </div>
             <figcaption className={styles.caption}>{clip.caption}</figcaption>
         </figure>
