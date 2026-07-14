@@ -231,7 +231,7 @@ export default function Pricing() {
                                 'Inference runs in your environment at zero metered cost',
                                 'Fail-closed regulated run: refuses unless certified, identity-covered, effect-declared, signed, and version-pinned',
                                 'Pilot first, then an annual platform license',
-                                'BAA signed for regulated engagements; SOC 2 attestation in progress',
+                                'We sign a BAA (US) or PHIPA agreement (Canada) for regulated engagements',
                                 'Audit trail: every run writes an illustrated report',
                                 'Self-healing, halt-teach-promote, and fleet management included',
                             ]}
