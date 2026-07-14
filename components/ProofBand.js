@@ -17,15 +17,15 @@ const cost = (c) => (c === 0 ? '$0' : `$${c.toFixed(2)}`)
 const stats = [
     {
         figure: `${secs(mm.compiled.wall_s_p50)} vs ${secs(mm.agent.wall_s_p50)}`,
-        caption: 'median run, compiled replay vs computer-use agent',
+        caption: 'typical run: OpenAdapt vs an AI agent',
     },
     {
         figure: `${cost(mm.compiled.cost_usd_per_run)} vs ${cost(mm.agent.cost_usd_per_run)}`,
-        caption: 'model cost per run (agent priced at list rate)',
+        caption: 'AI cost per run (agent priced at list rate)',
     },
     {
         figure: `${mm.compiled.model_calls_per_run} vs ${mm.agent.model_calls_per_run}`,
-        caption: 'model calls per run: the hot path is model-free',
+        caption: 'AI calls per run: none on a healthy OpenAdapt run',
     },
 ]
 
@@ -45,20 +45,20 @@ export default function ProofBand() {
                     ))}
                 </div>
                 <p className={styles.note}>
-                    Same clinical task run both ways on MockMed, the demo app that
-                    ships with openadapt-flow so anyone can rerun it
-                    deterministically ({mm.compiled.n} compiled replays vs{' '}
-                    {mm.agent.n} agent runs). Both arms passed the same
-                    arm-independent check every time, so this is a cost-and-latency
-                    gap, not a reliability gap. Agent cost is shown at list price;
-                    an introductory model rate lowers it through 2026-08-31.
+                    The same clinical task, run both ways on MockMed, the demo app that
+                    ships with openadapt-flow so anyone can reproduce these numbers
+                    exactly ({mm.compiled.n} OpenAdapt replays vs{' '}
+                    {mm.agent.n} agent runs). Both passed the same
+                    independent check every time. So this is a gap in cost and speed,
+                    not in reliability. The agent cost is list price;
+                    an introductory rate lowers it through 2026-08-31.
                 </p>
                 <p className={styles.note}>
                     We also ran it on the live OpenEMR public demo (N=
-                    {em.agent.n} agent runs, both arms 100%). That is a field
-                    result on a shared instance that resets daily, so it is not
-                    independently reproducible, it is cost-and-latency only, and it
-                    implies nothing about reliability on a real EMR.
+                    {em.agent.n} agent runs, both passed 100%). It runs on a shared
+                    instance that resets daily, so you cannot reproduce it exactly.
+                    Treat it as cost and speed only. It says nothing about
+                    reliability on a real EMR.
                 </p>
                 <div className={styles.links}>
                     <Link href="/compare">How we measured it →</Link>

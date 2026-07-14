@@ -82,9 +82,9 @@ export default function HealthcarePage() {
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         The one catastrophe in EMR automation is writing to the
                         wrong chart. On legacy and Citrix EMRs the software
-                        reads the screen with OCR, where two patients&#39;
+                        reads the screen as text, so two patients&#39;
                         record numbers can differ by a single look-alike
-                        character OCR can&#39;t tell apart. When OpenAdapt
+                        character it can&#39;t tell apart. When OpenAdapt
                         can&#39;t prove the row on screen is the recorded
                         patient, it stops and hands the step to a person. We
                         show it working case by case, from real renders and the

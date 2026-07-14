@@ -21,9 +21,9 @@ export default function BenchmarkSection() {
                     <a href={WAA_URL} target="_blank" rel="noopener noreferrer">
                         Windows Agent Arena
                     </a>{' '}
-                    in a CLI that handles VM lifecycle, agent execution, and
-                    step-by-step inspection — so you can iterate on your agent
-                    fast without modifying the original benchmarks.
+                    in a CLI that handles the VM, runs your agent, and lets you
+                    inspect every step. You iterate fast, and the original
+                    benchmarks stay untouched.
                 </p>
 
                 <div className={styles.highlights}>
@@ -52,8 +52,8 @@ export default function BenchmarkSection() {
                         <div>
                             <span className={styles.highlightTitle}>Unmodified benchmarks</span>
                             <span className={styles.highlightDesc}>
-                                Original tasks and scoring preserved — our
-                                tooling wraps, not forks
+                                Original tasks and scoring stay intact. Our
+                                tooling wraps them, it does not fork them
                             </span>
                         </div>
                     </div>
@@ -94,8 +94,8 @@ export default function BenchmarkSection() {
                         </div>
                     </div>
                     <p className={styles.caption}>
-                        The benchmark viewer lets you replay every step of an
-                        evaluation — screenshots, actions, and execution logs.{' '}
+                        The benchmark viewer replays every step of an
+                        evaluation: screenshots, actions, and logs.{' '}
                         <a
                             href={EVALS_REPO_URL}
                             target="_blank"

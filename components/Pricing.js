@@ -52,9 +52,9 @@ export default function Pricing() {
                 </h2>
                 <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     The engine is open source and free. When you need it in
-                    production, inference is bundled in — no per-step, per-seat,
-                    or per-model-call metering. On-prem keeps your data in your
-                    building.
+                    production, the AI is included in the price: no per-step,
+                    per-seat, or per-call metering. On-premises keeps your data
+                    in your building.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -129,7 +129,7 @@ export default function Pricing() {
                             >
                                 See Enterprise
                             </a>{' '}
-                            — your data stays in your building.
+                            and your data stays in your building.
                         </div>
                         <div className="mt-6 flex-grow" />
                         <Link
@@ -155,12 +155,12 @@ export default function Pricing() {
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            For regulated teams — healthcare, lending, and other
+                            For regulated teams in healthcare, lending, and other
                             compliance-bound back-offices.
                         </p>
                         <FeatureList
                             items={[
-                                'On-premises deployment — PHI never leaves the building',
+                                'On-premises deployment, so PHI never leaves the building',
                                 'Inference runs on your hardware at zero metered cost',
                                 'Paid pilot → annual platform license',
                                 'On-prem architecture built for BAA and SOC 2 requirements; formal attestation in progress',
@@ -203,11 +203,11 @@ export default function Pricing() {
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-2">
                             Pick one well-scoped task. We record it and compile
-                            it with you, then get it running end to end with
-                            effect verification, in days. A flat fee that&apos;s
-                            credited toward your pilot if you move forward. A
-                            low-risk way to see it work on your real workflow
-                            before you commit.
+                            it with you, then get it running end to end, with
+                            checks that confirm it did the right thing, in days.
+                            The flat fee is credited toward your pilot if you
+                            move forward. A low-risk way to see it work on your
+                            real workflow before you commit.
                         </p>
                     </div>
                     <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
@@ -233,9 +233,9 @@ export default function Pricing() {
                 </p>
 
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
-                    We price the workflow outcome and the compliance, and bundle
-                    the inference. No per-step, per-seat, or per-model-call
-                    charges anywhere.
+                    We price the outcome and the compliance, and include the AI in
+                    that price. No per-step, per-seat, or per-call charges
+                    anywhere.
                 </p>
             </div>
         </section>

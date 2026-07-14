@@ -82,7 +82,7 @@ export default function LendingPage() {
                         LOS screens.
                     </li>
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Extract fields from loan documents into your LOS — and
+                        Extract fields from loan documents into your LOS, and
                         pull data back out for disclosures, portals, and
                         spreadsheets.
                     </li>

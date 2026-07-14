@@ -32,17 +32,17 @@ const posture = [
     {
         status: 'yes',
         title: 'On-premises, local-first by architecture',
-        body: 'Recordings, compiled scripts, and replays live on your own infrastructure. In an Enterprise on-prem deployment, inference runs on your hardware too, so the data stays inside your perimeter.',
+        body: 'Recordings, scripts, and replays live on your own machines. In an on-premises deployment, the AI model runs on your hardware too, so your data stays inside your network.',
     },
     {
         status: 'yes',
-        title: 'Model-free on the default replay path',
-        body: 'A healthy compiled replay makes no cloud model calls. On that default path, nothing about the run leaves your machine. A model is used at compile time and to heal the script when the UI drifts; you can run that model on your own hardware or an appliance inside your network rather than sending data to a third party.',
+        title: 'No AI calls on a normal run',
+        body: 'A normal replay makes no cloud AI calls, so nothing about the run leaves your machine. An AI model is only used when you first compile the recording, or when the screen changes and the script needs a repair. You can run that model on your own hardware inside your network, so your data never goes to a third party.',
     },
     {
         status: 'yes',
         title: 'Audit trail on every run',
-        body: 'Every replay writes an illustrated run report: what ran, what it saw, and what healed. Each action is auditable against the demonstrated script.',
+        body: 'Every replay writes a step-by-step run report: what ran, what it saw, and what it repaired. You can check each action against the task you recorded.',
     },
     {
         status: 'yes',

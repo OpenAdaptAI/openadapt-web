@@ -92,10 +92,10 @@ export default function IndustriesGrid({
                     Built for regulated back-offices
                 </h2>
                 <p className={styles.p}>
-                    Record the workflow once and OpenAdapt compiles it into an
-                    automation your team can review, run, and audit, entirely
-                    on your own machines. No brittle selectors to hand-author.
-                    No per-run model costs.
+                    Record the workflow once and OpenAdapt turns it into an
+                    automation your team can run, review, and audit, all on
+                    your own machines. Nothing brittle to hand-build. No AI
+                    cost per run.
                     <br />
                     <a href="https://github.com/OpenAdaptAI/openadapt-privacy">
                         Built-in PII/PHI scrubbing
