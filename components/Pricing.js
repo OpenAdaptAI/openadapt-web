@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useState } from 'react'
 
 /*
  * Pricing — three lanes, value-priced.
@@ -8,6 +9,13 @@ import Link from 'next/link'
  * metered cost. Hosted is a secondary, non-PHI / evaluation on-ramp priced on
  * outcome units (workflow-runs), never per-step / per-seat / per-VLM-call. OSS
  * stays MIT and honest.
+ *
+ * Hosted (Phase 0) is a real paid sign-up via Stripe Checkout, but a concierge
+ * one: we onboard the first customers by hand, so the card is honest that this
+ * is managed onboarding, not a finished self-serve runner. The Sign up CTA
+ * POSTs to /api/create-checkout-session and redirects to Stripe Checkout. If
+ * checkout is not configured yet (no keys), the API returns 503 and we surface
+ * a friendly fallback.
  *
  * Deliberately NOT shown anywhere: $/step, $/VLM-call, per-seat, or a raw
  * $/run meter. We price the outcome and the compliance; inference is bundled.
@@ -40,6 +48,38 @@ function FeatureList({ items }) {
 }
 
 export default function Pricing() {
+    const [hostedLoading, setHostedLoading] = useState(false)
+    const [hostedError, setHostedError] = useState('')
+
+    // Concierge sign-up: POST to the checkout API, then redirect to Stripe
+    // Checkout. If checkout is not configured yet (no keys), the API returns
+    // 503 and we point the user at booking a call instead.
+    async function handleHostedSignup() {
+        setHostedError('')
+        setHostedLoading(true)
+        try {
+            const res = await fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            })
+            const data = await res.json().catch(() => ({}))
+            if (res.ok && data.url) {
+                window.location.assign(data.url)
+                return
+            }
+            setHostedError(
+                data.message ||
+                    'Checkout is not available right now. Please book a call and we will set you up.'
+            )
+        } catch (err) {
+            setHostedError(
+                'Something went wrong starting checkout. Please book a call and we will set you up.'
+            )
+        } finally {
+            setHostedLoading(false)
+        }
+    }
+
     return (
         <section
             id="pricing"
@@ -93,10 +133,10 @@ export default function Pricing() {
                         </p>
                     </div>
 
-                    {/* Card 2 — Hosted (preview / waitlist, not yet live) */}
+                    {/* Card 2 — Hosted (paid sign-up, concierge onboarding) */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
                         <span className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
-                            Preview · join the waitlist
+                            Managed onboarding
                         </span>
                         <p className="eyebrow">Hosted</p>
                         <div className="mt-2 flex items-baseline gap-2">
@@ -108,13 +148,13 @@ export default function Pricing() {
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            For teams without on-prem hardware who want a managed
-                            cloud runner. Not live yet: this is a preview, and
-                            the price shown is what it will cost at launch.
+                            For teams without on-prem hardware who want a
+                            managed cloud runner. We onboard you personally to
+                            start; the self-serve runner is rolling out.
                         </p>
                         <FeatureList
                             items={[
-                                'Fully managed cloud runner, nothing for you to run',
+                                'We set you up personally, nothing for you to run',
                                 'Up to 10,000 workflow runs a month',
                                 'Hosted inference included at no extra cost',
                                 'No per-step or per-seat billing, no surprise charges',
@@ -132,12 +172,19 @@ export default function Pricing() {
                             regulated data never leaves your network.
                         </div>
                         <div className="mt-6 flex-grow" />
-                        <Link
-                            href="/#book"
-                            className="btn-ghost-ink w-full text-center"
+                        <button
+                            type="button"
+                            onClick={handleHostedSignup}
+                            disabled={hostedLoading}
+                            className="btn-ink w-full text-center disabled:opacity-60"
                         >
-                            Join the waitlist
-                        </Link>
+                            {hostedLoading ? 'Starting checkout…' : 'Sign up'}
+                        </button>
+                        {hostedError && (
+                            <p className="mt-3 text-center text-xs leading-relaxed text-ink-3">
+                                {hostedError}
+                            </p>
+                        )}
                     </div>
 
                     {/* Card 3 — Enterprise (primary / recommended) */}
@@ -155,8 +202,8 @@ export default function Pricing() {
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            For regulated teams in healthcare, lending, and other
-                            compliance-bound back-offices.
+                            For regulated teams in healthcare, lending, and
+                            other compliance-bound back-offices.
                         </p>
                         <FeatureList
                             items={[
@@ -180,7 +227,10 @@ export default function Pricing() {
                             certified yet, and how to report a vulnerability.
                         </div>
                         <div className="mt-6 flex-grow" />
-                        <Link href="/#book" className="btn-ink w-full text-center">
+                        <Link
+                            href="/#book"
+                            className="btn-ink w-full text-center"
+                        >
                             Book a demo
                         </Link>
                     </div>
@@ -204,12 +254,13 @@ export default function Pricing() {
                             Start with one workflow, live in 30 days.
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                            Pick one high-value, repetitive task. You demonstrate
-                            it once and OpenAdapt compiles it, so it is live in
-                            days, not a multi-week integration project. We agree
-                            one success measure up front and get it running end to
-                            end with checks that confirm it did the right thing.
-                            If it doesn&apos;t hit that measure, you pay nothing.
+                            Pick one high-value, repetitive task. You
+                            demonstrate it once and OpenAdapt compiles it, so it
+                            is live in days, not a multi-week integration
+                            project. We agree one success measure up front and
+                            get it running end to end with checks that confirm
+                            it did the right thing. If it doesn&apos;t hit that
+                            measure, you pay nothing.
                         </p>
                     </div>
                     <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
@@ -238,13 +289,13 @@ export default function Pricing() {
                     </div>
                 </div>
                 <p className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
-                    Scope and price are confirmed before we begin. Full refund if
-                    the success criteria we agree up front aren&apos;t met.
+                    Scope and price are confirmed before we begin. Full refund
+                    if the success criteria we agree up front aren&apos;t met.
                 </p>
 
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
-                    We price the outcome and the compliance, and include the AI in
-                    that price. No per-step, per-seat, or per-call charges
+                    We price the outcome and the compliance, and include the AI
+                    in that price. No per-step, per-seat, or per-call charges
                     anywhere.
                 </p>
             </div>

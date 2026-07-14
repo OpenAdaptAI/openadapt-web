@@ -36,7 +36,8 @@
         "react-dom": "^18.2.0",
         "react-fontawesome": "^1.7.1",
         "react-slick": "^0.30.2",
-        "simplex-noise": "^4.0.3"
+        "simplex-noise": "^4.0.3",
+        "stripe": "^16.12.0"
     },
     "devDependencies": {
         "@netlify/plugin-nextjs": "^5.15.5",
