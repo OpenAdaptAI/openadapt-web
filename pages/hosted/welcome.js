@@ -31,7 +31,7 @@ export default function HostedWelcome() {
                 <p className="mt-4 text-base leading-relaxed text-ink-2">
                     Thanks for subscribing. We&apos;ll reach out within one
                     business day to set up your first workflow. We onboard you
-                    personally to start; the self-serve runner is rolling out.
+                    personally, so there&apos;s nothing for you to set up.
                 </p>
 
                 <div className="mt-8 rounded-2xl border border-hairline bg-panel p-6 md:p-7">
@@ -70,15 +70,16 @@ export default function HostedWelcome() {
                         </Link>
                     </div>
                     <p className="mt-3 text-xs leading-relaxed text-ink-3">
-                        Prefer to wait for our email? That works too. For
-                        non-PHI / evaluation workloads. Handling PHI or PII?{' '}
+                        Prefer to wait for our email? That works too. Working
+                        with PHI or PII?{' '}
                         <Link
                             href="/#pricing-enterprise"
                             className="text-accent underline"
                         >
-                            See Enterprise
+                            Enterprise
                         </Link>{' '}
-                        and your data stays in your building.
+                        runs OpenAdapt inside your own environment, so regulated
+                        data never leaves your network.
                     </p>
                 </div>
 
