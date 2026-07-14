@@ -13,7 +13,7 @@ const CarouselSection = () => {
         "Show it once. It runs forever. On your premises.",
         "Compiled replay. Zero per-run model cost.",
         "Self-healing: UI drift becomes a reviewable diff.",
-        "Your data never leaves the building.",
+        "On the default path, nothing leaves your machine.",
     ];
 
     useEffect(() => {
