@@ -66,8 +66,8 @@ describe('public product truth', () => {
         cy.visit('/')
         cy.get('button[aria-controls="nav-mobile-menu"]').click()
         cy.get('#nav-mobile-menu').within(() => {
-            cy.contains('Maturity').should('be.visible')
-            cy.contains('Launch').should('be.visible')
+            cy.contains('Maturity').scrollIntoView().should('be.visible')
+            cy.contains('Launch').scrollIntoView().should('be.visible')
             cy.contains('Open source').should('have.attr', 'href').and(
                 'include',
                 'openadapt-flow'
