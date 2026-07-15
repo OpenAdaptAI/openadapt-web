@@ -11,11 +11,11 @@ export default function HealthcarePage() {
                 <title>Healthcare Clinic Automation — Referral Intake & EMR Data Entry | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles a recorded demonstration of referral intake or EMR data entry into a self-healing automation that runs inside your clinic. PHI never leaves your machines. Web EMRs today, with desktop and VDI adapters in progress."
+                    content="OpenAdapt compiles demonstrated referral-intake and EMR workflows into governed automation. Original recordings stay local; approved sanitized derivatives may cross a declared boundary. Browser EMRs are the supported path; desktop and VDI remain experimental."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/healthcare" />
                 <meta property="og:title" content="Healthcare Clinic Automation | OpenAdapt" />
-                <meta property="og:description" content="Referral intake and EMR data entry, compiled from a demonstration and run entirely inside your clinic." />
+                <meta property="og:description" content="Referral intake and EMR data entry compiled from a demonstration, with explicit artifact and runtime data boundaries." />
                 <meta property="og:url" content="https://openadapt.ai/solutions/healthcare" />
             </Head>
 
@@ -59,15 +59,16 @@ export default function HealthcarePage() {
                         Why local matters here
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        PHI never leaves the clinic. OpenAdapt is local-first
-                        by architecture: recordings, compiled scripts, and
-                        replays all stay on your own infrastructure, and
-                        PII/PHI scrubbing tooling is included. Because it
-                        works from the screen rather than browser internals,
-                        the same vision-based approach is designed to reach the
-                        desktop and VDI EMRs that cloud automation tools
-                        can&#39;t. Web EMRs are supported today, and those
-                        desktop and VDI adapters are in progress.
+                        Original recordings stay local. If a hosted or
+                        cross-boundary workflow is enabled, only a sanitized
+                        derivative that passes destination policy may upload;
+                        policy can require a local reviewer to approve its
+                        exact hash first. Live observations can contain PHI
+                        again, so they stay inside the declared managed, BYOC,
+                        or on-prem trusted runtime boundary. Browser EMRs are
+                        the supported path today. Native desktop is
+                        experimental, and VDI/Citrix remains research rather
+                        than a validated production claim.
                     </p>
                 </div>
 
