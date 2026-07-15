@@ -37,6 +37,7 @@ describe('public product truth', () => {
 
     it('keeps the maturity and availability routes reachable on mobile', () => {
         cy.viewport(375, 812)
+        cy.visit('/')
         cy.get('button[aria-controls="nav-mobile-menu"]').click()
         cy.get('#nav-mobile-menu').within(() => {
             cy.contains('Maturity').should('be.visible')
