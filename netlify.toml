@@ -19,7 +19,6 @@
     skip = true
   [plugins.inputs.onSuccess]
     enable = true
-
 [[headers]]
   for = "/*"
   [headers.values]
