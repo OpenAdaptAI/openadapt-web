@@ -1,24 +1,19 @@
 import Link from 'next/link'
-import { useState } from 'react'
 
 /*
  * Pricing — three lanes, value-priced.
  *
  * Enterprise is the primary (visually recommended) card: on-prem, PHI never
  * leaves the building, inference runs on the customer's hardware at zero
- * metered cost. Hosted is a secondary, non-PHI / evaluation on-ramp priced on
- * outcome units (workflow-runs), never per-step / per-seat / per-VLM-call. OSS
- * stays MIT and honest.
+ * metered cost. Hosted is the non-PHI web-automation lane. OSS stays MIT and
+ * honest.
  *
- * Hosted (Phase 0) is a real paid sign-up via Stripe Checkout. The Sign up CTA
- * POSTs to /api/create-checkout-session and redirects to Stripe Checkout. If
- * checkout is not configured yet (no keys), the API returns 503 and we surface
- * a friendly fallback.
- *
- * The onboarding framing follows NEXT_PUBLIC_CLOUD_APP_URL: when it is set the
- * cloud app is live, so checkout routes the customer into their dashboard and
- * the card reads as self-serve. When it is unset we onboard the first
- * customers by hand, so the card is honest that this is managed onboarding.
+ * Hosted is a WAITLIST / preview card, not a live checkout. The managed cloud
+ * runner is still being built (it currently defaults to a mock runner), so we
+ * do not take recurring money or promise same-day self-serve runs yet. The CTA
+ * captures interest via the email form; the price is shown as indicative. Flip
+ * this card back to self-serve checkout only once the runner is proven live in
+ * production, the compute cost-abuse leak is closed, and the funnel is wired.
  *
  * Deliberately NOT shown anywhere: $/step, $/VLM-call, per-seat, or a raw
  * $/run meter. We price the outcome and the compliance; inference is bundled.
@@ -51,43 +46,6 @@ function FeatureList({ items }) {
 }
 
 export default function Pricing() {
-    const [hostedLoading, setHostedLoading] = useState(false)
-    const [hostedError, setHostedError] = useState('')
-
-    // When the cloud app is deployed, Hosted checkout routes the customer into
-    // their dashboard (subscription linked by email at first login), so the
-    // card reads as self-serve. Unset keeps the honest concierge framing.
-    const cloudAppConfigured = Boolean(process.env.NEXT_PUBLIC_CLOUD_APP_URL)
-
-    // Concierge sign-up: POST to the checkout API, then redirect to Stripe
-    // Checkout. If checkout is not configured yet (no keys), the API returns
-    // 503 and we point the user at booking a call instead.
-    async function handleHostedSignup() {
-        setHostedError('')
-        setHostedLoading(true)
-        try {
-            const res = await fetch('/api/create-checkout-session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-            })
-            const data = await res.json().catch(() => ({}))
-            if (res.ok && data.url) {
-                window.location.assign(data.url)
-                return
-            }
-            setHostedError(
-                data.message ||
-                    'Checkout is not available right now. Please book a call and we will set you up.'
-            )
-        } catch (err) {
-            setHostedError(
-                'Something went wrong starting checkout. Please book a call and we will set you up.'
-            )
-        } finally {
-            setHostedLoading(false)
-        }
-    }
-
     return (
         <section
             id="pricing"
@@ -141,12 +99,10 @@ export default function Pricing() {
                         </p>
                     </div>
 
-                    {/* Card 2 — Hosted (paid sign-up, concierge onboarding) */}
+                    {/* Card 2 — Hosted (non-PHI web lane, waitlist / preview) */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
                         <span className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
-                            {cloudAppConfigured
-                                ? 'Self-serve'
-                                : 'Managed onboarding'}
+                            Preview · waitlist
                         </span>
                         <p className="eyebrow">Hosted</p>
                         <div className="mt-2 flex items-baseline gap-2">
@@ -154,26 +110,35 @@ export default function Pricing() {
                                 $500
                             </span>
                             <span className="text-sm text-ink-3">
-                                /mo · up to 10,000 runs
+                                /mo · indicative
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            {cloudAppConfigured
-                                ? 'For teams without on-prem hardware who want a managed cloud runner. Sign up and your subscription links to your dashboard by email, so you are up and running the same day.'
-                                : 'For teams without on-prem hardware who want a managed cloud runner. We onboard you personally to start; the self-serve runner is rolling out.'}
+                            For non-regulated web and browser automation,
+                            without on-prem hardware. Record a task once and
+                            replay it deterministically at $0 per run: no
+                            per-step model bills and no cloud round-trip on the
+                            hot path, because it is compiled, not re-reasoned.
+                            The managed cloud runner is in preview; join the
+                            waitlist for early access.
                         </p>
                         <FeatureList
                             items={[
-                                cloudAppConfigured
-                                    ? 'Sign up and land straight in your dashboard'
-                                    : 'We set you up personally, nothing for you to run',
-                                'Up to 10,000 workflow runs a month',
-                                'Hosted inference included at no extra cost',
-                                'No per-step or per-seat billing, no surprise charges',
+                                'Deterministic replay at $0 per run, no per-run model cost',
+                                'No per-step, per-seat, or per-call billing',
+                                'Hosted inference included when the runner launches',
+                                'Self-healing scripts, reviewable as diffs',
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
-                            Working with PHI or PII?{' '}
+                            See the measured{' '}
+                            <Link
+                                href="/compare"
+                                className="text-accent underline"
+                            >
+                                compiled-versus-agent comparison
+                            </Link>
+                            . Working with PHI or PII?{' '}
                             <a
                                 href="#pricing-enterprise"
                                 className="text-accent underline"
@@ -184,19 +149,12 @@ export default function Pricing() {
                             regulated data never enters our infrastructure.
                         </div>
                         <div className="mt-6 flex-grow" />
-                        <button
-                            type="button"
-                            onClick={handleHostedSignup}
-                            disabled={hostedLoading}
-                            className="btn-ink w-full text-center disabled:opacity-60"
+                        <Link
+                            href="/#email-form"
+                            className="btn-ink w-full text-center"
                         >
-                            {hostedLoading ? 'Starting checkout…' : 'Sign up'}
-                        </button>
-                        {hostedError && (
-                            <p className="mt-3 text-center text-xs leading-relaxed text-ink-3">
-                                {hostedError}
-                            </p>
-                        )}
+                            Join the waitlist
+                        </Link>
                     </div>
 
                     {/* Card 3 — Enterprise (primary / recommended) */}
@@ -215,7 +173,11 @@ export default function Pricing() {
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
                             For regulated teams in healthcare, lending, and
-                            other compliance-bound back-offices.
+                            other compliance-bound back-offices. It halts before
+                            writing to the wrong record, on the Citrix and
+                            legacy desktop systems browser agents can&apos;t
+                            reach and RPA silently gets wrong, and it runs
+                            inside your building.
                         </p>
                         <FeatureList
                             items={[

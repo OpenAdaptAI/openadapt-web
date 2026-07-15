@@ -85,19 +85,28 @@ export default function HealthcarePage() {
                         wrong chart. On legacy and Citrix EMRs the software
                         reads the screen as text, so two patients&#39;
                         record numbers can differ by a single look-alike
-                        character it can&#39;t tell apart. When a certified
-                        workflow can&#39;t prove the row on screen is the
-                        recorded patient, it halts and hands the step to a
-                        person. We
-                        show it working case by case, from real renders and the
-                        real check, and we disclose what it doesn&#39;t cover.
+                        character it can&#39;t tell apart. On armed steps, when a
+                        certified workflow can&#39;t prove the row on screen is
+                        the recorded patient, it halts and hands the step to a
+                        person. The check covers steps that carry a patient
+                        identity, not every click; coverage is auditable per step
+                        and reported in every run. We show it working case by
+                        case, from real renders and the real check, and we
+                        disclose what it doesn&#39;t cover.
                     </p>
-                    <Link
-                        href="/safety"
-                        className="mt-4 inline-block text-sm font-medium"
-                    >
-                        See the wrong-patient defense →
-                    </Link>
+                    <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                        <Link href="/safety" className="font-medium">
+                            See the wrong-patient defense →
+                        </Link>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/LIMITS.md"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium"
+                        >
+                            Read what it doesn&#39;t cover →
+                        </a>
+                    </p>
                 </div>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">

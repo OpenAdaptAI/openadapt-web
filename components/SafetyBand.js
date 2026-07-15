@@ -20,12 +20,14 @@ export default function SafetyBand() {
                     Certified workflows halt instead of guessing.
                 </h2>
                 <p className="mx-auto max-w-2xl text-base md:text-lg text-ink-2">
-                    Certified workflows halt when identity or effects can&apos;t
-                    be verified, flagging a person rather than writing to the
-                    wrong record. We built an adversarial test suite to measure how
-                    often it could still pick the wrong target, put our own
-                    engine through seven rounds of it, and publish every
-                    result, including what it gets wrong today.
+                    On armed steps, certified workflows halt when identity or
+                    on-screen effects can&apos;t be verified, flagging a person
+                    rather than writing to the wrong record. Coverage is armed
+                    per step, auditable, and reported in every run. We built an
+                    adversarial test suite to measure how often it could still
+                    pick the wrong target, put our own engine through seven
+                    rounds of it, and publish every result, including what it
+                    gets wrong today.
                 </p>
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
                     <a
