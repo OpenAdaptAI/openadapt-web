@@ -16,11 +16,12 @@ const NAV_LINKS = [
     { label: 'Lending', href: '/solutions/lending' },
     { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },
-    { label: 'Pricing', href: '/#pricing' },
+    { label: 'Maturity', href: '/#product-status' },
+    { label: 'Launch', href: '/#pricing' },
     { label: 'About', href: '/about' },
     {
         label: 'Open source',
-        href: 'https://github.com/OpenAdaptAI/OpenAdapt',
+        href: 'https://github.com/OpenAdaptAI/openadapt-flow',
         external: true,
     },
 ]
@@ -79,13 +80,13 @@ export default function NavHeader() {
                     {menuOpen ? 'CLOSE' : 'MENU'}
                 </button>
                 <Link
-                    href="/#book"
+                    href="/#pricing"
                     className={styles.cta}
                     onClick={() =>
-                        track(EVENTS.BOOK_PILOT_CLICK, { location: 'nav' })
+                        track(EVENTS.HERO_CTA_CLICK, { location: 'nav', cta: 'start_hosted' })
                     }
                 >
-                    Book a demo
+                    Start hosted
                 </Link>
             </div>
             {menuOpen && (

@@ -11,11 +11,11 @@ export default function LendingPage() {
                 <title>Mortgage & Lending Automation — Loan-File Data Entry | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles a recorded demonstration of loan-file data entry into a self-healing automation that runs in your own environment. Vision-based and designed to reach desktop LOS software like Encompass; borrower data stays with you."
+                    content="OpenAdapt compiles demonstrated loan-file workflows into governed automation. Original recordings stay local; approved sanitized derivatives may cross a declared boundary. Browser workflows are supported; native LOS automation remains experimental."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/lending" />
                 <meta property="og:title" content="Mortgage & Lending Automation | OpenAdapt" />
-                <meta property="og:description" content="Loan-file data entry and extraction, compiled from a demonstration and run entirely in your environment." />
+                <meta property="og:description" content="Loan-file data entry and extraction compiled from a demonstration, with explicit artifact and runtime data boundaries." />
                 <meta property="og:url" content="https://openadapt.ai/solutions/lending" />
             </Head>
 
@@ -60,15 +60,16 @@ export default function LendingPage() {
                         Why local matters here
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Borrower data stays in your environment. OpenAdapt is
-                        local-first by architecture: recordings, compiled
-                        scripts, and replays never leave your infrastructure,
-                        and PII scrubbing tooling is included. Because it
-                        works from the screen rather than an API, the same
-                        vision-based approach is designed to reach desktop LOS
-                        software like Encompass without an API integration
-                        project. Web workflows are supported today, and that
-                        desktop adapter is in progress.
+                        Original recordings stay local. If a hosted or
+                        cross-boundary workflow is enabled, only a sanitized
+                        derivative admitted by destination policy may upload;
+                        policy can require local review and approval of its
+                        exact hash. Live observations can contain borrower
+                        data again, so they remain inside the declared managed,
+                        BYOC, or on-prem trusted runtime boundary. Browser
+                        workflows are the supported path today. Native desktop
+                        LOS automation, including Encompass, is experimental
+                        and must be qualified rather than assumed.
                     </p>
                 </div>
 

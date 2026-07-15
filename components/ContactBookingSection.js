@@ -87,13 +87,15 @@ export default function ContactBookingSection({
     return (
         <section id={sectionId} className="mx-auto max-w-5xl px-4 py-12">
             <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
-                <p className="eyebrow mb-2">Book</p>
+                <p className="eyebrow mb-2">Workflow qualification</p>
                 <h2 className="font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
                     Book a 30-minute automation fit call
                 </h2>
                 <p className="mt-3 text-sm text-ink-2 md:text-base">
-                    Tell us your highest-friction workflow and we&apos;ll map
-                    what can be automated first.
+                    Tell us the substrate, repetition, consequence of error,
+                    data boundary, and current verification path. We&apos;ll tell
+                    you whether it fits the shipped browser engine, experimental
+                    design-partner work, or neither.
                 </p>
 
                 {!isSubmitted ? (

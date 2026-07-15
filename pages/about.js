@@ -16,7 +16,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for desktop automation: record a workflow once and it compiles into a self-healing script that runs on your own machines with no per-run model calls.',
+        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for GUI automation: record a workflow once, compile it into deterministic replay, and resolve, review, or refuse interface drift under configured verification.',
     foundingDate: '2023',
     address: {
         '@type': 'PostalAddress',
@@ -94,10 +94,11 @@ export default function AboutPage() {
                     desktop automation. You record yourself doing a task once,
                     and it compiles that recording into a script that replays
                     on your own machines. Healthy runs make no
-                    cloud model calls; a model is only invoked to heal the
-                    script when the UI drifts, and the fix is proposed as a
-                    reviewable diff. That&#39;s the whole idea, and everything
-                    we build serves it.
+                    cloud model calls. When the UI drifts, retained evidence
+                    may deterministically re-resolve the target; optional AI
+                    may propose a repair, and configured verification can halt
+                    instead. Repairs are governed, reviewable diffs rather
+                    than an unconstrained promise of self-healing.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">

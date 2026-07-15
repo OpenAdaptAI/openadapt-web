@@ -17,17 +17,17 @@ export default function SafetyBand() {
             <div className="mx-auto max-w-3xl px-6 py-12 text-center">
                 <p className="eyebrow mb-2">Safety</p>
                 <h2 className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-ink mb-4">
-                    Certified workflows halt instead of guessing.
+                    Configured safeguards refuse instead of guessing.
                 </h2>
                 <p className="mx-auto max-w-2xl text-base md:text-lg text-ink-2">
-                    On armed steps, certified workflows halt when identity or
-                    on-screen effects can&apos;t be verified, flagging a person
-                    rather than writing to the wrong record. Coverage is armed
-                    per step, auditable, and reported in every run. We built an
-                    adversarial test suite to measure how often it could still
-                    pick the wrong target, put our own engine through seven
-                    rounds of it, and publish every result, including what it
-                    gets wrong today.
+                    Certification is opt-in, and its guarantees are only as
+                    broad as the configured policy and evidence. Identity checks
+                    cover armed steps; unarmed clicks have no identity gate.
+                    Transactional writes require declared effects and a
+                    deployment-specific verifier because a success screen can
+                    still hide a failed or duplicate write. We publish the
+                    adversarial results and residual failure classes rather than
+                    treating a passing screen as proof.
                 </p>
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
                     <a

@@ -4,40 +4,39 @@ import Link from 'next/link'
 import Footer from '@components/Footer'
 
 /*
- * Post-payment landing for OpenAdapt Hosted (Phase 0, concierge).
- *
- * Reached from Stripe Checkout success_url with ?session_id=... . We do not
- * unlock a self-serve runner here: we confirm the subscription and set the
- * expectation that a human reaches out to onboard the first workflow.
+ * Human-assisted Hosted support page. Successful Checkout does not land here;
+ * it returns to cloud /login with an opaque checkout_session_id that the cloud
+ * verifies server-side after authentication.
  */
 
 export default function HostedWelcome() {
     // When the cloud app is deployed, offer a direct link into it. The cloud
-    // app links the subscription to a cloud org by email at first login, so
-    // this drops the customer into their dashboard. Unset (cloud app not live
-    // yet) keeps the concierge-only flow below.
+    // app verifies and links the subscription after authenticated login. An
+    // unset value keeps the support/onboarding fallback usable without
+    // inventing a cloud destination.
     const cloudAppUrl = process.env.NEXT_PUBLIC_CLOUD_APP_URL || ''
 
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
-                <title>You&apos;re in | OpenAdapt Hosted</title>
+                <title>Hosted onboarding | OpenAdapt</title>
                 <meta name="robots" content="noindex" />
                 <meta
                     name="description"
-                    content="Thanks for subscribing to OpenAdapt Hosted. We onboard you personally and will reach out within one business day."
+                    content="Continue OpenAdapt Hosted onboarding or contact the team for account help."
                 />
             </Head>
 
             <div className="mx-auto flex max-w-2xl flex-col px-5 py-16 md:py-24">
                 <p className="eyebrow">OpenAdapt Hosted</p>
                 <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    You&apos;re in.
+                    Continue hosted onboarding
                 </h1>
                 <p className="mt-4 text-base leading-relaxed text-ink-2">
-                    Thanks for subscribing. We&apos;ll reach out within one
-                    business day to set up your first workflow. We onboard you
-                    personally, so there&apos;s nothing for you to set up.
+                    Successful checkout returns directly to secure cloud login,
+                    where the subscription is verified after authentication.
+                    Reaching this support page alone does not prove payment or
+                    create an entitlement.
                 </p>
 
                 <div className="mt-8 rounded-2xl border border-hairline bg-panel p-6 md:p-7">
@@ -48,36 +47,56 @@ export default function HostedWelcome() {
                         <li className="flex gap-3">
                             <span className="font-mono text-accent">1.</span>
                             <span>
-                                A real person from our team emails you within
-                                one business day.
+                                Return to the cloud login using the checkout
+                                redirect and authenticate with the checkout email.
                             </span>
                         </li>
                         <li className="flex gap-3">
                             <span className="font-mono text-accent">2.</span>
                             <span>
-                                We pick one high-value, repetitive workflow and
-                                you demonstrate it once.
+                                The cloud verifies the opaque Checkout Session
+                                with Stripe and binds it to your organization.
                             </span>
                         </li>
                         <li className="flex gap-3">
                             <span className="font-mono text-accent">3.</span>
                             <span>
-                                We compile it, run it with checks, and get it
-                                live for you. No infrastructure for you to run.
+                                Record one repeated browser workflow, then
+                                sanitize, review, approve, and push its exact
+                                recording derivative.
+                            </span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="font-mono text-accent">4.</span>
+                            <span>
+                                Compile, strict-lint, certify, and successfully
+                                replay locally. Sanitize, review, and approve the
+                                bundle; bind it to a one-time challenge with{' '}
+                                <code>validate-hosted</code>, then push that exact
+                                attested bundle.
+                            </span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="font-mono text-accent">5.</span>
+                            <span>
+                                Confirm the attested target and parameter schema,
+                                select a vault secret reference, supply non-secret
+                                values for the run, then inspect the structural
+                                report.
                             </span>
                         </li>
                     </ol>
                     {cloudAppUrl && (
                         <div className="mt-6">
                             <a
-                                href={cloudAppUrl}
+                                href={`${cloudAppUrl}/login`}
                                 className="btn-ink w-full text-center"
                             >
-                                Go to your dashboard
+                                Go to hosted login
                             </a>
                             <p className="mt-2 text-center text-xs leading-relaxed text-ink-3">
-                                Sign in with the email you used at checkout and
-                                your subscription is already linked.
+                                Use the Checkout redirect for automatic claim;
+                                this plain login link does not carry proof of payment.
                             </p>
                         </div>
                     )}
@@ -94,16 +113,31 @@ export default function HostedWelcome() {
                         </Link>
                     </div>
                     <p className="mt-3 text-xs leading-relaxed text-ink-3">
-                        Prefer to wait for our email? That works too. Working
-                        with PHI or PII?{' '}
+                        Compilation does not remove PHI. Upload the sanitized
+                        derivative whose manifest and hash you reviewed, not the
+                        raw recording. Unknown or unresolved content is refused.
+                        Recording push registers source provenance; it does not
+                        create a runnable workflow. If sanitation changed an
+                        execution-bearing value, hosted ingest returns{' '}
+                        <code>needs_parameterization</code>. The challenge-bound
+                        envelope binds exact artifact/provenance/report hashes,
+                        strict lint, policy, derived risk class, and successful
+                        replay. It is operator self-attestation, not independent
+                        certification. Cloud also applies exact policy and
+                        risk-class and deployed compiler-version allowlists and
+                        consumes the challenge once.
+                        Runtime screens can contain live PHI even when the
+                        authoring artifact was sanitized, so regulated execution
+                        stays inside its declared trusted boundary. Working with
+                        PHI or PII?{' '}
                         <Link
                             href="/#pricing-enterprise"
                             className="text-accent underline"
                         >
                             Enterprise
                         </Link>{' '}
-                        runs OpenAdapt inside your own environment, so regulated
-                        data never enters our infrastructure.
+                        uses a customer-controlled execution environment for
+                        PHI-bearing runtime data.
                     </p>
                 </div>
 

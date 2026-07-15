@@ -12,12 +12,14 @@ function BuildForYouSection() {
     return (
         <div className={styles.buildSection}>
             <div className={styles.buildContent}>
-                <h2 className={styles.buildTitle}>Let us build for you</h2>
+                <h2 className={styles.buildTitle}>Qualify one workflow with us</h2>
                 <p className={styles.buildDesc}>
-                    If OpenAdapt doesn&#39;t fully automate your workflow out of the box, we&#39;ll work with you to fix that.
+                    We first check the substrate, verification boundary, and
+                    measurable outcome. If the workflow fits, we can scope a
+                    paid design-partner pilot in your environment.
                 </p>
                 <Link className="btn-ink" href="#book">
-                    Start Intake
+                    Qualify a workflow
                 </Link>
             </div>
         </div>
@@ -34,14 +36,14 @@ export default function IndustriesGrid({
             title: 'Healthcare clinics',
             href: '/solutions/healthcare',
             descriptions:
-                'Referral and fax intake, EMR data entry and extraction; web EMRs today, desktop and VDI EMRs on the roadmap. PHI handling stays fully local.',
+                'Referral and fax intake, EMR data entry and extraction; evaluate web EMRs today. Desktop and VDI EMRs remain experimental design-partner work.',
             logo: '/images/noun-healthcare.svg',
         },
         {
             title: 'Mortgage & lending ops',
             href: '/solutions/lending',
             descriptions:
-                'Loan-file data extraction and entry; desktop LOS like Encompass on the roadmap. Borrower data stays in your environment.',
+                'Loan-file data extraction and entry with an explicit artifact and runtime boundary. Browser workflows are supported; native LOS work remains experimental.',
             logo: '/images/noun-finance.svg',
         },
         {
@@ -93,14 +95,15 @@ export default function IndustriesGrid({
                 </h2>
                 <p className={styles.p}>
                     Record the workflow once and OpenAdapt turns it into an
-                    automation your team can run, review, and audit, all on
-                    your own machines. Nothing brittle to hand-build. No AI
-                    cost per run.
+                    inspectable program your team can run and review on its own
+                    machines. Healthy browser replay makes no model calls;
+                    consequential workflows still require explicit identity,
+                    effect, policy, storage, and retention configuration.
                     <br />
                     <a href="https://github.com/OpenAdaptAI/openadapt-privacy">
-                        Built-in PII/PHI scrubbing
+                        Optional PII/PHI scrubbing
                     </a>{' '}
-                    keeps your sensitive data safe.
+                    covers configured sharing paths, not every raw artifact.
                 </p>
             </div>
             <div className={styles.row}>
@@ -138,7 +141,7 @@ export default function IndustriesGrid({
                                     handleGetStartedButtonClick(grid.title)
                                 }
                             >
-                                Get Started
+                                Evaluate fit
                             </Link>
                         </div>
                     </div>

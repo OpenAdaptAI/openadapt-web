@@ -34,29 +34,29 @@ const rows = [
         browser: 'Browser recording or a prompt',
     },
     {
-        dimension: 'Cost per run',
-        openadapt: 'None on healthy runs (model-free on the hot path)',
+        dimension: 'Model API cost per healthy run',
+        openadapt: '$0 measured; execution infrastructure is separate',
         rpa: 'Licensed per robot or per seat',
         agents: 'Metered model calls on every run',
         browser: 'Varies; cloud inference is metered',
     },
     {
         dimension: 'When the UI changes',
-        openadapt: 'Heals the script; fix arrives as a reviewable diff',
+        openadapt: 'Re-resolves, proposes a governed repair, or halts',
         rpa: 'Selectors break; someone repairs the flow by hand',
         agents: 'The model may adapt, or may take a different path',
         browser: 'DOM selectors break, or the model re-infers',
     },
     {
         dimension: 'Where it runs',
-        openadapt: 'Your machines',
+        openadapt: 'Local, managed browser, BYOC, or on-prem by declared boundary',
         rpa: 'Your infrastructure or vendor cloud',
         agents: 'Vendor cloud, with screenshots of your screen',
         browser: 'The browser; often with a cloud backend',
     },
     {
         dimension: 'App coverage',
-        openadapt: 'Desktop, web, and VDI/RDP (vision-based; adapters in progress)',
+        openadapt: 'Browser supported; Windows experimental; RDP/Citrix research',
         rpa: 'Desktop and web via connectors',
         agents: 'Anything on screen',
         browser: 'Browser only',
@@ -77,7 +77,7 @@ export default function ComparePage() {
                 <title>How OpenAdapt compares to RPA, AI agents, and browser recorders | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="An automation can save to the wrong patient's chart and still show a green checkmark. We measured how often that happens, starting with our own tool. See how OpenAdapt compares to RPA, computer-use agents, and browser recorders on safety first, then cost, coverage, and where your data stays."
+                    content="An automation can save to the wrong patient's chart and still show a green checkmark. We measured how often that happens, starting with our own tool. Compare OpenAdapt with RPA, computer-use agents, and browser recorders on safety, cost, maturity, and explicit data boundaries."
                 />
                 <link rel="canonical" href="https://openadapt.ai/compare" />
                 <meta property="og:title" content="How OpenAdapt compares | OpenAdapt" />
@@ -115,8 +115,9 @@ export default function ComparePage() {
                     traditional RPA, AI agents that drive a computer with a large
                     model, and browser recorders. OpenAdapt is a fourth. You
                     record the task once, and it compiles that recording into a
-                    script that replays for free, repairs itself when the screen
-                    changes, and, in a certified workflow,{' '}
+                    script that replays without model calls on a healthy run,
+                    then re-resolves, proposes a governed repair, or halts when
+                    the screen changes. In a certified workflow, it{' '}
                     <strong>halts rather than guess</strong> when it can&#39;t
                     confirm it&#39;s acting on the right record. Each approach
                     wins somewhere. Here is the honest picture, safety first.
@@ -194,9 +195,10 @@ export default function ComparePage() {
                     vendor UI update breaks the selectors, and someone reopens the
                     studio. Licensing is per robot or seat, and it&#39;s
                     proprietary. OpenAdapt skips the authoring: record the task
-                    once, it compiles to a script, and when the UI drifts it heals
-                    and proposes the fix as a reviewable diff, on your own
-                    machines, MIT open source.
+                    once, it compiles to a script, and when the UI drifts it
+                    re-resolves from evidence, proposes a governed repair, or
+                    halts under configured verification. The engine is MIT
+                    open source and supports local deployment.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
@@ -207,9 +209,12 @@ export default function ComparePage() {
                     through your task with a large model on every run: impressive
                     on novel work, but for repetitive work every run is slow,
                     differently-pathed, billed, and usually sends your screen to
-                    the cloud. OpenAdapt uses a model only at compile and heal
-                    time. A healthy run is a local compiled replay: same steps, no
-                    model calls, no per-run bill, screen stays on your machines.
+                    the cloud. OpenAdapt can use a model during compilation or
+                    governed repair, not on a healthy replay. Local execution
+                    keeps live observations local; hosted execution keeps them
+                    inside its declared managed runtime boundary. Only an
+                    approved sanitized derivative may cross the artifact
+                    boundary.
                 </p>
 
                 <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
@@ -376,10 +381,10 @@ export default function ComparePage() {
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         And if the system you need to automate already has a
                         solid API, use it; a direct integration will always beat
-                        driving a screen. OpenAdapt is for everything that
-                        doesn&#39;t: the legacy EMRs, Citrix estates, and desktop
-                        systems where that integration was never built, and a
-                        recorded demonstration is the only way in.
+                        driving a screen. The current OpenAdapt launch covers
+                        integration-hostile browser workflows. Native desktop,
+                        RDP, and Citrix are separate Experimental/Research paths,
+                        not capabilities implied by this comparison.
                     </p>
                 </div>
 
@@ -399,10 +404,16 @@ export default function ComparePage() {
                             Book a demo
                         </Link>
                         <a
-                            href="https://github.com/OpenAdaptAI/OpenAdapt"
+                            href="https://github.com/OpenAdaptAI/openadapt-flow"
                             className="btn-ghost-ink"
                         >
                             View on GitHub
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper"
+                            className="btn-ghost-ink"
+                        >
+                            Read the paper source
                         </a>
                     </div>
                 </div>
