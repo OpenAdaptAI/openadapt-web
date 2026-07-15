@@ -29,6 +29,8 @@
  *     https://app.openadapt.ai).
  */
 
+const { stripeModeMatches } = require('../../lib/stripeMode')
+
 // Read env at request time (not module load) so a missing key can't break
 // the build. The site is a static-ish Next.js app; these routes only run
 // server-side at request time.
@@ -60,13 +62,6 @@ function getBaseUrl() {
 
 function getCloudAppUrl() {
     return configuredOrigin(process.env.NEXT_PUBLIC_CLOUD_APP_URL)
-}
-
-function stripeModeMatches(secretKey, expectedMode) {
-    if (!expectedMode) return false
-    if (expectedMode === 'live') return secretKey.startsWith('sk_live_')
-    if (expectedMode === 'test') return secretKey.startsWith('sk_test_')
-    return false
 }
 
 // The Checkout Session id is opaque. The cloud verifies and claims it
