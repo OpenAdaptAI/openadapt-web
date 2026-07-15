@@ -12,9 +12,6 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[[plugins]]
-  package = "netlify-plugin-cypress"
-
 [[headers]]
   for = "/*"
   [headers.values]
