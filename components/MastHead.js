@@ -95,10 +95,11 @@ export default function Home({ githubStats }) {
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 OpenAdapt compiles a recorded demonstration into
-                                a self-healing automation. Certified workflows
-                                halt when identity or effects cannot be verified.
-                                It&apos;s open source and auditable, and it runs
-                                entirely on your own machines.
+                                a self-healing automation. On armed steps,
+                                certified workflows halt when identity or
+                                on-screen effects cannot be verified. It&apos;s
+                                open source and auditable, and it runs entirely
+                                on your own machines.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
                                 Every automation tool assumes an API. The
