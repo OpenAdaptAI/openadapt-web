@@ -96,6 +96,11 @@ describe('public product truth', () => {
                 'NEXT_PUBLIC_SITE_URL',
                 'NEXT_PUBLIC_CLOUD_APP_URL',
             ].forEach((name) => expect(source).to.include(`process.env.${name}`))
+            expect(source).to.include('if (!expectedMode) return false')
+        })
+
+        cy.readFile('lib/hostedOffer.js').then((source) => {
+            expect(source).to.include('if (!expectedMode) return false')
         })
     })
 })

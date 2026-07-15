@@ -11,9 +11,9 @@
  *     from the browser.
  *
  * Money + secrets safety:
- *   - Supports Stripe test and live keys. STRIPE_EXPECTED_MODE can require the
- *     deployed mode so a test key cannot accidentally back a live launch (or
- *     vice versa). No keys are ever hardcoded.
+ *   - Supports Stripe test and live keys. STRIPE_EXPECTED_MODE is required so
+ *     a test key cannot accidentally back a live launch (or vice versa). No
+ *     keys are ever hardcoded.
  *   - If the required env vars are missing (local dev, CI, preview deploys
  *     without secrets), we return a clean 503 so the site still builds and
  *     deploys. The build never imports Stripe at module load; it is required
@@ -22,6 +22,7 @@
  * Required env vars:
  *   STRIPE_SECRET_KEY   - Stripe secret key (sk_test_... in test mode)
  *   STRIPE_PRICE_ID     - the configured recurring price id (price_...)
+ *   STRIPE_EXPECTED_MODE - "live" in production or "test" elsewhere
  *
  * Required launch env vars:
  *   NEXT_PUBLIC_CLOUD_APP_URL - base URL of the cloud app (e.g.
@@ -62,7 +63,7 @@ function getCloudAppUrl() {
 }
 
 function stripeModeMatches(secretKey, expectedMode) {
-    if (!expectedMode) return true
+    if (!expectedMode) return false
     if (expectedMode === 'live') return secretKey.startsWith('sk_live_')
     if (expectedMode === 'test') return secretKey.startsWith('sk_test_')
     return false
