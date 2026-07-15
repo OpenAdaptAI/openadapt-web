@@ -1,26 +1,28 @@
 # OpenAdapt.AI
 
-> Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a deterministic, self-healing automation that runs entirely on your own machines. Healthy runs make no cloud model calls; a model is only used to heal the script when the UI drifts, and the fix is proposed as a reviewable diff. MIT licensed.
+> Open-source governed compiler for repeated GUI work. Record a workflow once and OpenAdapt compiles it into deterministic local replay. Healthy runs make no model calls. Under UI drift it deterministically re-resolves, optionally proposes an AI-assisted repair, accepts human teaching, or halts when configured verification cannot establish a safe path. MIT licensed.
 
 ## Documentation
 - [Getting Started](https://docs.openadapt.ai): Installation, quick start, and CLI reference
-- [GitHub Repository](https://github.com/OpenAdaptAI/OpenAdapt): Source code, README, and contribution guide
+- [Canonical Engine](https://github.com/OpenAdaptAI/openadapt-flow): Source, quickstart, maturity boundaries, benchmarks, and known limits
 
 ## Core Concepts
-- [How It Works](https://openadapt.ai/#how-it-works): Record, Compile, Run, Self-heal, Audit — a recorded demonstration becomes an editable script with visual anchors, per-step assertions, and parameters
+- [How It Works](https://openadapt.ai/#how-it-works): Record, compile, replay, resolve or halt, then verify and report
+- [Product Maturity](https://openadapt.ai/#product-status): Browser path, safety controls, desktop backends, hosted execution, and enterprise deployment status
 - [FAQ](https://openadapt.ai/#faq): How OpenAdapt differs from RPA tools and AI computer-use agents, data locality, licensing
-- [Privacy & Security](https://openadapt.ai/privacy-policy): Local-first by architecture — recordings and replays stay on your infrastructure
+- [Security and Data Boundaries](https://openadapt.ai/security): Screenshot, model, secret, report, certification, and commercial deployment boundaries
 - [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
 
 ## Use Cases
-- [Healthcare Clinics](https://openadapt.ai/solutions/healthcare): Referral and fax intake, EMR data entry and extraction — desktop and VDI EMRs included, PHI stays fully local
+- [Healthcare Clinics](https://openadapt.ai/solutions/healthcare): Intended regulated-workflow wedge; browser evaluation today, desktop and VDI paths not yet validated production integrations
 - [Mortgage & Lending Ops](https://openadapt.ai/solutions/lending): Loan-file data extraction and entry in desktop LOS software like Encompass
 - [Other Regulated Back-Offices](https://openadapt.ai/#industries): Document-heavy, compliance-bound workflows
 
 ## Source Code
-- [GitHub](https://github.com/OpenAdaptAI/OpenAdapt): MIT licensed, open source
-- [PyPI Package](https://pypi.org/project/openadapt/): Install via pip or uv
+- [Engine Source](https://github.com/OpenAdaptAI/openadapt-flow): MIT licensed, open source
+- [PyPI Package](https://pypi.org/project/openadapt-flow/): Standalone governed compiler and runtime
 - [Evaluations](https://github.com/OpenAdaptAI/openadapt-evals): Benchmark tooling with Windows Agent Arena integration
+- [Technical Paper Source](https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper): arXiv draft, machine-checked benchmark constants, methodology, limitations, and artifact checklist
 
 ## Blog
 - [Updates & Guides](https://blog.openadapt.ai): Technical posts and automation recipes
@@ -29,3 +31,21 @@
 - [Discord](https://discord.gg/yF527cQbDG): Community support and discussion
 - [LinkedIn](https://www.linkedin.com/company/openadapt-ai): Company updates
 - [X/Twitter](https://x.com/OpenAdaptAI): Project news
+
+## Commercial Status
+- The open-source browser engine is available now.
+- Managed hosted browser execution is launching now through configured Stripe Checkout and account onboarding.
+- Stripe is the source of truth for the hosted price and billing period; the website does not duplicate an amount.
+- Customer-controlled regulated deployments are scoped to the actual substrate, runtime boundary, verifier, and operating responsibilities.
+- Hosted browser checkout does not imply desktop/Citrix support, SOC 2 attestation, a standing BAA program, or a production SLA.
+
+## Hosted Data Boundary
+- Compiled bundles can contain screenshots, typed values, and literal identity evidence. Compilation does not make a bundle PHI-free.
+- Remote upload accepts a sanitized derivative, not the sensitive local original.
+- The derivative is inventoried, transformed, rescanned, manifested, locally reviewed when policy requires it, and approved by exact hash.
+- Unknown or unresolved content is refused; declarations such as `--attest-non-phi` cannot bypass sanitation.
+- Destination trust is independent of deployment lane. Verified customer endpoints can receive policy-permitted derivatives; unknown destinations are refused.
+- Sanitized authoring data does not make runtime screenshots PHI-free. PHI-bearing runtime observations remain inside the declared trusted boundary.
+- Cross-engine hosted admission is: recording sanitize/review/approve/push; local compile/strict-lint/certify/successful replay; bundle sanitize/review/approve; one-time challenge-bound validate-hosted; exact attested bundle push; configure; run.
+- validate-hosted binds exact recording/bundle hashes, compiler and parameter-schema provenance, an exact non-PHI HTTPS entry URL, target/host boundaries, the actual replay origin, lint/certification/report evidence, derived low or consequential risk class, and the organization/token challenge. Cloud enforces exact policy, risk-class, and deployed compiler-version allowlists and consumes the challenge once.
+- This is operator self-attestation with the ingest token, not independent certification or proof that Cloud witnessed the replay.

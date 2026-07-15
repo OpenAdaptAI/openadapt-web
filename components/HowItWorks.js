@@ -20,24 +20,24 @@ const steps = [
     },
     {
         number: '3.0',
-        name: 'Run',
+        name: 'Replay',
         description:
-            'It replays in milliseconds on your own machine, with no AI cost per run.',
+            'Healthy runs execute the compiled steps locally without a model call.',
         // Default to the live OpenEMR footage — the strongest wow.
         clipKey: 'run_openemr',
     },
     {
         number: '4.0',
-        name: 'Self-heal',
+        name: 'Resolve or halt',
         description:
-            'When the app changes, it finds the button again and shows you the fix to approve.',
+            'Under drift, deterministic evidence re-finds the target, an optional model proposes a repair, or verification refuses to continue.',
         clipKey: 'heal',
     },
     {
         number: '5.0',
-        name: 'Audit',
+        name: 'Verify and report',
         description:
-            'Every run leaves a step-by-step report: what it did, what it saw, what changed.',
+            'Configured postconditions and effects are checked, and every run records what happened, changed, or halted.',
         clipKey: 'audit',
     },
 ]
@@ -49,8 +49,8 @@ export default function HowItWorks() {
                 <p className={styles.eyebrow}>Process</p>
                 <h2 className={styles.heading}>How it works</h2>
                 <p className={styles.subheading}>
-                    Record a task once, and get an automation you can run,
-                    review, and audit.
+                    A demonstrated task becomes a reviewable program, not a
+                    prompt that a model reinterprets on every run.
                 </p>
                 <ol className={styles.steps}>
                     {steps.map((step) => {

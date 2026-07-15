@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
                 <title>Privacy Policy | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="OpenAdapt.AI privacy policy. Learn how we collect, use, and safeguard your data. All recordings are scrubbed of PII/PHI before upload."
+                    content="OpenAdapt.AI privacy policy and data boundaries for local artifacts, sanitized upload derivatives, hosted execution, optional model endpoints, and regulated runtimes."
                 />
                 <link rel="canonical" href="https://openadapt.ai/privacy-policy" />
                 <meta property="og:title" content="Privacy Policy | OpenAdapt.AI" />
@@ -27,30 +27,35 @@ const PrivacyPolicy = () => {
 
             <h2 className={styles.subheading}>1. Data Collection and Usage</h2>
             <p className={styles.paragraph}>
-                OpenAdapt is an open-source desktop software that records your
-                screen, keyboard, mouse, and optionally microphone inputs
-                locally on your machine. OpenAdapt transforms this recorded data
-                using various algorithms to generate prompts and instructions
-                for AI language models. All data is scrubbed of all Personally
-                Identifiable Information (PII) and Protected Health Information
-                (PHI) before being uploaded. Before data is uploaded, you will
-                be presented with the scrubbed data and required to confirm that
-                it has been properly sanitized of all PII/PHI. We do not store
-                or collect any of your personal data, files, or process
-                recordings. For product improvement and performance evaluation
-                purposes, we may collect anonymized usage data and analytics
-                through third-party services like Google Analytics.
+                The open-source engine records screenshots and GUI input locally
+                to compile and replay a workflow. Recordings, compiled bundles,
+                and machine-readable reports can contain Personally Identifiable
+                Information (PII) or Protected Health Information (PHI). A
+                compiled bundle is not de-identified or PHI-free by construction.
+                These artifacts stay local by default. A hosted upload is made
+                from a sanitized derivative, never by assuming compilation
+                removed sensitive data. The sanitation process inventories and
+                transforms supported content, rescans it, records unresolved
+                findings and tool versions in a manifest, and binds approval to
+                the derivative&apos;s cryptographic hash. Policy can require local
+                review before upload. Unknown or unsuccessfully transformed
+                content is refused rather than copied through. The separate{' '}
+                <code>report-break</code> path sends only a minimized break
+                descriptor. We may also collect hosted account, billing, usage,
+                support, website-form, and analytics data needed to provide the
+                service.
             </p>
 
             <h2 className={styles.subheading}>2. Third-Party Services</h2>
             <p className={styles.paragraph}>
-                Our desktop software can connect to third-party AI service
-                providers (e.g., OpenAI, Claude.ai) to use their language
-                models for process automation based on the prompts and
-                instructions generated from your recorded data.
-                Any data shared with these third-party services is subject to
-                their respective privacy policies, and we encourage you to
-                review them.
+                The engine can connect to an explicitly configured local or
+                remote model endpoint for optional repair assistance. Relevant
+                screenshots or crops may cross the boundary of a remote endpoint;
+                healthy replay does not call a model. Hosted control-plane and
+                runner infrastructure, website forms, hosting, analytics,
+                Stripe payment processing, and any model endpoint are
+                separate third-party services governed by their own terms and
+                privacy policies.
             </p>
 
             <h2 className={styles.subheading}>3. Email Address Collection</h2>
@@ -68,18 +73,19 @@ const PrivacyPolicy = () => {
 
             <h2 className={styles.subheading}>4. Data Security</h2>
             <p className={styles.paragraph}>
-                OpenAdapt employs industry-standard security measures in the
-                software's architecture to ensure the safe use of API keys and
-                payment information. While OpenAdapt itself does not store your
-                personal data or API keys, we facilitate secure interactions
-                with third-party services, including Stripe for payment
-                processing. For users who choose to use the OpenAdapt API key,
-                we securely manage the connection to third-party services on
-                your behalf. Please be aware that while we strive to use
-                commercially acceptable means to protect your information, no
-                method of transmission over the internet, or method of
-                electronic storage is 100% secure. We cannot guarantee absolute
-                security of data managed by third-party services.
+                Declared password and secret fields are injected at replay rather
+                than written into recordings. Other captured values, screenshots,
+                identity evidence, bundles, and reports remain sensitive local
+                artifacts and require appropriate filesystem access, encryption,
+                retention, endpoint, and deletion controls. The local original
+                remains sensitive and is never made safe by creation of a
+                derivative. Runtime observations can reintroduce sensitive data
+                after a recording was sanitized; PHI-bearing screenshots and
+                logs must remain within the declared trusted execution boundary.
+                No method of transmission or storage is completely secure. See
+                the current{' '}
+                <a href="/security">security and data-boundary page</a> before
+                evaluating regulated data.
             </p>
 
             <h2 className={styles.subheading}>5. Children's Privacy</h2>
