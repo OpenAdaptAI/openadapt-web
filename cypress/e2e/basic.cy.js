@@ -65,6 +65,39 @@ describe('public product truth', () => {
         cy.wait('@checkout').its('request.method').should('equal', 'POST')
         cy.location('pathname').should('equal', '/hosted/welcome')
     })
+
+    it('documents the exact hosted checkout environment contract', () => {
+        cy.readFile('.env.example').then((source) => {
+            expect(source).to.include('STRIPE_SECRET_KEY=')
+            expect(source).to.include('STRIPE_PRICE_ID=')
+            expect(source).to.include('STRIPE_EXPECTED_MODE=live')
+            expect(source).to.include(
+                'NEXT_PUBLIC_SITE_URL=https://openadapt.ai'
+            )
+            expect(source).to.include(
+                'NEXT_PUBLIC_CLOUD_APP_URL=https://app.openadapt.ai'
+            )
+            expect(source).to.include(
+                'Web and Cloud must use the same Stripe account, mode, and recurring price.'
+            )
+            expect(source).to.include(
+                'There is no request-host or concierge checkout fallback.'
+            )
+            expect(source).not.to.include('$500')
+            expect(source).not.to.include('STRIPE_WEBHOOK_SECRET')
+            expect(source).not.to.include('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+        })
+
+        cy.readFile('pages/api/create-checkout-session.js').then((source) => {
+            ;[
+                'STRIPE_SECRET_KEY',
+                'STRIPE_PRICE_ID',
+                'STRIPE_EXPECTED_MODE',
+                'NEXT_PUBLIC_SITE_URL',
+                'NEXT_PUBLIC_CLOUD_APP_URL',
+            ].forEach((name) => expect(source).to.include(`process.env.${name}`))
+        })
+    })
 })
 
 describe('security boundary', () => {
