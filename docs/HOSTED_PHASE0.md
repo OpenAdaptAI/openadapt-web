@@ -28,14 +28,24 @@ valid post-payment onboarding destination.
 
 | Variable | Scope | Purpose |
 |---|---|---|
-| `STRIPE_SECRET_KEY` | Server | Create Checkout Sessions. Test or live behavior follows the key. |
-| `STRIPE_PRICE_ID` | Server | Select the configured recurring offer. |
-| `STRIPE_EXPECTED_MODE` | Server | `live` or `test`; refuses a key from the wrong Stripe mode. Set `live` for launch. |
-| `NEXT_PUBLIC_CLOUD_APP_URL` | Public | Route successful checkout into cloud sign-in/onboarding. |
-| `NEXT_PUBLIC_SITE_URL` | Public | Stable success and cancellation base URL. |
+| `STRIPE_SECRET_KEY` | Server | Create Checkout Sessions. Production requires an `sk_live_` key; test and preview use `sk_test_`. |
+| `STRIPE_PRICE_ID` | Server | Select the recurring offer from the same Stripe account and mode as the key. |
+| `STRIPE_EXPECTED_MODE` | Server | Operator guard: set `live` in production and `test` in test or preview. A mismatched key is refused. |
+| `NEXT_PUBLIC_CLOUD_APP_URL` | Public | Exact HTTPS Cloud origin for post-payment sign-in/onboarding. |
+| `NEXT_PUBLIC_SITE_URL` | Public | Exact HTTPS site origin for Checkout cancellation. |
 
-Secrets belong in the deployment environment, never committed files. The live
-price id must belong to the same Stripe mode and account as the secret key.
+Secrets belong in the deployment environment, never committed files. Web and
+Cloud must use the same Stripe account and mode so Cloud can retrieve and claim
+the Session created by Web. The configured recurring price must also belong to
+that account and mode. In production, set `STRIPE_EXPECTED_MODE=live` with an
+`sk_live_` key and live price. In test or preview, set
+`STRIPE_EXPECTED_MODE=test` with an `sk_test_` key and test price. Set exact
+environment-specific site and Cloud origins in both cases.
+
+The website has no implicit request-host or concierge checkout fallback. If a
+required value is absent, invalid, or mode-mismatched, offer lookup is
+unavailable and `POST /api/create-checkout-session` returns HTTP 503. The
+standalone `/hosted/welcome` support page is not a payment-verification path.
 
 ## Production is never implicit mock
 
@@ -86,7 +96,10 @@ execution boundary.
 
 ## Go-live verification
 
-- [ ] Set live Stripe secret, price id, and signed webhook endpoint.
+- [ ] Configure Web with the live Stripe secret, live price id,
+      `STRIPE_EXPECTED_MODE=live`, and exact production site and Cloud origins.
+- [ ] Configure Cloud against the same live Stripe account and mode, including
+      its signed webhook endpoint and signing secret.
 - [ ] Confirm Stripe displays the intended amount and billing period.
 - [ ] Configure the production cloud app URL and site URL.
 - [ ] Verify checkout -> sign-in -> organization/subscription linkage.
