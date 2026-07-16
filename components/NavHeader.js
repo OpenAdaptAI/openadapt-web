@@ -17,7 +17,6 @@ const NAV_LINKS = [
     { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },
     { label: 'Pricing', href: '/#pricing' },
-    { label: 'Download', href: '/download' },
     { label: 'About', href: '/about' },
     {
         label: 'Open source',
@@ -105,8 +104,7 @@ export default function NavHeader() {
                                 rel="noopener noreferrer"
                                 onClick={() => {
                                     const ev = externalEvent(item.href)
-                                    if (ev)
-                                        track(ev, { location: 'nav_mobile' })
+                                    if (ev) track(ev, { location: 'nav_mobile' })
                                 }}
                             >
                                 {item.label}
