@@ -13,8 +13,8 @@ import { useId } from 'react'
  * follow the site theme rather than hardcoding light/dark values.
  */
 
-const COMPILED = 'var(--accent)' // OpenAdapt compiled replay — the win
-const AGENT = 'var(--ink-2)' // computer-use agent — muted
+const COMPILED = 'var(--accent)'
+const AGENT = 'var(--ink-2)'
 const TRACK = 'var(--hairline)'
 const CAPTION = 'var(--ink-3)'
 const INK = 'var(--ink)'
@@ -161,10 +161,9 @@ function LatencyChart({ compiled, agent, titleId, descId }) {
     )
 }
 
-// Cost chart: agent cost per run as a bar, compiled pinned at an emphasized
-// zero endpoint. The zero is the point — a filled dot and a "$0" that stays $0
-// on every run, forever.
-function CostChart({ compiled, agent, runs, titleId, descId }) {
+// Cost chart: measured token usage valued under the pricing basis documented in
+// the methodology. This excludes execution infrastructure and authoring cost.
+function CostChart({ compiled, agent, titleId, descId }) {
     const x0 = 6
     const x1 = 300
     const W = x1 - x0
@@ -172,7 +171,6 @@ function CostChart({ compiled, agent, runs, titleId, descId }) {
     const agentW = W // agent is the only nonzero cost, so it fills the plot
     const compiledY = 26
     const agentY = 66
-    const agent500 = Math.round(agent.cost_usd_per_run * runs)
     return (
         <svg
             viewBox="0 0 336 120"
@@ -181,11 +179,11 @@ function CostChart({ compiled, agent, runs, titleId, descId }) {
             aria-labelledby={`${titleId} ${descId}`}
             style={{ display: 'block' }}
         >
-            <title id={titleId}>Model cost per run: compiled replay vs computer-use agent</title>
+            <title id={titleId}>Estimated model cost per run: compiled replay vs computer-use agent</title>
             <desc id={descId}>
-                Compiled replay costs {fmtCost(compiled.cost_usd_per_run)} per run;
-                the agent costs {fmtCost(agent.cost_usd_per_run)} per run at list
-                price. Over {runs} runs that is $0 versus about ${agent500}.
+                Under the pricing basis documented in the methodology, compiled
+                replay has {fmtCost(compiled.cost_usd_per_run)} model cost per run
+                and the agent has {fmtCost(agent.cost_usd_per_run)} per run.
             </desc>
             {/* Compiled row: emphasized zero endpoint */}
             <text
@@ -218,7 +216,7 @@ function CostChart({ compiled, agent, runs, titleId, descId }) {
                 fontSize="10"
                 fill={CAPTION}
             >
-                every run, forever
+                no model charge
             </text>
             {/* Agent row */}
             <text
@@ -244,7 +242,7 @@ function CostChart({ compiled, agent, runs, titleId, descId }) {
                 {fmtCost(agent.cost_usd_per_run)} / run
             </text>
             <text x={x0} y={112} fontSize="9.5" fill={CAPTION} style={numStyle}>
-                at {runs} runs: $0 vs ~${agent500} · list price, model cost only
+                model inference only · pricing basis in methodology
             </text>
         </svg>
     )
@@ -265,7 +263,7 @@ function Stat({ value, label }) {
     )
 }
 
-export default function BenchmarkCharts({ dataset, runs = 500 }) {
+export default function BenchmarkCharts({ dataset }) {
     const { compiled, agent } = dataset
     const ids = {
         latT: useId(),
@@ -287,7 +285,7 @@ export default function BenchmarkCharts({ dataset, runs = 500 }) {
                     value={`${fmtCost(compiled.cost_usd_per_run)} vs ${fmtCost(
                         agent.cost_usd_per_run
                     )}`}
-                    label="model cost per run, at list price"
+                    label="estimated model cost per run"
                 />
                 <Stat
                     value={`${compiled.model_calls_per_run} vs ~${agent.model_calls_per_run}`}
@@ -308,18 +306,17 @@ export default function BenchmarkCharts({ dataset, runs = 500 }) {
                 </figure>
                 <figure className="rounded-xl border border-hairline bg-ground/60 p-4">
                     <figcaption className="eyebrow mb-3">
-                        Model cost per run
+                        Estimated model cost per run
                     </figcaption>
                     <CostChart
                         compiled={compiled}
                         agent={agent}
-                        runs={runs}
                         titleId={ids.costT}
                         descId={ids.costD}
                     />
                     <p className="sr-only">
-                        Compiled {fmtCost(compiled.cost_usd_per_run)} per run;
-                        agent {fmtCost(agent.cost_usd_per_run)} per run.
+                        Compiled {fmtCost(compiled.cost_usd_per_run)} model cost per
+                        run; agent {fmtCost(agent.cost_usd_per_run)} per run.
                     </p>
                 </figure>
             </div>

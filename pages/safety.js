@@ -14,7 +14,7 @@ const webPageSchema = {
     name: 'The wrong-patient defense, shown',
     url: 'https://openadapt.ai/safety',
     description:
-        'When OpenAdapt automates an EMR, a computer writes to a patient chart. The catastrophe is writing to the wrong patient. This page shows, case by case, how the identity check halts on look-alike record numbers that OCR cannot tell apart — generated from real screen renders and the real shipping check, with zero model calls — and it discloses what the defense does not cover.',
+        'Bounded test evidence for an OpenAdapt identity check: how configured steps halt on specific look-alike record-number cases, plus the limits this evidence does not cover.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -37,7 +37,7 @@ export default function SafetyPage() {
                 </title>
                 <meta
                     name="description"
-                    content="Automating an EMR means a computer writes to a patient chart, and the catastrophe is the wrong patient. See how OpenAdapt halts on look-alike record numbers that OCR reads identically — from real screen renders and the real check, zero model calls — plus an honest account of what it does not cover."
+                    content="Bounded test evidence for an OpenAdapt identity check: specific look-alike record-number cases, observed refusal behavior, and the limits this evidence does not cover."
                 />
                 <link rel="canonical" href="https://openadapt.ai/safety" />
                 <meta
@@ -46,7 +46,7 @@ export default function SafetyPage() {
                 />
                 <meta
                     property="og:description"
-                    content="Case by case: how OpenAdapt refuses to click when two patients' record numbers look identical to OCR. Real renders, real check, zero model calls. With the honest limits."
+                    content="Specific identity-check test cases, observed refusal behavior, and the limits this evidence does not cover."
                 />
                 <meta property="og:url" content="https://openadapt.ai/safety" />
                 <script
@@ -61,31 +61,25 @@ export default function SafetyPage() {
             <div className="mx-auto max-w-4xl px-4 py-14">
                 <p className="eyebrow">Safety · the wrong-patient defense</p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    When a computer writes to a chart, the one thing it can
-                    never do is write to the wrong patient.
+                    A consequential write needs verified identity, not just a
+                    successful click.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    Automating an EMR means a computer types into a patient
-                    record on its own. Get the field wrong and you fix a typo.
-                    Get the <em>patient</em> wrong and you have written someone
-                    else&#39;s medication, allergy, or note into the wrong
-                    chart. That is the failure this defense exists to prevent,
-                    and this page shows it working, case by case.
+                    A workflow can appear successful while acting on the wrong
+                    record. OpenAdapt can require identity evidence before a
+                    configured step and halt when that evidence is ambiguous.
+                    This page shows the bounded test cases behind that behavior.
                 </p>
                 <p className="mt-4 max-w-3xl text-base text-ink-2 md:text-lg">
-                    On legacy, Citrix, and RDP EMRs there is no browser to
-                    inspect and often no working accessibility tree, so the
-                    software reads the <em>screen</em> with OCR. The trap:
-                    some record numbers differ by a single look-alike
-                    character. A letter O against a zero. A lowercase L against
-                    a one. To a person they are nearly the same; to OCR they
-                    are the <em>same bytes</em>. Two different patients become
-                    one indistinguishable row of pixels.
+                    Screen text can contain look-alike characters that OCR cannot
+                    reliably distinguish, such as a letter O and a zero. The test
+                    asks whether the identity check refuses those ambiguous cases
+                    rather than treating them as a verified match.
                 </p>
                 <p className="mt-4 max-w-3xl text-base text-ink-2 md:text-lg">
-                    So the rule is simple. When the check cannot prove the row
-                    on screen is the patient it recorded, it does not guess. It
-                    halts and hands the step to a person.
+                    The boundary matters: these results cover the tested identity
+                    check and rendered cases. They do not establish end-to-end or
+                    production EMR reliability.
                 </p>
             </div>
 
