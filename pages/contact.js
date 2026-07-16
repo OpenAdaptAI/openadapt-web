@@ -9,11 +9,11 @@ export default function ContactPage() {
                 <title>Contact | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="Contact the OpenAdapt team. Tell us your workflow, tools, and volume. We'll propose a pilot scope and ROI target for AI-powered automation."
+                    content="Contact the OpenAdapt team to qualify a repeated workflow, its execution boundary, verification needs, and deployment path."
                 />
                 <link rel="canonical" href="https://openadapt.ai/contact" />
                 <meta property="og:title" content="Contact | OpenAdapt.AI" />
-                <meta property="og:description" content="Contact OpenAdapt. Share your workflow and we'll propose a pilot scope for AI-powered automation." />
+                <meta property="og:description" content="Share one repeated workflow and we'll map the right OpenAdapt execution, verification, and deployment path." />
                 <meta property="og:url" content="https://openadapt.ai/contact" />
             </Head>
             <ContactBookingSection showHomeLink />

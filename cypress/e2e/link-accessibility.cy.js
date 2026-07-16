@@ -3,7 +3,7 @@ describe('link interaction hierarchy', () => {
         cy.viewport(1280, 900)
         cy.visit('/about')
 
-        cy.get('a[href="mailto:hello@openadapt.ai"]')
+        cy.contains('a[href="mailto:hello@openadapt.ai"]', 'hello@openadapt.ai')
             .should('be.visible')
             .and('have.css', 'text-decoration-line', 'underline')
             .focus()
@@ -23,7 +23,7 @@ describe('link interaction hierarchy', () => {
         cy.viewport(375, 667)
         cy.visit('/about')
 
-        cy.get('a[href="mailto:hello@openadapt.ai"]')
+        cy.contains('a[href="mailto:hello@openadapt.ai"]', 'hello@openadapt.ai')
             .scrollIntoView()
             .should('be.visible')
             .and('have.css', 'text-decoration-line', 'underline')
