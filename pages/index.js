@@ -19,8 +19,9 @@ import SafetyBand from '@components/SafetyBand'
 
 const GITHUB_REPOSITORY = 'OpenAdaptAI/OpenAdapt'
 // Verified against the canonical repository on 2026-07-16. Deploys refresh
-// these values from GitHub; this snapshot prevents a network miss becoming 0/0.
-const GITHUB_STATS_FALLBACK = { stars: 1645, forks: 258 }
+// these values from GitHub; the verified fallback prevents a network miss
+// becoming misleading 0/0 social proof.
+const GITHUB_STATS_FALLBACK = { stars: 1646, forks: 258 }
 
 const organizationSchema = {
     '@context': 'https://schema.org',
@@ -142,7 +143,7 @@ export async function getStaticProps() {
             }
         }
     } catch (err) {
-        // Keep the dated, verified snapshot rather than displaying zeroes.
+        // Keep the dated, verified fallback rather than displaying zeroes.
     }
     const { getHostedOffer } = await import('../lib/hostedOffer')
     const hostedOffer = await getHostedOffer()
