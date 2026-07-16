@@ -97,8 +97,9 @@ const PrivacyPolicy = () => {
             <p className={styles.paragraph}>
                 Current product paths use Netlify for website hosting and forms;
                 Supabase for hosted authentication, database, and private object
-                storage; Modal for managed browser recording, compilation, and run
-                compute; Stripe for Checkout, billing, and subscription state;
+                storage; Modal for managed browser recording and run compute, plus
+                optional hosted compilation only when explicitly enabled; Stripe
+                for Checkout, billing, and subscription state;
                 PostHog for launch-funnel analytics when configured; Cal.com for
                 booking; and GitHub for source links, repository widgets, and
                 public repository data. These providers can receive network and
