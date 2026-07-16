@@ -25,11 +25,11 @@ export const faqItems = [
     },
     {
         question: 'Is managed hosted execution available?',
-        answer: 'Hosted browser execution is launching now. Checkout creates a subscription and routes the customer into account onboarding. The offer is scoped to the browser substrate; Windows, RDP, and Citrix status is shown separately in the maturity matrix and is not implied by a hosted subscription.',
+        answer: 'Managed execution is designed for approved browser workflows. Checkout creates a subscription and routes you into account onboarding, while the hosted control plane manages runs, reports, usage, and governed workflow updates.',
     },
     {
         question: 'What software does OpenAdapt work with?',
-        answer: 'The browser record → compile → replay path is the only shipped end-to-end backend today. Windows UIA has been locally demonstrated but remains experimental. Native macOS, RDP, and Citrix paths are research or validation work, not supported production integrations. Check the maturity matrix and published engine limits before choosing a workflow.',
+        answer: 'The supported launch path is repeated work in browser-based software. Workflows involving private systems, regulated runtime data, or deployment-specific effect checks can be qualified for a customer-controlled boundary. Technical evaluators can review the published engine limits before choosing a workflow.',
     },
 ]
 

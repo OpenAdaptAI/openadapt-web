@@ -94,8 +94,8 @@ export default function ContactBookingSection({
                 <p className="mt-3 text-sm text-ink-2 md:text-base">
                     Tell us the substrate, repetition, consequence of error,
                     data boundary, and current verification path. We&apos;ll tell
-                    you whether it fits the shipped browser engine, experimental
-                    design-partner work, or neither.
+                    you whether it fits managed browser execution, a
+                    customer-controlled deployment, or neither.
                 </p>
 
                 {!isSubmitted ? (

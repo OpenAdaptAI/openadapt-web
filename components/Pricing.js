@@ -51,9 +51,7 @@ function HostedCheckoutButton({ available }) {
             })
             const payload = await response.json()
             if (!response.ok || !payload.url) {
-                throw new Error(
-                    payload.message || 'Hosted checkout is temporarily unavailable.'
-                )
+                throw new Error('We could not open secure checkout. Please try again.')
             }
             window.location.assign(payload.url)
         } catch (error) {
@@ -62,34 +60,34 @@ function HostedCheckoutButton({ available }) {
         }
     }
 
+    if (!available) {
+        return (
+            <Link
+                href="/#book"
+                data-testid="hosted-contact"
+                className="btn-ink block w-full text-center"
+            >
+                Start with our team
+            </Link>
+        )
+    }
+
     return (
         <form
             action="/api/create-checkout-session"
             method="post"
-            onSubmit={available ? startCheckout : (event) => event.preventDefault()}
+            onSubmit={startCheckout}
         >
             <button
                 type="submit"
                 data-testid="hosted-checkout"
                 className="btn-ink w-full text-center disabled:cursor-wait disabled:opacity-60"
-                disabled={!available || state === 'loading'}
+                disabled={state === 'loading'}
             >
-                {!available
-                    ? 'Hosted checkout unavailable'
-                    : state === 'loading'
-                      ? 'Opening secure checkout…'
-                      : 'Start hosted subscription'}
+                {state === 'loading'
+                    ? 'Opening secure checkout…'
+                    : 'Start hosted subscription'}
             </button>
-            {!available && (
-                <p role="status" className="mt-3 text-xs leading-relaxed text-ink-3">
-                    The current Stripe price, billing period, and run allowance
-                    could not be verified. Checkout remains disabled rather than
-                    presenting a stale offer.{' '}
-                    <Link href="/#book" className="text-accent underline">
-                        Contact us for launch help.
-                    </Link>
-                </p>
-            )}
             {state === 'error' && (
                 <p role="alert" className="mt-3 text-xs leading-relaxed text-ink-3">
                     {message}{' '}
@@ -122,10 +120,9 @@ export default function Pricing({ hostedOffer = null }) {
                     Run it yourself or launch with us
                 </h2>
                 <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    The engine is MIT-licensed. Hosted browser execution is
-                    launching with subscription checkout now. When configured,
-                    this page reads the offer directly from Stripe; Checkout
-                    confirms the same price and billing period before payment.
+                    Run the MIT-licensed engine yourself, use managed browser
+                    execution, or qualify a customer-controlled deployment.
+                    Hosted prices are confirmed by Stripe before payment.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -167,14 +164,14 @@ export default function Pricing({ hostedOffer = null }) {
                     {/* Card 2 — Hosted browser execution */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
                         <span className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
-                            Launching now
+                            Managed browser
                         </span>
                         <p className="eyebrow">Hosted</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
                                 {hostedOfferAvailable
                                     ? hostedOffer.amount
-                                    : 'Offer unavailable'}
+                                    : 'Hosted execution'}
                             </span>
                             {hostedOffer?.cadence && (
                                 <span className="text-sm text-ink-3">
@@ -196,10 +193,9 @@ export default function Pricing({ hostedOffer = null }) {
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            Subscribe to the hosted browser path. Checkout
-                            creates a Stripe subscription and routes you into
-                            account onboarding; execution entitlements follow
-                            the configured hosted offer.
+                            Bring an approved browser workflow to a managed
+                            control plane for repeat execution, reporting, and
+                            governed updates.
                         </p>
                         <FeatureList
                             items={[
@@ -292,16 +288,15 @@ export default function Pricing({ hostedOffer = null }) {
                  */}
                 <div className="mt-6 flex flex-col gap-6 rounded-2xl border border-hairline bg-panel p-6 md:flex-row md:items-center md:justify-between md:p-7">
                     <div className="md:max-w-2xl">
-                        <p className="eyebrow">Commercial launch</p>
+                        <p className="eyebrow">Execution boundary</p>
                         <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink md:text-xl">
-                            Hosted browser subscriptions are opening now
+                            Choose the operating model that fits the workflow
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                            The checkout offer covers the browser substrate.
-                            Desktop, RDP, and Citrix remain separate validation
-                            work and are not silently included in a browser
-                            subscription. Regulated deployments are scoped
-                            around their actual data and verification boundary.
+                            Use managed browser execution for approved public web
+                            workflows. Choose a customer-controlled deployment
+                            when runtime data, private systems, or effect
+                            verification must remain inside your boundary.
                         </p>
                     </div>
                     <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
@@ -314,9 +309,9 @@ export default function Pricing({ hostedOffer = null }) {
                     </div>
                 </div>
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
-                    Stripe is the source of truth for the hosted subscription
-                    price. Checkout does not itself promise an SLA, compliance
-                    certification, or support for an experimental backend.
+                    The hosted subscription price shown above comes directly
+                    from Stripe and is confirmed again at checkout. Regulated
+                    deployment and service terms are scoped separately.
                 </p>
             </div>
         </section>

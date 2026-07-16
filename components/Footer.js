@@ -43,23 +43,23 @@ export default function Footer() {
                     ></iframe>
                     <a
                         className="github-button"
-                        href="https://github.com/OpenAdaptAI/openadapt-flow"
+                        href="https://github.com/OpenAdaptAI/OpenAdapt"
                         data-color-scheme="no-preference: light; light: light; dark: light;"
                         data-icon="octicon-star"
                         data-size="large"
                         data-show-count="true"
-                        aria-label="Star OpenAdaptAI/openadapt-flow on GitHub"
+                        aria-label="Star OpenAdaptAI/OpenAdapt on GitHub"
                     >
                         Star
                     </a>
                     <a
                         className="github-button"
-                        href="https://github.com/OpenAdaptAI/openadapt-flow/fork"
+                        href="https://github.com/OpenAdaptAI/OpenAdapt/fork"
                         data-color-scheme="no-preference: light; light: light; dark: light;"
                         data-icon="octicon-repo-forked"
                         data-size="large"
                         data-show-count="true"
-                        aria-label="Fork OpenAdaptAI/openadapt-flow on GitHub"
+                        aria-label="Fork OpenAdaptAI/OpenAdapt on GitHub"
                     >
                         Fork
                     </a>
@@ -98,7 +98,7 @@ export default function Footer() {
                             Compare
                         </a>
                         <a href="/#product-status" className={styles.link}>
-                            Maturity
+                            How it runs
                         </a>
                         <a href="/download" className={styles.link}>
                             Download

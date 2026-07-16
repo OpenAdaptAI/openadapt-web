@@ -11,7 +11,7 @@ export default function HealthcarePage() {
                 <title>Healthcare Clinic Automation — Referral Intake & EMR Data Entry | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles demonstrated referral-intake and EMR workflows into governed automation. Original recordings stay local; approved sanitized derivatives may cross a declared boundary. Browser EMRs are the supported path; desktop and VDI remain experimental."
+                    content="OpenAdapt compiles demonstrated referral-intake and browser-based EMR workflows into governed automation, with customer-controlled deployment options for regulated runtime boundaries."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/healthcare" />
                 <meta property="og:title" content="Healthcare Clinic Automation | OpenAdapt" />
@@ -63,10 +63,10 @@ export default function HealthcarePage() {
                         policy can require a local reviewer to approve its
                         exact hash first. Live observations can contain PHI
                         again, so they stay inside the declared managed, BYOC,
-                        or on-prem trusted runtime boundary. Browser EMRs are
-                        the supported path today. Native desktop is
-                        experimental, and VDI/Citrix remains research rather
-                        than a validated production claim.
+                        or on-prem trusted runtime boundary. Browser EMRs use
+                        the managed path; workflows involving private systems
+                        or other substrates are qualified inside a
+                        customer-controlled deployment.
                     </p>
                 </div>
 

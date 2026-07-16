@@ -28,6 +28,36 @@ test('footer email is a real keyboard-accessible link', () => {
     )
 })
 
+test('GitHub proof uses the canonical repository and a verified fallback', () => {
+    const home = read('pages/index.js')
+    const masthead = read('components/MastHead.js')
+    const footer = read('components/Footer.js')
+
+    assert.match(home, /GITHUB_REPOSITORY = 'OpenAdaptAI\/OpenAdapt'/)
+    assert.match(home, /GITHUB_STATS_FALLBACK = \{ stars: 1645, forks: 258 \}/)
+    assert.match(masthead, /https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt/)
+    assert.match(footer, /href="https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt"/)
+    assert.match(footer, /href="https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt\/fork"/)
+    assert.doesNotMatch(masthead, /on openadapt-flow/)
+})
+
+test('launch surfaces lead with capabilities instead of temporary gap labels', () => {
+    const product = read('components/ProductStatus.js')
+    const pricing = read('components/Pricing.js')
+
+    for (const label of [
+        'Research spike',
+        'macOS native workflows',
+        'Product maturity',
+    ]) {
+        assert.doesNotMatch(product, new RegExp(label, 'i'))
+    }
+    assert.match(product, /One governed workflow, end to end/)
+    assert.match(product, /Customer-controlled deployment/)
+    assert.doesNotMatch(pricing, /Offer unavailable|Hosted checkout unavailable/)
+    assert.match(pricing, /Start with our team/)
+})
+
 test('sitemap includes launch, download, and trust surfaces', () => {
     const sitemap = read('public/sitemap.xml')
     for (const route of ['pricing', 'download', 'security', 'safety']) {
