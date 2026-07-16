@@ -11,16 +11,18 @@
  *     from the browser.
  *
  * Money + secrets safety:
- *   - Supports Stripe test and live keys. STRIPE_EXPECTED_MODE is required so
- *     a test key cannot accidentally back a live launch (or vice versa). No
- *     keys are ever hardcoded.
+ *   - Supports Stripe restricted or full server keys in test and live mode.
+ *     STRIPE_EXPECTED_MODE is required so a test key cannot accidentally back
+ *     a live launch (or vice versa). No keys are ever hardcoded.
  *   - If the required env vars are missing (local dev, CI, preview deploys
  *     without secrets), we return a clean 503 so the site still builds and
  *     deploys. The build never imports Stripe at module load; it is required
  *     lazily inside the handler.
  *
  * Required env vars:
- *   STRIPE_SECRET_KEY   - Stripe secret key (sk_test_... in test mode)
+ *   STRIPE_SECRET_KEY   - preferably a restricted key (rk_live_... in
+ *                         production) with Price/Product read and Checkout
+ *                         Session write; full sk_ keys remain compatible
  *   STRIPE_PRICE_ID     - the configured recurring price id (price_...)
  *   STRIPE_EXPECTED_MODE - "live" in production or "test" elsewhere
  *
@@ -30,6 +32,7 @@
  */
 
 const { stripeModeMatches } = require('../../lib/stripeMode')
+const { hostedOfferFromPrice } = require('../../lib/hostedOfferContract')
 
 // Read env at request time (not module load) so a missing key can't break
 // the build. The site is a static-ish Next.js app; these routes only run
@@ -113,6 +116,20 @@ export default async function handler(req, res) {
         // or on any key being present.
         const Stripe = require('stripe')
         const stripe = new Stripe(secretKey)
+        const price = await stripe.prices.retrieve(priceId, {
+            expand: ['product'],
+        })
+        const offer = hostedOfferFromPrice(price, {
+            expectedLive: expectedMode === 'live',
+        })
+
+        if (!offer) {
+            return sendError(req, res, 503, {
+                error: 'checkout_offer_unverified',
+                message:
+                    'Hosted checkout is temporarily unavailable because the current offer could not be verified.',
+            })
+        }
 
         const session = await stripe.checkout.sessions.create({
             mode: 'subscription',
