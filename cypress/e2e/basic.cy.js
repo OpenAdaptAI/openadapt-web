@@ -16,7 +16,10 @@ describe('canonical booking destination', () => {
 
     it('uses Cal.com after continuing through the homepage form', () => {
         cy.visit('/')
-        cy.contains('Skip form and book now').click()
+        cy.contains('button', 'Skip form and book now')
+            .scrollIntoView()
+            .should('be.visible')
+            .click({ force: true })
         assertCanonicalBooking()
     })
 })

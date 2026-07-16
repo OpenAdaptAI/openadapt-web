@@ -13,6 +13,12 @@
 
 [[plugins]]
   package = "netlify-plugin-cypress"
+  # `.next` is an internal runtime artifact, not a static site. Exercise the
+  # deployed Next.js preview instead of serving `.next` directly in postBuild.
+  [plugins.inputs]
+    skip = true
+  [plugins.inputs.onSuccess]
+    enable = true
 
 [[headers]]
   for = "/*"
