@@ -60,7 +60,7 @@ describe('public product truth', () => {
             cy.contains('could not be verified').should('be.visible')
             cy.contains('$500').should('not.exist')
             cy.contains('workflow runs/month').should('not.exist')
-            cy.contains('sanitized derivative').should('be.visible')
+            cy.contains('approved sanitized copy').should('be.visible')
         })
     })
 
@@ -101,6 +101,67 @@ describe('public product truth', () => {
                 'openadapt-flow'
             )
         })
+    })
+
+    it('keeps benchmark proof concise and bounded', () => {
+        cy.get('[data-testid="benchmark-proof"]').within(() => {
+            cy.contains(
+                'Repeated work should not pay an agent to rethink the same task.'
+            ).should('be.visible')
+            cy.contains('In a bounded browser benchmark').should('be.visible')
+            cy.contains('not a production reliability claim').should('be.visible')
+            cy.contains(
+                'Review scope, samples, pricing basis, caveats, and raw results'
+            ).should('have.attr', 'href').and('include', 'benchmark/BENCHMARK.md')
+            cy.contains('N=').should('not.exist')
+            cy.contains('resets daily').should('not.exist')
+            cy.contains('introductory').should('not.exist')
+        })
+
+        cy.visit('/compare')
+        cy.get('#benchmark-evidence').within(() => {
+            cy.contains('In a bounded browser benchmark').should('be.visible')
+            cy.contains('100 compiled replays').should('not.exist')
+            cy.contains('$3/$15').should('not.exist')
+            cy.contains('introductory').should('not.exist')
+        })
+        cy.contains('A bounded field cross-check').parent().within(() => {
+            cy.contains('does not establish production EMR reliability').should(
+                'be.visible'
+            )
+            cy.contains('resets daily').should('not.exist')
+            cy.contains('N=10').should('not.exist')
+            cy.contains(
+                'Review scope, samples, demo limitations, pricing basis, and raw results'
+            ).should('have.attr', 'href').and('include', 'openemr/BENCHMARK.md')
+        })
+    })
+
+    it('keeps buyer claims inside the shipped browser and tested safety scope', () => {
+        cy.get('#faq').within(() => {
+            cy.contains('Does hosted validation certify my workflow?').should(
+                'not.exist'
+            )
+            cy.contains('approved sanitized copy').should('be.visible')
+        })
+
+        cy.visit('/solutions/healthcare')
+        cy.get('h1').should('contain.text', 'browser-based intake work')
+        cy.contains('prove production EMR safety').should('be.visible')
+        cy.contains('OpenAdapt does the retyping').should('not.exist')
+        cy.contains('Certified workflows halt before').should('not.exist')
+
+        cy.visit('/solutions/lending')
+        cy.get('h1')
+            .should('contain.text', 'browser queues, forms, and portals')
+            .and('not.contain.text', 'Encompass')
+        cy.contains('Encompass, is experimental').should('be.visible')
+
+        cy.visit('/safety')
+        cy.get('h1').should('contain.text', 'needs verified identity')
+        cy.contains('do not establish end-to-end or production EMR reliability').should(
+            'be.visible'
+        )
     })
 
     it('starts the configured hosted checkout path', () => {

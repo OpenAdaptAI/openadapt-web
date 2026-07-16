@@ -24,16 +24,14 @@ export default function HealthcarePage() {
                     OpenAdapt for healthcare clinics
                 </p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Referrals arrive by fax. Your staff retypes them into the
-                    EMR. OpenAdapt does the retyping.
+                    Your team repeats the same browser-based intake work all day.
+                    Compile one demonstrated workflow for governed replay.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    Record the intake workflow once (open the referral, read
-                    the fields, enter them into the EMR) and OpenAdapt
-                    compiles it into an automation your clinic runs on its own
-                    machines. Healthy runs make no cloud model calls, and when
-                    the EMR&#39;s screens change, the fix arrives as a
-                    reviewable diff, not a support ticket.
+                    Record a repeated browser workflow once and OpenAdapt compiles
+                    it into a local program. Healthy runs make no model calls. When
+                    the interface changes, OpenAdapt can re-resolve from evidence,
+                    propose a reviewable repair, or halt for an operator.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
@@ -78,22 +76,15 @@ export default function HealthcarePage() {
                 >
                     <p className="eyebrow">The wrong-patient defense</p>
                     <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
-                        Certified workflows halt before writing to the wrong
-                        patient.
+                        Require identity evidence before a consequential write.
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        The one catastrophe in EMR automation is writing to the
-                        wrong chart. On legacy and Citrix EMRs the software
-                        reads the screen as text, so two patients&#39;
-                        record numbers can differ by a single look-alike
-                        character it can&#39;t tell apart. On armed steps, when a
-                        certified workflow can&#39;t prove the row on screen is
-                        the recorded patient, it halts and hands the step to a
-                        person. The check covers steps that carry a patient
-                        identity, not every click; coverage is auditable per step
-                        and reported in every run. We show it working case by
-                        case, from real renders and the real check, and we
-                        disclose what it doesn&#39;t cover.
+                        Wrong-record writes are a critical automation risk. For a
+                        step configured with patient identity evidence, OpenAdapt
+                        can halt when it cannot verify that the live record matches
+                        the demonstrated target. This does not cover every click or
+                        prove production EMR safety; the linked test cases show the
+                        specific OCR ambiguities evaluated and the remaining limits.
                     </p>
                     <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
                         <Link href="/safety" className="font-medium">
@@ -115,14 +106,12 @@ export default function HealthcarePage() {
                 </h2>
                 <ul className="mt-4 space-y-3">
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Turn a recorded referral-intake session into an
-                        automation that reads incoming referral documents and
-                        enters the fields into your EMR.
+                        Replay a demonstrated browser intake workflow across an
+                        approved queue, form, and browser-accessible EMR path.
                     </li>
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Extract encounter, billing, or scheduling data out of
-                        the EMR into spreadsheets and portals without
-                        copy-paste.
+                        Move demonstrated fields between browser-accessible
+                        scheduling, billing, spreadsheet, and portal workflows.
                     </li>
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         Give your compliance lead an illustrated report of

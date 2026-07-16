@@ -20,14 +20,11 @@ export default function SafetyBand() {
                     Configured safeguards refuse instead of guessing.
                 </h2>
                 <p className="mx-auto max-w-2xl text-base md:text-lg text-ink-2">
-                    Certification is opt-in, and its guarantees are only as
-                    broad as the configured policy and evidence. Identity checks
-                    cover armed steps; unarmed clicks have no identity gate.
-                    Transactional writes require declared effects and a
-                    deployment-specific verifier because a success screen can
-                    still hide a failed or duplicate write. We publish the
-                    adversarial results and residual failure classes rather than
-                    treating a passing screen as proof.
+                    OpenAdapt can require identity and effect evidence before a
+                    consequential step, then halt for an operator when verification
+                    is ambiguous. That protection applies only where the workflow
+                    is configured to check it; a success screen alone is not proof
+                    that a write reached the right system or record.
                 </p>
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
                     <a

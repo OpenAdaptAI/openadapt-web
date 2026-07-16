@@ -203,25 +203,21 @@ export default function Pricing({ hostedOffer = null }) {
                         </p>
                         <FeatureList
                             items={[
-                                'Managed execution of locally compiled, attested browser bundles',
+                                'Managed execution of approved browser workflows',
                                 'Deterministic healthy replay with zero model calls',
-                                'Run history, structural reports, replacement activation, and metering',
-                                'Sanitized artifacts and attested bundles admitted under policy',
-                                'Configured price and billing period confirmed in Stripe',
+                                'Run history, failure reports, usage, and governed updates',
+                                'Sanitized uploads admitted under declared policy',
+                                'Price and billing period confirmed in Stripe',
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
-                            Hosted upload is for a sanitized derivative, not an
-                            assumption that compilation removed sensitive data.
-                            Review the scrub result before upload when policy
-                            requires it. Recording push is followed by local
-                            compile, strict lint, certification, successful replay,
-                            and approval of an unchanged bundle. Runnable upload
-                            then requires a one-time challenge-bound operator
-                            attestation; it is not independent certification.
-                            Workflows whose live runtime necessarily exposes PHI
-                            require a declared customer-controlled or separately
-                            qualified regulated execution boundary.
+                            Hosted upload accepts an approved sanitized copy, not
+                            the original recording. Live screens can contain
+                            sensitive data again; workflows that expose PHI require
+                            a separately qualified customer-controlled boundary.{' '}
+                            <Link href="/security" className="text-accent underline">
+                                Review the security boundary.
+                            </Link>
                         </div>
                         <div className="mt-6 flex-grow" />
                         <HostedCheckoutButton available={hostedOfferAvailable} />

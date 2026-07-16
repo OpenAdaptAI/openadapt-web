@@ -11,7 +11,7 @@ const webPageSchema = {
     name: 'How OpenAdapt compares',
     url: 'https://openadapt.ai/compare',
     description:
-        'Automation tools can save to the wrong record and report success. We measured how often that happens, on our own tool first. How OpenAdapt compares to RPA, AI computer-use agents, and browser recorders on safety first, then cost and coverage.',
+        'Compare OpenAdapt with RPA, AI computer-use agents, and browser recorders on repeated-work economics, verification boundaries, deployment, and maturity.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -77,13 +77,13 @@ export default function ComparePage() {
                 <title>How OpenAdapt compares to RPA, AI agents, and browser recorders | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="An automation can save to the wrong patient's chart and still show a green checkmark. We measured how often that happens, starting with our own tool. Compare OpenAdapt with RPA, computer-use agents, and browser recorders on safety, cost, maturity, and explicit data boundaries."
+                    content="Compare OpenAdapt with RPA, AI computer-use agents, and browser recorders on repeated-work economics, verification boundaries, deployment, and maturity."
                 />
                 <link rel="canonical" href="https://openadapt.ai/compare" />
                 <meta property="og:title" content="How OpenAdapt compares | OpenAdapt" />
                 <meta
                     property="og:description"
-                    content="Automation tools can save to the wrong record and report success. We spent seven rounds trying to make our own tool do it, fixed every hole, and published what's left. Compare on safety first, then cost and coverage."
+                    content="Where governed compiled replay fits: repeated-work economics, verification boundaries, deployment, and current substrate maturity."
                 />
                 <meta property="og:url" content="https://openadapt.ai/compare" />
                 <script
@@ -102,13 +102,10 @@ export default function ComparePage() {
                     How OpenAdapt compares
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    The worst thing an automation can do is quietly the wrong
-                    thing. It saves your note to the wrong patient&#39;s chart,
-                    shows a green checkmark, and moves on. Most tools confirm
-                    that something was saved. Almost none confirm{' '}
-                    <em>whose</em> record it saved to. That is the risk we think
-                    should decide this comparison, so we measured it, on our own
-                    tool first.
+                    Repeated work needs more than a successful click. Operators
+                    need predictable execution cost, a clear record of what ran,
+                    and a visible halt when the workflow cannot verify its target
+                    or effect.
                 </p>
                 <p className="mt-4 max-w-3xl text-base text-ink-2 md:text-lg">
                     There are three common ways to automate desktop work:
@@ -124,51 +121,46 @@ export default function ComparePage() {
                 </p>
 
                 <div className="mt-10 rounded-2xl border-2 border-ink bg-panel p-6 md:p-8">
-                    <p className="eyebrow">The measurement</p>
+                    <p className="eyebrow">Operational risk</p>
                     <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                        How often does it act on the wrong record?
+                        Verify the record before the write.
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        We spent seven rounds trying to make our own tool save to
-                        the wrong patient, and fixed every hole we found. The
-                        answer that held: confirm identity on the name and date of
-                        birth (which survive a misread), and stop and write nothing
-                        when only a look-alike ID separates two records.
+                        For a consequential workflow, confirming that a button
+                        responded is not enough. OpenAdapt can require identity and
+                        effect evidence before continuing, then halt for an operator
+                        when that evidence is ambiguous.
                     </p>
                     <div className="mt-5 grid gap-6 sm:grid-cols-2">
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                name + DOB
+                                Verify intent
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                it confirms the record by name and date of birth,
-                                which a single misread character can&#39;t quietly
-                                change
+                                require configured evidence that the workflow is
+                                acting on the intended record
                             </p>
                         </div>
                         <div>
                             <p className="font-display text-2xl font-semibold text-ink">
-                                it stops
+                                Refuse ambiguity
                             </p>
                             <p className="mt-1 text-sm text-ink-2">
-                                when two records differ only by a look-alike ID,
-                                it writes nothing and asks for a human, rather
-                                than risk the wrong one
+                                stop and preserve evidence instead of treating an
+                                uncertain target as a successful action
                             </p>
                         </div>
                     </div>
                     <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Honest exception, published against ourselves: inside a
-                        browser, an identity-keyed competitor is just as safe. We
-                        pull ahead where there is no browser to lean on, which is
-                        most of this work: desktop EMRs, Citrix, and Windows.
+                        Stable browser identity controls can provide the same kind
+                        of protection. OpenAdapt&apos;s current public evidence is
+                        strongest on the browser path; Windows is Experimental and
+                        RDP/Citrix remain Research.
                     </p>
                     <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                        &ldquo;Zero wrong actions&rdquo; is a target, not a boast;
-                        every round started from a version we thought was correct.
-                        What we promise is measured, disclosed, and fail-closed,
-                        with the open problems written down (display-scale drift,
-                        icon-only targets, small agent samples).
+                        Verification is only as strong as its configured identity,
+                        effect, and policy coverage. This reduces named failure
+                        modes; it does not prove zero wrong actions.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
                         <a
@@ -217,90 +209,58 @@ export default function ComparePage() {
                     boundary.
                 </p>
 
-                <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
-                    <p className="eyebrow">What repetition costs</p>
+                <div
+                    id="benchmark-evidence"
+                    className="mt-6 rounded-2xl border border-hairline bg-panel p-6 md:p-8"
+                >
+                    <p className="eyebrow">Measured evidence</p>
                     <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink">
-                        Cost, on a test you can run yourself
+                        Repeated work should not pay an agent to rethink the same task.
                     </h3>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        MockMed ships with openadapt-flow, so you can rerun this:
-                        100 compiled replays vs 20 agent runs, one independent
-                        check. Both finish every run. The agent doesn&#39;t fail
-                        here; it just costs money and time on every run where the
-                        compiled script costs neither.
+                        In a bounded browser benchmark, both approaches completed
+                        the measured workflow. Compiled replay was faster and used
+                        no model calls. This supports a cost-and-latency claim for
+                        repeated work on this task, not a broader reliability claim.
                     </p>
                     <BenchmarkCharts
                         dataset={benchmark.mockmed}
-                        runs={500}
                     />
-                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                        {benchmark.mockmed.caveats} Agent cost is computed at the
-                        model&#39;s list price ($3/$15 per Mtok in/out); an
-                        introductory $2/$10 rate applies through 2026-08-31, which
-                        lowers the agent figure further.
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        On the same setup under injected UI drift, a hybrid
-                        mode (compiled replay first, agent fallback only on a
-                        detected halt) matched agent reliability (20/20) at
-                        roughly one-eighth the agent&#39;s cost per successful
-                        run. Details and caveats (synthetic detected-halt
-                        drift, assumed drift mix) in the repo.
-                    </p>
                     <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
                         <a
                             href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/BENCHMARK.md"
                             className="inline-block text-sm text-accent hover:underline"
                         >
-                            MockMed methodology and raw data
+                            Review scope, samples, pricing basis, caveats, and raw results
                         </a>
                         <a
                             href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/hybrid/BENCHMARK.md"
                             className="inline-block text-sm text-accent hover:underline"
                         >
-                            Hybrid methodology and caveats
+                            Review drift and fallback evidence
                         </a>
                     </div>
                 </div>
 
                 <div className="mt-4 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                     <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
-                        The same result on a real EMR
+                        A bounded field cross-check
                     </h3>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        The same head-to-head on a real app: an 18-step
-                        add-patient-note workflow on the official OpenEMR public
-                        demo, one independent OCR check, a distinct note per run.
-                        Both succeeded every time (20/20 compiled, 10/10 agent).
-                        The demo resets daily, so treat this as a field
-                        cross-check on cost and latency, not a reproducible number
-                        or a reliability claim.
+                        We repeated the comparison against the public OpenEMR demo.
+                        Both approaches completed the measured workflow, while
+                        compiled replay showed lower median latency and no model
+                        calls. This is a cost-and-latency cross-check only. It does
+                        not establish production EMR reliability, safety, or readiness.
                     </p>
                     <BenchmarkCharts
                         dataset={benchmark.openemr}
-                        runs={500}
                     />
-                    <p className="mt-5 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Run the task 500 times and the ratios compound: about
-                        $275 and ten hours of wall clock through the agent,
-                        versus $0 and about five and a half hours compiled,
-                        with every action auditable against the demonstrated
-                        script. The compiled arm&#39;s price of entry is a
-                        one-minute human demonstration; the agent needs only a
-                        prompt.
-                    </p>
-                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                        Caveats: a shared demo that resets daily (a field result,
-                        not CI-reproducible); the agent arm is N=10, so its 100%
-                        has wide error bars; success is the arm-independent check
-                        for both, never self-report; pinned to claude-sonnet-5 on
-                        2026-07-08. Full method and raw data below.
-                    </p>
                     <a
                         href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/openemr/BENCHMARK.md"
                         className="mt-3 inline-block text-sm text-accent hover:underline"
                     >
-                        OpenEMR methodology and raw data
+                        Review scope, samples, demo limitations, pricing basis, and raw results
                     </a>
                 </div>
 
@@ -308,13 +268,12 @@ export default function ComparePage() {
                     Versus browser recording tools
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                    Skyvern and browser-use record or drive workflows inside the
-                    browser via DOM selectors or model inference. If your whole
-                    workflow lives in a browser tab, they&#39;re worth a look. The
-                    structural limit: they can&#39;t reach the desktop EMR, the
-                    Windows loan system, or anything over Citrix. OpenAdapt works
-                    from pixels and inputs, so the same approach extends to desktop
-                    and VDI/RDP (adapters in progress), all on your infrastructure.
+                    Browser-first tools use DOM selectors or model inference and
+                    can be a strong fit when the whole workflow stays in a tab.
+                    OpenAdapt adds compiled replay, evidence-backed verification,
+                    and an execution model intended to span structured and visual
+                    targets. The current launch is the browser path; desktop is
+                    Experimental and VDI/RDP remains Research.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
