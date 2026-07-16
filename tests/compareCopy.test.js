@@ -11,7 +11,7 @@ test('comparison page leads with buyer fit and operating outcomes', () => {
     ;[
         'Choose repeatable automation for work that repeats.',
         'Predictable repeat economics',
-        'Review change once',
+        'Review reusable change',
         'Know when it stopped',
         'Control the runtime boundary',
         'Choose by the operating model you need.',

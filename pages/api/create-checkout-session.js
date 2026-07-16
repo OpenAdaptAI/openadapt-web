@@ -33,6 +33,9 @@
 
 const { stripeModeMatches } = require('../../lib/stripeMode')
 const { hostedOfferFromPrice } = require('../../lib/hostedOfferContract')
+const {
+    isHostedCheckoutQualified,
+} = require('../../lib/hostedCheckoutQualification')
 
 // Read env at request time (not module load) so a missing key can't break
 // the build. The site is a static-ish Next.js app; these routes only run
@@ -94,10 +97,13 @@ export default async function handler(req, res) {
 
     const { secretKey, priceId, expectedMode } = getConfig()
 
-    // Guard: without keys the endpoint is a clean 503, not a 500 crash.
+    // Credentials are necessary but not sufficient. An operator sets the
+    // server-only qualification flag only after the real production checkout
+    // and return path have passed launch review.
     const cloudAppUrl = getCloudAppUrl()
     const baseUrl = getBaseUrl()
     if (
+        !isHostedCheckoutQualified() ||
         !secretKey ||
         !priceId ||
         !cloudAppUrl ||

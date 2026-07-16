@@ -28,7 +28,7 @@ export default function HealthcarePage() {
                     Compile one demonstrated workflow for governed replay.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    Record a repeated browser workflow once and OpenAdapt compiles
+                    Demonstrate a bounded browser workflow and OpenAdapt compiles
                     it into a local program. Healthy runs make no model calls. When
                     the interface changes, OpenAdapt can re-resolve from evidence,
                     propose a reviewable repair, or halt for an operator.

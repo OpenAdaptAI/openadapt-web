@@ -21,11 +21,11 @@ export const faqItems = [
     },
     {
         question: 'Is OpenAdapt free?',
-        answer: 'The engine is MIT-licensed and free to use or modify. Hosted browser execution is a paid subscription. Stripe Checkout shows the configured price and billing period before payment. Regulated and customer-controlled deployments are scoped separately because the substrate, data boundary, verifier, and operating responsibilities differ.',
+        answer: 'The engine is MIT-licensed and free to use or modify. When production checkout is qualified and explicitly enabled, hosted browser execution is a paid subscription whose price and billing period are confirmed in Stripe. Regulated and customer-controlled deployments are scoped separately because the substrate, data boundary, verifier, and operating responsibilities differ.',
     },
     {
         question: 'Is managed hosted execution available?',
-        answer: 'Managed execution is designed for approved browser workflows. Checkout creates a subscription and routes you into account onboarding, while the hosted control plane manages runs, reports, usage, and governed workflow updates.',
+        answer: 'Managed execution is scoped to approved browser workflows. The hosted control plane manages runs, reports, usage, and governed workflow updates. Direct subscription activation remains gated until the live checkout and account-return path complete launch qualification; workflow qualification is available through the team.',
     },
     {
         question: 'What software does OpenAdapt work with?',

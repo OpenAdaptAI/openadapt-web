@@ -16,7 +16,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for GUI automation: record a workflow once, compile it into deterministic replay, and resolve, review, or refuse interface drift under configured verification.',
+        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for GUI automation: compile a bounded workflow demonstration into deterministic replay, and resolve, review, or refuse interface drift under configured verification.',
     foundingDate: '2023',
     address: {
         '@type': 'PostalAddress',
@@ -96,7 +96,7 @@ export default function AboutPage() {
                     may re-resolve the target; optional AI may propose a repair,
                     and configured verification can halt instead. Repairs are
                     governed, reviewable diffs rather than an unconstrained
-                    promise of self-healing.
+                    promise of autonomous repair.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">

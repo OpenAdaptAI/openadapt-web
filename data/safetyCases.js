@@ -259,7 +259,7 @@ export const LIMITS = [
     },
     {
         title: 'It reads the screen, not the database',
-        body: "A fault-model study drove 90 replays through a real save boundary and found that vision checks silently mishandle 5 of 7 transactional failure modes. A double submit writes a second record behind a clean-looking success; an optimistic UI update the backend later rejects shows success over an empty database; a partial save drops a field. None of these looks like a drifting screen, so self-healing can't catch them, and the screen showed success. Closing this needs a read against the system of record plus an at-most-once guard, neither of which a vision-only replay can express.",
+        body: "A fault-model study drove 90 replays through a real save boundary and found that vision checks silently mishandle 5 of 7 transactional failure modes. A double submit writes a second record behind a clean-looking success; an optimistic UI update the backend later rejects shows success over an empty database; a partial save drops a field. None of these looks like a drifting screen, so UI re-resolution cannot catch them, and the screen showed success. Closing this needs a read against the system of record plus an at-most-once guard, neither of which a vision-only replay can express.",
     },
     {
         title: 'On pure-pixel screens, refusing a look-alike also refuses the right patient',

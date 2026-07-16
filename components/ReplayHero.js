@@ -4,7 +4,7 @@ import styles from './ReplayHero.module.css'
 
 /**
  * ReplayHero — the hero visual is the product: a compiled workflow replaying
- * as a live run report. Steps resolve deterministically in milliseconds, one
+ * as a live run report. Steps resolve through the deterministic ladder, one
  * hits UI drift and re-resolves deterministically, and the run closes with
  * zero model calls.
  * Pure DOM + CSS (no video, no canvas); loops by remounting; static final

@@ -7,7 +7,7 @@ const steps = [
         number: '1.0',
         name: 'Record',
         description:
-            'Do the task once. OpenAdapt watches your screen and your clicks.',
+            'Demonstrate one bounded instance. OpenAdapt captures the browser evidence and input events needed to compile it.',
         // Default to the live OpenEMR footage — the strongest wow.
         clipKey: 'record_openemr',
     },

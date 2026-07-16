@@ -54,11 +54,18 @@ describe('public product truth', () => {
         cy.get('#product-status').within(() => {
             cy.contains('One governed workflow, end to end').should('be.visible')
             cy.contains('Capture the workflow').should('be.visible')
-            cy.contains('Run deterministically').should('be.visible')
+            cy.contains('Run through the governed gate').should('be.visible')
             cy.contains('Managed browser execution').should('be.visible')
             cy.contains('Customer-controlled deployment').should('be.visible')
+            cy.contains('Execution substrate evidence').should('be.visible')
+            cy.contains('Browser / Playwright').should('be.visible')
+            cy.contains('Windows UIA').should('be.visible')
+            cy.contains('Native macOS').should('be.visible')
+            cy.contains('RDP / Citrix').should('be.visible')
+            cy.contains('Experimental').should('be.visible')
+            cy.contains('Research').should('be.visible')
             cy.contains('Research spike').should('not.exist')
-            cy.contains('Experimental').should('not.exist')
+            cy.contains('Product maturity').should('not.exist')
         })
         cy.get('#pricing').within(() => {
             cy.contains('Run it yourself or launch with us').should('be.visible')
@@ -193,6 +200,10 @@ describe('public product truth', () => {
             .and('not.contain.text', 'Encompass')
         cy.contains('customer-controlled deployment').should('be.visible')
         cy.contains('experimental').should('not.exist')
+        cy.get('[data-testid="lending-evidence-placeholder"]')
+            .should('be.visible')
+            .and('contain.text', 'awaiting oracle verification')
+        cy.get('img[alt*="OpenEMR"]').should('not.exist')
 
         cy.visit('/safety')
         cy.get('h1').should('contain.text', 'needs verified identity')
@@ -251,6 +262,7 @@ describe('public product truth', () => {
             expect(source).to.include('STRIPE_SECRET_KEY=')
             expect(source).to.include('STRIPE_PRICE_ID=')
             expect(source).to.include('STRIPE_EXPECTED_MODE=live')
+            expect(source).to.include('HOSTED_CHECKOUT_QUALIFIED=false')
             expect(source).to.include('rk_live_')
             expect(source).to.include(
                 'NEXT_PUBLIC_SITE_URL=https://openadapt.ai'
@@ -281,17 +293,25 @@ describe('public product truth', () => {
                 source.indexOf('stripe.checkout.sessions.create')
             )
             expect(source).to.include('checkout_offer_unverified')
+            expect(source).to.include('isHostedCheckoutQualified')
         })
     })
 
     it('publishes the managed subscription and data-boundary terms', () => {
         cy.visit('/terms-of-service')
         cy.contains('Effective July 16, 2026').should('be.visible')
+        cy.contains('Launch legal-review requirement').should('be.visible')
         cy.contains('Subscription, Renewal, and Usage').should('be.visible')
         cy.contains('renews automatically').should('be.visible')
         cy.contains('Cancellation and Refunds').should('be.visible')
         cy.contains('charges already paid are non-refundable').should('be.visible')
         cy.contains('Artifact and Runtime Data Boundaries').should('be.visible')
+        cy.contains('Managed browser recording is a different path').should(
+            'be.visible'
+        )
+        cy.contains('no fixed retention, backup-deletion, or recovery').should(
+            'be.visible'
+        )
         cy.contains('self-serve hosted subscription does not include a BAA').should(
             'be.visible'
         )
@@ -331,11 +351,17 @@ describe('security boundary', () => {
 
     it('states the same boundary in privacy and hosted onboarding', () => {
         cy.visit('/privacy-policy')
-        cy.contains('A compiled bundle is not de-identified or PHI-free').should(
+        cy.contains('Launch legal-review requirement').should('be.visible')
+        cy.contains('Compilation does not de-identify them').should(
             'be.visible'
         )
-        cy.contains('binds approval to').should('be.visible')
-        cy.contains('trusted execution boundary').should('be.visible')
+        cy.contains('approved by exact archive hash').should('be.visible')
+        cy.contains('Managed browser recording is separate').should('be.visible')
+        cy.contains('Current Service Providers').should('be.visible')
+        cy.contains('Healthy deterministic replay makes no model calls').should(
+            'be.visible'
+        )
+        cy.contains('customer-controlled boundary').should('be.visible')
 
         cy.visit('/hosted/welcome')
         cy.contains('Continue hosted onboarding').should('be.visible')

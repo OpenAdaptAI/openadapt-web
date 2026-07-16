@@ -10,7 +10,7 @@ import styles from './MastHead.module.css'
 const CarouselSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselItems = [
-        "Record once. Replay deterministically and locally.",
+        "Demonstrate a bounded workflow. Replay deterministically and locally.",
         "Healthy runs make zero model calls.",
         "Drift is resolved, reviewed, or refused.",
         "Choose local, hosted, or customer-controlled execution.",
@@ -96,11 +96,12 @@ export default function Home({ githubStats }) {
                                 deterministic workflows.
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                Record a repeated browser task once. Replay it
-                                locally with no model calls on healthy runs. When
-                                the interface changes, OpenAdapt re-resolves from
-                                evidence, proposes a reviewable repair, or stops
-                                for an operator.
+                                Demonstrate a bounded, repeated browser task.
+                                Compile it into a locally executable workflow
+                                whose healthy replay makes no model calls. When the
+                                interface changes, OpenAdapt re-resolves from
+                                retained evidence, proposes a governed repair, or
+                                stops for an operator.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
                                 Start with the supported browser path, then run
