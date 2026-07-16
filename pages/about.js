@@ -171,7 +171,7 @@ export default function AboutPage() {
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
                         If you&#39;ve got a repetitive desktop workflow, bring
-                        it to a 15-minute call and we&#39;ll tell you whether
+                        it to a 30-minute call and we&#39;ll tell you whether
                         compiling it makes sense.
                     </p>
                     <Link

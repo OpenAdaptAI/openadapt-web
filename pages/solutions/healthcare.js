@@ -126,7 +126,7 @@ export default function HealthcarePage() {
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
                         Bring your highest-volume retyping task to a
-                        15-minute call and we&#39;ll map what compiling it
+                        30-minute call and we&#39;ll map what compiling it
                         would look like in your clinic.
                     </p>
                     <Link
