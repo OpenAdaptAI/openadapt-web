@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
+const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
+
 /*
  * Three delivery paths. The hosted amount is retrieved from Stripe at build
  * time rather than duplicated in site code; Checkout confirms the same
@@ -88,6 +90,8 @@ function HostedCheckoutButton() {
 }
 
 export default function Pricing({ hostedOffer = null }) {
+    const runCapLabel = monthlyRunCapLabel(hostedOffer?.monthlyRunCap)
+
     return (
         <section
             id="pricing"
@@ -160,6 +164,14 @@ export default function Pricing({ hostedOffer = null }) {
                         {hostedOffer?.product && (
                             <p className="mt-1 font-mono text-xs text-ink-3">
                                 {hostedOffer.product}
+                            </p>
+                        )}
+                        {runCapLabel && (
+                            <p
+                                className="mt-2 text-sm font-semibold text-ink"
+                                data-testid="hosted-run-cap"
+                            >
+                                {runCapLabel}
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
