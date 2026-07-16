@@ -1,5 +1,10 @@
-const RELEASES_API =
-    'https://api.github.com/repos/OpenAdaptAI/openadapt-desktop/releases?per_page=20'
+import {
+    assetForPlatform,
+    DESKTOP_PLATFORMS,
+    detectDesktopPlatform,
+    releaseSigningState,
+    selectExperimentalDesktopRelease,
+} from '../../utils/desktopRelease'
 
 function asset(name, size = 1048576) {
     return {
@@ -28,56 +33,67 @@ function experimentalRelease(overrides = {}) {
     }
 }
 
-describe('desktop downloads', () => {
-    it('does not imply installers exist before a complete prerelease is public', () => {
-        cy.intercept('GET', RELEASES_API, {
-            body: [
-                {
-                    draft: false,
-                    prerelease: false,
-                    tag_name: 'v0.3.2',
-                    assets: [asset('openadapt_desktop-0.3.2-py3-none-any.whl')],
-                },
-            ],
-        })
-        cy.visit('/download')
-
-        cy.contains('Experimental desktop')
-        cy.contains('No public desktop installer yet')
-        cy.contains('Install the working CLI')
-            .should('have.attr', 'href')
-            .and('equal', 'https://docs.openadapt.ai')
-        cy.contains('All downloads').should('not.exist')
-        cy.contains('First launch').should('not.exist')
-    })
-
-    it('selects a complete desktop-v Experimental prerelease and exact assets', () => {
+describe('desktop release contract', () => {
+    it('ignores legacy, draft, and incomplete releases', () => {
+        const legacy = {
+            draft: false,
+            prerelease: false,
+            tag_name: 'v0.3.2',
+            assets: [asset('openadapt_desktop-0.3.2-py3-none-any.whl')],
+        }
+        const draft = experimentalRelease({ draft: true })
         const incomplete = experimentalRelease({
             tag_name: 'desktop-v0.2.0',
             assets: [asset('unrelated.msi')],
         })
-        cy.intercept('GET', RELEASES_API, {
-            body: [incomplete, experimentalRelease()],
-        })
-        cy.visit('/download')
 
-        cy.contains('Experimental prerelease desktop-v0.1.0')
-        cy.contains('All downloads')
-        cy.contains('Windows (x64)')
-            .parents('.rounded-xl')
-            .contains('Download')
-            .should(
-                'have.attr',
-                'href',
-                'https://downloads.example/OpenAdapt-Desktop-Experimental-v0.1.0-windows-x86_64-unsigned.msi'
-            )
-        cy.contains('macOS (Apple Silicon)')
-        cy.contains('macOS (Intel)')
-        cy.contains('Linux (x64)')
-        cy.contains('The DMGs are ad-hoc signed')
-        cy.contains('The Windows installers are not yet Authenticode signed')
-        cy.contains('Download SHA256SUMS')
-            .should('have.attr', 'href')
-            .and('equal', 'https://downloads.example/SHA256SUMS')
+        expect(
+            selectExperimentalDesktopRelease([legacy, draft, incomplete])
+        ).to.equal(null)
+    })
+
+    it('selects the newest complete desktop-v Experimental prerelease', () => {
+        const incomplete = experimentalRelease({
+            tag_name: 'desktop-v0.2.0',
+            assets: [asset('unrelated.msi')],
+        })
+        const complete = experimentalRelease()
+        const selected = selectExperimentalDesktopRelease([
+            incomplete,
+            complete,
+        ])
+
+        expect(selected).to.equal(complete)
+        const windows = DESKTOP_PLATFORMS.find(
+            (platform) => platform.id === 'windows'
+        )
+        expect(assetForPlatform(selected.assets, windows).name).to.equal(
+            'OpenAdapt-Desktop-Experimental-v0.1.0-windows-x86_64-unsigned.msi'
+        )
+        expect(releaseSigningState(selected.assets)).to.deep.equal({
+            macosNotarized: false,
+            windowsSigned: false,
+        })
+    })
+
+    it('does not guess unsupported or ambiguous architectures', () => {
+        expect(
+            detectDesktopPlatform({
+                userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X)',
+                platform: 'MacIntel',
+            })
+        ).to.equal(null)
+        expect(
+            detectDesktopPlatform({
+                userAgent: 'Mozilla/5.0 (X11; Linux aarch64)',
+                platform: 'Linux armv8l',
+            })
+        ).to.equal(null)
+        expect(
+            detectDesktopPlatform({
+                userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                platform: 'Win32',
+            })
+        ).to.equal('windows')
     })
 })
