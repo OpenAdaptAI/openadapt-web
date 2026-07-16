@@ -7,6 +7,13 @@ configured, and Checkout confirms the same price and billing period before the
 customer pays. If price retrieval is unavailable, the page says that the offer
 is configured in Stripe rather than presenting a stale fallback amount.
 
+The website retrieves the Price with its Product expanded. Set Product metadata
+`monthly_run_cap=<positive integer>` to publish the included workflow-run
+allowance beside the retrieved price. The website formats that exact value and
+omits the allowance when the metadata is missing or malformed; it has no
+hard-coded cap fallback. Keep `monthly_run_cap` equal to Cloud's
+`PLAN_MONTHLY_RUN_CAP` so the displayed offer and enforced entitlement agree.
+
 ## Customer flow
 
 1. The Hosted card calls `POST /api/create-checkout-session`.
@@ -101,6 +108,8 @@ execution boundary.
 - [ ] Configure Cloud against the same live Stripe account and mode, including
       its signed webhook endpoint and signing secret.
 - [ ] Confirm Stripe displays the intended amount and billing period.
+- [ ] Confirm Product metadata `monthly_run_cap` is a canonical positive integer
+      equal to Cloud `PLAN_MONTHLY_RUN_CAP`, and that the website displays it.
 - [ ] Configure the production cloud app URL and site URL.
 - [ ] Verify checkout -> sign-in -> organization/subscription linkage.
 - [ ] Verify cancellation, portal, webhook replay/idempotency, and entitlement
