@@ -89,7 +89,7 @@ export default function ContactBookingSection({
             <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                 <p className="eyebrow mb-2">Workflow qualification</p>
                 <h2 className="font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Book a 15-minute automation fit call
+                    Book a 30-minute automation fit call
                 </h2>
                 <p className="mt-3 text-sm text-ink-2 md:text-base">
                     Tell us the substrate, repetition, consequence of error,

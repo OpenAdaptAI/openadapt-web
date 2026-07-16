@@ -17,6 +17,26 @@ describe('public product truth', () => {
         cy.get('a[href="/security"]').should('exist')
     })
 
+    it('uses the canonical 30-minute Cal.com booking event', () => {
+        cy.visit('/book')
+        cy.get('h1').should(
+            'contain.text',
+            'Book a 30-minute automation fit call'
+        )
+        cy.get('iframe[title="Book a call with OpenAdapt"]')
+            .should('have.attr', 'src')
+            .and(
+                'equal',
+                'https://cal.com/richard-abrich/30min?overlayCalendar=true'
+            )
+        cy.contains('this direct booking link')
+            .should('have.attr', 'href')
+            .and(
+                'equal',
+                'https://cal.com/richard-abrich/30min?overlayCalendar=true'
+            )
+    })
+
     it('states repair, maturity, and commercial boundaries', () => {
         cy.contains('What “repair” means, and where it stops').should('be.visible')
         cy.contains('Unsupported drift').should('be.visible')
