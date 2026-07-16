@@ -34,7 +34,7 @@ test('GitHub proof uses the canonical repository and a verified fallback', () =>
     const footer = read('components/Footer.js')
 
     assert.match(home, /GITHUB_REPOSITORY = 'OpenAdaptAI\/OpenAdapt'/)
-    assert.match(home, /GITHUB_STATS_FALLBACK = \{ stars: 1645, forks: 258 \}/)
+    assert.match(home, /GITHUB_STATS_FALLBACK = \{ stars: 1646, forks: 258 \}/)
     assert.match(masthead, /https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt/)
     assert.match(footer, /href="https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt"/)
     assert.match(footer, /href="https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt\/fork"/)
@@ -44,6 +44,8 @@ test('GitHub proof uses the canonical repository and a verified fallback', () =>
 test('launch surfaces lead with capabilities instead of temporary gap labels', () => {
     const product = read('components/ProductStatus.js')
     const pricing = read('components/Pricing.js')
+    const llms = read('public/llms.txt')
+    const readme = read('README.md')
 
     for (const label of [
         'Research spike',
@@ -56,6 +58,9 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
     assert.match(product, /Customer-controlled deployment/)
     assert.doesNotMatch(pricing, /Offer unavailable|Hosted checkout unavailable/)
     assert.match(pricing, /Start with our team/)
+    assert.doesNotMatch(llms, /Product Maturity|launching now|not implied/i)
+    assert.match(llms, /How It Runs/)
+    assert.doesNotMatch(readme, /Maturity matrix/i)
 })
 
 test('sitemap includes launch, download, and trust surfaces', () => {

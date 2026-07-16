@@ -4,19 +4,19 @@
 
 ## Documentation
 - [Getting Started](https://docs.openadapt.ai): Installation, quick start, and CLI reference
-- [Canonical Engine](https://github.com/OpenAdaptAI/openadapt-flow): Source, quickstart, maturity boundaries, benchmarks, and known limits
+- [Canonical Engine](https://github.com/OpenAdaptAI/openadapt-flow): Source, quickstart, operating boundaries, benchmarks, and known limits
 
 ## Core Concepts
 - [How It Works](https://openadapt.ai/#how-it-works): Record, compile, replay, resolve or halt, then verify and report
 - [Compare Approaches](https://openadapt.ai/compare): When to choose OpenAdapt, traditional RPA, computer-use agents, browser recorders, or a direct API
-- [Product Maturity](https://openadapt.ai/#product-status): Browser path, safety controls, desktop backends, hosted execution, and enterprise deployment status
+- [How It Runs](https://openadapt.ai/#product-status): Governed workflow lifecycle and local, managed browser, or customer-controlled execution
 - [FAQ](https://openadapt.ai/#faq): How OpenAdapt differs from RPA tools and AI computer-use agents, data locality, licensing
 - [Security and Data Boundaries](https://openadapt.ai/security): Screenshot, model, secret, report, certification, and commercial deployment boundaries
 - [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
 
 ## Use Cases
-- [Healthcare Clinics](https://openadapt.ai/solutions/healthcare): Repeated browser-accessible intake, scheduling, billing, and EMR data-entry workflows; native desktop and VDI paths are not implied
-- [Mortgage & Lending Ops](https://openadapt.ai/solutions/lending): Repeated borrower-data entry across approved browser queues, forms, portals, and LOS pages; native desktop LOS support is not implied
+- [Healthcare Clinics](https://openadapt.ai/solutions/healthcare): Repeated browser-accessible intake, scheduling, billing, and EMR data-entry workflows with explicit identity, effect, and data-boundary checks
+- [Mortgage & Lending Ops](https://openadapt.ai/solutions/lending): Repeated borrower-data entry across approved browser queues, forms, portals, and LOS pages with governed replay and reporting
 - [Other Regulated Back-Offices](https://openadapt.ai/#industries): Demonstrated browser workflows that require repeatable execution, review, and explicit data boundaries
 
 ## Source Code
@@ -35,10 +35,10 @@
 
 ## Commercial Status
 - The open-source browser engine is available now.
-- Managed hosted browser execution is launching now through configured Stripe Checkout and account onboarding.
+- Managed browser subscriptions use verified Stripe Checkout and account onboarding.
 - Stripe Checkout presents the verified launch price and billing period; Web refuses checkout if the configured Stripe offer differs from the published launch contract.
 - Customer-controlled regulated deployments are scoped to the actual substrate, runtime boundary, verifier, and operating responsibilities.
-- Hosted browser checkout does not imply native desktop, RDP/VDI, or Citrix support, SOC 2 attestation, a standing BAA program, or a production SLA.
+- Hosted subscriptions cover managed browser execution; customer-controlled regulated deployments and service terms are qualified separately for the workflow boundary.
 
 ## Hosted Data Boundary
 - Compiled bundles can contain screenshots, typed values, and literal identity evidence. Compilation does not make a bundle PHI-free.

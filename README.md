@@ -9,7 +9,7 @@ This is the Next.js-based landing page for OpenAdapt, featuring:
 
 - **Canonical product truth** centred on deterministic compiled replay
 - **Audience paths** for developers, automation teams, and regulated enterprises
-- **Maturity matrix** separating the browser launch path from experimental and research backends
+- **Execution paths** for local, managed browser, and customer-controlled operation
 - **Industries grid** showing use cases across different sectors
 - **Developer resources** and contribution information
 - **Email signup** for product and launch updates
