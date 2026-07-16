@@ -14,14 +14,6 @@ export default function Footer() {
     const bookHref = isHome ? '#book' : '/book'
     const contactHref = isHome ? '#book' : '/contact'
 
-    // Function to handle the reveal of the email address
-    const revealEmail = () => {
-        // Construct the email address and open in mail client
-        const user = 'hello'
-        const domain = 'openadapt.ai'
-        window.location.href = `mailto:${user}@${domain}`
-    }
-
     return (
         <div className={styles.footerContainer}>
             <footer className="grid grid-flow-row auto-rows-max gap-3 max-w-4xl mx-auto">
@@ -88,7 +80,10 @@ export default function Footer() {
                         <a href={contactHref} className={styles.link}>
                             Contact
                         </a>
-                        <a onClick={revealEmail} className={styles.link}>
+                        <a
+                            href="mailto:hello@openadapt.ai"
+                            className={styles.link}
+                        >
                             Email
                         </a>
                     </div>
