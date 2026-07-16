@@ -91,10 +91,36 @@ test('public slogans scope demonstrated workflows and governed repair', () => {
     assert.match(sources, /governed repair/i)
 })
 
+test('buyer-fit section leads with infrastructure operators, not vertical claims', () => {
+    const industries = read('components/IndustriesGrid.js')
+
+    for (const buyer of [
+        'Automation teams & BPO operators',
+        'RCM & vertical-software vendors',
+        'Regulated enterprise operations',
+    ]) {
+        assert.match(industries, new RegExp(buyer.replace('&', '\\&')))
+    }
+    assert.match(industries, /structured inputs/)
+    assert.match(industries, /existing\s+business logic/)
+    assert.match(industries, /high repeated volume/)
+    assert.match(industries, /UI-only last-mile gap/)
+    assert.match(industries, /independent (effect )?source of truth/)
+    assert.match(industries, /Healthcare workflow reference/)
+    assert.match(industries, /Lending operations reference/)
+    assert.doesNotMatch(industries, /title: 'Healthcare clinics'/)
+    assert.doesNotMatch(industries, /title: 'Mortgage & lending ops'/)
+})
+
 test('lending page does not reuse healthcare media as lending evidence', () => {
     const lending = read('pages/solutions/lending.js')
 
     assert.doesNotMatch(lending, /import HowItWorks/)
+    assert.match(lending, /Lending Operations Reference/)
+    assert.match(lending, /Prefer supported APIs/)
+    assert.match(lending, /remaining UI-only browser gap/)
+    assert.match(lending, /not evidence of[\s\S]*production lending integration/)
+    assert.doesNotMatch(lending, /mortgage|Encompass|\bLOS\b/i)
     assert.match(lending, /lending-evidence-placeholder/)
     assert.match(lending, /do not reuse healthcare or OpenEMR footage/i)
     assert.match(lending, /awaiting oracle verification/i)
