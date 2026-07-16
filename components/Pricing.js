@@ -141,10 +141,10 @@ export default function Pricing({ hostedOffer = null }) {
                         </p>
                         <FeatureList
                             items={[
-                                'Browser record → compile → replay, fully local',
+                                'Browser artifacts stay local unless you explicitly push',
                                 'Deterministic re-resolution with auditable diffs',
-                                'Lint, certify, reports, and refusal semantics',
-                                'The engine is MIT and always will be',
+                                'Policy certification, fail-closed run gate, and reports',
+                                'MIT-licensed engine and CLI',
                             ]}
                         />
                         <div className="mt-6 flex-grow" />
@@ -309,9 +309,10 @@ export default function Pricing({ hostedOffer = null }) {
                     </div>
                 </div>
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
-                    The hosted subscription price shown above comes directly
-                    from Stripe and is confirmed again at checkout. Regulated
-                    deployment and service terms are scoped separately.
+                    {hostedOfferAvailable
+                        ? 'The hosted subscription price shown above comes directly from Stripe and is confirmed again at checkout.'
+                        : 'Managed browser subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
+                    Regulated deployment and service terms are scoped separately.
                 </p>
             </div>
         </section>

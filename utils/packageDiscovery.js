@@ -83,8 +83,8 @@ async function fetchGitHubRepos() {
 // instead of requesting download data that will 404 upstream.
 // Last verified against pypi.org/pypi/<name>/json: 2026-07-13
 const FALLBACK_PACKAGES = [
-    { name: 'openadapt', description: 'Demonstration compiler for desktop automation: record once, replay deterministically, self-heal on drift', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
-    { name: 'openadapt-flow', description: 'Record a workflow once, compile it into a deterministic, self-healing, locally-run script', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt', description: 'Demonstration compiler for governed local automation: replay deterministically, repair or halt under drift', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
+    { name: 'openadapt-flow', description: 'Compile bounded demonstrations into deterministic local workflows with governed repair and refusal', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
     { name: 'openadapt-types', description: 'Canonical action and episode schemas shared across the ecosystem', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },
     { name: 'openadapt-agent', description: 'Production execution engine for OpenAdapt GUI automation agents', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: false },
     { name: 'openadapt-capture', description: 'GUI interaction capture with time-aligned media', stars: 0, language: 'Python', pushed_at: '', html_url: '', category: 'core', on_pypi: true },

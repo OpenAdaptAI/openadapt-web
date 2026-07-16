@@ -1,6 +1,6 @@
 # OpenAdapt.AI
 
-> Open-source governed compiler for repeated GUI work. Record a workflow once and OpenAdapt compiles it into deterministic local replay. Healthy runs make no model calls. Under UI drift it deterministically re-resolves, optionally proposes an AI-assisted repair, accepts human teaching, or halts when configured verification cannot establish a safe path. MIT licensed.
+> Open-source governed compiler for repeated GUI work. OpenAdapt compiles a bounded demonstration into deterministic local replay. Healthy runs make no model calls. Under UI drift it deterministically re-resolves from retained evidence, optionally proposes a governed repair, accepts human teaching, or halts when configured verification cannot establish a safe path. MIT licensed.
 
 ## Documentation
 - [Getting Started](https://docs.openadapt.ai): Installation, quick start, and CLI reference
@@ -35,8 +35,8 @@
 
 ## Commercial Status
 - The open-source browser engine is available now.
-- Managed browser subscriptions use verified Stripe Checkout and account onboarding.
-- Stripe Checkout presents the verified launch price and billing period; Web refuses checkout if the configured Stripe offer differs from the published launch contract.
+- Once the live payment and account-return path is qualified and explicitly enabled, managed browser subscriptions use verified Stripe Checkout and account onboarding.
+- Credentials alone cannot expose the launch price or create Checkout. Web also refuses a configured Stripe offer that differs from the launch contract.
 - Customer-controlled regulated deployments are scoped to the actual substrate, runtime boundary, verifier, and operating responsibilities.
 - Hosted subscriptions cover managed browser execution; customer-controlled regulated deployments and service terms are qualified separately for the workflow boundary.
 

@@ -8,17 +8,17 @@ const workflow = [
     {
         number: '01',
         title: 'Capture the workflow',
-        detail: 'Record a repeated browser task once, including the evidence OpenAdapt needs to identify targets and verify outcomes.',
+        detail: 'Demonstrate a bounded, repeated browser task, including the evidence OpenAdapt needs to identify targets and verify outcomes.',
     },
     {
         number: '02',
-        title: 'Compile and review',
-        detail: 'Turn the demonstration into an inspectable program with parameters, target evidence, postconditions, and policy checks.',
+        title: 'Compile and policy-check',
+        detail: 'Turn the demonstration into an inspectable program with parameters, target evidence, postconditions, and an explicit OpenAdapt certification policy.',
     },
     {
         number: '03',
-        title: 'Run deterministically',
-        detail: 'Replay healthy workflows without model calls. Each run produces structured history, evidence, and a clear result.',
+        title: 'Run through the governed gate',
+        detail: 'The fail-closed run gate rechecks the exact bundle and selected policy. Healthy replay makes no model calls and produces structured evidence.',
     },
     {
         number: '04',
@@ -46,6 +46,29 @@ const boundaries = [
         detail: 'Keep runtime data inside a qualified customer boundary when the workflow involves regulated data, private systems, or deployment-specific effect checks.',
         href: '/security',
         link: 'Review the security boundary',
+    },
+]
+
+const substrates = [
+    {
+        name: 'Browser / Playwright',
+        status: 'Beta',
+        scope: 'The reference record, compile, policy-check, replay, refusal, and report lifecycle runs in CI. Each target application still requires workflow qualification.',
+    },
+    {
+        name: 'Windows UIA',
+        status: 'Experimental',
+        scope: 'The protocol is mock-tested in CI and an opt-in Windows-on-ARM path has exercised UIA resolution. Broad third-party application support is not established.',
+    },
+    {
+        name: 'Native macOS',
+        status: 'Research',
+        scope: 'The browser path runs on macOS, but the engine does not ship a production-candidate native macOS accessibility backend.',
+    },
+    {
+        name: 'RDP / Citrix',
+        status: 'Research',
+        scope: 'Offline and mocked adapters exercise the backend seam. Real remote-display protocols, target applications, DPI, and latency remain unqualified.',
     },
 ]
 
@@ -88,6 +111,50 @@ export default function ProductStatus() {
                         </li>
                     ))}
                 </ol>
+
+                <div className="mt-8 overflow-hidden rounded-2xl border border-hairline bg-ground">
+                    <div className="overflow-x-auto">
+                        <table className="w-full min-w-[680px] border-collapse text-left text-sm">
+                            <caption className="border-b border-hairline px-5 py-4 text-left">
+                                <span className="font-display text-lg font-semibold text-ink">
+                                    Execution substrate evidence
+                                </span>
+                                <span className="mt-1 block text-xs leading-relaxed text-ink-3">
+                                    Lifecycle labels summarize public evidence; they are not an SLA,
+                                    compliance certification, or support promise for an arbitrary app.
+                                </span>
+                            </caption>
+                            <thead className="bg-panel font-mono text-[10px] uppercase tracking-[0.12em] text-ink-3">
+                                <tr>
+                                    <th className="border-b border-hairline px-5 py-3 font-medium">
+                                        Substrate
+                                    </th>
+                                    <th className="border-b border-hairline px-5 py-3 font-medium">
+                                        Evidence tier
+                                    </th>
+                                    <th className="border-b border-hairline px-5 py-3 font-medium">
+                                        Current scope
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {substrates.map((item) => (
+                                    <tr key={item.name} className="align-top">
+                                        <th className="border-b border-hairline px-5 py-4 font-display font-semibold text-ink">
+                                            {item.name}
+                                        </th>
+                                        <td className="border-b border-hairline px-5 py-4 font-mono text-xs text-accent">
+                                            {item.status}
+                                        </td>
+                                        <td className="border-b border-hairline px-5 py-4 leading-relaxed text-ink-2">
+                                            {item.scope}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <div className="mt-8 rounded-2xl border border-hairline bg-ground p-5 md:p-7">
                     <p className="eyebrow">Choose the execution boundary</p>

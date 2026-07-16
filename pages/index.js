@@ -53,7 +53,7 @@ const organizationSchema = {
         'Machine Learning',
         'Large Language Models',
     ],
-    slogan: 'Record once. Replay deterministically. Repair under governance.',
+    slogan: 'Demonstrate a bounded workflow. Replay deterministically. Repair under governance.',
 }
 
 const softwareSchema = {
@@ -81,7 +81,7 @@ const softwareSchema = {
         priceCurrency: 'USD',
     },
     featureList: [
-        'Record a browser workflow once as a demonstration',
+        'Compile a demonstrated, bounded browser workflow',
         'Compile demonstrations into editable automation scripts',
         'Local replay with zero per-run model cost',
         'Deterministic UI re-resolution with auditable bundle updates',
@@ -100,7 +100,7 @@ const websiteSchema = {
     alternateName: 'OpenAdapt',
     url: 'https://openadapt.ai',
     description:
-        'Open-source governed compiler: record a GUI workflow once, compile it into deterministic local replay, and resolve, review, or refuse interface drift.',
+        'Open-source governed compiler: compile a bounded GUI demonstration into deterministic local replay, and resolve, review, or refuse interface drift.',
     publisher: {
         '@type': 'Organization',
         name: 'OpenAdapt.AI',

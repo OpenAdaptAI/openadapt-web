@@ -2,7 +2,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
-import HowItWorks from '@components/HowItWorks'
 
 export default function LendingPage() {
     return (
@@ -25,10 +24,10 @@ export default function LendingPage() {
                 </p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
                     Your team repeats the same borrower-data entry across browser
-                    queues, forms, and portals. Compile the workflow once.
+                    queues, forms, and portals. Compile a bounded demonstration.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    Record a repeated browser task once and OpenAdapt compiles it
+                    Demonstrate a bounded browser task and OpenAdapt compiles it
                     into a local program. Healthy runs make no model calls. When
                     the interface changes, OpenAdapt can re-resolve from evidence,
                     propose a reviewable repair, or halt for an operator.
@@ -49,7 +48,26 @@ export default function LendingPage() {
                 </div>
             </div>
 
-            <HowItWorks />
+            <section
+                data-testid="lending-evidence-placeholder"
+                className="border-y border-hairline bg-panel px-4 py-12"
+            >
+                <div className="mx-auto max-w-4xl">
+                    <p className="eyebrow">Lending evidence status</p>
+                    <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
+                        Lending-specific workflow media is awaiting oracle verification
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
+                        We do not reuse healthcare or OpenEMR footage as proof of a
+                        lending workflow. This page describes the intended workflow
+                        fit; lending-specific fixtures, results, and media will appear
+                        only after the task and success oracle are reproducible.
+                    </p>
+                    <Link href="/compare#benchmark-evidence" className="mt-4 inline-block text-sm text-accent underline">
+                        Review the current published evidence method
+                    </Link>
+                </div>
+            </section>
 
             <div className="mx-auto max-w-4xl px-4 py-12">
                 <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">

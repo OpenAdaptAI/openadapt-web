@@ -25,6 +25,13 @@ const TermsOfService = () => {
 
             <h1 className={styles.heading}>Terms of Service</h1>
             <p className={styles.paragraph}>
+                <strong>Launch legal-review requirement.</strong> These Terms
+                describe the current product and intended commercial operation,
+                but they are not a substitute for qualified legal advice. OpenAdapt
+                must obtain counsel review of these Terms and the Privacy Policy
+                before enabling paid production checkout.
+            </p>
+            <p className={styles.paragraph}>
                 <strong>Effective July 16, 2026.</strong> These Terms of Service
                 (&quot;Terms&quot;) govern the OpenAdapt hosted service and website
                 provided by MLDSAI Inc. (&quot;OpenAdapt,&quot; &quot;we,&quot; or
@@ -37,21 +44,31 @@ const TermsOfService = () => {
 
             <h2 className={styles.subheading}>1. Open Source and Hosted Service</h2>
             <p className={styles.paragraph}>
-                The OpenAdapt engine is separate open-source software offered
-                under its repository license. The paid hosted subscription covers
-                managed browser execution for eligible, locally compiled and
-                attested workflows, plus the associated control-plane, run history,
-                structural reports, metering, and billing-management surfaces.
-                It does not include Windows, RDP, Citrix, a regulated deployment,
-                professional services, an SLA, or a compliance certification unless
-                a signed order expressly says otherwise.
+                The OpenAdapt engine is separate MIT-licensed software. It records,
+                compiles, and runs browser workflows on an operator&apos;s machine by
+                default; installing the engine does not create an account or upload
+                an artifact. The optional hosted service provides a control plane,
+                managed browser execution, run history, structural reports, usage,
+                and billing-management surfaces for workflows admitted under the
+                hosted policy.
+            </p>
+            <p className={styles.paragraph}>
+                When paid checkout has been qualified and enabled, the hosted
+                subscription covers approved browser workflows. Windows UIA,
+                native macOS, RDP, Citrix, customer-controlled regulated
+                deployment, professional services, an SLA, a BAA, and compliance
+                certification are not included. A separately scoped deployment
+                cannot claim support, assurance, or certification beyond its actual
+                implementation, evidence, and reviewed written terms.
             </p>
             <p className={styles.paragraph}>
                 OpenAdapt compiles demonstrated GUI workflows into deterministic,
-                locally executable programs. Healthy runs make no model calls.
-                Interfaces and applications can still change, and a workflow can
-                halt, fail verification, or require a governed repair. Runnable
-                does not mean certified for every environment or business process.
+                locally executable programs. Healthy deterministic replay makes no
+                model calls. Interfaces and applications can still change, and a
+                workflow can halt, fail verification, or require a governed repair.
+                A policy-certified bundle has passed the selected OpenAdapt policy;
+                that is not independent certification of an environment, business
+                process, security program, or legal compliance.
             </p>
 
             <h2 className={styles.subheading}>2. Accounts and Authorized Use</h2>
@@ -73,13 +90,13 @@ const TermsOfService = () => {
 
             <h2 className={styles.subheading}>3. Subscription, Renewal, and Usage</h2>
             <p className={styles.paragraph}>
-                Stripe Checkout shows the configured price, currency, and billing
-                period before you subscribe. Your subscription renews automatically
-                for that billing period until canceled. You authorize Stripe and
-                OpenAdapt to charge the payment method on file at each renewal,
-                including applicable taxes shown at Checkout. Failed or reversed
-                payment can suspend hosted execution until the subscription returns
-                to an active state.
+                If paid checkout is enabled, Stripe Checkout shows the configured
+                price, currency, and billing period before you subscribe. Your
+                subscription renews automatically for that billing period until
+                canceled. You authorize Stripe and OpenAdapt to charge the payment
+                method on file at each renewal, including applicable taxes shown at
+                Checkout. Failed or reversed payment can suspend hosted execution
+                until the subscription returns to an active state.
             </p>
             <p className={styles.paragraph}>
                 The current offer page states the included monthly workflow-run
@@ -114,12 +131,21 @@ const TermsOfService = () => {
             <h2 className={styles.subheading}>5. Artifact and Runtime Data Boundaries</h2>
             <p className={styles.paragraph}>
                 Compilation does not make a recording or bundle de-identified or
-                PHI-free. The managed upload path accepts only the exact sanitized
-                derivative admitted by destination policy and bound to its reviewed
-                manifest and cryptographic hash. The original remains sensitive
-                inside your trusted boundary. Unknown, unresolved, modified, or
-                wrong-destination content is refused. Approval of a derivative does
-                not make the original safe and is not an independent certification.
+                PHI-free. The explicit artifact-ingest path accepts only the exact
+                approved sanitized derivative admitted by destination policy and
+                bound to its reviewed manifest and cryptographic hash. The original
+                remains sensitive inside your trusted boundary. Unknown,
+                unresolved, modified, or wrong-destination content is refused.
+                Approval of a derivative does not make the original safe and is not
+                independent proof of de-identification.
+            </p>
+            <p className={styles.paragraph}>
+                Managed browser recording is a different path. It captures browser
+                frames and input events inside the hosted authoring boundary and can
+                persist the resulting raw recording in private service storage for
+                compilation. A managed recording is not sanitized merely because it
+                was captured or compiled by the service. Do not use managed
+                recording for content that is outside the declared hosted boundary.
             </p>
             <p className={styles.paragraph}>
                 A live application can reintroduce PII, PHI, credentials, or other
@@ -132,7 +158,7 @@ const TermsOfService = () => {
                 current technical controls and limitations.
             </p>
 
-            <h2 className={styles.subheading}>6. Customer Content and Privacy</h2>
+            <h2 className={styles.subheading}>6. Customer Content, Retention, and Privacy</h2>
             <p className={styles.paragraph}>
                 You retain your rights in workflow artifacts and other content you
                 provide. You grant us the limited right to host, process, transmit,
@@ -141,6 +167,18 @@ const TermsOfService = () => {
                 basis and all necessary notices and permissions for data you process.
                 Our collection and handling of account, billing, usage, support, and
                 service data are described in the Privacy Policy.
+            </p>
+            <p className={styles.paragraph}>
+                Local recordings, bundles, reports, and checkpoints remain under
+                the operator&apos;s retention and deletion controls. The hosted
+                service persists account and organization records, managed
+                recordings, approved artifacts, bundles, reports, run and usage
+                records, and billing references as needed to operate the configured
+                service. A short-lived signed runner URL limits object access; it
+                does not itself delete the stored object. The self-serve service
+                currently makes no fixed retention, backup-deletion, or recovery
+                commitment. Workflows with mandatory schedules require a written,
+                qualified deployment scope before their data is sent.
             </p>
 
             <h2 className={styles.subheading}>7. Beta Status and Service Changes</h2>
@@ -152,6 +190,15 @@ const TermsOfService = () => {
                 simulated successful run. Unless a signed order says otherwise,
                 no uptime, response-time, support, retention, recovery, or service
                 credit commitment applies.
+            </p>
+            <p className={styles.paragraph}>
+                The service uses providers for website and form hosting,
+                authentication, database and object storage, managed compute,
+                payment processing, optional analytics, source-code widgets, and
+                booking.
+                The Privacy Policy names the current providers and explains the
+                related data flows. Provider availability and provider terms can
+                affect those parts of the service.
             </p>
 
             <h2 className={styles.subheading}>8. Intellectual Property</h2>
@@ -208,6 +255,8 @@ const TermsOfService = () => {
             <p className={styles.paragraph}>
                 Questions about these Terms, billing, cancellation, or refunds may
                 be sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+                Qualified counsel must review this document before paid production
+                checkout is activated.
             </p>
         </div>
     )

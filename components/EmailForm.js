@@ -14,11 +14,13 @@ export default function EmailForm() {
         event.preventDefault()
         setIsSubmitting(true)
 
-        window.gtag('event', 'submit_form', {
-            event_category: 'Form',
-            event_label: 'email',
-            value: 1,
-        })
+        if (typeof window !== 'undefined' && window.gtag) {
+            window.gtag('event', 'submit_form', {
+                event_category: 'Form',
+                event_label: 'email',
+                value: 1,
+            })
+        }
 
         const formData = new FormData(event.target)
         /*

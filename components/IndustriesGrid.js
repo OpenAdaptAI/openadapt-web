@@ -94,9 +94,9 @@ export default function IndustriesGrid({
                     Built for regulated back-offices
                 </h2>
                 <p className={styles.p}>
-                    Record the workflow once and OpenAdapt turns it into an
-                    inspectable program your team can run and review on its own
-                    machines. Healthy browser replay makes no model calls;
+                    Demonstrate a bounded workflow and OpenAdapt turns it into
+                    an inspectable program your team can run and review on its
+                    own machines. Healthy browser replay makes no model calls;
                     consequential workflows still require explicit identity,
                     effect, policy, storage, and retention configuration.
                     <br />

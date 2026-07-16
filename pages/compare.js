@@ -33,7 +33,7 @@ const outcomes = [
         body: 'Healthy replay is deterministic and uses no model calls. Model spend is reserved for compilation or repair.',
     },
     {
-        title: 'Review change once',
+        title: 'Review reusable change',
         body: 'A repair updates the reusable workflow instead of asking a model to rediscover the task on every run.',
     },
     {

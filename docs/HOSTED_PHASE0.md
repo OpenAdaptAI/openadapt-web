@@ -1,14 +1,16 @@
 # Hosted launch runbook
 
 The website launches the configured Hosted subscription through Stripe
-Checkout. `STRIPE_PRICE_ID` must select the exact live launch offer: the stable
+Checkout only after the production lifecycle has been qualified and the
+server-only `HOSTED_CHECKOUT_QUALIFIED=true` gate is deliberately enabled.
+Credentials alone cannot expose the offer or create a Checkout Session.
+`STRIPE_PRICE_ID` must select the exact live launch offer: the stable
 `OpenAdapt Cloud` Product, licensed USD $500 monthly Price, 10,000-run allowance,
 Beta browser lifecycle, and canonical launch lookup key. The pricing page still
 retrieves the amount server-side for display, but it refuses a Price that differs
 from that launch contract. Checkout verifies the same Price and Product again
-before the customer pays. If verification is unavailable, the page says that
-the offer is unavailable and disables checkout rather than presenting a stale
-fallback amount.
+before the customer pays. Until qualification is enabled, the page presents a
+workflow-qualification contact path and no price or buy button.
 
 The website retrieves the Price with its Product expanded. The Product must use
 id `prod_openadapt_cloud`, name `OpenAdapt Cloud`, and metadata
@@ -37,12 +39,13 @@ Cloud's `STRIPE_PRICE_ID` must select this same Price and
 
 Missing Stripe or cloud-app configuration returns HTTP 503 and the pricing
 component offers a direct contact fallback. Checkout cannot begin without a
-valid post-payment onboarding destination.
+valid post-payment onboarding destination or the explicit qualification gate.
 
 ## Website environment
 
 | Variable | Scope | Purpose |
 |---|---|---|
+| `HOSTED_CHECKOUT_QUALIFIED` | Server | Fail-closed launch gate. Keep `false` until the real production Checkout and Cloud return/claim path, legal copy, and operator launch review pass. |
 | `STRIPE_SECRET_KEY` | Server | Read the configured Price/Product and create Checkout Sessions. Prefer a dedicated restricted `rk_live_` key with Price/Product read and Checkout Session write; full `sk_live_` keys remain compatible. |
 | `STRIPE_PRICE_ID` | Server | Select the recurring offer from the same Stripe account and mode as the key. |
 | `STRIPE_EXPECTED_MODE` | Server | Operator guard: set `live` in production and `test` in test or preview. A mismatched key is refused. |
@@ -69,6 +72,7 @@ disabled) or use a complete, isolated test-mode set.
 
 | Variable | Netlify scopes | Secret | Value class |
 |---|---|---|---|
+| `HOSTED_CHECKOUT_QUALIFIED` | Builds + Functions | No; server-only | `false` until launch qualification, then `true` |
 | `STRIPE_SECRET_KEY` | Builds + Functions | Yes | Dedicated `rk_live_` preferred; `sk_live_` compatible |
 | `STRIPE_PRICE_ID` | Builds + Functions | No | Live recurring `price_...` |
 | `STRIPE_EXPECTED_MODE` | Builds + Functions | No | `live` |
@@ -80,8 +84,9 @@ offer during build. Functions scope is also required for ISR regeneration and
 the checkout API route. Do not add Cloud-only `STRIPE_WEBHOOK_SECRET` or
 `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` to the Web site.
 
-The website has no implicit request-host or concierge checkout fallback. If a
-required value is absent, invalid, mode-mismatched, inactive, or outside the
+The website has no implicit request-host or concierge checkout fallback. If the
+qualification flag is not exactly `true`, or a required value is absent,
+invalid, mode-mismatched, inactive, or outside the
 exact Product and Price contract above, offer lookup is unavailable, the
 checkout button is disabled, and `POST /api/create-checkout-session` returns
 HTTP 503.
@@ -137,6 +142,8 @@ execution boundary.
 
 ## Go-live verification
 
+- [ ] Obtain qualified legal review of the Terms and Privacy Policy and record
+      operator approval; product documentation is not legal advice.
 - [ ] Configure Web with the live restricted Stripe server key, live price id,
       `STRIPE_EXPECTED_MODE=live`, and exact production site and Cloud origins.
 - [ ] Configure Cloud against the same live Stripe account and mode, including
@@ -174,8 +181,11 @@ execution boundary.
 - [ ] Verify the production runner cannot silently fall back to mock success.
 - [ ] Verify usage metering, caps, logs, alerts, deletion, backup, restore, and
       incident procedures.
-- [ ] Perform one real-card purchase, verify service entitlement, then cancel
-      and refund according to the published terms.
+- [ ] Keep `HOSTED_CHECKOUT_QUALIFIED=false` while every prior check runs.
+- [ ] Obtain explicit approval before any real charge. Then perform one
+      real-card purchase, verify service entitlement, cancel and refund according
+      to the counsel-reviewed terms, and set `HOSTED_CHECKOUT_QUALIFIED=true`
+      only after the full return/claim lifecycle passes.
 
 Hosted browser launch does not imply Windows, RDP, or Citrix support, an SLA,
 SOC 2 attestation, a BAA, or authorization for a regulated workload. Those
