@@ -35,7 +35,7 @@ function FeatureList({ items }) {
     )
 }
 
-function HostedCheckoutButton() {
+function HostedCheckoutButton({ available }) {
     const [state, setState] = useState('idle')
     const [message, setMessage] = useState('')
 
@@ -66,17 +66,30 @@ function HostedCheckoutButton() {
         <form
             action="/api/create-checkout-session"
             method="post"
-            onSubmit={startCheckout}
+            onSubmit={available ? startCheckout : (event) => event.preventDefault()}
         >
             <button
                 type="submit"
                 data-testid="hosted-checkout"
                 className="btn-ink w-full text-center disabled:cursor-wait disabled:opacity-60"
-                disabled={state === 'loading'}
-                onClick={startCheckout}
+                disabled={!available || state === 'loading'}
             >
-                {state === 'loading' ? 'Opening secure checkout…' : 'Start hosted subscription'}
+                {!available
+                    ? 'Hosted checkout unavailable'
+                    : state === 'loading'
+                      ? 'Opening secure checkout…'
+                      : 'Start hosted subscription'}
             </button>
+            {!available && (
+                <p role="status" className="mt-3 text-xs leading-relaxed text-ink-3">
+                    The current Stripe price, billing period, and run allowance
+                    could not be verified. Checkout remains disabled rather than
+                    presenting a stale offer.{' '}
+                    <Link href="/#book" className="text-accent underline">
+                        Contact us for launch help.
+                    </Link>
+                </p>
+            )}
             {state === 'error' && (
                 <p role="alert" className="mt-3 text-xs leading-relaxed text-ink-3">
                     {message}{' '}
@@ -91,6 +104,12 @@ function HostedCheckoutButton() {
 
 export default function Pricing({ hostedOffer = null }) {
     const runCapLabel = monthlyRunCapLabel(hostedOffer?.monthlyRunCap)
+    const hostedOfferAvailable = Boolean(
+        hostedOffer?.amount &&
+        hostedOffer?.cadence &&
+        hostedOffer?.product &&
+        runCapLabel
+    )
 
     return (
         <section
@@ -153,7 +172,9 @@ export default function Pricing({ hostedOffer = null }) {
                         <p className="eyebrow">Hosted</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
-                                {hostedOffer?.amount || 'Configured in Stripe'}
+                                {hostedOfferAvailable
+                                    ? hostedOffer.amount
+                                    : 'Offer unavailable'}
                             </span>
                             {hostedOffer?.cadence && (
                                 <span className="text-sm text-ink-3">
@@ -203,7 +224,18 @@ export default function Pricing({ hostedOffer = null }) {
                             qualified regulated execution boundary.
                         </div>
                         <div className="mt-6 flex-grow" />
-                        <HostedCheckoutButton />
+                        <HostedCheckoutButton available={hostedOfferAvailable} />
+                        <p className="mt-3 text-center text-xs leading-relaxed text-ink-3">
+                            By subscribing, you agree to the{' '}
+                            <Link href="/terms-of-service" className="text-accent underline">
+                                Terms of Service
+                            </Link>{' '}
+                            and acknowledge the{' '}
+                            <Link href="/privacy-policy" className="text-accent underline">
+                                Privacy Policy
+                            </Link>
+                            .
+                        </p>
                     </div>
 
                     {/* Card 3 — Enterprise (primary / recommended) */}
