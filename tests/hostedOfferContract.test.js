@@ -14,11 +14,28 @@ function recurringPrice(monthlyRunCap = '10000') {
         type: 'recurring',
         unit_amount: 50000,
         currency: 'usd',
-        recurring: { interval: 'month', interval_count: 1 },
+        billing_scheme: 'per_unit',
+        transform_quantity: null,
+        custom_unit_amount: null,
+        tiers_mode: null,
+        currency_options: {},
+        lookup_key: 'openadapt_cloud_usd_monthly_500_10000_v1',
+        recurring: {
+            interval: 'month',
+            interval_count: 1,
+            usage_type: 'licensed',
+            trial_period_days: null,
+        },
         product: {
+            id: 'prod_openadapt_cloud',
             active: true,
+            livemode: true,
             name: 'OpenAdapt Cloud',
-            metadata: { monthly_run_cap: monthlyRunCap },
+            metadata: {
+                monthly_run_cap: monthlyRunCap,
+                substrate: 'browser',
+                lifecycle: 'beta',
+            },
         },
     }
 }
@@ -54,26 +71,43 @@ test('refuses a valid run cap that differs from the fixed launch contract', () =
     }
 })
 
-test('rejects a Price that cannot back recurring Checkout', () => {
-    assert.equal(hostedOfferFromPrice({ ...recurringPrice(), active: false }), null)
-    assert.equal(hostedOfferFromPrice({ ...recurringPrice(), type: 'one_time' }), null)
-    assert.equal(hostedOfferFromPrice({ ...recurringPrice(), unit_amount: null }), null)
-    assert.equal(hostedOfferFromPrice({ ...recurringPrice(), unit_amount: 0 }), null)
-    assert.equal(hostedOfferFromPrice({ ...recurringPrice(), recurring: null }), null)
-    assert.equal(
-        hostedOfferFromPrice({
-            ...recurringPrice(),
-            recurring: { interval: 'month', interval_count: 0 },
-        }),
-        null
-    )
-    assert.equal(
-        hostedOfferFromPrice({
-            ...recurringPrice(),
-            product: { ...recurringPrice().product, active: false },
-        }),
-        null
-    )
+test('rejects any Price or Product outside the exact Cloud launch contract', () => {
+    const price = recurringPrice()
+    for (const candidate of [
+        { ...price, active: false },
+        { ...price, type: 'one_time' },
+        { ...price, unit_amount: 49900 },
+        { ...price, currency: 'cad' },
+        { ...price, billing_scheme: 'tiered', tiers_mode: 'graduated' },
+        { ...price, transform_quantity: { divide_by: 10, round: 'up' } },
+        { ...price, custom_unit_amount: { enabled: true } },
+        { ...price, currency_options: { cad: { unit_amount: 75000 } } },
+        { ...price, lookup_key: 'other' },
+        { ...price, recurring: null },
+        { ...price, recurring: { ...price.recurring, interval_count: 2 } },
+        { ...price, recurring: { ...price.recurring, usage_type: 'metered' } },
+        { ...price, recurring: { ...price.recurring, trial_period_days: 30 } },
+        { ...price, product: { ...price.product, id: 'prod_other' } },
+        { ...price, product: { ...price.product, active: false } },
+        { ...price, product: { ...price.product, livemode: false } },
+        { ...price, product: { ...price.product, name: 'Other' } },
+        {
+            ...price,
+            product: {
+                ...price.product,
+                metadata: { ...price.product.metadata, substrate: 'windows' },
+            },
+        },
+        {
+            ...price,
+            product: {
+                ...price.product,
+                metadata: { ...price.product.metadata, lifecycle: 'stable' },
+            },
+        },
+    ]) {
+        assert.equal(hostedOfferFromPrice(candidate), null)
+    }
 })
 
 test('binds offer verification to the declared Stripe mode', () => {
@@ -84,7 +118,11 @@ test('binds offer verification to the declared Stripe mode', () => {
     )
     assert.ok(
         hostedOfferFromPrice(
-            { ...recurringPrice(), livemode: false },
+            {
+                ...recurringPrice(),
+                livemode: false,
+                product: { ...recurringPrice().product, livemode: false },
+            },
             { expectedLive: false }
         )
     )
