@@ -35,16 +35,16 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 
 ### Booking configuration
 
-Set Calendly for inline booking in `.env.local`:
+Set the canonical Cal.com event for inline booking in `.env.local`:
+
+```bash
+NEXT_PUBLIC_BOOKING_URL=https://cal.com/richard-abrich/30min?overlayCalendar=true
+```
+
+An older Calendly deployment can still use the compatibility variable:
 
 ```bash
 NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/your-org/intro-call
-```
-
-Optional backward-compatible fallback:
-
-```bash
-NEXT_PUBLIC_BOOKING_URL=https://calendly.com/your-org/intro-call
 ```
 
 Clockwise links are supported as link-only fallback and are not iframed.
