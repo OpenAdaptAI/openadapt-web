@@ -9,14 +9,15 @@ is unavailable and disables checkout rather than presenting a stale fallback
 amount.
 
 The website retrieves the Price with its Product expanded. Set Product metadata
-`monthly_run_cap=<positive integer>` to publish the included workflow-run
-allowance beside the retrieved price. The website formats that exact value and
-refuses the offer when the metadata is missing or malformed; it has no
-hard-coded cap fallback. The checkout endpoint retrieves and verifies the same
-active recurring Price and expanded Product again immediately before creating a
-Session, so a stale page or direct POST cannot bypass the offer gate. Keep
-`monthly_run_cap` equal to Cloud's
-`PLAN_MONTHLY_RUN_CAP` so the displayed offer and enforced entitlement agree.
+`monthly_run_cap=10000` to publish the included workflow-run allowance beside
+the retrieved price. The website formats that Stripe value, but accepts it only
+when it exactly matches the fixed 10,000-run launch contract also enforced by
+Cloud. Missing, malformed, or different metadata makes the offer unavailable;
+there is no display fallback. The checkout endpoint retrieves and verifies the
+same active recurring Price and expanded Product again immediately before
+creating a Session, so a stale page, post-deploy metadata edit, or direct POST
+cannot bypass the offer gate. Cloud's `PLAN_MONTHLY_RUN_CAP` must also be
+`10000` so the displayed offer and enforced entitlement agree.
 
 ## Customer flow
 
@@ -76,9 +77,10 @@ the checkout API route. Do not add Cloud-only `STRIPE_WEBHOOK_SECRET` or
 `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` to the Web site.
 
 The website has no implicit request-host or concierge checkout fallback. If a
-required value is absent, invalid, mode-mismatched, inactive, or missing the
-canonical Product run-cap metadata, offer lookup is unavailable, the checkout
-button is disabled, and `POST /api/create-checkout-session` returns HTTP 503.
+required value is absent, invalid, mode-mismatched, inactive, or does not carry
+the exact `monthly_run_cap=10000` Product metadata, offer lookup is unavailable,
+the checkout button is disabled, and `POST /api/create-checkout-session`
+returns HTTP 503.
 The standalone `/hosted/welcome` support page is not a payment-verification
 path.
 
@@ -136,8 +138,10 @@ execution boundary.
 - [ ] Configure Cloud against the same live Stripe account and mode, including
       its signed webhook endpoint and signing secret.
 - [ ] Confirm Stripe displays the intended amount and billing period.
-- [ ] Confirm Product metadata `monthly_run_cap` is a canonical positive integer
-      equal to Cloud `PLAN_MONTHLY_RUN_CAP`, and that the website displays it.
+- [ ] Confirm Product metadata `monthly_run_cap=10000`, Cloud
+      `PLAN_MONTHLY_RUN_CAP=10000`, and that the website displays 10,000 runs.
+- [ ] Change Product metadata to another valid positive integer and confirm both
+      Web offer rendering and direct checkout refuse it; restore `10000`.
 - [ ] Confirm an unavailable or malformed offer disables Web checkout and a
       direct checkout POST returns HTTP 503 without creating a Session.
 - [ ] Confirm Checkout links the current Terms and Privacy Policy, automatic
