@@ -1,23 +1,26 @@
 # Hosted launch runbook
 
 The website launches the configured Hosted subscription through Stripe
-Checkout. It does not hard-code a numeric amount: `STRIPE_PRICE_ID` selects the
-offer, the pricing page retrieves that amount server-side when Stripe is
-configured, and Checkout confirms the same price and billing period before the
-customer pays. If price retrieval is unavailable, the page says that the offer
-is unavailable and disables checkout rather than presenting a stale fallback
-amount.
+Checkout. `STRIPE_PRICE_ID` must select the exact live launch offer: the stable
+`OpenAdapt Cloud` Product, licensed USD $500 monthly Price, 10,000-run allowance,
+Beta browser lifecycle, and canonical launch lookup key. The pricing page still
+retrieves the amount server-side for display, but it refuses a Price that differs
+from that launch contract. Checkout verifies the same Price and Product again
+before the customer pays. If verification is unavailable, the page says that
+the offer is unavailable and disables checkout rather than presenting a stale
+fallback amount.
 
-The website retrieves the Price with its Product expanded. Set Product metadata
-`monthly_run_cap=10000` to publish the included workflow-run allowance beside
-the retrieved price. The website formats that Stripe value, but accepts it only
-when it exactly matches the fixed 10,000-run launch contract also enforced by
-Cloud. Missing, malformed, or different metadata makes the offer unavailable;
-there is no display fallback. The checkout endpoint retrieves and verifies the
-same active recurring Price and expanded Product again immediately before
-creating a Session, so a stale page, post-deploy metadata edit, or direct POST
-cannot bypass the offer gate. Cloud's `PLAN_MONTHLY_RUN_CAP` must also be
-`10000` so the displayed offer and enforced entitlement agree.
+The website retrieves the Price with its Product expanded. The Product must use
+id `prod_openadapt_cloud`, name `OpenAdapt Cloud`, and metadata
+`monthly_run_cap=10000`, `substrate=browser`, and `lifecycle=beta`. The Price
+must use lookup key `openadapt_cloud_usd_monthly_500_10000_v1`, have no trial or
+alternate currency amounts, and otherwise match the fixed offer above. Missing,
+malformed, or different fields make the offer unavailable; there is no display
+fallback. The checkout endpoint retrieves and verifies the same active recurring
+Price and expanded Product immediately before creating a Session, so a stale
+page, post-deploy Stripe edit, or direct POST cannot bypass the offer gate.
+Cloud's `STRIPE_PRICE_ID` must select this same Price and
+`PLAN_MONTHLY_RUN_CAP` must be `10000`.
 
 ## Customer flow
 
@@ -77,10 +80,10 @@ the checkout API route. Do not add Cloud-only `STRIPE_WEBHOOK_SECRET` or
 `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` to the Web site.
 
 The website has no implicit request-host or concierge checkout fallback. If a
-required value is absent, invalid, mode-mismatched, inactive, or does not carry
-the exact `monthly_run_cap=10000` Product metadata, offer lookup is unavailable,
-the checkout button is disabled, and `POST /api/create-checkout-session`
-returns HTTP 503.
+required value is absent, invalid, mode-mismatched, inactive, or outside the
+exact Product and Price contract above, offer lookup is unavailable, the
+checkout button is disabled, and `POST /api/create-checkout-session` returns
+HTTP 503.
 The standalone `/hosted/welcome` support page is not a payment-verification
 path.
 
@@ -137,11 +140,13 @@ execution boundary.
       `STRIPE_EXPECTED_MODE=live`, and exact production site and Cloud origins.
 - [ ] Configure Cloud against the same live Stripe account and mode, including
       its signed webhook endpoint and signing secret.
-- [ ] Confirm Stripe displays the intended amount and billing period.
-- [ ] Confirm Product metadata `monthly_run_cap=10000`, Cloud
-      `PLAN_MONTHLY_RUN_CAP=10000`, and that the website displays 10,000 runs.
-- [ ] Change Product metadata to another valid positive integer and confirm both
-      Web offer rendering and direct checkout refuse it; restore `10000`.
+- [ ] Confirm Web and Cloud `STRIPE_PRICE_ID` select the same exact live Price,
+      and Stripe displays USD $500/month with no trial or alternate amounts.
+- [ ] Confirm Product id/name, lookup key, browser/Beta metadata,
+      `monthly_run_cap=10000`, and Cloud `PLAN_MONTHLY_RUN_CAP=10000`; verify the
+      website displays $500/month and 10,000 runs.
+- [ ] Change one launch Product/Price field and confirm both Web offer rendering
+      and direct checkout refuse it; restore the exact contract.
 - [ ] Confirm an unavailable or malformed offer disables Web checkout and a
       direct checkout POST returns HTTP 503 without creating a Session.
 - [ ] Confirm Checkout links the current Terms and Privacy Policy, automatic
