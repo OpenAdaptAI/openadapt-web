@@ -140,7 +140,7 @@ export async function getStaticProps() {
     }
     const { getHostedOffer } = await import('../lib/hostedOffer')
     const hostedOffer = await getHostedOffer()
-    return { props: { githubStats, hostedOffer }, revalidate: 86400 }
+    return { props: { githubStats, hostedOffer }, revalidate: 300 }
 }
 
 export default function Home({ githubStats, hostedOffer }) {

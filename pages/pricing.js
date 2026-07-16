@@ -7,7 +7,7 @@ import Pricing from '@components/Pricing'
 export async function getStaticProps() {
     const { getHostedOffer } = await import('../lib/hostedOffer')
     const hostedOffer = await getHostedOffer()
-    return { props: { hostedOffer }, revalidate: 86400 }
+    return { props: { hostedOffer }, revalidate: 300 }
 }
 
 export default function PricingPage({ hostedOffer }) {

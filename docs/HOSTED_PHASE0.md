@@ -5,13 +5,17 @@ Checkout. It does not hard-code a numeric amount: `STRIPE_PRICE_ID` selects the
 offer, the pricing page retrieves that amount server-side when Stripe is
 configured, and Checkout confirms the same price and billing period before the
 customer pays. If price retrieval is unavailable, the page says that the offer
-is configured in Stripe rather than presenting a stale fallback amount.
+is unavailable and disables checkout rather than presenting a stale fallback
+amount.
 
 The website retrieves the Price with its Product expanded. Set Product metadata
 `monthly_run_cap=<positive integer>` to publish the included workflow-run
 allowance beside the retrieved price. The website formats that exact value and
-omits the allowance when the metadata is missing or malformed; it has no
-hard-coded cap fallback. Keep `monthly_run_cap` equal to Cloud's
+refuses the offer when the metadata is missing or malformed; it has no
+hard-coded cap fallback. The checkout endpoint retrieves and verifies the same
+active recurring Price and expanded Product again immediately before creating a
+Session, so a stale page or direct POST cannot bypass the offer gate. Keep
+`monthly_run_cap` equal to Cloud's
 `PLAN_MONTHLY_RUN_CAP` so the displayed offer and enforced entitlement agree.
 
 ## Customer flow
@@ -35,7 +39,7 @@ valid post-payment onboarding destination.
 
 | Variable | Scope | Purpose |
 |---|---|---|
-| `STRIPE_SECRET_KEY` | Server | Create Checkout Sessions. Production requires an `sk_live_` key; test and preview use `sk_test_`. |
+| `STRIPE_SECRET_KEY` | Server | Read the configured Price/Product and create Checkout Sessions. Prefer a dedicated restricted `rk_live_` key with Price/Product read and Checkout Session write; full `sk_live_` keys remain compatible. |
 | `STRIPE_PRICE_ID` | Server | Select the recurring offer from the same Stripe account and mode as the key. |
 | `STRIPE_EXPECTED_MODE` | Server | Operator guard: set `live` in production and `test` in test or preview. A mismatched key is refused. |
 | `NEXT_PUBLIC_CLOUD_APP_URL` | Public | Exact HTTPS Cloud origin for post-payment sign-in/onboarding. |
@@ -45,14 +49,38 @@ Secrets belong in the deployment environment, never committed files. Web and
 Cloud must use the same Stripe account and mode so Cloud can retrieve and claim
 the Session created by Web. The configured recurring price must also belong to
 that account and mode. In production, set `STRIPE_EXPECTED_MODE=live` with an
-`sk_live_` key and live price. In test or preview, set
-`STRIPE_EXPECTED_MODE=test` with an `sk_test_` key and test price. Set exact
-environment-specific site and Cloud origins in both cases.
+`rk_live_` restricted key (preferred) or `sk_live_` key and live price. In test
+or preview, set `STRIPE_EXPECTED_MODE=test` with an `rk_test_` or `sk_test_` key
+and test price. Set exact
+environment-specific site and Cloud origins in both cases. Web and Cloud do not
+need to share the same credential: keep the Cloud full server key separate and
+give Web the least-privilege restricted key described above.
+
+### Netlify production scopes
+
+Set these variables in the Web Netlify site for the `Production` deploy context
+only. Deploy Previews and branch deploys should either omit them (checkout stays
+disabled) or use a complete, isolated test-mode set.
+
+| Variable | Netlify scopes | Secret | Value class |
+|---|---|---|---|
+| `STRIPE_SECRET_KEY` | Builds + Functions | Yes | Dedicated `rk_live_` preferred; `sk_live_` compatible |
+| `STRIPE_PRICE_ID` | Builds + Functions | No | Live recurring `price_...` |
+| `STRIPE_EXPECTED_MODE` | Builds + Functions | No | `live` |
+| `NEXT_PUBLIC_CLOUD_APP_URL` | Builds + Functions | No; browser-visible | `https://app.openadapt.ai` |
+| `NEXT_PUBLIC_SITE_URL` | Builds + Functions | No; browser-visible | `https://openadapt.ai` |
+
+Build scope is required because the home and pricing pages generate the verified
+offer during build. Functions scope is also required for ISR regeneration and
+the checkout API route. Do not add Cloud-only `STRIPE_WEBHOOK_SECRET` or
+`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` to the Web site.
 
 The website has no implicit request-host or concierge checkout fallback. If a
-required value is absent, invalid, or mode-mismatched, offer lookup is
-unavailable and `POST /api/create-checkout-session` returns HTTP 503. The
-standalone `/hosted/welcome` support page is not a payment-verification path.
+required value is absent, invalid, mode-mismatched, inactive, or missing the
+canonical Product run-cap metadata, offer lookup is unavailable, the checkout
+button is disabled, and `POST /api/create-checkout-session` returns HTTP 503.
+The standalone `/hosted/welcome` support page is not a payment-verification
+path.
 
 ## Production is never implicit mock
 
@@ -103,13 +131,18 @@ execution boundary.
 
 ## Go-live verification
 
-- [ ] Configure Web with the live Stripe secret, live price id,
+- [ ] Configure Web with the live restricted Stripe server key, live price id,
       `STRIPE_EXPECTED_MODE=live`, and exact production site and Cloud origins.
 - [ ] Configure Cloud against the same live Stripe account and mode, including
       its signed webhook endpoint and signing secret.
 - [ ] Confirm Stripe displays the intended amount and billing period.
 - [ ] Confirm Product metadata `monthly_run_cap` is a canonical positive integer
       equal to Cloud `PLAN_MONTHLY_RUN_CAP`, and that the website displays it.
+- [ ] Confirm an unavailable or malformed offer disables Web checkout and a
+      direct checkout POST returns HTTP 503 without creating a Session.
+- [ ] Confirm Checkout links the current Terms and Privacy Policy, automatic
+      renewal is disclosed, the Cloud portal can cancel at period end, and the
+      published refund policy matches the configured Stripe behavior.
 - [ ] Configure the production cloud app URL and site URL.
 - [ ] Verify checkout -> sign-in -> organization/subscription linkage.
 - [ ] Verify cancellation, portal, webhook replay/idempotency, and entitlement

@@ -55,7 +55,9 @@ describe('public product truth', () => {
         cy.get('#pricing').within(() => {
             cy.contains('Run it yourself or launch with us').should('be.visible')
             cy.contains('Launching now').should('be.visible')
-            cy.contains('Start hosted subscription').should('be.visible')
+            cy.contains('Offer unavailable').should('be.visible')
+            cy.contains('Hosted checkout unavailable').should('be.disabled')
+            cy.contains('could not be verified').should('be.visible')
             cy.contains('$500').should('not.exist')
             cy.contains('workflow runs/month').should('not.exist')
             cy.contains('sanitized derivative').should('be.visible')
@@ -102,11 +104,28 @@ describe('public product truth', () => {
     })
 
     it('starts the configured hosted checkout path', () => {
+        cy.intercept('GET', '**/_next/data/**/pricing.json*', {
+            statusCode: 200,
+            body: {
+                pageProps: {
+                    hostedOffer: {
+                        amount: '$500.00',
+                        cadence: '/month',
+                        product: 'OpenAdapt Cloud',
+                        monthlyRunCap: 10000,
+                    },
+                },
+                __N_SSG: true,
+            },
+        }).as('hostedCheckoutOffer')
         cy.intercept('POST', '**/api/create-checkout-session', {
             statusCode: 303,
             headers: { location: '/hosted/welcome' },
         }).as('checkout')
 
+        cy.visit('/about')
+        cy.window().then((win) => win.next.router.push('/pricing'))
+        cy.wait('@hostedCheckoutOffer')
         cy.get('[data-testid="hosted-checkout"]')
             .should('contain.text', 'Start hosted subscription')
             .should('not.be.disabled')
@@ -118,11 +137,23 @@ describe('public product truth', () => {
         cy.location('pathname').should('equal', '/hosted/welcome')
     })
 
+    it('refuses direct checkout when the offer cannot be verified', () => {
+        cy.request({
+            method: 'POST',
+            url: '/api/create-checkout-session',
+            failOnStatusCode: false,
+        }).then((response) => {
+            expect(response.status).to.equal(503)
+            expect(response.body.error).to.equal('checkout_not_configured')
+        })
+    })
+
     it('documents the exact hosted checkout environment contract', () => {
         cy.readFile('.env.example').then((source) => {
             expect(source).to.include('STRIPE_SECRET_KEY=')
             expect(source).to.include('STRIPE_PRICE_ID=')
             expect(source).to.include('STRIPE_EXPECTED_MODE=live')
+            expect(source).to.include('rk_live_')
             expect(source).to.include(
                 'NEXT_PUBLIC_SITE_URL=https://openadapt.ai'
             )
@@ -148,7 +179,27 @@ describe('public product truth', () => {
                 'NEXT_PUBLIC_SITE_URL',
                 'NEXT_PUBLIC_CLOUD_APP_URL',
             ].forEach((name) => expect(source).to.include(`process.env.${name}`))
+            expect(source.indexOf('stripe.prices.retrieve')).to.be.lessThan(
+                source.indexOf('stripe.checkout.sessions.create')
+            )
+            expect(source).to.include('checkout_offer_unverified')
         })
+    })
+
+    it('publishes the managed subscription and data-boundary terms', () => {
+        cy.visit('/terms-of-service')
+        cy.contains('Effective July 16, 2026').should('be.visible')
+        cy.contains('Subscription, Renewal, and Usage').should('be.visible')
+        cy.contains('renews automatically').should('be.visible')
+        cy.contains('Cancellation and Refunds').should('be.visible')
+        cy.contains('charges already paid are non-refundable').should('be.visible')
+        cy.contains('Artifact and Runtime Data Boundaries').should('be.visible')
+        cy.contains('self-serve hosted subscription does not include a BAA').should(
+            'be.visible'
+        )
+        cy.contains('no uptime, response-time, support, retention, recovery').should(
+            'be.visible'
+        )
     })
 })
 
