@@ -14,9 +14,9 @@
 - [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
 
 ## Use Cases
-- [Healthcare Clinics](https://openadapt.ai/solutions/healthcare): Intended regulated-workflow wedge; browser evaluation today, desktop and VDI paths not yet validated production integrations
-- [Mortgage & Lending Ops](https://openadapt.ai/solutions/lending): Loan-file data extraction and entry in desktop LOS software like Encompass
-- [Other Regulated Back-Offices](https://openadapt.ai/#industries): Document-heavy, compliance-bound workflows
+- [Healthcare Clinics](https://openadapt.ai/solutions/healthcare): Repeated browser-accessible intake, scheduling, billing, and EMR data-entry workflows; native desktop and VDI paths are not implied
+- [Mortgage & Lending Ops](https://openadapt.ai/solutions/lending): Repeated borrower-data entry across approved browser queues, forms, portals, and LOS pages; native desktop LOS support is not implied
+- [Other Regulated Back-Offices](https://openadapt.ai/#industries): Demonstrated browser workflows that require repeatable execution, review, and explicit data boundaries
 
 ## Source Code
 - [Engine Source](https://github.com/OpenAdaptAI/openadapt-flow): MIT licensed, open source
@@ -35,9 +35,9 @@
 ## Commercial Status
 - The open-source browser engine is available now.
 - Managed hosted browser execution is launching now through configured Stripe Checkout and account onboarding.
-- Stripe is the source of truth for the hosted price and billing period; the website does not duplicate an amount.
+- Stripe Checkout presents the verified launch price and billing period; Web refuses checkout if the configured Stripe offer differs from the published launch contract.
 - Customer-controlled regulated deployments are scoped to the actual substrate, runtime boundary, verifier, and operating responsibilities.
-- Hosted browser checkout does not imply desktop/Citrix support, SOC 2 attestation, a standing BAA program, or a production SLA.
+- Hosted browser checkout does not imply native desktop, RDP/VDI, or Citrix support, SOC 2 attestation, a standing BAA program, or a production SLA.
 
 ## Hosted Data Boundary
 - Compiled bundles can contain screenshots, typed values, and literal identity evidence. Compilation does not make a bundle PHI-free.
