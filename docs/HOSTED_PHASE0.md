@@ -57,8 +57,9 @@ that account and mode. In production, set `STRIPE_EXPECTED_MODE=live` with an
 or preview, set `STRIPE_EXPECTED_MODE=test` with an `rk_test_` or `sk_test_` key
 and test price. Set exact
 environment-specific site and Cloud origins in both cases. Web and Cloud do not
-need to share the same credential: keep the Cloud full server key separate and
-give Web the least-privilege restricted key described above.
+need to share a credential: give each deployment a separate restricted key, with
+Cloud's key limited to the additional subscription and billing-portal operations
+its control plane performs.
 
 ### Netlify production scopes
 
