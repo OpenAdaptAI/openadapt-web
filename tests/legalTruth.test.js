@@ -42,6 +42,10 @@ test('privacy page names current providers and exact model-call posture', () => 
     assert.match(privacy, /Healthy deterministic replay makes no model calls/)
     assert.match(privacy, /Model-assisted[\s\S]*repair is optional and off by default/)
     assert.match(privacy, /does not bypass identity,[\s\S]*policy checks/)
+    assert.match(
+        privacy,
+        /Modal for managed browser recording and run compute,[\s\S]*optional hosted compilation only when explicitly enabled/
+    )
     assert.doesNotMatch(privacy, /ensuring the security|do not share your email/i)
     assert.doesNotMatch(read('pages/_app.js'), /googletagmanager|google-analytics/i)
     assert.match(privacy, /designate[\s\S]*accountable privacy official/i)
