@@ -1,8 +1,7 @@
-// Default booking is Cal.com (richard-abrich/60min). The maintainer syncs a
-// single service they already use; override with NEXT_PUBLIC_BOOKING_URL if
-// that ever changes.
+// Keep production and local builds on the same canonical booking destination.
+// NEXT_PUBLIC_BOOKING_URL remains available for explicit preview/provider tests.
 export const DEFAULT_BOOKING_URL =
-    'https://cal.com/richard-abrich/60min?overlayCalendar=true'
+    'https://cal.com/richard-abrich/30min?overlayCalendar=true'
 
 export function detectBookingProvider(url) {
     if (!url) {
@@ -12,13 +11,13 @@ export function detectBookingProvider(url) {
     try {
         const parsed = new URL(url)
         const host = parsed.hostname.toLowerCase()
-        if (host.includes('cal.com')) {
+        if (host === 'cal.com' || host.endsWith('.cal.com')) {
             return 'calcom'
         }
-        if (host.includes('calendly.com')) {
+        if (host === 'calendly.com' || host.endsWith('.calendly.com')) {
             return 'calendly'
         }
-        if (host.includes('clockwise.com')) {
+        if (host === 'clockwise.com' || host.endsWith('.clockwise.com')) {
             return 'clockwise'
         }
         return 'other'
