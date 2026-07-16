@@ -13,7 +13,7 @@ const CarouselSection = () => {
         "Record once. Replay deterministically and locally.",
         "Healthy runs make zero model calls.",
         "Drift is resolved, reviewed, or refused.",
-        "Hosted browser execution is launching now.",
+        "Choose local, hosted, or customer-controlled execution.",
     ];
 
     useEffect(() => {
@@ -71,9 +71,10 @@ export default function Home({ githubStats }) {
                                 </span>
                                 {githubStats && githubStats.stars > 0 && (
                                     <a
-                                        href="https://github.com/OpenAdaptAI/openadapt-flow"
+                                        href="https://github.com/OpenAdaptAI/OpenAdapt"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        data-testid="github-proof"
                                         onClick={() =>
                                             track(EVENTS.GITHUB_CLICK, {
                                                 location: 'hero_stars',
@@ -83,7 +84,7 @@ export default function Home({ githubStats }) {
                                         style={{ border: '1px solid var(--hairline)' }}
                                     >
                                         <span aria-hidden="true">★</span>
-                                        {formatStars(githubStats.stars)} on openadapt-flow
+                                        {formatStars(githubStats.stars)} stars on OpenAdapt
                                         <span className="text-ink-3">
                                             · {githubStats.forks} forks
                                         </span>
@@ -102,10 +103,10 @@ export default function Home({ githubStats }) {
                                 for an operator.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
-                                The browser workflow path is Beta and available
-                                today. Windows is Experimental; macOS, RDP, and
-                                Citrix remain Research.{' '}
-                                <Link href="#product-status">See the maturity matrix.</Link>
+                                Start with the supported browser path, then run
+                                through the local engine, managed control plane,
+                                or a qualified customer boundary.{' '}
+                                <Link href="#product-status">See how deployment works.</Link>
                             </p>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />

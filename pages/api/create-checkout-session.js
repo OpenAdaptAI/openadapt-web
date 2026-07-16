@@ -82,7 +82,7 @@ function sendError(req, res, status, payload) {
 
     res.setHeader('content-type', 'text/html; charset=utf-8')
     return res.status(status).send(
-        `<!doctype html><title>Hosted checkout unavailable</title><p>${payload.message}</p><p><a href="/#pricing">Return to launch options</a></p>`
+        `<!doctype html><title>Complete your OpenAdapt setup</title><p>${payload.message}</p><p><a href="/#pricing">Return to launch options</a></p>`
     )
 }
 
@@ -107,7 +107,7 @@ export default async function handler(req, res) {
         return sendError(req, res, 503, {
             error: 'checkout_not_configured',
             message:
-                'Hosted checkout is temporarily unavailable. Please contact us to complete setup.',
+                'We could not open secure checkout. Please try again or contact us.',
         })
     }
 
@@ -127,7 +127,7 @@ export default async function handler(req, res) {
             return sendError(req, res, 503, {
                 error: 'checkout_offer_unverified',
                 message:
-                    'Hosted checkout is temporarily unavailable because the current offer could not be verified.',
+                    'We could not open secure checkout. Please try again or contact us.',
             })
         }
 

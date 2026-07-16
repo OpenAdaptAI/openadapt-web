@@ -11,7 +11,7 @@ export default function LendingPage() {
                 <title>Mortgage & Lending Automation — Loan-File Data Entry | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles demonstrated loan-file workflows into governed automation. Original recordings stay local; approved sanitized derivatives may cross a declared boundary. Browser workflows are supported; native LOS automation remains experimental."
+                    content="OpenAdapt compiles demonstrated browser-based loan-file workflows into governed automation, with customer-controlled deployment options for private and regulated runtime boundaries."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/lending" />
                 <meta property="og:title" content="Mortgage & Lending Automation | OpenAdapt" />
@@ -64,9 +64,9 @@ export default function LendingPage() {
                         exact hash. Live observations can contain borrower
                         data again, so they remain inside the declared managed,
                         BYOC, or on-prem trusted runtime boundary. Browser
-                        workflows are the supported path today. Native desktop
-                        LOS automation, including Encompass, is experimental
-                        and must be qualified rather than assumed.
+                        workflows use the managed path; private or
+                        deployment-specific LOS workflows are qualified inside
+                        a customer-controlled deployment.
                     </p>
                 </div>
 

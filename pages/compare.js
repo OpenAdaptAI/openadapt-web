@@ -90,8 +90,8 @@ const rows = [
         browser: 'Browser with local or cloud services',
     },
     {
-        dimension: 'Current coverage',
-        openadapt: 'Browser Beta; Windows Experimental; RDP and Citrix Research',
+        dimension: 'Best-fit scope',
+        openadapt: 'Repeated browser workflows with local, managed, or customer-controlled execution',
         rpa: 'Mature desktop and browser coverage',
         agents: 'Broad screen coverage; provider-specific',
         browser: 'Browser only',
@@ -368,7 +368,7 @@ export default function ComparePage() {
                     </p>
                     <p className="mt-4 text-sm">
                         <Link href="/#product-status" className="text-accent">
-                            Check current product maturity
+                            Review execution and deployment options
                         </Link>
                     </p>
                 </section>

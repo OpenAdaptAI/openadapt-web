@@ -15,7 +15,7 @@ const paths = [
     {
         audience: 'Automation & operations',
         title: 'Launch hosted browser workflows',
-        body: 'Subscribe, record a browser workflow, inspect the compiled program and reports, then operate deterministic runs from the hosted control plane. Desktop and remote-display backends remain separate validation paths.',
+        body: 'Subscribe, record a browser workflow, inspect the compiled program and reports, then operate deterministic runs from the hosted control plane.',
         primary: { label: 'Start hosted', href: '#pricing' },
         secondary: { label: 'Review the benchmark', href: '/compare' },
     },

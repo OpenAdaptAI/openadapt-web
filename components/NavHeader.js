@@ -16,7 +16,7 @@ const NAV_LINKS = [
     { label: 'Lending', href: '/solutions/lending' },
     { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },
-    { label: 'Maturity', href: '/#product-status' },
+    { label: 'How it runs', href: '/#product-status' },
     { label: 'Download', href: '/download' },
     { label: 'Launch', href: '/#pricing' },
     { label: 'About', href: '/about' },

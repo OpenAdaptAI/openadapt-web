@@ -36,14 +36,14 @@ export default function IndustriesGrid({
             title: 'Healthcare clinics',
             href: '/solutions/healthcare',
             descriptions:
-                'Referral and fax intake, EMR data entry and extraction; evaluate web EMRs today. Desktop and VDI EMRs remain experimental design-partner work.',
+                'Referral and fax intake, plus data entry and extraction across approved browser-based EMR workflows.',
             logo: '/images/noun-healthcare.svg',
         },
         {
             title: 'Mortgage & lending ops',
             href: '/solutions/lending',
             descriptions:
-                'Loan-file data extraction and entry with an explicit artifact and runtime boundary. Browser workflows are supported; native LOS work remains experimental.',
+                'Loan-file data extraction and entry across approved browser queues, forms, portals, and LOS pages.',
             logo: '/images/noun-finance.svg',
         },
         {

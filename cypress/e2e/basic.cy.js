@@ -41,23 +41,32 @@ describe('public product truth', () => {
         cy.get('a[href$="#open-source"]').should('exist')
         cy.get('a[href$="#product-status"]').should('exist')
         cy.get('a[href="/security"]').should('exist')
+        cy.get('[data-testid="github-proof"]')
+            .should('have.attr', 'href', 'https://github.com/OpenAdaptAI/OpenAdapt')
+        cy.get('[data-testid="github-proof"]')
+            .should('contain.text', 'stars on OpenAdapt')
+            .and('contain.text', 'forks')
     })
 
-    it('states repair, maturity, and commercial boundaries', () => {
+    it('explains the governed workflow and execution choices', () => {
         cy.contains('What “repair” means, and where it stops').should('be.visible')
         cy.contains('Unsupported drift').should('be.visible')
         cy.get('#product-status').within(() => {
-            cy.contains('Browser recording and replay').should('be.visible')
-            cy.contains('Research spike').should('be.visible')
-            cy.contains('Managed hosted execution').should('be.visible')
-            cy.contains('Launching · browser').should('be.visible')
+            cy.contains('One governed workflow, end to end').should('be.visible')
+            cy.contains('Capture the workflow').should('be.visible')
+            cy.contains('Run deterministically').should('be.visible')
+            cy.contains('Managed browser execution').should('be.visible')
+            cy.contains('Customer-controlled deployment').should('be.visible')
+            cy.contains('Research spike').should('not.exist')
+            cy.contains('Experimental').should('not.exist')
         })
         cy.get('#pricing').within(() => {
             cy.contains('Run it yourself or launch with us').should('be.visible')
-            cy.contains('Launching now').should('be.visible')
-            cy.contains('Offer unavailable').should('be.visible')
-            cy.contains('Hosted checkout unavailable').should('be.disabled')
-            cy.contains('could not be verified').should('be.visible')
+            cy.contains('Managed browser').should('be.visible')
+            cy.contains('Hosted execution').should('be.visible')
+            cy.contains('Start with our team').should('be.visible')
+            cy.contains('Offer unavailable').should('not.exist')
+            cy.contains('Hosted checkout unavailable').should('not.exist')
             cy.contains('$500').should('not.exist')
             cy.contains('workflow runs/month').should('not.exist')
             cy.contains('approved sanitized copy').should('be.visible')
@@ -89,12 +98,12 @@ describe('public product truth', () => {
             .and('have.text', 'Up to 10,000 workflow runs/month')
     })
 
-    it('keeps the maturity and availability routes reachable on mobile', () => {
+    it('keeps deployment and launch routes reachable on mobile', () => {
         cy.viewport(375, 667)
         cy.visit('/')
         cy.get('button[aria-controls="nav-mobile-menu"]').click()
         cy.get('#nav-mobile-menu').within(() => {
-            cy.contains('Maturity').scrollIntoView().should('be.visible')
+            cy.contains('How it runs').scrollIntoView().should('be.visible')
             cy.contains('Launch').scrollIntoView().should('be.visible')
             cy.contains('Open source').should('have.attr', 'href').and(
                 'include',
@@ -182,7 +191,8 @@ describe('public product truth', () => {
         cy.get('h1')
             .should('contain.text', 'browser queues, forms, and portals')
             .and('not.contain.text', 'Encompass')
-        cy.contains('Encompass, is experimental').should('be.visible')
+        cy.contains('customer-controlled deployment').should('be.visible')
+        cy.contains('experimental').should('not.exist')
 
         cy.visit('/safety')
         cy.get('h1').should('contain.text', 'needs verified identity')

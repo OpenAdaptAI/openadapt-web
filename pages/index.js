@@ -17,6 +17,11 @@ import AudiencePaths from '@components/AudiencePaths'
 import SafetyBand from '@components/SafetyBand'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
 
+const GITHUB_REPOSITORY = 'OpenAdaptAI/OpenAdapt'
+// Verified against the canonical repository on 2026-07-16. Deploys refresh
+// these values from GitHub; this snapshot prevents a network miss becoming 0/0.
+const GITHUB_STATS_FALLBACK = { stars: 1645, forks: 258 }
+
 const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -33,7 +38,7 @@ const organizationSchema = {
         'Open-source governed compiler for repeated GUI work. OpenAdapt turns a recorded demonstration into a deterministic, locally executable workflow, proposes reviewable repairs under drift, and halts when configured verification fails.',
     foundingDate: '2023',
     sameAs: [
-        'https://github.com/OpenAdaptAI/openadapt-flow',
+        'https://github.com/OpenAdaptAI/OpenAdapt',
         'https://x.com/OpenAdaptAI',
         'https://www.linkedin.com/company/openadapt-ai',
         'https://discord.gg/yF527cQbDG',
@@ -117,18 +122,19 @@ const faqSchema = {
 }
 
 export async function getStaticProps() {
-    // Fetch real GitHub social proof at build time so the number is accurate
-    // on each deploy without a client-side request. Falls back to a known-good
-    // floor if the build host has no network.
-    let githubStats = { stars: 0, forks: 0 }
+    // Fetch real GitHub social proof at build time without a client request.
+    let githubStats = { ...GITHUB_STATS_FALLBACK }
     try {
         const res = await fetch(
-            'https://api.github.com/repos/OpenAdaptAI/openadapt-flow',
+            `https://api.github.com/repos/${GITHUB_REPOSITORY}`,
             { headers: { Accept: 'application/vnd.github+json' } }
         )
         if (res.ok) {
             const data = await res.json()
-            if (typeof data.stargazers_count === 'number') {
+            if (
+                typeof data.stargazers_count === 'number' &&
+                typeof data.forks_count === 'number'
+            ) {
                 githubStats = {
                     stars: data.stargazers_count,
                     forks: data.forks_count,
@@ -136,7 +142,7 @@ export async function getStaticProps() {
             }
         }
     } catch (err) {
-        // keep the fallback floor
+        // Keep the dated, verified snapshot rather than displaying zeroes.
     }
     const { getHostedOffer } = await import('../lib/hostedOffer')
     const hostedOffer = await getHostedOffer()
