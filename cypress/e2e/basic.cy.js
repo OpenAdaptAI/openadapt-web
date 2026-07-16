@@ -31,8 +31,34 @@ describe('public product truth', () => {
             cy.contains('Launching now').should('be.visible')
             cy.contains('Start hosted subscription').should('be.visible')
             cy.contains('$500').should('not.exist')
+            cy.contains('workflow runs/month').should('not.exist')
             cy.contains('sanitized derivative').should('be.visible')
         })
+    })
+
+    it('renders the Stripe Product run allowance without a website fallback', () => {
+        cy.intercept('GET', '**/_next/data/**/pricing.json*', {
+            statusCode: 200,
+            body: {
+                pageProps: {
+                    hostedOffer: {
+                        amount: '$500.00',
+                        cadence: '/month',
+                        product: 'OpenAdapt Cloud',
+                        monthlyRunCap: 10000,
+                    },
+                },
+                __N_SSG: true,
+            },
+        }).as('hostedOffer')
+
+        cy.visit('/about')
+        cy.window().then((win) => win.next.router.push('/pricing'))
+        cy.wait('@hostedOffer')
+        cy.location('pathname').should('equal', '/pricing')
+        cy.get('[data-testid="hosted-run-cap"]')
+            .should('be.visible')
+            .and('have.text', 'Up to 10,000 workflow runs/month')
     })
 
     it('keeps the maturity and availability routes reachable on mobile', () => {
