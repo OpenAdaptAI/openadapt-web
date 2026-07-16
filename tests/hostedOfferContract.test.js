@@ -47,6 +47,13 @@ test('refuses a missing or malformed Product run cap rather than inventing one',
     assert.equal(hostedOfferFromPrice(recurringPrice('not-a-number')), null)
 })
 
+test('refuses a valid run cap that differs from the fixed launch contract', () => {
+    for (const value of ['1', '500', '9999', '10001', '20000']) {
+        assert.equal(parseMonthlyRunCap({ monthly_run_cap: value }), Number(value))
+        assert.equal(hostedOfferFromPrice(recurringPrice(value)), null)
+    }
+})
+
 test('rejects a Price that cannot back recurring Checkout', () => {
     assert.equal(hostedOfferFromPrice({ ...recurringPrice(), active: false }), null)
     assert.equal(hostedOfferFromPrice({ ...recurringPrice(), type: 'one_time' }), null)
