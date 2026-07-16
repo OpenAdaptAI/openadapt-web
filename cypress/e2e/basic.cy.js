@@ -119,22 +119,49 @@ describe('public product truth', () => {
         })
 
         cy.visit('/compare')
+        cy.get('h1').should(
+            'contain.text',
+            'Choose repeatable automation for work that repeats.'
+        )
+        cy.get('#side-by-side').within(() => {
+            cy.contains('Choose by the operating model you need.').should(
+                'be.visible'
+            )
+            cy.contains('Repeated, consequential browser workflows').should(
+                'be.visible'
+            )
+            cy.contains('Novel or changing tasks').should('be.visible')
+        })
         cy.get('#benchmark-evidence').within(() => {
-            cy.contains('In a bounded browser benchmark').should('be.visible')
+            cy.contains('On MockMed').should('be.visible')
+            cy.contains('Faster repeat runs without per-run model spend.').should(
+                'be.visible'
+            )
             cy.contains('100 compiled replays').should('not.exist')
             cy.contains('$3/$15').should('not.exist')
             cy.contains('introductory').should('not.exist')
-        })
-        cy.contains('A bounded field cross-check').parent().within(() => {
-            cy.contains('does not establish production EMR reliability').should(
-                'be.visible'
-            )
             cy.contains('resets daily').should('not.exist')
             cy.contains('N=10').should('not.exist')
             cy.contains(
-                'Review scope, samples, demo limitations, pricing basis, and raw results'
+                'Method, raw results, and rerun instructions'
+            ).should('have.attr', 'href').and('include', 'benchmark/BENCHMARK.md')
+            cy.contains(
+                'OpenEMR cross-check'
             ).should('have.attr', 'href').and('include', 'openemr/BENCHMARK.md')
         })
+        cy.contains("We'd rather tell you").should('not.exist')
+        cy.contains('Versus traditional RPA platforms').should('not.exist')
+
+        cy.viewport(375, 812)
+        cy.visit('/compare')
+        cy.contains('Scroll horizontally to compare all approaches.').should(
+            'be.visible'
+        )
+        cy.get('#side-by-side [role="region"]')
+            .should('be.visible')
+            .and('have.attr', 'tabindex', '0')
+        cy.contains('Start hosted').scrollIntoView().should('be.visible')
+        cy.contains('Book a workflow review').should('be.visible')
     })
 
     it('keeps buyer claims inside the shipped browser and tested safety scope', () => {
