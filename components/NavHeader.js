@@ -17,6 +17,7 @@ const NAV_LINKS = [
     { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },
     { label: 'Maturity', href: '/#product-status' },
+    { label: 'Download', href: '/download' },
     { label: 'Launch', href: '/#pricing' },
     { label: 'About', href: '/about' },
     {

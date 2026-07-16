@@ -105,6 +105,9 @@ export default function Footer() {
                         <a href="/#product-status" className={styles.link}>
                             Maturity
                         </a>
+                        <a href="/download" className={styles.link}>
+                            Download
+                        </a>
                         <a href="/about" className={styles.link}>
                             About
                         </a>
