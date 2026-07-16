@@ -95,22 +95,17 @@ export default function Home({ githubStats }) {
                                 deterministic workflows.
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                Record a task once. OpenAdapt compiles it into a
-                                locally executable program that makes no model
-                                calls on a healthy run. When the interface
-                                drifts, it deterministically re-resolves the
-                                target, optionally proposes an AI-assisted
-                                repair, or halts when configured verification
-                                cannot establish a safe next step.
+                                Record a repeated browser task once. Replay it
+                                locally with no model calls on healthy runs. When
+                                the interface changes, OpenAdapt re-resolves from
+                                evidence, proposes a reviewable repair, or stops
+                                for an operator.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
-                                The browser record → compile → replay path is
-                                available today. Windows UIA is locally proven
-                                but experimental; macOS, RDP, and Citrix are not
-                                validated production paths. The intended wedge
-                                is repeated, consequential work that is too
-                                integration-hostile for conventional RPA and too
-                                important to re-reason through on every run.
+                                The browser workflow path is Beta and available
+                                today. Windows is Experimental; macOS, RDP, and
+                                Citrix remain Research.{' '}
+                                <Link href="#product-status">See the maturity matrix.</Link>
                             </p>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />

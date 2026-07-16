@@ -24,17 +24,14 @@ export default function LendingPage() {
                     OpenAdapt for mortgage &amp; lending ops
                 </p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Your team copies the same loan-file data between documents
-                    and Encompass all day. OpenAdapt is built to compile that
-                    workflow once.
+                    Your team repeats the same borrower-data entry across browser
+                    queues, forms, and portals. Compile the workflow once.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    Record one pass of the task (open the loan documents,
-                    find the fields, enter them into the LOS) and OpenAdapt
-                    compiles it into an automation that runs on your own
-                    machines. Healthy runs make no cloud model calls, and when
-                    an LOS screen changes, the fix is proposed as a reviewable
-                    diff.
+                    Record a repeated browser task once and OpenAdapt compiles it
+                    into a local program. Healthy runs make no model calls. When
+                    the interface changes, OpenAdapt can re-resolve from evidence,
+                    propose a reviewable repair, or halt for an operator.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
@@ -78,14 +75,12 @@ export default function LendingPage() {
                 </h2>
                 <ul className="mt-4 space-y-3">
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Turn a recorded loan-file session into an automation
-                        that moves borrower data between documents and your
-                        LOS screens.
+                        Replay a demonstrated borrower-data workflow across
+                        approved browser queues, forms, portals, and LOS pages.
                     </li>
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Extract fields from loan documents into your LOS, and
-                        pull data back out for disclosures, portals, and
-                        spreadsheets.
+                        Move demonstrated fields between browser-accessible LOS,
+                        disclosure, portal, and spreadsheet workflows.
                     </li>
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         Hand QC and compliance an illustrated report of every

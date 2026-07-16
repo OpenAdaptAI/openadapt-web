@@ -17,11 +17,7 @@ export const faqItems = [
     },
     {
         question: 'Does my data leave my machines?',
-        answer: 'Self-hosted runs remain local by default. For hosted or cross-boundary use, OpenAdapt creates a sanitized derivative rather than assuming compilation removed PHI. The sanitizer inventories and transforms supported content, rescans it, records a manifest and hash, and refuses unresolved content. Policy can require local review and exact-hash approval. Hosted recording push registers provenance; a runnable bundle additionally requires local compile, strict lint, policy certification, successful replay, bundle sanitation/approval, and a one-time challenge-bound operator attestation. Runtime screenshots can reintroduce PHI, so they remain inside the declared trusted execution boundary.',
-    },
-    {
-        question: 'Does hosted validation certify my workflow?',
-        answer: 'No. validate-hosted is operator self-attestation, signed with the ingest token. It binds exact recording and bundle hashes, compiler provenance, strict lint, policy, derived low or consequential risk class, and a matching replay report to a fresh one-time challenge. Cloud verifies its exact policy and risk-class allowlists, requires a compiler version deployed by the runner, and consumes the challenge once, but it did not independently witness the local replay. Independent certification requires a separately controlled evaluator and signing identity.',
+        answer: 'Self-hosted runs remain local by default. Hosted upload accepts an approved sanitized copy, not the original recording and not an assumption that compilation removed sensitive data. Live screenshots can contain sensitive data again, so they stay inside the declared managed, customer-controlled, or on-prem runtime boundary. See the security page for the exact admission and review controls.',
     },
     {
         question: 'Is OpenAdapt free?',
