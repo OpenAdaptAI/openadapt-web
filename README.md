@@ -35,19 +35,12 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 
 ### Booking configuration
 
-Set the canonical Cal.com event for inline booking in `.env.local`:
+Booking is code-owned and always routes to the canonical Cal.com event:
 
-```bash
-NEXT_PUBLIC_BOOKING_URL=https://cal.com/richard-abrich/30min?overlayCalendar=true
-```
+`https://cal.com/richard-abrich/30min?overlayCalendar=true`
 
-An older Calendly deployment can still use the compatibility variable:
-
-```bash
-NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/your-org/intro-call
-```
-
-Clockwise links are supported as link-only fallback and are not iframed.
+Deploy-time booking-provider overrides are intentionally ignored so stale
+environment variables cannot redirect the homepage form or `/book` embed.
 
 ## Deployment
 

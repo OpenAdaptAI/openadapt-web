@@ -44,13 +44,12 @@ export default function BookingEmbed({ name = '', email = '' }) {
         )
     }
 
-    if (provider !== 'calendly' && provider !== 'calcom') {
-        const providerLabel = provider === 'clockwise' ? 'Clockwise' : 'your booking provider'
+    if (provider !== 'calcom') {
         return (
             <div className="rounded-xl border border-amber-700/40 bg-amber-100 px-4 py-5 text-amber-900">
                 <p className="text-sm">
-                    {providerLabel} does not support secure inline embedding on this page.
-                    Open booking in a new tab instead.
+                    The booking destination is invalid. Use the contact form
+                    while we restore the canonical Cal.com scheduler.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">
                     <a
