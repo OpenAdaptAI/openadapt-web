@@ -188,6 +188,16 @@ describe('public product truth', () => {
             cy.contains('approved sanitized copy').should('be.visible')
         })
 
+        cy.get('#industries').within(() => {
+            cy.contains("Who it's for").should('be.visible')
+            cy.contains('Automation teams & BPO operators').should('be.visible')
+            cy.contains('RCM & vertical-software vendors').should('be.visible')
+            cy.contains('Regulated enterprise operations').should('be.visible')
+            cy.contains('Healthcare workflow reference').should('be.visible')
+            cy.contains('Lending operations reference').should('be.visible')
+            cy.contains('Mortgage & lending ops').should('not.exist')
+        })
+
         cy.visit('/solutions/healthcare')
         cy.get('h1').should('contain.text', 'browser-based intake work')
         cy.contains('prove production EMR safety').should('be.visible')
@@ -196,8 +206,13 @@ describe('public product truth', () => {
 
         cy.visit('/solutions/lending')
         cy.get('h1')
-            .should('contain.text', 'browser queues, forms, and portals')
+            .should('contain.text', 'Prefer supported APIs')
+            .and('contain.text', 'remaining UI-only browser gap')
             .and('not.contain.text', 'Encompass')
+            .and('not.contain.text', 'Mortgage')
+        cy.contains('not evidence of a production lending integration').should(
+            'be.visible'
+        )
         cy.contains('customer-controlled deployment').should('be.visible')
         cy.contains('experimental').should('not.exist')
         cy.get('[data-testid="lending-evidence-placeholder"]')
