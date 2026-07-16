@@ -1,16 +1,22 @@
-describe('empty spec', () => {
-    beforeEach(() => {
-        cy.visit('/')
+const BOOKING_URL =
+    'https://cal.com/richard-abrich/30min?overlayCalendar=true'
+
+function assertCanonicalBooking() {
+    cy.get('iframe[title="Book a call with OpenAdapt"]')
+        .should('have.attr', 'src')
+        .and('equal', BOOKING_URL)
+    cy.get('iframe[src*="calendly.com"]').should('not.exist')
+}
+
+describe('canonical booking destination', () => {
+    it('uses Cal.com on the dedicated booking page', () => {
+        cy.visit('/book')
+        assertCanonicalBooking()
     })
 
-    /*
-  it('displays the resources text', () => {
-    cy.get('h1')
-    .contains('Next.js Toolbox');
-  })
-  it('renders the form', () => {
-    cy.get('form')
-    .should('be.visible')
-  })
-  */
+    it('uses Cal.com after continuing through the homepage form', () => {
+        cy.visit('/')
+        cy.contains('Skip form and book now').click()
+        assertCanonicalBooking()
+    })
 })
