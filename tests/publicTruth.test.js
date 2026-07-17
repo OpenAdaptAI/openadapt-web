@@ -72,6 +72,8 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
         'Partner qualification',
         'Design partner needed',
         'Reference lifecycle accepted',
+        'Scoped acceptance passed',
+        'Scoped TextEdit evidence accepted',
         'Acceptance in progress',
         'No ICA/HDX evidence',
     ]) {
@@ -81,6 +83,24 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
     assert.match(product, /RDP evidence is not treated as Citrix evidence/)
     assert.match(product, /Evidence state/)
     assert.match(product, /not in the hosted browser launch candidate/)
+    assert.match(product, /20260717-candidate-56759c8-v2 in-tree WinForms matrix completed 3\/3 trials/)
+    assert.match(product, /independent SQLite oracle confirmed 3\/3 effects/)
+    assert.match(product, /stale-target and ambiguous-target controls each refused 3\/3/)
+    assert.match(product, /not arbitrary Windows applications or hosted desktop/)
+    assert.match(product, /preserves earlier rejected diagnostic runs/)
+    assert.match(product, /candidate b1b61a5 completed 3\/3 exact-byte TextEdit trials/)
+    assert.match(product, /immutable batch report remains failed/)
+    assert.match(product, /SHA-256-bound adjudication verified actual process and temporary-file cleanup/)
+    assert.match(product, /not clean-machine, design-partner, production, or broad macOS evidence/)
+    assert.match(product, /0 silent incorrect successes and 0 over-halts/)
+    assert.match(
+        product,
+        /blob\/defafbae758a75c8e149d9693f2cffe1f2264b8c\/benchmark\/windows_uia\/results\.json/
+    )
+    assert.match(
+        product,
+        /blob\/ca1b522cad215875f7471782283f8f8bb8e6c998\/benchmark\/macos_native\/textedit_counted_3plus1_b1b61a5_20260717\.adjudication\.json/
+    )
     assert.doesNotMatch(pricing, /Offer unavailable|Hosted checkout unavailable/)
     assert.match(pricing, /Start with our team/)
     assert.doesNotMatch(llms, /Product Maturity|launching now|not implied/i)
