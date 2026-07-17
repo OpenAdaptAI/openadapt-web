@@ -27,10 +27,10 @@ export default function MyApp({ Component, pageProps }) {
             {/* New pages must add their own <Head> with unique title, description, canonical, and og:* tags */}
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>OpenAdapt — Record once. Compiled, self-healing desktop automation that runs on your premises.</title>
+                <title>OpenAdapt — Governed, deterministic automation for repeated GUI work</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles a recorded demonstration into a self-healing automation that replays on your own machines. Healthy replay makes zero model calls. Self-hosted and bring-your-own-cloud deployments keep PHI out of our infrastructure. Open source, MIT licensed."
+                    content="OpenAdapt compiles demonstrated GUI workflows into deterministic local programs. Healthy replay makes zero model calls; drift is resolved, reviewed, or refused under configured verification. MIT licensed."
                 />
                 <link
                     rel="apple-touch-icon"
@@ -61,8 +61,8 @@ export default function MyApp({ Component, pageProps }) {
                 {/* Open Graph */}
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="OpenAdapt.AI" />
-                <meta property="og:title" content="OpenAdapt — Show it once. It runs forever. On your premises." />
-                <meta property="og:description" content="OpenAdapt compiles a recorded demonstration into a self-healing automation that runs on your own machines. Open source, MIT licensed." />
+                <meta property="og:title" content="OpenAdapt — Governed, deterministic automation for repeated GUI work" />
+                <meta property="og:description" content="Compile a bounded demonstration into local deterministic replay, then resolve, review, or refuse interface drift. MIT licensed." />
                 <meta property="og:image" content="https://openadapt.ai/og.png" />
                 <meta property="og:image:type" content="image/png" />
                 <meta property="og:image:width" content="1024" />
@@ -72,25 +72,10 @@ export default function MyApp({ Component, pageProps }) {
                 {/* Twitter Card */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@OpenAdaptAI" />
-                <meta name="twitter:title" content="OpenAdapt — Show it once. It runs forever. On your premises." />
-                <meta name="twitter:description" content="Record a workflow once. OpenAdapt compiles it into a self-healing automation that runs on your own machines. MIT licensed." />
+                <meta name="twitter:title" content="OpenAdapt — Governed, deterministic GUI automation" />
+                <meta name="twitter:description" content="Compile a bounded demonstration into local deterministic replay, then resolve, review, or refuse interface drift. MIT licensed." />
                 <meta name="twitter:image" content="https://openadapt.ai/og.png" />
 
-                {/* Google tag (gtag.js) */}
-                <script
-                    async
-                    src="https://www.googletagmanager.com/gtag/js?id=G-CJ01Y19XJN"
-                ></script>
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-CJ01Y19XJN');
-            `,
-                    }}
-                />
             </Head>
             <NavHeader />
             <main className="font-sans">

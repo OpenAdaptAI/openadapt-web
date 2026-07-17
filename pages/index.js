@@ -3,6 +3,7 @@ import Head from 'next/head'
 
 import ContactBookingSection from '@components/ContactBookingSection'
 import Developers from '@components/Developers'
+import DriftOutcomes from '@components/DriftOutcomes'
 import EmailForm from '@components/EmailForm'
 import Faq, { faqItems } from '@components/Faq'
 import Footer from '@components/Footer'
@@ -10,9 +11,17 @@ import HowItWorks from '@components/HowItWorks'
 import IndustriesGrid from '@components/IndustriesGrid'
 import MastHead from '@components/MastHead'
 import Pricing from '@components/Pricing'
+import ProductStatus from '@components/ProductStatus'
 import ProofBand from '@components/ProofBand'
+import AudiencePaths from '@components/AudiencePaths'
 import SafetyBand from '@components/SafetyBand'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
+
+const GITHUB_REPOSITORY = 'OpenAdaptAI/OpenAdapt'
+// Verified against the canonical repository on 2026-07-16. Deploys refresh
+// these values from GitHub; the verified fallback prevents a network miss
+// becoming misleading 0/0 social proof.
+const GITHUB_STATS_FALLBACK = { stars: 1646, forks: 258 }
 
 const organizationSchema = {
     '@context': 'https://schema.org',
@@ -27,7 +36,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a self-healing automation that runs entirely on your own machines with no per-run model calls.',
+        'Open-source governed compiler for repeated GUI work. OpenAdapt turns a recorded demonstration into a deterministic, locally executable workflow, proposes reviewable repairs under drift, and halts when configured verification fails.',
     foundingDate: '2023',
     sameAs: [
         'https://github.com/OpenAdaptAI/OpenAdapt',
@@ -44,7 +53,7 @@ const organizationSchema = {
         'Machine Learning',
         'Large Language Models',
     ],
-    slogan: 'Show it once. It runs forever.',
+    slogan: 'Demonstrate a bounded workflow. Replay deterministically. Repair under governance.',
 }
 
 const softwareSchema = {
@@ -53,9 +62,9 @@ const softwareSchema = {
     name: 'OpenAdapt',
     alternateName: 'OpenAdapt.AI',
     applicationCategory: 'DeveloperApplication',
-    operatingSystem: 'Windows, macOS, Linux',
+    operatingSystem: 'Windows, macOS, Linux (browser workflow path)',
     description:
-        'Open-source demonstration compiler for desktop automation. Record a workflow once and OpenAdapt compiles it into a self-healing script that replays locally with no per-run model calls. Deterministic fallbacks (template, OCR, geometry) handle many UI changes, an optional local model assists unresolved ones, and the fix is proposed as a reviewable diff.',
+        'Open-source governed compiler for repeated GUI work. Record a browser workflow, compile it into a deterministic local program, and use configured verification to resolve, repair, or halt under interface drift.',
     url: 'https://openadapt.ai',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     author: {
@@ -64,7 +73,7 @@ const softwareSchema = {
         url: 'https://openadapt.ai',
     },
     license: 'https://opensource.org/licenses/MIT',
-    codeRepository: 'https://github.com/OpenAdaptAI/OpenAdapt',
+    codeRepository: 'https://github.com/OpenAdaptAI/openadapt-flow',
     programmingLanguage: 'Python',
     offers: {
         '@type': 'Offer',
@@ -72,12 +81,13 @@ const softwareSchema = {
         priceCurrency: 'USD',
     },
     featureList: [
-        'Record a desktop workflow once as a demonstration',
+        'Compile a demonstrated, bounded browser workflow',
         'Compile demonstrations into editable automation scripts',
         'Local replay with zero per-run model cost',
-        'Self-healing: UI drift is repaired via a fallback ladder and proposed as a reviewable diff',
-        'Local-first: recordings, scripts, and replays stay on your infrastructure',
-        'PII/PHI data scrubbing for sensitive workflows',
+        'Deterministic UI re-resolution with auditable bundle updates',
+        'Optional AI-assisted repair subject to configured verification and policy',
+        'Original recordings stay local; approved sanitized derivatives may cross policy-approved boundaries',
+        'Local review and hash-bound approval for sanitized derivatives',
         'Illustrated audit report for every run',
     ],
     isAccessibleForFree: true,
@@ -90,7 +100,7 @@ const websiteSchema = {
     alternateName: 'OpenAdapt',
     url: 'https://openadapt.ai',
     description:
-        'Open-source demonstration compiler: record a desktop workflow once and it compiles into a self-healing automation that runs on your premises with no per-run model calls.',
+        'Open-source governed compiler: compile a bounded GUI demonstration into deterministic local replay, and resolve, review, or refuse interface drift.',
     publisher: {
         '@type': 'Organization',
         name: 'OpenAdapt.AI',
@@ -113,18 +123,19 @@ const faqSchema = {
 }
 
 export async function getStaticProps() {
-    // Fetch real GitHub social proof at build time so the number is accurate
-    // on each deploy without a client-side request. Falls back to a known-good
-    // floor if the build host has no network.
-    let githubStats = { stars: 1636, forks: 257 }
+    // Fetch real GitHub social proof at build time without a client request.
+    let githubStats = { ...GITHUB_STATS_FALLBACK }
     try {
         const res = await fetch(
-            'https://api.github.com/repos/OpenAdaptAI/OpenAdapt',
+            `https://api.github.com/repos/${GITHUB_REPOSITORY}`,
             { headers: { Accept: 'application/vnd.github+json' } }
         )
         if (res.ok) {
             const data = await res.json()
-            if (typeof data.stargazers_count === 'number') {
+            if (
+                typeof data.stargazers_count === 'number' &&
+                typeof data.forks_count === 'number'
+            ) {
                 githubStats = {
                     stars: data.stargazers_count,
                     forks: data.forks_count,
@@ -132,12 +143,14 @@ export async function getStaticProps() {
             }
         }
     } catch (err) {
-        // keep the fallback floor
+        // Keep the dated, verified fallback rather than displaying zeroes.
     }
-    return { props: { githubStats }, revalidate: 86400 }
+    const { getHostedOffer } = await import('../lib/hostedOffer')
+    const hostedOffer = await getHostedOffer()
+    return { props: { githubStats, hostedOffer }, revalidate: 300 }
 }
 
-export default function Home({ githubStats }) {
+export default function Home({ githubStats, hostedOffer }) {
     const [feedbackData, setFeedbackData] = useState({
         email: '',
         message: '',
@@ -175,7 +188,10 @@ export default function Home({ githubStats }) {
                 />
             </Head>
             <MastHead githubStats={githubStats} />
+            <AudiencePaths />
             <HowItWorks />
+            <DriftOutcomes />
+            <ProductStatus />
             <ProofBand />
             <SafetyBand />
             <IndustriesGrid
@@ -206,11 +222,11 @@ export default function Home({ githubStats }) {
                     margin: '0 auto 14px',
                     maxWidth: '560px',
                 }}>
-                    We&apos;re taking a small number of healthcare and lending
-                    pilots. OpenAdapt v1 is open source and under active
-                    development.
+                    OpenAdapt is launching managed browser execution now, with
+                    the same deterministic compiler available under MIT for
+                    local and customer-controlled deployment.
                 </p>
-                <a href="#book" style={{
+                <a href="#pricing" style={{
                     display: 'inline-block',
                     background: 'var(--accent)',
                     color: 'var(--on-accent, #fff)',
@@ -220,10 +236,10 @@ export default function Home({ githubStats }) {
                     borderRadius: '8px',
                     textDecoration: 'none',
                 }}>
-                    Book a pilot →
+                    Choose a launch path →
                 </a>
             </div>
-            <Pricing />
+                <Pricing hostedOffer={hostedOffer} />
             <Developers />
             {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
             <Faq />

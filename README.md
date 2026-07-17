@@ -1,15 +1,22 @@
 # openadapt-web
 
-The official website for [OpenAdapt.AI](https://openadapt.ai) - AI-first desktop automation.
+The official website for [OpenAdapt.AI](https://openadapt.ai), the governed
+compiler for repeated GUI workflows.
+
+**Lifecycle: Beta.** The website documents the evidence-bounded browser product
+and narrower Experimental/Research substrates. This label is not a statement
+that every described deployment path or target application is production-ready.
 
 ## Overview
 
 This is the Next.js-based landing page for OpenAdapt, featuring:
 
-- **Hero section** with demo video showcasing workflow automation
+- **Canonical product truth** centred on deterministic compiled replay
+- **Audience paths** for developers, automation teams, and regulated enterprises
+- **Execution paths** for local, managed browser, and customer-controlled operation
 - **Industries grid** showing use cases across different sectors
 - **Developer resources** and contribution information
-- **Email signup** for updates and early access
+- **Email signup** for product and launch updates
 - **Single-page contact + booking flow** on landing (`#book`)
 - **Booking page** for intro calls (`/book`)
 - **Contact intake form** for sales workflows (`/contact`)
@@ -48,26 +55,19 @@ The site is automatically deployed to Netlify on push to the main branch.
 
 - **Production**: [openadapt.ai](https://openadapt.ai)
 
-## Related Repositories
+## Product Repositories
 
 | Repository | Description |
 |------------|-------------|
-| [OpenAdapt](https://github.com/OpenAdaptAI/OpenAdapt) | Main application and meta-package |
-| [openadapt-capture](https://github.com/OpenAdaptAI/openadapt-capture) | GUI interaction capture library |
-| [openadapt-ml](https://github.com/OpenAdaptAI/openadapt-ml) | Machine learning models and training |
-| [openadapt-evals](https://github.com/OpenAdaptAI/openadapt-evals) | Benchmark evaluation framework |
-| [openadapt-consilium](https://github.com/OpenAdaptAI/openadapt-consilium) | Multi-model consensus library |
-| [openadapt-herald](https://github.com/OpenAdaptAI/openadapt-herald) | Git history to social media automation |
-| [openadapt-crier](https://github.com/OpenAdaptAI/openadapt-crier) | Event-driven Telegram approval bot |
-| [openadapt-wright](https://github.com/OpenAdaptAI/openadapt-wright) | Dev automation worker (Ralph Loop) |
-| [openadapt-grounding](https://github.com/OpenAdaptAI/openadapt-grounding) | UI grounding models |
-| [openadapt-viewer](https://github.com/OpenAdaptAI/openadapt-viewer) | Recording visualization |
-| [openadapt-privacy](https://github.com/OpenAdaptAI/openadapt-privacy) | PII scrubbing |
-| [openadapt-retrieval](https://github.com/OpenAdaptAI/openadapt-retrieval) | Demo retrieval |
-| [openadapt-tray](https://github.com/OpenAdaptAI/openadapt-tray) | System tray app |
-| [openadapt-telemetry](https://github.com/OpenAdaptAI/openadapt-telemetry) | Usage telemetry |
+| [openadapt-flow](https://github.com/OpenAdaptAI/openadapt-flow) | Canonical engine: compiler, governed runtime, validation, and limits |
+| [OpenAdapt](https://github.com/OpenAdaptAI/OpenAdapt) | Installer and unified CLI that routes `openadapt flow` to the engine |
+| [openadapt-desktop](https://github.com/OpenAdaptAI/openadapt-desktop) | Desktop authoring and operator surface, in development |
+| [openadapt-evals](https://github.com/OpenAdaptAI/openadapt-evals) | Evaluation and benchmark research |
+| [openadapt-privacy](https://github.com/OpenAdaptAI/openadapt-privacy) | Optional PII/PHI scrubbing library |
 
-The website automatically discovers new `openadapt-*` repos from the [OpenAdaptAI](https://github.com/OpenAdaptAI) GitHub org.
+The public product story must not treat repository count as product breadth.
+Research and internal tools belong in reference material, not top-level
+positioning.
 
 ## License
 

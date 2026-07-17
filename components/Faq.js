@@ -1,27 +1,35 @@
 export const faqItems = [
     {
         question: 'What is OpenAdapt?',
-        answer: 'OpenAdapt is an open-source tool for automating desktop work. You do a task once while it records you, and it turns that recording into a script that runs on your own machines and repairs itself when the screen changes. A healthy run makes no cloud AI calls, so it costs nothing to run.',
+        answer: 'OpenAdapt is an open-source governed compiler for repeated GUI work. You demonstrate a task, it compiles the trace into a deterministic local program, and configured verification decides whether UI drift can be re-resolved, needs a proposed repair, or must halt. A healthy replay makes no model calls.',
     },
     {
         question: 'How is OpenAdapt different from RPA tools like UiPath?',
-        answer: 'With traditional RPA, someone hand-builds the automation, and it breaks when the screen changes. With OpenAdapt you just record the task once. When the screen changes, it fixes itself and shows you the change to approve. And it runs entirely on your own machines.',
+        answer: 'Conventional RPA is broad and mature, especially on Windows, but workflows are usually assembled around selectors and integrations. OpenAdapt targets the narrower case where work is repetitive and consequential but the interface is visual, variable, or integration-hostile. It compiles a demonstration and uses a resolution ladder under drift rather than asking a model to re-plan every run.',
     },
     {
         question: 'How is OpenAdapt different from AI computer-use agents?',
-        answer: 'An AI agent works out your task from scratch on every run, so it is slow, unpredictable, and charges you each time. OpenAdapt learns the task once and replays it locally for free. Healthy replay makes zero model calls. When the screen changes, deterministic fallbacks (template, OCR, geometry) handle many UI changes, and an optional local model assists the rest.',
+        answer: 'A computer-use agent is appropriate for novel work because it can re-plan each run. OpenAdapt is for repeated work: healthy replay follows the compiled program locally with zero model calls. Under drift, deterministic structure, template, OCR, and geometry evidence run first. An optional model can propose a repair, but it does not make unsupported drift safe and remains subject to configured verification and policy.',
+    },
+    {
+        question: 'Does “repair” mean every UI change is handled automatically?',
+        answer: 'No. A target may be re-resolved deterministically, an optional model may propose a repair, an operator may teach a correction, or the run may halt as unsupported. Available evidence, identity coverage, postconditions, policy, and verifier configuration determine which outcome is allowed. OpenAdapt does not claim general adaptation to arbitrary application changes.',
     },
     {
         question: 'Does my data leave my machines?',
-        answer: 'In a self-hosted or bring-your-own-cloud deployment, no. Recordings, scripts, and replays all live on your own machines, and healthy replay makes zero model calls. When the screen changes, deterministic fallbacks (template, OCR, geometry) handle many UI changes; an optional model can assist the rest, and you can run that model on your own hardware inside your network, so PHI never enters our infrastructure. Tools for scrubbing PII and PHI are included, so you can clean captured data before anyone or anything sees it.',
+        answer: 'Self-hosted runs remain local by default. Hosted upload accepts an approved sanitized copy, not the original recording and not an assumption that compilation removed sensitive data. Live screenshots can contain sensitive data again, so they stay inside the declared managed, customer-controlled, or on-prem runtime boundary. See the security page for the exact admission and review controls.',
     },
     {
         question: 'Is OpenAdapt free?',
-        answer: 'Yes. OpenAdapt is MIT-licensed open source, free to use and modify. For regulated teams in healthcare and lending, we also run paid pilots with hands-on support: we help build your first workflows, set up review, and keep the automations running. Book a demo to talk about a pilot.',
+        answer: 'The engine is MIT-licensed and free to use or modify. When production checkout is qualified and explicitly enabled, hosted browser execution is a paid subscription whose price and billing period are confirmed in Stripe. Regulated and customer-controlled deployments are scoped separately because the substrate, data boundary, verifier, and operating responsibilities differ.',
+    },
+    {
+        question: 'Is managed hosted execution available?',
+        answer: 'Managed execution is scoped to approved browser workflows. The hosted control plane manages runs, reports, usage, and governed workflow updates. Direct subscription activation remains gated until the live checkout and account-return path complete launch qualification; workflow qualification is available through the team.',
     },
     {
         question: 'What software does OpenAdapt work with?',
-        answer: "OpenAdapt works from what is on the screen, not from an API or browser internals. Today it handles web apps, including web EMRs. Because it works from the screen, the same approach can reach desktop apps and software delivered over Citrix or remote desktop. Those adapters are in progress. The goal is to automate the desktop EMRs and loan systems that cloud tools can't touch, with no API integration project.",
+        answer: 'The supported launch path is repeated work in browser-based software. Workflows involving private systems, regulated runtime data, or deployment-specific effect checks can be qualified for a customer-controlled boundary. Technical evaluators can review the published engine limits before choosing a workflow.',
     },
 ]
 

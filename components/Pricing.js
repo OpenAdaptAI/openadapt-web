@@ -1,30 +1,15 @@
-import Link from 'next/link'
 import { useState } from 'react'
+import Link from 'next/link'
+
+const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
 
 /*
- * Pricing — three lanes, value-priced.
- *
- * Enterprise is the primary (visually recommended) card: on-prem, PHI never
- * leaves the building, inference runs on the customer's hardware at zero
- * metered cost. Hosted is a secondary, non-PHI / evaluation on-ramp priced on
- * outcome units (workflow-runs), never per-step / per-seat / per-VLM-call. OSS
- * stays MIT and honest.
- *
- * Hosted (Phase 0) is a real paid sign-up via Stripe Checkout. The Sign up CTA
- * POSTs to /api/create-checkout-session and redirects to Stripe Checkout. If
- * checkout is not configured yet (no keys), the API returns 503 and we surface
- * a friendly fallback.
- *
- * The onboarding framing follows NEXT_PUBLIC_CLOUD_APP_URL: when it is set the
- * cloud app is live, so checkout routes the customer into their dashboard and
- * the card reads as self-serve. When it is unset we onboard the first
- * customers by hand, so the card is honest that this is managed onboarding.
- *
- * Deliberately NOT shown anywhere: $/step, $/VLM-call, per-seat, or a raw
- * $/run meter. We price the outcome and the compliance; inference is bundled.
+ * Three delivery paths. The hosted amount is retrieved from Stripe at build
+ * time rather than duplicated in site code; Checkout confirms the same
+ * configured product and price before payment.
  */
 
-const GITHUB_URL = 'https://github.com/OpenAdaptAI/OpenAdapt'
+const GITHUB_URL = 'https://github.com/OpenAdaptAI/openadapt-flow'
 
 function Check() {
     return (
@@ -50,43 +35,79 @@ function FeatureList({ items }) {
     )
 }
 
-export default function Pricing() {
-    const [hostedLoading, setHostedLoading] = useState(false)
-    const [hostedError, setHostedError] = useState('')
+function HostedCheckoutButton({ available }) {
+    const [state, setState] = useState('idle')
+    const [message, setMessage] = useState('')
 
-    // When the cloud app is deployed, Hosted checkout routes the customer into
-    // their dashboard (subscription linked by email at first login), so the
-    // card reads as self-serve. Unset keeps the honest concierge framing.
-    const cloudAppConfigured = Boolean(process.env.NEXT_PUBLIC_CLOUD_APP_URL)
+    const startCheckout = async (event) => {
+        event.preventDefault()
+        setState('loading')
+        setMessage('')
 
-    // Concierge sign-up: POST to the checkout API, then redirect to Stripe
-    // Checkout. If checkout is not configured yet (no keys), the API returns
-    // 503 and we point the user at booking a call instead.
-    async function handleHostedSignup() {
-        setHostedError('')
-        setHostedLoading(true)
         try {
-            const res = await fetch('/api/create-checkout-session', {
+            const response = await fetch('/api/create-checkout-session', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'content-type': 'application/json' },
             })
-            const data = await res.json().catch(() => ({}))
-            if (res.ok && data.url) {
-                window.location.assign(data.url)
-                return
+            const payload = await response.json()
+            if (!response.ok || !payload.url) {
+                throw new Error('We could not open secure checkout. Please try again.')
             }
-            setHostedError(
-                data.message ||
-                    'Checkout is not available right now. Please book a call and we will set you up.'
-            )
-        } catch (err) {
-            setHostedError(
-                'Something went wrong starting checkout. Please book a call and we will set you up.'
-            )
-        } finally {
-            setHostedLoading(false)
+            window.location.assign(payload.url)
+        } catch (error) {
+            setState('error')
+            setMessage(error.message)
         }
     }
+
+    if (!available) {
+        return (
+            <Link
+                href="/#book"
+                data-testid="hosted-contact"
+                className="btn-ink block w-full text-center"
+            >
+                Start with our team
+            </Link>
+        )
+    }
+
+    return (
+        <form
+            action="/api/create-checkout-session"
+            method="post"
+            onSubmit={startCheckout}
+        >
+            <button
+                type="submit"
+                data-testid="hosted-checkout"
+                className="btn-ink w-full text-center disabled:cursor-wait disabled:opacity-60"
+                disabled={state === 'loading'}
+            >
+                {state === 'loading'
+                    ? 'Opening secure checkout…'
+                    : 'Start hosted subscription'}
+            </button>
+            {state === 'error' && (
+                <p role="alert" className="mt-3 text-xs leading-relaxed text-ink-3">
+                    {message}{' '}
+                    <Link href="/#book" className="text-accent underline">
+                        Contact us to complete setup.
+                    </Link>
+                </p>
+            )}
+        </form>
+    )
+}
+
+export default function Pricing({ hostedOffer = null }) {
+    const runCapLabel = monthlyRunCapLabel(hostedOffer?.monthlyRunCap)
+    const hostedOfferAvailable = Boolean(
+        hostedOffer?.amount &&
+        hostedOffer?.cadence &&
+        hostedOffer?.product &&
+        runCapLabel
+    )
 
     return (
         <section
@@ -94,15 +115,14 @@ export default function Pricing() {
             className="border-t-2 border-ink bg-ground px-5 py-16 md:py-20"
         >
             <div className="mx-auto max-w-5xl">
-                <p className="eyebrow text-center">Pricing</p>
+                <p className="eyebrow text-center">Launch options</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Priced on the outcome, not the click
+                    Run it yourself or launch with us
                 </h2>
                 <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    The engine is open source and free. When you need it in
-                    production, the AI is included in the price: no per-step,
-                    per-seat, or per-call metering. On-premises keeps your data
-                    in your building.
+                    Run the MIT-licensed engine yourself, use managed browser
+                    execution, or qualify a customer-controlled deployment.
+                    Hosted prices are confirmed by Stripe before payment.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -121,10 +141,10 @@ export default function Pricing() {
                         </p>
                         <FeatureList
                             items={[
-                                'Record → compile → replay, fully local',
-                                'Self-healing scripts, reviewable as diffs',
-                                'Self-host for full auditability',
-                                'The engine is MIT and always will be',
+                                'Browser artifacts stay local unless you explicitly push',
+                                'Deterministic re-resolution with auditable diffs',
+                                'Policy certification, fail-closed run gate, and reports',
+                                'MIT-licensed engine and CLI',
                             ]}
                         />
                         <div className="mt-6 flex-grow" />
@@ -137,66 +157,77 @@ export default function Pricing() {
                             View on GitHub
                         </a>
                         <p className="mt-3 text-center font-mono text-xs text-ink-3">
-                            pip install openadapt
+                            pip install openadapt-flow
                         </p>
                     </div>
 
-                    {/* Card 2 — Hosted (paid sign-up, concierge onboarding) */}
+                    {/* Card 2 — Hosted browser execution */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
                         <span className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
-                            {cloudAppConfigured
-                                ? 'Self-serve'
-                                : 'Managed onboarding'}
+                            Managed browser
                         </span>
                         <p className="eyebrow">Hosted</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
-                                $500
+                                {hostedOfferAvailable
+                                    ? hostedOffer.amount
+                                    : 'Hosted execution'}
                             </span>
-                            <span className="text-sm text-ink-3">
-                                /mo · up to 10,000 runs
-                            </span>
+                            {hostedOffer?.cadence && (
+                                <span className="text-sm text-ink-3">
+                                    {hostedOffer.cadence}
+                                </span>
+                            )}
                         </div>
+                        {hostedOffer?.product && (
+                            <p className="mt-1 font-mono text-xs text-ink-3">
+                                {hostedOffer.product}
+                            </p>
+                        )}
+                        {runCapLabel && (
+                            <p
+                                className="mt-2 text-sm font-semibold text-ink"
+                                data-testid="hosted-run-cap"
+                            >
+                                {runCapLabel}
+                            </p>
+                        )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            {cloudAppConfigured
-                                ? 'For teams without on-prem hardware who want a managed cloud runner. Sign up and your subscription links to your dashboard by email, so you are up and running the same day.'
-                                : 'For teams without on-prem hardware who want a managed cloud runner. We onboard you personally to start; the self-serve runner is rolling out.'}
+                            Bring an approved browser workflow to a managed
+                            control plane for repeat execution, reporting, and
+                            governed updates.
                         </p>
                         <FeatureList
                             items={[
-                                cloudAppConfigured
-                                    ? 'Sign up and land straight in your dashboard'
-                                    : 'We set you up personally, nothing for you to run',
-                                'Up to 10,000 workflow runs a month',
-                                'Hosted inference included at no extra cost',
-                                'No per-step or per-seat billing, no surprise charges',
+                                'Managed execution of approved browser workflows',
+                                'Deterministic healthy replay with zero model calls',
+                                'Run history, failure reports, usage, and governed updates',
+                                'Sanitized uploads admitted under declared policy',
+                                'Price and billing period confirmed in Stripe',
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
-                            Working with PHI or PII?{' '}
-                            <a
-                                href="#pricing-enterprise"
-                                className="text-accent underline"
-                            >
-                                Enterprise
-                            </a>{' '}
-                            runs OpenAdapt inside your own environment, so
-                            regulated data never enters our infrastructure.
+                            Hosted upload accepts an approved sanitized copy, not
+                            the original recording. Live screens can contain
+                            sensitive data again; workflows that expose PHI require
+                            a separately qualified customer-controlled boundary.{' '}
+                            <Link href="/security" className="text-accent underline">
+                                Review the security boundary.
+                            </Link>
                         </div>
                         <div className="mt-6 flex-grow" />
-                        <button
-                            type="button"
-                            onClick={handleHostedSignup}
-                            disabled={hostedLoading}
-                            className="btn-ink w-full text-center disabled:opacity-60"
-                        >
-                            {hostedLoading ? 'Starting checkout…' : 'Sign up'}
-                        </button>
-                        {hostedError && (
-                            <p className="mt-3 text-center text-xs leading-relaxed text-ink-3">
-                                {hostedError}
-                            </p>
-                        )}
+                        <HostedCheckoutButton available={hostedOfferAvailable} />
+                        <p className="mt-3 text-center text-xs leading-relaxed text-ink-3">
+                            By subscribing, you agree to the{' '}
+                            <Link href="/terms-of-service" className="text-accent underline">
+                                Terms of Service
+                            </Link>{' '}
+                            and{' '}
+                            <Link href="/privacy-policy" className="text-accent underline">
+                                acknowledge the Privacy Notice
+                            </Link>
+                            .
+                        </p>
                     </div>
 
                     {/* Card 3 — Enterprise (primary / recommended) */}
@@ -205,26 +236,29 @@ export default function Pricing() {
                         className="relative flex h-full flex-col rounded-2xl border-2 border-ink bg-panel p-6 shadow-[0_8px_32px_rgba(35,40,31,0.10)] md:p-7"
                     >
                         <span className="absolute -top-3 left-6 rounded-full bg-ink px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ground">
-                            Recommended
+                            Regulated deployment
                         </span>
                         <p className="eyebrow">Enterprise</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
-                                Talk to us
+                                Contact sales
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            For regulated teams in healthcare, lending, and
-                            other compliance-bound back-offices.
+                            For consequential workflows that require a
+                            customer-controlled data boundary. We qualify the
+                            substrate, artifact policy, effect oracle, and
+                            operating model before production use.
                         </p>
                         <FeatureList
                             items={[
-                                'On-prem, or managed by us inside your own cloud (single-tenant), so PHI never enters our infrastructure',
-                                'Inference runs on your hardware at zero metered cost',
-                                'Pilot first, then an annual platform license',
-                                'On-prem architecture built for BAA and SOC 2 requirements; formal attestation in progress',
-                                'Audit trail: every run writes an illustrated report',
-                                'Self-healing and fleet management included',
+                                'Qualify the substrate and safety boundary first',
+                                'Scope one workflow and one measurable outcome',
+                                'Execute in the customer-controlled environment',
+                                'Identity and effect checks configured per deployment',
+                                'Sanitized derivatives may cross approved boundaries',
+                                'Runtime PHI remains in the trusted execution environment',
+                                'Deployment, support, and compliance terms documented in scope',
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
@@ -243,72 +277,42 @@ export default function Pricing() {
                             href="/#book"
                             className="btn-ink w-full text-center"
                         >
-                            Book a demo
+                            Plan a regulated deployment
                         </Link>
                     </div>
                 </div>
 
                 {/*
-                 * Pilot: the paid on-ramp, not a fourth tier. One clear
-                 * engagement: we get one workflow live in 30 days against a
-                 * single agreed success measure, refunded if it misses. $15k
-                 * anchors the value (10-30% of a $30-75k annual license); a
-                 * founding-design-partner discount takes it to $10k to reward
-                 * and earn references from the first customers. The fee credits
-                 * toward the first-year license (NOT "toward the pilot": the fee
-                 * IS the pilot). Sales-led (book a call, then invoice), so the
-                 * CTA is a call, not a checkout.
+                 * Hosted launch and regulated deployment are separate offers;
+                 * checkout never implies a certification or regulated SLA.
                  */}
                 <div className="mt-6 flex flex-col gap-6 rounded-2xl border border-hairline bg-panel p-6 md:flex-row md:items-center md:justify-between md:p-7">
                     <div className="md:max-w-2xl">
-                        <p className="eyebrow">Pilot</p>
+                        <p className="eyebrow">Execution boundary</p>
                         <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink md:text-xl">
-                            Start with one workflow, live in 30 days.
+                            Choose the operating model that fits the workflow
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                            Pick one high-value, repetitive task. You
-                            demonstrate it once and OpenAdapt compiles it, so it
-                            is live in days, not a multi-week integration
-                            project. We agree one success measure up front and
-                            get it running end to end with checks that confirm
-                            it did the right thing. If it doesn&apos;t hit that
-                            measure, you pay nothing.
+                            Use managed browser execution for approved public web
+                            workflows. Choose a customer-controlled deployment
+                            when runtime data, private systems, or effect
+                            verification must remain inside your boundary.
                         </p>
                     </div>
                     <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
-                        <div className="md:text-right">
-                            <div className="flex items-baseline gap-2 md:justify-end">
-                                <span className="font-display text-xl font-semibold tracking-tight text-ink">
-                                    $10,000
-                                </span>
-                                <span className="text-sm text-ink-3 line-through">
-                                    $15,000
-                                </span>
-                            </div>
-                            <div className="font-mono text-xs text-accent">
-                                Founding pricing, for our first design partners
-                            </div>
-                            <div className="font-mono text-xs text-ink-3">
-                                credited toward your first-year license
-                            </div>
-                        </div>
                         <Link
                             href="/#book"
                             className="btn-ink w-full text-center md:w-auto"
                         >
-                            Book a call to scope a pilot
+                            Discuss deployment
                         </Link>
                     </div>
                 </div>
-                <p className="mx-auto mt-4 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
-                    Scope and price are confirmed before we begin. Full refund
-                    if the success criteria we agree up front aren&apos;t met.
-                </p>
-
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
-                    We price the outcome and the compliance, and include the AI
-                    in that price. No per-step, per-seat, or per-call charges
-                    anywhere.
+                    {hostedOfferAvailable
+                        ? 'The hosted subscription price shown above comes directly from Stripe and is confirmed again at checkout.'
+                        : 'Managed browser subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
+                    Regulated deployment and service terms are scoped separately.
                 </p>
             </div>
         </section>

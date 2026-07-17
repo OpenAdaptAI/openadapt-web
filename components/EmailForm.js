@@ -14,11 +14,13 @@ export default function EmailForm() {
         event.preventDefault()
         setIsSubmitting(true)
 
-        window.gtag('event', 'submit_form', {
-            event_category: 'Form',
-            event_label: 'email',
-            value: 1,
-        })
+        if (typeof window !== 'undefined' && window.gtag) {
+            window.gtag('event', 'submit_form', {
+                event_category: 'Form',
+                event_label: 'email',
+                value: 1,
+            })
+        }
 
         const formData = new FormData(event.target)
         /*
@@ -94,12 +96,13 @@ export default function EmailForm() {
                                 className="btn-ink disabled:opacity-50"
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? 'Sending...' : 'Register'}
+                        {isSubmitting ? 'Sending...' : 'Join updates'}
                             </button>
                         </div>
                     </form>
                     <p className="text-xs mt-2 font-light text-ink-3">
-                        Register for updates (we promise not to spam)
+                        Product updates and hosted launch information. This does
+                        not create an account or promise access.
                     </p>
                 </>
             )}

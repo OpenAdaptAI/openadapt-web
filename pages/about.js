@@ -16,7 +16,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for desktop automation: record a workflow once and it compiles into a self-healing script that runs on your own machines with no per-run model calls.',
+        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for GUI automation: compile a bounded workflow demonstration into deterministic replay, and resolve, review, or refuse interface drift under configured verification.',
     foundingDate: '2023',
     address: {
         '@type': 'PostalAddress',
@@ -59,7 +59,7 @@ export default function AboutPage() {
                 <title>About OpenAdapt | MLDSAI Inc.</title>
                 <meta
                     name="description"
-                    content="OpenAdapt is an open-source demonstration compiler for desktop automation, built in the open by MLDSAI Inc. in Toronto since 2023. MIT-licensed, developed on GitHub, published on PyPI."
+                    content="OpenAdapt is an open-source governed compiler for repeated GUI workflows, built in the open by MLDSAI Inc. in Toronto since 2023."
                 />
                 <link rel="canonical" href="https://openadapt.ai/about" />
                 <meta property="og:title" content="About OpenAdapt | MLDSAI Inc." />
@@ -90,14 +90,13 @@ export default function AboutPage() {
                     About OpenAdapt
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    OpenAdapt is an open-source demonstration compiler for
-                    desktop automation. You record yourself doing a task once,
-                    and it compiles that recording into a script that replays
-                    on your own machines. Healthy runs make no
-                    cloud model calls; a model is only invoked to heal the
-                    script when the UI drifts, and the fix is proposed as a
-                    reviewable diff. That&#39;s the whole idea, and everything
-                    we build serves it.
+                    OpenAdapt compiles demonstrated GUI workflows into
+                    deterministic, locally executable programs. Healthy runs
+                    make no model calls. When the UI drifts, retained evidence
+                    may re-resolve the target; optional AI may propose a repair,
+                    and configured verification can halt instead. Repairs are
+                    governed, reviewable diffs rather than an unconstrained
+                    promise of autonomous repair.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
@@ -116,24 +115,24 @@ export default function AboutPage() {
                     Open source, actually
                 </h2>
                 <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                    The code lives in the{' '}
+                    The canonical compiler and governed runtime live in{' '}
                     <a
-                        href="https://github.com/OpenAdaptAI"
+                        href="https://github.com/OpenAdaptAI/openadapt-flow"
                         className="text-accent hover:underline"
                     >
-                        OpenAdaptAI organization on GitHub
+                        openadapt-flow
                     </a>
-                    , split into focused packages: openadapt-capture for
-                    cross-platform recording, openadapt-privacy for PII/PHI
-                    scrubbing, openadapt-ml for models, and the{' '}
+                    . The{' '}
                     <a
-                        href="https://pypi.org/project/openadapt/"
+                        href="https://github.com/OpenAdaptAI/OpenAdapt"
                         className="text-accent hover:underline"
                     >
-                        openadapt meta-package on PyPI
+                        OpenAdapt launcher
                     </a>{' '}
-                    that ties them together. Everything is MIT-licensed. Use
-                    it, fork it, ship it, no permission needed.
+                    provides the stable install and unified CLI, while optional
+                    privacy and research packages remain separate surfaces. The
+                    engine and launcher are MIT-licensed: use them, fork them,
+                    and ship them without asking permission.
                 </p>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
@@ -150,7 +149,7 @@ export default function AboutPage() {
                     and a person will reply. For bugs and feature requests,
                     open an issue on{' '}
                     <a
-                        href="https://github.com/OpenAdaptAI/OpenAdapt"
+                        href="https://github.com/OpenAdaptAI/openadapt-flow/issues"
                         className="text-accent hover:underline"
                     >
                         GitHub
@@ -170,9 +169,10 @@ export default function AboutPage() {
                         Talk to us
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
-                        If you&#39;ve got a repetitive desktop workflow, bring
-                        it to a 30-minute call and we&#39;ll tell you whether
-                        compiling it makes sense.
+                        Bring one repeated, high-friction workflow to a
+                        30-minute call. We&#39;ll map it to the shipped browser
+                        path, a scoped customer-controlled deployment, or a
+                        better-fitting approach.
                     </p>
                     <Link
                         href="/#book"
