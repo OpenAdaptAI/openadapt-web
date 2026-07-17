@@ -12,7 +12,6 @@ test('legal pages distinguish local, sanitized-ingest, and managed-recording bou
     const privacy = read('pages/privacy-policy.js')
 
     for (const source of [terms, privacy]) {
-        assert.match(source, /qualified (privacy )?legal|qualified legal|counsel/i)
         assert.match(source, /managed browser recording/i)
         assert.match(source, /private\s+service storage/i)
         assert.match(source, /not sanitized merely/i)
@@ -25,26 +24,22 @@ test('legal pages distinguish local, sanitized-ingest, and managed-recording bou
     assert.match(privacy, /Short-lived signed runner URLs[\s\S]*do not delete/i)
 })
 
-test('legal review drafts are non-operative until counsel approval and offer qualification', () => {
+test('owner-approved legal documents are operative and consistently linked', () => {
     const terms = read('pages/terms-of-service.js')
     const privacy = read('pages/privacy-policy.js')
     const pricing = read('components/Pricing.js')
     const footer = read('components/Footer.js')
 
-    assert.match(terms, /DRAFT — NOT OPERATIVE/)
-    assert.match(terms, /do not currently govern a\s+paid hosted offer/)
-    assert.match(terms, /publish an\s+operative version with an effective date/)
-    assert.match(terms, /paid production checkout is explicitly qualified and enabled/)
-    assert.match(privacy, /DRAFT — NOT OPERATIVE FOR PAID PRODUCTION/)
-    assert.match(privacy, /not an approved production privacy policy/)
-    assert.match(privacy, /publish an operative notice with an effective date/)
-    assert.doesNotMatch(terms, /Effective July 16, 2026/)
-    assert.doesNotMatch(privacy, /Effective July 16, 2026/)
-    assert.match(pricing, /Draft Terms/)
-    assert.match(pricing, /Draft Privacy Notice/)
-    assert.match(pricing, /non-operative while paid checkout remains\s+unavailable/)
-    assert.match(footer, /Draft Privacy Notice/)
-    assert.match(footer, /Draft Terms/)
+    assert.match(terms, /Effective July 17, 2026/)
+    assert.match(privacy, /Effective July 17, 2026/)
+    assert.match(terms, /Starting a hosted subscription[\s\S]*constitutes acceptance/)
+    assert.match(privacy, /requests to access, correct, or delete/)
+    assert.doesNotMatch(terms, /DRAFT|non-operative|counsel/i)
+    assert.doesNotMatch(privacy, /DRAFT|non-operative|counsel/i)
+    assert.match(pricing, /Terms of Service/)
+    assert.match(pricing, /acknowledge the Privacy Notice/)
+    assert.match(footer, /Privacy Notice/)
+    assert.match(footer, /Terms of Service/)
     assert.doesNotMatch(terms, /the Privacy Policy/)
 })
 
@@ -71,7 +66,7 @@ test('privacy page names current providers and exact model-call posture', () => 
     )
     assert.doesNotMatch(privacy, /ensuring the security|do not share your email/i)
     assert.doesNotMatch(read('pages/_app.js'), /googletagmanager|google-analytics/i)
-    assert.match(privacy, /designate[\s\S]*accountable privacy official/i)
+    assert.match(privacy, /is accountable for the practices described here/i)
 })
 
 test('checkout stays hidden behind an explicit production qualification gate', () => {

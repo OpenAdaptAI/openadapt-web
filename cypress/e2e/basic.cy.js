@@ -317,9 +317,8 @@ describe('public product truth', () => {
 
     it('publishes the managed subscription and data-boundary terms', () => {
         cy.visit('/terms-of-service')
-        cy.contains('DRAFT — NOT OPERATIVE.').should('be.visible')
-        cy.contains('Draft reviewed July 16, 2026.').should('be.visible')
-        cy.contains('Effective July 16, 2026').should('not.exist')
+        cy.contains('Effective July 17, 2026.').should('be.visible')
+        cy.contains('DRAFT — NOT OPERATIVE.').should('not.exist')
         cy.contains('Subscription, Renewal, and Usage').should('be.visible')
         cy.contains('renews automatically').should('be.visible')
         cy.contains('Cancellation and Refunds').should('be.visible')
@@ -370,11 +369,9 @@ describe('security boundary', () => {
 
     it('states the same boundary in privacy and hosted onboarding', () => {
         cy.visit('/privacy-policy')
+        cy.contains('Effective July 17, 2026.').should('be.visible')
         cy.contains('DRAFT — NOT OPERATIVE FOR PAID PRODUCTION.').should(
-            'be.visible'
-        )
-        cy.contains('Technical inventory reviewed July 16, 2026.').should(
-            'be.visible'
+            'not.exist'
         )
         cy.contains('Compilation does not de-identify them').should(
             'be.visible'
