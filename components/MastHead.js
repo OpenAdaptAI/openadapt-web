@@ -119,14 +119,14 @@ export default function Home({ githubStats }) {
                                 <div className="flex items-center justify-center gap-3 mt-6 mb-4">
                                     <Link
                                         className="btn-ink"
-                                        href="#pricing"
+                                        href="#book"
                                         onClick={() =>
                                             track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'start_hosted',
+                                                cta: 'qualify_workflow',
                                             })
                                         }
                                     >
-                                        Start hosted
+                                        Qualify a workflow
                                     </Link>
                                     <Link
                                         className="btn-ghost-ink"

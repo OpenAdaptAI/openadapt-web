@@ -9,37 +9,39 @@ const TermsOfService = () => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Terms of Service | OpenAdapt.AI</title>
+                <title>Draft Terms of Service | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="Terms for the OpenAdapt open-source software, managed browser subscription, billing, cancellation, refunds, usage limits, and data boundaries."
+                    content="Draft, non-operative terms proposed for a future qualified OpenAdapt managed-browser offer. Counsel review is required before publication or paid production checkout."
                 />
                 <link rel="canonical" href="https://openadapt.ai/terms-of-service" />
-                <meta property="og:title" content="Terms of Service | OpenAdapt.AI" />
+                <meta property="og:title" content="Draft Terms of Service | OpenAdapt.AI" />
                 <meta
                     property="og:description"
-                    content="Terms for OpenAdapt software and the managed browser subscription."
+                    content="Non-operative draft terms for a future qualified OpenAdapt managed-browser offer."
                 />
                 <meta property="og:url" content="https://openadapt.ai/terms-of-service" />
             </Head>
 
-            <h1 className={styles.heading}>Terms of Service</h1>
+            <h1 className={styles.heading}>Draft Terms of Service</h1>
             <p className={styles.paragraph}>
-                <strong>Launch legal-review requirement.</strong> These Terms
-                describe the current product and intended commercial operation,
-                but they are not a substitute for qualified legal advice. OpenAdapt
-                must obtain counsel review of these Terms and the Privacy Policy
-                before enabling paid production checkout.
+                <strong>DRAFT — NOT OPERATIVE.</strong> These proposed Terms are
+                published for launch review only. They do not currently govern a
+                paid hosted offer and are not being presented for acceptance.
+                OpenAdapt must obtain qualified counsel approval, publish an
+                operative version with an effective date, and explicitly enable a
+                qualified paid production offer before these provisions can apply.
             </p>
             <p className={styles.paragraph}>
-                <strong>Effective July 16, 2026.</strong> These Terms of Service
-                (&quot;Terms&quot;) govern the OpenAdapt hosted service and website
-                provided by MLDSAI Inc. (&quot;OpenAdapt,&quot; &quot;we,&quot; or
-                &quot;us&quot;). By starting a hosted subscription, accessing the
-                hosted service, or using the website, you agree to these Terms and
-                acknowledge our <a href="/privacy-policy">Privacy Policy</a>. If
-                you use the service for an organization, you represent that you
-                have authority to bind it.
+                <strong>Draft reviewed July 16, 2026.</strong> If approved and
+                published as operative, these Terms would govern the OpenAdapt
+                hosted service and related website interactions provided by MLDSAI
+                Inc. (&quot;OpenAdapt,&quot; &quot;we,&quot; or &quot;us&quot;). At
+                that point, starting a hosted subscription or accessing the paid
+                hosted service would constitute acceptance of the operative Terms
+                and acknowledgement of the operative privacy notice. The
+                MIT-licensed engine remains governed by its open-source license.
+                All hosted-service provisions below are proposed and conditional.
             </p>
 
             <h2 className={styles.subheading}>1. Open Source and Hosted Service</h2>
@@ -99,13 +101,13 @@ const TermsOfService = () => {
                 until the subscription returns to an active state.
             </p>
             <p className={styles.paragraph}>
-                The current offer page states the included monthly workflow-run
-                allowance. The control plane refuses new runs when the configured
-                allowance is exhausted; it does not automatically charge an overage.
-                Unused runs do not roll over. A run is metered once at its terminal
-                transition, including a verified halt or failure after execution has
-                started. An abandoned reservation that was never claimed for
-                execution is returned to the allowance.
+                When a paid offer is enabled, its offer page will state the included
+                monthly workflow-run allowance. Under the proposed launch contract,
+                a claimed execution consumes one run whether it completes, halts,
+                or fails; a reservation never claimed for execution does not. The
+                proposed offer has no automatic overage charge and unused runs do
+                not roll over. The verified Stripe offer and counsel-approved,
+                operative Terms will control before a customer can subscribe.
             </p>
 
             <h2 className={styles.subheading}>4. Cancellation and Refunds</h2>
@@ -166,7 +168,7 @@ const TermsOfService = () => {
                 and operate the service. You are responsible for having a lawful
                 basis and all necessary notices and permissions for data you process.
                 Our collection and handling of account, billing, usage, support, and
-                service data are described in the Privacy Policy.
+                service data are described in the draft Privacy Notice.
             </p>
             <p className={styles.paragraph}>
                 Local recordings, bundles, reports, and checkpoints remain under
@@ -196,7 +198,7 @@ const TermsOfService = () => {
                 authentication, database and object storage, managed compute,
                 payment processing, optional analytics, source-code widgets, and
                 booking.
-                The Privacy Policy names the current providers and explains the
+                The draft Privacy Notice names the current providers and explains the
                 related data flows. Provider availability and provider terms can
                 affect those parts of the service.
             </p>
@@ -243,20 +245,19 @@ const TermsOfService = () => {
 
             <h2 className={styles.subheading}>11. Changes and Governing Law</h2>
             <p className={styles.paragraph}>
-                We may update these Terms as the service changes. We will post the
-                revised date and provide any notice required by law. Material changes
-                apply prospectively. These Terms are governed by the laws of Ontario,
-                Canada, without regard to conflict-of-law principles, and disputes
-                will be brought in courts located in Ontario unless applicable law
-                requires another forum.
+                We may update this draft as the service and launch review change.
+                An approved version will state its effective date and any required
+                notice process. The proposed governing law is Ontario, Canada,
+                without regard to conflict-of-law principles, with disputes brought
+                in Ontario courts unless applicable law requires another forum.
             </p>
 
             <h2 className={styles.subheading}>12. Contact</h2>
             <p className={styles.paragraph}>
                 Questions about these Terms, billing, cancellation, or refunds may
                 be sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
-                Qualified counsel must review this document before paid production
-                checkout is activated.
+                This draft remains non-operative until qualified counsel approves
+                it and paid production checkout is explicitly qualified and enabled.
             </p>
         </div>
     )

@@ -176,7 +176,7 @@ describe('public product truth', () => {
         cy.get('#side-by-side [role="region"]')
             .should('be.visible')
             .and('have.attr', 'tabindex', '0')
-        cy.contains('Start hosted').scrollIntoView().should('be.visible')
+        cy.contains('Qualify a workflow').scrollIntoView().should('be.visible')
         cy.contains('Book a workflow review').should('be.visible')
     })
 
@@ -199,7 +199,8 @@ describe('public product truth', () => {
         })
 
         cy.visit('/solutions/healthcare')
-        cy.get('h1').should('contain.text', 'browser-based intake work')
+        cy.get('h1').should('contain.text', 'structured healthcare workflows')
+        cy.contains('OpenAdapt does not parse referrals').should('be.visible')
         cy.contains('prove production EMR safety').should('be.visible')
         cy.contains('OpenAdapt does the retyping').should('not.exist')
         cy.contains('Certified workflows halt before').should('not.exist')
@@ -215,9 +216,11 @@ describe('public product truth', () => {
         )
         cy.contains('customer-controlled deployment').should('be.visible')
         cy.contains('experimental').should('not.exist')
-        cy.get('[data-testid="lending-evidence-placeholder"]')
-            .should('be.visible')
-            .and('contain.text', 'awaiting oracle verification')
+        cy.get('[data-testid="frappe-lending-reference"]').should('be.visible')
+        cy.get('img[alt*="Synthetic Frappe Lending"]').should('be.visible')
+        cy.contains('Inspect image provenance')
+            .should('have.attr', 'href')
+            .and('equal', '/images/frappe-lending-reference.provenance.json')
         cy.get('img[alt*="OpenEMR"]').should('not.exist')
 
         cy.visit('/safety')
@@ -314,8 +317,9 @@ describe('public product truth', () => {
 
     it('publishes the managed subscription and data-boundary terms', () => {
         cy.visit('/terms-of-service')
-        cy.contains('Effective July 16, 2026').should('be.visible')
-        cy.contains('Launch legal-review requirement').should('be.visible')
+        cy.contains('DRAFT — NOT OPERATIVE.').should('be.visible')
+        cy.contains('Draft reviewed July 16, 2026.').should('be.visible')
+        cy.contains('Effective July 16, 2026').should('not.exist')
         cy.contains('Subscription, Renewal, and Usage').should('be.visible')
         cy.contains('renews automatically').should('be.visible')
         cy.contains('Cancellation and Refunds').should('be.visible')
@@ -366,7 +370,12 @@ describe('security boundary', () => {
 
     it('states the same boundary in privacy and hosted onboarding', () => {
         cy.visit('/privacy-policy')
-        cy.contains('Launch legal-review requirement').should('be.visible')
+        cy.contains('DRAFT — NOT OPERATIVE FOR PAID PRODUCTION.').should(
+            'be.visible'
+        )
+        cy.contains('Technical inventory reviewed July 16, 2026.').should(
+            'be.visible'
+        )
         cy.contains('Compilation does not de-identify them').should(
             'be.visible'
         )

@@ -25,6 +25,29 @@ test('legal pages distinguish local, sanitized-ingest, and managed-recording bou
     assert.match(privacy, /Short-lived signed runner URLs[\s\S]*do not delete/i)
 })
 
+test('legal review drafts are non-operative until counsel approval and offer qualification', () => {
+    const terms = read('pages/terms-of-service.js')
+    const privacy = read('pages/privacy-policy.js')
+    const pricing = read('components/Pricing.js')
+    const footer = read('components/Footer.js')
+
+    assert.match(terms, /DRAFT — NOT OPERATIVE/)
+    assert.match(terms, /do not currently govern a\s+paid hosted offer/)
+    assert.match(terms, /publish an\s+operative version with an effective date/)
+    assert.match(terms, /paid production checkout is explicitly qualified and enabled/)
+    assert.match(privacy, /DRAFT — NOT OPERATIVE FOR PAID PRODUCTION/)
+    assert.match(privacy, /not an approved production privacy policy/)
+    assert.match(privacy, /publish an operative notice with an effective date/)
+    assert.doesNotMatch(terms, /Effective July 16, 2026/)
+    assert.doesNotMatch(privacy, /Effective July 16, 2026/)
+    assert.match(pricing, /Draft Terms/)
+    assert.match(pricing, /Draft Privacy Notice/)
+    assert.match(pricing, /non-operative while paid checkout remains\s+unavailable/)
+    assert.match(footer, /Draft Privacy Notice/)
+    assert.match(footer, /Draft Terms/)
+    assert.doesNotMatch(terms, /the Privacy Policy/)
+})
+
 test('privacy page names current providers and exact model-call posture', () => {
     const privacy = read('pages/privacy-policy.js')
 
