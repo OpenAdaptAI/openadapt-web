@@ -8,29 +8,26 @@ const PrivacyPolicy = () => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Draft Privacy Notice | OpenAdapt.AI</title>
+                <title>Privacy Notice | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="Draft, non-operative privacy notice and factual technical data-flow inventory for OpenAdapt local artifacts, optional hosted paths, providers, and runtime boundaries."
+                    content="Privacy notice for OpenAdapt local artifacts, optional hosted services, providers, retention, and runtime boundaries."
                 />
                 <link rel="canonical" href="https://openadapt.ai/privacy-policy" />
-                <meta property="og:title" content="Draft Privacy Notice | OpenAdapt.AI" />
-                <meta property="og:description" content="Non-operative draft notice and technical inventory for OpenAdapt local artifacts, optional hosted services, providers, retention, and runtime boundaries." />
+                <meta property="og:title" content="Privacy Notice | OpenAdapt.AI" />
+                <meta property="og:description" content="Privacy notice for OpenAdapt local artifacts, optional hosted services, providers, retention, and runtime boundaries." />
                 <meta property="og:url" content="https://openadapt.ai/privacy-policy" />
             </Head>
-            <h1 className={styles.heading}>Draft Privacy Notice</h1>
+            <h1 className={styles.heading}>Privacy Notice</h1>
             <p className={styles.paragraph}>
-                <strong>DRAFT — NOT OPERATIVE FOR PAID PRODUCTION.</strong> This
-                page is a factual technical data-flow inventory for launch review;
-                it is not an approved production privacy policy, consent instrument,
-                legal opinion, or compliance certification. MLDSAI Inc. must obtain
-                qualified privacy-counsel approval, designate an accountable privacy
-                official, and publish an operative notice with an effective date
-                before enabling paid production checkout.
+                <strong>Effective July 17, 2026.</strong> This Notice describes how
+                MLDSAI Inc. collects, uses, stores, and shares information through
+                the OpenAdapt website, open-source software interactions, and
+                optional hosted service. It is not a compliance certification.
             </p>
             <p className={styles.paragraph}>
-                <strong>Technical inventory reviewed July 16, 2026.</strong> MLDSAI Inc.
-                (&quot;OpenAdapt,&quot; &quot;we,&quot; or &quot;us&quot;)
+                MLDSAI Inc. (&quot;OpenAdapt,&quot; &quot;we,&quot; or
+                &quot;us&quot;) is accountable for the practices described here and
                 operates the OpenAdapt website and optional hosted service. Contact{' '}
                 <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> with
                 privacy questions. The open-source engine is separate software
@@ -170,17 +167,12 @@ const PrivacyPolicy = () => {
 
             <h2 className={styles.subheading}>9. Changes and Contact</h2>
             <p className={styles.paragraph}>
-                We may update this draft inventory as product paths, providers, or
-                legal requirements change. If counsel approves an operative privacy
-                notice, we will publish its effective date and provide any notice
-                required by applicable law. Questions or
-                requests concerning personal information can be sent to the
-                current privacy contact at{' '}
-                <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Before
-                paid production checkout is activated, MLDSAI Inc. must designate
-                an accountable privacy official and have qualified privacy counsel
-                approve the access, correction, complaint, retention, deletion,
-                consent, and cross-border processing procedures reflected here.
+                We may update this Notice as product paths, providers, or legal
+                requirements change. We will publish the effective date and provide
+                any notice required by applicable law. Questions, complaints, or
+                requests to access, correct, or delete personal information can be
+                sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+                We will verify and respond to requests as required by applicable law.
             </p>
         </div>
     )

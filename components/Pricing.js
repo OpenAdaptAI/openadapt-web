@@ -218,16 +218,15 @@ export default function Pricing({ hostedOffer = null }) {
                         <div className="mt-6 flex-grow" />
                         <HostedCheckoutButton available={hostedOfferAvailable} />
                         <p className="mt-3 text-center text-xs leading-relaxed text-ink-3">
-                            Launch review materials:{' '}
+                            By subscribing, you agree to the{' '}
                             <Link href="/terms-of-service" className="text-accent underline">
-                                Draft Terms
+                                Terms of Service
                             </Link>{' '}
                             and{' '}
                             <Link href="/privacy-policy" className="text-accent underline">
-                                Draft Privacy Notice
+                                acknowledge the Privacy Notice
                             </Link>
-                            . They are non-operative while paid checkout remains
-                            unavailable.
+                            .
                         </p>
                     </div>
 

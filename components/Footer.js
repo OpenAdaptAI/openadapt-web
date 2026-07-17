@@ -112,10 +112,10 @@ export default function Footer() {
                             Security
                         </a>{' '}
                         <a href="/privacy-policy" className={styles.link}>
-                            Draft Privacy Notice
+                            Privacy Notice
                         </a>{' '}
                         <a href="/terms-of-service" className={styles.link}>
-                            Draft Terms
+                            Terms of Service
                         </a>
                     </div>
                     <div className={styles.footerLinks}>
