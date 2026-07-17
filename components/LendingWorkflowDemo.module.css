@@ -34,40 +34,6 @@
     letter-spacing: 0.01em;
 }
 
-.clipFooter {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.clipFooter .caption {
-    flex: 1;
-}
-
-.motionControl {
-    flex-shrink: 0;
-    margin-top: 7px;
-    padding: 3px 7px;
-    border: 1px solid var(--hairline);
-    border-radius: 6px;
-    background: var(--panel);
-    color: var(--accent);
-    cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 600;
-}
-
-.motionControl:hover {
-    border-color: var(--accent);
-}
-
-.motionControl:focus-visible {
-    outline: 3px solid var(--focus);
-    outline-offset: 2px;
-}
-
 .evidenceFigure {
     padding: 16px;
 }
