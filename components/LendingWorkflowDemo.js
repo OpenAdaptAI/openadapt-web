@@ -1,10 +1,10 @@
+import Clip from './Clip'
 import processStyles from './HowItWorks.module.css'
 import styles from './LendingWorkflowDemo.module.css'
 
 const clips = {
     record: {
-        src: '/lending-demo/record-frappe.gif',
-        poster: '/lending-demo/record-frappe.jpg',
+        gif: '/lending-demo/record-frappe.gif',
         width: 880,
         height: 550,
         alt: 'Captured Frappe Lending frames showing a synthetic loan application demonstration being completed and saved.',
@@ -12,42 +12,13 @@ const clips = {
             'Demonstrate — captured Frappe Lending frames · synthetic local fixture',
     },
     replay: {
-        src: '/lending-demo/replay-frappe.gif',
-        poster: '/lending-demo/replay-frappe.jpg',
+        gif: '/lending-demo/replay-frappe.gif',
         width: 880,
         height: 550,
         alt: 'OpenAdapt deterministically replaying the compiled synthetic loan application workflow in Frappe Lending.',
         caption:
             'Replay — real compiled run · local, model-free, independently checked',
     },
-}
-
-function LendingClip({ clip }) {
-    return (
-        <figure className={styles.figure}>
-            <div
-                className={styles.media}
-                style={{ aspectRatio: `${clip.width} / ${clip.height}` }}
-            >
-                <picture>
-                    <source
-                        media="(prefers-reduced-motion: reduce)"
-                        srcSet={clip.poster}
-                    />
-                    <img
-                        className={styles.image}
-                        src={clip.src}
-                        alt={clip.alt}
-                        width={clip.width}
-                        height={clip.height}
-                        loading="lazy"
-                        decoding="async"
-                    />
-                </picture>
-            </div>
-            <figcaption className={styles.caption}>{clip.caption}</figcaption>
-        </figure>
-    )
 }
 
 function CompilePanel() {
@@ -133,7 +104,7 @@ const steps = [
         name: 'Demonstrate',
         description:
             'Complete one synthetic Loan Application while OpenAdapt captures the browser evidence and input events.',
-        visual: <LendingClip clip={clips.record} />,
+        visual: <Clip clip={clips.record} />,
     },
     {
         number: '2.0',
@@ -147,7 +118,7 @@ const steps = [
         name: 'Replay',
         description:
             'Execute the compiled steps locally against Frappe Lending without asking a model to reinterpret the task.',
-        visual: <LendingClip clip={clips.replay} />,
+        visual: <Clip clip={clips.replay} />,
     },
     {
         number: '4.0',
