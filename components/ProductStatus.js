@@ -52,23 +52,33 @@ const boundaries = [
 const substrates = [
     {
         name: 'Browser / Playwright',
-        status: 'Beta',
+        availability: 'Public beta',
+        evidence: 'Reference lifecycle accepted',
         scope: 'The reference record, compile, policy-check, replay, refusal, and report lifecycle runs in CI. Each target application still requires workflow qualification.',
     },
     {
         name: 'Windows UIA',
-        status: 'Experimental',
-        scope: 'The protocol is mock-tested in CI and an opt-in Windows-on-ARM path has exercised UIA resolution. Broad third-party application support is not established.',
+        availability: 'Partner qualification',
+        evidence: 'Acceptance in progress',
+        scope: 'A typed, fail-closed candidate driver is under real Windows qualification with an independent database oracle. It is not in the hosted browser launch candidate.',
     },
     {
         name: 'Native macOS',
-        status: 'Research',
-        scope: 'The browser path runs on macOS, but the engine does not ship a production-candidate native macOS accessibility backend.',
+        availability: 'Partner qualification',
+        evidence: 'Acceptance in progress',
+        scope: 'A native exact-window candidate is under permissioned TextEdit qualification. Ambiguous or foreground-mismatched windows halt; broader application support is not established.',
     },
     {
-        name: 'RDP / Citrix',
-        status: 'Research',
-        scope: 'Offline and mocked adapters exercise the backend seam. Real remote-display protocols, target applications, DPI, and latency remain unqualified.',
+        name: 'RDP',
+        availability: 'Partner qualification',
+        evidence: 'Acceptance in progress',
+        scope: 'The network RDP candidate uses strict framebuffer leases, viewport-drift refusal, current-frame readiness, and an independent guest-file oracle. It is not in the hosted browser launch candidate.',
+    },
+    {
+        name: 'Citrix',
+        availability: 'Design partner needed',
+        evidence: 'No ICA/HDX evidence',
+        scope: 'The generic remote-window safety floor can begin qualification, but Citrix requires the customer’s actual ICA/HDX environment. RDP evidence is not treated as Citrix evidence.',
     },
 ]
 
@@ -114,14 +124,15 @@ export default function ProductStatus() {
 
                 <div className="mt-8 overflow-hidden rounded-2xl border border-hairline bg-ground">
                     <div className="overflow-x-auto">
-                        <table className="w-full min-w-[680px] border-collapse text-left text-sm">
+                        <table className="w-full min-w-[820px] border-collapse text-left text-sm">
                             <caption className="border-b border-hairline px-5 py-4 text-left">
                                 <span className="font-display text-lg font-semibold text-ink">
                                     Execution substrate evidence
                                 </span>
                                 <span className="mt-1 block text-xs leading-relaxed text-ink-3">
-                                    Lifecycle labels summarize public evidence; they are not an SLA,
-                                    compliance certification, or support promise for an arbitrary app.
+                                    Availability describes access offered; evidence state records
+                                    acceptance status. Neither is an SLA, compliance certification,
+                                    or support promise for an arbitrary app.
                                 </span>
                             </caption>
                             <thead className="bg-panel font-mono text-[10px] uppercase tracking-[0.12em] text-ink-3">
@@ -130,7 +141,10 @@ export default function ProductStatus() {
                                         Substrate
                                     </th>
                                     <th className="border-b border-hairline px-5 py-3 font-medium">
-                                        Evidence tier
+                                        Availability
+                                    </th>
+                                    <th className="border-b border-hairline px-5 py-3 font-medium">
+                                        Evidence state
                                     </th>
                                     <th className="border-b border-hairline px-5 py-3 font-medium">
                                         Current scope
@@ -144,7 +158,10 @@ export default function ProductStatus() {
                                             {item.name}
                                         </th>
                                         <td className="border-b border-hairline px-5 py-4 font-mono text-xs text-accent">
-                                            {item.status}
+                                            {item.availability}
+                                        </td>
+                                        <td className="border-b border-hairline px-5 py-4 font-mono text-xs text-ink-3">
+                                            {item.evidence}
                                         </td>
                                         <td className="border-b border-hairline px-5 py-4 leading-relaxed text-ink-2">
                                             {item.scope}
