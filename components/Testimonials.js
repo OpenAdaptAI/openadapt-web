@@ -14,8 +14,8 @@ const testimonials = [
             'automatically with just a few clicks. The personalized service ' +
             'and support were phenomenal. I will definitely be using ' +
             'OpenAdapt to audit my procedures every month from now on.',
-        name: 'Victor Abrich, MD, FHRS',
-        role: 'Electrophysiologist, MercyOne Waterloo Heart Care',
+        name: 'Victor Abrich',
+        role: 'Electrophysiologist',
         sourceUrl: 'https://github.com/OpenAdaptAI/openadapt-web/issues/9',
         sourceLabel: 'Documented on GitHub',
     },

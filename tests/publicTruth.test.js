@@ -260,8 +260,11 @@ test('testimonials are verbatim from their documented public source', () => {
     // and string-concatenation syntax collapsed.
     const flattened = component.replace(/'\s*\+\s*'/g, '').replace(/\s+/g, ' ')
     assert.ok(flattened.includes(documentedQuote))
-    assert.match(component, /Victor Abrich, MD, FHRS/)
-    assert.match(component, /Electrophysiologist, MercyOne Waterloo Heart Care/)
+    assert.match(component, /Victor Abrich/)
+    assert.match(component, /Electrophysiologist/)
+    // Attribution is limited to name + specialty. No employer/institution
+    // names in public marketing copy without that institution's sign-off.
+    assert.doesNotMatch(component, /MercyOne/)
     assert.match(
         component,
         /https:\/\/github\.com\/OpenAdaptAI\/openadapt-web\/issues\/9/
