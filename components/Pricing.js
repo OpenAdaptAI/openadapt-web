@@ -62,13 +62,22 @@ function HostedCheckoutButton({ available }) {
 
     if (!available) {
         return (
-            <Link
-                href="/#book"
-                data-testid="hosted-contact"
-                className="btn-ink block w-full text-center"
-            >
-                Start with our team
-            </Link>
+            <div>
+                <Link
+                    href="/#book"
+                    data-testid="hosted-contact"
+                    className="btn-ink block w-full text-center"
+                >
+                    Start with our team
+                </Link>
+                <Link
+                    href="/#get-updates"
+                    data-testid="hosted-waitlist"
+                    className="mt-3 block text-center text-xs text-accent underline"
+                >
+                    Get notified when hosted access opens
+                </Link>
+            </div>
         )
     }
 
