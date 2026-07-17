@@ -238,3 +238,33 @@ test('sitemap includes launch, download, and trust surfaces', () => {
         assert.match(sitemap, new RegExp(`https://openadapt\\.ai/${route}`))
     }
 })
+
+test('testimonials are verbatim from their documented public source', () => {
+    // Source of record: https://github.com/OpenAdaptAI/openadapt-web/issues/9
+    // (posted 2023-05-30). The quote below is the documented text; the
+    // component must carry it verbatim, attribute it as documented, and
+    // link the source. Testimonials without a documented source must not
+    // be added.
+    const component = read('components/Testimonials.js')
+    const home = read('pages/index.js')
+
+    const documentedQuote =
+        'My hospital had under-billed $75K worth of procedural RVUs which ' +
+        'took me 20 hours of manual chart review over the course of 6 ' +
+        'months to recover. OpenAdapt was able to do this job automatically ' +
+        'with just a few clicks. The personalized service and support were ' +
+        'phenomenal. I will definitely be using OpenAdapt to audit my ' +
+        'procedures every month from now on.'
+
+    // The quote is wrapped across source lines; compare with whitespace
+    // and string-concatenation syntax collapsed.
+    const flattened = component.replace(/'\s*\+\s*'/g, '').replace(/\s+/g, ' ')
+    assert.ok(flattened.includes(documentedQuote))
+    assert.match(component, /Victor Abrich, MD, FHRS/)
+    assert.match(component, /Electrophysiologist, MercyOne Waterloo Heart Care/)
+    assert.match(
+        component,
+        /https:\/\/github\.com\/OpenAdaptAI\/openadapt-web\/issues\/9/
+    )
+    assert.match(home, /<Testimonials \/>/)
+})
