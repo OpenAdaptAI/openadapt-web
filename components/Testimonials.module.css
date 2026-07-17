@@ -1,0 +1,91 @@
+.section {
+    background: var(--ground);
+    border-bottom: 1px solid var(--hairline);
+    padding: 48px 16px;
+}
+
+.inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.heading {
+    max-width: 46rem;
+    margin: 10px auto 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--ink);
+}
+
+/* Flex (not a fixed-column grid) so one card centers today and two or
+   three cards flow naturally as more documented testimonials land. */
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 26px 24px;
+    max-width: 620px;
+    flex: 1 1 340px;
+    margin: 0;
+    text-align: left;
+}
+
+.figure {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.2;
+}
+
+.figureCaption {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.45;
+}
+
+.quote {
+    margin: 14px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+}
+
+.attribution {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 13.5px;
+}
+
+.name {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.role {
+    color: var(--ink-2);
+}
+
+.source {
+    margin-top: 4px;
+    color: var(--ink-2);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    width: fit-content;
+}

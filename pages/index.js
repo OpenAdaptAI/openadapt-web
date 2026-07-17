@@ -15,6 +15,7 @@ import ProductStatus from '@components/ProductStatus'
 import ProofBand from '@components/ProofBand'
 import AudiencePaths from '@components/AudiencePaths'
 import SafetyBand from '@components/SafetyBand'
+import Testimonials from '@components/Testimonials'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
 
 const GITHUB_REPOSITORY = 'OpenAdaptAI/OpenAdapt'
@@ -199,6 +200,7 @@ export default function Home({ githubStats, hostedOffer }) {
                 setFeedbackData={setFeedbackData}
                 sectionRef={sectionRef}
             />
+            <Testimonials />
             <div style={{
                 background: 'var(--panel)',
                 textAlign: 'center',
