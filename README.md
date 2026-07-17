@@ -3,9 +3,11 @@
 The official website for [OpenAdapt.AI](https://openadapt.ai), the governed
 compiler for repeated GUI workflows.
 
-**Lifecycle: Beta.** The website documents the evidence-bounded browser product
-and narrower Experimental/Research substrates. This label is not a statement
-that every described deployment path or target application is production-ready.
+**Lifecycle: Beta.** The website documents the evidence-bounded browser product,
+partner-scoped desktop and RDP qualification, and the real-environment gate for
+Citrix. Availability and evidence state are reported separately. This label is
+not a statement that every described deployment path or target application is
+production-ready.
 
 ## Overview
 

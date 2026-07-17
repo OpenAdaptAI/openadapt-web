@@ -62,13 +62,25 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
         'Browser / Playwright',
         'Windows UIA',
         'Native macOS',
-        'RDP / Citrix',
+        'RDP',
+        'Citrix',
     ]) {
         assert.match(product, new RegExp(substrate.replace('/', '\\/')))
     }
-    for (const tier of ['Beta', 'Experimental', 'Research']) {
-        assert.match(product, new RegExp(`status: '${tier}'`))
+    for (const label of [
+        'Public beta',
+        'Partner qualification',
+        'Design partner needed',
+        'Reference lifecycle accepted',
+        'Acceptance in progress',
+        'No ICA/HDX evidence',
+    ]) {
+        assert.match(product, new RegExp(label))
     }
+    assert.doesNotMatch(product, /RDP \/ Citrix/)
+    assert.match(product, /RDP evidence is not treated as Citrix evidence/)
+    assert.match(product, /Evidence state/)
+    assert.match(product, /not in the hosted browser launch candidate/)
     assert.doesNotMatch(pricing, /Offer unavailable|Hosted checkout unavailable/)
     assert.match(pricing, /Start with our team/)
     assert.doesNotMatch(llms, /Product Maturity|launching now|not implied/i)
