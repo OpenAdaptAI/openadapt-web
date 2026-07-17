@@ -66,9 +66,23 @@ describe('public product truth', () => {
             cy.contains('Availability').should('be.visible')
             cy.contains('Evidence state').should('be.visible')
             cy.contains('Partner qualification').should('be.visible')
+            cy.contains('Scoped acceptance passed').should('be.visible')
+            cy.contains('Scoped TextEdit evidence accepted').should('be.visible')
             cy.contains('Acceptance in progress').should('be.visible')
             cy.contains('Design partner needed').should('be.visible')
             cy.contains('No ICA/HDX evidence').should('be.visible')
+            cy.contains(
+                '20260717-candidate-56759c8-v2 in-tree WinForms matrix completed 3/3 trials'
+            ).should('be.visible')
+            cy.contains('candidate b1b61a5 completed 3/3 exact-byte TextEdit trials').should(
+                'be.visible'
+            )
+            cy.contains('Review exact Windows evidence')
+                .should('have.attr', 'href')
+                .and('include', 'defafbae758a75c8e149d9693f2cffe1f2264b8c')
+            cy.contains('Review scoped macOS evidence')
+                .should('have.attr', 'href')
+                .and('include', 'ca1b522cad215875f7471782283f8f8bb8e6c998')
             cy.contains('Research spike').should('not.exist')
             cy.contains('Product maturity').should('not.exist')
         })
