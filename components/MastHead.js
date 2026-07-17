@@ -10,10 +10,10 @@ import styles from './MastHead.module.css'
 const CarouselSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselItems = [
-        "Show it once. It runs forever. On your premises.",
-        "Compiled replay. Zero per-run model cost.",
-        "Self-healing: UI drift becomes a reviewable diff.",
-        "On the default path, nothing leaves your machine.",
+        "Demonstrate a bounded workflow. Replay deterministically and locally.",
+        "Healthy runs make zero model calls.",
+        "Drift is resolved, reviewed, or refused.",
+        "Choose local, hosted, or customer-controlled execution.",
     ];
 
     useEffect(() => {
@@ -74,6 +74,7 @@ export default function Home({ githubStats }) {
                                         href="https://github.com/OpenAdaptAI/OpenAdapt"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        data-testid="github-proof"
                                         onClick={() =>
                                             track(EVENTS.GITHUB_CLICK, {
                                                 location: 'hero_stars',
@@ -83,7 +84,7 @@ export default function Home({ githubStats }) {
                                         style={{ border: '1px solid var(--hairline)' }}
                                     >
                                         <span aria-hidden="true">★</span>
-                                        {formatStars(githubStats.stars)} on GitHub
+                                        {formatStars(githubStats.stars)} stars on OpenAdapt
                                         <span className="text-ink-3">
                                             · {githubStats.forks} forks
                                         </span>
@@ -91,25 +92,22 @@ export default function Home({ githubStats }) {
                                 )}
                             </div>
                             <h1 className="font-display text-2xl md:text-3xl mt-0 mb-4 font-semibold tracking-tight text-ink">
-                                Show it once. It runs forever. On your premises.
+                                Compile repeated GUI work into governed,
+                                deterministic workflows.
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                OpenAdapt compiles a recorded demonstration into
-                                a self-healing automation. Certified workflows
-                                halt when identity or effects cannot be verified.
-                                It&apos;s open source and auditable, and it runs
-                                entirely on your own machines.
+                                Demonstrate a bounded, repeated browser task.
+                                Compile it into a locally executable workflow
+                                whose healthy replay makes no model calls. When the
+                                interface changes, OpenAdapt re-resolves from
+                                retained evidence, proposes a governed repair, or
+                                stops for an operator.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
-                                Every automation tool assumes an API. The
-                                systems that actually run your business
-                                don&apos;t: legacy EMRs, Citrix desktops, the
-                                internal apps your team still works by hand.
-                                OpenAdapt learns them from one demonstration and
-                                runs them where your data already lives. Web
-                                workflows are supported today. Windows and Citrix
-                                workflows are being validated with design
-                                partners.
+                                Start with the supported browser path, then run
+                                through the local engine, managed control plane,
+                                or a qualified customer boundary.{' '}
+                                <Link href="#product-status">See how deployment works.</Link>
                             </p>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
@@ -124,22 +122,22 @@ export default function Home({ githubStats }) {
                                         href="#book"
                                         onClick={() =>
                                             track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'book_a_demo',
+                                                cta: 'qualify_workflow',
                                             })
                                         }
                                     >
-                                        Book a demo
+                                        Qualify a workflow
                                     </Link>
                                     <Link
                                         className="btn-ghost-ink"
-                                        href="#how-it-works"
+                                        href="#open-source"
                                         onClick={() =>
                                             track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'see_how_it_works',
+                                                cta: 'run_browser_quickstart',
                                             })
                                         }
                                     >
-                                        See how it works
+                                        Run locally
                                     </Link>
                                 </div>
                             </div>

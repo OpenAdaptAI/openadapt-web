@@ -2,101 +2,177 @@ import React from 'react'
 import Head from 'next/head'
 import styles from '@styles/LegalPages.module.css'
 
+const CONTACT_EMAIL = 'hello@openadapt.ai'
+
 const PrivacyPolicy = () => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Privacy Policy | OpenAdapt.AI</title>
+                <title>Privacy Notice | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="OpenAdapt.AI privacy policy. Learn how we collect, use, and safeguard your data. All recordings are scrubbed of PII/PHI before upload."
+                    content="Privacy notice for OpenAdapt local artifacts, optional hosted services, providers, retention, and runtime boundaries."
                 />
                 <link rel="canonical" href="https://openadapt.ai/privacy-policy" />
-                <meta property="og:title" content="Privacy Policy | OpenAdapt.AI" />
-                <meta property="og:description" content="OpenAdapt.AI privacy policy. Learn how we collect, use, and safeguard your data." />
+                <meta property="og:title" content="Privacy Notice | OpenAdapt.AI" />
+                <meta property="og:description" content="Privacy notice for OpenAdapt local artifacts, optional hosted services, providers, retention, and runtime boundaries." />
                 <meta property="og:url" content="https://openadapt.ai/privacy-policy" />
             </Head>
-            <h1 className={styles.heading}>Privacy Policy</h1>
+            <h1 className={styles.heading}>Privacy Notice</h1>
             <p className={styles.paragraph}>
-                At OpenAdapt.AI, we are committed to protecting your privacy and
-                ensuring the security of your personal data. This Privacy Policy
-                outlines how we collect, use, and safeguard the information you
-                provide when using our products and services, including through
-                our website hosted on Netlify.
+                <strong>Effective July 17, 2026.</strong> This Notice describes how
+                MLDSAI Inc. collects, uses, stores, and shares information through
+                the OpenAdapt website, open-source software interactions, and
+                optional hosted service. It is not a compliance certification.
+            </p>
+            <p className={styles.paragraph}>
+                MLDSAI Inc. (&quot;OpenAdapt,&quot; &quot;we,&quot; or
+                &quot;us&quot;) is accountable for the practices described here and
+                operates the OpenAdapt website and optional hosted service. Contact{' '}
+                <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> with
+                privacy questions. The open-source engine is separate software
+                operated by the person or organization that installs it.
             </p>
 
-            <h2 className={styles.subheading}>1. Data Collection and Usage</h2>
+            <h2 className={styles.subheading}>1. Local Engine and Artifacts</h2>
             <p className={styles.paragraph}>
-                OpenAdapt is an open-source desktop software that records your
-                screen, keyboard, mouse, and optionally microphone inputs
-                locally on your machine. OpenAdapt transforms this recorded data
-                using various algorithms to generate prompts and instructions
-                for AI language models. All data is scrubbed of all Personally
-                Identifiable Information (PII) and Protected Health Information
-                (PHI) before being uploaded. Before data is uploaded, you will
-                be presented with the scrubbed data and required to confirm that
-                it has been properly sanitized of all PII/PHI. We do not store
-                or collect any of your personal data, files, or process
-                recordings. For product improvement and performance evaluation
-                purposes, we may collect anonymized usage data and analytics
-                through third-party services like Google Analytics.
+                The open-source engine records screenshots and GUI input on the
+                operator&apos;s machine to compile and replay a workflow. Local
+                recordings, compiled bundles, machine reports, screenshots,
+                identity evidence, parameters, and checkpoints can contain
+                personal information, credentials, or PHI. Compilation does not
+                de-identify them. Installing or running the engine does not by
+                itself create an OpenAdapt account or send those artifacts to the
+                hosted service.
+            </p>
+            <p className={styles.paragraph}>
+                The optional sanitation command creates a transformed copy; it
+                does not mutate or make the source safe. Supported text and still
+                images are inventoried, transformed, rescanned, reviewed under the
+                selected policy, and approved by exact archive hash. Unsupported,
+                unresolved, changed, or unknown content is refused. The original
+                remains inside the operator&apos;s boundary. The separate{' '}
+                <code>report-break</code> path sends a minimized diagnostic without
+                screenshots, typed values, intents, reasons, errors, or report text.
             </p>
 
-            <h2 className={styles.subheading}>2. Third-Party Services</h2>
+            <h2 className={styles.subheading}>2. Optional Hosted Service</h2>
             <p className={styles.paragraph}>
-                Our desktop software can connect to third-party AI service
-                providers (e.g., OpenAI, Claude.ai) to use their language
-                models for process automation based on the prompts and
-                instructions generated from your recorded data.
-                Any data shared with these third-party services is subject to
-                their respective privacy policies, and we encourage you to
-                review them.
+                The hosted service can collect account and organization records,
+                authentication identifiers, contact and support messages, billing
+                references, subscription state, workflow configuration, approved
+                artifact archives and manifests, run status, usage, reports, logs,
+                and audit records. The explicit artifact-ingest path accepts an
+                approved sanitized derivative, not the sensitive local source, and
+                checks the exact submitted bytes and destination policy.
+            </p>
+            <p className={styles.paragraph}>
+                Managed browser recording is separate from sanitized artifact
+                ingest. When a user starts a managed recording session, browser
+                frames and input events are captured inside the hosted authoring
+                boundary, and the resulting raw recording can be stored in private
+                service storage for compilation. It is not sanitized merely by
+                capture or compilation. Managed execution can also observe live
+                application data and produce reports after a design-time artifact
+                was sanitized. Workflows that necessarily expose PHI or other
+                restricted runtime data require a separately qualified,
+                customer-controlled boundary.
             </p>
 
-            <h2 className={styles.subheading}>3. Email Address Collection</h2>
+            <h2 className={styles.subheading}>
+                3. Model Calls and Governed Execution
+            </h2>
             <p className={styles.paragraph}>
-                For updates, support, and user registration, we collect email
-                addresses via our website. This collection is facilitated
-                through Netlify forms, which are used solely for the purpose of
-                communication and service enhancement. We do not share your
-                email with third parties without your consent, except as
-                required for providing the services you've requested or for
-                legal compliance. Users who wish to opt-out of future
-                communications can do so at any time by using the unsubscribe
-                link included in our emails or by contacting us directly.
+                Healthy deterministic replay makes no model calls. Model-assisted
+                repair is optional and off by default. If an operator explicitly
+                enables a local or remote model endpoint, relevant target crops,
+                screenshots, identity evidence, intents, OCR, or expected state can
+                be sent to that configured endpoint. A remote model provider then
+                receives data under its own terms and the operator&apos;s selected
+                boundary. Model output is a proposal; it does not bypass identity,
+                risk, postcondition, effect, or policy checks.
             </p>
 
-            <h2 className={styles.subheading}>4. Data Security</h2>
+            <h2 className={styles.subheading}>4. Current Service Providers</h2>
             <p className={styles.paragraph}>
-                OpenAdapt employs industry-standard security measures in the
-                software's architecture to ensure the safe use of API keys and
-                payment information. While OpenAdapt itself does not store your
-                personal data or API keys, we facilitate secure interactions
-                with third-party services, including Stripe for payment
-                processing. For users who choose to use the OpenAdapt API key,
-                we securely manage the connection to third-party services on
-                your behalf. Please be aware that while we strive to use
-                commercially acceptable means to protect your information, no
-                method of transmission over the internet, or method of
-                electronic storage is 100% secure. We cannot guarantee absolute
-                security of data managed by third-party services.
+                Current product paths use Netlify for website hosting and forms;
+                Supabase for hosted authentication, database, and private object
+                storage; Modal for managed browser recording and run compute, plus
+                optional hosted compilation only when explicitly enabled; Stripe
+                for Checkout, billing, and subscription state;
+                PostHog for launch-funnel analytics when configured; Cal.com for
+                booking; and GitHub for source links, repository widgets, and
+                public repository data. These providers can receive network and
+                service data needed for the selected interaction and process it
+                under their own terms and privacy policies, potentially outside
+                the visitor&apos;s province or country depending on provider and
+                project configuration. A customer-controlled deployment can use a
+                different approved provider set documented in its scope.
             </p>
 
-            <h2 className={styles.subheading}>5. Children's Privacy</h2>
+            <h2 className={styles.subheading}>5. Website Forms, Booking, and Analytics</h2>
+            <p className={styles.paragraph}>
+                Contact and update forms can collect a name, email address, company,
+                role, workflow description, and message through Netlify. We use
+                those submissions for the requested communication, workflow
+                qualification, support, and product updates. Opening the booking
+                flow loads Cal.com; name and email are passed as booking prefill
+                only when the visitor supplied them. Stripe receives payment and
+                billing details when a visitor enters enabled Checkout.
+            </p>
+            <p className={styles.paragraph}>
+                If a PostHog key is configured, the site sends page views and named
+                launch-funnel clicks. The current code disables autocapture,
+                persistent browser storage, and session recording and does not send
+                form contents, emails, or free text to PostHog. Without a PostHog
+                key, that analytics path is a no-op. Analytics data is
+                marketing-site data, not workflow runtime data.
+            </p>
+
+            <h2 className={styles.subheading}>6. Retention and Deletion Boundaries</h2>
+            <p className={styles.paragraph}>
+                Local artifact retention is controlled by the operator; the engine
+                does not automatically delete raw recordings, bundles, machine
+                reports, or checkpoints. The hosted service persists account and
+                organization data, managed recordings, approved artifacts, bundles,
+                reports, run and usage records, and billing references in its
+                configured stores. Short-lived signed runner URLs limit object
+                access but do not delete the stored objects. The self-serve service
+                currently publishes no fixed retention, backup-deletion, or
+                recovery period. Do not send data that requires a specific schedule
+                until that schedule and deletion process are documented in a
+                qualified written deployment scope. Providers can retain billing,
+                security, or service records under their own obligations.
+            </p>
+
+            <h2 className={styles.subheading}>7. Security Boundaries</h2>
+            <p className={styles.paragraph}>
+                Declared browser password and secret fields are injected at replay
+                rather than written into recording events or bundles. Other typed
+                values, screenshots, identity evidence, bundles, and reports remain
+                sensitive and need appropriate access, encryption, retention,
+                endpoint, backup, and deletion controls. Runtime observations can
+                reintroduce sensitive data after sanitation. No transmission or
+                storage method is completely secure. Review the current{' '}
+                <a href="/security">security and data-boundary page</a> before
+                evaluating consequential or regulated work.
+            </p>
+
+            <h2 className={styles.subheading}>8. Children&apos;s Privacy</h2>
             <p className={styles.paragraph}>
                 Our products and services are not intended for use by children
                 under the age of 13. We do not knowingly collect personal
                 information from children.
             </p>
 
-            <h2 className={styles.subheading}>
-                6. Changes to this Privacy Policy
-            </h2>
+            <h2 className={styles.subheading}>9. Changes and Contact</h2>
             <p className={styles.paragraph}>
-                We may update this Privacy Policy from time to time to reflect
-                changes in our practices or legal requirements. The updated
-                version will be posted on our website, and we encourage you to
-                review it periodically.
+                We may update this Notice as product paths, providers, or legal
+                requirements change. We will publish the effective date and provide
+                any notice required by applicable law. Questions, complaints, or
+                requests to access, correct, or delete personal information can be
+                sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+                We will verify and respond to requests as required by applicable law.
             </p>
         </div>
     )

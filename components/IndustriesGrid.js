@@ -12,12 +12,14 @@ function BuildForYouSection() {
     return (
         <div className={styles.buildSection}>
             <div className={styles.buildContent}>
-                <h2 className={styles.buildTitle}>Let us build for you</h2>
+                <h2 className={styles.buildTitle}>Qualify one workflow with us</h2>
                 <p className={styles.buildDesc}>
-                    If OpenAdapt doesn&#39;t fully automate your workflow out of the box, we&#39;ll work with you to fix that.
+                    We first check the substrate, verification boundary, and
+                    measurable outcome. If the workflow fits, we can scope a
+                    paid design-partner pilot in your environment.
                 </p>
                 <Link className="btn-ink" href="#book">
-                    Start Intake
+                    Qualify a workflow
                 </Link>
             </div>
         </div>
@@ -31,35 +33,43 @@ export default function IndustriesGrid({
 }) {
     const gridData = [
         {
-            title: 'Healthcare clinics',
-            href: '/solutions/healthcare',
+            title: 'Automation teams & BPO operators',
+            href: '#book',
             descriptions:
-                'Referral and fax intake, EMR data entry and extraction; web EMRs today, desktop and VDI EMRs on the roadmap. PHI handling stays fully local.',
-            logo: '/images/noun-healthcare.svg',
-        },
-        {
-            title: 'Mortgage & lending ops',
-            href: '/solutions/lending',
-            descriptions:
-                'Loan-file data extraction and entry; desktop LOS like Encompass on the roadmap. Borrower data stays in your environment.',
+                'High-volume repeated operations with structured inputs, established business logic, and a UI-only last-mile gap that can be checked against an independent effect source of truth.',
             logo: '/images/noun-finance.svg',
         },
         {
-            title: 'Other regulated back-offices',
+            title: 'RCM & vertical-software vendors',
             href: '#book',
             descriptions:
-                'Document-heavy, compliance-bound workflows. Tell us yours.',
+                'Products with supported APIs for the core path and a bounded browser-only step at the edge, where volume and a separate system of record make verification practical.',
+            logo: '/images/noun-healthcare.svg',
+            example: {
+                label: 'Healthcare workflow reference',
+                href: '/solutions/healthcare',
+            },
+        },
+        {
+            title: 'Regulated enterprise operations',
+            href: '#book',
+            descriptions:
+                'Governed teams that already know the inputs and rules, repeat the task at material volume, and can verify the external effect independently of the GUI run.',
             logo: '/images/noun-law.svg',
+            example: {
+                label: 'Lending operations reference',
+                href: '/solutions/lending',
+            },
         },
     ]
 
     const industryMessages = {
-        'Healthcare clinics':
-            "I'm interested in automating referral intake and EMR data entry at our clinic.",
-        'Mortgage & lending ops':
-            "I'm interested in automating loan-file data entry and extraction in our LOS.",
-        'Other regulated back-offices':
-            "I'm interested in automating a document-heavy workflow in a regulated back-office.",
+        'Automation teams & BPO operators':
+            "I'm evaluating a high-volume workflow with a UI-only last-mile gap and an independent effect source of truth.",
+        'RCM & vertical-software vendors':
+            "I'm evaluating a bounded browser step that remains after using supported APIs.",
+        'Regulated enterprise operations':
+            "I'm evaluating a governed repeated workflow with structured inputs and an independent effect source of truth.",
     }
 
     const getDataFromTitle = (title) => {
@@ -87,20 +97,23 @@ export default function IndustriesGrid({
                 </a>
             </div>
             <div className="mt-12">
-                <p className="eyebrow text-center mb-2">Industries</p>
+                <p className="eyebrow text-center mb-2">Who it&apos;s for</p>
                 <h2 className="font-display text-center text-xl font-semibold text-ink mb-3 tracking-tight">
-                    Built for regulated back-offices
+                    Teams closing a UI-only last-mile gap
                 </h2>
                 <p className={styles.p}>
-                    Record the workflow once and OpenAdapt turns it into an
-                    automation your team can run, review, and audit, all on
-                    your own machines. Nothing brittle to hand-build. No AI
-                    cost per run.
+                    The strongest fit starts with structured inputs, existing
+                    business logic, high repeated volume, a browser step without
+                    a supported API, and an independent source of truth for the
+                    intended effect. OpenAdapt compiles that bounded UI-only gap
+                    into an inspectable program. Healthy replay makes no model
+                    calls; consequential workflows still require explicit identity,
+                    effect, policy, storage, and retention configuration.
                     <br />
                     <a href="https://github.com/OpenAdaptAI/openadapt-privacy">
-                        Built-in PII/PHI scrubbing
+                        Optional PII/PHI scrubbing
                     </a>{' '}
-                    keeps your sensitive data safe.
+                    covers configured sharing paths, not every raw artifact.
                 </p>
             </div>
             <div className={styles.row}>
@@ -130,6 +143,14 @@ export default function IndustriesGrid({
                                     <li key={grid.title}>{description}</li>
                                 ))}
                         </ul>
+                        {grid.example ? (
+                            <p className="mt-3 text-center text-xs text-ink-3">
+                                Example:{' '}
+                                <Link className="underline" href={grid.example.href}>
+                                    {grid.example.label}
+                                </Link>
+                            </p>
+                        ) : null}
                         <div className="flex flex-row items-center justify-center mt-3 mb-2">
                             <Link
                                 className="btn-ink"
@@ -138,7 +159,7 @@ export default function IndustriesGrid({
                                     handleGetStartedButtonClick(grid.title)
                                 }
                             >
-                                Get Started
+                                Evaluate fit
                             </Link>
                         </div>
                     </div>

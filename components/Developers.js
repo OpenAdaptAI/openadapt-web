@@ -5,16 +5,16 @@ import PyPIDownloadChart from './PyPIDownloadChart';
 
 const ecosystemLinks = [
     {
-        label: 'All repositories',
-        href: 'https://github.com/OpenAdaptAI',
-    },
-    {
-        label: 'openadapt-flow',
+        label: 'Engine source',
         href: 'https://github.com/OpenAdaptAI/openadapt-flow',
     },
     {
         label: 'Docs',
         href: 'https://docs.openadapt.ai',
+    },
+    {
+        label: 'Technical paper source',
+        href: 'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper',
     },
     {
         label: 'Blog',
@@ -26,7 +26,7 @@ const ecosystemLinks = [
     },
     {
         label: 'Report an issue',
-        href: 'https://github.com/OpenAdaptAI/OpenAdapt/issues/new/choose',
+        href: 'https://github.com/OpenAdaptAI/openadapt-flow/issues/new/choose',
     },
 ];
 
@@ -34,15 +34,17 @@ export default function Developers() {
     const [buildWarnings, setBuildWarnings] = useState([]);
 
     useEffect(() => {
-        // Fetch issues labeled "main-broken"
-        fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt/issues?state=open&labels=main-broken')
-            .then(response => response.json())
+        // Surface known breakage in the canonical engine rather than implying
+        // that the historical umbrella repository is the product runtime.
+        fetch('https://api.github.com/repos/OpenAdaptAI/openadapt-flow/issues?state=open&labels=main-broken')
+            .then(response => response.ok ? response.json() : [])
             .then(issues => {
-                setBuildWarnings(issues.map(issue => ({
+                setBuildWarnings((Array.isArray(issues) ? issues : []).map(issue => ({
                     id: issue.number,
                     url: issue.html_url
                 })));
-            });
+            })
+            .catch(() => setBuildWarnings([]));
     }, []);
 
     return (
@@ -76,8 +78,10 @@ export default function Developers() {
                         </div>
                     )}
                     <p className="mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-ink-2">
-                        OpenAdapt is open source. Record a workflow once and it becomes a
-                        self-healing automation that runs on your own machines, with no AI cost per run.
+                        <code>openadapt-flow</code> is the canonical engine. Its
+                        browser path records a workflow, compiles it into a
+                        reviewable program, and replays it locally with no model
+                        calls on a healthy run.
                     </p>
 
                     {/* uv-first Installation Section */}

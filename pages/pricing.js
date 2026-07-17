@@ -4,24 +4,30 @@ import ContactBookingSection from '@components/ContactBookingSection'
 import Footer from '@components/Footer'
 import Pricing from '@components/Pricing'
 
-export default function PricingPage() {
+export async function getStaticProps() {
+    const { getHostedOffer } = await import('../lib/hostedOffer')
+    const hostedOffer = await getHostedOffer()
+    return { props: { hostedOffer }, revalidate: 300 }
+}
+
+export default function PricingPage({ hostedOffer }) {
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
-                <title>Pricing | OpenAdapt.AI</title>
+                <title>Availability and commercial status | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="OpenAdapt pricing: the open-source engine is free (MIT), a hosted runner for non-PHI teams, and on-premises Enterprise where PHI never leaves your building and inference runs on your hardware at zero metered cost. No per-step, per-seat, or per-model-call charges."
+                    content="Launch OpenAdapt with the MIT engine, managed hosted browser execution, or a scoped customer-controlled deployment."
                 />
                 <link rel="canonical" href="https://openadapt.ai/pricing" />
-                <meta property="og:title" content="Pricing | OpenAdapt.AI" />
+                <meta property="og:title" content="Availability and commercial status | OpenAdapt.AI" />
                 <meta
                     property="og:description"
-                    content="Open source and free. Hosted for teams without on-prem hardware. Enterprise on-prem where your data stays in your building — inference bundled, never metered per step or per seat."
+                    content="OpenAdapt launch options: self-host the MIT engine, qualify managed browser execution, or scope a regulated deployment."
                 />
                 <meta property="og:url" content="https://openadapt.ai/pricing" />
             </Head>
-            <Pricing />
+            <Pricing hostedOffer={hostedOffer} />
             <ContactBookingSection />
             <Footer />
         </div>

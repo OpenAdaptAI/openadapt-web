@@ -67,7 +67,7 @@
       "height": 550,
       "source": "real",
       "app": "mockmed",
-      "caption": "Self-heal \u2014 real footage \u00b7 driving our MockMed demo app",
+      "caption": "Governed drift handling \u2014 real footage \u00b7 driving our MockMed demo app",
       "alt": "OpenAdapt replaying against a drifted UI: the fallback ladder still finds each target and proposes the anchor fix as a reviewable diff.",
       "bytes": {
         "webm": 60588,

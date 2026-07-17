@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindows, faApple, faLinux, faPython } from '@fortawesome/free-brands-svg-icons';
-import { faCopy, faCheck, faTerminal, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faWindows, faApple, faLinux } from '@fortawesome/free-brands-svg-icons';
+import { faCopy, faCheck, faTerminal } from '@fortawesome/free-solid-svg-icons';
 import styles from './InstallSection.module.css';
-import { getPyPIDownloadStats, formatDownloadCount } from 'utils/pypiStats';
 import { track, EVENTS } from 'utils/analytics';
 
 // One self-contained line, Homebrew-style. The hosted install script
@@ -60,7 +59,6 @@ function CopyButton({ text, className, onCopied }) {
 export default function InstallSection() {
     const [selectedPlatform, setSelectedPlatform] = useState('macOS');
     const [detectedPlatform, setDetectedPlatform] = useState(null);
-    const [pypiStats, setPypiStats] = useState({ total: 0, packages: {} });
 
     useEffect(() => {
         // Auto-detect platform
@@ -76,10 +74,6 @@ export default function InstallSection() {
             setDetectedPlatform('Linux');
         }
 
-        // Fetch PyPI download stats
-        getPyPIDownloadStats().then(stats => {
-            setPypiStats(stats);
-        });
     }, []);
 
     const currentPlatform = platforms[selectedPlatform];
@@ -88,25 +82,13 @@ export default function InstallSection() {
         <div className={styles.installSection}>
             <div className={styles.header}>
                 <FontAwesomeIcon icon={faTerminal} className={styles.terminalIcon} />
-                <h3 className={styles.title}>Install in 30 seconds</h3>
+                <h3 className={styles.title}>Install the browser workflow CLI</h3>
             </div>
 
             <p className={styles.subtitle}>
-                One command installs everything you need. No Python setup required.
+                One command installs the OpenAdapt launcher and governed compiler.
+                No account or hosted service is required.
             </p>
-
-            {/* PyPI Download Stats */}
-            {pypiStats.total > 0 && (
-                <div className={styles.pypiStats}>
-                    <FontAwesomeIcon icon={faPython} className={styles.pypiIcon} />
-                    <span className={styles.pypiCount}>
-                        {formatDownloadCount(pypiStats.total)}
-                    </span>
-                    <span className={styles.pypiLabel}>
-                        installs this month (all packages)
-                    </span>
-                </div>
-            )}
 
             {/* Platform Tabs */}
             <div className={styles.platformTabs}>
@@ -148,8 +130,10 @@ export default function InstallSection() {
                 </pre>
                 <div className={styles.codeFooter}>
                     <span className={styles.note}>
-                        Installs uv and OpenAdapt, then you run{' '}
-                        <code>openadapt</code>. {currentPlatform.note}.{' '}
+                        Installs uv and OpenAdapt, then the compiler is available
+                        under <code>openadapt flow</code>. {currentPlatform.note}.
+                        These platform tabs describe the CLI and browser path,
+                        not validated native desktop automation.{' '}
                         <a
                             href={currentPlatform.script}
                             target="_blank"
@@ -165,11 +149,12 @@ export default function InstallSection() {
             {/* Quick Start: the full loop */}
             <div className={styles.quickStart}>
                 <h4 className={styles.quickStartTitle}>
-                    The full loop, in five commands
+                    The end-to-end browser loop
                 </h4>
                 <p className={styles.note} style={{ marginBottom: '0.75rem' }}>
                     Try the whole loop right now against the
-                    bundled demo app: record, compile, replay, heal. No account, no cloud service. Once it is
+                    bundled demo app: record, compile, inspect, certify, replay,
+                    and induce known test drift. No account or cloud service. Once it is
                     installed, your workflow data stays on your machine. One
                     heads-up on first run: the first <code>demo-record</code> or{' '}
                     <code>replay</code> downloads a bundled Chromium (~150&nbsp;MB)
@@ -195,27 +180,42 @@ export default function InstallSection() {
                         <span>Turn the recording into a workflow</span>
                     </div>
                     <div className={styles.commandItem}>
+                        <code>openadapt flow lint bundle</code>
+                        <span>Inspect identity, assertion, and risk coverage gaps</span>
+                    </div>
+                    <div className={styles.commandItem}>
+                        <code>
+                            openadapt flow certify bundle --policy clinical-write
+                        </code>
+                        <span>Enforce a policy before deployment</span>
+                    </div>
+                    <div className={styles.commandItem}>
                         <code>openadapt flow replay bundle</code>
                         <span>Replay it locally, with zero AI calls</span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt flow replay bundle --drift theme</code>
-                        <span>Change the UI and watch it heal itself</span>
+                        <span>Exercise deterministic re-resolution on bundled test drift</span>
+                    </div>
+                    <div className={styles.commandItem}>
+                        <code>uv tool uninstall openadapt</code>
+                        <span>Remove the launcher when you are finished</span>
                     </div>
                 </div>
                 <p className={styles.note} style={{ marginTop: '0.75rem' }}>
                     Every replay writes a step-by-step run report: what ran,
-                    what it saw, what healed. Source on{' '}
+                    what it saw, what re-resolved, and what halted. The
+                    browser path is the only shipped end-to-end backend today.
+                    Source and measured limits on{' '}
                     <a
                         href="https://github.com/OpenAdaptAI/openadapt-flow"
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ textDecoration: 'underline' }}
                     >
-                        GitHub
+                        openadapt-flow
                     </a>
-                    . Running this on your own desktop workflows in a regulated
-                    environment?{' '}
+                    . Evaluating a regulated workflow?{' '}
                     <a href="#book" style={{ textDecoration: 'underline' }}>
                         Book a demo
                     </a>

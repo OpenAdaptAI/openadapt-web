@@ -4,8 +4,9 @@ import styles from './ReplayHero.module.css'
 
 /**
  * ReplayHero — the hero visual is the product: a compiled workflow replaying
- * as a live run report. Steps resolve deterministically in milliseconds, one
- * hits UI drift and heals itself, and the run closes with zero model calls.
+ * as a live run report. Steps resolve through the deterministic ladder, one
+ * hits UI drift and re-resolves deterministically, and the run closes with
+ * zero model calls.
  * Pure DOM + CSS (no video, no canvas); loops by remounting; static final
  * frame under prefers-reduced-motion.
  */
@@ -16,7 +17,7 @@ const ROWS = [
     { n: '3.0', action: 'click', target: "'Tasks'", rung: 'template', ms: '9ms', status: 'ok' },
     { n: '4.0', action: 'click', target: "'Open referral'", rung: 'template', ms: '11ms', status: 'ok' },
     { n: '5.0', action: 'click', target: "'Save Encounter'", rung: 'drift', ms: '', status: 'drift' },
-    { n: '', action: '', target: 'healed via geometry — fix saved as reviewable diff', rung: '', ms: '', status: 'heal' },
+    { n: '', action: '', target: 're-resolved via geometry — anchor update saved as diff', rung: '', ms: '', status: 'heal' },
     { n: '', action: '', target: 'postconditions verified · run complete', rung: '', ms: '', status: 'done' },
 ]
 
@@ -37,7 +38,7 @@ export default function ReplayHero() {
     }, [])
 
     return (
-        <div className={styles.frame} aria-label="Example of a compiled workflow replaying and self-healing">
+        <div className={styles.frame} aria-label="Example of a compiled workflow replaying and re-resolving UI drift">
             <div className={styles.titlebar}>
                 <span className={styles.dot} />
                 <span className={styles.dot} />

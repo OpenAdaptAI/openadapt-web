@@ -48,7 +48,7 @@ export default function FeedbackForm({ feedbackData }) {
 
     return (
         <div
-            id="waitlist"
+            id="product-updates"
             className={`${styles.background} px-10`}
             style={{
                 display: 'flex',
@@ -90,10 +90,11 @@ export default function FeedbackForm({ feedbackData }) {
                             </label>
                         </p>
                         <h1 className="font-light text-3xl text-white my-0">
-                            Join the Waitlist
+                            Product updates
                         </h1>
                         <h2 className="mt-10 mb-8 font-light text-white flex-auto">
-                            We'll email you when you can access OpenAdapt Alpha.
+                            We&apos;ll email you about releases, launch operations,
+                            and new supported backends.
                         </h2>
                         <label
                             className={styles['email_label']}
