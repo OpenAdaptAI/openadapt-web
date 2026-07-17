@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 import processStyles from './HowItWorks.module.css'
 import styles from './LendingWorkflowDemo.module.css'
 
@@ -25,39 +23,29 @@ const clips = {
 }
 
 function LendingClip({ clip }) {
-    const [playing, setPlaying] = useState(false)
-
-    useEffect(() => {
-        setPlaying(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-    }, [])
-
     return (
         <figure className={styles.figure}>
             <div
                 className={styles.media}
                 style={{ aspectRatio: `${clip.width} / ${clip.height}` }}
             >
-                <img
-                    className={styles.image}
-                    src={playing ? clip.src : clip.poster}
-                    alt={clip.alt}
-                    width={clip.width}
-                    height={clip.height}
-                    loading="lazy"
-                    decoding="async"
-                />
+                <picture>
+                    <source
+                        media="(prefers-reduced-motion: reduce)"
+                        srcSet={clip.poster}
+                    />
+                    <img
+                        className={styles.image}
+                        src={clip.src}
+                        alt={clip.alt}
+                        width={clip.width}
+                        height={clip.height}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                </picture>
             </div>
-            <div className={styles.clipFooter}>
-                <figcaption className={styles.caption}>{clip.caption}</figcaption>
-                <button
-                    type="button"
-                    className={styles.motionControl}
-                    aria-pressed={playing}
-                    onClick={() => setPlaying((current) => !current)}
-                >
-                    {playing ? 'Pause animation' : 'Play animation'}
-                </button>
-            </div>
+            <figcaption className={styles.caption}>{clip.caption}</figcaption>
         </figure>
     )
 }

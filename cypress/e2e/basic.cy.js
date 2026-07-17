@@ -224,28 +224,13 @@ describe('public product truth', () => {
             .scrollIntoView()
             .should('be.visible')
         cy.contains('6/6 compiled trials correct').should('be.visible')
-        cy.get('button').contains(/Pause animation|Play animation/).first()
-            .then(($button) => {
-                const startsPlaying = $button.text().includes('Pause')
-                const initialAsset = startsPlaying
-                    ? '/lending-demo/record-frappe.gif'
-                    : '/lending-demo/record-frappe.jpg'
-                const toggledAsset = startsPlaying
-                    ? '/lending-demo/record-frappe.jpg'
-                    : '/lending-demo/record-frappe.gif'
-
-                cy.get('img[alt*="Frappe Lending frames"]')
-                    .should('have.attr', 'src')
-                    .and('equal', initialAsset)
-                cy.wrap($button).click()
-                cy.get('img[alt*="Frappe Lending frames"]')
-                    .should('have.attr', 'src')
-                    .and('equal', toggledAsset)
-                cy.wrap($button).click()
-                cy.get('img[alt*="Frappe Lending frames"]')
-                    .should('have.attr', 'src')
-                    .and('equal', initialAsset)
-            })
+        cy.get('img[alt*="Frappe Lending frames"]')
+            .should('have.attr', 'src')
+            .and('equal', '/lending-demo/record-frappe.gif')
+        cy.get('img[alt*="deterministically replaying"]')
+            .should('have.attr', 'src')
+            .and('equal', '/lending-demo/replay-frappe.gif')
+        cy.contains(/Pause animation|Play animation/).should('not.exist')
         cy.contains('Inspect evidence manifest')
             .should('have.attr', 'href')
             .and('equal', '/lending-demo/provenance.json')
