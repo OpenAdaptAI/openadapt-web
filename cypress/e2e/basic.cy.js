@@ -216,12 +216,49 @@ describe('public product truth', () => {
         )
         cy.contains('customer-controlled deployment').should('be.visible')
         cy.contains('experimental').should('not.exist')
-        cy.get('[data-testid="frappe-lending-reference"]').should('be.visible')
-        cy.get('img[alt*="Synthetic Frappe Lending"]').should('be.visible')
-        cy.contains('Inspect image provenance')
+        cy.get('[data-testid="frappe-lending-workflow-demo"]').should('be.visible')
+        cy.get('img[alt*="Frappe Lending frames"]')
+            .scrollIntoView()
+            .should('be.visible')
+        cy.get('img[alt*="deterministically replaying"]')
+            .scrollIntoView()
+            .should('be.visible')
+        cy.contains('6/6 compiled trials correct').should('be.visible')
+        cy.get('button').contains(/Pause animation|Play animation/).first()
+            .then(($button) => {
+                const startsPlaying = $button.text().includes('Pause')
+                const initialAsset = startsPlaying
+                    ? '/lending-demo/record-frappe.gif'
+                    : '/lending-demo/record-frappe.jpg'
+                const toggledAsset = startsPlaying
+                    ? '/lending-demo/record-frappe.jpg'
+                    : '/lending-demo/record-frappe.gif'
+
+                cy.get('img[alt*="Frappe Lending frames"]')
+                    .should('have.attr', 'src')
+                    .and('equal', initialAsset)
+                cy.wrap($button).click()
+                cy.get('img[alt*="Frappe Lending frames"]')
+                    .should('have.attr', 'src')
+                    .and('equal', toggledAsset)
+                cy.wrap($button).click()
+                cy.get('img[alt*="Frappe Lending frames"]')
+                    .should('have.attr', 'src')
+                    .and('equal', initialAsset)
+            })
+        cy.contains('Inspect evidence manifest')
             .should('have.attr', 'href')
-            .and('equal', '/images/frappe-lending-reference.provenance.json')
+            .and('equal', '/lending-demo/provenance.json')
         cy.get('img[alt*="OpenEMR"]').should('not.exist')
+
+        cy.viewport(375, 812)
+        cy.visit('/solutions/lending')
+        cy.get('[data-testid="frappe-lending-workflow-demo"]')
+            .scrollIntoView()
+            .should('be.visible')
+        cy.document().then((document) => {
+            expect(document.documentElement.scrollWidth).to.be.at.most(375)
+        })
 
         cy.visit('/safety')
         cy.get('h1').should('contain.text', 'needs verified identity')
