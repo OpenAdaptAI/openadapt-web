@@ -14,9 +14,9 @@ const paths = [
     },
     {
         audience: 'Automation & operations',
-        title: 'Launch hosted browser workflows',
-        body: 'Subscribe, record a browser workflow, inspect the compiled program and reports, then operate deterministic runs from the hosted control plane.',
-        primary: { label: 'Start hosted', href: '#pricing' },
+        title: 'Qualify a managed browser workflow',
+        body: 'Bring one repeated browser workflow, its operating boundary, and an independent success oracle. If it fits the current managed path, scope a supervised pilot with the team.',
+        primary: { label: 'Qualify a workflow', href: '#book' },
         secondary: { label: 'Review the benchmark', href: '/compare' },
     },
     {

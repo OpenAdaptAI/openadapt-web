@@ -382,8 +382,8 @@ export default function ComparePage() {
                         incorrect-success rate on work your team already repeats.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
-                        <Link href="/pricing" className="btn-ink">
-                            Start hosted
+                        <Link href="/#book" className="btn-ink">
+                            Qualify a workflow
                         </Link>
                         <Link href="/#book" className="btn-ghost-ink">
                             Book a workflow review

@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
@@ -50,23 +51,51 @@ export default function LendingPage() {
             </div>
 
             <section
-                data-testid="lending-evidence-placeholder"
+                data-testid="frappe-lending-reference"
                 className="border-y border-hairline bg-panel px-4 py-12"
             >
                 <div className="mx-auto max-w-4xl">
-                    <p className="eyebrow">Lending evidence status</p>
+                    <p className="eyebrow">Synthetic reference evidence</p>
                     <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                        Lending-specific workflow media is awaiting oracle verification
+                        Frappe Lending reference environment
                     </h2>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                        We do not reuse healthcare or OpenEMR footage as proof of a
-                        lending workflow. This page describes candidate workflow fit;
-                        lending-specific fixtures, results, and media will appear only
-                        after the bounded task and success oracle are reproducible.
+                        This is Frappe Lending v16.2.0 running locally with synthetic
+                        data. The captured Loan Application save passed the fixture&#39;s
+                        separately authenticated read-only REST check and direct SQL
+                        effect audit. It is an unaffiliated reference environment—not
+                        a customer deployment, endorsement, reliability benchmark, or
+                        evidence for a proprietary lending system, Windows, RDP, or
+                        Citrix.
                     </p>
-                    <Link href="/compare#benchmark-evidence" className="mt-4 inline-block text-sm text-accent underline">
-                        Review the current published evidence method
-                    </Link>
+                    <figure className="mt-6 overflow-hidden rounded-2xl border border-hairline bg-ground">
+                        <Image
+                            src="/images/frappe-lending-reference.png"
+                            alt="Synthetic Frappe Lending Loan Application saved in the local reference environment"
+                            width={1280}
+                            height={800}
+                            priority
+                            className="h-auto w-full"
+                        />
+                        <figcaption className="border-t border-hairline px-4 py-3 text-xs leading-relaxed text-ink-3">
+                            Frappe Lending reference environment (synthetic,
+                            unaffiliated). The image documents fixture identity and
+                            one oracle-checked save; comparative trial results remain
+                            separate from this media. Frappe is a registered trademark
+                            of Frappe Technologies Pvt. Ltd.
+                        </figcaption>
+                    </figure>
+                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                        <Link href="/compare#benchmark-evidence" className="text-accent underline">
+                            Review the current published evidence method
+                        </Link>
+                        <a
+                            href="/images/frappe-lending-reference.provenance.json"
+                            className="text-accent underline"
+                        >
+                            Inspect image provenance
+                        </a>
+                    </div>
                 </div>
             </section>
 

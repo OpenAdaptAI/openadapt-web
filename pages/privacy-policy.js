@@ -8,25 +8,28 @@ const PrivacyPolicy = () => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Privacy Policy | OpenAdapt.AI</title>
+                <title>Draft Privacy Notice | OpenAdapt.AI</title>
                 <meta
                     name="description"
-                    content="OpenAdapt.AI privacy policy and data boundaries for local artifacts, sanitized upload derivatives, hosted execution, optional model endpoints, and regulated runtimes."
+                    content="Draft, non-operative privacy notice and factual technical data-flow inventory for OpenAdapt local artifacts, optional hosted paths, providers, and runtime boundaries."
                 />
                 <link rel="canonical" href="https://openadapt.ai/privacy-policy" />
-                <meta property="og:title" content="Privacy Policy | OpenAdapt.AI" />
-                <meta property="og:description" content="OpenAdapt.AI privacy policy for local artifacts, optional hosted services, providers, retention, and runtime data boundaries." />
+                <meta property="og:title" content="Draft Privacy Notice | OpenAdapt.AI" />
+                <meta property="og:description" content="Non-operative draft notice and technical inventory for OpenAdapt local artifacts, optional hosted services, providers, retention, and runtime boundaries." />
                 <meta property="og:url" content="https://openadapt.ai/privacy-policy" />
             </Head>
-            <h1 className={styles.heading}>Privacy Policy</h1>
+            <h1 className={styles.heading}>Draft Privacy Notice</h1>
             <p className={styles.paragraph}>
-                <strong>Launch legal-review requirement.</strong> This policy maps
-                the current technical data flows; it is not legal advice or a
-                compliance certification. MLDSAI Inc. must obtain review from
-                qualified privacy counsel before enabling paid production checkout.
+                <strong>DRAFT — NOT OPERATIVE FOR PAID PRODUCTION.</strong> This
+                page is a factual technical data-flow inventory for launch review;
+                it is not an approved production privacy policy, consent instrument,
+                legal opinion, or compliance certification. MLDSAI Inc. must obtain
+                qualified privacy-counsel approval, designate an accountable privacy
+                official, and publish an operative notice with an effective date
+                before enabling paid production checkout.
             </p>
             <p className={styles.paragraph}>
-                <strong>Effective July 16, 2026.</strong> MLDSAI Inc.
+                <strong>Technical inventory reviewed July 16, 2026.</strong> MLDSAI Inc.
                 (&quot;OpenAdapt,&quot; &quot;we,&quot; or &quot;us&quot;)
                 operates the OpenAdapt website and optional hosted service. Contact{' '}
                 <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> with
@@ -167,9 +170,10 @@ const PrivacyPolicy = () => {
 
             <h2 className={styles.subheading}>9. Changes and Contact</h2>
             <p className={styles.paragraph}>
-                We may update this policy as product paths, providers, or legal
-                requirements change. We will post the revised effective date and
-                provide any notice required by applicable law. Questions or
+                We may update this draft inventory as product paths, providers, or
+                legal requirements change. If counsel approves an operative privacy
+                notice, we will publish its effective date and provide any notice
+                required by applicable law. Questions or
                 requests concerning personal information can be sent to the
                 current privacy contact at{' '}
                 <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Before

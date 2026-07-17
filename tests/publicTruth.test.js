@@ -1,4 +1,5 @@
 const assert = require('node:assert/strict')
+const crypto = require('node:crypto')
 const fs = require('node:fs')
 const path = require('node:path')
 const test = require('node:test')
@@ -112,6 +113,51 @@ test('buyer-fit section leads with infrastructure operators, not vertical claims
     assert.doesNotMatch(industries, /title: 'Mortgage & lending ops'/)
 })
 
+test('top-level calls to action qualify a workflow instead of implying hosted activation', () => {
+    const sources = [
+        read('components/AudiencePaths.js'),
+        read('components/MastHead.js'),
+        read('components/NavHeader.js'),
+        read('pages/compare.js'),
+    ].join('\n')
+
+    assert.doesNotMatch(sources, /Start hosted|start_hosted/)
+    assert.match(sources, /Qualify a workflow/)
+    assert.match(sources, /Plan a pilot/)
+})
+
+test('healthcare page sells verified last-mile infrastructure, not a clinic vertical product', () => {
+    const healthcare = read('pages/solutions/healthcare.js')
+
+    for (const buyer of [
+        'RCM vendors',
+        'healthcare BPOs',
+        'automation teams',
+        'vertical-software companies',
+    ]) {
+        assert.match(healthcare, new RegExp(buyer))
+    }
+    assert.match(healthcare, /structured\s+input and business logic/)
+    assert.match(healthcare, /independent source of truth/)
+    assert.match(healthcare, /does not parse referrals/)
+    assert.match(healthcare, /remaining UI-only gap/)
+    assert.doesNotMatch(healthcare, /OpenAdapt for healthcare clinics|What a clinic can compile/)
+})
+
+test('machine-readable use cases do not claim mortgage, LOS, or a healthcare vertical product', () => {
+    const llms = read('public/llms.txt')
+
+    assert.match(llms, /Healthcare Execution Infrastructure/)
+    assert.match(llms, /RCM vendors, healthcare BPOs, automation teams, and vertical-software companies/)
+    assert.match(llms, /Lending Operations Reference/)
+    assert.match(llms, /not evidence of a production lending integration/)
+    assert.doesNotMatch(llms, /Healthcare Clinics|Mortgage|\bLOS\b/)
+})
+
+test('public repository declares its lifecycle state', () => {
+    assert.match(read('README.md'), /Lifecycle: Beta/)
+})
+
 test('lending page does not reuse healthcare media as lending evidence', () => {
     const lending = read('pages/solutions/lending.js')
 
@@ -121,9 +167,38 @@ test('lending page does not reuse healthcare media as lending evidence', () => {
     assert.match(lending, /remaining UI-only browser gap/)
     assert.match(lending, /not evidence of[\s\S]*production lending integration/)
     assert.doesNotMatch(lending, /mortgage|Encompass|\bLOS\b/i)
-    assert.match(lending, /lending-evidence-placeholder/)
-    assert.match(lending, /do not reuse healthcare or OpenEMR footage/i)
-    assert.match(lending, /awaiting oracle verification/i)
+    assert.match(lending, /frappe-lending-reference/)
+    assert.match(lending, /Frappe Lending reference environment/)
+    assert.match(lending, /synthetic,\s*unaffiliated/i)
+    assert.match(lending, /separately authenticated read-only REST check/)
+    assert.match(lending, /direct SQL[\s\S]*effect audit/)
+    assert.match(lending, /not[\s\S]*reliability benchmark/i)
+    assert.match(lending, /\/images\/frappe-lending-reference\.png/)
+    assert.match(lending, /frappe-lending-reference\.provenance\.json/)
+    assert.match(lending, /Frappe is a registered trademark/)
+    assert.doesNotMatch(lending, /lending-evidence-placeholder|awaiting oracle verification/i)
+})
+
+test('lending reference image has durable synthetic provenance', () => {
+    const assetPath = path.join(root, 'public/images/frappe-lending-reference.png')
+    const provenance = JSON.parse(
+        read('public/images/frappe-lending-reference.provenance.json')
+    )
+    const digest = crypto
+        .createHash('sha256')
+        .update(fs.readFileSync(assetPath))
+        .digest('hex')
+
+    assert.equal(provenance.asset_sha256, digest)
+    assert.equal(provenance.synthetic_fixture, true)
+    assert.equal(provenance.recording_id, 'recording-live-valid11')
+    assert.equal(provenance.recording_frame, 'frames/0020_after.png')
+    assert.equal(provenance.software.lending.commit.length, 40)
+    assert.equal(provenance.software.frappe.commit.length, 40)
+    assert.equal(provenance.software.erpnext.commit.length, 40)
+    assert.match(provenance.oracle_boundary, /read-only REST.*direct SQL.*table-delta/i)
+    assert.match(provenance.limitations, /not.*reliability.*Windows.*Citrix/i)
+    assert.match(provenance.trademark_notice, /registered trademark/i)
 })
 
 test('sitemap includes launch, download, and trust surfaces', () => {

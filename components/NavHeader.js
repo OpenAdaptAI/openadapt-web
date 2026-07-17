@@ -81,13 +81,13 @@ export default function NavHeader() {
                     {menuOpen ? 'CLOSE' : 'MENU'}
                 </button>
                 <Link
-                    href="/#pricing"
+                    href="/#book"
                     className={styles.cta}
                     onClick={() =>
-                        track(EVENTS.HERO_CTA_CLICK, { location: 'nav', cta: 'start_hosted' })
+                        track(EVENTS.HERO_CTA_CLICK, { location: 'nav', cta: 'plan_pilot' })
                     }
                 >
-                    Start hosted
+                    Plan a pilot
                 </Link>
             </div>
             {menuOpen && (

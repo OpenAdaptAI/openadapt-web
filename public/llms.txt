@@ -15,8 +15,8 @@
 - [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
 
 ## Use Cases
-- [Healthcare Clinics](https://openadapt.ai/solutions/healthcare): Repeated browser-accessible intake, scheduling, billing, and EMR data-entry workflows with explicit identity, effect, and data-boundary checks
-- [Mortgage & Lending Ops](https://openadapt.ai/solutions/lending): Repeated borrower-data entry across approved browser queues, forms, portals, and LOS pages with governed replay and reporting
+- [Healthcare Execution Infrastructure](https://openadapt.ai/solutions/healthcare): Governed last-mile browser execution for RCM vendors, healthcare BPOs, automation teams, and vertical-software companies that already have structured input and business logic
+- [Lending Operations Reference](https://openadapt.ai/solutions/lending): A bounded, synthetic reference for evaluating an API-first workflow's remaining UI-only step; it is not evidence of a production lending integration
 - [Other Regulated Back-Offices](https://openadapt.ai/#industries): Demonstrated browser workflows that require repeatable execution, review, and explicit data boundaries
 
 ## Source Code
