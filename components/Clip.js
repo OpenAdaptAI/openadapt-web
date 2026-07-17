@@ -21,12 +21,13 @@ const BASE = '/how-it-works/'
  */
 export default function Clip({ clip }) {
     const aspectRatio = `${clip.width} / ${clip.height}`
+    const src = clip.gif.startsWith('/') ? clip.gif : BASE + clip.gif
     return (
         <figure className={styles.figure}>
             <div className={styles.media} style={{ aspectRatio }}>
                 <img
                     className={styles.el}
-                    src={BASE + clip.gif}
+                    src={src}
                     alt={clip.alt}
                     width={clip.width}
                     height={clip.height}
