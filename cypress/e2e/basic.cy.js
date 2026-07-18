@@ -1,6 +1,19 @@
 const BOOKING_URL =
     'https://cal.com/richard-abrich/30min?overlayCalendar=true'
 
+function isProductionDeployment() {
+    const baseUrl = Cypress.config('baseUrl')
+    const hostname = baseUrl ? new URL(baseUrl).hostname : ''
+
+    // Netlify's onSuccess plugin receives the deploy context. The hostname
+    // fallback also supports intentional local Cypress runs against the
+    // canonical production site.
+    return (
+        Cypress.expose('deploymentContext') === 'production' ||
+        hostname === 'openadapt.ai'
+    )
+}
+
 function assertCanonicalBooking() {
     cy.get('iframe[title="Book a call with OpenAdapt"]')
         .should('have.attr', 'src')
@@ -199,13 +212,27 @@ describe('public product truth', () => {
         cy.get('#pricing').within(() => {
             cy.contains('Run it yourself or launch with us').should('be.visible')
             cy.contains('Managed browser').should('be.visible')
-            cy.contains('Hosted execution').should('be.visible')
-            cy.contains('Start with our team').should('be.visible')
             cy.contains('Offer unavailable').should('not.exist')
             cy.contains('Hosted checkout unavailable').should('not.exist')
-            cy.contains('$500').should('not.exist')
-            cy.contains('workflow runs/month').should('not.exist')
             cy.contains('approved sanitized copy').should('be.visible')
+
+            if (isProductionDeployment()) {
+                cy.contains('$500.00').should('be.visible')
+                cy.contains('/month').should('be.visible')
+                cy.contains('OpenAdapt Cloud').should('be.visible')
+                cy.contains('Up to 10,000 workflow runs/month').should(
+                    'be.visible'
+                )
+                cy.contains('Start hosted subscription').should('be.visible')
+                cy.contains('Hosted execution').should('not.exist')
+                cy.contains('Start with our team').should('not.exist')
+            } else {
+                cy.contains('Hosted execution').should('be.visible')
+                cy.contains('Start with our team').should('be.visible')
+                cy.contains('$500').should('not.exist')
+                cy.contains('workflow runs/month').should('not.exist')
+                cy.contains('Start hosted subscription').should('not.exist')
+            }
         })
     })
 
@@ -754,14 +781,24 @@ describe('public product truth', () => {
         cy.location('pathname').should('equal', '/hosted/welcome')
     })
 
-    it('refuses direct checkout when the offer cannot be verified', () => {
+    it('matches direct checkout to the deployment qualification boundary', () => {
         cy.request({
             method: 'POST',
             url: '/api/create-checkout-session',
             failOnStatusCode: false,
         }).then((response) => {
-            expect(response.status).to.equal(503)
-            expect(response.body.error).to.equal('checkout_not_configured')
+            if (isProductionDeployment()) {
+                expect(response.status).to.equal(200)
+                expect(response.body).to.have.property('url')
+                expect(new URL(response.body.url).origin).to.equal(
+                    'https://checkout.stripe.com'
+                )
+            } else {
+                expect(response.status).to.equal(503)
+                expect(response.body.error).to.equal(
+                    'checkout_not_configured'
+                )
+            }
         })
     })
 
