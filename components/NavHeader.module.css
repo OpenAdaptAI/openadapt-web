@@ -33,7 +33,7 @@
 .links {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: clamp(12px, 1.45vw, 22px);
     margin-left: auto;
 }
 
@@ -86,7 +86,8 @@
     display: none;
 }
 
-@media (max-width: 767px) {
+/* The ten-link desktop navigation no longer fits reliably at tablet widths. */
+@media (max-width: 1120px) {
     .links {
         display: none;
     }
@@ -103,6 +104,8 @@
     .mobilePanel {
         display: flex;
         flex-direction: column;
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
         background: var(--panel);
         border-bottom: 1px solid var(--hairline);
         padding: 6px 16px 12px;
@@ -123,5 +126,26 @@
     .mobileLink:hover {
         color: var(--accent);
         text-decoration: none;
+    }
+}
+
+@media (max-width: 420px) {
+    .inner {
+        gap: 8px;
+        padding: 0 10px;
+    }
+
+    .wordmark {
+        font-size: 17px;
+    }
+
+    .menuButton {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    .cta {
+        padding: 7px 11px;
+        font-size: 12px;
     }
 }
