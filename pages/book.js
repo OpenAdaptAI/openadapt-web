@@ -1,12 +1,20 @@
 import Link from 'next/link'
 import Head from 'next/head'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import BookingEmbed from '@components/BookingEmbed'
 import Footer from '@components/Footer'
+import { trackBookingClick } from 'utils/conversion'
 
 export default function BookPage() {
     const router = useRouter()
+
+    // Reaching the scheduler page is the E1 "booking click" conversion —
+    // it covers every CTA that routes here without touching each CTA.
+    useEffect(() => {
+        trackBookingClick({ location: 'book_page' })
+    }, [])
     const name = typeof router.query.name === 'string' ? router.query.name : ''
     const email = typeof router.query.email === 'string' ? router.query.email : ''
 

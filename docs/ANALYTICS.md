@@ -65,3 +65,50 @@ tab selected (`macOS`/`Linux`/`Windows`), the copy variant
 Because persistence is in-memory, a funnel is measured within a single page
 session (a visitor navigating the SPA), which is exactly the launch-day
 behavior we care about.
+
+## Paid-acquisition measurement (E1: GA4 + Meta Pixel)
+
+Additive layer for capped paid-traffic tests (Meta ads + community
+placements driving a landing page). Everything here is **env-gated and off
+by default** — with neither id set, no script loads and nothing renders:
+
+| Env var | Loads | Component |
+| ------- | ----- | --------- |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 (gtag.js): SPA pageviews + conversions, feeds the native GA4 → BigQuery export | `components/analytics/GoogleAnalytics.js` |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel: PageView + standard conversion events for campaign optimization | `components/analytics/MetaPixel.js` |
+
+Both are mounted once in `pages/_app.js`, so every page (including
+campaign landing pages such as `/dental`) is covered with no per-page
+wiring.
+
+### Conversion events
+
+Fired through the single fan-out module `utils/conversion.js` (never
+inline `gtag`/`fbq` calls):
+
+| Conversion | Fires when | PostHog | GA4 | Meta |
+| ---------- | ---------- | ------- | --- | ---- |
+| Email capture (**qualified lead**) | email/contact form submits successfully (`components/EmailForm.js`, `components/ContactBookingSection.js`) | `email_capture_submitted` | `generate_lead` | `Lead` |
+| Booking click | visitor reaches the scheduler (`pages/book.js`) or clicks a direct booking link (`components/BookingEmbed.js`) | `book_call_click` | `book_call_click` | `Contact` |
+| Booking confirmed (**qualified lead**) | Cal.com embed reports a completed booking — best-effort postMessage signal (`components/BookingEmbed.js`) | `book_call_confirmed` | `book_call_confirmed` | `Schedule` |
+
+### Attribution
+
+`utils/attribution.js` captures `utm_source/medium/campaign/term/content`
+(+ `fbclid`/`gclid`) from the first landing URL of the session into
+`sessionStorage` (first-touch; cleared when the tab closes; no cookies)
+and every conversion event carries them, so cost-per-qualified-lead can be
+attributed per campaign/ad set/placement.
+
+### Privacy posture (deltas vs the PostHog layer)
+
+- Event properties remain campaign labels + enum locations only — never
+  emails, names, or form contents.
+- GA4 is configured with `allow_google_signals: false` and
+  `allow_ad_personalization_signals: false` (measurement, not
+  remarketing). GA4 does not log or store IP addresses.
+- The Meta Pixel is inherently a third-party ad tracker: enable it only
+  while a Meta campaign is live, and never on any surface that could
+  receive PHI-adjacent traffic. The site has no CMP today; the consent
+  discussion and regional considerations live in the E1 tracking runbook
+  (private), which gates turning the pixel on.
