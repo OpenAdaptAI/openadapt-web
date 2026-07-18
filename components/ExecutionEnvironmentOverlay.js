@@ -3,13 +3,17 @@ import styles from './ExecutionEnvironmentOverlay.module.css'
 export default function ExecutionEnvironmentOverlay({
     environment,
     reference,
+    stage,
 }) {
     return (
         <div
-            className={styles.overlay}
+            className={`${styles.overlay} ${
+                stage === 'resolve' ? styles.resolve : ''
+            }`}
             data-testid="execution-environment-overlay"
             data-execution-environment={environment.key}
             data-environment-source-kind={environment.sourceKind}
+            data-reference-stage={stage}
             role="img"
             aria-label={`${environment.label} execution view for the ${reference.label} reference workflow`}
         >

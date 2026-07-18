@@ -40,6 +40,12 @@ const referenceWorkflows = {
             effect: 'deployment-specific oracle required',
         },
         resolve: {
+            track: {
+                animationClass: 'openemrTargets',
+                duration: '6.58s',
+                evidence:
+                    'OpenEMR replay timing and visible action regions',
+            },
             evidence: [
                 'Recorded OpenEMR target evidence',
                 'Configured identity and target constraints',
@@ -108,6 +114,12 @@ const referenceWorkflows = {
             effect: 'exactly one matching Loan Application',
         },
         resolve: {
+            track: {
+                animationClass: 'frappeTargets',
+                duration: '10.18s',
+                evidence:
+                    'Frappe replay frames 0, 3, 8, 12, 16, and 20',
+            },
             evidence: [
                 'Recorded Frappe Loan Application evidence',
                 'Applicant and form-context constraints',
@@ -180,6 +192,12 @@ const referenceWorkflows = {
             effect: 'exactly one claim row in status Entered',
         },
         resolve: {
+            track: {
+                animationClass: 'openimisTargets',
+                duration: '19.79s',
+                evidence:
+                    'openIMIS replay timing and compiled claim-form action regions',
+            },
             evidence: [
                 'Recorded openIMIS claim-form evidence',
                 'Policyholder, facility, and form context',
