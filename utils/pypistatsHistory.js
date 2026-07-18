@@ -332,26 +332,7 @@ export async function getRecentDownloadStats() {
     };
 }
 
-/**
- * Fetches GitHub stats for the main OpenAdapt repository
- * @returns {Promise<Object>} - Object with stars, forks, watchers
- */
-export async function getGitHubStats() {
-    try {
-        const response = await fetch('https://api.github.com/repos/OpenAdaptAI/OpenAdapt');
-        if (!response.ok) {
-            console.warn('Failed to fetch GitHub stats:', response.status);
-            return null;
-        }
-        const data = await response.json();
-        return {
-            stars: data.stargazers_count,
-            forks: data.forks_count,
-            watchers: data.subscribers_count,
-            openIssues: data.open_issues_count,
-        };
-    } catch (error) {
-        console.error('Error fetching GitHub stats:', error);
-        return null;
-    }
-}
+// GitHub stats are intentionally NOT fetched from this client-side module.
+// api.github.com allows 60 unauthenticated requests/hour per client IP, so
+// browser-side fetches 403 for visitors on shared IPs. GitHub data is
+// server-rendered via lib/githubApi.js in getStaticProps instead.
