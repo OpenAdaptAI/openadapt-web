@@ -16,6 +16,23 @@ const referenceWorkflows = {
             'Recorded and replayed OpenEMR footage for a bounded healthcare browser workflow.',
         record: manifest.steps.record_openemr,
         replay: manifest.steps.run_openemr,
+        stageMedia: {
+            compile: {
+                src: '/how-it-works/record_openemr.gif',
+                alt: 'Live OpenEMR demonstration footage behind OpenAdapt’s animated compile view.',
+                sourceLabel: 'OpenEMR demonstration',
+            },
+            resolve: {
+                src: '/how-it-works/run_openemr.gif',
+                alt: 'Live OpenEMR replay footage behind OpenAdapt’s animated target-resolution view.',
+                sourceLabel: 'OpenEMR replay',
+            },
+            verify: {
+                src: '/how-it-works/run_openemr.gif',
+                alt: 'Live OpenEMR replay footage behind OpenAdapt’s animated audit-contract view.',
+                sourceLabel: 'OpenEMR replay',
+            },
+        },
         compile: {
             workflow: 'openemr-browser-reference',
             parameters: 'workflow-defined inputs',
@@ -66,6 +83,23 @@ const referenceWorkflows = {
             alt: 'OpenAdapt deterministically replaying the compiled synthetic loan application workflow in Frappe Lending.',
             caption:
                 'Replay — Frappe Lending reference · model-free and independently checked',
+        },
+        stageMedia: {
+            compile: {
+                src: '/lending-demo/record-frappe.gif',
+                alt: 'Frappe Lending demonstration footage behind OpenAdapt’s animated compile view.',
+                sourceLabel: 'Frappe Lending demonstration',
+            },
+            resolve: {
+                src: '/lending-demo/replay-frappe.gif',
+                alt: 'Frappe Lending replay footage behind OpenAdapt’s animated target-resolution view.',
+                sourceLabel: 'Frappe Lending replay',
+            },
+            verify: {
+                src: '/lending-demo/replay-frappe.gif',
+                alt: 'Frappe Lending replay footage behind OpenAdapt’s animated verified-effect audit view.',
+                sourceLabel: 'Frappe Lending replay',
+            },
         },
         compile: {
             workflow: 'create-loan-application',
@@ -121,6 +155,23 @@ const referenceWorkflows = {
             alt: 'OpenAdapt deterministically replaying the compiled claims-intake workflow in openIMIS with a fresh claim number.',
             caption:
                 'Replay — openIMIS claims reference · model-free and independently checked',
+        },
+        stageMedia: {
+            compile: {
+                src: '/insurance-demo/record-openimis.gif',
+                alt: 'openIMIS claim-entry demonstration footage behind OpenAdapt’s animated compile view.',
+                sourceLabel: 'openIMIS demonstration',
+            },
+            resolve: {
+                src: '/insurance-demo/replay-openimis.gif',
+                alt: 'openIMIS claim-entry replay footage behind OpenAdapt’s animated target-resolution view.',
+                sourceLabel: 'openIMIS replay',
+            },
+            verify: {
+                src: '/insurance-demo/replay-openimis.gif',
+                alt: 'openIMIS claim-entry replay footage behind OpenAdapt’s animated verified-effect audit view.',
+                sourceLabel: 'openIMIS replay',
+            },
         },
         compile: {
             workflow: 'openimis-claim-intake',
@@ -242,10 +293,10 @@ export default function HowItWorks({ showUseCases = false }) {
                             </Link>
                         </div>
                         <p className={styles.visualScopeNote}>
-                            Record and Replay are real reference footage. Compile,
-                            Resolve or halt, and Verify are crafted, app-labelled
-                            contract views; they do not claim unrecorded
-                            application footage.
+                            Every stage uses the selected reference application.
+                            Compile, Resolve or halt, and Verify layer animated
+                            OpenAdapt contract views over that application’s real
+                            demonstration or replay footage.
                         </p>
                     </div>
                 )}
