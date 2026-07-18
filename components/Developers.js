@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './Developers.module.css';
 import InstallSection from '@components/InstallSection';
 import PyPIDownloadChart from './PyPIDownloadChart';
@@ -13,23 +13,10 @@ const ecosystemLinks = [
     ...DEVELOPER_LINKS.slice(3),
 ];
 
-export default function Developers() {
-    const [buildWarnings, setBuildWarnings] = useState([]);
-
-    useEffect(() => {
-        // Surface known breakage in the canonical engine rather than implying
-        // that the historical umbrella repository is the product runtime.
-        fetch('https://api.github.com/repos/OpenAdaptAI/openadapt-flow/issues?state=open&labels=main-broken')
-            .then(response => response.ok ? response.json() : [])
-            .then(issues => {
-                setBuildWarnings((Array.isArray(issues) ? issues : []).map(issue => ({
-                    id: issue.number,
-                    url: issue.html_url
-                })));
-            })
-            .catch(() => setBuildWarnings([]));
-    }, []);
-
+export default function Developers({ buildWarnings = [], githubStats = null }) {
+    // Known engine breakage (open main-broken issues) and GitHub social
+    // proof arrive server-rendered from the page's getStaticProps; the
+    // visitor's browser never calls api.github.com.
     return (
         <div className={styles.row} id="open-source">
             {/* Legacy anchors kept for existing inbound links */}
@@ -71,7 +58,7 @@ export default function Developers() {
                     <InstallSection />
 
                     {/* PyPI Download Statistics */}
-                    <PyPIDownloadChart />
+                    <PyPIDownloadChart githubStats={githubStats} />
 
                     <div className="mt-8 mb-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
                         {ecosystemLinks.map((link) => (

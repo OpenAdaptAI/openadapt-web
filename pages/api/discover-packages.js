@@ -3,7 +3,7 @@
  *
  * *** SINGLE SOURCE OF TRUTH FOR PACKAGE LISTS ***
  * This API endpoint uses the shared packageDiscovery utility module.
- * The discovery logic itself is in utils/packageDiscovery.js
+ * The discovery logic itself is in lib/packageDiscovery.js
  *
  * This endpoint provides an HTTP interface to the discovery logic for:
  * - Client-side code that needs to fetch package lists
@@ -13,7 +13,7 @@
  * instead of making HTTP calls to this endpoint.
  */
 
-import { discoverPackages, CACHE_DURATION } from '../../utils/packageDiscovery.js';
+import { discoverPackages, CACHE_DURATION } from '../../lib/packageDiscovery.js';
 
 export default async function handler(req, res) {
     try {

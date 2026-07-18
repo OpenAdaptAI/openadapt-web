@@ -41,13 +41,17 @@ export default function Footer() {
                         width="114"
                         style={{ border: '0', borderRadius: '6px' }}
                     ></iframe>
+                    {/* Intentionally no count bubbles: requesting counts
+                        makes buttons.js call the GitHub API from every
+                        visitor's browser (60 unauthenticated req/hr per IP,
+                        so shared IPs get 403s). Star/fork counts are
+                        server-rendered in the masthead instead. */}
                     <a
                         className="github-button"
                         href="https://github.com/OpenAdaptAI/OpenAdapt"
                         data-color-scheme="no-preference: light; light: light; dark: light;"
                         data-icon="octicon-star"
                         data-size="large"
-                        data-show-count="true"
                         aria-label="Star OpenAdaptAI/OpenAdapt on GitHub"
                     >
                         Star
@@ -58,7 +62,6 @@ export default function Footer() {
                         data-color-scheme="no-preference: light; light: light; dark: light;"
                         data-icon="octicon-repo-forked"
                         data-size="large"
-                        data-show-count="true"
                         aria-label="Fork OpenAdaptAI/OpenAdapt on GitHub"
                     >
                         Fork

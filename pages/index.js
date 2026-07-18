@@ -124,33 +124,26 @@ const faqSchema = {
 
 export async function getStaticProps() {
     // Fetch real GitHub social proof at build time without a client request.
-    let githubStats = { ...GITHUB_STATS_FALLBACK }
-    try {
-        const res = await fetch(
-            `https://api.github.com/repos/${GITHUB_REPOSITORY}`,
-            { headers: { Accept: 'application/vnd.github+json' } }
-        )
-        if (res.ok) {
-            const data = await res.json()
-            if (
-                typeof data.stargazers_count === 'number' &&
-                typeof data.forks_count === 'number'
-            ) {
-                githubStats = {
-                    stars: data.stargazers_count,
-                    forks: data.forks_count,
-                }
-            }
-        }
-    } catch (err) {
-        // Keep the dated, verified fallback rather than displaying zeroes.
-    }
+    // On a network miss getRepoSocialProof keeps the dated, verified
+    // fallback rather than displaying zeroes.
+    const { getRepoSocialProof, getOpenIssuesByLabel } = await import(
+        '../lib/githubApi'
+    )
+    const [githubStats, buildWarnings] = await Promise.all([
+        getRepoSocialProof(GITHUB_REPOSITORY, GITHUB_STATS_FALLBACK),
+        // Known engine breakage surfaced server-side so visitor browsers
+        // never call api.github.com (60 req/hr per IP → 403s on shared IPs).
+        getOpenIssuesByLabel('OpenAdaptAI/openadapt-flow', 'main-broken'),
+    ])
     const { getHostedOffer } = await import('../lib/hostedOffer')
     const hostedOffer = await getHostedOffer()
-    return { props: { githubStats, hostedOffer }, revalidate: 300 }
+    return {
+        props: { githubStats, buildWarnings, hostedOffer },
+        revalidate: 300,
+    }
 }
 
-export default function Home({ githubStats, hostedOffer }) {
+export default function Home({ githubStats, buildWarnings, hostedOffer }) {
     const [feedbackData, setFeedbackData] = useState({
         email: '',
         message: '',
@@ -240,7 +233,10 @@ export default function Home({ githubStats, hostedOffer }) {
                 </a>
             </div>
                 <Pricing hostedOffer={hostedOffer} />
-            <Developers />
+            <Developers
+                buildWarnings={buildWarnings}
+                githubStats={githubStats}
+            />
             {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
             <Faq />
             <ContactBookingSection prefill={feedbackData} />
