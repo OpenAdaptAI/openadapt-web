@@ -14,7 +14,13 @@
   </url>
   <url>
     <loc>https://openadapt.ai/solutions/lending</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://openadapt.ai/solutions/insurance</loc>
+    <lastmod>2026-07-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

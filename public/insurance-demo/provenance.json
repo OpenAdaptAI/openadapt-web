@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "synthetic_fixture": true,
+  "source": {
+    "repository": "https://github.com/OpenAdaptAI/openadapt-flow",
+    "benchmark_commit": "3276ad2b537c558211a5a357fd7ac1e19f0a029e",
+    "benchmark_tree": "https://github.com/OpenAdaptAI/openadapt-flow/tree/3276ad2b537c558211a5a357fd7ac1e19f0a029e/benchmark/openimis_claims",
+    "pull_request": "https://github.com/OpenAdaptAI/openadapt-flow/pull/141",
+    "environment": "benchmark/openimis_claims (openIMIS claims-intake reference environment)",
+    "recorded_claim_code": "OA000003",
+    "replayed_claim_codes": ["OA231353", "OA231429", "OA231458"]
+  },
+  "media": {
+    "record-openimis.gif": {
+      "sha256": "3873c32fcd76a1f1d971e8caf2cb0fbbdcc0cf53bc2d6485bd0d1f371bb7e8ca",
+      "source": "opt-in Playwright session video of the real recording session (post-setup portion)",
+      "kind": "animated clip of the real recorded claims-intake demonstration",
+      "width": 880,
+      "height": 550
+    },
+    "record-openimis.jpg": {
+      "sha256": "10067184285912a673fd20cddb93a4e57cbfb13bf23fd596b9b501da80083dd1",
+      "source": "frame from the same recording-session video",
+      "kind": "real recording-session frame",
+      "width": 880,
+      "height": 550
+    },
+    "replay-openimis.gif": {
+      "sha256": "0bf94532c91ea28bfb8387333e838eb430dc2382ca73d97f5be53110f6782f4a",
+      "source": "opt-in Playwright session video of the real compiled replay that wrote claim OA231353 (post-setup portion)",
+      "kind": "animated clip of a real compiled, oracle-verified replay",
+      "width": 880,
+      "height": 550
+    },
+    "replay-openimis.jpg": {
+      "sha256": "c19a55fcbef589c935540ac80a3f6df2ac93fe71ca0727f846d0eff49ae8306b",
+      "source": "frame from the same replay-session video",
+      "kind": "real compiled-replay frame",
+      "width": 880,
+      "height": 550
+    },
+    "claims-list-openimis.jpg": {
+      "sha256": "9bdc7885222b64d9ef689a5505e709d1cc89bc30ef544c603cf99c5459adfd41",
+      "source": "openIMIS Health Facility Claims list after the recorded demonstration and three replays",
+      "kind": "real application screenshot (claims OA000003, OA231353, OA231429, OA231458 in status Entered)",
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "software": {
+    "openimis_be": {
+      "ref": "25.10",
+      "image_digest": "sha256:a77228c7469fab5f3523d3f7b9877d62aa116b303fd87a6d55aa3a46c1892592"
+    },
+    "openimis_fe": {
+      "ref": "25.10",
+      "image_digest": "sha256:ed0e0b1dbe91308d4df3322a1aee40176b42d47bbf72fea79a59fa84ef63db4a"
+    },
+    "openimis_pgsql_demo_dataset": {
+      "ref": "25.10",
+      "image_digest": "sha256:d4bc881e408b74b4cf47fb718534fe0f10940bb951b6cb7ee9a1a30048adf29d"
+    },
+    "openimis_dist_dkr": {
+      "commit": "cd6220d1f0578e56a589c47953250c2ad3d0caa5"
+    }
+  },
+  "evidence": {
+    "scope": "local reference demonstration, model-free compiled replays",
+    "publication_ready_comparative_matrix": false,
+    "task": "enter exactly one synthetic health-facility claim (insuree, claim number, diagnosis, service) and save it",
+    "recorded_demonstrations": 1,
+    "compiled_replays": 3,
+    "compiled_replays_verified": 3,
+    "duplicate_claims": 0,
+    "wrong_policyholder_writes": 0,
+    "model_calls": 0,
+    "replay_wall_seconds": [25.6, 26.6, 30.3],
+    "oracle": "direct SQL read of the openIMIS claims database requiring exactly one non-voided claim row per run, in status Entered, matching the demonstrated insuree number and health facility; pixels and actor self-report never establish success"
+  },
+  "limitations": "One synthetic claims-intake task on one pinned local macOS arm64 environment loaded with the upstream openIMIS demo dataset plus one bootstrapped synthetic policyholder. The media and three verified replays are not a customer deployment, a reliability benchmark, an agent-comparison matrix, adjudication automation, or evidence for a proprietary claims platform, Windows, RDP, or Citrix.",
+  "affiliation": "OpenAdapt is not affiliated with or endorsed by the openIMIS Initiative.",
+  "upstream": "https://openimis.org/"
+}
