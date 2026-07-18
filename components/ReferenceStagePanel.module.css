@@ -437,7 +437,8 @@
 }
 
 .caption strong,
-.caption span {
+.caption span,
+.caption small {
     display: block;
 }
 
@@ -446,6 +447,12 @@
     color: var(--ink-2);
     font-size: 9px;
     text-transform: capitalize;
+}
+
+.caption small {
+    margin-top: 2px;
+    color: var(--ink-2);
+    font: inherit;
 }
 
 @keyframes livePulse {
