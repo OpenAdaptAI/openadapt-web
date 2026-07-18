@@ -15,9 +15,9 @@
 - [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
 
 ## Use Cases
-- [Healthcare Execution Infrastructure](https://openadapt.ai/solutions/healthcare): Governed last-mile browser execution for RCM vendors, healthcare BPOs, automation teams, and vertical-software companies that already have structured input and business logic
-- [Lending Operations Reference](https://openadapt.ai/solutions/lending): A bounded, synthetic reference for evaluating an API-first workflow's remaining UI-only step; it is not evidence of a production lending integration
-- [Insurance Claims Reference](https://openadapt.ai/solutions/insurance): A bounded, synthetic claims-intake reference recorded and replayed on openIMIS with a direct SQL claim-row oracle; it is not evidence of a production insurance integration
+- [Healthcare Execution Infrastructure](https://openadapt.ai/solutions/healthcare): Governed last-mile execution for RCM vendors, healthcare BPOs, automation teams, and vertical-software companies that already have structured input and business logic
+- [Lending Operations](https://openadapt.ai/solutions/lending): A demonstrated Frappe Lending workflow compiled into model-free replay and checked against independent REST and SQL effect oracles
+- [Insurance Claims Execution](https://openadapt.ai/solutions/insurance): A demonstrated openIMIS claims-intake workflow compiled into model-free replay and checked against a direct SQL claim-row oracle
 - [Other Regulated Back-Offices](https://openadapt.ai/#industries): Demonstrated browser workflows that require repeatable execution, review, and explicit data boundaries
 
 ## Source Code
@@ -36,7 +36,7 @@
 
 ## Commercial Status
 - The open-source browser engine is available now.
-- Once the live payment and account-return path is qualified and explicitly enabled, managed browser subscriptions use verified Stripe Checkout and account onboarding.
+- Managed browser execution is available as a $500/month subscription through verified Stripe Checkout and account onboarding.
 - Credentials alone cannot expose the launch price or create Checkout. Web also refuses a configured Stripe offer that differs from the launch contract.
 - Customer-controlled regulated deployments are scoped to the actual substrate, runtime boundary, verifier, and operating responsibilities.
 - Hosted subscriptions cover managed browser execution; customer-controlled regulated deployments and service terms are qualified separately for the workflow boundary.

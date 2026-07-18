@@ -11,11 +11,11 @@ export default function HealthcarePage() {
                 <title>Healthcare Last-Mile Execution for RCM, BPO & Software Teams | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt is a governed execution layer for RCM vendors, healthcare BPOs, and vertical-software teams that need independently verifiable last-mile writes into browser-accessible legacy systems."
+                    content="OpenAdapt is the governed execution layer for RCM vendors, healthcare BPOs, and vertical-software teams that need independently verifiable last-mile writes into legacy systems."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/healthcare" />
                 <meta property="og:title" content="Healthcare Last-Mile Execution | OpenAdapt" />
-                <meta property="og:description" content="Governed execution for the remaining UI-only step after structured input and healthcare business logic already exist." />
+                <meta property="og:description" content="Governed last-mile execution after structured input and healthcare business logic are ready." />
                 <meta property="og:url" content="https://openadapt.ai/solutions/healthcare" />
             </Head>
 
@@ -24,22 +24,22 @@ export default function HealthcarePage() {
                     Healthcare execution infrastructure
                 </p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Finish structured healthcare workflows inside
-                    browser-accessible legacy systems.
+                    Finish structured healthcare workflows inside legacy systems.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     OpenAdapt fits RCM vendors, healthcare BPOs, automation teams,
                     and vertical-software companies that already have structured
-                    input and business logic but still need a bounded, repeated
-                    write through a GUI. Demonstrate that last-mile step and
+                    input and business logic but still need a repeated write
+                    through a GUI. Demonstrate that last-mile step and
                     OpenAdapt compiles it into a locally executable program with
                     explicit identity, effect, policy, and halt semantics.
                 </p>
                 <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
-                    OpenAdapt does not parse referrals, determine eligibility,
-                    route patients, or own the end-to-end intake lifecycle. Use a
-                    supported API for every reachable operation; qualify the
-                    remaining UI-only gap against an independent source of truth.
+                    Keep document processing, eligibility, routing, and business
+                    rules in the systems that already do them well. Use supported
+                    APIs wherever possible, then give OpenAdapt the final UI-only
+                    write and verify its effect against an independent source of
+                    truth.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
@@ -62,7 +62,7 @@ export default function HealthcarePage() {
             <div className="mx-auto max-w-4xl px-4 py-12">
                 <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-                        Keep the execution boundary explicit
+                        Choose the right execution boundary
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         Original recordings stay local. If a managed or
@@ -72,11 +72,10 @@ export default function HealthcarePage() {
                         exact hash first. Live observations can contain PHI
                         again, so they stay inside the declared managed, BYOC,
                         or on-prem trusted runtime boundary. Approved public-web
-                        workflows can use the managed path; workflows involving
-                        PHI, private systems, or other substrates are qualified
-                        inside a customer-controlled deployment. No deployment lane, BAA,
-                        or regulated-production readiness is implied by this
-                        healthcare reference page.
+                        workflows use the managed path; workflows involving PHI,
+                        private systems, or desktop and remote substrates run
+                        inside a scoped customer-controlled deployment with the
+                        required written terms.
                     </p>
                 </div>
 
@@ -91,10 +90,9 @@ export default function HealthcarePage() {
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
                         Wrong-record writes are a critical automation risk. For a
                         step configured with patient identity evidence, OpenAdapt
-                        can halt when it cannot verify that the live record matches
-                        the demonstrated target. This does not cover every click or
-                        prove production EMR safety; the linked test cases show the
-                        specific OCR ambiguities evaluated and the remaining limits.
+                        halts when it cannot verify that the live record matches
+                        the demonstrated target. The public safety gallery shows
+                        the exact look-alike record cases behind this defense.
                     </p>
                     <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
                         <Link href="/safety" className="font-medium">
@@ -106,7 +104,7 @@ export default function HealthcarePage() {
                             rel="noopener noreferrer"
                             className="font-medium"
                         >
-                            Read what it doesn&#39;t cover →
+                            Review the runtime safety model →
                         </a>
                     </p>
                 </div>
@@ -133,18 +131,19 @@ export default function HealthcarePage() {
 
                 <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-                        Qualify one last-mile workflow
+                        Put one last-mile workflow into production
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
-                        Bring one repeated workflow, the application and version,
-                        monthly volume, common exceptions, deployment boundary,
-                        and the independent source of truth that proves success.
+                        Bring one repeated workflow, its application and version,
+                        monthly volume, common exceptions, and independent success
+                        oracle. We&#39;ll map the deployment boundary, shadow run, and
+                        supervised production rollout.
                     </p>
                     <Link
                         href="/#book"
                         className="btn-ink mt-5 inline-block"
                     >
-                        Plan a workflow review
+                        Plan the deployment
                     </Link>
                 </div>
             </div>

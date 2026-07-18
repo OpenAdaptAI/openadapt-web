@@ -15,7 +15,7 @@ const webPageSchema = {
     name: 'Security and trust',
     url: 'https://openadapt.ai/security',
     description:
-        'How OpenAdapt handles your data: on-premises, local-first, model-free on the default replay path. What is and is not certified today, and how to report a vulnerability.',
+        'OpenAdapt security controls, local-first execution, governed artifact boundaries, assurance status, and vulnerability reporting.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -144,7 +144,7 @@ export default function SecurityPage() {
                 <title>Security and trust | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="How OpenAdapt handles your data: on-premises, local-first, and model-free on the default replay path. An honest account of what is and is not certified today, and how to report a vulnerability."
+                    content="Review OpenAdapt security controls, local-first execution, governed artifact boundaries, assurance status, and vulnerability reporting."
                 />
                 <link rel="canonical" href="https://openadapt.ai/security" />
                 <meta
@@ -153,7 +153,7 @@ export default function SecurityPage() {
                 />
                 <meta
                     property="og:description"
-                    content="On-premises, local-first, model-free on the default path. What is and is not certified yet, stated plainly, plus how to report a vulnerability."
+                    content="Local-first execution, governed artifact boundaries, assurance status, and vulnerability reporting."
                 />
                 <meta property="og:url" content="https://openadapt.ai/security" />
                 <script
@@ -167,14 +167,13 @@ export default function SecurityPage() {
             <div className="mx-auto max-w-4xl px-4 py-14">
                 <p className="eyebrow">Security and trust</p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Where your data goes, and what we have and haven&#39;t
-                    certified yet
+                    Controls, data boundaries, and assurance
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    OpenAdapt is built to run where your data already lives. This
-                    page states our posture plainly: what is in place today, what
-                    is underway, and what is still just planned. If a badge is not
-                    here, we do not have it yet.
+                    OpenAdapt is built to run where your data already lives. Use
+                    this page to map local, managed, and customer-controlled
+                    execution to the controls and assurance commitments required
+                    for your workflow.
                 </p>
 
                 <div className="mt-10 space-y-4">
