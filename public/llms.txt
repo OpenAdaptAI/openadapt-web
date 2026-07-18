@@ -20,6 +20,18 @@
 - [Insurance Claims Execution](https://openadapt.ai/solutions/insurance): A demonstrated openIMIS claims-intake workflow compiled into model-free replay and checked against a direct SQL claim-row oracle
 - [Other Regulated Back-Offices](https://openadapt.ai/#industries): Demonstrated browser workflows that require repeatable execution, review, and explicit data boundaries
 
+## Workflow Templates
+Real, runnable workflow templates. Every template corresponds to something that actually runs: proven references execute end to end against real open-source applications in the openadapt-flow repository with system-of-record verification; pattern templates are workflow shapes compiled from a recording of the customer's own team, anchored to those references. No template exists for a workflow that has not actually been run.
+- [Template Gallery](https://openadapt.ai/templates): All workflow templates with proof level, demonstrated steps, verification oracles, and CLI quickstart
+- [Patient Triage Note](https://openadapt.ai/templates/patient-triage-note): The canonical tutorial on the bundled synthetic clinic app, including the clinical-write policy gate refusing an under-verified bundle
+- [OpenEMR Patient Note](https://openadapt.ai/templates/openemr-patient-note): 18-step add-patient-note workflow verified against the record itself, with a published field run of 20/20 compiled trials at zero model calls
+- [Frappe Lending Loan Application](https://openadapt.ai/templates/frappe-loan-application): Loan application entry verified by independent REST, SQL, and exact table-delta oracles
+- [openIMIS Claim Intake](https://openadapt.ai/templates/openimis-claim-intake): Health-facility claim intake verified by a direct SQL claim-row oracle
+- [Dental Insurance Eligibility Checks](https://openadapt.ai/templates/dental-insurance-eligibility): Pattern — a practice's own payer-portal verification workflow, compiled from its own recording
+- [Insurance Eligibility and Coverage Checks](https://openadapt.ai/templates/insurance-eligibility-check): Pattern — repeated carrier-portal lookups with per-case parameters and halt-on-ambiguity
+- [New Patient Record Entry](https://openadapt.ai/templates/new-patient-record): Pattern — registration re-keying with per-patient parameters, anchored to the OpenEMR reference
+- [Report Export with Arrival Verification](https://openadapt.ai/templates/report-export-verification): Pattern — exports accepted only when exactly one conforming file actually arrived, with optional SHA-256 content identity
+
 ## Source Code
 - [Engine Source](https://github.com/OpenAdaptAI/openadapt-flow): MIT licensed, open source
 - [PyPI Package](https://pypi.org/project/openadapt-flow/): Standalone governed compiler and runtime
