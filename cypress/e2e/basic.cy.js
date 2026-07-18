@@ -41,6 +41,9 @@ describe('public product truth', () => {
         cy.get('a[href$="#open-source"]').should('exist')
         cy.get('a[href$="#product-status"]').should('exist')
         cy.get('a[href="/security"]').should('exist')
+        cy.get('nav[aria-label="Primary"]')
+            .find('a[href="/solutions/insurance"]')
+            .should('be.visible')
         cy.get('[data-testid="github-proof"]')
             .should('have.attr', 'href', 'https://github.com/OpenAdaptAI/OpenAdapt')
         cy.get('[data-testid="github-proof"]')
@@ -112,6 +115,9 @@ describe('public product truth', () => {
         cy.visit('/')
         cy.get('button[aria-controls="nav-mobile-menu"]').click()
         cy.get('#nav-mobile-menu').within(() => {
+            cy.contains('Insurance')
+                .should('have.attr', 'href')
+                .and('equal', '/solutions/insurance')
             cy.contains('How it runs').scrollIntoView().should('be.visible')
             cy.contains('Launch').scrollIntoView().should('be.visible')
             cy.contains('Open source').should('have.attr', 'href').and(
@@ -119,6 +125,19 @@ describe('public product truth', () => {
                 'openadapt-flow'
             )
         })
+
+        cy.viewport(1024, 768)
+        cy.visit('/')
+        cy.get('nav[aria-label="Primary"]')
+            .find('a[href="/solutions/insurance"]')
+            .should('not.be.visible')
+        cy.get('button[aria-controls="nav-mobile-menu"]')
+            .should('be.visible')
+            .click()
+        cy.get('#nav-mobile-menu')
+            .find('a[href="/solutions/insurance"]')
+            .scrollIntoView()
+            .should('be.visible')
     })
 
     it('keeps benchmark proof concise and bounded', () => {
@@ -205,6 +224,26 @@ describe('public product truth', () => {
             cy.contains('button', 'Healthcare')
                 .should('have.attr', 'aria-pressed', 'true')
             cy.get('img[alt*="OpenEMR"]').should('have.length', 2)
+            cy.get('[data-testid^="reference-"]')
+                .should('have.length', 3)
+                .each(($panel) => {
+                    cy.wrap($panel).should(
+                        'have.attr',
+                        'data-reference',
+                        'healthcare'
+                    )
+                })
+            cy.get('[data-testid="reference-compile-panel"]')
+                .should('contain.text', 'OpenEMR browser reference')
+                .and('contain.text', 'deployment-specific oracle required')
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .should('contain.text', 'OpenEMR browser reference')
+                .and('contain.text', 'No application-specific drift trial is claimed')
+            cy.get('[data-testid="reference-verify-panel"]')
+                .should('contain.text', 'qualification required')
+                .and('contain.text', 'No application-specific audit result claimed')
+            cy.get('img[src^="/how-it-works/compile"], img[src^="/how-it-works/heal"], img[src^="/how-it-works/audit"]')
+                .should('not.exist')
 
             cy.contains('button', 'Lending').click()
             cy.contains('button', 'Lending')
@@ -215,6 +254,22 @@ describe('public product truth', () => {
             cy.get('img[src="/lending-demo/replay-frappe.gif"]').should(
                 'be.visible'
             )
+            cy.get('[data-testid^="reference-"]')
+                .each(($panel) => {
+                    cy.wrap($panel).should(
+                        'have.attr',
+                        'data-reference',
+                        'lending'
+                    )
+                })
+            cy.get('[data-testid="reference-compile-panel"]')
+                .should('contain.text', 'Frappe Lending reference')
+                .and('contain.text', 'create-loan-application')
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .should('contain.text', 'Frappe Loan Application evidence')
+            cy.get('[data-testid="reference-verify-panel"]')
+                .should('contain.text', '6 / 6 verified')
+                .and('contain.text', '0 silent incorrect successes')
 
             cy.contains('button', 'Insurance').click()
             cy.contains('button', 'Insurance')
@@ -225,6 +280,22 @@ describe('public product truth', () => {
             cy.get('img[src="/insurance-demo/replay-openimis.gif"]').should(
                 'be.visible'
             )
+            cy.get('[data-testid^="reference-"]')
+                .each(($panel) => {
+                    cy.wrap($panel).should(
+                        'have.attr',
+                        'data-reference',
+                        'insurance'
+                    )
+                })
+            cy.get('[data-testid="reference-compile-panel"]')
+                .should('contain.text', 'openIMIS claims reference')
+                .and('contain.text', 'openimis-claim-intake')
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .should('contain.text', 'openIMIS claim-form evidence')
+            cy.get('[data-testid="reference-verify-panel"]')
+                .should('contain.text', '3 / 3 verified')
+                .and('contain.text', '0 duplicate claims')
             cy.contains('View the bounded use case')
                 .should('have.attr', 'href')
                 .and('equal', '/solutions/insurance')

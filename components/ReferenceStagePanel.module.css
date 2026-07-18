@@ -1,0 +1,277 @@
+.figure {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--panel);
+}
+
+.titlebar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 36px;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--hairline);
+    background: color-mix(in srgb, var(--panel) 84%, var(--ground));
+}
+
+.dots {
+    display: flex;
+    gap: 4px;
+}
+
+.dots i {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--hairline-dotted);
+}
+
+.system {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.badge {
+    padding: 2px 7px;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.content {
+    min-height: 244px;
+    padding: 15px 16px 14px;
+}
+
+.panelHeading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid var(--hairline);
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.panelHeading strong {
+    color: var(--accent);
+    font-size: 9px;
+    text-align: right;
+}
+
+.contract {
+    display: grid;
+    margin: 7px 0 0;
+}
+
+.contract div {
+    display: grid;
+    grid-template-columns: minmax(88px, 0.65fr) minmax(0, 1.5fr);
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.contract div:last-child {
+    border-bottom: 0;
+}
+
+.contract dt,
+.contract dd {
+    min-width: 0;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.45;
+}
+
+.contract dt {
+    color: var(--ink-3);
+}
+
+.contract dd {
+    color: var(--ink);
+    overflow-wrap: anywhere;
+}
+
+.ladder {
+    display: grid;
+    gap: 7px;
+    margin: 13px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ladder li {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: center;
+    gap: 9px;
+    padding: 8px 10px;
+    border: 1px solid var(--hairline);
+    border-radius: 7px;
+    background: var(--ground);
+}
+
+.ladder li span {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 9px;
+}
+
+.ladder li strong {
+    color: var(--ink-2);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.haltRule {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 9px;
+    padding: 8px 10px;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--hairline));
+    border-radius: 7px;
+    background: color-mix(in srgb, var(--accent) 7%, var(--ground));
+    font-family: var(--font-mono);
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+.haltRule span {
+    color: var(--ink-3);
+}
+
+.haltRule strong {
+    color: var(--accent);
+    text-align: right;
+}
+
+.checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 13px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.checks li {
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+    padding: 9px;
+    border: 1px solid var(--hairline);
+    border-radius: 7px;
+    background: var(--ground);
+}
+
+.check,
+.pending {
+    flex-shrink: 0;
+    font-weight: 700;
+}
+
+.check {
+    color: var(--accent);
+}
+
+.pending {
+    color: var(--ink-3);
+}
+
+.checks strong,
+.checks small {
+    display: block;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+}
+
+.checks strong {
+    color: var(--ink);
+    font-size: 11px;
+}
+
+.checks small {
+    margin-top: 2px;
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 9px;
+}
+
+.metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.metrics span {
+    padding: 4px 6px;
+    border-radius: 5px;
+    background: color-mix(in srgb, var(--accent) 8%, var(--ground));
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    line-height: 1.35;
+}
+
+.caption {
+    display: block;
+    min-height: 48px;
+    margin: 0;
+    padding: 9px 12px;
+    border-top: 1px solid var(--hairline);
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+    .content {
+        min-height: 0;
+        padding: 13px 12px;
+    }
+
+    .checks {
+        grid-template-columns: 1fr;
+    }
+
+    .haltRule {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .haltRule strong {
+        text-align: left;
+    }
+
+    .caption {
+        min-height: 0;
+    }
+}

@@ -129,7 +129,7 @@
     white-space: nowrap;
 }
 
-.sharedVisualNote {
+.visualScopeNote {
     margin: 6px auto 0;
     color: var(--ink-3);
     font-family: var(--font-mono);

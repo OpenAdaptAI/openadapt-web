@@ -44,6 +44,7 @@ test('insurance page shows a real openIMIS workflow demo without reusing other v
 test('insurance reference is linked from the buyer-fit grid and llms.txt', () => {
     const industries = read('components/IndustriesGrid.js')
     const footer = read('components/Footer.js')
+    const nav = read('components/NavHeader.js')
     const home = read('pages/index.js')
     const howItWorks = read('components/HowItWorks.js')
     const llms = read('public/llms.txt')
@@ -52,6 +53,7 @@ test('insurance reference is linked from the buyer-fit grid and llms.txt', () =>
     assert.match(industries, /Insurance claims reference/)
     assert.match(industries, /\/solutions\/insurance/)
     assert.match(footer, /\/solutions\/insurance/)
+    assert.match(nav, /\/solutions\/insurance/)
     assert.match(home, /<HowItWorks showUseCases \/>/)
     for (const useCase of ['Healthcare', 'Lending', 'Insurance']) {
         assert.match(howItWorks, new RegExp(`label: '${useCase}'`))
