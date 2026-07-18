@@ -7,7 +7,7 @@ import Footer from '@components/Footer'
 
 const OFFER_FACTS = [
     {
-        title: '$299/mo',
+        title: '$499/mo',
         detail: 'Flat founding-cohort price. No per-verification fees, no per-seat math.',
     },
     {
@@ -31,7 +31,7 @@ export default function DentalPage() {
                 <title>Automated Dental Insurance Verification — Runs on Your Front-Desk PC | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt automates dental insurance verification on your own front-desk computer. $299/mo founding cohort, PHI designed to stay on your machine, and a system that halts and asks instead of guessing wrong."
+                    content="OpenAdapt automates dental insurance verification on your own front-desk computer. Every verification completed — by automation, or by our team when the automation halts. $499/mo founding cohort, PHI designed to stay on your machine."
                 />
                 <link rel="canonical" href="https://openadapt.ai/dental" />
                 <meta
@@ -40,7 +40,7 @@ export default function DentalPage() {
                 />
                 <meta
                     property="og:description"
-                    content="$299/mo, runs on your front-desk PC, halts instead of guessing. Founding cohort of 10 practices with a results guarantee."
+                    content="$499/mo, every verification completed — runs on your front-desk PC, halts instead of guessing, and our team finishes anything the automation flags. Founding cohort of 10 practices with a results guarantee."
                 />
                 <meta property="og:url" content="https://openadapt.ai/dental" />
             </Head>
@@ -174,7 +174,7 @@ export default function DentalPage() {
                 {/* Closing CTA banner */}
                 <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                        Founding cohort: 10 practices. $299/mo. Full refund if
+                        Founding cohort: 10 practices. $499/mo. Full refund if
                         it misses the agreed KPI.
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">

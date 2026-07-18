@@ -11,7 +11,7 @@ test('dental page states the founding-cohort offer exactly and honestly', () => 
     const page = read('pages/dental.js')
 
     // The offer as specified: price, locality, halt contract, guarantee, cohort.
-    assert.match(page, /\$299\/mo/)
+    assert.match(page, /\$499\/mo/)
     assert.match(page, /front-desk (PC|computer)/i)
     assert.match(page, /halts (and asks )?instead of guessing/i)
     assert.match(page, /founding cohort of 10 practices/i)
