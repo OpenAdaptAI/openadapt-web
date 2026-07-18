@@ -20,7 +20,7 @@
  * giving up, and fall back to any cached value we have.
  */
 
-import { getDiscoveredPackages } from '../../../utils/packageDiscovery.js';
+import { getDiscoveredPackages } from '../../../lib/packageDiscovery.js';
 
 // Module-level cache. Keyed by `<package>|<endpoint>|<period>`.
 // Persists for the life of a warm serverless instance.

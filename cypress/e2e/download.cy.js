@@ -33,6 +33,39 @@ function experimentalRelease(overrides = {}) {
     }
 }
 
+describe('download page is server-rendered', () => {
+    it('ships the desktop release state in the initial HTML', () => {
+        // The release list is resolved in getStaticProps, so the raw HTML
+        // (before any JavaScript runs) must already contain a definite
+        // state — never a client-side loading placeholder.
+        cy.request('/download').its('body').then((html) => {
+            expect(html).to.not.include('Finding the latest release')
+            const definiteStates = [
+                'Experimental prerelease', // ready
+                'No public desktop installer yet', // none
+                'We could not reach GitHub just now', // build-time fetch miss
+            ]
+            expect(
+                definiteStates.some((state) => html.includes(state)),
+                'initial HTML contains a server-resolved release state'
+            ).to.equal(true)
+        })
+    })
+
+    it('never calls api.github.com from the visitor browser', () => {
+        // api.github.com allows 60 unauthenticated requests/hour per client
+        // IP, so any browser-side call 403s on shared IPs. Fail loudly if
+        // one reappears.
+        cy.intercept('https://api.github.com/**', { statusCode: 418 }).as(
+            'githubApi'
+        )
+        cy.visit('/download')
+        cy.get('#desktop-builds').should('be.visible')
+        cy.contains('Finding the latest release').should('not.exist')
+        cy.get('@githubApi.all').should('have.length', 0)
+    })
+})
+
 describe('desktop release contract', () => {
     it('ignores legacy, draft, and incomplete releases', () => {
         const legacy = {

@@ -20,7 +20,6 @@ import {
     formatDate,
     calculateGrowthStats,
     getRecentDownloadStats,
-    getGitHubStats,
 } from 'utils/pypistatsHistory';
 import { formatDownloadCount } from 'utils/pypiStats';
 import { getPackageVersionHistory, getVersionReleasedOnDate, getVersionForDate } from 'utils/pypiVersions';
@@ -159,7 +158,10 @@ const packageColors = {
     },
 };
 
-const PyPIDownloadChart = () => {
+// githubStats ({ stars, forks }) is server-rendered by the page's
+// getStaticProps — the browser must never call api.github.com (60 req/hr
+// per visitor IP means shared IPs get 403s).
+const PyPIDownloadChart = ({ githubStats = null }) => {
     const [historyData, setHistoryData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -168,7 +170,6 @@ const PyPIDownloadChart = () => {
     const [timeRange, setTimeRange] = useState('all'); // 'all' for all available (~6 months), '3m' for 3 months
     const [growthStats, setGrowthStats] = useState(null);
     const [recentStats, setRecentStats] = useState(null);
-    const [githubStats, setGithubStats] = useState(null);
     const [versionHistory, setVersionHistory] = useState([]);
 
     useEffect(() => {
@@ -205,14 +206,14 @@ const PyPIDownloadChart = () => {
         fetchData();
     }, [period, timeRange]);
 
-    // Fetch recent stats, GitHub stats, and version history once on mount
+    // Fetch recent stats and version history once on mount. GitHub stats
+    // are NOT fetched here — they arrive server-rendered via props.
     useEffect(() => {
         const fetchAdditionalStats = async () => {
             try {
                 // Use Promise.allSettled to ensure all promises complete even if some fail
                 const results = await Promise.allSettled([
                     getRecentDownloadStats(),
-                    getGitHubStats(),
                     getPackageVersionHistory('openadapt'),
                 ]);
 
@@ -225,15 +226,9 @@ const PyPIDownloadChart = () => {
                 }
 
                 if (results[1].status === 'fulfilled' && results[1].value) {
-                    setGithubStats(results[1].value);
+                    setVersionHistory(results[1].value);
                 } else {
-                    console.error('Failed to load GitHub stats:', results[1].reason);
-                }
-
-                if (results[2].status === 'fulfilled' && results[2].value) {
-                    setVersionHistory(results[2].value);
-                } else {
-                    console.error('Failed to load version history:', results[2].reason);
+                    console.error('Failed to load version history:', results[1].reason);
                 }
             } catch (err) {
                 console.error('Error fetching additional stats:', err);

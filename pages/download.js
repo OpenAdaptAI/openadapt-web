@@ -7,11 +7,9 @@ import { track } from 'utils/analytics'
 import {
     assetForPlatform,
     DESKTOP_PLATFORMS,
-    DESKTOP_RELEASES_API,
     DESKTOP_RELEASES_PAGE,
     detectDesktopPlatform,
     releaseSigningState,
-    selectExperimentalDesktopRelease,
 } from 'utils/desktopRelease'
 
 function formatSize(bytes) {
@@ -20,9 +18,18 @@ function formatSize(bytes) {
     return `${mb.toFixed(1)} MB`
 }
 
-export default function DownloadPage() {
-    const [status, setStatus] = useState('loading') // loading | ready | none | error
-    const [release, setRelease] = useState(null)
+export async function getStaticProps() {
+    // The release list is fetched at build/revalidate time so visitor
+    // browsers never call api.github.com (60 unauthenticated req/hr per
+    // client IP means shared IPs got 403s and a broken download page).
+    const { getExperimentalDesktopRelease } = await import('../lib/githubApi')
+    const { release, fetchFailed } = await getExperimentalDesktopRelease()
+    return { props: { release, fetchFailed }, revalidate: 3600 }
+}
+
+export default function DownloadPage({ release, fetchFailed }) {
+    // ready | none | error — decided at build time, rendered in initial HTML.
+    const status = release ? 'ready' : fetchFailed ? 'error' : 'none'
     const [detectedId, setDetectedId] = useState(null)
 
     useEffect(() => {
@@ -31,30 +38,6 @@ export default function DownloadPage() {
                 typeof navigator === 'undefined' ? null : navigator
             )
         )
-
-        let cancelled = false
-        async function load() {
-            try {
-                const res = await fetch(DESKTOP_RELEASES_API, {
-                    headers: { Accept: 'application/vnd.github+json' },
-                })
-                if (cancelled) return
-                if (!res.ok) {
-                    setStatus('error')
-                    return
-                }
-                const data = await res.json()
-                const selected = selectExperimentalDesktopRelease(data)
-                setRelease(selected)
-                setStatus(selected ? 'ready' : 'none')
-            } catch (err) {
-                if (!cancelled) setStatus('error')
-            }
-        }
-        load()
-        return () => {
-            cancelled = true
-        }
     }, [])
 
     const assets =
@@ -144,12 +127,6 @@ export default function DownloadPage() {
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
                         Native installer preview
                     </h2>
-                    {status === 'loading' && (
-                        <p className="text-sm text-ink-3">
-                            Finding the latest release...
-                        </p>
-                    )}
-
                     {status === 'ready' && recommended && (
                         <div className="rounded-2xl border-2 border-ink bg-panel p-6 md:p-7">
                             <p className="eyebrow">Recommended for you</p>

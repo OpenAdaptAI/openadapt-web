@@ -36,10 +36,71 @@ test('GitHub proof uses the canonical repository and a verified fallback', () =>
 
     assert.match(home, /GITHUB_REPOSITORY = 'OpenAdaptAI\/OpenAdapt'/)
     assert.match(home, /GITHUB_STATS_FALLBACK = \{ stars: 1646, forks: 258 \}/)
+    // Stats are sourced server-side (getStaticProps → lib/githubApi) with
+    // the verified fallback applied on any network miss, so a GitHub outage
+    // or rate limit never becomes misleading 0/0 social proof — and visitor
+    // browsers never call api.github.com themselves.
+    assert.match(
+        home,
+        /getRepoSocialProof\(GITHUB_REPOSITORY, GITHUB_STATS_FALLBACK\)/
+    )
+    assert.match(
+        read('lib/githubApi.js'),
+        /return \{ \.\.\.fallback \}/,
+        'lib/githubApi.js must fall back to the verified stats on failure'
+    )
     assert.match(masthead, /https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt/)
     assert.match(footer, /href="https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt"/)
     assert.match(footer, /href="https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt\/fork"/)
     assert.doesNotMatch(masthead, /on openadapt-flow/)
+})
+
+test('visitor browsers never call api.github.com', () => {
+    // api.github.com allows 60 unauthenticated requests/hour per client IP.
+    // Any client-side fetch therefore 403s for visitors on shared IPs
+    // (offices, VPNs, CGNAT) and breaks the page. GitHub data must only be
+    // fetched server-side: lib/ (dynamically imported in getStaticProps)
+    // and pages/api/ routes.
+    const clientSourceDirs = ['components', 'utils', 'pages']
+    for (const dir of clientSourceDirs) {
+        const entries = fs.readdirSync(path.join(root, dir), {
+            recursive: true,
+        })
+        for (const entry of entries) {
+            const relativePath = path.join(dir, String(entry))
+            if (!relativePath.endsWith('.js')) continue
+            if (relativePath.startsWith(path.join('pages', 'api'))) continue
+            assert.doesNotMatch(
+                read(relativePath),
+                /https:\/\/api\.github\.com/,
+                `${relativePath} must not construct an api.github.com URL — ` +
+                    'fetch GitHub data server-side via lib/githubApi.js instead'
+            )
+        }
+    }
+
+    // The buttons.github.io widget fetches api.github.com from the browser
+    // whenever a count bubble is requested — never reintroduce it.
+    assert.doesNotMatch(
+        read('components/Footer.js'),
+        /data-show-count/,
+        'github-button count bubbles make visitor browsers call ' +
+            'api.github.com; keep counts server-rendered instead'
+    )
+
+    // The server-side module holds every GitHub API call, works without a
+    // token, and only uses an optional GITHUB_TOKEN to raise build limits.
+    const githubApi = read('lib/githubApi.js')
+    assert.match(githubApi, /https:\/\/api\.github\.com/)
+    assert.match(githubApi, /process\.env\.GITHUB_TOKEN/)
+    assert.doesNotMatch(githubApi, /NEXT_PUBLIC/)
+
+    // The download page renders the release list from getStaticProps (ISR),
+    // so the release data is in the initial HTML for every visitor.
+    const download = read('pages/download.js')
+    assert.match(download, /export async function getStaticProps/)
+    assert.match(download, /getExperimentalDesktopRelease/)
+    assert.match(download, /revalidate: 3600/)
 })
 
 test('launch surfaces lead with capabilities instead of temporary gap labels', () => {
@@ -83,7 +144,7 @@ test('public slogans scope demonstrated workflows and governed repair', () => {
         'components/MastHead.js',
         'components/ReplayHero.js',
         'public/llms.txt',
-        'utils/packageDiscovery.js',
+        'lib/packageDiscovery.js',
         'public/how-it-works/MANIFEST.json',
     ].map(read).join('\n')
 

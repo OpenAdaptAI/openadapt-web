@@ -24,6 +24,11 @@ jobs:
           cache: npm
       - name: Build and run browser contract
         uses: cypress-io/github-action@fa4a118725a8f001170d49631ea89e5d66fee626 # v7.4.1
+        env:
+          # GitHub data is fetched server-side in getStaticProps. The
+          # workflow token raises the API rate limit so CI builds render the
+          # real release list instead of the rate-limit fallback state.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           build: npm run build
           start: npm start
