@@ -23,7 +23,7 @@ const PrivacyPolicy = () => {
                 <strong>Effective July 17, 2026.</strong> This Notice describes how
                 MLDSAI Inc. collects, uses, stores, and shares information through
                 the OpenAdapt website, open-source software interactions, and
-                optional hosted service. It is not a compliance certification.
+                hosted service.
             </p>
             <p className={styles.paragraph}>
                 MLDSAI Inc. (&quot;OpenAdapt,&quot; &quot;we,&quot; or
@@ -56,7 +56,7 @@ const PrivacyPolicy = () => {
                 screenshots, typed values, intents, reasons, errors, or report text.
             </p>
 
-            <h2 className={styles.subheading}>2. Optional Hosted Service</h2>
+            <h2 className={styles.subheading}>2. Hosted Service</h2>
             <p className={styles.paragraph}>
                 The hosted service can collect account and organization records,
                 authentication identifiers, contact and support messages, billing

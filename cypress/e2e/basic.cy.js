@@ -41,6 +41,9 @@ describe('public product truth', () => {
         cy.get('a[href$="#open-source"]').should('exist')
         cy.get('a[href$="#product-status"]').should('exist')
         cy.get('a[href="/security"]').should('exist')
+        cy.get('nav[aria-label="Primary"]')
+            .find('a[href="/solutions/insurance"]')
+            .should('be.visible')
         cy.get('[data-testid="github-proof"]')
             .should('have.attr', 'href', 'https://github.com/OpenAdaptAI/OpenAdapt')
         cy.get('[data-testid="github-proof"]')
@@ -57,32 +60,15 @@ describe('public product truth', () => {
             cy.contains('Run through the governed gate').should('be.visible')
             cy.contains('Managed browser execution').should('be.visible')
             cy.contains('Customer-controlled deployment').should('be.visible')
-            cy.contains('Execution substrate evidence').should('be.visible')
-            cy.contains('Browser / Playwright').should('be.visible')
-            cy.contains('Windows UIA').should('be.visible')
-            cy.contains('Native macOS').should('be.visible')
-            cy.contains('RDP').should('be.visible')
-            cy.contains('Citrix').should('be.visible')
-            cy.contains('Availability').should('be.visible')
-            cy.contains('Evidence state').should('be.visible')
-            cy.contains('Partner qualification').should('be.visible')
-            cy.contains('Scoped acceptance passed').should('be.visible')
-            cy.contains('Scoped TextEdit evidence accepted').should('be.visible')
-            cy.contains('Scoped RDP evidence accepted').should('be.visible')
-            cy.contains('Design partner needed').should('be.visible')
-            cy.contains('No ICA/HDX evidence').should('be.visible')
-            cy.contains(
-                '20260717-candidate-56759c8-v2 in-tree WinForms matrix completed 3/3 trials'
-            ).should('be.visible')
-            cy.contains('candidate b1b61a5 completed 3/3 exact-byte TextEdit trials').should(
-                'be.visible'
-            )
-            cy.contains('Review exact Windows evidence')
+            cy.contains('Built for the interfaces your work depends on').should('be.visible')
+            cy.contains('Web applications').should('be.visible')
+            cy.contains('Windows applications').should('be.visible')
+            cy.contains('RDP, Citrix & VDI').should('be.visible')
+            cy.contains('qualification evidence')
                 .should('have.attr', 'href')
-                .and('include', 'defafbae758a75c8e149d9693f2cffe1f2264b8c')
-            cy.contains('Review scoped macOS evidence')
-                .should('have.attr', 'href')
-                .and('include', 'ca1b522cad215875f7471782283f8f8bb8e6c998')
+                .and('include', '/tree/main/benchmark')
+            cy.contains('Execution substrate evidence').should('not.exist')
+            cy.contains('Partner qualification').should('not.exist')
             cy.contains('Research spike').should('not.exist')
             cy.contains('Product maturity').should('not.exist')
         })
@@ -129,6 +115,9 @@ describe('public product truth', () => {
         cy.visit('/')
         cy.get('button[aria-controls="nav-mobile-menu"]').click()
         cy.get('#nav-mobile-menu').within(() => {
+            cy.contains('Insurance')
+                .should('have.attr', 'href')
+                .and('equal', '/solutions/insurance')
             cy.contains('How it runs').scrollIntoView().should('be.visible')
             cy.contains('Launch').scrollIntoView().should('be.visible')
             cy.contains('Open source').should('have.attr', 'href').and(
@@ -136,6 +125,19 @@ describe('public product truth', () => {
                 'openadapt-flow'
             )
         })
+
+        cy.viewport(1024, 768)
+        cy.visit('/')
+        cy.get('nav[aria-label="Primary"]')
+            .find('a[href="/solutions/insurance"]')
+            .should('not.be.visible')
+        cy.get('button[aria-controls="nav-mobile-menu"]')
+            .should('be.visible')
+            .click()
+        cy.get('#nav-mobile-menu')
+            .find('a[href="/solutions/insurance"]')
+            .scrollIntoView()
+            .should('be.visible')
     })
 
     it('keeps benchmark proof concise and bounded', () => {
@@ -222,6 +224,26 @@ describe('public product truth', () => {
             cy.contains('button', 'Healthcare')
                 .should('have.attr', 'aria-pressed', 'true')
             cy.get('img[alt*="OpenEMR"]').should('have.length', 2)
+            cy.get('[data-testid^="reference-"]')
+                .should('have.length', 3)
+                .each(($panel) => {
+                    cy.wrap($panel).should(
+                        'have.attr',
+                        'data-reference',
+                        'healthcare'
+                    )
+                })
+            cy.get('[data-testid="reference-compile-panel"]')
+                .should('contain.text', 'OpenEMR browser reference')
+                .and('contain.text', 'deployment-specific oracle required')
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .should('contain.text', 'OpenEMR browser reference')
+                .and('contain.text', 'No application-specific drift trial is claimed')
+            cy.get('[data-testid="reference-verify-panel"]')
+                .should('contain.text', 'qualification required')
+                .and('contain.text', 'No application-specific audit result claimed')
+            cy.get('img[src^="/how-it-works/compile"], img[src^="/how-it-works/heal"], img[src^="/how-it-works/audit"]')
+                .should('not.exist')
 
             cy.contains('button', 'Lending').click()
             cy.contains('button', 'Lending')
@@ -232,6 +254,22 @@ describe('public product truth', () => {
             cy.get('img[src="/lending-demo/replay-frappe.gif"]').should(
                 'be.visible'
             )
+            cy.get('[data-testid^="reference-"]')
+                .each(($panel) => {
+                    cy.wrap($panel).should(
+                        'have.attr',
+                        'data-reference',
+                        'lending'
+                    )
+                })
+            cy.get('[data-testid="reference-compile-panel"]')
+                .should('contain.text', 'Frappe Lending reference')
+                .and('contain.text', 'create-loan-application')
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .should('contain.text', 'Frappe Loan Application evidence')
+            cy.get('[data-testid="reference-verify-panel"]')
+                .should('contain.text', '6 / 6 verified')
+                .and('contain.text', '0 silent incorrect successes')
 
             cy.contains('button', 'Insurance').click()
             cy.contains('button', 'Insurance')
@@ -242,6 +280,22 @@ describe('public product truth', () => {
             cy.get('img[src="/insurance-demo/replay-openimis.gif"]').should(
                 'be.visible'
             )
+            cy.get('[data-testid^="reference-"]')
+                .each(($panel) => {
+                    cy.wrap($panel).should(
+                        'have.attr',
+                        'data-reference',
+                        'insurance'
+                    )
+                })
+            cy.get('[data-testid="reference-compile-panel"]')
+                .should('contain.text', 'openIMIS claims reference')
+                .and('contain.text', 'openimis-claim-intake')
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .should('contain.text', 'openIMIS claim-form evidence')
+            cy.get('[data-testid="reference-verify-panel"]')
+                .should('contain.text', '3 / 3 verified')
+                .and('contain.text', '0 duplicate claims')
             cy.contains('View the bounded use case')
                 .should('have.attr', 'href')
                 .and('equal', '/solutions/insurance')
@@ -261,20 +315,17 @@ describe('public product truth', () => {
 
         cy.visit('/solutions/healthcare')
         cy.get('h1').should('contain.text', 'structured healthcare workflows')
-        cy.contains('OpenAdapt does not parse referrals').should('be.visible')
-        cy.contains('prove production EMR safety').should('be.visible')
+        cy.contains('document processing, eligibility, routing').should('be.visible')
+        cy.contains('public safety gallery').should('be.visible')
         cy.contains('OpenAdapt does the retyping').should('not.exist')
         cy.contains('Certified workflows halt before').should('not.exist')
 
         cy.visit('/solutions/lending')
         cy.get('h1')
-            .should('contain.text', 'Prefer supported APIs')
-            .and('contain.text', 'remaining UI-only browser gap')
+            .should('contain.text', 'final UI-only mile')
             .and('not.contain.text', 'Encompass')
             .and('not.contain.text', 'Mortgage')
-        cy.contains('not evidence of a production lending integration').should(
-            'be.visible'
-        )
+        cy.contains('supported APIs and exports').should('be.visible')
         cy.contains('customer-controlled deployment').should('be.visible')
         cy.contains('experimental').should('not.exist')
         cy.get('[data-testid="frappe-lending-workflow-demo"]').should('be.visible')
@@ -299,9 +350,7 @@ describe('public product truth', () => {
 
         cy.visit('/solutions/insurance')
         cy.get('h1').should('contain.text', 'Claims intake')
-        cy.contains('not evidence of a production insurance integration').should(
-            'be.visible'
-        )
+        cy.contains('supported APIs for adjudication').should('be.visible')
         cy.get('[data-testid="openimis-claims-workflow-demo"]').should(
             'be.visible'
         )
@@ -431,7 +480,7 @@ describe('public product truth', () => {
         cy.contains('no fixed retention, backup-deletion, or recovery').should(
             'be.visible'
         )
-        cy.contains('self-serve hosted subscription does not include a BAA').should(
+        cy.contains('A BAA applies only when expressly included').should(
             'be.visible'
         )
         cy.contains('no uptime, response-time, support, retention, recovery').should(
@@ -487,10 +536,10 @@ describe('security boundary', () => {
 
         cy.visit('/hosted/welcome')
         cy.contains('Continue hosted onboarding').should('be.visible')
-        cy.contains('does not prove payment').should('be.visible')
-        cy.contains('sanitized derivative').should('be.visible')
-        cy.contains('Unknown or unresolved content is refused').should('be.visible')
-        cy.contains('validate-hosted').should('be.visible')
-        cy.contains('consumes the challenge once').should('be.visible')
+        cy.contains('Sign in with the email used at checkout').should('be.visible')
+        cy.contains('review the captured demonstration').should('be.visible')
+        cy.contains('Run under supervision').should('be.visible')
+        cy.contains('Monitor usage, outcomes').should('be.visible')
+        cy.contains('customer-controlled deployment').should('be.visible')
     })
 })

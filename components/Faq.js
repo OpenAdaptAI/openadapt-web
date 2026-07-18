@@ -21,15 +21,15 @@ export const faqItems = [
     },
     {
         question: 'Is OpenAdapt free?',
-        answer: 'The engine is MIT-licensed and free to use or modify. When production checkout is qualified and explicitly enabled, hosted browser execution is a paid subscription whose price and billing period are confirmed in Stripe. Regulated and customer-controlled deployments are scoped separately because the substrate, data boundary, verifier, and operating responsibilities differ.',
+        answer: 'The engine is MIT-licensed and free to use or modify. Managed browser execution is available as a $500/month subscription, with the price and billing period confirmed again in Stripe Checkout. Customer-controlled deployments are scoped separately because the substrate, data boundary, verifier, and operating responsibilities differ.',
     },
     {
         question: 'Is managed hosted execution available?',
-        answer: 'Managed execution is scoped to approved browser workflows. The hosted control plane manages runs, reports, usage, and governed workflow updates. Direct subscription activation remains gated until the live checkout and account-return path complete launch qualification; workflow qualification is available through the team.',
+        answer: 'Yes. The hosted subscription provides managed execution for approved browser workflows, including run history, reports, usage, and governed workflow updates. Start the subscription from the pricing section, then qualify the workflow and its verification boundary during onboarding.',
     },
     {
         question: 'What software does OpenAdapt work with?',
-        answer: 'The supported launch path is repeated work in browser-based software. Workflows involving private systems, regulated runtime data, or deployment-specific effect checks can be qualified for a customer-controlled boundary. Technical evaluators can review the published engine limits before choosing a workflow.',
+        answer: 'OpenAdapt targets repeated workflows across browser applications, Windows UI Automation, native macOS, and remote desktop environments. Managed subscriptions cover approved browser workflows. Private systems, regulated runtime data, Windows, macOS, RDP, and Citrix workflows are delivered through a scoped customer-controlled deployment.',
     },
 ]
 

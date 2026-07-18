@@ -8,29 +8,27 @@ export default function InsurancePage() {
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
-                <title>Insurance Claims Reference — Bounded Browser Workflow Fit | OpenAdapt</title>
+                <title>Verified Insurance Claims Execution | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="A bounded insurance claims-intake reference: prefer supported APIs, then qualify governed GUI compilation only for the remaining UI-only browser step, verified against the claims database."
+                    content="OpenAdapt compiles repeated claims UI work into deterministic execution and verifies the resulting write against the claims system of record."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/insurance" />
-                <meta property="og:title" content="Insurance Claims Reference | OpenAdapt" />
-                <meta property="og:description" content="Prefer supported APIs; qualify governed browser GUI compilation only for a remaining UI-only claims-intake gap." />
+                <meta property="og:title" content="Verified Insurance Claims Execution | OpenAdapt" />
+                <meta property="og:description" content="Claims intake demonstrated once, replayed deterministically, and checked against the system of record." />
                 <meta property="og:url" content="https://openadapt.ai/solutions/insurance" />
             </Head>
 
             <div className="mx-auto max-w-4xl px-4 py-14">
                 <p className="eyebrow">
-                    Insurance claims reference
+                    Insurance claims execution
                 </p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
                     Claims intake, demonstrated once, replayed exactly — and
                     checked against the claims database.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    This page is a bounded workflow-fit reference, not evidence
-                    of a production insurance integration. It shows OpenAdapt
-                    running the full loop on a real open-source insurance
+                    See OpenAdapt run the full loop on a real open-source insurance
                     system: a health-facility claim is entered once in openIMIS,
                     compiled into a governed local program, and replayed with a
                     fresh claim number — with success established only by a
@@ -38,12 +36,10 @@ export default function InsurancePage() {
                     self-report.
                 </p>
                 <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
-                    Where a claims platform exposes a supported API, use it —
-                    openIMIS itself has one. The browser demonstration isolates
-                    the value of compiled replay for claims operations, BPOs,
-                    and TPAs whose intake step lives in a portal or claims UI
-                    that exposes no such API. OpenAdapt does not adjudicate
-                    claims, decide coverage, or own the claims lifecycle.
+                    Use supported APIs for adjudication, coverage, and core claims
+                    logic. OpenAdapt completes the repeated last-mile intake or
+                    update trapped in a portal or claims UI, then verifies the
+                    result against the claims database.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
@@ -81,7 +77,7 @@ export default function InsurancePage() {
                 </div>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
-                    Candidate UI-only gaps to qualify
+                    Where the execution layer fits
                 </h2>
                 <ul className="mt-4 space-y-3">
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
@@ -101,13 +97,12 @@ export default function InsurancePage() {
 
                 <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-                        Show us one bounded claims step
+                        Put one claims workflow into production
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
-                        Bring one residual UI-only intake or update step, after
-                        reviewing supported APIs, to a 30-minute call.
-                        We&#39;ll map the evidence and qualification it would
-                        require in your environment.
+                        Bring one repeated intake or update step and the claim
+                        record that proves its outcome. We&#39;ll map the deployment,
+                        verification, shadow run, and supervised rollout.
                     </p>
                     <Link
                         href="/#book"

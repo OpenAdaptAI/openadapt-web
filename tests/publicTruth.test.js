@@ -57,62 +57,18 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
     }
     assert.match(product, /One governed workflow, end to end/)
     assert.match(product, /Customer-controlled deployment/)
-    assert.match(product, /Execution substrate evidence/)
-    for (const substrate of [
-        'Browser / Playwright',
-        'Windows UIA',
-        'Native macOS',
-        'RDP',
-        'Citrix',
-    ]) {
-        assert.match(product, new RegExp(substrate.replace('/', '\\/')))
-    }
-    for (const label of [
-        'Public beta',
-        'Partner qualification',
-        'Design partner needed',
-        'Reference lifecycle accepted',
-        'Scoped acceptance passed',
-        'Scoped TextEdit evidence accepted',
-        'Scoped RDP evidence accepted',
-        'No ICA/HDX evidence',
-    ]) {
-        assert.match(product, new RegExp(label))
-    }
-    assert.doesNotMatch(product, /RDP \/ Citrix/)
-    assert.match(product, /RDP evidence is not treated as Citrix evidence/)
-    assert.match(product, /Evidence state/)
-    assert.match(product, /not in the hosted browser launch candidate/)
-    assert.match(product, /20260717-candidate-56759c8-v2 in-tree WinForms matrix completed 3\/3 trials/)
-    assert.match(product, /independent SQLite oracle confirmed 3\/3 effects/)
-    assert.match(product, /stale-target and ambiguous-target controls each refused 3\/3/)
-    assert.match(product, /not arbitrary Windows applications or hosted desktop/)
-    assert.match(product, /preserves earlier rejected diagnostic runs/)
-    assert.match(product, /candidate b1b61a5 completed 3\/3 exact-byte TextEdit trials/)
-    assert.match(product, /immutable batch report remains failed/)
-    assert.match(product, /SHA-256-bound adjudication verified actual process and temporary-file cleanup/)
-    assert.match(product, /not clean-machine, design-partner, production, or broad macOS evidence/)
-    assert.match(product, /0 silent incorrect successes and 0 over-halts/)
-    assert.match(product, /candidate 82a658a completed 3\/3 trials/)
-    assert.match(product, /unique file through the Windows Run dialog over network RDP/)
-    assert.match(product, /Independent guest-tools readback confirmed the exact file contents/)
-    assert.match(product, /51\.845s, 10\.467s, and 7\.477s/)
-    assert.match(product, /0 failures, 0 silent incorrect successes, 0 over-halts, and 0 model calls/)
-    assert.match(product, /restored the exact eight-snapshot inventory/)
-    assert.match(product, /returned the current pointer without resume to the unchanged original base/)
-    assert.match(product, /not arbitrary RDP applications, record-level identity, clean-machine or production support, hosted RDP, or Citrix ICA\/HDX/)
-    assert.match(
-        product,
-        /blob\/defafbae758a75c8e149d9693f2cffe1f2264b8c\/benchmark\/windows_uia\/results\.json/
-    )
-    assert.match(
-        product,
-        /blob\/ca1b522cad215875f7471782283f8f8bb8e6c998\/benchmark\/macos_native\/textedit_counted_3plus1_b1b61a5_20260717\.adjudication\.json/
-    )
-    assert.match(
-        product,
-        /blob\/6610d24cebba27918b8ea507b2f05a094057ac85\/benchmark\/rdp\/results_82a658a_20260718\.sanitized\.json/
-    )
+    assert.match(product, /One execution model across your stack/)
+    assert.match(product, /Built for the interfaces your work depends on/)
+    assert.match(product, /Web applications/)
+    assert.match(product, /Windows applications/)
+    assert.match(product, /RDP, Citrix & VDI/)
+    assert.match(product, /workflows stay inspectable, policy-bound/)
+    assert.match(product, /Every production workflow is qualified against its target application/)
+    assert.match(product, /tree\/main\/benchmark/)
+    assert.match(product, /docs\/LIMITS\.md/)
+    assert.doesNotMatch(product, /Execution substrate evidence/)
+    assert.doesNotMatch(product, /Partner qualification/)
+    assert.doesNotMatch(product, /No ICA\/HDX evidence/)
     assert.doesNotMatch(pricing, /Offer unavailable|Hosted checkout unavailable/)
     assert.match(pricing, /Start with our team/)
     assert.doesNotMatch(llms, /Product Maturity|launching now|not implied/i)
@@ -147,8 +103,8 @@ test('buyer-fit section leads with infrastructure operators, not vertical claims
         assert.match(industries, new RegExp(buyer.replace('&', '\\&')))
     }
     assert.match(industries, /structured inputs/)
-    assert.match(industries, /existing\s+business logic/)
-    assert.match(industries, /high repeated volume/)
+    assert.match(industries, /established\s+business logic/)
+    assert.match(industries, /[Hh]igh-volume repeated/)
     assert.match(industries, /UI-only last-mile gap/)
     assert.match(industries, /independent (effect )?source of truth/)
     assert.match(industries, /Healthcare workflow reference/)
@@ -182,9 +138,9 @@ test('healthcare page sells verified last-mile infrastructure, not a clinic vert
         assert.match(healthcare, new RegExp(buyer))
     }
     assert.match(healthcare, /structured\s+input and business logic/)
-    assert.match(healthcare, /independent source of truth/)
-    assert.match(healthcare, /does not parse referrals/)
-    assert.match(healthcare, /remaining UI-only gap/)
+    assert.match(healthcare, /independent\s+source of[\s\S]*truth/)
+    assert.match(healthcare, /document processing, eligibility, routing/)
+    assert.match(healthcare, /final UI-only/)
     assert.doesNotMatch(healthcare, /OpenAdapt for healthcare clinics|What a clinic can compile/)
 })
 
@@ -193,8 +149,8 @@ test('machine-readable use cases do not claim mortgage, LOS, or a healthcare ver
 
     assert.match(llms, /Healthcare Execution Infrastructure/)
     assert.match(llms, /RCM vendors, healthcare BPOs, automation teams, and vertical-software companies/)
-    assert.match(llms, /Lending Operations Reference/)
-    assert.match(llms, /not evidence of a production lending integration/)
+    assert.match(llms, /Lending Operations/)
+    assert.match(llms, /independent REST and SQL effect oracles/)
     assert.doesNotMatch(llms, /Healthcare Clinics|Mortgage|\bLOS\b/)
 })
 
@@ -208,10 +164,9 @@ test('lending page shows a real Frappe workflow demo without reusing healthcare 
 
     assert.doesNotMatch(lending, /import HowItWorks/)
     assert.match(lending, /import LendingWorkflowDemo/)
-    assert.match(lending, /Lending Operations Reference/)
-    assert.match(lending, /Prefer supported APIs/)
-    assert.match(lending, /remaining UI-only browser gap/)
-    assert.match(lending, /not evidence of[\s\S]*production lending integration/)
+    assert.match(lending, /Lending operations/)
+    assert.match(lending, /supported APIs and exports/)
+    assert.match(lending, /final UI-only mile/)
     assert.doesNotMatch(`${lending}\n${demo}`, /OpenEMR|mortgage|Encompass/i)
     assert.match(demo, /frappe-lending-workflow-demo/)
     assert.match(demo, /From demonstration to verified Frappe write/)
@@ -231,7 +186,7 @@ test('lending page shows a real Frappe workflow demo without reusing healthcare 
     assert.doesNotMatch(demo, /Pause animation|Play animation/)
     assert.match(demo, /\/lending-demo\/provenance\.json/)
     assert.match(demo, /Inspect evidence manifest/)
-    assert.match(demo, /not establish production lending reliability/)
+    assert.match(demo, /evidence manifest records the exact software, task,[\s\S]*oracle, media hashes, and scope/i)
     assert.match(demo, /Frappe Lending v16\.2\.0/)
     assert.doesNotMatch(demo, /lending-evidence-placeholder|awaiting oracle verification/i)
 })

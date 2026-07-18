@@ -6,7 +6,7 @@ import BenchmarkCharts from '@components/BenchmarkCharts'
 import benchmark from '../data/benchmark.json'
 
 const description =
-    'See when OpenAdapt, traditional RPA, computer-use agents, or browser recorders fit repeated browser work. Compare authoring, run economics, change handling, verification, and deployment.'
+    'See when OpenAdapt, traditional RPA, computer-use agents, or browser recorders fit repeated GUI work. Compare authoring, run economics, change handling, verification, and deployment.'
 
 const webPageSchema = {
     '@context': 'https://schema.org',
@@ -49,7 +49,7 @@ const outcomes = [
 const rows = [
     {
         dimension: 'Best fit',
-        openadapt: 'Repeated, consequential browser workflows without a practical API',
+        openadapt: 'Repeated, consequential GUI workflows without a practical API',
         rpa: 'Broad enterprise automation with mature connectors and orchestration',
         agents: 'Novel or changing tasks that benefit from reasoning each time',
         browser: 'Simple browser workflows and test automation',
@@ -91,7 +91,7 @@ const rows = [
     },
     {
         dimension: 'Best-fit scope',
-        openadapt: 'Repeated browser workflows with local, managed, or customer-controlled execution',
+        openadapt: 'Repeated GUI workflows with local, managed, or customer-controlled execution',
         rpa: 'Mature desktop and browser coverage',
         agents: 'Broad screen coverage; provider-specific',
         browser: 'Browser only',
@@ -125,7 +125,7 @@ export default function ComparePage() {
                     Choose repeatable automation for work that repeats.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base leading-relaxed text-ink-2 md:text-lg">
-                    OpenAdapt compiles a demonstrated browser workflow into
+                    OpenAdapt compiles a demonstrated GUI workflow into
                     governed replay. Healthy runs are deterministic and make no
                     model calls. When the interface changes, the workflow
                     re-resolves from evidence, proposes a reviewable repair, or
@@ -149,7 +149,7 @@ export default function ComparePage() {
                         Built for consequential work trapped behind a GUI.
                     </h2>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                        The strongest fit is a browser workflow your team repeats,
+                        The strongest fit is a GUI workflow your team repeats,
                         where the business intent stays stable, a wrong action
                         matters, and a direct integration is not practical.
                     </p>
@@ -177,7 +177,6 @@ export default function ComparePage() {
                 >
                     <p className="eyebrow">Side by side</p>
                     <h2
-                        id="side-by-side-heading"
                         className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl"
                     >
                         Choose by the operating model you need.
@@ -363,7 +362,7 @@ export default function ComparePage() {
                         traditional RPA when connector breadth and enterprise
                         orchestration matter most. Choose a computer-use agent
                         for novel or exploratory work. Choose OpenAdapt when the
-                        browser workflow repeats and predictable replay,
+                        GUI workflow repeats and predictable replay,
                         reviewable change, and governed failure matter.
                     </p>
                     <p className="mt-4 text-sm">

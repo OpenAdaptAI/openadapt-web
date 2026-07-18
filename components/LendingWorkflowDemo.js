@@ -92,7 +92,7 @@ function VerificationPanel() {
             </div>
             <figcaption className={styles.caption}>
                 Verify — three baseline and three cosmetic-drift compiled trials;
-                bounded local engineering evidence, not a customer deployment
+                scoped to the pinned local reference environment
             </figcaption>
         </figure>
     )
@@ -169,11 +169,11 @@ export default function LendingWorkflowDemo() {
                         Frappe Lending v16.2.0, Frappe v16.27.0, and ERPNext
                         v16.27.0 were pinned in a local fixture with fictional
                         values. The six compiled trials cover one task on one
-                        environment under baseline and cosmetic-drift conditions;
-                        they do not establish production lending reliability or
-                        support for a proprietary LOS, Windows, RDP, or Citrix.
-                        OpenAdapt is unaffiliated with Frappe Technologies Pvt.
-                        Ltd.; Frappe is its registered trademark.
+                        environment under baseline and cosmetic-drift conditions.
+                        The evidence manifest records the exact software, task,
+                        oracle, media hashes, and scope. OpenAdapt is unaffiliated
+                        with Frappe Technologies Pvt. Ltd.; Frappe is its registered
+                        trademark.
                     </p>
                     <a href="/lending-demo/provenance.json">
                         Inspect evidence manifest

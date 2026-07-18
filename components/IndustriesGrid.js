@@ -12,14 +12,14 @@ function BuildForYouSection() {
     return (
         <div className={styles.buildSection}>
             <div className={styles.buildContent}>
-                <h2 className={styles.buildTitle}>Qualify one workflow with us</h2>
+                <h2 className={styles.buildTitle}>Put one workflow into production</h2>
                 <p className={styles.buildDesc}>
-                    We first check the substrate, verification boundary, and
-                    measurable outcome. If the workflow fits, we can scope a
-                    paid design-partner pilot in your environment.
+                    Start with one repeated workflow, its verification oracle,
+                    and its execution boundary. We&#39;ll take it through shadow
+                    operation and supervised production writes in your environment.
                 </p>
                 <Link className="btn-ink" href="#book">
-                    Qualify a workflow
+                    Plan the deployment
                 </Link>
             </div>
         </div>
@@ -106,18 +106,12 @@ export default function IndustriesGrid({
                     Teams closing a UI-only last-mile gap
                 </h2>
                 <p className={styles.p}>
-                    The strongest fit starts with structured inputs, existing
-                    business logic, high repeated volume, a browser step without
-                    a supported API, and an independent source of truth for the
-                    intended effect. OpenAdapt compiles that bounded UI-only gap
-                    into an inspectable program. Healthy replay makes no model
-                    calls; consequential workflows still require explicit identity,
-                    effect, policy, storage, and retention configuration.
-                    <br />
-                    <a href="https://github.com/OpenAdaptAI/openadapt-privacy">
-                        Optional PII/PHI scrubbing
-                    </a>{' '}
-                    covers configured sharing paths, not every raw artifact.
+                    OpenAdapt is built for high-volume workflows with structured
+                    inputs, established business logic, and a final write trapped
+                    behind a user interface. Demonstrate that last mile once and
+                    compile it into an inspectable program with explicit identity,
+                    effect, policy, and deployment boundaries. Healthy replay makes
+                    no model calls.
                 </p>
             </div>
             <div className={styles.row}>

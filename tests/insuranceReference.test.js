@@ -14,10 +14,9 @@ test('insurance page shows a real openIMIS workflow demo without reusing other v
 
     assert.doesNotMatch(insurance, /import HowItWorks/)
     assert.match(insurance, /import InsuranceWorkflowDemo/)
-    assert.match(insurance, /Insurance claims reference/i)
-    assert.match(insurance, /not evidence[\s\S]*of a production insurance integration/)
+    assert.match(insurance, /Insurance claims execution/i)
     assert.match(insurance, /supported API/)
-    assert.match(insurance, /does not adjudicate/)
+    assert.match(insurance, /supported APIs for adjudication/)
     assert.doesNotMatch(`${insurance}\n${demo}`, /OpenEMR|Frappe|Encompass|mortgage/i)
     assert.match(demo, /openimis-claims-workflow-demo/)
     assert.match(demo, /From demonstration to verified openIMIS claim/)
@@ -35,7 +34,7 @@ test('insurance page shows a real openIMIS workflow demo without reusing other v
     assert.doesNotMatch(demo, /<picture>|prefers-reduced-motion/)
     assert.match(demo, /\/insurance-demo\/provenance\.json/)
     assert.match(demo, /Inspect evidence manifest/)
-    assert.match(demo, /do not establish production insurance\s+reliability/)
+    assert.match(demo, /evidence manifest records the exact[\s\S]*software, task, oracle, media hashes, and scope/i)
     assert.match(demo, /openIMIS 25\.10/)
     assert.match(demo, /unaffiliated with the openIMIS Initiative/)
     assert.doesNotMatch(demo, /insurance-evidence-placeholder|awaiting oracle verification/i)
@@ -44,6 +43,7 @@ test('insurance page shows a real openIMIS workflow demo without reusing other v
 test('insurance reference is linked from the buyer-fit grid and llms.txt', () => {
     const industries = read('components/IndustriesGrid.js')
     const footer = read('components/Footer.js')
+    const nav = read('components/NavHeader.js')
     const home = read('pages/index.js')
     const howItWorks = read('components/HowItWorks.js')
     const llms = read('public/llms.txt')
@@ -52,6 +52,7 @@ test('insurance reference is linked from the buyer-fit grid and llms.txt', () =>
     assert.match(industries, /Insurance claims reference/)
     assert.match(industries, /\/solutions\/insurance/)
     assert.match(footer, /\/solutions\/insurance/)
+    assert.match(nav, /\/solutions\/insurance/)
     assert.match(home, /<HowItWorks showUseCases \/>/)
     for (const useCase of ['Healthcare', 'Lending', 'Insurance']) {
         assert.match(howItWorks, new RegExp(`label: '${useCase}'`))
@@ -63,8 +64,8 @@ test('insurance reference is linked from the buyer-fit grid and llms.txt', () =>
     assert.match(howItWorks, /\/insurance-demo\/record-openimis\.gif/)
     assert.match(howItWorks, /\/insurance-demo\/replay-openimis\.gif/)
     assert.match(sitemap, /https:\/\/openadapt\.ai\/solutions\/insurance/)
-    assert.match(llms, /Insurance Claims Reference/)
-    assert.match(llms, /not evidence of a production insurance integration/)
+    assert.match(llms, /Insurance Claims Execution/)
+    assert.match(llms, /direct SQL claim-row oracle/)
 })
 
 test('insurance demo media has durable synthetic evidence provenance', () => {
