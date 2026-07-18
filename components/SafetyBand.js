@@ -26,8 +26,9 @@ export default function SafetyBand() {
                     is configured to check it; a success screen alone is not proof
                     that a write reached the right system or record.
                 </p>
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
                     <a
+                        className="chip-evidence"
                         href={LIMITS_URL}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -35,6 +36,7 @@ export default function SafetyBand() {
                         Read what it doesn&apos;t do yet →
                     </a>
                     <a
+                        className="chip-evidence"
                         href={VALIDATION_URL}
                         target="_blank"
                         rel="noopener noreferrer"
