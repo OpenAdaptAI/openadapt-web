@@ -128,7 +128,7 @@ export default function DownloadPage() {
 
                 <div className="mt-6 flex flex-wrap gap-3">
                     <a
-                        href="https://docs.openadapt.ai/getting-started/installation/"
+                        href="https://docs.openadapt.ai/get-started/"
                         className="btn-ink"
                     >
                         Install the engine
