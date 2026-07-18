@@ -113,6 +113,46 @@ test('buyer-fit section leads with infrastructure operators, not vertical claims
     assert.doesNotMatch(industries, /title: 'Mortgage & lending ops'/)
 })
 
+test('workflow and execution-environment selectors are independent and media-honest', () => {
+    const howItWorks = read('components/HowItWorks.js')
+    const overlay = read('components/ExecutionEnvironmentOverlay.js')
+
+    for (const label of [
+        'Healthcare',
+        'Lending',
+        'Insurance',
+        'Browser',
+        'Windows',
+        'macOS',
+        'Linux',
+        'RDP',
+        'Citrix',
+    ]) {
+        assert.match(howItWorks, new RegExp(`label: '${label}'`))
+    }
+
+    assert.match(
+        howItWorks,
+        /Choose a workflow and execution environment\s+independently/
+    )
+    assert.match(howItWorks, /aria-label="Execution environment"/)
+    assert.match(howItWorks, /sourceKind: 'application-footage'/)
+    assert.match(howItWorks, /sourceKind: 'environment-visualization'/)
+    assert.match(howItWorks, /sourceKind: 'transport-visualization'/)
+    assert.match(
+        howItWorks,
+        /Native Linux execution uses AT-SPI structural evidence/
+    )
+    assert.match(
+        howItWorks,
+        /Application footage and execution-environment\s+overlays are labeled separately/
+    )
+    assert.match(
+        overlay,
+        /data-environment-source-kind=\{environment\.sourceKind\}/
+    )
+})
+
 test('top-level calls to action qualify a workflow instead of implying hosted activation', () => {
     const sources = [
         read('components/AudiencePaths.js'),

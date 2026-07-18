@@ -226,6 +226,17 @@ describe('public product truth', () => {
         cy.get('#how-it-works').within(() => {
             cy.contains('button', 'Healthcare')
                 .should('have.attr', 'aria-pressed', 'true')
+            cy.contains('button', 'Browser')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.get('figure[data-execution-environment="browser"]')
+                .should('have.length', 5)
+                .each(($figure) => {
+                    cy.wrap($figure).should(
+                        'have.attr',
+                        'data-environment-source-kind',
+                        'application-footage'
+                    )
+                })
             cy.get('img[alt*="OpenEMR"]').should('have.length', 5)
             cy.get('[data-testid^="reference-"]')
                 .should('have.length', 3)
@@ -255,6 +266,10 @@ describe('public product truth', () => {
                 )
                 .find('img')
                 .should('have.attr', 'src', '/how-it-works/run_openemr.gif')
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .find('[data-testid="resolve-target-track"]')
+                .should('have.attr', 'data-resolve-track', 'openemrTargets')
+                .and('have.attr', 'data-resolve-duration', '6.58s')
             cy.get('[data-testid="reference-verify-panel"]')
                 .should('contain.text', 'qualification required')
                 .and('contain.text', 'No application-specific audit result claimed')
@@ -302,6 +317,10 @@ describe('public product truth', () => {
                 )
                 .find('img')
                 .should('have.attr', 'src', '/lending-demo/replay-frappe.gif')
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .find('[data-testid="resolve-target-track"]')
+                .should('have.attr', 'data-resolve-track', 'frappeTargets')
+                .and('have.attr', 'data-resolve-duration', '10.18s')
             cy.get('[data-testid="reference-verify-panel"]')
                 .should('contain.text', '6 / 6 verified')
                 .and('contain.text', '0 silent incorrect successes')
@@ -357,6 +376,10 @@ describe('public product truth', () => {
                     'src',
                     '/insurance-demo/replay-openimis.gif'
                 )
+            cy.get('[data-testid="reference-resolve-panel"]')
+                .find('[data-testid="resolve-target-track"]')
+                .should('have.attr', 'data-resolve-track', 'openimisTargets')
+                .and('have.attr', 'data-resolve-duration', '19.79s')
             cy.get('[data-testid="reference-verify-panel"]')
                 .should('contain.text', '3 / 3 verified')
                 .and('contain.text', '0 duplicate claims')
@@ -374,14 +397,73 @@ describe('public product truth', () => {
             cy.contains('View the bounded use case')
                 .should('have.attr', 'href')
                 .and('equal', '/solutions/insurance')
+
+            cy.contains('button', 'RDP').click()
+            cy.contains('button', 'RDP')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.contains('button', 'Insurance')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.get('figure[data-execution-environment="rdp"]')
+                .should('have.length', 5)
+                .each(($figure) => {
+                    cy.wrap($figure).should(
+                        'have.attr',
+                        'data-environment-source-kind',
+                        'transport-visualization'
+                    )
+                })
+            cy.contains('governed RDP transport path').should('be.visible')
+            cy.get('img[src="/insurance-demo/record-openimis.gif"]').should(
+                'be.visible'
+            )
+
+            cy.contains('button', 'Citrix').click()
+            cy.contains('button', 'Citrix')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.get('figure[data-execution-environment="citrix"]')
+                .should('have.length', 5)
+                .and(
+                    'have.attr',
+                    'data-environment-source-kind',
+                    'transport-visualization'
+                )
+            cy.contains('governed ICA/HDX transport path').should(
+                'be.visible'
+            )
+
+            cy.contains('button', 'Linux').click()
+            cy.contains(
+                'Native Linux execution uses AT-SPI structural evidence'
+            ).should('be.visible')
+            cy.get('figure[data-execution-environment="linux"]')
+                .should('have.length', 5)
+                .and(
+                    'have.attr',
+                    'data-environment-source-kind',
+                    'environment-visualization'
+                )
+
+            for (const environment of ['Windows', 'macOS', 'Browser']) {
+                cy.contains('button', environment).click()
+                cy.contains('button', environment).should(
+                    'have.attr',
+                    'aria-pressed',
+                    'true'
+                )
+            }
         })
 
         cy.viewport(375, 812)
         cy.visit('/')
         cy.get('#how-it-works').within(() => {
             cy.contains('button', 'Insurance').click()
+            cy.contains('button', 'Citrix').click()
             cy.get('img[src="/insurance-demo/record-openimis.gif"]').should(
                 'be.visible'
+            )
+            cy.get('figure[data-execution-environment="citrix"]').should(
+                'have.length',
+                5
             )
         })
         cy.document().then((document) => {
