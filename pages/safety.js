@@ -240,7 +240,7 @@ export default function SafetyPage() {
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
                         <Link href="/#book" className="btn-ink">
-                            Book a demo
+                            Evaluate a workflow
                         </Link>
                         <Link
                             href="/solutions/healthcare"

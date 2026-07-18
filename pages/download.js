@@ -92,29 +92,33 @@ export default function DownloadPage({ release, fetchFailed }) {
             <div className="mx-auto max-w-4xl px-4 py-14">
                 <p className="eyebrow">Install OpenAdapt</p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Start with the working engine
+                    Start with the OpenAdapt CLI
                 </h1>
                 <p className="mt-5 max-w-2xl text-base text-ink-2 md:text-lg">
-                    The open-source{' '}
+                    The flagship{' '}
                     <a
                         href="https://github.com/OpenAdaptAI/OpenAdapt"
                         className="font-medium underline underline-offset-4"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        openadapt-flow CLI
+                        OpenAdapt project
                     </a>{' '}
-                    provides the complete record, compile, certify, replay, and
-                    repair workflow today. Native installers are available below
-                    for teams evaluating desktop packaging.
+                    installs the compiler and governed runtime under the unified{' '}
+                    <code>openadapt flow</code> command. Native installers are
+                    generated separately from the latest complete Experimental
+                    desktop prerelease.
                 </p>
+                <pre className="mt-6 max-w-2xl overflow-x-auto rounded-xl border border-hairline bg-panel p-4 font-mono text-sm text-ink">
+                    <code>pip install openadapt</code>
+                </pre>
 
                 <div className="mt-6 flex flex-wrap gap-3">
                     <a
                         href="https://docs.openadapt.ai/get-started/"
                         className="btn-ink"
                     >
-                        Install the engine
+                        Read docs
                     </a>
                     <a href="#desktop-builds" className="btn-ghost-ink">
                         View desktop builds
@@ -187,9 +191,10 @@ export default function DownloadPage({ release, fetchFailed }) {
                             </p>
                             <p className="mt-2 max-w-2xl text-sm text-ink-2">
                                 No complete Experimental desktop prerelease has
-                                been published. Use openadapt-flow today, or
-                                watch the desktop releases page for the first
-                                native preview.
+                                been published. Use{' '}
+                                <code>pip install openadapt</code>, or watch the
+                                desktop releases page for the next native
+                                preview.
                             </p>
                             <div className="mt-4 flex flex-wrap gap-3">
                                 <a
@@ -206,7 +211,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    Install the working CLI
+                                    Read docs
                                 </a>
                             </div>
                         </div>
@@ -375,12 +380,12 @@ export default function DownloadPage({ release, fetchFailed }) {
                         Need the working workflow engine?
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
-                        Start with the openadapt-flow CLI, or bring the workflow
+                        Start with <code>pip install openadapt</code>, or bring the workflow
                         you most want to automate to a 30-minute call.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
-                        <Link href="/#book" className="btn-ink">
-                            Book a demo
+                        <Link href="/#open-source" className="btn-ink">
+                            Try locally
                         </Link>
                         <a
                             href="https://docs.openadapt.ai"
@@ -388,7 +393,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            Read the docs
+                            Read docs
                         </a>
                     </div>
                 </div>

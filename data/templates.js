@@ -21,22 +21,23 @@
 
 const FLOW_REPO = 'https://github.com/OpenAdaptAI/openadapt-flow'
 
-// The canonical CLI quickstart (mirrors the openadapt-flow README "Try it").
+// The canonical end-user quickstart enters through the flagship OpenAdapt
+// package while source links below continue to point to the engine repository.
 const DEMO_QUICKSTART = [
-    { cmd: 'pip install openadapt-flow', what: 'Install the open-source compiler and runtime.' },
-    { cmd: 'openadapt-flow demo-record --out rec', what: 'Serve the bundled MockMed clinic app locally and record the canonical triage demonstration.' },
-    { cmd: 'openadapt-flow compile rec --out bundle --name triage-note', what: 'Compile the recording into a deterministic, locally executable bundle.' },
-    { cmd: 'openadapt-flow lint bundle', what: 'Report the bundle’s coverage gaps — expected: it finds the demo’s unarmed irreversible final click.' },
-    { cmd: 'openadapt-flow certify bundle --policy clinical-write', what: 'Enforce the strict clinical-write policy — expected: refusal. That is the safety boundary working.' },
-    { cmd: 'openadapt-flow replay bundle', what: 'Replay locally, $0, no model calls; writes report.json and an illustrated REPORT.md.' },
+    { cmd: 'pip install openadapt', what: 'Install the OpenAdapt launcher and governed compiler.' },
+    { cmd: 'openadapt flow demo-record --out rec', what: 'Serve the bundled MockMed clinic app locally and record the canonical triage demonstration.' },
+    { cmd: 'openadapt flow compile rec --out bundle --name triage-note', what: 'Compile the recording into a deterministic, locally executable bundle.' },
+    { cmd: 'openadapt flow lint bundle', what: 'Report the bundle’s coverage gaps — expected: it finds the demo’s unarmed irreversible final click.' },
+    { cmd: 'openadapt flow certify bundle --policy clinical-write', what: 'Enforce the strict clinical-write policy — expected: refusal. That is the safety boundary working.' },
+    { cmd: 'openadapt flow replay bundle', what: 'Replay locally, $0, no model calls; writes report.json and an illustrated REPORT.md.' },
 ]
 
 const RECORD_YOUR_OWN = [
-    { cmd: 'pip install openadapt-flow', what: 'Install the open-source compiler and runtime.' },
-    { cmd: 'openadapt-flow record --url https://your.app --out rec', what: 'Open a headed browser on your app and demonstrate the workflow once; Ctrl-C to finish.' },
-    { cmd: 'openadapt-flow compile rec --out bundle --name my-task', what: 'Compile the recording into a deterministic bundle with auto-classified risk per step.' },
-    { cmd: 'openadapt-flow lint bundle && openadapt-flow certify bundle --policy permissive', what: 'Surface coverage gaps, then gate the bundle against a policy before it ever deploys.' },
-    { cmd: 'openadapt-flow replay bundle --url https://your.app --param name=value', what: 'Replay against your app; recorded values are defaults and --param overrides them.' },
+    { cmd: 'pip install openadapt', what: 'Install the OpenAdapt launcher and governed compiler.' },
+    { cmd: 'openadapt flow record --url https://your.app --out rec', what: 'Open a headed browser on your app and demonstrate the workflow once; Ctrl-C to finish.' },
+    { cmd: 'openadapt flow compile rec --out bundle --name my-task', what: 'Compile the recording into a deterministic bundle with auto-classified risk per step.' },
+    { cmd: 'openadapt flow lint bundle && openadapt flow certify bundle --policy permissive', what: 'Surface coverage gaps, then gate the bundle against a policy before it ever deploys.' },
+    { cmd: 'openadapt flow replay bundle --url https://your.app --param name=value', what: 'Replay against your app; recorded values are defaults and --param overrides them.' },
 ]
 
 const templates = [
@@ -53,7 +54,7 @@ const templates = [
         metaDescription:
             'Automate patient triage note entry: record the workflow once, compile it into deterministic local replay, and see the clinical-write policy gate refuse an under-verified bundle. Runs today with two commands.',
         runsOn:
-            'MockMed, the synthetic clinic application bundled with the openadapt-flow CLI — no setup and no real patient data. It ships so you can run this entire template in about two minutes.',
+            'MockMed, the synthetic clinic application bundled with the OpenAdapt CLI — no setup and no real patient data. It ships so you can run this entire template in about two minutes.',
         steps: [
             'Sign in to the clinic app',
             'Open the first referral in the task list',
@@ -70,7 +71,6 @@ const templates = [
         source: `${FLOW_REPO}#try-it`,
         evidence:
             'A nightly clean-machine test runs this complete install-to-uninstall journey on Linux, macOS, and Windows.',
-        cta: { href: '/solutions/healthcare', label: 'Healthcare execution infrastructure' },
     },
     {
         slug: 'openemr-patient-note',
@@ -100,7 +100,6 @@ const templates = [
         source: `${FLOW_REPO}/tree/main/benchmark/openemr_e2e`,
         evidence:
             'Field run on the real third-party OpenEMR public demo: compiled replay went 20/20 versus 10/10 for a computer-use agent, faster and with zero model calls. Field test, not CI-reproducible — the public demo is shared, resets daily, and the agent sample is small; the verifier and task-prompt units run in CI.',
-        cta: { href: '/solutions/healthcare', label: 'Healthcare execution infrastructure' },
     },
     {
         slug: 'frappe-loan-application',
@@ -130,7 +129,6 @@ const templates = [
         source: `${FLOW_REPO}/tree/main/benchmark/frappe_lending`,
         evidence:
             '6/6 compiled trials correct across the pinned baseline and a cosmetic-drift variant — 0 silent incorrect successes, 0 over-halts, 0 model calls, $0 model cost. An initial engineering matrix, not a publication benchmark; the full comparative matrix (paid agent arm, 10 fresh trials per cell) is still open.',
-        cta: { href: '/solutions/lending', label: 'Lending operations reference' },
     },
     {
         slug: 'openimis-claim-intake',
@@ -159,7 +157,6 @@ const templates = [
         source: `${FLOW_REPO}/tree/main/benchmark/openimis_claims`,
         evidence:
             'A reference environment, deliberately not a benchmark: no timing matrix and no agent arm. Any future reliability claim requires the full matched protocol the Frappe Lending and OpenEMR references define.',
-        cta: { href: '/solutions/insurance', label: 'Insurance claims execution' },
     },
 
     // ------------------------------------------------------------------
@@ -191,7 +188,6 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/tree/main/benchmark/openimis_claims`,
         evidence: null,
-        cta: { href: '/dental', label: 'Automated verification for dental practices — founding cohort' },
     },
     {
         slug: 'insurance-eligibility-check',
@@ -219,7 +215,6 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/tree/main/benchmark/openimis_claims`,
         evidence: null,
-        cta: { href: '/solutions/insurance', label: 'Insurance claims execution' },
     },
     {
         slug: 'new-patient-record',
@@ -246,7 +241,6 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/tree/main/benchmark/openemr_e2e`,
         evidence: null,
-        cta: { href: '/solutions/healthcare', label: 'Healthcare execution infrastructure' },
     },
     {
         slug: 'report-export-verification',
@@ -273,7 +267,6 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/blob/main/openadapt_flow/runtime/effects/file_arrival.py`,
         evidence: null,
-        cta: { href: '/#book', label: 'Qualify a workflow' },
     },
 ]
 

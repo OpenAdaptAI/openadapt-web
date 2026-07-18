@@ -55,52 +55,114 @@ function emulateReducedMotion(value) {
 }
 
 describe('Cloud product preview', () => {
-    it('autoplays a labeled demonstration walkthrough with a pause control', () => {
+    it('supports the guided tour and interactive reference states', () => {
         cy.viewport(1280, 1700)
         cy.then(() => emulateReducedMotion('no-preference'))
         cy.visit('/', { onBeforeLoad: preferMotion })
 
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
         cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            cy.get('[data-testid="dashboard-preview-media-label"]')
+            cy.get('[data-testid="dashboard-preview-brand"]')
                 .should('be.visible')
-                .and('have.text', 'Product preview · demonstration data')
-            cy.get('video').should(($video) => {
-                expect($video).to.have.attr('autoplay')
-                expect($video).to.have.attr('loop')
-                expect($video).to.have.attr('playsinline')
-            })
-            cy.get('video').then(($video) => {
-                expect($video[0].muted).to.equal(true)
-            })
-            cy.contains('button', 'Pause')
-                .should('be.visible')
+                .and('contain.text', 'OpenAdapt')
+                .and('contain.text', 'Cloud')
+            cy.get('[data-reference="healthcare"]')
+                .should('have.attr', 'data-view', 'workflow')
+                .and('have.attr', 'data-playing', 'true')
+            cy.wait(4300)
+            cy.get('[data-reference="healthcare"]').should(
+                'have.attr',
+                'data-view',
+                'run'
+            )
+            cy.contains('button', 'Pause tour').click()
+            cy.get('[data-reference="healthcare"]').should(
+                'have.attr',
+                'data-playing',
+                'false'
+            )
+        })
+        cy.get('[data-testid="dashboard-reference-lending"]')
+            .focus()
+            .should('be.focused')
+            .click()
+        cy.get('[data-testid="dashboard-reference-lending"]')
+            .should('have.attr', 'aria-pressed', 'true')
+        cy.get('[data-testid="dashboard-product-preview"]').within(() => {
+            cy.contains('h3', 'Frappe Lending').should('be.visible')
+            cy.get('[data-testid="dashboard-view-evidence"]')
                 .click()
-            cy.contains('button', 'Play').should('be.visible')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.contains('h4', 'Independent readback').should('be.visible')
+            cy.contains('dt', 'SQL delta').should('be.visible')
+            cy.get('[data-testid="dashboard-reference-media"]')
+                .should('have.attr', 'src')
+                .and('include', '/lending-demo/replay-frappe.jpg')
+            cy.contains('button', 'Play tour').click()
+            cy.get('[data-reference="lending"]').should(
+                'have.attr',
+                'data-playing',
+                'true'
+            )
         })
 
+        cy.contains('Reference workflows using synthetic records').should(
+            'be.visible'
+        )
+        cy.get('#cloud-product').should(
+            'not.contain.text',
+            'demo.openadapt.ai'
+        )
+        cy.get('[data-testid="dashboard-product-preview"]').within(() => {
+            cy.contains('button', 'Pause tour').click()
+            cy.get('[data-playing="false"]').should('exist')
+        })
+        cy.get('[data-testid="dashboard-preview-brand"]').scrollIntoView({
+            offset: { top: -70, left: 0 },
+        })
         cy.screenshot('dashboard-showcase-desktop', {
             capture: 'viewport',
         })
+        cy.get('[data-reference="lending"]').screenshot(
+            'dashboard-showcase-detail-desktop'
+        )
     })
 
-    it('shows the labeled static fallback for reduced motion', () => {
+    it('keeps the interactive preview static for reduced motion on mobile', () => {
         cy.viewport(390, 844)
         cy.then(() => emulateReducedMotion('reduce'))
         cy.visit('/', { onBeforeLoad: preferReducedMotion })
 
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
         cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            cy.get('[data-reduced-motion="true"]').should('exist')
-            cy.get('video').should('not.be.visible')
-            cy.get('img[alt*="synthetic demonstration workflows"]')
+            cy.get('[data-reduced-motion="true"]')
+                .should('have.attr', 'data-playing', 'false')
+            cy.get('[data-testid="dashboard-tour-status"]')
                 .should('be.visible')
-            cy.get('[data-testid="dashboard-preview-media-label"]')
+                .and('have.text', 'Tour paused for reduced motion')
+            cy.get('[data-testid="dashboard-reference-media"]')
                 .should('be.visible')
-                .and('have.text', 'Product preview · demonstration data')
-            cy.get('button[aria-label$="product preview"]').should(
-                'not.be.visible'
+                .and('have.attr', 'src')
+                .and('include', '/how-it-works/record_openemr.jpg')
+        })
+        cy.get('[data-testid="dashboard-reference-insurance"]')
+            .click()
+            .should('have.attr', 'aria-pressed', 'true')
+        cy.get('[data-testid="dashboard-product-preview"]').within(() => {
+            cy.get('[data-testid="dashboard-view-report"]')
+                .focus()
+                .should('be.focused')
+                .click()
+            cy.get('[data-testid="dashboard-view-report"]')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.contains('h4', 'openIMIS reference').should('be.visible')
+            cy.contains('dt', 'Wrong-policyholder writes').should(
+                'be.visible'
             )
+            cy.get('[data-testid="dashboard-reference-media"]')
+                .should('have.attr', 'src')
+                .and('include', '/insurance-demo/replay-openimis.jpg')
+            cy.contains('button', /tour/i).should('not.exist')
         })
 
         cy.get('#cloud-product').screenshot(

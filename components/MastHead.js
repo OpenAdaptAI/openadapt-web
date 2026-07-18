@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import React from 'react'
 import Link from 'next/link'
 
@@ -6,50 +5,6 @@ import ReplayHero from '@components/ReplayHero'
 import { track, EVENTS } from 'utils/analytics'
 
 import styles from './MastHead.module.css'
-
-const CarouselSection = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const carouselItems = [
-        "Demonstrate a bounded workflow. Replay deterministically and locally.",
-        "Healthy runs make zero model calls.",
-        "Drift is resolved, reviewed, or refused.",
-        "Choose local, hosted, or customer-controlled execution.",
-    ];
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentIndex((prevIndex) =>
-                prevIndex === carouselItems.length - 1 ? 0 : prevIndex + 1
-            );
-        }, 4000);
-
-        return () => clearInterval(timer);
-    }, []);
-
-    return (
-        <div className="relative h-10 w-full overflow-hidden my-2">
-            <div className="absolute w-full">
-                {carouselItems.map((item, index) => (
-                    <div
-                        key={index}
-                        className={`
-                            absolute top-0 left-0 w-full
-                            transform transition-all duration-500 ease-out
-                            ${index === currentIndex ?
-                                'opacity-100 translate-y-0' :
-                                'opacity-0 translate-y-4'
-                            }
-                        `}
-                    >
-                        <span className="inline-block py-1.5 px-3 w-full text-center text-ink-3 text-sm">
-                            {item}
-                        </span>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
 
 const formatStars = (n) =>
     n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k` : String(n)
@@ -112,9 +67,6 @@ export default function Home({ githubStats }) {
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
                             </div>
-                            <div className="mt-6 font-light text-base md:text-lg">
-                                <CarouselSection />
-                            </div>
                             <div id="register">
                                 <div className="flex items-center justify-center gap-3 mt-6 mb-4">
                                     <Link
@@ -126,7 +78,7 @@ export default function Home({ githubStats }) {
                                             })
                                         }
                                     >
-                                        Qualify a workflow
+                                        Evaluate a workflow
                                     </Link>
                                     <Link
                                         className="btn-ghost-ink"
@@ -137,7 +89,7 @@ export default function Home({ githubStats }) {
                                             })
                                         }
                                     >
-                                        Run locally
+                                        Try locally
                                     </Link>
                                 </div>
                             </div>

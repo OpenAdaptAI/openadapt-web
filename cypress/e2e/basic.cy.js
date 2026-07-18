@@ -139,12 +139,12 @@ describe('public product truth', () => {
                 'true'
             )
             cy.get('#nav-developers-menu').within(() => {
-                cy.contains('a', 'Engine source')
+                cy.contains('a', 'Compiler/runtime source')
                     .should('be.visible')
                     .and(
                         'have.attr',
                         'href',
-                        'https://github.com/OpenAdaptAI/OpenAdapt'
+                        'https://github.com/OpenAdaptAI/openadapt-flow'
                     )
                 cy.contains('a', 'Docs')
                     .should('be.visible')
@@ -304,9 +304,12 @@ describe('public product truth', () => {
                 .and('equal', 'https://blog.openadapt.ai')
             // The Developers dropdown renders as a labeled flat group.
             cy.contains('Developers').scrollIntoView().should('be.visible')
-            cy.contains('a', 'Engine source')
+            cy.contains('a', 'Compiler/runtime source')
                 .should('have.attr', 'href')
-                .and('equal', 'https://github.com/OpenAdaptAI/OpenAdapt')
+                .and(
+                    'equal',
+                    'https://github.com/OpenAdaptAI/openadapt-flow'
+                )
             cy.contains('a', 'Docs')
                 .should('have.attr', 'href')
                 .and('equal', 'https://docs.openadapt.ai')
@@ -410,8 +413,10 @@ describe('public product truth', () => {
         cy.get('#side-by-side [role="region"]')
             .should('be.visible')
             .and('have.attr', 'tabindex', '0')
-        cy.contains('Qualify a workflow').scrollIntoView().should('be.visible')
-        cy.contains('Book a workflow review').should('be.visible')
+        cy.contains('Evaluate a workflow')
+            .scrollIntoView()
+            .should('be.visible')
+        cy.contains('Try locally').should('be.visible')
     })
 
     it('keeps buyer claims inside the shipped browser and tested safety scope', () => {
@@ -431,6 +436,7 @@ describe('public product truth', () => {
             cy.contains('Lending operations reference').should('be.visible')
             cy.contains('Insurance claims reference').should('be.visible')
             cy.contains('Mortgage & lending ops').should('not.exist')
+            cy.contains("There's An AI For That").should('not.exist')
         })
 
         cy.get('#how-it-works').within(() => {

@@ -202,12 +202,17 @@ export default function TemplatePage({ template, anchorTemplates }) {
                         verification, shadow run, and supervised rollout.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
-                        <Link href={t.cta.href} className="btn-ink">
-                            {t.cta.label}
+                        <Link href="/#book" className="btn-ink">
+                            Evaluate a workflow
                         </Link>
-                        <Link href="/#book" className="btn-ghost-ink">
-                            Book a demo
-                        </Link>
+                        <a
+                            href="https://docs.openadapt.ai"
+                            className="btn-ghost-ink"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Read docs
+                        </a>
                     </div>
                 </div>
             </div>

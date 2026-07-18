@@ -4,28 +4,6 @@ import Link from 'next/link'
 
 import styles from './IndustriesGrid.module.css'
 
-/*
- * BuildForYouSection — light editorial CTA block. The old dark canvas mesh
- * and SMIL circuit animation were removed with the paper-terminal restyle.
- */
-function BuildForYouSection() {
-    return (
-        <div className={styles.buildSection}>
-            <div className={styles.buildContent}>
-                <h2 className={styles.buildTitle}>Put one workflow into production</h2>
-                <p className={styles.buildDesc}>
-                    Start with one repeated workflow, its verification oracle,
-                    and its execution boundary. We&#39;ll take it through shadow
-                    operation and supervised production writes in your environment.
-                </p>
-                <Link className="btn-ink" href="#book">
-                    Plan the deployment
-                </Link>
-            </div>
-        </div>
-    )
-}
-
 export default function IndustriesGrid({
     feedbackData,
     setFeedbackData,
@@ -90,17 +68,7 @@ export default function IndustriesGrid({
 
     return (
         <div className={styles.background} id="industries">
-            <div className="flex flex-col items-center justify-center pt-10">
-                <a
-                    href="https://theresanaiforthat.com/ai/openadapt-ai/?ref=featured&v=2868434"
-                    target="_blank"
-                    rel="nofollow"
-                    className="opacity-70 hover:opacity-100 transition-opacity duration-200"
-                >
-                    <img width="240" height="52" src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600" alt="Featured on There's An AI For That"></img>
-                </a>
-            </div>
-            <div className="mt-12">
+            <div className="pt-12">
                 <p className="eyebrow text-center mb-2">Who it&apos;s for</p>
                 <h2 className="font-display text-center text-xl font-semibold text-ink mb-3 tracking-tight">
                     Teams closing a UI-only last-mile gap
@@ -157,14 +125,13 @@ export default function IndustriesGrid({
                                     handleGetStartedButtonClick(grid.title)
                                 }
                             >
-                                Evaluate fit
+                                Evaluate a workflow
                             </Link>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <BuildForYouSection />
         </div>
     )
 }

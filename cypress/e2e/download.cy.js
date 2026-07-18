@@ -33,6 +33,24 @@ function experimentalRelease(overrides = {}) {
     }
 }
 
+function completeRelease(tag, publishedAt) {
+    const version = tag.replace('desktop-v', '')
+    const prefix = `OpenAdapt-Desktop-Experimental-v${version}`
+    return experimentalRelease({
+        tag_name: tag,
+        published_at: publishedAt,
+        assets: [
+            asset(`${prefix}-macos-arm64-adhoc.dmg`),
+            asset(`${prefix}-macos-x86_64-adhoc.dmg`),
+            asset(`${prefix}-windows-x86_64-unsigned.msi`),
+            asset(`${prefix}-windows-x86_64-unsigned-nsis-setup.exe`),
+            asset(`${prefix}-linux-x86_64-unsigned.AppImage`),
+            asset(`${prefix}-linux-x86_64-unsigned.deb`),
+            asset('SHA256SUMS', 512),
+        ],
+    })
+}
+
 describe('download page is server-rendered', () => {
     it('ships the desktop release state in the initial HTML', () => {
         // The release list is resolved in getStaticProps, so the raw HTML
@@ -107,6 +125,21 @@ describe('desktop release contract', () => {
             macosNotarized: false,
             windowsSigned: false,
         })
+    })
+
+    it('uses publication metadata instead of relying on API response order', () => {
+        const older = completeRelease(
+            'desktop-v0.1.1',
+            '2026-07-16T17:03:15Z'
+        )
+        const latest = completeRelease(
+            'desktop-v0.5.1',
+            '2026-07-18T20:03:56Z'
+        )
+
+        expect(selectExperimentalDesktopRelease([older, latest])).to.equal(
+            latest
+        )
     })
 
     it('does not guess unsupported or ambiguous architectures', () => {

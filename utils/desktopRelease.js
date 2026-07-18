@@ -105,7 +105,28 @@ export function isCompleteExperimentalDesktopRelease(release) {
 
 export function selectExperimentalDesktopRelease(releases) {
     if (!Array.isArray(releases)) return null
-    return releases.find(isCompleteExperimentalDesktopRelease) || null
+    const complete = releases.filter(isCompleteExperimentalDesktopRelease)
+    if (complete.length === 0) return null
+
+    // The GitHub endpoint is normally newest-first, but select by publication
+    // metadata so a stable release interleaved in the response or a changed
+    // API ordering cannot make the download page advertise an older desktop
+    // prerelease.
+    return complete.reduce((latest, candidate) => {
+        const latestTime = Date.parse(
+            latest.published_at || latest.created_at || ''
+        )
+        const candidateTime = Date.parse(
+            candidate.published_at || candidate.created_at || ''
+        )
+        if (
+            Number.isFinite(candidateTime) &&
+            (!Number.isFinite(latestTime) || candidateTime > latestTime)
+        ) {
+            return candidate
+        }
+        return latest
+    })
 }
 
 export function detectDesktopPlatform(navigatorValue) {

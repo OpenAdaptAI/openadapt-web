@@ -4,7 +4,8 @@
 
 ## Documentation
 - [Getting Started](https://docs.openadapt.ai): Installation, quick start, and CLI reference
-- [Canonical Engine](https://github.com/OpenAdaptAI/openadapt-flow): Source, quickstart, operating boundaries, benchmarks, and known limits
+- [OpenAdapt Project](https://github.com/OpenAdaptAI/OpenAdapt): Flagship open-source project, stable install route, and unified `openadapt flow` CLI
+- [Compiler/Runtime Source](https://github.com/OpenAdaptAI/openadapt-flow): Engine source, contributor setup, operating boundaries, benchmarks, and known limits
 
 ## Core Concepts
 - [How It Works](https://openadapt.ai/#how-it-works): Record, compile, replay, resolve or halt, then verify and report
@@ -33,8 +34,9 @@ Real, runnable workflow templates. Every template corresponds to something that 
 - [Report Export with Arrival Verification](https://openadapt.ai/templates/report-export-verification): Pattern — exports accepted only when exactly one conforming file actually arrived, with optional SHA-256 content identity
 
 ## Source Code
-- [Engine Source](https://github.com/OpenAdaptAI/openadapt-flow): MIT licensed, open source
-- [PyPI Package](https://pypi.org/project/openadapt-flow/): Standalone governed compiler and runtime
+- [OpenAdapt Project](https://github.com/OpenAdaptAI/OpenAdapt): Flagship MIT-licensed project and public source entry point
+- [PyPI Package](https://pypi.org/project/openadapt/): Install with `pip install openadapt`, then use `openadapt flow ...`
+- [Compiler/Runtime Source](https://github.com/OpenAdaptAI/openadapt-flow): Canonical engine implementation and contributor surface
 - [Evaluations](https://github.com/OpenAdaptAI/openadapt-evals): Benchmark tooling with Windows Agent Arena integration
 - [Technical Paper Source](https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper): arXiv draft, machine-checked benchmark constants, methodology, limitations, and artifact checklist
 
