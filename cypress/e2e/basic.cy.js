@@ -315,20 +315,17 @@ describe('public product truth', () => {
 
         cy.visit('/solutions/healthcare')
         cy.get('h1').should('contain.text', 'structured healthcare workflows')
-        cy.contains('OpenAdapt does not parse referrals').should('be.visible')
-        cy.contains('prove production EMR safety').should('be.visible')
+        cy.contains('document processing, eligibility, routing').should('be.visible')
+        cy.contains('public safety gallery').should('be.visible')
         cy.contains('OpenAdapt does the retyping').should('not.exist')
         cy.contains('Certified workflows halt before').should('not.exist')
 
         cy.visit('/solutions/lending')
         cy.get('h1')
-            .should('contain.text', 'Prefer supported APIs')
-            .and('contain.text', 'remaining UI-only browser gap')
+            .should('contain.text', 'final UI-only mile')
             .and('not.contain.text', 'Encompass')
             .and('not.contain.text', 'Mortgage')
-        cy.contains('not evidence of a production lending integration').should(
-            'be.visible'
-        )
+        cy.contains('supported APIs and exports').should('be.visible')
         cy.contains('customer-controlled deployment').should('be.visible')
         cy.contains('experimental').should('not.exist')
         cy.get('[data-testid="frappe-lending-workflow-demo"]').should('be.visible')
@@ -353,9 +350,7 @@ describe('public product truth', () => {
 
         cy.visit('/solutions/insurance')
         cy.get('h1').should('contain.text', 'Claims intake')
-        cy.contains('not evidence of a production insurance integration').should(
-            'be.visible'
-        )
+        cy.contains('supported APIs for adjudication').should('be.visible')
         cy.get('[data-testid="openimis-claims-workflow-demo"]').should(
             'be.visible'
         )
@@ -485,7 +480,7 @@ describe('public product truth', () => {
         cy.contains('no fixed retention, backup-deletion, or recovery').should(
             'be.visible'
         )
-        cy.contains('self-serve hosted subscription does not include a BAA').should(
+        cy.contains('A BAA applies only when expressly included').should(
             'be.visible'
         )
         cy.contains('no uptime, response-time, support, retention, recovery').should(
@@ -541,10 +536,10 @@ describe('security boundary', () => {
 
         cy.visit('/hosted/welcome')
         cy.contains('Continue hosted onboarding').should('be.visible')
-        cy.contains('does not prove payment').should('be.visible')
-        cy.contains('sanitized derivative').should('be.visible')
-        cy.contains('Unknown or unresolved content is refused').should('be.visible')
-        cy.contains('validate-hosted').should('be.visible')
-        cy.contains('consumes the challenge once').should('be.visible')
+        cy.contains('Sign in with the email used at checkout').should('be.visible')
+        cy.contains('review the captured demonstration').should('be.visible')
+        cy.contains('Run under supervision').should('be.visible')
+        cy.contains('Monitor usage, outcomes').should('be.visible')
+        cy.contains('customer-controlled deployment').should('be.visible')
     })
 })

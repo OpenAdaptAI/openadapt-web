@@ -170,9 +170,9 @@ export default function AboutPage() {
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
                         Bring one repeated, high-friction workflow to a
-                        30-minute call. We&#39;ll map it to the shipped browser
-                        path, a scoped customer-controlled deployment, or a
-                        better-fitting approach.
+                        30-minute call. We&#39;ll map the workflow, verification
+                        oracle, execution boundary, and fastest path to a
+                        production deployment.
                     </p>
                     <Link
                         href="/#book"

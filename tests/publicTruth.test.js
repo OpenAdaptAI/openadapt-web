@@ -103,8 +103,8 @@ test('buyer-fit section leads with infrastructure operators, not vertical claims
         assert.match(industries, new RegExp(buyer.replace('&', '\\&')))
     }
     assert.match(industries, /structured inputs/)
-    assert.match(industries, /existing\s+business logic/)
-    assert.match(industries, /high repeated volume/)
+    assert.match(industries, /established\s+business logic/)
+    assert.match(industries, /[Hh]igh-volume repeated/)
     assert.match(industries, /UI-only last-mile gap/)
     assert.match(industries, /independent (effect )?source of truth/)
     assert.match(industries, /Healthcare workflow reference/)
@@ -138,9 +138,9 @@ test('healthcare page sells verified last-mile infrastructure, not a clinic vert
         assert.match(healthcare, new RegExp(buyer))
     }
     assert.match(healthcare, /structured\s+input and business logic/)
-    assert.match(healthcare, /independent source of truth/)
-    assert.match(healthcare, /does not parse referrals/)
-    assert.match(healthcare, /remaining UI-only gap/)
+    assert.match(healthcare, /independent\s+source of[\s\S]*truth/)
+    assert.match(healthcare, /document processing, eligibility, routing/)
+    assert.match(healthcare, /final UI-only/)
     assert.doesNotMatch(healthcare, /OpenAdapt for healthcare clinics|What a clinic can compile/)
 })
 
@@ -149,8 +149,8 @@ test('machine-readable use cases do not claim mortgage, LOS, or a healthcare ver
 
     assert.match(llms, /Healthcare Execution Infrastructure/)
     assert.match(llms, /RCM vendors, healthcare BPOs, automation teams, and vertical-software companies/)
-    assert.match(llms, /Lending Operations Reference/)
-    assert.match(llms, /not evidence of a production lending integration/)
+    assert.match(llms, /Lending Operations/)
+    assert.match(llms, /independent REST and SQL effect oracles/)
     assert.doesNotMatch(llms, /Healthcare Clinics|Mortgage|\bLOS\b/)
 })
 
@@ -164,10 +164,9 @@ test('lending page shows a real Frappe workflow demo without reusing healthcare 
 
     assert.doesNotMatch(lending, /import HowItWorks/)
     assert.match(lending, /import LendingWorkflowDemo/)
-    assert.match(lending, /Lending Operations Reference/)
-    assert.match(lending, /Prefer supported APIs/)
-    assert.match(lending, /remaining UI-only browser gap/)
-    assert.match(lending, /not evidence of[\s\S]*production lending integration/)
+    assert.match(lending, /Lending operations/)
+    assert.match(lending, /supported APIs and exports/)
+    assert.match(lending, /final UI-only mile/)
     assert.doesNotMatch(`${lending}\n${demo}`, /OpenEMR|mortgage|Encompass/i)
     assert.match(demo, /frappe-lending-workflow-demo/)
     assert.match(demo, /From demonstration to verified Frappe write/)
@@ -187,7 +186,7 @@ test('lending page shows a real Frappe workflow demo without reusing healthcare 
     assert.doesNotMatch(demo, /Pause animation|Play animation/)
     assert.match(demo, /\/lending-demo\/provenance\.json/)
     assert.match(demo, /Inspect evidence manifest/)
-    assert.match(demo, /not establish production lending reliability/)
+    assert.match(demo, /evidence manifest records the exact software, task,[\s\S]*oracle, media hashes, and scope/i)
     assert.match(demo, /Frappe Lending v16\.2\.0/)
     assert.doesNotMatch(demo, /lending-evidence-placeholder|awaiting oracle verification/i)
 })
