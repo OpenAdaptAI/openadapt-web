@@ -2,6 +2,7 @@ import {
     assetForPlatform,
     DESKTOP_PLATFORMS,
     detectDesktopPlatform,
+    detectDesktopPlatformWithHints,
     releaseSigningState,
     selectExperimentalDesktopRelease,
 } from '../../utils/desktopRelease'
@@ -31,6 +32,24 @@ function experimentalRelease(overrides = {}) {
         ],
         ...overrides,
     }
+}
+
+function completeRelease(tag, publishedAt) {
+    const version = tag.replace('desktop-v', '')
+    const prefix = `OpenAdapt-Desktop-Experimental-v${version}`
+    return experimentalRelease({
+        tag_name: tag,
+        published_at: publishedAt,
+        assets: [
+            asset(`${prefix}-macos-arm64-adhoc.dmg`),
+            asset(`${prefix}-macos-x86_64-adhoc.dmg`),
+            asset(`${prefix}-windows-x86_64-unsigned.msi`),
+            asset(`${prefix}-windows-x86_64-unsigned-nsis-setup.exe`),
+            asset(`${prefix}-linux-x86_64-unsigned.AppImage`),
+            asset(`${prefix}-linux-x86_64-unsigned.deb`),
+            asset('SHA256SUMS', 512),
+        ],
+    })
 }
 
 describe('download page is server-rendered', () => {
@@ -63,6 +82,38 @@ describe('download page is server-rendered', () => {
         cy.get('#desktop-builds').should('be.visible')
         cy.contains('Finding the latest release').should('not.exist')
         cy.get('@githubApi.all').should('have.length', 0)
+    })
+
+    it('gives Macs an explicit architecture chooser when the browser withholds CPU details', () => {
+        cy.visit('/download', {
+            onBeforeLoad(win) {
+                Object.defineProperty(win.navigator, 'platform', {
+                    configurable: true,
+                    value: 'MacIntel',
+                })
+                Object.defineProperty(win.navigator, 'userAgent', {
+                    configurable: true,
+                    value: 'Mozilla/5.0 (Macintosh; Intel Mac OS X)',
+                })
+                Object.defineProperty(win.navigator, 'userAgentData', {
+                    configurable: true,
+                    value: undefined,
+                })
+            },
+        })
+
+        cy.get('#desktop-builds').then(($builds) => {
+            // A local/no-token build may intentionally render the
+            // server-side GitHub-unavailable state. Production and
+            // authenticated CI exercise the chooser when release props exist.
+            if ($builds.text().includes('We could not reach GitHub')) return
+            cy.wrap($builds)
+                .should('contain.text', 'macOS detected')
+                .and('contain.text', 'Choose your Mac processor')
+                .and('contain.text', 'Download for Apple Silicon')
+                .and('contain.text', 'Download for Intel')
+                .and('not.contain.text', 'We could not safely choose')
+        })
     })
 })
 
@@ -109,13 +160,28 @@ describe('desktop release contract', () => {
         })
     })
 
-    it('does not guess unsupported or ambiguous architectures', () => {
+    it('uses publication metadata instead of relying on API response order', () => {
+        const older = completeRelease(
+            'desktop-v0.1.1',
+            '2026-07-16T17:03:15Z'
+        )
+        const latest = completeRelease(
+            'desktop-v0.5.1',
+            '2026-07-18T20:03:56Z'
+        )
+
+        expect(selectExperimentalDesktopRelease([older, latest])).to.equal(
+            latest
+        )
+    })
+
+    it('routes ambiguous Macs to a macOS chooser and refuses unsupported architectures', () => {
         expect(
             detectDesktopPlatform({
                 userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X)',
                 platform: 'MacIntel',
             })
-        ).to.equal(null)
+        ).to.equal('macos')
         expect(
             detectDesktopPlatform({
                 userAgent: 'Mozilla/5.0 (X11; Linux aarch64)',
@@ -128,5 +194,33 @@ describe('desktop release contract', () => {
                 platform: 'Win32',
             })
         ).to.equal('windows')
+    })
+
+    it('uses architecture client hints when a Mac browser exposes them', async () => {
+        expect(
+            await detectDesktopPlatformWithHints({
+                userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X)',
+                platform: 'MacIntel',
+                userAgentData: {
+                    getHighEntropyValues: async () => ({
+                        platform: 'macOS',
+                        architecture: 'arm',
+                        bitness: '64',
+                    }),
+                },
+            })
+        ).to.equal('macos-arm')
+
+        expect(
+            await detectDesktopPlatformWithHints({
+                userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X)',
+                platform: 'MacIntel',
+                userAgentData: {
+                    getHighEntropyValues: async () => {
+                        throw new Error('withheld')
+                    },
+                },
+            })
+        ).to.equal('macos')
     })
 })

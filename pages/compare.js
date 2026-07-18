@@ -382,20 +382,12 @@ export default function ComparePage() {
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
                         <Link href="/#book" className="btn-ink">
-                            Qualify a workflow
+                            Evaluate a workflow
                         </Link>
-                        <Link href="/#book" className="btn-ghost-ink">
-                            Book a workflow review
+                        <Link href="/#open-source" className="btn-ghost-ink">
+                            Try locally
                         </Link>
                     </div>
-                    <p className="mt-5 text-sm">
-                        <a
-                            href="https://github.com/OpenAdaptAI/openadapt-flow"
-                            className="text-accent"
-                        >
-                            Inspect the open-source engine
-                        </a>
-                    </p>
                 </section>
             </main>
 

@@ -9,8 +9,6 @@ const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
  * configured product and price before payment.
  */
 
-const GITHUB_URL = 'https://github.com/OpenAdaptAI/OpenAdapt'
-
 function Check() {
     return (
         <span
@@ -158,15 +156,13 @@ export default function Pricing({ hostedOffer = null }) {
                         />
                         <div className="mt-6 flex-grow" />
                         <a
-                            href={GITHUB_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href="/#open-source"
                             className="btn-ghost-ink w-full text-center"
                         >
-                            View on GitHub
+                            Try locally
                         </a>
                         <p className="mt-3 text-center font-mono text-xs text-ink-3">
-                            pip install openadapt-flow
+                            pip install openadapt
                         </p>
                     </div>
 
@@ -286,37 +282,11 @@ export default function Pricing({ hostedOffer = null }) {
                             href="/#book"
                             className="btn-ink w-full text-center"
                         >
-                            Plan a regulated deployment
+                            Evaluate a workflow
                         </Link>
                     </div>
                 </div>
 
-                {/*
-                 * Hosted launch and regulated deployment are separate offers;
-                 * checkout never implies a certification or regulated SLA.
-                 */}
-                <div className="mt-6 flex flex-col gap-6 rounded-2xl border border-hairline bg-panel p-6 md:flex-row md:items-center md:justify-between md:p-7">
-                    <div className="md:max-w-2xl">
-                        <p className="eyebrow">Execution boundary</p>
-                        <h3 className="mt-2 font-display text-lg font-semibold tracking-tight text-ink md:text-xl">
-                            Choose the operating model that fits the workflow
-                        </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                            Use managed browser execution for approved public web
-                            workflows. Choose a customer-controlled deployment
-                            when runtime data, private systems, or effect
-                            verification must remain inside your boundary.
-                        </p>
-                    </div>
-                    <div className="flex flex-shrink-0 flex-col items-start gap-3 md:items-end">
-                        <Link
-                            href="/#book"
-                            className="btn-ink w-full text-center md:w-auto"
-                        >
-                            Discuss deployment
-                        </Link>
-                    </div>
-                </div>
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
                     {hostedOfferAvailable
                         ? 'The hosted subscription price shown above comes directly from Stripe and is confirmed again at checkout.'

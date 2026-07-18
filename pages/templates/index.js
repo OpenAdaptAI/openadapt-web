@@ -119,14 +119,11 @@ export default function TemplatesIndexPage() {
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
                         <Link href="/#book" className="btn-ink">
-                            Qualify a workflow
+                            Evaluate a workflow
                         </Link>
-                        <a
-                            href="https://github.com/OpenAdaptAI/openadapt-flow#try-it"
-                            className="btn-ghost-ink"
-                        >
-                            Try the CLI quickstart
-                        </a>
+                        <Link href="/#open-source" className="btn-ghost-ink">
+                            Try locally
+                        </Link>
                     </div>
                 </div>
             </div>

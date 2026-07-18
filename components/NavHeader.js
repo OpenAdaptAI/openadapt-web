@@ -337,10 +337,13 @@ export default function NavHeader() {
                     href="/#book"
                     className={styles.cta}
                     onClick={() =>
-                        track(EVENTS.HERO_CTA_CLICK, { location: 'nav', cta: 'plan_pilot' })
+                        track(EVENTS.HERO_CTA_CLICK, {
+                            location: 'nav',
+                            cta: 'evaluate_workflow',
+                        })
                     }
                 >
-                    Plan a pilot
+                    Evaluate a workflow
                 </Link>
             </div>
             {menuOpen && (

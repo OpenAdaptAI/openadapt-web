@@ -18,12 +18,6 @@ import AudiencePaths from '@components/AudiencePaths'
 import SafetyBand from '@components/SafetyBand'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
 
-const GITHUB_REPOSITORY = 'OpenAdaptAI/OpenAdapt'
-// Verified against the canonical repository on 2026-07-16. Deploys refresh
-// these values from GitHub; the verified fallback prevents a network miss
-// becoming misleading 0/0 social proof.
-const GITHUB_STATS_FALLBACK = { stars: 1646, forks: 258 }
-
 const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -82,7 +76,7 @@ const softwareSchema = {
         priceCurrency: 'USD',
     },
     featureList: [
-        'Compile a demonstrated, bounded browser workflow',
+        'Compile a demonstrated, bounded GUI workflow',
         'Compile demonstrations into editable automation scripts',
         'Local replay with zero per-run model cost',
         'Deterministic UI re-resolution with auditable bundle updates',
@@ -124,14 +118,14 @@ const faqSchema = {
 }
 
 export async function getStaticProps() {
-    // Fetch real GitHub social proof at build time without a client request.
-    // On a network miss getRepoSocialProof keeps the dated, verified
-    // fallback rather than displaying zeroes.
-    const { getRepoSocialProof, getOpenIssuesByLabel } = await import(
-        '../lib/githubApi'
+    // Seed the initial HTML with the shared cached/verified repository stats.
+    // The footer may refresh through our same-origin endpoint after hydration.
+    const { getOpenIssuesByLabel } = await import('../lib/githubApi')
+    const { getOpenAdaptRepositoryStats } = await import(
+        '../lib/openAdaptRepositoryStats'
     )
     const [githubStats, buildWarnings] = await Promise.all([
-        getRepoSocialProof(GITHUB_REPOSITORY, GITHUB_STATS_FALLBACK),
+        getOpenAdaptRepositoryStats(),
         // Known engine breakage surfaced server-side so visitor browsers
         // never call api.github.com (60 req/hr per IP → 403s on shared IPs).
         getOpenIssuesByLabel('OpenAdaptAI/openadapt-flow', 'main-broken'),
@@ -194,47 +188,7 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
                 setFeedbackData={setFeedbackData}
                 sectionRef={sectionRef}
             />
-            <div style={{
-                background: 'var(--panel)',
-                textAlign: 'center',
-                padding: '28px 16px',
-                borderTop: '1px solid var(--hairline)',
-                borderBottom: '1px solid var(--hairline)',
-            }}>
-                <p style={{
-                    color: 'var(--ink)',
-                    fontSize: '17px',
-                    fontWeight: 600,
-                    margin: '0 auto 6px',
-                    maxWidth: '640px',
-                }}>
-                    Running the same workflow hundreds of times on software you
-                    can&apos;t API into?
-                </p>
-                <p style={{
-                    color: 'var(--ink-2)',
-                    fontSize: '14px',
-                    margin: '0 auto 14px',
-                    maxWidth: '560px',
-                }}>
-                    OpenAdapt is launching managed browser execution now, with
-                    the same deterministic compiler available under MIT for
-                    local and customer-controlled deployment.
-                </p>
-                <a href="#pricing" style={{
-                    display: 'inline-block',
-                    background: 'var(--accent)',
-                    color: 'var(--on-accent, #fff)',
-                    fontSize: '15px',
-                    fontWeight: 600,
-                    padding: '10px 22px',
-                    borderRadius: '8px',
-                    textDecoration: 'none',
-                }}>
-                    Choose a launch path →
-                </a>
-            </div>
-                <Pricing hostedOffer={hostedOffer} />
+            <Pricing hostedOffer={hostedOffer} />
             <Developers
                 buildWarnings={buildWarnings}
                 githubStats={githubStats}
@@ -243,7 +197,7 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
             <Faq />
             <ContactBookingSection prefill={feedbackData} />
             <EmailForm />
-            <Footer />
+            <Footer repositoryStats={githubStats} />
         </div>
     )
 }

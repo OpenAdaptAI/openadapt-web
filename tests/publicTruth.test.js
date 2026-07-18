@@ -33,26 +33,46 @@ test('GitHub proof uses the canonical repository and a verified fallback', () =>
     const home = read('pages/index.js')
     const masthead = read('components/MastHead.js')
     const footer = read('components/Footer.js')
+    const snapshot = read('data/repositoryStats.js')
+    const loader = read('lib/openAdaptRepositoryStats.js')
+    const endpoint = read('pages/api/repository-stats.js')
 
-    assert.match(home, /GITHUB_REPOSITORY = 'OpenAdaptAI\/OpenAdapt'/)
-    assert.match(home, /GITHUB_STATS_FALLBACK = \{ stars: 1646, forks: 258 \}/)
-    // Stats are sourced server-side (getStaticProps → lib/githubApi) with
-    // the verified fallback applied on any network miss, so a GitHub outage
-    // or rate limit never becomes misleading 0/0 social proof — and visitor
-    // browsers never call api.github.com themselves.
-    assert.match(
-        home,
-        /getRepoSocialProof\(GITHUB_REPOSITORY, GITHUB_STATS_FALLBACK\)/
-    )
+    assert.match(snapshot, /OPENADAPT_REPOSITORY = 'OpenAdaptAI\/OpenAdapt'/)
+    assert.match(snapshot, /stars: 1648/)
+    assert.match(snapshot, /forks: 258/)
+    assert.match(snapshot, /source: 'snapshot'/)
+    assert.match(home, /getOpenAdaptRepositoryStats\(\)/)
+    assert.match(home, /<Footer repositoryStats=\{githubStats\} \/>/)
+    assert.match(footer, /repositoryStats = OPENADAPT_STATS_SNAPSHOT/)
+    assert.match(footer, /fetch\('\/api\/repository-stats'/)
+    assert.match(footer, /Keep the server-rendered snapshot\/last-known value/)
+    assert.match(loader, /const FRESH_TTL_MS = 10 \* 60 \* 1000/)
+    assert.match(loader, /if \(inFlight\) return inFlight/)
+    assert.match(loader, /source:[\s\S]*?'stale'[\s\S]*?'snapshot'/)
+    assert.match(endpoint, /s-maxage=600/)
+    assert.match(endpoint, /stale-while-revalidate=3600/)
+    assert.match(endpoint, /stale-if-error=86400/)
     assert.match(
         read('lib/githubApi.js'),
         /return \{ \.\.\.fallback \}/,
         'lib/githubApi.js must fall back to the verified stats on failure'
     )
     assert.match(masthead, /https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt/)
-    assert.match(footer, /href="https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt"/)
-    assert.match(footer, /href="https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt\/fork"/)
+    assert.match(masthead, /stars on OpenAdapt/)
+    assert.match(footer, /stars on OpenAdapt/)
+    assert.match(footer, /forks of OpenAdapt/)
+    assert.match(footer, /footer-star-count/)
+    assert.match(footer, /footer-fork-count/)
     assert.doesNotMatch(masthead, /on openadapt-flow/)
+
+    for (const page of [
+        'pages/index.js',
+        'pages/solutions/healthcare.js',
+        'pages/solutions/lending.js',
+        'pages/solutions/insurance.js',
+    ]) {
+        assert.match(read(page), /<Footer/, `${page} renders shared footer`)
+    }
 })
 
 test('visitor browsers never call api.github.com', () => {
@@ -83,9 +103,14 @@ test('visitor browsers never call api.github.com', () => {
     // whenever a count bubble is requested — never reintroduce it.
     assert.doesNotMatch(
         read('components/Footer.js'),
-        /data-show-count/,
-        'github-button count bubbles make visitor browsers call ' +
-            'api.github.com; keep counts server-rendered instead'
+        /data-show-count|github-button/,
+        'third-party github-button widgets make visitor browsers call ' +
+            'api.github.com; keep counts in shared footer markup instead'
+    )
+    assert.doesNotMatch(
+        read('pages/_app.js'),
+        /buttons\.github\.io/,
+        'the GitHub buttons script must not run in visitor browsers'
     )
 
     // The server-side module holds every GitHub API call, works without a
@@ -172,6 +197,7 @@ test('buyer-fit section leads with infrastructure operators, not vertical claims
     assert.match(industries, /Lending operations reference/)
     assert.doesNotMatch(industries, /title: 'Healthcare clinics'/)
     assert.doesNotMatch(industries, /title: 'Mortgage & lending ops'/)
+    assert.doesNotMatch(industries, /theresanaiforthat|TAAFT/i)
 })
 
 test('workflow and execution-environment selectors are independent and media-honest', () => {
@@ -214,7 +240,7 @@ test('workflow and execution-environment selectors are independent and media-hon
     )
 })
 
-test('top-level calls to action qualify a workflow instead of implying hosted activation', () => {
+test('top-level calls to action use one coherent evaluation funnel', () => {
     const sources = [
         read('components/AudiencePaths.js'),
         read('components/MastHead.js'),
@@ -223,8 +249,35 @@ test('top-level calls to action qualify a workflow instead of implying hosted ac
     ].join('\n')
 
     assert.doesNotMatch(sources, /Start hosted|start_hosted/)
-    assert.match(sources, /Qualify a workflow/)
-    assert.match(sources, /Plan a pilot/)
+    assert.match(sources, /Evaluate a workflow/)
+    assert.match(sources, /Try locally/)
+    assert.match(sources, /Read docs/)
+    assert.doesNotMatch(
+        sources,
+        /Qualify a workflow|Plan a pilot|Book a workflow review/
+    )
+})
+
+test('end-user quickstarts enter through OpenAdapt while engine links stay technical', () => {
+    const install = read('components/InstallSection.js')
+    const pricing = read('components/Pricing.js')
+    const templates = read('data/templates.js')
+    const download = read('pages/download.js')
+    const developerLinks = read('data/developerLinks.js')
+    const publicSurfaces = [install, pricing, templates, download].join('\n')
+
+    assert.match(publicSurfaces, /pip install openadapt/)
+    assert.match(publicSurfaces, /openadapt flow/)
+    assert.doesNotMatch(publicSurfaces, /pip install openadapt-flow/)
+    assert.doesNotMatch(publicSurfaces, /uv tool uninstall openadapt/)
+    assert.doesNotMatch(
+        publicSurfaces,
+        /openadapt-flow (?:demo-record|record|compile|lint|certify|replay)/
+    )
+    assert.match(
+        developerLinks,
+        /label: 'Compiler\/runtime source',\s+href: 'https:\/\/github\.com\/OpenAdaptAI\/openadapt-flow'/
+    )
 })
 
 test('healthcare page sells verified last-mile infrastructure, not a clinic vertical product', () => {

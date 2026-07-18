@@ -9,7 +9,7 @@
         "data": "Synthetic demonstration workflows and run evidence generated through the application's mock-mode API"
     },
     "presentation": {
-        "required_media_label": "Product preview · demonstration data",
+        "required_media_label": "OpenAdapt Cloud · reference workflow",
         "claim_boundary": "Not a customer or production run"
     },
     "assets": {

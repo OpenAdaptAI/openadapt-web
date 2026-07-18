@@ -39,7 +39,7 @@ export default function LendingPage() {
                         href="/#book"
                         className="btn-ink"
                     >
-                        Book a demo
+                        Evaluate a workflow
                     </Link>
                     <Link
                         href="/"
@@ -102,7 +102,7 @@ export default function LendingPage() {
                         href="/#book"
                         className="btn-ink mt-5 inline-block"
                     >
-                        Book a demo
+                        Evaluate a workflow
                     </Link>
                 </div>
             </div>
