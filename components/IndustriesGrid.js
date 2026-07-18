@@ -38,6 +38,10 @@ export default function IndustriesGrid({
             descriptions:
                 'High-volume repeated operations with structured inputs, established business logic, and a UI-only last-mile gap that can be checked against an independent effect source of truth.',
             logo: '/images/noun-finance.svg',
+            example: {
+                label: 'Insurance claims reference',
+                href: '/solutions/insurance',
+            },
         },
         {
             title: 'RCM & vertical-software vendors',

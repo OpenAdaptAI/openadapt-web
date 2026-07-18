@@ -36,7 +36,106 @@
     font-size: 15px;
     font-weight: 400;
     text-align: center;
-    margin: 0 0 44px;
+    margin: 0 0 34px;
+}
+
+.references {
+    margin: 0 auto 40px;
+    max-width: 880px;
+}
+
+.referenceLabel {
+    margin: 0 0 10px;
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.tab {
+    appearance: none;
+    min-width: 0;
+    padding: 13px 14px;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--ink-2);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.tab:hover {
+    border-color: var(--ink-3);
+}
+
+.tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.tab[aria-pressed='true'] {
+    border-color: var(--accent);
+    background: var(--ground);
+    box-shadow: inset 0 0 0 1px var(--accent);
+    color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tab {
+        transition: none;
+    }
+}
+
+.tab span,
+.tab small {
+    display: block;
+}
+
+.tab span {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.tab small {
+    margin-top: 3px;
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.referenceSummary {
+    margin: 14px auto 0;
+    max-width: 760px;
+    color: var(--ink-2);
+    font-size: 13px;
+    line-height: 1.55;
+    text-align: center;
+}
+
+.referenceSummary a {
+    color: var(--accent);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.sharedVisualNote {
+    margin: 6px auto 0;
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.5;
+    text-align: center;
 }
 
 .steps {
@@ -141,5 +240,13 @@
     .number {
         min-width: 34px;
         font-size: 14px;
+    }
+
+    .tabs {
+        grid-template-columns: 1fr;
+    }
+
+    .tab {
+        text-align: center;
     }
 }

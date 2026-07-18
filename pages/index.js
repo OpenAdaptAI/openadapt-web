@@ -189,7 +189,7 @@ export default function Home({ githubStats, hostedOffer }) {
             </Head>
             <MastHead githubStats={githubStats} />
             <AudiencePaths />
-            <HowItWorks />
+            <HowItWorks showUseCases />
             <DriftOutcomes />
             <ProductStatus />
             <ProofBand />

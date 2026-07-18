@@ -94,6 +94,9 @@ export default function Footer() {
                         <a href="/solutions/lending" className={styles.link}>
                             Lending
                         </a>
+                        <a href="/solutions/insurance" className={styles.link}>
+                            Insurance
+                        </a>
                         <a href="/compare" className={styles.link}>
                             Compare
                         </a>
