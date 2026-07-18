@@ -45,9 +45,9 @@
 
 .badge {
     padding: 2px 7px;
-    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    background: color-mix(in srgb, var(--accent) 10%, var(--ground));
     color: var(--accent);
     font-family: var(--font-mono);
     font-size: 9px;
@@ -55,46 +55,141 @@
     text-transform: uppercase;
 }
 
-.content {
+.scene {
+    position: relative;
+    aspect-ratio: 880 / 550;
     min-height: 244px;
-    padding: 15px 16px 14px;
+    overflow: hidden;
+    background: var(--ground);
+}
+
+.application {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.scene::after {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(8, 15, 31, 0.12), rgba(8, 15, 31, 0.02)),
+        linear-gradient(0deg, rgba(8, 15, 31, 0.28), transparent 48%);
+    content: '';
+    pointer-events: none;
+}
+
+.sourceChip {
+    position: absolute;
+    z-index: 3;
+    top: 10px;
+    left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: calc(100% - 20px);
+    padding: 5px 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 999px;
+    background: rgba(8, 15, 31, 0.74);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.04em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    backdrop-filter: blur(7px);
+}
+
+.sourceChip i {
+    display: block;
+    width: 6px;
+    height: 6px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #59e194;
+    box-shadow: 0 0 0 0 rgba(89, 225, 148, 0.7);
+    animation: livePulse 1.8s ease-out infinite;
+}
+
+.stageOverlay {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
+}
+
+.glassCard {
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 8px;
+    background: rgba(8, 15, 31, 0.88);
+    box-shadow: 0 14px 30px rgba(2, 8, 23, 0.3);
+    color: #fff;
+    backdrop-filter: blur(9px);
+}
+
+.compileCard {
+    right: 12px;
+    bottom: 12px;
+    width: min(76%, 350px);
+    padding: 10px 11px 9px;
+    animation: cardEnter 6s ease-in-out infinite;
 }
 
 .panelHeading {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding-bottom: 11px;
-    border-bottom: 1px solid var(--hairline);
-    color: var(--ink-3);
+    gap: 9px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.7);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 8px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 
 .panelHeading strong {
-    color: var(--accent);
-    font-size: 9px;
+    color: #7ee3a8;
+    font-size: 7px;
     text-align: right;
 }
 
 .contract {
     display: grid;
-    margin: 7px 0 0;
+    margin: 5px 0 0;
 }
 
 .contract div {
     display: grid;
-    grid-template-columns: minmax(88px, 0.65fr) minmax(0, 1.5fr);
-    gap: 10px;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--hairline);
+    grid-template-columns: minmax(62px, 0.52fr) minmax(0, 1.55fr);
+    gap: 7px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    opacity: 0;
+    animation: lineReveal 6s ease-out infinite;
 }
 
-.contract div:last-child {
+.contract div:nth-child(2) {
+    animation-delay: 0.18s;
+}
+
+.contract div:nth-child(3) {
+    animation-delay: 0.36s;
+}
+
+.contract div:nth-child(4) {
     border-bottom: 0;
+    animation-delay: 0.54s;
 }
 
 .contract dt,
@@ -102,92 +197,181 @@
     min-width: 0;
     margin: 0;
     font-family: var(--font-mono);
-    font-size: 10px;
-    line-height: 1.45;
+    font-size: 7px;
+    line-height: 1.35;
 }
 
 .contract dt {
-    color: var(--ink-3);
+    color: rgba(255, 255, 255, 0.56);
 }
 
 .contract dd {
-    color: var(--ink);
+    color: #fff;
     overflow-wrap: anywhere;
+}
+
+.compileProgress {
+    height: 2px;
+    margin-top: 5px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.compileProgress i {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: #59e194;
+    transform-origin: left;
+    animation: compileProgress 6s ease-in-out infinite;
+}
+
+.resolveCard {
+    right: 10px;
+    bottom: 10px;
+    width: min(72%, 326px);
+    padding: 9px 10px;
+}
+
+.targetMarker {
+    position: absolute;
+    top: 27%;
+    left: 19%;
+    width: 34%;
+    height: 19%;
+    border: 2px solid #59e194;
+    border-radius: 4px;
+    box-shadow: 0 0 0 999px rgba(8, 15, 31, 0.13);
+    animation: targetResolve 5.4s ease-in-out infinite;
+}
+
+.targetMarker::before,
+.targetMarker::after,
+.targetMarker i::before,
+.targetMarker i::after {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-color: #fff;
+    content: '';
+}
+
+.targetMarker::before {
+    top: -3px;
+    left: -3px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+}
+
+.targetMarker::after {
+    top: -3px;
+    right: -3px;
+    border-top: 2px solid;
+    border-right: 2px solid;
+}
+
+.targetMarker i::before {
+    bottom: -3px;
+    left: -3px;
+    border-bottom: 2px solid;
+    border-left: 2px solid;
+}
+
+.targetMarker i::after {
+    right: -3px;
+    bottom: -3px;
+    border-right: 2px solid;
+    border-bottom: 2px solid;
 }
 
 .ladder {
     display: grid;
-    gap: 7px;
-    margin: 13px 0 0;
+    gap: 4px;
+    margin: 7px 0 0;
     padding: 0;
     list-style: none;
 }
 
 .ladder li {
     display: grid;
-    grid-template-columns: 28px minmax(0, 1fr);
+    grid-template-columns: 20px minmax(0, 1fr);
     align-items: center;
-    gap: 9px;
-    padding: 8px 10px;
-    border: 1px solid var(--hairline);
-    border-radius: 7px;
-    background: var(--ground);
+    gap: 6px;
+    padding: 5px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 0;
+    animation: evidenceResolve 5.4s ease-in-out infinite;
+    animation-delay: calc(var(--evidence-index) * 0.28s);
 }
 
 .ladder li span {
-    color: var(--accent);
+    color: #7ee3a8;
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 7px;
 }
 
 .ladder li strong {
-    color: var(--ink-2);
-    font-size: 11px;
+    color: #fff;
+    font-size: 8px;
     font-weight: 500;
-    line-height: 1.35;
+    line-height: 1.25;
 }
 
 .haltRule {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    margin-top: 9px;
-    padding: 8px 10px;
-    border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--hairline));
-    border-radius: 7px;
-    background: color-mix(in srgb, var(--accent) 7%, var(--ground));
+    gap: 7px;
+    margin-top: 5px;
+    padding: 5px 6px;
+    border: 1px solid rgba(255, 193, 7, 0.48);
+    border-radius: 5px;
+    background: rgba(255, 193, 7, 0.1);
     font-family: var(--font-mono);
-    font-size: 9px;
-    line-height: 1.4;
+    font-size: 7px;
+    line-height: 1.3;
 }
 
 .haltRule span {
-    color: var(--ink-3);
+    color: rgba(255, 255, 255, 0.72);
 }
 
 .haltRule strong {
-    color: var(--accent);
+    color: #ffd979;
     text-align: right;
+}
+
+.verifyCard {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    padding: 9px 10px;
 }
 
 .checks {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    margin: 13px 0 0;
+    gap: 5px;
+    margin: 7px 0 0;
     padding: 0;
     list-style: none;
 }
 
 .checks li {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     min-width: 0;
-    padding: 9px;
-    border: 1px solid var(--hairline);
-    border-radius: 7px;
-    background: var(--ground);
+    padding: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 0;
+    animation: checkReveal 5.8s ease-out infinite;
+    animation-delay: calc(var(--check-index) * 0.3s);
 }
 
 .check,
@@ -197,78 +381,204 @@
 }
 
 .check {
-    color: var(--accent);
+    color: #7ee3a8;
 }
 
 .pending {
-    color: var(--ink-3);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .checks strong,
 .checks small {
     display: block;
     overflow-wrap: anywhere;
-    line-height: 1.35;
+    line-height: 1.25;
 }
 
 .checks strong {
-    color: var(--ink);
-    font-size: 11px;
+    color: #fff;
+    font-size: 8px;
 }
 
 .checks small {
-    margin-top: 2px;
-    color: var(--ink-3);
+    margin-top: 1px;
+    color: rgba(255, 255, 255, 0.62);
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 7px;
 }
 
 .metrics {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 10px;
+    gap: 4px;
+    margin-top: 6px;
 }
 
 .metrics span {
-    padding: 4px 6px;
-    border-radius: 5px;
-    background: color-mix(in srgb, var(--accent) 8%, var(--ground));
-    color: var(--ink-2);
+    padding: 3px 5px;
+    border-radius: 4px;
+    background: rgba(89, 225, 148, 0.12);
+    color: #b3f5ce;
     font-family: var(--font-mono);
-    font-size: 8px;
-    line-height: 1.35;
+    font-size: 6px;
+    line-height: 1.3;
 }
 
 .caption {
     display: block;
     min-height: 48px;
     margin: 0;
-    padding: 9px 12px;
+    padding: 8px 11px;
     border-top: 1px solid var(--hairline);
     color: var(--ink-3);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 9px;
     line-height: 1.45;
 }
 
+.caption strong,
+.caption span {
+    display: block;
+}
+
+.caption strong {
+    margin-bottom: 2px;
+    color: var(--ink-2);
+    font-size: 9px;
+    text-transform: capitalize;
+}
+
+@keyframes livePulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(89, 225, 148, 0.7);
+    }
+    70%,
+    100% {
+        box-shadow: 0 0 0 6px rgba(89, 225, 148, 0);
+    }
+}
+
+@keyframes cardEnter {
+    0%,
+    7% {
+        opacity: 0.35;
+        transform: translateY(12px);
+    }
+    16%,
+    88% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0.35;
+        transform: translateY(12px);
+    }
+}
+
+@keyframes lineReveal {
+    0%,
+    8% {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+    18%,
+    88% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+}
+
+@keyframes compileProgress {
+    0% {
+        transform: scaleX(0);
+    }
+    52%,
+    88% {
+        transform: scaleX(1);
+    }
+    100% {
+        transform: scaleX(0);
+    }
+}
+
+@keyframes targetResolve {
+    0%,
+    12% {
+        opacity: 0;
+        transform: scale(1.18);
+    }
+    25%,
+    78% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    92%,
+    100% {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+}
+
+@keyframes evidenceResolve {
+    0%,
+    10% {
+        opacity: 0;
+        transform: translateX(7px);
+    }
+    24%,
+    82% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(7px);
+    }
+}
+
+@keyframes checkReveal {
+    0%,
+    8% {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    22%,
+    86% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sourceChip i,
+    .compileCard,
+    .contract div,
+    .compileProgress i,
+    .targetMarker,
+    .ladder li,
+    .checks li {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
 @media (max-width: 640px) {
-    .content {
-        min-height: 0;
-        padding: 13px 12px;
+    .scene {
+        min-height: 230px;
     }
 
-    .checks {
-        grid-template-columns: 1fr;
-    }
-
-    .haltRule {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .haltRule strong {
-        text-align: left;
+    .compileCard,
+    .resolveCard {
+        width: calc(100% - 20px);
     }
 
     .caption {

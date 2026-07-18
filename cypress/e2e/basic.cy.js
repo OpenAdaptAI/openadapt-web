@@ -226,7 +226,7 @@ describe('public product truth', () => {
         cy.get('#how-it-works').within(() => {
             cy.contains('button', 'Healthcare')
                 .should('have.attr', 'aria-pressed', 'true')
-            cy.get('img[alt*="OpenEMR"]').should('have.length', 2)
+            cy.get('img[alt*="OpenEMR"]').should('have.length', 5)
             cy.get('[data-testid^="reference-"]')
                 .should('have.length', 3)
                 .each(($panel) => {
@@ -239,14 +239,32 @@ describe('public product truth', () => {
             cy.get('[data-testid="reference-compile-panel"]')
                 .should('contain.text', 'OpenEMR browser reference')
                 .and('contain.text', 'deployment-specific oracle required')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/how-it-works/record_openemr.gif'
+                )
+                .find('img')
+                .should('have.attr', 'src', '/how-it-works/record_openemr.gif')
             cy.get('[data-testid="reference-resolve-panel"]')
                 .should('contain.text', 'OpenEMR browser reference')
-                .and('contain.text', 'No application-specific drift trial is claimed')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/how-it-works/run_openemr.gif'
+                )
+                .find('img')
+                .should('have.attr', 'src', '/how-it-works/run_openemr.gif')
             cy.get('[data-testid="reference-verify-panel"]')
                 .should('contain.text', 'qualification required')
                 .and('contain.text', 'No application-specific audit result claimed')
-            cy.get('img[src^="/how-it-works/compile"], img[src^="/how-it-works/heal"], img[src^="/how-it-works/audit"]')
-                .should('not.exist')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/how-it-works/run_openemr.gif'
+                )
+                .find('img')
+                .should('have.attr', 'src', '/how-it-works/run_openemr.gif')
 
             cy.contains('button', 'Lending').click()
             cy.contains('button', 'Lending')
@@ -268,11 +286,32 @@ describe('public product truth', () => {
             cy.get('[data-testid="reference-compile-panel"]')
                 .should('contain.text', 'Frappe Lending reference')
                 .and('contain.text', 'create-loan-application')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/lending-demo/record-frappe.gif'
+                )
+                .find('img')
+                .should('have.attr', 'src', '/lending-demo/record-frappe.gif')
             cy.get('[data-testid="reference-resolve-panel"]')
                 .should('contain.text', 'Frappe Loan Application evidence')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/lending-demo/replay-frappe.gif'
+                )
+                .find('img')
+                .should('have.attr', 'src', '/lending-demo/replay-frappe.gif')
             cy.get('[data-testid="reference-verify-panel"]')
                 .should('contain.text', '6 / 6 verified')
                 .and('contain.text', '0 silent incorrect successes')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/lending-demo/replay-frappe.gif'
+                )
+                .find('img')
+                .should('have.attr', 'src', '/lending-demo/replay-frappe.gif')
 
             cy.contains('button', 'Insurance').click()
             cy.contains('button', 'Insurance')
@@ -294,11 +333,44 @@ describe('public product truth', () => {
             cy.get('[data-testid="reference-compile-panel"]')
                 .should('contain.text', 'openIMIS claims reference')
                 .and('contain.text', 'openimis-claim-intake')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/insurance-demo/record-openimis.gif'
+                )
+                .find('img')
+                .should(
+                    'have.attr',
+                    'src',
+                    '/insurance-demo/record-openimis.gif'
+                )
             cy.get('[data-testid="reference-resolve-panel"]')
                 .should('contain.text', 'openIMIS claim-form evidence')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/insurance-demo/replay-openimis.gif'
+                )
+                .find('img')
+                .should(
+                    'have.attr',
+                    'src',
+                    '/insurance-demo/replay-openimis.gif'
+                )
             cy.get('[data-testid="reference-verify-panel"]')
                 .should('contain.text', '3 / 3 verified')
                 .and('contain.text', '0 duplicate claims')
+                .and(
+                    'have.attr',
+                    'data-stage-source',
+                    '/insurance-demo/replay-openimis.gif'
+                )
+                .find('img')
+                .should(
+                    'have.attr',
+                    'src',
+                    '/insurance-demo/replay-openimis.gif'
+                )
             cy.contains('View the bounded use case')
                 .should('have.attr', 'href')
                 .and('equal', '/solutions/insurance')

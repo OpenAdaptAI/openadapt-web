@@ -10,6 +10,7 @@ const read = (relativePath) =>
 test('every homepage process visual follows the selected real reference app', () => {
     const howItWorks = read('components/HowItWorks.js')
     const panels = read('components/ReferenceStagePanel.js')
+    const panelStyles = read('components/ReferenceStagePanel.module.css')
 
     assert.match(howItWorks, /import ReferenceStagePanel/)
     for (const key of ['healthcare', 'lending', 'insurance']) {
@@ -23,12 +24,43 @@ test('every homepage process visual follows the selected real reference app', ()
     assert.doesNotMatch(howItWorks, /manifest\.steps\.(compile|heal|audit)/)
     assert.doesNotMatch(howItWorks, /MockMed|shared engine lifecycle/)
 
+    const selectedAppSources = {
+        healthcare: [
+            '/how-it-works/record_openemr.gif',
+            '/how-it-works/run_openemr.gif',
+        ],
+        lending: [
+            '/lending-demo/record-frappe.gif',
+            '/lending-demo/replay-frappe.gif',
+        ],
+        insurance: [
+            '/insurance-demo/record-openimis.gif',
+            '/insurance-demo/replay-openimis.gif',
+        ],
+    }
+    for (const sources of Object.values(selectedAppSources)) {
+        for (const source of sources) {
+            assert.match(howItWorks, new RegExp(source.replaceAll('/', '\\/')))
+        }
+    }
+    assert.equal(
+        new Set(Object.values(selectedAppSources).flat()).size,
+        6,
+        'each reference app must use its own media sources'
+    )
+
     for (const stage of ['compile', 'resolve', 'verify']) {
         assert.match(panels, new RegExp(`stage="${stage}"`))
     }
     assert.match(panels, /data-reference=\{reference\.key\}/)
-    assert.match(panels, /not captured application output/)
-    assert.match(panels, /No application-specific drift trial is claimed/)
+    assert.match(panels, /data-stage-source=\{media\.src\}/)
+    assert.match(panels, /src=\{media\.src\}/)
+    assert.match(panels, /className=\{styles\.application\}/)
+    assert.match(panels, /OpenAdapt produces/)
+    assert.doesNotMatch(panels, /MockMed/)
+    assert.match(panelStyles, /animation: cardEnter/)
+    assert.match(panelStyles, /animation: targetResolve/)
+    assert.match(panelStyles, /animation: checkReveal/)
 })
 
 test('industry panels distinguish bounded evidence from required qualification', () => {
@@ -46,7 +78,7 @@ test('industry panels distinguish bounded evidence from required qualification',
     assert.match(howItWorks, /0 duplicate claims/)
     assert.match(
         howItWorks,
-        /do not claim unrecorded\s+application footage/
+        /Every stage uses the selected reference application/
     )
 })
 
