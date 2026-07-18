@@ -121,11 +121,17 @@ export default function InstallSection() {
                         <code>openadapt flow lint bundle</code>
                         <span>Inspect identity, assertion, and risk coverage gaps</span>
                     </div>
-                    <div className={styles.commandItem}>
+                    <div
+                        className={`${styles.commandItem} ${styles.commandItemHalt}`}
+                    >
                         <code>
                             openadapt flow certify bundle --policy clinical-write
                         </code>
-                        <span>Enforce a policy before deployment</span>
+                        <span>
+                            The clinical gate refuses this demo bundle and
+                            exits non-zero — on purpose. Safeguards refuse
+                            instead of guessing.
+                        </span>
                     </div>
                     <div className={styles.commandItem}>
                         <code>openadapt flow replay bundle</code>

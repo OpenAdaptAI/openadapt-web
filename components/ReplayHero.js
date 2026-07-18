@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import styles from './ReplayHero.module.css'
 
@@ -7,8 +7,9 @@ import styles from './ReplayHero.module.css'
  * as a live run report. Steps resolve through the deterministic ladder, one
  * hits UI drift and re-resolves deterministically, and the run closes with
  * zero model calls.
- * Pure DOM + CSS (no video, no canvas); loops by remounting; static final
- * frame under prefers-reduced-motion.
+ * Pure DOM + CSS (no video, no canvas); plays while visible and restarts
+ * from the top whenever it scrolls back into view, so every viewing starts
+ * at step 1.0; static final frame under prefers-reduced-motion.
  */
 
 const ROWS = [
@@ -21,37 +22,94 @@ const ROWS = [
     { n: '', action: '', target: 'postconditions verified · run complete', rung: '', ms: '', status: 'done' },
 ]
 
+const ROW_DELAY_S = (i) => 0.5 + i * 1.15
+const STEP_COUNT = 5 // rows with a decimal step number feed the replay rail
+const DRIFT_INDEX = 4
 const LOOP_MS = 12000
 
 export default function ReplayHero() {
+    const frameRef = useRef(null)
     const [cycle, setCycle] = useState(0)
 
     useEffect(() => {
         if (
-            typeof window !== 'undefined' &&
+            typeof window === 'undefined' ||
             window.matchMedia('(prefers-reduced-motion: reduce)').matches
         ) {
             return undefined
         }
-        const timer = setInterval(() => setCycle((c) => c + 1), LOOP_MS)
-        return () => clearInterval(timer)
+
+        let timer = null
+        const startLoop = () => {
+            if (timer) return
+            timer = setInterval(() => setCycle((c) => c + 1), LOOP_MS)
+        }
+        const stopLoop = () => {
+            if (!timer) return
+            clearInterval(timer)
+            timer = null
+        }
+
+        const node = frameRef.current
+        if (!node || typeof IntersectionObserver === 'undefined') {
+            startLoop()
+            return stopLoop
+        }
+
+        let everHidden = false
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    // Restart from step 1.0 when scrolling back to the hero.
+                    if (everHidden) setCycle((c) => c + 1)
+                    startLoop()
+                } else {
+                    everHidden = true
+                    stopLoop()
+                }
+            },
+            { threshold: 0.3 }
+        )
+        observer.observe(node)
+        return () => {
+            observer.disconnect()
+            stopLoop()
+        }
     }, [])
 
     return (
-        <div className={styles.frame} aria-label="Example of a compiled workflow replaying and re-resolving UI drift">
+        <div
+            ref={frameRef}
+            className={styles.frame}
+            aria-label="Example of a compiled workflow replaying and re-resolving UI drift"
+        >
             <div className={styles.titlebar}>
                 <span className={styles.dot} />
                 <span className={styles.dot} />
                 <span className={styles.dot} />
                 <span className={styles.title}>referral-intake · compiled replay</span>
-                <span className={styles.badge}>local</span>
+                <span className={styles.badge}>
+                    <span className={styles.badgeDot} aria-hidden="true" />
+                    local
+                </span>
             </div>
             <div className={styles.body} key={cycle}>
+                <div className={styles.rail} aria-hidden="true">
+                    {Array.from({ length: STEP_COUNT }, (_, i) => (
+                        <span
+                            key={`${cycle}-tick-${i}`}
+                            className={`${styles.tick} ${
+                                i === DRIFT_INDEX ? styles.tickDrift : ''
+                            }`}
+                            style={{ animationDelay: `${ROW_DELAY_S(i)}s` }}
+                        />
+                    ))}
+                </div>
                 {ROWS.map((row, i) => (
                     <div
                         key={`${cycle}-${i}`}
                         className={`${styles.row} ${styles[row.status]}`}
-                        style={{ animationDelay: `${0.5 + i * 1.15}s` }}
+                        style={{ animationDelay: `${ROW_DELAY_S(i)}s` }}
                     >
                         {row.status === 'heal' ? (
                             <span className={styles.healText}>
@@ -79,11 +137,12 @@ export default function ReplayHero() {
                 ))}
                 <div
                     className={`${styles.row} ${styles.summary}`}
-                    style={{ animationDelay: `${0.5 + ROWS.length * 1.15}s` }}
+                    style={{ animationDelay: `${ROW_DELAY_S(ROWS.length)}s` }}
                 >
                     <span>
                         total 2.4s &nbsp;·&nbsp; model calls: 0 &nbsp;·&nbsp;
                         cost per run: $0.00
+                        <span className={styles.cursor} aria-hidden="true" />
                     </span>
                     <span className={styles.stamp}>
                         VERIFIED · 0 MODEL CALLS

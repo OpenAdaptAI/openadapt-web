@@ -15,6 +15,7 @@ import Pricing from '@components/Pricing'
 import ProductStatus from '@components/ProductStatus'
 import ProofBand from '@components/ProofBand'
 import AudiencePaths from '@components/AudiencePaths'
+import Reveal from '@components/Reveal'
 import SafetyBand from '@components/SafetyBand'
 // import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
 
@@ -176,27 +177,53 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
                 />
             </Head>
             <MastHead githubStats={githubStats} />
-            <AudiencePaths />
-            <DashboardShowcase />
-            <HowItWorks showUseCases />
-            <DriftOutcomes />
-            <ProductStatus />
-            <ProofBand />
-            <SafetyBand />
-            <IndustriesGrid
-                feedbackData={feedbackData}
-                setFeedbackData={setFeedbackData}
-                sectionRef={sectionRef}
-            />
-            <Pricing hostedOffer={hostedOffer} />
-            <Developers
-                buildWarnings={buildWarnings}
-                githubStats={githubStats}
-            />
+            <Reveal>
+                <AudiencePaths />
+            </Reveal>
+            <Reveal>
+                <DashboardShowcase />
+            </Reveal>
+            <Reveal>
+                <HowItWorks showUseCases />
+            </Reveal>
+            <Reveal>
+                <DriftOutcomes />
+            </Reveal>
+            <Reveal>
+                <ProductStatus />
+            </Reveal>
+            <Reveal>
+                <ProofBand />
+            </Reveal>
+            <Reveal>
+                <SafetyBand />
+            </Reveal>
+            <Reveal>
+                <IndustriesGrid
+                    feedbackData={feedbackData}
+                    setFeedbackData={setFeedbackData}
+                    sectionRef={sectionRef}
+                />
+            </Reveal>
+            <Reveal>
+                <Pricing hostedOffer={hostedOffer} />
+            </Reveal>
+            <Reveal>
+                <Developers
+                    buildWarnings={buildWarnings}
+                    githubStats={githubStats}
+                />
+            </Reveal>
             {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
-            <Faq />
-            <ContactBookingSection prefill={feedbackData} />
-            <EmailForm />
+            <Reveal>
+                <Faq />
+            </Reveal>
+            <Reveal>
+                <ContactBookingSection prefill={feedbackData} />
+            </Reveal>
+            <Reveal>
+                <EmailForm />
+            </Reveal>
             <Footer repositoryStats={githubStats} />
         </div>
     )
