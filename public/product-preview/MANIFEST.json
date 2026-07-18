@@ -1,0 +1,34 @@
+{
+    "schema_version": 1,
+    "captured_at": "2026-07-18T14:36:11-04:00",
+    "source": {
+        "repository": "https://github.com/OpenAdaptAI/openadapt-cloud",
+        "commit": "730089c2279aebe9926f00c1491d04387b1e062e",
+        "mode": "local_mock",
+        "capture_method": "Playwright against the unmodified localhost Cloud interface",
+        "data": "Synthetic demonstration workflows and run evidence generated through the application's mock-mode API"
+    },
+    "presentation": {
+        "required_media_label": "Product preview · demonstration data",
+        "claim_boundary": "Not a customer or production run"
+    },
+    "assets": {
+        "dashboard-walkthrough.mp4": {
+            "source_name": "dashboard-walkthrough.mp4",
+            "sha256": "2af62c62ef5238d38bc84599d12899fb13429ef45489fc6e5e7618f4fc86bb96",
+            "bytes": 1204990,
+            "width": 1280,
+            "height": 800,
+            "duration_seconds": 25.7,
+            "codec": "h264",
+            "audio": false
+        },
+        "dashboard-workflows.png": {
+            "source_name": "shots/02-workflows.png",
+            "sha256": "8e524193520f65bf7ea0e7f0362a40673bf31242ab60045709b2d8968ca6fd52",
+            "bytes": 177204,
+            "width": 2880,
+            "height": 1800
+        }
+    }
+}
