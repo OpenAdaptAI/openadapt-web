@@ -208,7 +208,7 @@ export default function InstallSection() {
                     browser path is the only shipped end-to-end backend today.
                     Source and measured limits on{' '}
                     <a
-                        href="https://github.com/OpenAdaptAI/openadapt-flow"
+                        href="https://github.com/OpenAdaptAI/OpenAdapt"
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ textDecoration: 'underline' }}

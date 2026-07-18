@@ -114,7 +114,7 @@ export default function DownloadPage() {
                 <p className="mt-5 max-w-2xl text-base text-ink-2 md:text-lg">
                     The open-source{' '}
                     <a
-                        href="https://github.com/OpenAdaptAI/openadapt-flow"
+                        href="https://github.com/OpenAdaptAI/OpenAdapt"
                         className="font-medium underline underline-offset-4"
                         target="_blank"
                         rel="noopener noreferrer"

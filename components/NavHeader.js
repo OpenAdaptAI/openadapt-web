@@ -23,7 +23,7 @@ const NAV_LINKS = [
     { label: 'About', href: '/about' },
     {
         label: 'Open source',
-        href: 'https://github.com/OpenAdaptAI/openadapt-flow',
+        href: 'https://github.com/OpenAdaptAI/OpenAdapt',
         external: true,
     },
 ]

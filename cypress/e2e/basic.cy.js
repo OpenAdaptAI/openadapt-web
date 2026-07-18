@@ -126,7 +126,7 @@ describe('public product truth', () => {
             cy.contains('Launch').should('have.attr', 'href', '/#pricing')
             cy.contains('Open source')
                 .should('have.attr', 'href')
-                .and('include', 'openadapt-flow')
+                .and('equal', 'https://github.com/OpenAdaptAI/OpenAdapt')
         })
 
         cy.viewport(1024, 768)

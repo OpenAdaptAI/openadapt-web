@@ -9,7 +9,7 @@ const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
  * configured product and price before payment.
  */
 
-const GITHUB_URL = 'https://github.com/OpenAdaptAI/openadapt-flow'
+const GITHUB_URL = 'https://github.com/OpenAdaptAI/OpenAdapt'
 
 function Check() {
     return (
