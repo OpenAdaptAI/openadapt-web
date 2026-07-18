@@ -5,6 +5,7 @@ const LIMITS_URL = `${FLOW_URL}/blob/main/docs/LIMITS.md`
 const HOSTED_URL = 'https://docs.openadapt.ai/guides/hosted/'
 const WINDOWS_UIA_EVIDENCE_URL = `${FLOW_URL}/blob/defafbae758a75c8e149d9693f2cffe1f2264b8c/benchmark/windows_uia/results.json`
 const MACOS_TEXTEDIT_EVIDENCE_URL = `${FLOW_URL}/blob/ca1b522cad215875f7471782283f8f8bb8e6c998/benchmark/macos_native/textedit_counted_3plus1_b1b61a5_20260717.adjudication.json`
+const RDP_EVIDENCE_URL = `${FLOW_URL}/blob/6610d24cebba27918b8ea507b2f05a094057ac85/benchmark/rdp/results_82a658a_20260718.sanitized.json`
 
 const workflow = [
     {
@@ -77,8 +78,10 @@ const substrates = [
     {
         name: 'RDP',
         availability: 'Partner qualification',
-        evidence: 'Acceptance in progress',
-        scope: 'The network RDP candidate uses strict framebuffer leases, viewport-drift refusal, current-frame readiness, and an independent guest-file oracle. It is not in the hosted browser launch candidate.',
+        evidence: 'Scoped RDP evidence accepted',
+        scope: 'On one Parallels Windows 11 VM at 1280×800 with Aardwolf 0.2.14, candidate 82a658a completed 3/3 trials that created a unique file through the Windows Run dialog over network RDP. Independent guest-tools readback confirmed the exact file contents. Trial latencies were 51.845s, 10.467s, and 7.477s; there were 0 failures, 0 silent incorrect successes, 0 over-halts, and 0 model calls. Cleanup deleted only the batch-owned snapshot, restored the exact eight-snapshot inventory, left the VM suspended, and returned the current pointer without resume to the unchanged original base. It is not in the hosted browser launch candidate. This qualifies only that task, VM snapshot, transport, and oracle—not arbitrary RDP applications, record-level identity, clean-machine or production support, hosted RDP, or Citrix ICA/HDX.',
+        evidenceUrl: RDP_EVIDENCE_URL,
+        evidenceLink: 'Review exact RDP evidence',
     },
     {
         name: 'Citrix',
