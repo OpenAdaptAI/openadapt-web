@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import Head from 'next/head'
 
 import ContactBookingSection from '@components/ContactBookingSection'
+import DashboardShowcase from '@components/DashboardShowcase'
 import Developers from '@components/Developers'
 import DriftOutcomes from '@components/DriftOutcomes'
 import EmailForm from '@components/EmailForm'
@@ -182,6 +183,7 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
             </Head>
             <MastHead githubStats={githubStats} />
             <AudiencePaths />
+            <DashboardShowcase />
             <HowItWorks showUseCases />
             <DriftOutcomes />
             <ProductStatus />
