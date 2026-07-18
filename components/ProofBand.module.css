@@ -71,3 +71,19 @@
     gap: 6px 20px;
     font-size: 13.5px;
 }
+
+.provenance {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.provenanceNote {
+    margin: 10px auto 0;
+    max-width: 34rem;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-3);
+}

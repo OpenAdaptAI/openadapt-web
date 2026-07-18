@@ -268,6 +268,27 @@
     background: var(--inset-bg);
     border-radius: 8px;
     border: 1px solid var(--inset-border);
+    transition: border-color var(--dur-2, 180ms) var(--ease-out, ease);
+}
+
+.commandItem:hover {
+    border-color: rgba(134, 217, 168, 0.35);
+}
+
+/* The certify step is an intentional refusal: mark it with the same drift
+   amber the run report uses for halts, so "the gate says no here" reads as
+   a feature, not a broken quickstart. */
+.commandItemHalt {
+    border-left: 2px solid #e3b34f;
+}
+
+.commandItemHalt:hover {
+    border-color: rgba(227, 179, 79, 0.55);
+    border-left-color: #e3b34f;
+}
+
+.commandItemHalt code {
+    color: #e3b34f;
 }
 
 .commandItem code {

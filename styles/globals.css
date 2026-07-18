@@ -30,6 +30,12 @@
         Arial, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
         monospace;
+    /* Motion tokens — calm, single-purpose, no bounce.
+       (Matches the unified design-system spec: 120/180/260ms, one ease.) */
+    --dur-1: 120ms;
+    --dur-2: 180ms;
+    --dur-3: 260ms;
+    --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 html {
@@ -53,6 +59,11 @@ body * {
     color: inherit;
 }
 
+::selection {
+    background: rgba(62, 107, 79, 0.22);
+    color: var(--ink);
+}
+
 h1,
 h2,
 h3,
@@ -60,6 +71,18 @@ h4 {
     font-family: var(--font-display);
     font-weight: 600;
     letter-spacing: -0.01em;
+    /* Avoid one-word orphan lines in headings; no layout shift risk. */
+    text-wrap: balance;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+/* Measured numbers are the product; render them as instrumentation. */
+.tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
 }
 
 a {
@@ -67,7 +90,8 @@ a {
     text-decoration: none;
     text-decoration-thickness: 0.08em;
     text-underline-offset: 0.18em;
-    transition: color 0.16s ease, text-decoration-color 0.16s ease;
+    transition: color var(--dur-2) var(--ease-out),
+        text-decoration-color var(--dur-2) var(--ease-out);
 }
 
 a:hover {
@@ -148,7 +172,10 @@ button:not(:disabled),
     font-size: 14px;
     font-weight: 500;
     text-decoration: none;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color var(--dur-2) var(--ease-out),
+        color var(--dur-2) var(--ease-out),
+        box-shadow var(--dur-2) var(--ease-out),
+        transform var(--dur-1) var(--ease-out);
 }
 
 .btn-ink:hover {
@@ -156,11 +183,13 @@ button:not(:disabled),
     border-color: #3a4133;
     color: var(--ground);
     text-decoration: none;
+    box-shadow: 0 2px 10px rgba(35, 40, 31, 0.18);
 }
 
 .btn-ink:active {
     background: var(--ink);
     border-color: var(--ink);
+    box-shadow: none;
     transform: translateY(1px);
 }
 
@@ -175,7 +204,8 @@ button:not(:disabled),
     font-size: 14px;
     font-weight: 500;
     text-decoration: none;
-    transition: background-color 0.2s ease;
+    transition: background-color var(--dur-2) var(--ease-out),
+        transform var(--dur-1) var(--ease-out);
 }
 
 .btn-ghost-ink:hover {
@@ -187,6 +217,78 @@ button:not(:disabled),
 .btn-ghost-ink:active {
     background: rgba(35, 40, 31, 0.11);
     transform: translateY(1px);
+}
+
+/* Evidence chip: a mono bordered pill that links to a real artifact
+   (benchmark files, CI-run tests, limits docs). The affordance for
+   "this claim is backed by something you can open". */
+.chip-evidence {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 13px;
+    border: 1px solid var(--hairline);
+    border-radius: 9999px;
+    background: var(--panel);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    color: var(--ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color var(--dur-2) var(--ease-out),
+        color var(--dur-2) var(--ease-out),
+        background-color var(--dur-2) var(--ease-out);
+}
+
+.chip-evidence::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.75;
+    flex-shrink: 0;
+}
+
+.chip-evidence:hover {
+    border-color: var(--accent);
+    color: var(--accent-hover);
+    background: rgba(62, 107, 79, 0.05);
+    text-decoration: none;
+}
+
+.chip-evidence:visited {
+    color: var(--ink-2);
+}
+
+.chip-evidence:visited:hover {
+    color: var(--accent-hover);
+}
+
+/* Scroll-linked reveal. The JS side (components/Reveal.js) only arms the
+   initial hidden state after hydration, so no-JS visitors, crawlers, and
+   reduced-motion users always see static content. Transform resolves to
+   none at rest so no containing block lingers for fixed/sticky children. */
+.reveal-armed {
+    opacity: 0;
+    transform: translateY(14px);
+}
+
+.reveal-in {
+    opacity: 1;
+    transform: none;
+    transition: opacity var(--dur-3) var(--ease-out),
+        transform var(--dur-3) var(--ease-out);
+}
+
+/* Inputs share the buttons' timing so the page feels like one instrument. */
+input,
+textarea,
+select {
+    transition: border-color var(--dur-2) var(--ease-out),
+        box-shadow var(--dur-2) var(--ease-out),
+        background-color var(--dur-2) var(--ease-out);
 }
 
 .fade-in {
@@ -218,6 +320,12 @@ button:not(:disabled),
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto !important;
+    }
+
+    /* Reveals render as plain static content. */
+    .reveal-armed {
+        opacity: 1 !important;
+        transform: none !important;
     }
 
     *,
