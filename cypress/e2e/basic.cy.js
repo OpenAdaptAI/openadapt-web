@@ -41,9 +41,13 @@ describe('public product truth', () => {
         cy.get('a[href$="#open-source"]').should('exist')
         cy.get('a[href$="#product-status"]').should('exist')
         cy.get('a[href="/security"]').should('exist')
-        cy.get('nav[aria-label="Primary"]')
-            .find('a[href="/solutions/insurance"]')
-            .should('be.visible')
+        cy.get('nav[aria-label="Primary"]').within(() => {
+            cy.contains('button', 'Solutions').click()
+            cy.get('#nav-solutions-menu')
+                .find('a[href="/solutions/insurance"]')
+                .should('be.visible')
+        })
+        cy.get('h1').click()
         cy.get('[data-testid="github-proof"]')
             .should('have.attr', 'href', 'https://github.com/OpenAdaptAI/OpenAdapt')
         cy.get('[data-testid="github-proof"]')
@@ -51,20 +55,71 @@ describe('public product truth', () => {
             .and('contain.text', 'forks')
     })
 
-    it('surfaces Blog and the Developers dropdown in the primary nav', () => {
+    it('surfaces a concise, keyboard-accessible primary navigation', () => {
+        // A pointer hover may open a dropdown before the ensuing
+        // click. The click pins it open, including for touch browsers
+        // that synthesize hover events before click.
+        cy.contains('button', 'Solutions').trigger('mouseover')
+        cy.get('#nav-solutions-menu').should('be.visible')
+        cy.contains('button', 'Solutions').click().trigger('mouseout')
+        cy.get('#nav-solutions-menu').should('be.visible')
+        cy.get('h1').click()
+        cy.get('#nav-solutions-menu').should('not.exist')
+
+        // ArrowDown opens the menu and focuses its first item; focus
+        // moving outside the dropdown dismisses it.
+        cy.contains('button', 'Product').focus().type('{downarrow}')
+        cy.get('#nav-product-menu a').first().should('be.focused')
+        cy.focused().type('{downarrow}')
+        cy.get('#nav-product-menu a').eq(1).should('be.focused')
+        cy.contains('nav[aria-label="Primary"] a', 'Launch').focus()
+        cy.get('#nav-product-menu').should('not.exist')
+
         cy.get('nav[aria-label="Primary"]').within(() => {
+            cy.contains('a', 'Launch')
+                .should('be.visible')
+                .and('have.attr', 'href', '/#pricing')
             cy.contains('a', 'Blog')
                 .should('be.visible')
                 .and('have.attr', 'href', 'https://blog.openadapt.ai')
             cy.contains('a', 'Open source')
                 .should('be.visible')
                 .and('have.attr', 'href', 'https://github.com/OpenAdaptAI/OpenAdapt')
+            cy.contains('a', 'About').should('not.exist')
+
+            cy.contains('button', 'Solutions')
+                .should('be.visible')
+                .and('have.attr', 'aria-expanded', 'false')
+            cy.contains('button', 'Solutions').click()
+            cy.get('#nav-solutions-menu').within(() => {
+                cy.contains('a', 'Healthcare')
+                    .should('have.attr', 'href', '/solutions/healthcare')
+                cy.contains('a', 'Lending')
+                    .should('have.attr', 'href', '/solutions/lending')
+                cy.contains('a', 'Insurance')
+                    .should('have.attr', 'href', '/solutions/insurance')
+            })
+
+            cy.contains('button', 'Product').click()
+            cy.get('#nav-solutions-menu').should('not.exist')
+            cy.get('#nav-product-menu').within(() => {
+                cy.contains('a', 'How it runs')
+                    .should('have.attr', 'href', '/#product-status')
+                cy.contains('a', 'Safety')
+                    .should('have.attr', 'href', '/safety')
+                cy.contains('a', 'Compare')
+                    .should('have.attr', 'href', '/compare')
+                cy.contains('a', 'Templates')
+                    .should('have.attr', 'href', '/templates')
+                cy.contains('a', 'Download')
+                    .should('have.attr', 'href', '/download')
+            })
+
             cy.contains('button', 'Developers')
                 .should('be.visible')
                 .and('have.attr', 'aria-expanded', 'false')
-            cy.get('#nav-developers-menu').should('not.exist')
-
             cy.contains('button', 'Developers').click()
+            cy.get('#nav-product-menu').should('not.exist')
             cy.contains('button', 'Developers').should(
                 'have.attr',
                 'aria-expanded',
@@ -103,7 +158,7 @@ describe('public product truth', () => {
             })
         })
 
-        // Escape closes the dropdown.
+        // Escape closes and returns focus to the trigger.
         cy.contains('button', 'Developers').type('{esc}')
         cy.get('#nav-developers-menu').should('not.exist')
         cy.contains('button', 'Developers').should(
@@ -111,6 +166,7 @@ describe('public product truth', () => {
             'aria-expanded',
             'false'
         )
+        cy.contains('button', 'Developers').should('be.focused')
 
         // Reopen, then a click outside the dropdown closes it.
         cy.contains('button', 'Developers').click()
@@ -181,17 +237,41 @@ describe('public product truth', () => {
     it('keeps deployment and launch routes reachable on mobile', () => {
         cy.viewport(375, 667)
         cy.visit('/')
+        cy.get('header').then(($header) => {
+            expect($header[0].getBoundingClientRect().left).to.equal(0)
+        })
         cy.get('button[aria-controls="nav-mobile-menu"]').click()
+        cy.get('#nav-mobile-menu').should('be.visible')
         cy.get('#nav-mobile-menu').within(() => {
-            cy.contains('Insurance')
+            cy.contains('Solutions').scrollIntoView().should('be.visible')
+            cy.contains('a', 'Healthcare')
+                .should('have.attr', 'href')
+                .and('equal', '/solutions/healthcare')
+            cy.contains('a', 'Lending')
+                .should('have.attr', 'href')
+                .and('equal', '/solutions/lending')
+            cy.contains('a', 'Insurance')
                 .should('have.attr', 'href')
                 .and('equal', '/solutions/insurance')
-            cy.contains('How it runs').should(
+            cy.contains('Product').scrollIntoView().should('be.visible')
+            cy.contains('a', 'How it runs').should(
                 'have.attr',
                 'href',
                 '/#product-status'
             )
-            cy.contains('Launch').should('have.attr', 'href', '/#pricing')
+            cy.contains('a', 'Safety')
+                .should('have.attr', 'href')
+                .and('equal', '/safety')
+            cy.contains('a', 'Compare')
+                .should('have.attr', 'href')
+                .and('equal', '/compare')
+            cy.contains('a', 'Templates')
+                .should('have.attr', 'href')
+                .and('equal', '/templates')
+            cy.contains('a', 'Download')
+                .should('have.attr', 'href')
+                .and('equal', '/download')
+            cy.contains('a', 'Launch').should('have.attr', 'href', '/#pricing')
             cy.contains('a', 'Blog')
                 .should('have.attr', 'href')
                 .and('equal', 'https://blog.openadapt.ai')
@@ -223,11 +303,19 @@ describe('public product truth', () => {
                 .should('have.attr', 'href')
                 .and('equal', 'https://github.com/OpenAdaptAI/OpenAdapt')
         })
+        cy.get('#nav-mobile-menu').then(($menu) => {
+            expect($menu[0].scrollHeight).to.be.greaterThan(
+                $menu[0].clientHeight
+            )
+        })
+        cy.document().then((document) => {
+            expect(document.documentElement.scrollWidth).to.be.at.most(375)
+        })
 
         cy.viewport(1024, 768)
         cy.visit('/')
         cy.get('nav[aria-label="Primary"]')
-            .find('a[href="/solutions/insurance"]')
+            .contains('button', 'Solutions')
             .should('not.be.visible')
         cy.get('button[aria-controls="nav-mobile-menu"]')
             .should('be.visible')

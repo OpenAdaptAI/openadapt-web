@@ -15,21 +15,43 @@ const externalEvent = (href) => {
     return null
 }
 
-const NAV_LINKS = [
+const isExternal = (href) => /^https?:\/\//.test(href)
+
+const SOLUTIONS_LINKS = [
     { label: 'Healthcare', href: '/solutions/healthcare' },
     { label: 'Lending', href: '/solutions/lending' },
     { label: 'Insurance', href: '/solutions/insurance' },
+]
+
+const PRODUCT_LINKS = [
+    { label: 'How it runs', href: '/#product-status' },
     { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },
-    { label: 'How it runs', href: '/#product-status' },
+    { label: 'Templates', href: '/templates' },
     { label: 'Download', href: '/download' },
+]
+
+const NAV_LINKS = [
+    {
+        label: 'Solutions',
+        dropdown: SOLUTIONS_LINKS,
+        menuId: 'nav-solutions-menu',
+        align: 'left',
+    },
+    {
+        label: 'Product',
+        dropdown: PRODUCT_LINKS,
+        menuId: 'nav-product-menu',
+        align: 'left',
+    },
     { label: 'Launch', href: '/#pricing' },
-    { label: 'About', href: '/about' },
     { label: BLOG_LINK.label, href: BLOG_LINK.href, external: true },
-    // Rendered as the nested "Developers" dropdown (desktop) or a
-    // labeled group (mobile). Blog is already top-level, so the
-    // dropdown carries the remaining developer ecosystem links.
-    { label: 'Developers', dropdown: DEVELOPER_LINKS },
+    {
+        label: 'Developers',
+        dropdown: DEVELOPER_LINKS,
+        menuId: 'nav-developers-menu',
+        align: 'right',
+    },
     {
         label: 'Open source',
         href: 'https://github.com/OpenAdaptAI/OpenAdapt',
@@ -54,7 +76,24 @@ function ExternalNavLink({ item, className, location }) {
     )
 }
 
-function DevelopersDropdown({ links }) {
+function DropdownLink({ item, className, location }) {
+    if (isExternal(item.href)) {
+        return (
+            <ExternalNavLink
+                item={item}
+                className={className}
+                location={location}
+            />
+        )
+    }
+    return (
+        <Link href={item.href} className={className}>
+            {item.label}
+        </Link>
+    )
+}
+
+function NavDropdown({ label, links, menuId, align }) {
     const [open, setOpen] = useState(false)
     const rootRef = useRef(null)
     const triggerRef = useRef(null)
@@ -182,6 +221,11 @@ function DevelopersDropdown({ links }) {
         }
     }
 
+    const panelClassName =
+        align === 'left'
+            ? `${styles.dropdownPanel} ${styles.dropdownPanelLeft}`
+            : styles.dropdownPanel
+
     return (
         <div
             ref={rootRef}
@@ -197,10 +241,10 @@ function DevelopersDropdown({ links }) {
                 className={styles.dropdownTrigger}
                 aria-expanded={open}
                 aria-haspopup="true"
-                aria-controls="nav-developers-menu"
+                aria-controls={menuId}
                 onClick={onTriggerClick}
             >
-                Developers
+                {label}
                 <span className={styles.caret} aria-hidden="true">
                     ▾
                 </span>
@@ -208,16 +252,16 @@ function DevelopersDropdown({ links }) {
             {open && (
                 <div
                     ref={panelRef}
-                    id="nav-developers-menu"
-                    className={styles.dropdownPanel}
-                    aria-label="Developers"
+                    id={menuId}
+                    className={panelClassName}
+                    aria-label={label}
                 >
                     {links.map((item) => (
-                        <ExternalNavLink
+                        <DropdownLink
                             key={item.label}
                             item={item}
                             className={styles.dropdownItem}
-                            location="nav_developers"
+                            location={`nav_${label.toLowerCase()}`}
                         />
                     ))}
                 </div>
@@ -236,7 +280,13 @@ export default function NavHeader() {
     }, [router.asPath])
 
     return (
-        <header className={styles.header}>
+        <header
+            className={
+                menuOpen
+                    ? `${styles.header} ${styles.headerMenuOpen}`
+                    : styles.header
+            }
+        >
             <div className={styles.inner}>
                 <Link href="/" className={styles.wordmark}>
                     <span className="font-extralight">Open</span>
@@ -246,9 +296,12 @@ export default function NavHeader() {
                     {NAV_LINKS.map((item) => {
                         if (item.dropdown) {
                             return (
-                                <DevelopersDropdown
+                                <NavDropdown
                                     key={item.label}
+                                    label={item.label}
                                     links={item.dropdown}
+                                    menuId={item.menuId}
+                                    align={item.align}
                                 />
                             )
                         }
@@ -298,8 +351,8 @@ export default function NavHeader() {
                 >
                     {NAV_LINKS.map((item) => {
                         if (item.dropdown) {
-                            // The mobile panel is a flat list, so the
-                            // dropdown renders as a labeled group in place.
+                            // Each desktop dropdown becomes a labeled
+                            // group in the mobile panel.
                             return (
                                 <div
                                     key={item.label}
@@ -312,11 +365,11 @@ export default function NavHeader() {
                                         {item.label}
                                     </span>
                                     {item.dropdown.map((link) => (
-                                        <ExternalNavLink
+                                        <DropdownLink
                                             key={link.label}
                                             item={link}
                                             className={styles.mobileLink}
-                                            location="nav_mobile_developers"
+                                            location={`nav_mobile_${item.label.toLowerCase()}`}
                                         />
                                     ))}
                                 </div>
