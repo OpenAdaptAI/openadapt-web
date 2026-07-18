@@ -8,7 +8,7 @@ const paths = [
         primary: { label: 'Run the quickstart', href: '#open-source' },
         secondary: {
             label: 'Read the engine source',
-            href: 'https://github.com/OpenAdaptAI/openadapt-flow',
+            href: 'https://github.com/OpenAdaptAI/OpenAdapt',
             external: true,
         },
     },
