@@ -73,6 +73,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://openadapt.ai/dental</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://openadapt.ai/privacy-policy</loc>
     <lastmod>2026-05-25</lastmod>
     <changefreq>yearly</changefreq>
