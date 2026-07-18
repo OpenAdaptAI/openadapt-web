@@ -68,7 +68,7 @@ describe('public product truth', () => {
             cy.contains('Partner qualification').should('be.visible')
             cy.contains('Scoped acceptance passed').should('be.visible')
             cy.contains('Scoped TextEdit evidence accepted').should('be.visible')
-            cy.contains('Acceptance in progress').should('be.visible')
+            cy.contains('Scoped RDP evidence accepted').should('be.visible')
             cy.contains('Design partner needed').should('be.visible')
             cy.contains('No ICA/HDX evidence').should('be.visible')
             cy.contains(
