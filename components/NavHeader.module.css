@@ -40,15 +40,35 @@
 }
 
 .link {
+    position: relative;
     font-size: 13.5px;
     color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
+    transition: color var(--dur-2, 180ms) var(--ease-out, ease);
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 1.5px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-2, 180ms) var(--ease-out, ease);
 }
 
 .link:hover {
     color: var(--accent);
     text-decoration: none;
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+    transform: scaleX(1);
 }
 
 .dropdown {
@@ -96,6 +116,14 @@
     border: 1px solid var(--hairline);
     border-radius: 10px;
     box-shadow: 0 10px 24px rgba(35, 40, 31, 0.08);
+    animation: panelIn var(--dur-1, 120ms) var(--ease-out, ease);
+}
+
+@keyframes panelIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
 }
 
 .dropdownPanelLeft {

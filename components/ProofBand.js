@@ -35,7 +35,9 @@ export default function ProofBand() {
                 <div className={styles.grid}>
                     {stats.map((stat) => (
                         <div key={stat.figure} className={styles.card}>
-                            <div className={styles.figure}>{stat.figure}</div>
+                            <div className={`${styles.figure} tnum`}>
+                                {stat.figure}
+                            </div>
                             <div className={styles.caption}>{stat.caption}</div>
                         </div>
                     ))}
@@ -57,6 +59,37 @@ export default function ProofBand() {
                         Review scope, samples, pricing basis, caveats, and raw results
                     </a>
                 </div>
+                <div className={styles.provenance}>
+                    <a
+                        className="chip-evidence"
+                        href={mm.results_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        results.json
+                    </a>
+                    <a
+                        className="chip-evidence"
+                        href={`https://github.com/${benchmark.provenance.source_repo}/tree/${benchmark.provenance.commit}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        commit {benchmark.provenance.commit.slice(0, 7)}
+                    </a>
+                    <a
+                        className="chip-evidence"
+                        href="https://github.com/OpenAdaptAI/openadapt-web/blob/main/tests/publicTruth.test.js"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        truth tests in CI
+                    </a>
+                </div>
+                <p className={styles.provenanceNote}>
+                    Figures are copied verbatim from the published results file
+                    at the pinned commit and re-rendered at build time. The
+                    claims on this page are checked by automated truth tests.
+                </p>
             </div>
         </section>
     )
