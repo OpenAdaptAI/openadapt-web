@@ -118,12 +118,15 @@ describe('public product truth', () => {
             cy.contains('Insurance')
                 .should('have.attr', 'href')
                 .and('equal', '/solutions/insurance')
-            cy.contains('How it runs').scrollIntoView().should('be.visible')
-            cy.contains('Launch').scrollIntoView().should('be.visible')
-            cy.contains('Open source').should('have.attr', 'href').and(
-                'include',
-                'openadapt-flow'
+            cy.contains('How it runs').should(
+                'have.attr',
+                'href',
+                '/#product-status'
             )
+            cy.contains('Launch').should('have.attr', 'href', '/#pricing')
+            cy.contains('Open source')
+                .should('have.attr', 'href')
+                .and('include', 'openadapt-flow')
         })
 
         cy.viewport(1024, 768)
@@ -164,9 +167,9 @@ describe('public product truth', () => {
             cy.contains('Choose by the operating model you need.').should(
                 'be.visible'
             )
-            cy.contains('Repeated, consequential browser workflows').should(
-                'be.visible'
-            )
+            cy.contains(
+                'Repeated, consequential GUI workflows without a practical API'
+            ).should('be.visible')
             cy.contains('Novel or changing tasks').should('be.visible')
         })
         cy.get('#benchmark-evidence').within(() => {
