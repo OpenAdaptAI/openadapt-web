@@ -5,7 +5,7 @@ import PyPIDownloadChart from './PyPIDownloadChart';
 import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks';
 
 // Canonical hrefs live in data/developerLinks.js (shared with the nav
-// "Developers" dropdown). Keep the historical on-page order: Engine
+// "Developers" dropdown). Keep the historical on-page order: compiler/runtime
 // source, Docs, Technical paper source, Blog, Discord, Report an issue.
 const ecosystemLinks = [
     ...DEVELOPER_LINKS.slice(0, 3),
@@ -48,8 +48,9 @@ export default function Developers({ buildWarnings = [], githubStats = null }) {
                         </div>
                     )}
                     <p className="mt-2 mb-6 mx-auto text-center max-w-2xl text-sm text-ink-2">
-                        <code>openadapt-flow</code> is the canonical engine. Its
-                        browser path records a workflow, compiles it into a
+                        <code>pip install openadapt</code> is the stable
+                        end-user entry point. The <code>openadapt-flow</code>{' '}
+                        engine records a workflow, compiles it into a
                         reviewable program, and replays it locally with no model
                         calls on a healthy run.
                     </p>

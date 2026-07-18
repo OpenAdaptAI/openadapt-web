@@ -14,8 +14,8 @@ export const BLOG_LINK = {
 
 export const DEVELOPER_LINKS = [
     {
-        label: 'Engine source',
-        href: 'https://github.com/OpenAdaptAI/OpenAdapt',
+        label: 'Compiler/runtime source',
+        href: 'https://github.com/OpenAdaptAI/openadapt-flow',
     },
     {
         label: 'Docs',

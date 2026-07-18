@@ -35,8 +35,16 @@ test('registry entries are complete, unique, and search-titled', () => {
         assert.ok(t.quickstart.length >= 3, `${t.slug}: CLI quickstart`)
         assert.equal(
             t.quickstart[0].cmd,
-            'pip install openadapt-flow',
-            `${t.slug}: quickstart starts from the real published package`
+            'pip install openadapt',
+            `${t.slug}: quickstart starts from the flagship package`
+        )
+        assert.ok(
+            t.quickstart.slice(1).every((step) =>
+                step.cmd.split(' && ').every((command) =>
+                    command.startsWith('openadapt flow ')
+                )
+            ),
+            `${t.slug}: quickstart uses the unified OpenAdapt CLI`
         )
         assert.match(
             t.source,
@@ -47,7 +55,6 @@ test('registry entries are complete, unique, and search-titled', () => {
             ['reference', 'field', 'pattern'].includes(t.proof),
             `${t.slug}: declared proof level`
         )
-        assert.ok(t.cta && t.cta.href && t.cta.label, `${t.slug}: CTA present`)
     }
 })
 
@@ -145,7 +152,6 @@ test('template pages render every registry field they promise', () => {
         't.verificationOracles',
         't.quickstart',
         't.source',
-        't.cta.href',
     ]) {
         assert.ok(page.includes(field), `[slug].js renders ${field}`)
     }

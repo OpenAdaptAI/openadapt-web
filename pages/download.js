@@ -9,6 +9,7 @@ import {
     DESKTOP_PLATFORMS,
     DESKTOP_RELEASES_PAGE,
     detectDesktopPlatform,
+    detectDesktopPlatformWithHints,
     releaseSigningState,
 } from 'utils/desktopRelease'
 
@@ -33,11 +34,16 @@ export default function DownloadPage({ release, fetchFailed }) {
     const [detectedId, setDetectedId] = useState(null)
 
     useEffect(() => {
-        setDetectedId(
-            detectDesktopPlatform(
-                typeof navigator === 'undefined' ? null : navigator
-            )
-        )
+        let active = true
+        const navigatorValue =
+            typeof navigator === 'undefined' ? null : navigator
+        setDetectedId(detectDesktopPlatform(navigatorValue))
+        detectDesktopPlatformWithHints(navigatorValue).then((next) => {
+            if (active) setDetectedId(next)
+        })
+        return () => {
+            active = false
+        }
     }, [])
 
     const assets =
@@ -59,6 +65,13 @@ export default function DownloadPage({ release, fetchFailed }) {
                 (d) => d.platform.id === detectedId && d.asset
             ) || null,
         [platformDownloads, detectedId]
+    )
+    const macosDownloads = useMemo(
+        () =>
+            platformDownloads.filter(({ platform, asset }) =>
+                platform.id.startsWith('macos-') && asset
+            ),
+        [platformDownloads]
     )
 
     const version = release ? release.tag_name || release.name : null
@@ -92,29 +105,33 @@ export default function DownloadPage({ release, fetchFailed }) {
             <div className="mx-auto max-w-4xl px-4 py-14">
                 <p className="eyebrow">Install OpenAdapt</p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Start with the working engine
+                    Start with the OpenAdapt CLI
                 </h1>
                 <p className="mt-5 max-w-2xl text-base text-ink-2 md:text-lg">
-                    The open-source{' '}
+                    The flagship{' '}
                     <a
                         href="https://github.com/OpenAdaptAI/OpenAdapt"
                         className="font-medium underline underline-offset-4"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        openadapt-flow CLI
+                        OpenAdapt project
                     </a>{' '}
-                    provides the complete record, compile, certify, replay, and
-                    repair workflow today. Native installers are available below
-                    for teams evaluating desktop packaging.
+                    installs the compiler and governed runtime under the unified{' '}
+                    <code>openadapt flow</code> command. Native installers are
+                    generated separately from the latest complete Experimental
+                    desktop prerelease.
                 </p>
+                <pre className="mt-6 max-w-2xl overflow-x-auto rounded-xl border border-hairline bg-panel p-4 font-mono text-sm text-ink">
+                    <code>pip install openadapt</code>
+                </pre>
 
                 <div className="mt-6 flex flex-wrap gap-3">
                     <a
                         href="https://docs.openadapt.ai/get-started/"
                         className="btn-ink"
                     >
-                        Install the engine
+                        Read docs
                     </a>
                     <a href="#desktop-builds" className="btn-ghost-ink">
                         View desktop builds
@@ -167,15 +184,57 @@ export default function DownloadPage({ release, fetchFailed }) {
                         </div>
                     )}
 
-                    {status === 'ready' && !recommended && (
+                    {status === 'ready' &&
+                        detectedId === 'macos' &&
+                        macosDownloads.length > 0 && (
+                            <div className="rounded-2xl border-2 border-ink bg-panel p-6 md:p-7">
+                                <p className="eyebrow">macOS detected</p>
+                                <p className="font-display mt-2 text-xl font-semibold tracking-tight text-ink">
+                                    Choose your Mac processor
+                                </p>
+                                <p className="mt-2 text-sm text-ink-2">
+                                    Choose Apple Silicon for M1, M2, M3, M4, or
+                                    later Macs. Choose Intel for older
+                                    Intel-based Macs. You can confirm this from
+                                    Apple menu → About This Mac.
+                                </p>
+                                <div className="mt-5 flex flex-wrap gap-3">
+                                    {macosDownloads.map(
+                                        ({ platform, asset }) => (
+                                            <a
+                                                key={platform.id}
+                                                href={
+                                                    asset.browser_download_url
+                                                }
+                                                className="btn-ink"
+                                                onClick={() =>
+                                                    track('download_click', {
+                                                        platform: platform.id,
+                                                        version,
+                                                        recommended: true,
+                                                        architectureChooser:
+                                                            true,
+                                                    })
+                                                }
+                                            >
+                                                Download for {platform.arch}
+                                            </a>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                    {status === 'ready' &&
+                        !recommended &&
+                        detectedId !== 'macos' && (
                         <div>
                             <p className="eyebrow">
                                 Experimental prerelease {version}
                             </p>
                             <p className="mt-2 text-sm text-ink-2">
-                                We could not safely choose an installer for this
-                                device. Pick your platform and architecture
-                                below.
+                                Choose the build that matches your operating
+                                system and processor below.
                             </p>
                         </div>
                     )}
@@ -187,9 +246,10 @@ export default function DownloadPage({ release, fetchFailed }) {
                             </p>
                             <p className="mt-2 max-w-2xl text-sm text-ink-2">
                                 No complete Experimental desktop prerelease has
-                                been published. Use openadapt-flow today, or
-                                watch the desktop releases page for the first
-                                native preview.
+                                been published. Use{' '}
+                                <code>pip install openadapt</code>, or watch the
+                                desktop releases page for the next native
+                                preview.
                             </p>
                             <div className="mt-4 flex flex-wrap gap-3">
                                 <a
@@ -206,7 +266,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    Install the working CLI
+                                    Read docs
                                 </a>
                             </div>
                         </div>
@@ -375,12 +435,12 @@ export default function DownloadPage({ release, fetchFailed }) {
                         Need the working workflow engine?
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
-                        Start with the openadapt-flow CLI, or bring the workflow
+                        Start with <code>pip install openadapt</code>, or bring the workflow
                         you most want to automate to a 30-minute call.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
-                        <Link href="/#book" className="btn-ink">
-                            Book a demo
+                        <Link href="/#open-source" className="btn-ink">
+                            Try locally
                         </Link>
                         <a
                             href="https://docs.openadapt.ai"
@@ -388,7 +448,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            Read the docs
+                            Read docs
                         </a>
                     </div>
                 </div>

@@ -1,18 +1,70 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
 
+import {
+    OPENADAPT_REPOSITORY_URL,
+    OPENADAPT_STATS_SNAPSHOT,
+} from 'data/repositoryStats'
 import { track, EVENTS } from 'utils/analytics'
 import styles from './Footer.module.css'
 
-export default function Footer() {
+function validStats(value) {
+    return (
+        value &&
+        Number.isInteger(value.stars) &&
+        value.stars > 0 &&
+        Number.isInteger(value.forks) &&
+        value.forks >= 0
+    )
+}
+
+function snapshotLabel(stats) {
+    if (stats.source === 'github' && !stats.stale) {
+        return 'GitHub · refreshed recently'
+    }
+    if (stats.source === 'stale') {
+        return 'GitHub · last-known counts'
+    }
+    return 'GitHub snapshot · refreshed when available'
+}
+
+export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
     const router = useRouter()
     const currentYear = new Date().getFullYear()
     const isHome = router.pathname === '/'
     const bookHref = isHome ? '#book' : '/book'
     const contactHref = isHome ? '#book' : '/contact'
+    const [stats, setStats] = useState(
+        validStats(repositoryStats)
+            ? repositoryStats
+            : OPENADAPT_STATS_SNAPSHOT
+    )
+
+    useEffect(() => {
+        const controller = new AbortController()
+        fetch('/api/repository-stats', {
+            headers: { Accept: 'application/json' },
+            signal: controller.signal,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `Repository stats request failed: ${response.status}`
+                    )
+                }
+                return response.json()
+            })
+            .then((nextStats) => {
+                if (validStats(nextStats)) setStats(nextStats)
+            })
+            .catch(() => {
+                // Keep the server-rendered snapshot/last-known value.
+            })
+        return () => controller.abort()
+    }, [])
 
     return (
         <div className={styles.footerContainer}>
@@ -33,7 +85,7 @@ export default function Footer() {
                         />
                     </div>
                 </div>
-                <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
+                <div className={styles.repositoryProof}>
                     <iframe
                         src="https://github.com/sponsors/OpenAdaptAI/button"
                         title="Sponsor OpenAdaptAI"
@@ -41,31 +93,39 @@ export default function Footer() {
                         width="114"
                         style={{ border: '0', borderRadius: '6px' }}
                     ></iframe>
-                    {/* Intentionally no count bubbles: requesting counts
-                        makes buttons.js call the GitHub API from every
-                        visitor's browser (60 unauthenticated req/hr per IP,
-                        so shared IPs get 403s). Star/fork counts are
-                        server-rendered in the masthead instead. */}
-                    <a
-                        className="github-button"
-                        href="https://github.com/OpenAdaptAI/OpenAdapt"
-                        data-color-scheme="no-preference: light; light: light; dark: light;"
-                        data-icon="octicon-star"
-                        data-size="large"
-                        aria-label="Star OpenAdaptAI/OpenAdapt on GitHub"
+                    <div
+                        className={styles.repositoryStats}
+                        data-testid="footer-repository-stats"
                     >
-                        Star
-                    </a>
-                    <a
-                        className="github-button"
-                        href="https://github.com/OpenAdaptAI/OpenAdapt/fork"
-                        data-color-scheme="no-preference: light; light: light; dark: light;"
-                        data-icon="octicon-repo-forked"
-                        data-size="large"
-                        aria-label="Fork OpenAdaptAI/OpenAdapt on GitHub"
+                        <a
+                            href={OPENADAPT_REPOSITORY_URL}
+                            className={styles.repositoryStat}
+                            aria-label={`${stats.stars.toLocaleString('en-US')} stars on OpenAdapt`}
+                        >
+                            <span aria-hidden="true">★</span>
+                            <strong data-testid="footer-star-count">
+                                {stats.stars.toLocaleString('en-US')}
+                            </strong>
+                            <small>stars on OpenAdapt</small>
+                        </a>
+                        <a
+                            href={`${OPENADAPT_REPOSITORY_URL}/fork`}
+                            className={styles.repositoryStat}
+                            aria-label={`${stats.forks.toLocaleString('en-US')} forks of OpenAdapt`}
+                        >
+                            <span aria-hidden="true">⑂</span>
+                            <strong data-testid="footer-fork-count">
+                                {stats.forks.toLocaleString('en-US')}
+                            </strong>
+                            <small>forks</small>
+                        </a>
+                    </div>
+                    <p
+                        className={styles.repositorySource}
+                        data-testid="footer-repository-source"
                     >
-                        Fork
-                    </a>
+                        {snapshotLabel(stats)}
+                    </p>
                 </div>
                 <div className={styles.footerContent}>
                     <div className={`${styles.footerLinks} pt-4`}>
@@ -78,7 +138,7 @@ export default function Footer() {
                                 })
                             }
                         >
-                            Book a Call
+                            Evaluate a workflow
                         </a>
                         <a href={contactHref} className={styles.link}>
                             Contact
@@ -144,10 +204,10 @@ export default function Footer() {
                             href="https://app.openadapt.ai"
                             className={styles.link}
                         >
-                            Hosted dashboard (beta)
+                            Hosted dashboard
                         </a>
                         <a
-                            href="https://github.com/OpenAdaptAI"
+                            href="https://github.com/OpenAdaptAI/OpenAdapt"
                             className={styles.link}
                             onClick={() =>
                                 track(EVENTS.GITHUB_CLICK, {
@@ -155,7 +215,18 @@ export default function Footer() {
                                 })
                             }
                         >
-                            GitHub
+                            OpenAdapt project
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/openadapt-flow"
+                            className={styles.link}
+                            onClick={() =>
+                                track(EVENTS.GITHUB_CLICK, {
+                                    location: 'footer_engine',
+                                })
+                            }
+                        >
+                            Compiler/runtime source
                         </a>
                         <a
                             href="https://discord.gg/yF527cQbDG"

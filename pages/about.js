@@ -178,7 +178,7 @@ export default function AboutPage() {
                         href="/#book"
                         className="btn-ink mt-5 inline-block"
                     >
-                        Book a demo
+                        Evaluate a workflow
                     </Link>
                 </div>
             </div>

@@ -15,7 +15,10 @@ test('developer ecosystem links have a single canonical source', () => {
     // Canonical destinations live in data/developerLinks.js only.
     assert.match(links, /https:\/\/blog\.openadapt\.ai/)
     for (const [label, href] of [
-        ['Engine source', 'https://github.com/OpenAdaptAI/OpenAdapt'],
+        [
+            'Compiler/runtime source',
+            'https://github.com/OpenAdaptAI/openadapt-flow',
+        ],
         ['Docs', 'https://docs.openadapt.ai'],
         [
             'Technical paper source',
@@ -76,6 +79,10 @@ test('top navigation consolidates solutions, product and developer destinations'
     assert.match(
         nav,
         /label: 'Open source',\s+href: 'https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt'/
+    )
+    assert.doesNotMatch(
+        links,
+        /label: 'Compiler\/runtime source',\s+href: 'https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt'/
     )
 
     assert.doesNotMatch(nav, /'\/about'/)
