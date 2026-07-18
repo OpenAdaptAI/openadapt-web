@@ -205,7 +205,7 @@ export default function DentalLeadForm({ sectionId = 'book' }) {
                                 value={form.message}
                                 onChange={handleChange}
                                 className="rounded-lg border border-ink/30 bg-panel px-3 py-2 text-ink placeholder-ink-3/60 focus:border-accent focus:outline-none"
-                                placeholder="Which payer portals do you check most? Roughly how many verifications per week?"
+                                placeholder="Which payer portals do you check most? Roughly how many verifications per month?"
                             />
                         </label>
 
