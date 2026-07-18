@@ -74,7 +74,7 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
         'Reference lifecycle accepted',
         'Scoped acceptance passed',
         'Scoped TextEdit evidence accepted',
-        'Acceptance in progress',
+        'Scoped RDP evidence accepted',
         'No ICA/HDX evidence',
     ]) {
         assert.match(product, new RegExp(label))
@@ -93,6 +93,14 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
     assert.match(product, /SHA-256-bound adjudication verified actual process and temporary-file cleanup/)
     assert.match(product, /not clean-machine, design-partner, production, or broad macOS evidence/)
     assert.match(product, /0 silent incorrect successes and 0 over-halts/)
+    assert.match(product, /candidate 82a658a completed 3\/3 trials/)
+    assert.match(product, /unique file through the Windows Run dialog over network RDP/)
+    assert.match(product, /Independent guest-tools readback confirmed the exact file contents/)
+    assert.match(product, /51\.845s, 10\.467s, and 7\.477s/)
+    assert.match(product, /0 failures, 0 silent incorrect successes, 0 over-halts, and 0 model calls/)
+    assert.match(product, /restored the exact eight-snapshot inventory/)
+    assert.match(product, /returned the current pointer without resume to the unchanged original base/)
+    assert.match(product, /not arbitrary RDP applications, record-level identity, clean-machine or production support, hosted RDP, or Citrix ICA\/HDX/)
     assert.match(
         product,
         /blob\/defafbae758a75c8e149d9693f2cffe1f2264b8c\/benchmark\/windows_uia\/results\.json/
@@ -100,6 +108,10 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
     assert.match(
         product,
         /blob\/ca1b522cad215875f7471782283f8f8bb8e6c998\/benchmark\/macos_native\/textedit_counted_3plus1_b1b61a5_20260717\.adjudication\.json/
+    )
+    assert.match(
+        product,
+        /blob\/6610d24cebba27918b8ea507b2f05a094057ac85\/benchmark\/rdp\/results_82a658a_20260718\.sanitized\.json/
     )
     assert.doesNotMatch(pricing, /Offer unavailable|Hosted checkout unavailable/)
     assert.match(pricing, /Start with our team/)
