@@ -44,6 +44,17 @@
     max-width: 880px;
 }
 
+.selectorIntro {
+    margin: 0 0 16px;
+    color: var(--ink-2);
+    font-size: 13px;
+    text-align: center;
+}
+
+.selectorBlock + .selectorBlock {
+    margin-top: 16px;
+}
+
 .referenceLabel {
     margin: 0 0 10px;
     color: var(--ink-3);
@@ -60,6 +71,10 @@
     gap: 8px;
 }
 
+.environmentTabs {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
 .tab {
     appearance: none;
     min-width: 0;
@@ -71,6 +86,11 @@
     cursor: pointer;
     text-align: left;
     transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.environmentTab {
+    padding: 11px 8px;
+    text-align: center;
 }
 
 .tab:hover {
@@ -115,7 +135,7 @@
 }
 
 .referenceSummary {
-    margin: 14px auto 0;
+    margin: 0;
     max-width: 760px;
     color: var(--ink-2);
     font-size: 13px;
@@ -123,10 +143,51 @@
     text-align: center;
 }
 
+.referenceSummary strong,
+.referenceSummary span {
+    display: block;
+}
+
+.referenceSummary strong {
+    margin-bottom: 4px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 15px;
+}
+
 .referenceSummary a {
     color: var(--accent);
     font-weight: 500;
     white-space: nowrap;
+}
+
+.selectionSummary {
+    margin: 18px auto 0;
+    max-width: 780px;
+    padding: 13px 15px;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--panel);
+}
+
+.environmentSummary {
+    margin: 7px auto 0;
+    color: var(--ink-2);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.environmentSummary span,
+.environmentSummary small {
+    display: block;
+}
+
+.environmentSummary small {
+    margin-top: 3px;
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 9px;
 }
 
 .visualScopeNote {
@@ -246,7 +307,15 @@
         grid-template-columns: 1fr;
     }
 
+    .environmentTabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .tab {
         text-align: center;
+    }
+
+    .selectionSummary {
+        padding: 12px;
     }
 }
