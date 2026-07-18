@@ -55,7 +55,11 @@ export default function EmailForm() {
         + (isSubmitting ? ' opacity-0' : ' opacity-100')
 
     return (
-        <div className={`${styles.background} flex flex-col justify-center items-center`}>
+        <div
+            id="get-updates"
+            className={`${styles.background} flex flex-col justify-center items-center`}
+            style={{ scrollMarginTop: '80px' }}
+        >
             {formHidden ? (
                 <div className="fade-in">
                     <h4 className="font-light text-ink-2 text-sm">
