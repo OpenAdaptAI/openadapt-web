@@ -6,7 +6,7 @@ import PyPIDownloadChart from './PyPIDownloadChart';
 const ecosystemLinks = [
     {
         label: 'Engine source',
-        href: 'https://github.com/OpenAdaptAI/openadapt-flow',
+        href: 'https://github.com/OpenAdaptAI/OpenAdapt',
     },
     {
         label: 'Docs',

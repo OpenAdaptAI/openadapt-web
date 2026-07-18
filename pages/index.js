@@ -73,7 +73,7 @@ const softwareSchema = {
         url: 'https://openadapt.ai',
     },
     license: 'https://opensource.org/licenses/MIT',
-    codeRepository: 'https://github.com/OpenAdaptAI/openadapt-flow',
+    codeRepository: 'https://github.com/OpenAdaptAI/OpenAdapt',
     programmingLanguage: 'Python',
     offers: {
         '@type': 'Offer',
