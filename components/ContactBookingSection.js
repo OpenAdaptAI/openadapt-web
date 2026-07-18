@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import BookingEmbed from '@components/BookingEmbed'
+import { trackEmailCapture } from 'utils/conversion'
 
 const INITIAL_FORM = {
     name: '',
@@ -45,14 +46,6 @@ export default function ContactBookingSection({
         setIsSubmitting(true)
 
         try {
-            if (typeof window !== 'undefined' && window.gtag) {
-                window.gtag('event', 'submit_form', {
-                    event_category: 'Form',
-                    event_label: 'contact',
-                    value: 1,
-                })
-            }
-
             const formData = new URLSearchParams()
             formData.set('form-name', 'contact')
             formData.set('name', form.name)
@@ -75,6 +68,9 @@ export default function ContactBookingSection({
                 throw new Error(`Form submission failed with status ${response.status}`)
             }
 
+            // E1 qualified-lead conversion: contact intake captured. Carries
+            // first-touch utm_* attribution; never any form contents.
+            trackEmailCapture({ location: 'contact_form' })
             setIsSubmitted(true)
         } catch (submitError) {
             console.error(submitError)
