@@ -83,44 +83,9 @@
     pointer-events: none;
 }
 
-.sourceChip {
-    position: absolute;
-    z-index: 3;
-    top: 10px;
-    left: 10px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    max-width: calc(100% - 20px);
-    padding: 5px 8px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.32);
-    border-radius: 999px;
-    background: rgba(8, 15, 31, 0.74);
-    color: #fff;
-    font-family: var(--font-mono);
-    font-size: 8px;
-    letter-spacing: 0.04em;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    white-space: nowrap;
-    backdrop-filter: blur(7px);
-}
-
-.sourceChip i {
-    display: block;
-    width: 6px;
-    height: 6px;
-    flex: 0 0 auto;
-    border-radius: 50%;
-    background: #59e194;
-    box-shadow: 0 0 0 0 rgba(89, 225, 148, 0.7);
-    animation: livePulse 1.8s ease-out infinite;
-}
-
 .stageOverlay {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     inset: 0;
     pointer-events: none;
 }
@@ -229,22 +194,75 @@
 }
 
 .resolveCard {
-    right: 10px;
-    bottom: 10px;
-    width: min(72%, 326px);
+    top: 48px;
+    left: 10px;
+    width: min(29%, 246px);
     padding: 9px 10px;
+}
+
+.resolveCard .panelHeading {
+    display: grid;
+    justify-items: start;
+    gap: 3px;
+}
+
+.resolveCard .panelHeading strong {
+    text-align: left;
+}
+
+.resolveCard .ladder {
+    gap: 3px;
+    margin-top: 5px;
+}
+
+.resolveCard .ladder li {
+    grid-template-columns: 16px minmax(0, 1fr);
+    gap: 4px;
+    padding: 4px;
+}
+
+.resolveCard .haltRule {
+    display: grid;
+    justify-items: start;
+    gap: 2px;
+    padding: 4px;
+}
+
+.resolveCard .haltRule strong {
+    text-align: left;
 }
 
 .targetMarker {
     position: absolute;
-    top: 27%;
-    left: 19%;
-    width: 34%;
-    height: 19%;
-    border: 2px solid #59e194;
+    z-index: 10;
+    width: 12.5%;
+    height: 8%;
+    opacity: 0;
+    border: 3px solid #32f58a;
     border-radius: 4px;
-    box-shadow: 0 0 0 999px rgba(8, 15, 31, 0.13);
-    animation: targetResolve 5.4s ease-in-out infinite;
+    background: rgba(50, 245, 138, 0.14);
+    box-shadow:
+        0 0 0 999px rgba(8, 15, 31, 0.06),
+        0 0 0 2px rgba(2, 8, 23, 0.72),
+        0 0 16px rgba(50, 245, 138, 0.84);
+    will-change: top, left, width, height, opacity;
+}
+
+.openemrTargets {
+    animation: openemrTargets var(--target-duration) steps(1, end) infinite;
+}
+
+.frappeTargets {
+    animation: frappeTargets var(--target-duration) steps(1, end) infinite;
+}
+
+.openimisTargets {
+    animation: openimisTargets var(--target-duration) steps(1, end) infinite;
+}
+
+.figure[data-media-ready='false'] .targetMarker {
+    opacity: 0;
+    animation: none;
 }
 
 .targetMarker::before,
@@ -286,6 +304,22 @@
     border-bottom: 2px solid;
 }
 
+.targetMarker > b {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    background: #32f58a;
+    color: #08121b;
+    font-family: var(--font-mono);
+    font-size: 6px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
 .ladder {
     display: grid;
     gap: 4px;
@@ -303,9 +337,7 @@
     border: 1px solid rgba(255, 255, 255, 0.13);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.06);
-    opacity: 0;
-    animation: evidenceResolve 5.4s ease-in-out infinite;
-    animation-delay: calc(var(--evidence-index) * 0.28s);
+    opacity: 1;
 }
 
 .ladder li span {
@@ -455,16 +487,6 @@
     font: inherit;
 }
 
-@keyframes livePulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(89, 225, 148, 0.7);
-    }
-    70%,
-    100% {
-        box-shadow: 0 0 0 6px rgba(89, 225, 148, 0);
-    }
-}
-
 @keyframes cardEnter {
     0%,
     7% {
@@ -512,38 +534,203 @@
     }
 }
 
-@keyframes targetResolve {
+/*
+ * Resolve markers share the GIF timeline rather than running an unrelated
+ * decorative loop. Positions are percentages of the recorded 1280 × 800
+ * viewport (or the visible OpenEMR controls) so they scale with the footage.
+ * Adjacent duplicate keyframes make the marker jump between targets. Gaps
+ * represent scrolling, loading, or final evidence frames with no action.
+ */
+@keyframes openemrTargets {
     0%,
-    12% {
-        opacity: 0;
-        transform: scale(1.18);
-    }
-    25%,
-    78% {
+    11.9% {
+        top: 24%;
+        left: 46%;
+        width: 18%;
+        height: 4%;
         opacity: 1;
-        transform: scale(1);
     }
-    92%,
+    12%,
+    22.9% {
+        top: 27.5%;
+        left: 46%;
+        width: 18%;
+        height: 4%;
+        opacity: 1;
+    }
+    23%,
+    30.9% {
+        top: 34%;
+        left: 35.7%;
+        width: 28.6%;
+        height: 4%;
+        opacity: 1;
+    }
+    31%,
     100% {
+        top: 34%;
+        left: 35.7%;
+        width: 28.6%;
+        height: 4%;
         opacity: 0;
-        transform: scale(0.96);
     }
 }
 
-@keyframes evidenceResolve {
+@keyframes frappeTargets {
     0%,
-    10% {
-        opacity: 0;
-        transform: translateX(7px);
-    }
-    24%,
-    82% {
+    11.19% {
+        top: 21%;
+        left: 34.77%;
+        width: 12.5%;
+        height: 8%;
         opacity: 1;
-        transform: translateX(0);
     }
+    11.2%,
+    29.85% {
+        top: 21%;
+        left: 69.92%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    29.86%,
+    44.79% {
+        top: 83.13%;
+        left: 34.77%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    44.8%,
+    59.72% {
+        top: 92%;
+        left: 34.77%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    59.73%,
+    74.65% {
+        top: 92%;
+        left: 69.92%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    74.66%,
+    78% {
+        top: 0;
+        left: 87.5%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    78.01%,
     100% {
+        top: 0;
+        left: 87.5%;
+        width: 12.5%;
+        height: 8%;
         opacity: 0;
-        transform: translateX(7px);
+    }
+}
+
+@keyframes openimisTargets {
+    0%,
+    4.99% {
+        top: 31.88%;
+        left: 70.7%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 0;
+    }
+    5%,
+    17.99% {
+        top: 31.88%;
+        left: 70.7%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    18%,
+    28.99% {
+        top: 31.88%;
+        left: 50%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    29%,
+    40.99% {
+        top: 54.25%;
+        left: 52.11%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    41%,
+    45.99% {
+        top: 54.25%;
+        left: 52.11%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 0;
+    }
+    46%,
+    60.99% {
+        top: 57.38%;
+        left: 25.86%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    61%,
+    65.99% {
+        top: 57.38%;
+        left: 25.86%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 0;
+    }
+    66%,
+    75.99% {
+        top: 62.88%;
+        left: 11.64%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    76%,
+    83.99% {
+        top: 68.75%;
+        left: 13.75%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    84%,
+    87.99% {
+        top: 68.75%;
+        left: 13.75%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 0;
+    }
+    88%,
+    93.99% {
+        top: 90%;
+        left: 87.5%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 1;
+    }
+    94%,
+    100% {
+        top: 90%;
+        left: 87.5%;
+        width: 12.5%;
+        height: 8%;
+        opacity: 0;
     }
 }
 
@@ -565,7 +752,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .sourceChip i,
     .compileCard,
     .contract div,
     .compileProgress i,
@@ -576,6 +762,10 @@
         opacity: 1;
         transform: none;
     }
+
+    .targetMarker {
+        display: none;
+    }
 }
 
 @media (max-width: 640px) {
@@ -583,9 +773,13 @@
         min-height: 230px;
     }
 
-    .compileCard,
-    .resolveCard {
+    .compileCard {
         width: calc(100% - 20px);
+    }
+
+    .resolveCard {
+        top: 42px;
+        width: min(42%, 210px);
     }
 
     .caption {

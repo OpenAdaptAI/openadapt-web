@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react'
+
 import ExecutionEnvironmentOverlay from './ExecutionEnvironmentOverlay'
 import styles from './ReferenceStagePanel.module.css'
 
@@ -16,15 +18,41 @@ function PanelFrame({
     caption,
 }) {
     const media = reference.stageMedia[stage]
+    const figureRef = useRef(null)
+    const [visibleRun, setVisibleRun] = useState(0)
+    const [loadedMedia, setLoadedMedia] = useState(null)
+    const mediaToken = `${media.src}:${visibleRun}`
+    const mediaReady = loadedMedia === mediaToken
+
+    useEffect(() => {
+        const figure = figureRef.current
+        if (!figure || typeof IntersectionObserver === 'undefined') {
+            setVisibleRun(1)
+            return undefined
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return
+                setVisibleRun(1)
+                observer.disconnect()
+            },
+            { rootMargin: '160px 0px' }
+        )
+        observer.observe(figure)
+        return () => observer.disconnect()
+    }, [])
 
     return (
         <figure
+            ref={figureRef}
             className={styles.figure}
             data-testid={`reference-${stage}-panel`}
             data-reference={reference.key}
             data-stage-source={media.src}
             data-execution-environment={environment.key}
             data-environment-source-kind={environment.sourceKind}
+            data-media-ready={mediaReady ? 'true' : 'false'}
         >
             <div className={styles.titlebar}>
                 <span className={styles.dots} aria-hidden="true">
@@ -37,6 +65,7 @@ function PanelFrame({
             </div>
             <div className={styles.scene}>
                 <img
+                    key={mediaToken}
                     className={styles.application}
                     src={media.src}
                     alt={media.alt}
@@ -44,15 +73,13 @@ function PanelFrame({
                     height="550"
                     loading="lazy"
                     decoding="async"
+                    onLoad={() => setLoadedMedia(mediaToken)}
                 />
-                <span className={styles.sourceChip}>
-                    <i aria-hidden="true" />
-                    {media.sourceLabel}
-                </span>
                 <div className={styles.stageOverlay}>{children}</div>
                 <ExecutionEnvironmentOverlay
                     environment={environment}
                     reference={reference}
+                    stage={stage}
                 />
             </div>
             <figcaption className={styles.caption}>
@@ -109,6 +136,8 @@ function CompilePanel({ reference, environment }) {
 }
 
 function ResolvePanel({ reference, environment }) {
+    const track = reference.resolve.track
+
     return (
         <PanelFrame
             reference={reference}
@@ -117,8 +146,19 @@ function ResolvePanel({ reference, environment }) {
             badge="resolving"
             caption="Selected-app replay footage with the target-evidence ladder and explicit halt path animated in context."
         >
-            <span className={styles.targetMarker} aria-hidden="true">
+            <span
+                className={`${styles.targetMarker} ${
+                    styles[track.animationClass]
+                }`}
+                data-testid="resolve-target-track"
+                data-resolve-track={track.animationClass}
+                data-resolve-duration={track.duration}
+                data-resolve-evidence={track.evidence}
+                style={{ '--target-duration': track.duration }}
+                aria-hidden="true"
+            >
                 <i />
+                <b>target</b>
             </span>
             <div className={`${styles.glassCard} ${styles.resolveCard}`}>
                 <div className={styles.panelHeading}>
@@ -127,10 +167,7 @@ function ResolvePanel({ reference, environment }) {
                 </div>
                 <ol className={styles.ladder}>
                     {reference.resolve.evidence.map((item, index) => (
-                        <li
-                            key={item}
-                            style={{ '--evidence-index': index }}
-                        >
+                        <li key={item}>
                             <span>{String(index + 1).padStart(2, '0')}</span>
                             <strong>{item}</strong>
                         </li>
