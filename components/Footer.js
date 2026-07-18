@@ -135,6 +135,12 @@ export default function Footer() {
                             Blog
                         </a>
                         <a
+                            href="https://app.openadapt.ai"
+                            className={styles.link}
+                        >
+                            Hosted dashboard (beta)
+                        </a>
+                        <a
                             href="https://github.com/OpenAdaptAI"
                             className={styles.link}
                             onClick={() =>
