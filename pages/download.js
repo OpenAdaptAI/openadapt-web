@@ -9,6 +9,7 @@ import {
     DESKTOP_PLATFORMS,
     DESKTOP_RELEASES_PAGE,
     detectDesktopPlatform,
+    detectDesktopPlatformWithHints,
     releaseSigningState,
 } from 'utils/desktopRelease'
 
@@ -33,11 +34,16 @@ export default function DownloadPage({ release, fetchFailed }) {
     const [detectedId, setDetectedId] = useState(null)
 
     useEffect(() => {
-        setDetectedId(
-            detectDesktopPlatform(
-                typeof navigator === 'undefined' ? null : navigator
-            )
-        )
+        let active = true
+        const navigatorValue =
+            typeof navigator === 'undefined' ? null : navigator
+        setDetectedId(detectDesktopPlatform(navigatorValue))
+        detectDesktopPlatformWithHints(navigatorValue).then((next) => {
+            if (active) setDetectedId(next)
+        })
+        return () => {
+            active = false
+        }
     }, [])
 
     const assets =
@@ -59,6 +65,13 @@ export default function DownloadPage({ release, fetchFailed }) {
                 (d) => d.platform.id === detectedId && d.asset
             ) || null,
         [platformDownloads, detectedId]
+    )
+    const macosDownloads = useMemo(
+        () =>
+            platformDownloads.filter(({ platform, asset }) =>
+                platform.id.startsWith('macos-') && asset
+            ),
+        [platformDownloads]
     )
 
     const version = release ? release.tag_name || release.name : null
@@ -171,15 +184,57 @@ export default function DownloadPage({ release, fetchFailed }) {
                         </div>
                     )}
 
-                    {status === 'ready' && !recommended && (
+                    {status === 'ready' &&
+                        detectedId === 'macos' &&
+                        macosDownloads.length > 0 && (
+                            <div className="rounded-2xl border-2 border-ink bg-panel p-6 md:p-7">
+                                <p className="eyebrow">macOS detected</p>
+                                <p className="font-display mt-2 text-xl font-semibold tracking-tight text-ink">
+                                    Choose your Mac processor
+                                </p>
+                                <p className="mt-2 text-sm text-ink-2">
+                                    Choose Apple Silicon for M1, M2, M3, M4, or
+                                    later Macs. Choose Intel for older
+                                    Intel-based Macs. You can confirm this from
+                                    Apple menu → About This Mac.
+                                </p>
+                                <div className="mt-5 flex flex-wrap gap-3">
+                                    {macosDownloads.map(
+                                        ({ platform, asset }) => (
+                                            <a
+                                                key={platform.id}
+                                                href={
+                                                    asset.browser_download_url
+                                                }
+                                                className="btn-ink"
+                                                onClick={() =>
+                                                    track('download_click', {
+                                                        platform: platform.id,
+                                                        version,
+                                                        recommended: true,
+                                                        architectureChooser:
+                                                            true,
+                                                    })
+                                                }
+                                            >
+                                                Download for {platform.arch}
+                                            </a>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                    {status === 'ready' &&
+                        !recommended &&
+                        detectedId !== 'macos' && (
                         <div>
                             <p className="eyebrow">
                                 Experimental prerelease {version}
                             </p>
                             <p className="mt-2 text-sm text-ink-2">
-                                We could not safely choose an installer for this
-                                device. Pick your platform and architecture
-                                below.
+                                Choose the build that matches your operating
+                                system and processor below.
                             </p>
                         </div>
                     )}

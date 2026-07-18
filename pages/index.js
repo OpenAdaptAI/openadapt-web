@@ -76,7 +76,7 @@ const softwareSchema = {
         priceCurrency: 'USD',
     },
     featureList: [
-        'Compile a demonstrated, bounded browser workflow',
+        'Compile a demonstrated, bounded GUI workflow',
         'Compile demonstrations into editable automation scripts',
         'Local replay with zero per-run model cost',
         'Deterministic UI re-resolution with auditable bundle updates',

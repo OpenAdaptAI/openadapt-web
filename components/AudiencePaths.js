@@ -14,8 +14,8 @@ const paths = [
     },
     {
         audience: 'Automation & operations',
-        title: 'Qualify a managed browser workflow',
-        body: 'Bring one repeated browser workflow, its operating boundary, and an independent success oracle. If it fits the current managed path, scope a supervised pilot with the team.',
+        title: 'Launch a managed workflow',
+        body: 'Bring one repeated GUI workflow, its operating boundary, and an independent success oracle. OpenAdapt compiles the demonstrated last mile and keeps its run evidence, review, and repair lifecycle connected.',
         primary: { label: 'Evaluate a workflow', href: '#book' },
         secondary: { label: 'Review the benchmark', href: '/compare' },
     },

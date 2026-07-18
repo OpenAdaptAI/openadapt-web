@@ -135,18 +135,48 @@ export function detectDesktopPlatform(navigatorValue) {
         navigatorValue.platform || ''
     }`.toLowerCase()
 
-    // Browser signals do not reliably distinguish Apple Silicon from Intel.
-    // A wrong installer is worse than asking macOS visitors to choose.
-    if (/mac|iphone|ipad/.test(fingerprint)) return null
-
     const isArm = /(?:^|[^a-z])(?:arm64|aarch64|armv8)(?:[^a-z]|$)/.test(
         fingerprint
     )
     const isX64 = /x86_64|x86-64|amd64|win64|wow64|x64/.test(fingerprint)
+    if (/mac/.test(fingerprint)) {
+        if (isArm) return 'macos-arm'
+        if (isX64) return 'macos-x64'
+        // Safari and several Chromium configurations deliberately report
+        // Apple Silicon as MacIntel. We can still give a macOS-specific
+        // two-button chooser instead of presenting detection as a failure.
+        return 'macos'
+    }
+    if (/iphone|ipad/.test(fingerprint)) return null
     if (isArm || !isX64) return null
     if (/win/.test(fingerprint)) return 'windows'
     if (/linux/.test(fingerprint) && !/android/.test(fingerprint)) return 'linux'
     return null
+}
+
+export async function detectDesktopPlatformWithHints(navigatorValue) {
+    const detected = detectDesktopPlatform(navigatorValue)
+    if (detected !== 'macos') return detected
+
+    const hints = navigatorValue?.userAgentData
+    if (!hints || typeof hints.getHighEntropyValues !== 'function') {
+        return detected
+    }
+    try {
+        const values = await hints.getHighEntropyValues([
+            'architecture',
+            'bitness',
+            'platform',
+        ])
+        const fingerprint =
+            `${values.platform || ''} ${values.architecture || ''} ${values.bitness || ''}`.toLowerCase()
+        if (!/mac/.test(fingerprint)) return detected
+        if (/arm|aarch64/.test(fingerprint)) return 'macos-arm'
+        if (/x86|x64|amd64/.test(fingerprint)) return 'macos-x64'
+    } catch {
+        // Client hints are optional. The explicit macOS chooser remains.
+    }
+    return detected
 }
 
 export function releaseSigningState(assets) {

@@ -25,7 +25,7 @@ export default function IndustriesGrid({
             title: 'RCM & vertical-software vendors',
             href: '#book',
             descriptions:
-                'Products with supported APIs for the core path and a bounded browser-only step at the edge, where volume and a separate system of record make verification practical.',
+                'Products with supported APIs for the core path and a bounded UI-only step at the edge, where volume and a separate system of record make verification practical.',
             logo: '/images/noun-healthcare.svg',
             example: {
                 label: 'Healthcare workflow reference',
@@ -49,7 +49,7 @@ export default function IndustriesGrid({
         'Automation teams & BPO operators':
             "I'm evaluating a high-volume workflow with a UI-only last-mile gap and an independent effect source of truth.",
         'RCM & vertical-software vendors':
-            "I'm evaluating a bounded browser step that remains after using supported APIs.",
+            "I'm evaluating a bounded UI step that remains after using supported APIs.",
         'Regulated enterprise operations':
             "I'm evaluating a governed repeated workflow with structured inputs and an independent effect source of truth.",
     }

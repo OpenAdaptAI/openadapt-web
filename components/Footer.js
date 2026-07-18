@@ -204,7 +204,7 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
                             href="https://app.openadapt.ai"
                             className={styles.link}
                         >
-                            Hosted dashboard (beta)
+                            Hosted dashboard
                         </a>
                         <a
                             href="https://github.com/OpenAdaptAI/OpenAdapt"

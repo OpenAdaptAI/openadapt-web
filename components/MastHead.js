@@ -51,7 +51,7 @@ export default function Home({ githubStats }) {
                                 deterministic workflows.
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                Demonstrate a bounded, repeated browser task.
+                                Demonstrate a bounded, repeated GUI workflow.
                                 Compile it into a locally executable workflow
                                 whose healthy replay makes no model calls. When the
                                 interface changes, OpenAdapt re-resolves from
@@ -59,9 +59,10 @@ export default function Home({ githubStats }) {
                                 stops for an operator.
                             </p>
                             <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
-                                Start with the supported browser path, then run
-                                through the local engine, managed control plane,
-                                or a qualified customer boundary.{' '}
+                                Use the same compiled workflow model across browser,
+                                Windows, macOS, Linux, RDP, Citrix, and VDI targets,
+                                running locally, through OpenAdapt Cloud, or inside
+                                a customer-controlled boundary.{' '}
                                 <Link href="#product-status">See how deployment works.</Link>
                             </p>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
