@@ -41,23 +41,32 @@ export default function DentalHaltMoment() {
                 It halts and asks. It never guesses.
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                Most automation fails loudly or — worse — succeeds wrongly:
-                it reads the wrong patient&apos;s screen and writes the wrong
-                benefits into your day sheet. OpenAdapt is built around the
-                opposite contract. Before a consequential step, it checks the
-                evidence on the live screen against the patient record it was
-                asked to verify. If the two don&apos;t match — a look-alike
-                name, a changed portal layout, an unexpected popup — the run
-                stops and asks your front desk, instead of silently writing a
-                wrong answer.
+                OpenAdapt checks configured case-identity and page evidence
+                before consequential steps. If the evidence does not match —
+                a look-alike name, a changed portal layout, an unexpected popup
+                — the run stops and sends the case to your front
+                desk&apos;s ready-to-finish queue.
             </p>
             <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                The result is checked against the system of record, not just
-                what happens to be on the screen. A completed run means the
-                verification actually landed where it belongs; anything
-                ambiguous becomes a question for a human, with the evidence
-                attached.
+                After a run, OpenAdapt confirms that the declared local result
+                artifacts — such as the case PDF and results-log entry — were
+                created for the scoped case. That verifies delivery, not the
+                payer&apos;s underlying accuracy, and this founding service
+                does not write benefits back into your practice-management
+                system. Anything ambiguous stays a human question with the
+                available run evidence attached.
             </p>
+
+            <div className="mt-5 max-w-3xl rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2">
+                <strong className="text-ink">Staff first, founder-backed.</strong>{' '}
+                Your team handles MFA and CAPTCHA prompts and finishes routine
+                exceptions from the local queue. A phone-only result becomes
+                an evidence-rich ready-to-call task for staff; this founding
+                service does not place the call. If a portal exception still
+                needs help, OpenAdapt provides same-business-day assistance
+                only for practices that consented to assisted access and
+                portals that cleared the access review.
+            </div>
 
             <div className="mt-8 grid gap-6 md:grid-cols-2">
                 <Clip clip={clips.record} />

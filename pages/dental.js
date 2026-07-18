@@ -7,20 +7,20 @@ import Footer from '@components/Footer'
 
 const OFFER_FACTS = [
     {
-        title: '$499/mo',
-        detail: 'Flat founding-cohort price. No per-verification fees, no per-seat math.',
+        title: '$500/mo',
+        detail: 'Flat founding price for one practice location. Cancel monthly.',
     },
     {
-        title: 'Runs on your front-desk PC',
-        detail: 'Installed on the computer your team already uses. No new portal to learn.',
+        title: '3 portals · 600 checks',
+        detail: 'Up to three approved payer portals and 600 eligibility checks each month.',
     },
     {
-        title: 'Halts instead of guessing',
-        detail: 'Anything ambiguous stops and asks a human — it never silently writes a wrong answer.',
+        title: 'Attended and local',
+        detail: 'Runs on your front-desk PC, inside portal sessions your staff open and supervise.',
     },
     {
-        title: 'Results guarantee',
-        detail: 'We agree on a verification KPI at kickoff. Miss it, and you get a full refund.',
+        title: 'Monthly KPI refund',
+        detail: 'We sign a monthly service KPI at kickoff. If we miss it, that month is refunded.',
     },
 ]
 
@@ -31,7 +31,7 @@ export default function DentalPage() {
                 <title>Automated Dental Insurance Verification — Runs on Your Front-Desk PC | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt automates dental insurance verification on your own front-desk computer. Every verification completed — by automation, or by our team when the automation halts. $499/mo founding cohort, PHI designed to stay on your machine."
+                    content="A $500/month founding service for single-location dental practices: up to 3 approved payer portals and 600 attended, local eligibility checks, with a staff-first exception queue and a signed monthly KPI."
                 />
                 <link rel="canonical" href="https://openadapt.ai/dental" />
                 <meta
@@ -40,7 +40,7 @@ export default function DentalPage() {
                 />
                 <meta
                     property="og:description"
-                    content="$499/mo, every verification completed — runs on your front-desk PC, halts instead of guessing, and our team finishes anything the automation flags. Founding cohort of 10 practices with a results guarantee."
+                    content="$500/month for one dental practice location: up to 3 approved payer portals and 600 attended, local eligibility checks, backed by a signed monthly service KPI."
                 />
                 <meta property="og:url" content="https://openadapt.ai/dental" />
             </Head>
@@ -56,18 +56,19 @@ export default function DentalPage() {
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     OpenAdapt learns your practice&apos;s own
-                    insurance-verification workflow from a recording of your
-                    team doing it once, then runs it on your front-desk
-                    computer — the same portals, the same clicks, without the
-                    person. When anything doesn&apos;t match, it halts and asks
-                    instead of guessing wrong.
+                    insurance-verification workflow from recordings of
+                    representative cases, then runs the approved paths on your
+                    front-desk computer — in the same payer sessions your
+                    staff open and supervise. When anything doesn&apos;t
+                    match, it halts and puts the case in a ready-to-finish
+                    queue instead of guessing.
                 </p>
                 <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
                     We&apos;re onboarding a founding cohort of 10 practices.
                     Founding practices work directly with the founders: we
                     build your verification workflow with you, agree on the
-                    result it has to deliver, and refund you in full if it
-                    misses.
+                    monthly service KPI in writing, and refund that
+                    month&apos;s fee if the signed KPI is missed.
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -96,10 +97,10 @@ export default function DentalPage() {
                 </div>
             </div>
 
-            {/* Halt moment: real replay footage + system-of-record story */}
+            {/* Halt moment: real replay footage + bounded delivery verification */}
             <DentalHaltMoment />
 
-            {/* Local-first / no-BAA block */}
+            {/* Local-first data-boundary block */}
             <div className="mx-auto max-w-5xl px-4 py-12">
                 <div
                     className="rounded-2xl border border-hairline bg-panel p-6 md:p-8"
@@ -115,20 +116,20 @@ export default function DentalPage() {
                         every run all live and execute on your practice&apos;s
                         own computer. Patient information is processed where it
                         already is — behind your firewall, under your existing
-                        HIPAA safeguards — not shipped to our cloud.
+                        safeguards — and is not uploaded to OpenAdapt&apos;s
+                        cloud as part of a healthy run.
                     </p>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                        Because the software is designed so we never receive
-                        protected health information in local-only processing,
-                        practices generally don&apos;t need a business
-                        associate agreement with us for this configuration —
-                        a BAA applies when a vendor creates, receives,
-                        maintains, or transmits PHI on your behalf. Your
-                        compliance officer or counsel makes that call for your
-                        practice; we&apos;re glad to walk them through exactly
-                        what the software does and doesn&apos;t touch. This is
-                        a description of how the product is built, not legal
-                        advice.
+                        Your staff handles halted cases first from the local
+                        queue. If a case still needs help, OpenAdapt can assist
+                        the same business day only when your practice has
+                        consented, the payer portal has cleared our access
+                        review, and the required privacy terms — including a
+                        BAA when applicable — are in place. Assistance is
+                        supervised on your computer; patient data is not copied
+                        into our cloud. Your compliance officer or counsel
+                        makes the legal call for your practice. This describes
+                        the operating design, not legal advice.
                     </p>
                     <p className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm">
                         <Link href="/security" className="font-medium">
@@ -148,9 +149,9 @@ export default function DentalPage() {
                     </h2>
                     <ol className="mt-5 max-w-3xl list-decimal space-y-3 pl-5 text-sm leading-relaxed text-ink-2 md:text-base">
                         <li>
-                            On a call, your team verifies one patient the way
-                            you always do while OpenAdapt records the
-                            demonstration on your machine.
+                            On a call, your team verifies representative cases
+                            for each proposed payer portal while OpenAdapt
+                            records the demonstrations on your machine.
                         </li>
                         <li>
                             We compile that demonstration into a checked,
@@ -159,8 +160,8 @@ export default function DentalPage() {
                         </li>
                         <li>
                             It runs supervised first — your front desk watches
-                            it work and answers when it halts — then becomes
-                            part of the daily routine.
+                            it work and uses the ready-to-finish queue when it
+                            halts — then it becomes part of the daily routine.
                         </li>
                     </ol>
                     <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
@@ -174,13 +175,14 @@ export default function DentalPage() {
                 {/* Closing CTA banner */}
                 <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                        Founding cohort: 10 practices. $499/mo. Full refund if
-                        it misses the agreed KPI.
+                        Founding cohort: 10 practices. $500/mo. Full refund if
+                        the signed monthly KPI is missed.
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
                         Bring the payer portals you check most and a rough
-                        weekly verification count. Twenty minutes tells you
-                        whether this fits your practice.
+                        monthly verification count. The founding service covers
+                        one location, up to three approved portals, and up to
+                        600 checks per month.
                     </p>
                     <a href="#book" className="btn-ink mt-5 inline-block">
                         Book a 20-minute setup call
