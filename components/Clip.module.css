@@ -4,6 +4,7 @@
 }
 
 .media {
+    position: relative;
     width: 100%;
     overflow: hidden;
     background: var(--panel);
@@ -25,4 +26,15 @@
     line-height: 1.5;
     letter-spacing: 0.01em;
     color: var(--ink-3);
+}
+
+.caption span,
+.caption small {
+    display: block;
+}
+
+.caption small {
+    margin-top: 2px;
+    color: var(--ink-2);
+    font: inherit;
 }

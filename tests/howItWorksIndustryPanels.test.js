@@ -56,11 +56,61 @@ test('every homepage process visual follows the selected real reference app', ()
     assert.match(panels, /data-stage-source=\{media\.src\}/)
     assert.match(panels, /src=\{media\.src\}/)
     assert.match(panels, /className=\{styles\.application\}/)
+    assert.doesNotMatch(panels, /sourceChip/)
+    const sceneMarkup = panels.slice(
+        panels.indexOf('<div className={styles.scene}>'),
+        panels.indexOf('<figcaption')
+    )
+    assert.doesNotMatch(sceneMarkup, /sourceLabel|sourceChip/)
     assert.match(panels, /OpenAdapt produces/)
     assert.doesNotMatch(panels, /MockMed/)
     assert.match(panelStyles, /animation: cardEnter/)
-    assert.match(panelStyles, /animation: targetResolve/)
+    assert.match(panelStyles, /@keyframes openemrTargets/)
+    assert.match(panelStyles, /@keyframes frappeTargets/)
+    assert.match(panelStyles, /@keyframes openimisTargets/)
+    assert.match(panelStyles, /steps\(1, end\)/)
+    assert.match(
+        panelStyles,
+        /prefers-reduced-motion:[\s\S]*?\.targetMarker\s*\{[\s\S]*?display: none/
+    )
     assert.match(panelStyles, /animation: checkReveal/)
+})
+
+test('resolve tracks are app-specific and synchronized to each replay', () => {
+    const howItWorks = read('components/HowItWorks.js')
+    const panels = read('components/ReferenceStagePanel.js')
+
+    const tracks = [
+        ['openemrTargets', '6.58s'],
+        ['frappeTargets', '10.18s'],
+        ['openimisTargets', '19.79s'],
+    ]
+    for (const [animationClass, duration] of tracks) {
+        assert.match(
+            howItWorks,
+            new RegExp(
+                `animationClass: '${animationClass}'[\\s\\S]*?duration: '${duration.replace(
+                    '.',
+                    '\\.'
+                )}'`
+            )
+        )
+    }
+    assert.equal(
+        new Set(tracks.map(([animationClass]) => animationClass)).size,
+        tracks.length
+    )
+    assert.equal(
+        new Set(tracks.map(([, duration]) => duration)).size,
+        tracks.length
+    )
+    assert.match(panels, /data-resolve-track=\{track\.animationClass\}/)
+    assert.match(panels, /data-resolve-duration=\{track\.duration\}/)
+    assert.match(panels, /styles\[track\.animationClass\]/)
+    assert.match(panels, /data-media-ready=\{mediaReady \? 'true' : 'false'\}/)
+    assert.match(panels, /new IntersectionObserver/)
+    assert.match(panels, /key=\{mediaToken\}/)
+    assert.match(panels, /onLoad=\{\(\) => setLoadedMedia\(mediaToken\)\}/)
 })
 
 test('industry panels distinguish bounded evidence from required qualification', () => {

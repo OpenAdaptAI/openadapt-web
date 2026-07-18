@@ -40,6 +40,12 @@ const referenceWorkflows = {
             effect: 'deployment-specific oracle required',
         },
         resolve: {
+            track: {
+                animationClass: 'openemrTargets',
+                duration: '6.58s',
+                evidence:
+                    'OpenEMR replay timing and visible action regions',
+            },
             evidence: [
                 'Recorded OpenEMR target evidence',
                 'Configured identity and target constraints',
@@ -108,6 +114,12 @@ const referenceWorkflows = {
             effect: 'exactly one matching Loan Application',
         },
         resolve: {
+            track: {
+                animationClass: 'frappeTargets',
+                duration: '10.18s',
+                evidence:
+                    'Frappe replay frames 0, 3, 8, 12, 16, and 20',
+            },
             evidence: [
                 'Recorded Frappe Loan Application evidence',
                 'Applicant and form-context constraints',
@@ -180,6 +192,12 @@ const referenceWorkflows = {
             effect: 'exactly one claim row in status Entered',
         },
         resolve: {
+            track: {
+                animationClass: 'openimisTargets',
+                duration: '19.79s',
+                evidence:
+                    'openIMIS replay timing and compiled claim-form action regions',
+            },
             evidence: [
                 'Recorded openIMIS claim-form evidence',
                 'Policyholder, facility, and form context',
@@ -207,12 +225,105 @@ const referenceWorkflows = {
     },
 }
 
+const executionEnvironments = {
+    browser: {
+        key: 'browser',
+        label: 'Browser',
+        system: 'DOM + Playwright',
+        detail:
+            'Structural browser execution with DOM targets, deterministic input, and configured effect checks.',
+        mediaTruth:
+            'Selected application footage with the browser execution path in context.',
+        mediaCaption:
+            'Browser execution · selected application footage',
+        sourceKind: 'application-footage',
+        pathLabel: 'structural execution',
+        nodes: ['Flow', 'DOM target', 'Effect check'],
+        motionClass: 'browser',
+    },
+    windows: {
+        key: 'windows',
+        label: 'Windows',
+        system: 'UIA + native actions',
+        detail:
+            'Local Windows execution with UI Automation target evidence, native actions, and independent outcome checks.',
+        mediaTruth:
+            'Selected application footage with the native Windows execution path in context.',
+        mediaCaption:
+            'Windows execution view · UIA overlay over selected application footage',
+        sourceKind: 'environment-visualization',
+        pathLabel: 'native Windows path',
+        nodes: ['Flow', 'UIA target', 'Outcome'],
+        motionClass: 'windows',
+    },
+    macos: {
+        key: 'macos',
+        label: 'macOS',
+        system: 'Accessibility + native',
+        detail:
+            'Local macOS execution with Accessibility element evidence, native input, and governed verification.',
+        mediaTruth:
+            'Selected application footage with the native macOS execution path in context.',
+        mediaCaption:
+            'macOS execution view · Accessibility overlay over selected application footage',
+        sourceKind: 'environment-visualization',
+        pathLabel: 'native macOS path',
+        nodes: ['Flow', 'AX element', 'Outcome'],
+        motionClass: 'macos',
+    },
+    linux: {
+        key: 'linux',
+        label: 'Linux',
+        system: 'AT-SPI + portal',
+        detail:
+            'Native Linux execution uses AT-SPI structural evidence and an operator-approved desktop session for governed actions and verification.',
+        mediaTruth:
+            'Selected application footage with the native Linux execution path in context.',
+        mediaCaption:
+            'Linux execution view · AT-SPI and approved desktop session',
+        sourceKind: 'environment-visualization',
+        pathLabel: 'native Linux path',
+        nodes: ['Flow', 'AT-SPI target', 'Outcome'],
+        motionClass: 'runner',
+    },
+    rdp: {
+        key: 'rdp',
+        label: 'RDP',
+        system: 'remote framebuffer',
+        detail:
+            'Remote execution binds the target session, maps framebuffer and input traffic, and checks the intended effect independently.',
+        mediaTruth:
+            'Selected application footage with the governed RDP transport path in context.',
+        mediaCaption:
+            'RDP execution view · governed remote transport path',
+        sourceKind: 'transport-visualization',
+        pathLabel: 'remote transport view',
+        nodes: ['Flow', 'Frame + input', 'Remote app'],
+        motionClass: 'remote',
+    },
+    citrix: {
+        key: 'citrix',
+        label: 'Citrix',
+        system: 'ICA / HDX path',
+        detail:
+            'The customer-controlled execution path carries governed pixel/input observations across the Citrix boundary and verifies effects separately.',
+        mediaTruth:
+            'Selected application footage with the governed ICA/HDX transport path in context.',
+        mediaCaption:
+            'Citrix execution view · governed ICA/HDX path',
+        sourceKind: 'transport-visualization',
+        pathLabel: 'customer-controlled transport',
+        nodes: ['Flow', 'ICA / HDX', 'Remote app'],
+        motionClass: 'citrix',
+    },
+}
+
 const steps = [
     {
         number: '1.0',
         name: 'Record',
         description:
-            'Demonstrate one bounded instance. OpenAdapt captures the browser evidence and input events needed to compile it.',
+            'Demonstrate one bounded instance. OpenAdapt captures the screen, input, and available structural evidence needed to compile it.',
         visualKey: 'record',
     },
     {
@@ -247,7 +358,10 @@ const steps = [
 
 export default function HowItWorks({ showUseCases = false }) {
     const [selectedUseCase, setSelectedUseCase] = useState('healthcare')
+    const [selectedEnvironment, setSelectedEnvironment] =
+        useState('browser')
     const selectedReference = referenceWorkflows[selectedUseCase]
+    const environment = executionEnvironments[selectedEnvironment]
 
     return (
         <section id="how-it-works" className={styles.section}>
@@ -260,44 +374,99 @@ export default function HowItWorks({ showUseCases = false }) {
                 </p>
                 {showUseCases && (
                     <div className={styles.references}>
-                        <p className={styles.referenceLabel}>
-                            Choose a reference workflow
+                        <p className={styles.selectorIntro}>
+                            Choose a workflow and execution environment
+                            independently.
                         </p>
-                        <div
-                            className={styles.tabs}
-                            role="group"
-                            aria-label="Reference workflow use case"
-                        >
-                            {Object.entries(referenceWorkflows).map(
-                                ([key, reference]) => (
-                                    <button
-                                        key={key}
-                                        type="button"
-                                        aria-pressed={selectedUseCase === key}
-                                        className={styles.tab}
-                                        onClick={() => setSelectedUseCase(key)}
-                                    >
-                                        <span>{reference.label}</span>
-                                        <small>{reference.system}</small>
-                                    </button>
-                                )
-                            )}
+                        <div className={styles.selectorBlock}>
+                            <p className={styles.referenceLabel}>
+                                Reference workflow
+                            </p>
+                            <div
+                                className={styles.tabs}
+                                role="group"
+                                aria-label="Reference workflow use case"
+                            >
+                                {Object.entries(referenceWorkflows).map(
+                                    ([key, reference]) => (
+                                        <button
+                                            key={key}
+                                            type="button"
+                                            aria-pressed={
+                                                selectedUseCase === key
+                                            }
+                                            className={styles.tab}
+                                            onClick={() =>
+                                                setSelectedUseCase(key)
+                                            }
+                                        >
+                                            <span>{reference.label}</span>
+                                            <small>{reference.system}</small>
+                                        </button>
+                                    )
+                                )}
+                            </div>
                         </div>
-                        <div
-                            className={styles.referenceSummary}
-                            aria-live="polite"
-                        >
-                            <span>{selectedReference.detail}</span>{' '}
-                            <Link href={selectedReference.href}>
-                                View the bounded use case →
-                            </Link>
+                        <div className={styles.selectorBlock}>
+                            <p className={styles.referenceLabel}>
+                                Execution environment
+                            </p>
+                            <div
+                                className={`${styles.tabs} ${styles.environmentTabs}`}
+                                role="group"
+                                aria-label="Execution environment"
+                            >
+                                {Object.entries(executionEnvironments).map(
+                                    ([key, option]) => (
+                                        <button
+                                            key={key}
+                                            type="button"
+                                            aria-pressed={
+                                                selectedEnvironment === key
+                                            }
+                                            className={`${styles.tab} ${styles.environmentTab}`}
+                                            onClick={() =>
+                                                setSelectedEnvironment(key)
+                                            }
+                                        >
+                                            <span>{option.label}</span>
+                                            <small>{option.system}</small>
+                                        </button>
+                                    )
+                                )}
+                            </div>
                         </div>
-                        <p className={styles.visualScopeNote}>
-                            Every stage uses the selected reference application.
-                            Compile, Resolve or halt, and Verify layer animated
-                            OpenAdapt contract views over that application’s real
-                            demonstration or replay footage.
-                        </p>
+                        <div className={styles.selectionSummary}>
+                            <div
+                                className={styles.referenceSummary}
+                                aria-live="polite"
+                            >
+                                <strong>
+                                    {selectedReference.label} ×{' '}
+                                    {environment.label}
+                                </strong>
+                                <span>
+                                    {selectedReference.detail}{' '}
+                                    <Link href={selectedReference.href}>
+                                        View the bounded use case →
+                                    </Link>
+                                </span>
+                            </div>
+                            <div
+                                className={styles.environmentSummary}
+                                aria-live="polite"
+                            >
+                                <span>{environment.detail}</span>
+                                <small>{environment.mediaTruth}</small>
+                            </div>
+                            <p className={styles.visualScopeNote}>
+                                {
+                                    'Every stage uses the selected reference application. '
+                                }
+                                Application footage and execution-environment
+                                overlays are labeled separately.
+                            </p>
+                        </div>
                     </div>
                 )}
                 <ol className={styles.steps}>
@@ -323,17 +492,20 @@ export default function HowItWorks({ showUseCases = false }) {
                                 <div className={styles.clip}>
                                     {isRecordedClip ? (
                                         <Clip
-                                            key={`${selectedUseCase}-${step.visualKey}`}
+                                            key={`${selectedUseCase}-${selectedEnvironment}-${step.visualKey}`}
                                             clip={
                                                 selectedReference[
                                                     step.visualKey
                                                 ]
                                             }
+                                            environment={environment}
+                                            reference={selectedReference}
                                         />
                                     ) : (
                                         <ReferenceStagePanel
-                                            key={`${selectedUseCase}-${step.visualKey}`}
+                                            key={`${selectedUseCase}-${selectedEnvironment}-${step.visualKey}`}
                                             reference={selectedReference}
+                                            environment={environment}
                                             stage={step.visualKey}
                                         />
                                     )}
