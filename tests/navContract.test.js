@@ -9,6 +9,7 @@ const read = (relative) =>
 const links = read('data/developerLinks.js')
 const nav = read('components/NavHeader.js')
 const developers = read('components/Developers.js')
+const footer = read('components/Footer.js')
 
 test('developer ecosystem links have a single canonical source', () => {
     // Canonical destinations live in data/developerLinks.js only.
@@ -41,21 +42,66 @@ test('developer ecosystem links have a single canonical source', () => {
     assert.doesNotMatch(nav, /https:\/\/docs\.openadapt\.ai/)
 })
 
-test('top navigation exposes Blog, a Developers dropdown, and Open source', () => {
-    // Blog is a top-level external item sourced from the shared module.
+test('top navigation consolidates solutions, product and developer destinations', () => {
+    for (const [label, href] of [
+        ['Healthcare', '/solutions/healthcare'],
+        ['Lending', '/solutions/lending'],
+        ['Insurance', '/solutions/insurance'],
+    ]) {
+        assert.ok(
+            nav.includes(`{ label: '${label}', href: '${href}' }`),
+            `Solutions carries ${label} → ${href}`
+        )
+    }
+    assert.match(nav, /dropdown: SOLUTIONS_LINKS/)
+
+    for (const [label, href] of [
+        ['How it runs', '/#product-status'],
+        ['Safety', '/safety'],
+        ['Compare', '/compare'],
+        ['Templates', '/templates'],
+        ['Download', '/download'],
+    ]) {
+        assert.ok(
+            nav.includes(`{ label: '${label}', href: '${href}' }`),
+            `Product carries ${label} → ${href}`
+        )
+    }
+    assert.match(nav, /dropdown: PRODUCT_LINKS/)
+
+    assert.match(nav, /\{ label: 'Launch', href: '\/#pricing' \}/)
     assert.match(nav, /label: BLOG_LINK\.label, href: BLOG_LINK\.href/)
 
-    // The Developers dropdown nests the developer ecosystem links.
-    assert.match(nav, /label: 'Developers', dropdown: DEVELOPER_LINKS/)
-    assert.match(nav, /aria-expanded=\{open\}/)
-    assert.match(nav, /aria-controls="nav-developers-menu"/)
-    assert.match(nav, /case 'Escape':/)
-    assert.match(nav, /case 'ArrowDown':/)
-    assert.match(nav, /addEventListener\('pointerdown', onPointerDown\)/)
-
-    // Open source stays top-level and keeps pointing at the flagship repo.
+    assert.match(nav, /label: 'Developers',\s+dropdown: DEVELOPER_LINKS/)
     assert.match(
         nav,
         /label: 'Open source',\s+href: 'https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt'/
     )
+
+    assert.doesNotMatch(nav, /'\/about'/)
+    assert.match(footer, /href="\/about"/)
+})
+
+test('all dropdowns share the same keyboard, pointer and ARIA behavior', () => {
+    assert.equal(
+        nav.match(/aria-haspopup="true"/g).length,
+        1,
+        'one reusable dropdown trigger implementation'
+    )
+    assert.match(nav, /function NavDropdown\(\{ label, links, menuId, align \}\)/)
+    for (const menuId of [
+        'nav-solutions-menu',
+        'nav-product-menu',
+        'nav-developers-menu',
+    ]) {
+        assert.ok(nav.includes(`menuId: '${menuId}'`), menuId)
+    }
+
+    assert.match(nav, /aria-expanded=\{open\}/)
+    assert.match(nav, /aria-controls=\{menuId\}/)
+    assert.match(nav, /case 'Escape':/)
+    assert.match(nav, /case 'ArrowDown':/)
+    assert.match(nav, /case 'ArrowUp':/)
+    assert.match(nav, /addEventListener\('pointerdown', onPointerDown\)/)
+    assert.match(nav, /mobileGroupLabel/)
 })

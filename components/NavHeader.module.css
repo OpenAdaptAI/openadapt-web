@@ -1,6 +1,8 @@
 .header {
     position: sticky;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 100;
     background: var(--panel);
     border-bottom: 1px solid var(--hairline);
@@ -96,6 +98,11 @@
     box-shadow: 0 10px 24px rgba(35, 40, 31, 0.08);
 }
 
+.dropdownPanelLeft {
+    left: -12px;
+    right: auto;
+}
+
 /* Invisible bridge over the 10px gap so hover survives the traversal
    from the trigger down into the panel. */
 .dropdownPanel::before {
@@ -159,9 +166,14 @@
     display: none;
 }
 
-/* The twelve-item desktop navigation (with Blog and the Developers
-   dropdown) no longer fits reliably below laptop widths. */
+/* Collapse before the navigation and CTA can crowd the wordmark. */
 @media (max-width: 1200px) {
+    .headerMenuOpen {
+        position: fixed;
+        inset: 0 0 auto;
+        width: 100%;
+    }
+
     .links {
         display: none;
     }
@@ -179,7 +191,10 @@
         display: flex;
         flex-direction: column;
         max-height: calc(100vh - 60px);
+        overscroll-behavior: contain;
         overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
         background: var(--panel);
         border-bottom: 1px solid var(--hairline);
         padding: 6px 16px 12px;
@@ -216,8 +231,7 @@
         padding: 12px 0 2px;
     }
 
-    /* Links inside the Developers group keep their divider even when
-       they are the group's last child, because more items follow. */
+    /* Group links retain their divider because more items follow. */
     .mobileGroup .mobileLink:last-child {
         border-bottom: 1px dotted var(--hairline-dotted);
     }
@@ -227,19 +241,24 @@
     .inner {
         gap: 8px;
         padding: 0 10px;
+        min-width: 0;
     }
 
     .wordmark {
         font-size: 17px;
+        flex: 0 1 auto;
+        min-width: 0;
     }
 
     .menuButton {
         padding: 6px 8px;
         font-size: 11px;
+        flex: 0 0 auto;
     }
 
     .cta {
         padding: 7px 11px;
         font-size: 12px;
+        flex: 0 0 auto;
     }
 }
