@@ -214,7 +214,49 @@ describe('public product truth', () => {
             cy.contains('Regulated enterprise operations').should('be.visible')
             cy.contains('Healthcare workflow reference').should('be.visible')
             cy.contains('Lending operations reference').should('be.visible')
+            cy.contains('Insurance claims reference').should('be.visible')
             cy.contains('Mortgage & lending ops').should('not.exist')
+        })
+
+        cy.get('#how-it-works').within(() => {
+            cy.contains('button', 'Healthcare')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.get('img[alt*="OpenEMR"]').should('have.length', 2)
+
+            cy.contains('button', 'Lending').click()
+            cy.contains('button', 'Lending')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.get('img[src="/lending-demo/record-frappe.gif"]').should(
+                'be.visible'
+            )
+            cy.get('img[src="/lending-demo/replay-frappe.gif"]').should(
+                'be.visible'
+            )
+
+            cy.contains('button', 'Insurance').click()
+            cy.contains('button', 'Insurance')
+                .should('have.attr', 'aria-pressed', 'true')
+            cy.get('img[src="/insurance-demo/record-openimis.gif"]').should(
+                'be.visible'
+            )
+            cy.get('img[src="/insurance-demo/replay-openimis.gif"]').should(
+                'be.visible'
+            )
+            cy.contains('View the bounded use case')
+                .should('have.attr', 'href')
+                .and('equal', '/solutions/insurance')
+        })
+
+        cy.viewport(375, 812)
+        cy.visit('/')
+        cy.get('#how-it-works').within(() => {
+            cy.contains('button', 'Insurance').click()
+            cy.get('img[src="/insurance-demo/record-openimis.gif"]').should(
+                'be.visible'
+            )
+        })
+        cy.document().then((document) => {
+            expect(document.documentElement.scrollWidth).to.be.at.most(375)
         })
 
         cy.visit('/solutions/healthcare')
@@ -254,6 +296,24 @@ describe('public product truth', () => {
             .should('have.attr', 'href')
             .and('equal', '/lending-demo/provenance.json')
         cy.get('img[alt*="OpenEMR"]').should('not.exist')
+
+        cy.visit('/solutions/insurance')
+        cy.get('h1').should('contain.text', 'Claims intake')
+        cy.contains('not evidence of a production insurance integration').should(
+            'be.visible'
+        )
+        cy.get('[data-testid="openimis-claims-workflow-demo"]').should(
+            'be.visible'
+        )
+        cy.get('img[src="/insurance-demo/record-openimis.gif"]')
+            .scrollIntoView()
+            .should('be.visible')
+        cy.get('img[src="/insurance-demo/replay-openimis.gif"]')
+            .scrollIntoView()
+            .should('be.visible')
+        cy.contains('Inspect evidence manifest')
+            .should('have.attr', 'href')
+            .and('equal', '/insurance-demo/provenance.json')
 
         cy.viewport(375, 812)
         cy.visit('/solutions/lending')
