@@ -92,7 +92,7 @@ function VerificationPanel() {
             </div>
             <figcaption className={styles.caption}>
                 Verify — every run is accepted only by a direct SQL read of the
-                claim row; local reference evidence, not a customer deployment
+                claim row in the pinned local reference environment
             </figcaption>
         </figure>
     )
@@ -172,10 +172,9 @@ export default function InsuranceWorkflowDemo() {
                         the upstream synthetic demo dataset plus one synthetic
                         policyholder. The clips show one recorded claims-intake
                         demonstration and a real compiled replay on that
-                        environment; they do not establish production insurance
-                        reliability, adjudication automation, or support for a
-                        proprietary claims platform, Windows, RDP, or Citrix.
-                        OpenAdapt is unaffiliated with the openIMIS Initiative.
+                        environment. The evidence manifest records the exact
+                        software, task, oracle, media hashes, and scope. OpenAdapt
+                        is unaffiliated with the openIMIS Initiative.
                     </p>
                     <a href="/insurance-demo/provenance.json">
                         Inspect evidence manifest

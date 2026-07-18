@@ -85,19 +85,19 @@ export default function DownloadPage() {
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
-                <title>Download OpenAdapt Desktop | OpenAdapt</title>
+                <title>Install OpenAdapt | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="Download the Experimental OpenAdapt Desktop packaging preview for Windows, macOS, and Linux."
+                    content="Install the working OpenAdapt engine, or inspect native desktop packaging for Windows, macOS, and Linux."
                 />
                 <link rel="canonical" href="https://openadapt.ai/download" />
                 <meta
                     property="og:title"
-                    content="Download OpenAdapt Desktop | OpenAdapt"
+                    content="Install OpenAdapt | OpenAdapt"
                 />
                 <meta
                     property="og:description"
-                    content="Experimental native packaging previews for Windows, macOS, and Linux."
+                    content="Install the OpenAdapt engine and inspect native desktop packaging for Windows, macOS, and Linux."
                 />
                 <meta
                     property="og:url"
@@ -107,14 +107,12 @@ export default function DownloadPage() {
 
             {/* Hero */}
             <div className="mx-auto max-w-4xl px-4 py-14">
-                <p className="eyebrow">Experimental desktop</p>
+                <p className="eyebrow">Install OpenAdapt</p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    OpenAdapt Desktop preview
+                    Start with the working engine
                 </h1>
                 <p className="mt-5 max-w-2xl text-base text-ink-2 md:text-lg">
-                    These installers validate native packaging and removal. The
-                    desktop shell is not yet connected to workflow recording or
-                    replay. Use the open-source{' '}
+                    The open-source{' '}
                     <a
                         href="https://github.com/OpenAdaptAI/openadapt-flow"
                         className="font-medium underline underline-offset-4"
@@ -123,12 +121,29 @@ export default function DownloadPage() {
                     >
                         openadapt-flow CLI
                     </a>{' '}
-                    for the working record, compile, certify, replay, and repair
-                    path.
+                    provides the complete record, compile, certify, replay, and
+                    repair workflow today. Native installers are available below
+                    for teams evaluating desktop packaging.
                 </p>
 
+                <div className="mt-6 flex flex-wrap gap-3">
+                    <a
+                        href="https://docs.openadapt.ai/getting-started/installation/"
+                        className="btn-ink"
+                    >
+                        Install the engine
+                    </a>
+                    <a href="#desktop-builds" className="btn-ghost-ink">
+                        View desktop builds
+                    </a>
+                </div>
+
                 {/* Recommended download */}
-                <div className="mt-8">
+                <div id="desktop-builds" className="mt-12 scroll-mt-8">
+                    <p className="eyebrow">Desktop packaging</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        Native installer preview
+                    </h2>
                     {status === 'loading' && (
                         <p className="text-sm text-ink-3">
                             Finding the latest release...

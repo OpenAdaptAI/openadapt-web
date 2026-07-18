@@ -48,12 +48,15 @@ const TermsOfService = () => {
                 hosted policy.
             </p>
             <p className={styles.paragraph}>
-                The hosted subscription covers approved browser workflows. Windows UIA,
-                native macOS, RDP, Citrix, customer-controlled regulated
-                deployment, professional services, an SLA, a BAA, and compliance
-                certification are not included. A separately scoped deployment
-                cannot claim support, assurance, or certification beyond its actual
-                implementation, evidence, and reviewed written terms.
+                The hosted subscription includes managed execution for approved
+                browser workflows. Workflows that require Windows UIA, native
+                macOS, RDP, Citrix, private-network access, or a regulated runtime
+                boundary must be covered by a separately scoped,
+                customer-controlled deployment order. Professional services, service
+                levels, a BAA, and compliance commitments apply only when they are
+                expressly included in a signed order. That order defines the
+                supported workflow, execution boundary, operating responsibilities,
+                and applicable assurance commitments.
             </p>
             <p className={styles.paragraph}>
                 OpenAdapt compiles demonstrated GUI workflows into deterministic,
@@ -145,9 +148,10 @@ const TermsOfService = () => {
                 A live application can reintroduce PII, PHI, credentials, or other
                 sensitive data after authoring artifacts were sanitized. Do not run
                 a workflow whose managed runtime necessarily exposes PHI or other
-                restricted data unless a separately qualified, customer-controlled
-                execution boundary and any required written agreement are in place.
-                The self-serve hosted subscription does not include a BAA. See the{' '}
+                restricted data in the self-serve hosted service. Use a
+                customer-controlled execution boundary governed by a signed order
+                and any required data-processing agreement. A BAA applies only when
+                expressly included in that signed order. See the{' '}
                 <a href="/security">Security and Data Boundary</a> page for the
                 current technical controls and limitations.
             </p>
