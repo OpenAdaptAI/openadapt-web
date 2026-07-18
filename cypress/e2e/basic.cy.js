@@ -51,6 +51,74 @@ describe('public product truth', () => {
             .and('contain.text', 'forks')
     })
 
+    it('surfaces Blog and the Developers dropdown in the primary nav', () => {
+        cy.get('nav[aria-label="Primary"]').within(() => {
+            cy.contains('a', 'Blog')
+                .should('be.visible')
+                .and('have.attr', 'href', 'https://blog.openadapt.ai')
+            cy.contains('a', 'Open source')
+                .should('be.visible')
+                .and('have.attr', 'href', 'https://github.com/OpenAdaptAI/OpenAdapt')
+            cy.contains('button', 'Developers')
+                .should('be.visible')
+                .and('have.attr', 'aria-expanded', 'false')
+            cy.get('#nav-developers-menu').should('not.exist')
+
+            cy.contains('button', 'Developers').click()
+            cy.contains('button', 'Developers').should(
+                'have.attr',
+                'aria-expanded',
+                'true'
+            )
+            cy.get('#nav-developers-menu').within(() => {
+                cy.contains('a', 'Engine source')
+                    .should('be.visible')
+                    .and(
+                        'have.attr',
+                        'href',
+                        'https://github.com/OpenAdaptAI/OpenAdapt'
+                    )
+                cy.contains('a', 'Docs')
+                    .should('be.visible')
+                    .and('have.attr', 'href', 'https://docs.openadapt.ai')
+                cy.contains('a', 'Technical paper source')
+                    .should('be.visible')
+                    .and(
+                        'have.attr',
+                        'href',
+                        'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper'
+                    )
+                cy.contains('a', 'Discord')
+                    .should('be.visible')
+                    .and('have.attr', 'href', 'https://discord.gg/yF527cQbDG')
+                cy.contains('a', 'Report an issue')
+                    .should('be.visible')
+                    .and(
+                        'have.attr',
+                        'href',
+                        'https://github.com/OpenAdaptAI/openadapt-flow/issues/new/choose'
+                    )
+                // Blog is top-level, not duplicated inside the dropdown.
+                cy.contains('a', 'Blog').should('not.exist')
+            })
+        })
+
+        // Escape closes the dropdown.
+        cy.contains('button', 'Developers').type('{esc}')
+        cy.get('#nav-developers-menu').should('not.exist')
+        cy.contains('button', 'Developers').should(
+            'have.attr',
+            'aria-expanded',
+            'false'
+        )
+
+        // Reopen, then a click outside the dropdown closes it.
+        cy.contains('button', 'Developers').click()
+        cy.get('#nav-developers-menu').should('be.visible')
+        cy.get('h1').click()
+        cy.get('#nav-developers-menu').should('not.exist')
+    })
+
     it('explains the governed workflow and execution choices', () => {
         cy.contains('What “repair” means, and where it stops').should('be.visible')
         cy.contains('Unsupported drift').should('be.visible')
@@ -124,7 +192,34 @@ describe('public product truth', () => {
                 '/#product-status'
             )
             cy.contains('Launch').should('have.attr', 'href', '/#pricing')
+            cy.contains('a', 'Blog')
+                .should('have.attr', 'href')
+                .and('equal', 'https://blog.openadapt.ai')
+            // The Developers dropdown renders as a labeled flat group.
+            cy.contains('Developers').scrollIntoView().should('be.visible')
+            cy.contains('a', 'Engine source')
+                .should('have.attr', 'href')
+                .and('equal', 'https://github.com/OpenAdaptAI/OpenAdapt')
+            cy.contains('a', 'Docs')
+                .should('have.attr', 'href')
+                .and('equal', 'https://docs.openadapt.ai')
+            cy.contains('a', 'Technical paper source')
+                .should('have.attr', 'href')
+                .and(
+                    'equal',
+                    'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper'
+                )
+            cy.contains('a', 'Discord')
+                .should('have.attr', 'href')
+                .and('equal', 'https://discord.gg/yF527cQbDG')
+            cy.contains('a', 'Report an issue')
+                .should('have.attr', 'href')
+                .and(
+                    'equal',
+                    'https://github.com/OpenAdaptAI/openadapt-flow/issues/new/choose'
+                )
             cy.contains('Open source')
+                .scrollIntoView()
                 .should('have.attr', 'href')
                 .and('equal', 'https://github.com/OpenAdaptAI/OpenAdapt')
         })

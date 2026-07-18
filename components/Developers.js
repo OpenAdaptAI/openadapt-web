@@ -2,32 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styles from './Developers.module.css';
 import InstallSection from '@components/InstallSection';
 import PyPIDownloadChart from './PyPIDownloadChart';
+import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks';
 
+// Canonical hrefs live in data/developerLinks.js (shared with the nav
+// "Developers" dropdown). Keep the historical on-page order: Engine
+// source, Docs, Technical paper source, Blog, Discord, Report an issue.
 const ecosystemLinks = [
-    {
-        label: 'Engine source',
-        href: 'https://github.com/OpenAdaptAI/OpenAdapt',
-    },
-    {
-        label: 'Docs',
-        href: 'https://docs.openadapt.ai',
-    },
-    {
-        label: 'Technical paper source',
-        href: 'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper',
-    },
-    {
-        label: 'Blog',
-        href: 'https://blog.openadapt.ai',
-    },
-    {
-        label: 'Discord',
-        href: 'https://discord.gg/yF527cQbDG',
-    },
-    {
-        label: 'Report an issue',
-        href: 'https://github.com/OpenAdaptAI/openadapt-flow/issues/new/choose',
-    },
+    ...DEVELOPER_LINKS.slice(0, 3),
+    BLOG_LINK,
+    ...DEVELOPER_LINKS.slice(3),
 ];
 
 export default function Developers() {

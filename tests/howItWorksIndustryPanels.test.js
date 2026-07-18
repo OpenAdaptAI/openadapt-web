@@ -137,7 +137,11 @@ test('primary navigation exposes Insurance and collapses before links crowd', ()
     const css = read('components/NavHeader.module.css')
 
     assert.match(nav, /label: 'Insurance', href: '\/solutions\/insurance'/)
-    assert.match(css, /@media \(max-width: 1120px\)/)
+    // 1200px: the twelve-item nav (Blog + Developers dropdown included)
+    // collapses to the mobile menu before links crowd, while the
+    // 1280px-wide desktop contract in cypress/e2e/basic.cy.js still
+    // sees the full link row.
+    assert.match(css, /@media \(max-width: 1200px\)/)
     assert.match(css, /max-height: calc\(100vh - 60px\)/)
     assert.match(css, /overflow-y: auto/)
     assert.match(css, /@media \(max-width: 420px\)/)

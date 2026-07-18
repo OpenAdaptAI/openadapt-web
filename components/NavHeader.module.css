@@ -49,6 +49,79 @@
     text-decoration: none;
 }
 
+.dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dropdownTrigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.dropdownTrigger:hover,
+.dropdownTrigger[aria-expanded='true'] {
+    color: var(--accent);
+}
+
+.caret {
+    font-size: 9px;
+    line-height: 1;
+    transform: translateY(1px);
+}
+
+.dropdownPanel {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: -12px;
+    z-index: 110;
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+    padding: 6px;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(35, 40, 31, 0.08);
+}
+
+/* Invisible bridge over the 10px gap so hover survives the traversal
+   from the trigger down into the panel. */
+.dropdownPanel::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 0;
+    right: 0;
+    height: 12px;
+}
+
+.dropdownItem {
+    font-size: 13.5px;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+
+.dropdownItem:hover {
+    color: var(--accent);
+    background: var(--ground);
+    text-decoration: none;
+}
+
 .cta {
     display: inline-block;
     padding: 7px 16px;
@@ -86,8 +159,9 @@
     display: none;
 }
 
-/* The ten-link desktop navigation no longer fits reliably at tablet widths. */
-@media (max-width: 1120px) {
+/* The twelve-item desktop navigation (with Blog and the Developers
+   dropdown) no longer fits reliably below laptop widths. */
+@media (max-width: 1200px) {
     .links {
         display: none;
     }
@@ -126,6 +200,26 @@
     .mobileLink:hover {
         color: var(--accent);
         text-decoration: none;
+    }
+
+    .mobileGroup {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobileGroupLabel {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        padding: 12px 0 2px;
+    }
+
+    /* Links inside the Developers group keep their divider even when
+       they are the group's last child, because more items follow. */
+    .mobileGroup .mobileLink:last-child {
+        border-bottom: 1px dotted var(--hairline-dotted);
     }
 }
 
