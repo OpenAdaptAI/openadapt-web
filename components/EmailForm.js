@@ -3,8 +3,9 @@ import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import styles from './EmailForm.module.css'
+import { trackEmailCapture } from 'utils/conversion'
 
-export default function EmailForm() {
+export default function EmailForm({ location = 'email_form' }) {
     const router = useRouter()
     const [email, setEmail] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -13,14 +14,6 @@ export default function EmailForm() {
     const handleSubmit = async (event) => {
         event.preventDefault()
         setIsSubmitting(true)
-
-        if (typeof window !== 'undefined' && window.gtag) {
-            window.gtag('event', 'submit_form', {
-                event_category: 'Form',
-                event_label: 'email',
-                value: 1,
-            })
-        }
 
         const formData = new FormData(event.target)
         /*
@@ -38,6 +31,9 @@ export default function EmailForm() {
                 setIsSubmitting(false)
                 if (response.ok) {
                     setFormHidden(true) // Hide form and show success message on successful submission
+                    // E1 qualified-lead conversion: email captured. Carries
+                    // first-touch utm_* attribution; never the email itself.
+                    trackEmailCapture({ location })
                     console.log('Form successfully submitted')
                     // Handle further actions here, e.g., showing a success message
                 } else {

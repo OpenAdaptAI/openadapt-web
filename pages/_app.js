@@ -7,7 +7,10 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import NavHeader from '@components/NavHeader'
+import GoogleAnalytics from '@components/analytics/GoogleAnalytics'
+import MetaPixel from '@components/analytics/MetaPixel'
 import { initAnalytics, capturePageview } from 'utils/analytics'
+import { captureAttribution } from 'utils/attribution'
 
 export default function MyApp({ Component, pageProps }) {
     const router = useRouter()
@@ -15,6 +18,9 @@ export default function MyApp({ Component, pageProps }) {
     // Initialize privacy-conscious funnel analytics (no-op without a key)
     // and capture a pageview on every client-side route change.
     useEffect(() => {
+        // First-touch utm_* capture for paid-acquisition tests (E1); no-op
+        // when the landing URL carries no campaign params.
+        captureAttribution()
         initAnalytics()
         capturePageview(window.location.pathname + window.location.search)
         const handleRouteChange = (url) => capturePageview(url)
@@ -77,6 +83,9 @@ export default function MyApp({ Component, pageProps }) {
                 <meta name="twitter:image" content="https://openadapt.ai/og.png" />
 
             </Head>
+            {/* Env-gated: render nothing without their NEXT_PUBLIC_* ids. */}
+            <GoogleAnalytics />
+            <MetaPixel />
             <NavHeader />
             <main className="font-sans">
                 <Component {...pageProps} />

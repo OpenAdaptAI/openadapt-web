@@ -1,10 +1,31 @@
 import Link from 'next/link'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import {
     buildBookingUrlWithPrefill,
     getBookingConfig,
 } from 'utils/booking'
+import { trackBookingClick, trackBookingConfirmed } from 'utils/conversion'
+
+/**
+ * Best-effort "booked call" detection: the Cal.com iframe posts messages to
+ * the parent page when a booking completes. Formats vary across embed
+ * versions, so match on origin + the event name appearing anywhere in the
+ * payload, and treat this as a soft signal (the booking itself is the
+ * source of truth in Cal.com).
+ */
+function isCalBookingSuccess(event) {
+    try {
+        if (!event?.origin || !event.origin.includes('cal.com')) return false
+        const raw =
+            typeof event.data === 'string'
+                ? event.data
+                : JSON.stringify(event.data)
+        return typeof raw === 'string' && raw.includes('bookingSuccessful')
+    } catch (err) {
+        return false
+    }
+}
 
 export default function BookingEmbed({ name = '', email = '' }) {
     const { bookingUrl, provider } = useMemo(() => {
@@ -18,6 +39,18 @@ export default function BookingEmbed({ name = '', email = '' }) {
         () => buildBookingUrlWithPrefill(bookingUrl, { name, email }),
         [bookingUrl, name, email]
     )
+
+    // E1 qualified-lead conversion: a completed Cal.com booking.
+    useEffect(() => {
+        if (!bookingUrl || provider !== 'calcom') return undefined
+        const handleMessage = (event) => {
+            if (isCalBookingSuccess(event)) {
+                trackBookingConfirmed({ location: 'booking_embed' })
+            }
+        }
+        window.addEventListener('message', handleMessage)
+        return () => window.removeEventListener('message', handleMessage)
+    }, [bookingUrl, provider])
 
     if (!bookingUrl) {
         return (
@@ -57,6 +90,11 @@ export default function BookingEmbed({ name = '', email = '' }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn-ink"
+                        onClick={() =>
+                            trackBookingClick({
+                                location: 'booking_embed_fallback',
+                            })
+                        }
                     >
                         Open Booking Link
                     </a>
@@ -88,6 +126,11 @@ export default function BookingEmbed({ name = '', email = '' }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-accent underline hover:text-ink"
+                    onClick={() =>
+                        trackBookingClick({
+                            location: 'booking_embed_direct_link',
+                        })
+                    }
                 >
                     this direct booking link
                 </a>
