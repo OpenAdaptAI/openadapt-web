@@ -43,10 +43,26 @@ test('insurance page shows a real openIMIS workflow demo without reusing other v
 
 test('insurance reference is linked from the buyer-fit grid and llms.txt', () => {
     const industries = read('components/IndustriesGrid.js')
+    const footer = read('components/Footer.js')
+    const home = read('pages/index.js')
+    const howItWorks = read('components/HowItWorks.js')
     const llms = read('public/llms.txt')
+    const sitemap = read('public/sitemap.xml')
 
     assert.match(industries, /Insurance claims reference/)
     assert.match(industries, /\/solutions\/insurance/)
+    assert.match(footer, /\/solutions\/insurance/)
+    assert.match(home, /<HowItWorks showUseCases \/>/)
+    for (const useCase of ['Healthcare', 'Lending', 'Insurance']) {
+        assert.match(howItWorks, new RegExp(`label: '${useCase}'`))
+    }
+    assert.match(howItWorks, /role="group"/)
+    assert.match(howItWorks, /aria-pressed=/)
+    assert.match(howItWorks, /\/lending-demo\/record-frappe\.gif/)
+    assert.match(howItWorks, /\/lending-demo\/replay-frappe\.gif/)
+    assert.match(howItWorks, /\/insurance-demo\/record-openimis\.gif/)
+    assert.match(howItWorks, /\/insurance-demo\/replay-openimis\.gif/)
+    assert.match(sitemap, /https:\/\/openadapt\.ai\/solutions\/insurance/)
     assert.match(llms, /Insurance Claims Reference/)
     assert.match(llms, /not evidence of a production insurance integration/)
 })
@@ -56,6 +72,10 @@ test('insurance demo media has durable synthetic evidence provenance', () => {
 
     assert.equal(provenance.synthetic_fixture, true)
     assert.equal(provenance.source.benchmark_commit.length, 40)
+    assert.equal(
+        provenance.source.benchmark_tree,
+        `https://github.com/OpenAdaptAI/openadapt-flow/tree/${provenance.source.benchmark_commit}/benchmark/openimis_claims`
+    )
     assert.match(
         provenance.source.pull_request,
         /^https:\/\/github\.com\/OpenAdaptAI\/openadapt-flow\/pull\/\d+$/

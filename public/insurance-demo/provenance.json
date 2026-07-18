@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-17T23:30:00Z",
   "synthetic_fixture": true,
   "source": {
     "repository": "https://github.com/OpenAdaptAI/openadapt-flow",
     "benchmark_commit": "3276ad2b537c558211a5a357fd7ac1e19f0a029e",
+    "benchmark_tree": "https://github.com/OpenAdaptAI/openadapt-flow/tree/3276ad2b537c558211a5a357fd7ac1e19f0a029e/benchmark/openimis_claims",
     "pull_request": "https://github.com/OpenAdaptAI/openadapt-flow/pull/141",
     "environment": "benchmark/openimis_claims (openIMIS claims-intake reference environment)",
     "recorded_claim_code": "OA000003",
