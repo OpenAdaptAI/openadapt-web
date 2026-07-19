@@ -95,9 +95,12 @@ describe('Cloud product preview', () => {
                 .should('have.attr', 'aria-pressed', 'true')
             cy.contains('h4', 'Independent readback').should('be.visible')
             cy.contains('dt', 'SQL delta').should('be.visible')
+            // Footage keeps playing (animated GIF) even though selecting a
+            // reference/view pauses the guided tour — only reduced motion
+            // shows the static still.
             cy.get('[data-testid="dashboard-reference-media"]')
                 .should('have.attr', 'src')
-                .and('include', '/lending-demo/replay-frappe.jpg')
+                .and('include', '/lending-demo/replay-frappe.gif')
             cy.contains('button', 'Play tour').click()
             cy.get('[data-reference="lending"]').should(
                 'have.attr',
