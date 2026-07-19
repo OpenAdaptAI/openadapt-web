@@ -66,38 +66,65 @@ test('reference footage animates independently of the guided-tour state', () => 
     )
 })
 
-test('dashboard preview reuses the three reference applications and provenance-backed media', () => {
+test('every reference x view slot uses provenance-backed real Cloud app footage', () => {
     const component = read('components/DashboardShowcase.js')
-    const howItWorks = JSON.parse(
-        read('public/how-it-works/MANIFEST.json')
-    )
-    const lending = JSON.parse(
-        read('public/lending-demo/provenance.json')
-    )
-    const insurance = JSON.parse(
-        read('public/insurance-demo/provenance.json')
+    const provenance = JSON.parse(
+        read('public/cloud-preview/provenance.json')
     )
 
-    assert.equal(howItWorks.steps.record_openemr.source, 'real')
-    assert.equal(howItWorks.steps.record_openemr.app, 'openemr')
-    assert.equal(lending.synthetic_fixture, true)
-    assert.equal(lending.evidence.compiled_correct, 6)
-    assert.equal(insurance.synthetic_fixture, true)
-    assert.equal(insurance.evidence.compiled_replays_verified, 3)
+    // The footage is the REAL app.openadapt.ai product (openadapt-cloud) in
+    // its explicit local mock mode, with obviously synthetic seed data.
+    assert.equal(provenance.synthetic_fixture, true)
+    assert.equal(
+        provenance.source.repository,
+        'https://github.com/OpenAdaptAI/openadapt-cloud'
+    )
+    assert.match(provenance.source.commit, /^[a-f0-9]{40}$/)
+    assert.match(provenance.source.mode, /mock/)
 
-    for (const asset of [
-        '/how-it-works/record_openemr.gif',
-        '/how-it-works/run_openemr.gif',
-        '/lending-demo/record-frappe.gif',
-        '/lending-demo/replay-frappe.gif',
-        '/insurance-demo/record-openimis.gif',
-        '/insurance-demo/replay-openimis.gif',
-    ]) {
-        assert.match(component, new RegExp(asset.replaceAll('/', '\\/')))
+    for (const referenceKey of ['healthcare', 'lending', 'insurance']) {
+        for (const view of ['workflow', 'run', 'evidence', 'report']) {
+            for (const extension of ['gif', 'jpg']) {
+                const asset = `/cloud-preview/${referenceKey}-${view}.${extension}`
+                assert.match(
+                    component,
+                    new RegExp(asset.replaceAll('/', '\\/')),
+                    `component should reference ${asset}`
+                )
+                assert.equal(
+                    fs.existsSync(path.join(root, 'public', asset)),
+                    true,
+                    `${asset} should exist`
+                )
+                assert.equal(
+                    typeof provenance.media[
+                        `${referenceKey}-${view}.${extension}`
+                    ]?.sha256,
+                    'string',
+                    `${asset} should be provenance-backed`
+                )
+            }
+        }
+    }
+
+    // Animated slots loop forever and stay at the shared 880x550 footprint.
+    for (const [name, entry] of Object.entries(provenance.media)) {
+        if (!name.endsWith('.gif')) continue
+        assert.equal(entry.width, 880)
+        assert.equal(entry.height, 550)
+        assert.match(entry.loop, /infinite/)
+        const bytes = fs.readFileSync(
+            path.join(root, 'public', 'cloud-preview', name)
+        )
         assert.equal(
-            fs.existsSync(path.join(root, 'public', asset)),
+            bytes.subarray(0, 2000).includes('NETSCAPE2.0'),
             true,
-            `${asset} should exist`
+            `${name} should carry the NETSCAPE2.0 loop extension`
         )
     }
+
+    // The per-view media selection is total: no view falls back to a shared
+    // record/replay clip.
+    assert.match(component, /reference\.media\[viewKey\]/)
+    assert.doesNotMatch(component, /reference\.media\.replay/)
 })
