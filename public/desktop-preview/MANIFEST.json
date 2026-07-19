@@ -26,6 +26,62 @@
             "sha256": "658f26f04be306ec06ad8abbc0e0f865fe29421e01a0a536403670444a5bd225",
             "width": 580,
             "height": 640
+        },
+        "windows/installer-welcome.png": {
+            "source": {
+                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+                "version": "0.6.1",
+                "release_tag": "desktop-v0.6.1",
+                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
+                "installer_sha256_prefix": "ef30d798f03be2b3",
+                "capture_method": "Live console capture (`prlctl capture`) of the real NSIS v3.11 installer for OpenAdapt Desktop Experimental v0.6.1, run inside a Parallels Windows 11 guest [Version 10.0.22631.6199, display 3024x1812]. Welcome page of the setup wizard, cropped to the dialog. No pixels retouched; VM reverted to its base snapshot afterward.",
+                "shows": "NSIS wizard welcome page: \"Welcome to OpenAdapt Desktop Setup\"."
+            },
+            "sha256": "a365a61a26103430fc13dad3c062a932c19aaa55524694a14fa8ca5d26d741a5",
+            "width": 1044,
+            "height": 784
+        },
+        "windows/installer-location.png": {
+            "source": {
+                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+                "version": "0.6.1",
+                "release_tag": "desktop-v0.6.1",
+                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
+                "installer_sha256_prefix": "ef30d798f03be2b3",
+                "capture_method": "Live console capture (`prlctl capture`) of the same NSIS installer's Choose Install Location page inside the Parallels Windows 11 guest, cropped to the dialog. Shows the real per-user default path under %LOCALAPPDATA%. No pixels retouched.",
+                "shows": "Choose Install Location page defaulting to C:\\Users\\<user>\\AppData\\Local\\OpenAdapt Desktop; footer reads Nullsoft Install System v3.11."
+            },
+            "sha256": "98f972f4837b5d89db236c4997a7ab0239e7eca808385c4673db289d774ab0a7",
+            "width": 1044,
+            "height": 784
+        },
+        "windows/installer-finish.png": {
+            "source": {
+                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+                "version": "0.6.1",
+                "release_tag": "desktop-v0.6.1",
+                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
+                "installer_sha256_prefix": "ef30d798f03be2b3",
+                "capture_method": "Live console capture (`prlctl capture`) of the NSIS installer's Completing page inside the Parallels Windows 11 guest, cropped to the dialog. The install itself completes in ~1s. No pixels retouched.",
+                "shows": "\"Completing OpenAdapt Desktop Setup\" with \"Run OpenAdapt Desktop\" and \"Create desktop shortcut\" checked. NOTE: the shipped v0.6.1 build panics at launch (openadapt-desktop issue #26), so no app-window media exists and none is fabricated."
+            },
+            "sha256": "5898e4e54286d6875adfbb7079d6e0d9ea41a4f1a82f6878900529413d3c120d",
+            "width": 1044,
+            "height": 784
+        },
+        "windows/security-warning-unsigned.png": {
+            "source": {
+                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+                "version": "0.6.1",
+                "release_tag": "desktop-v0.6.1",
+                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
+                "installer_sha256_prefix": "ef30d798f03be2b3",
+                "capture_method": "Live console capture (`prlctl capture`) of Windows' real Attachment Manager \"Open File - Security Warning\" dialog for the unsigned NSIS installer inside the Parallels Windows 11 guest. Mark-of-the-Web (ZoneId=3) was set exactly as a browser writes it on download. Cropped to the dialog; no pixels retouched.",
+                "shows": "\"Open File - Security Warning\": \"The publisher could not be verified\", Publisher: Unknown Publisher, for ...v0.6.1-windows-x86_64-unsigned-nsis-setup.exe, with Run / Cancel. This is the friction a first-time user of the unsigned build sees."
+            },
+            "sha256": "a1ee4ce63055c5ae61730783197d685cce88a391aedaadc7a6a8cec47170973c",
+            "width": 990,
+            "height": 740
         }
     }
 }
