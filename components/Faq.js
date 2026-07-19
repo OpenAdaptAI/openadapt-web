@@ -1,7 +1,7 @@
 export const faqItems = [
     {
         question: 'What is OpenAdapt?',
-        answer: 'OpenAdapt is an open-source governed compiler for repeated GUI work. You demonstrate a task, it compiles the trace into a deterministic local program, and configured verification decides whether UI drift can be re-resolved, needs a proposed repair, or must halt. A healthy replay makes no model calls.',
+        answer: 'OpenAdapt is an open-source governed workflow compiler for repeated GUI work. You demonstrate a task, it compiles the trace into a deterministic local program, and configured verification decides whether UI drift can be re-resolved, needs a proposed repair, or must halt. A healthy replay makes no model calls.',
     },
     {
         question: 'How is OpenAdapt different from RPA tools like UiPath?',

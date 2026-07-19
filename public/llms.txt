@@ -1,6 +1,6 @@
 # OpenAdapt.AI
 
-> Open-source governed compiler for repeated GUI work. OpenAdapt compiles a bounded demonstration into deterministic local replay. Healthy runs make no model calls. Under UI drift it deterministically re-resolves from retained evidence, optionally proposes a governed repair, accepts human teaching, or halts when configured verification cannot establish a safe path. MIT licensed.
+> Open-source governed workflow compiler for repeated GUI work. OpenAdapt compiles a bounded demonstration into deterministic local replay. Healthy runs make no model calls. Under UI drift it deterministically re-resolves from retained evidence, optionally proposes a governed repair, accepts human teaching, or halts when configured verification cannot establish a safe path. MIT licensed.
 
 ## Documentation
 - [Getting Started](https://docs.openadapt.ai): Installation, quick start, and CLI reference

@@ -44,8 +44,8 @@ export default function InstallSection() {
             </div>
 
             <p className={styles.subtitle}>
-                One command installs the OpenAdapt launcher and governed compiler.
-                No account or hosted service is required.
+                One command installs the OpenAdapt launcher and governed
+                workflow compiler. No account or hosted service is required.
             </p>
 
             <div className={styles.codeContainer}>
@@ -130,7 +130,9 @@ export default function InstallSection() {
                         <span>
                             The clinical gate refuses this demo bundle and
                             exits non-zero — on purpose. Safeguards refuse
-                            instead of guessing.
+                            instead of guessing. Re-run with{' '}
+                            <code>--policy permissive</code> to see a clean
+                            pass.
                         </span>
                     </div>
                     <div className={styles.commandItem}>
