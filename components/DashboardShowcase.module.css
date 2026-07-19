@@ -425,7 +425,9 @@
     width: 100%;
     height: 100%;
     min-height: 365px;
-    object-fit: cover;
+    /* The footage is the real Cloud dashboard; never crop product chrome.
+     * Letterbox inside the dark media panel instead of cover-cropping. */
+    object-fit: contain;
 }
 
 .referenceMedia span {
