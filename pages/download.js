@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
+import DesktopPreview from '@components/DesktopPreview'
 import Footer from '@components/Footer'
 import { track } from 'utils/analytics'
 import {
@@ -361,6 +362,9 @@ export default function DownloadPage({ release, fetchFailed }) {
                     </p>
                 </div>
             )}
+
+            {/* Real captures of the Experimental surfaces (see component). */}
+            <DesktopPreview />
 
             {/* Guidance is tied to the signing labels in the published assets. */}
             {status === 'ready' &&
