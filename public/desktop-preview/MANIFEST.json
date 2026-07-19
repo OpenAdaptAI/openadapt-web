@@ -1,0 +1,31 @@
+{
+    "schema_version": 1,
+    "captured_at": "2026-07-19T09:16:00-04:00",
+    "presentation": {
+        "required_media_label": "Experimental prerelease surfaces",
+        "claim_boundary": "Screenshots of real product surfaces in their honest disconnected/standalone states. Not a working end-to-end workflow demonstration."
+    },
+    "assets": {
+        "cockpit-connect.png": {
+            "source": {
+                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+                "commit": "49129892025cc5cb7b589e5e7c641f377640441b",
+                "version": "0.6.1",
+                "capture_method": "Unmodified `vite build` output of the desktop cockpit served locally and screenshotted with Playwright at device_scale_factor 2 in a 1120x760 viewport (the app's real default window size). No Tauri runtime or engine sidecar was attached, so the cockpit rendered its real connect (Sign in) surface via its own graceful-degradation code path. No DOM was injected or modified."
+            },
+            "sha256": "e8f2932e9e6d6677cd660c617f47fd04fbea253ba735978a5a5e1234411ea2ac",
+            "width": 2240,
+            "height": 1520
+        },
+        "tray-menu.png": {
+            "source": {
+                "repository": "https://github.com/OpenAdaptAI/openadapt-tray",
+                "package": "openadapt-tray 0.1.1 (PyPI)",
+                "capture_method": "The published openadapt-tray package running live in the macOS menu bar with its real menu open, captured with the macOS `screencapture` utility and cropped. A neutral dark window was placed behind the menu before capture; the menu bar, icon, and menu are unmodified. The pynput global-hotkey listener was not started (it requires macOS Input Monitoring permission unavailable to the capture session); all other components ran as shipped. State shown is the real standalone state: no desktop companion process was running and sync is offline."
+            },
+            "sha256": "658f26f04be306ec06ad8abbc0e0f865fe29421e01a0a536403670444a5bd225",
+            "width": 580,
+            "height": 640
+        }
+    }
+}
