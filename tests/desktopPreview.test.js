@@ -105,8 +105,55 @@ test('desktop preview labels match the Experimental reality', () => {
     // Static section: no animation or client state, so it cannot violate the
     // motion tokens or shift layout.
     assert.doesNotMatch(component, /useState|useEffect|setInterval/)
-    assert.match(component, /width="1120"\s+height="760"/)
+    // The cockpit still reserves its real pixel aspect ratio (2240x1464 → the
+    // launched-app capture with the macOS title bar trimmed) so it causes no
+    // layout shift.
+    assert.match(component, /width="1120"\s+height="732"/)
     assert.match(component, /width="290"\s+height="320"/)
+})
+
+test('cockpit still is the real launched v0.6.2 app window with provenance', () => {
+    const component = read('components/DesktopPreview.js')
+    const manifest = JSON.parse(read('public/desktop-preview/MANIFEST.json'))
+
+    // The cockpit asset must be declared, exist on disk, and match its hash.
+    const cockpit = manifest.assets['cockpit-connect.png']
+    assert.ok(cockpit, 'manifest must declare cockpit-connect.png')
+    const bytes = fs.readFileSync(
+        path.join(root, 'public/desktop-preview/cockpit-connect.png')
+    )
+    const sha256 = crypto.createHash('sha256').update(bytes).digest('hex')
+    assert.equal(
+        sha256,
+        cockpit.sha256,
+        'cockpit-connect.png on disk does not match its manifest hash'
+    )
+    assert.equal(
+        cockpit.sha256,
+        '96c0c1bc1b66ae3030ed80471a14107b22689350817f4cd96993b4d51fa5175f'
+    )
+
+    // Provenance: the published v0.6.2 DMG (the launch-panic fix), captured
+    // from the actual launched app — not a vite/Playwright render.
+    assert.equal(cockpit.source.version, '0.6.2')
+    assert.equal(cockpit.source.release_tag, 'desktop-v0.6.2')
+    assert.match(cockpit.source.capture_method, /launched desktop app/)
+    assert.match(cockpit.source.capture_method, /real packaged Tauri window/)
+    assert.match(cockpit.source.capture_method, /screencapture/)
+
+    // Real recorded dimensions (title bar trimmed): 2240x1464.
+    assert.equal(cockpit.width, 2240)
+    assert.equal(cockpit.height, 1464)
+
+    // The copy states the app now launches and names the v0.6.2 fix; the stale
+    // "does not launch yet" claim is gone.
+    assert.match(component, /v0\.6\.2 fixes it/)
+    assert.match(component, /the real app running/)
+    assert.match(
+        component,
+        /the real window from the launched Experimental app/
+    )
+    assert.doesNotMatch(component, /does not launch yet/)
 })
 
 test('windows install-flow captions stay honest about the unsigned prerelease', () => {
@@ -127,15 +174,25 @@ test('windows install-flow captions stay honest about the unsigned prerelease', 
         'windows section must call the Unknown Publisher warning expected'
     )
 
-    // The installer stills must NOT imply the app runs — the shipped build
-    // panics at launch (openadapt-desktop issue #26). The finish caption says
-    // so, and no app-window image is rendered anywhere on the page.
+    // The app now launches: v0.6.2 fixes the earlier startup panic
+    // (openadapt-desktop issue #26). The finish caption references the fix and
+    // points to the real running connect screen, and the stale "does not
+    // launch / no app window" claim is gone.
+    assert.doesNotMatch(
+        component,
+        /does not launch yet|no app window is shown/,
+        'the stale issue #26 launch caveat must be removed'
+    )
     assert.match(
         component,
-        /does not launch yet \(issue #26\)/,
-        'the finish caption must not imply the app runs'
+        /v0\.6\.2 fixes it/,
+        'the finish caption must credit the v0.6.2 launch fix'
     )
-    assert.doesNotMatch(component, /app-window|app_window/i)
+    assert.match(
+        component,
+        /issue #26/,
+        'the finish caption must still name the fixed issue for continuity'
+    )
 
     // The Windows install stills reserve their real pixel aspect ratio so the
     // three-up strip causes no layout shift, and there is still no client
