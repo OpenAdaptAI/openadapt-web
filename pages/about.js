@@ -16,7 +16,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'MLDSAI Inc. builds OpenAdapt, an open-source demonstration compiler for GUI automation: compile a bounded workflow demonstration into deterministic replay, and resolve, review, or refuse interface drift under configured verification.',
+        'MLDSAI Inc. builds OpenAdapt, an open-source governed workflow compiler for GUI automation: compile a bounded workflow demonstration into deterministic replay, and resolve, repair, or halt interface drift under configured verification.',
     foundingDate: '2023',
     address: {
         '@type': 'PostalAddress',
@@ -59,7 +59,7 @@ export default function AboutPage() {
                 <title>About OpenAdapt | MLDSAI Inc.</title>
                 <meta
                     name="description"
-                    content="OpenAdapt is an open-source governed compiler for repeated GUI workflows, built in the open by MLDSAI Inc. in Toronto since 2023."
+                    content="OpenAdapt is an open-source governed workflow compiler for repeated GUI work, built in the open by MLDSAI Inc. in Toronto since 2023."
                 />
                 <link rel="canonical" href="https://openadapt.ai/about" />
                 <meta property="og:title" content="About OpenAdapt | MLDSAI Inc." />
