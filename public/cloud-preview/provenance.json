@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-19T00:00:00Z",
+  "synthetic_fixture": true,
+  "source": {
+    "repository": "https://github.com/OpenAdaptAI/openadapt-cloud",
+    "commit": "5bcd074deead7ee818592b62a83fcca2d2f56f0c",
+    "branch": "main",
+    "mode": "OPENADAPT_CLOUD_MODE=mock (local development simulator; no live backend)",
+    "capture": "Playwright Chromium, 1320x825 viewport downscaled to 880x550, real page navigations of the actual dashboard UI",
+    "data": "Synthetic workflows, runs, halts, and taught fixes seeded through the app\u2019s own public API surface (POST /api/workflows, /api/runs, /api/runs/ingest-report, /api/teach); the product\u2019s own LOCAL MOCK MODE banner is visible in every frame."
+  },
+  "media": {
+    "healthcare-evidence.gif": {
+      "sha256": "196b8cf9a1d3a9449814c5ce0ba2152c7b51c4040fcb24c46fa11af022e81e4e",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 6,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "healthcare-evidence.jpg": {
+      "sha256": "78c1d7d59be11196878b5754e534576af215af3c3ba2f669b864db8a306cb76d",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "healthcare-report.gif": {
+      "sha256": "c22e77baf4ba888358caed5972d3bdf7f75ef5ef304759cd32a8893981430e5a",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 5,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "healthcare-report.jpg": {
+      "sha256": "fc2dea52f0c5d5ddfd6118ed6b3a52f25839dacdd27c0be955ab732a5c8c39b0",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "healthcare-run.gif": {
+      "sha256": "0a46d264cb78bd49d504e97305401b0546f2603e36d2fc2a5d78847b14e18d6d",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 5,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "healthcare-run.jpg": {
+      "sha256": "fc2dea52f0c5d5ddfd6118ed6b3a52f25839dacdd27c0be955ab732a5c8c39b0",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "healthcare-workflow.gif": {
+      "sha256": "dc01266c4403fccb3cf4c2b6528a5825c5601efc8ddb37ab13d9142f91d8a7a4",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 6,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "healthcare-workflow.jpg": {
+      "sha256": "4348a02d9dcd908ce8529917bb9069eb93dbfa281ef61431fc4ada8ae303089e",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "insurance-evidence.gif": {
+      "sha256": "f476c7bda40d1b065b638c94b2346e83a40cc0bd185b85e9c4b5020c35319cb6",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 6,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "insurance-evidence.jpg": {
+      "sha256": "4506550fd79ad58863364eb7fe617faf8bcce5a277cfb3fa4c2f6fb4c37acc03",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "insurance-report.gif": {
+      "sha256": "53793a257d85fa290bedc567745bbd7d7a2f7ec403a21c99d4e5a74b4ade7287",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 5,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "insurance-report.jpg": {
+      "sha256": "af827eb6866daf431bfda1332d31130aa33785b116948b7926c9d469e3f6441f",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "insurance-run.gif": {
+      "sha256": "b5a2b9efbdefbef25ff40609c1440898d82b6d4bfabc2cbd4defc50e0396934c",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 5,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "insurance-run.jpg": {
+      "sha256": "af827eb6866daf431bfda1332d31130aa33785b116948b7926c9d469e3f6441f",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "insurance-workflow.gif": {
+      "sha256": "c35a50c73ed0245c75477cc995ba4d979f45a82464923571c0f7688f70f4b93c",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 6,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "insurance-workflow.jpg": {
+      "sha256": "c30a6dd4313632ba5f55ce08a95be5c3fdd7cfee1259f96991815b074c99c738",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "lending-evidence.gif": {
+      "sha256": "79d4e1b050d54b1dccc8155085d35cc13eb9600f991a805cd637d991e3a03b8e",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 6,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "lending-evidence.jpg": {
+      "sha256": "831eb6ad2f74da0b02e214532cff7e94282a4338bb0370982b42ddaf8e9c7266",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "lending-report.gif": {
+      "sha256": "0dfaca8dba22116f1a07b3c9ee013a6b68c95e10b719c763b743f66f9edb96e8",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 5,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "lending-report.jpg": {
+      "sha256": "ec6ffe4f8052534de5e33ed39e90a2e7ad370e83bec7332bc23b8a01595ce5da",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "lending-run.gif": {
+      "sha256": "807c51fcdeeeb613e83787a3d0e8c7d8058bbad0f059035e8a27074a0a536c78",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 5,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "lending-run.jpg": {
+      "sha256": "ec6ffe4f8052534de5e33ed39e90a2e7ad370e83bec7332bc23b8a01595ce5da",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    },
+    "lending-workflow.gif": {
+      "sha256": "5d4aaff1ed202781487bb6a940409bdde08b17e4ae9b8e29b68e845906a1ae6f",
+      "kind": "animated sequence of real OpenAdapt Cloud dashboard frames",
+      "width": 880,
+      "height": 550,
+      "frames": 6,
+      "loop": "infinite (NETSCAPE2.0)"
+    },
+    "lending-workflow.jpg": {
+      "sha256": "7652c878f0f7e8383553a4917dee8957dd1a98518f44857c7ab12838e9e3d791",
+      "kind": "first frame still (reduced-motion fallback)",
+      "width": 880,
+      "height": 550
+    }
+  }
+}

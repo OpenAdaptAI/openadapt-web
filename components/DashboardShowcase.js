@@ -19,15 +19,25 @@ const REFERENCES = [
         application: 'OpenEMR',
         workflow: 'Patient note entry',
         media: {
-            record: {
-                animated: '/how-it-works/record_openemr.gif',
-                still: '/how-it-works/record_openemr.jpg',
-                alt: 'OpenAdapt recording a bounded workflow in a live OpenEMR reference instance.',
+            workflow: {
+                animated: '/cloud-preview/healthcare-workflow.gif',
+                still: '/cloud-preview/healthcare-workflow.jpg',
+                alt: 'The OpenAdapt Cloud workflows list opening the synthetic OpenEMR workflow: approved bundle versions and run history in the real dashboard.',
             },
-            replay: {
-                animated: '/how-it-works/run_openemr.gif',
-                still: '/how-it-works/run_openemr.jpg',
-                alt: 'OpenAdapt replaying the compiled OpenEMR reference workflow.',
+            run: {
+                animated: '/cloud-preview/healthcare-run.gif',
+                still: '/cloud-preview/healthcare-run.jpg',
+                alt: 'OpenAdapt Cloud run detail for a completed synthetic OpenEMR run: step metrics and the live timeline with verified effects.',
+            },
+            evidence: {
+                animated: '/cloud-preview/healthcare-evidence.gif',
+                still: '/cloud-preview/healthcare-evidence.jpg',
+                alt: 'OpenAdapt Cloud halt evidence for the synthetic OpenEMR workflow: the locally reported stop, resolver metrics, and the governed repair page.',
+            },
+            report: {
+                animated: '/cloud-preview/healthcare-report.gif',
+                still: '/cloud-preview/healthcare-report.jpg',
+                alt: 'OpenAdapt Cloud run report for the synthetic OpenEMR run: structured step receipts bound to the compiled bundle.',
             },
         },
         views: {
@@ -95,15 +105,25 @@ const REFERENCES = [
         application: 'Frappe Lending',
         workflow: 'Loan application entry',
         media: {
-            record: {
-                animated: '/lending-demo/record-frappe.gif',
-                still: '/lending-demo/record-frappe.jpg',
-                alt: 'Captured Frappe Lending frames showing a synthetic loan application demonstration.',
+            workflow: {
+                animated: '/cloud-preview/lending-workflow.gif',
+                still: '/cloud-preview/lending-workflow.jpg',
+                alt: 'The OpenAdapt Cloud workflows list opening the synthetic Frappe Lending workflow: approved bundle versions and run history in the real dashboard.',
             },
-            replay: {
-                animated: '/lending-demo/replay-frappe.gif',
-                still: '/lending-demo/replay-frappe.jpg',
-                alt: 'OpenAdapt replaying the compiled synthetic loan application workflow in Frappe Lending.',
+            run: {
+                animated: '/cloud-preview/lending-run.gif',
+                still: '/cloud-preview/lending-run.jpg',
+                alt: 'OpenAdapt Cloud run detail for a completed synthetic Frappe Lending run: step metrics and the live timeline with verified effects.',
+            },
+            evidence: {
+                animated: '/cloud-preview/lending-evidence.gif',
+                still: '/cloud-preview/lending-evidence.jpg',
+                alt: 'OpenAdapt Cloud halt evidence for the synthetic Frappe Lending workflow: the locally reported stop, resolver metrics, and the governed repair page.',
+            },
+            report: {
+                animated: '/cloud-preview/lending-report.gif',
+                still: '/cloud-preview/lending-report.jpg',
+                alt: 'OpenAdapt Cloud run report for the synthetic Frappe Lending run: structured step receipts bound to the compiled bundle.',
             },
         },
         views: {
@@ -171,15 +191,25 @@ const REFERENCES = [
         application: 'openIMIS',
         workflow: 'Claim intake',
         media: {
-            record: {
-                animated: '/insurance-demo/record-openimis.gif',
-                still: '/insurance-demo/record-openimis.jpg',
-                alt: 'Captured openIMIS frames showing a synthetic health-facility claim demonstration.',
+            workflow: {
+                animated: '/cloud-preview/insurance-workflow.gif',
+                still: '/cloud-preview/insurance-workflow.jpg',
+                alt: 'The OpenAdapt Cloud workflows list opening the synthetic openIMIS workflow: approved bundle versions and run history in the real dashboard.',
             },
-            replay: {
-                animated: '/insurance-demo/replay-openimis.gif',
-                still: '/insurance-demo/replay-openimis.jpg',
-                alt: 'OpenAdapt replaying the compiled synthetic claim-intake workflow in openIMIS.',
+            run: {
+                animated: '/cloud-preview/insurance-run.gif',
+                still: '/cloud-preview/insurance-run.jpg',
+                alt: 'OpenAdapt Cloud run detail for a completed synthetic openIMIS run: step metrics and the live timeline with verified effects.',
+            },
+            evidence: {
+                animated: '/cloud-preview/insurance-evidence.gif',
+                still: '/cloud-preview/insurance-evidence.jpg',
+                alt: 'OpenAdapt Cloud halt evidence for the synthetic openIMIS workflow: the locally reported stop, resolver metrics, and the governed repair page.',
+            },
+            report: {
+                animated: '/cloud-preview/insurance-report.gif',
+                still: '/cloud-preview/insurance-report.jpg',
+                alt: 'OpenAdapt Cloud run report for the synthetic openIMIS run: structured step receipts bound to the compiled bundle.',
             },
         },
         views: {
@@ -282,10 +312,10 @@ export default function DashboardShowcase() {
     const reference = REFERENCES[referenceIndex]
     const viewKey = VIEW_ORDER[viewIndex]
     const view = reference.views[viewKey]
-    const media =
-        viewKey === 'workflow'
-            ? reference.media.record
-            : reference.media.replay
+    // Every reference x view slot has its own footage of the real Cloud
+    // dashboard (captured from openadapt-cloud in local mock mode with
+    // synthetic seed data — see /cloud-preview/provenance.json).
+    const media = reference.media[viewKey]
     const tourPlaying = playing && !reducedMotion
 
     const selectReference = (index) => {
@@ -477,7 +507,7 @@ export default function DashboardShowcase() {
 
                                 <div className={styles.referenceMedia}>
                                     {/*
-                                     * Reference footage follows the same
+                                     * Product footage follows the same
                                      * mechanism as the How-it-works Clips: an
                                      * <img> pointed DIRECTLY at the animated
                                      * GIF, which always plays and loops via
@@ -509,8 +539,8 @@ export default function DashboardShowcase() {
                                         data-testid="dashboard-reference-media"
                                     />
                                     <span>
-                                        Real {reference.application} reference
-                                        footage
+                                        Real OpenAdapt Cloud app · synthetic{' '}
+                                        {reference.application} workflow
                                     </span>
                                 </div>
                             </div>
