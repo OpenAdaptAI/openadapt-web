@@ -403,12 +403,36 @@ export default function DownloadPage({ release, fetchFailed }) {
                                         </p>
                                         <p className="mt-2 text-sm leading-relaxed text-ink-2">
                                             The Windows installers are not yet
-                                            Authenticode signed. If SmartScreen
-                                            shows &quot;Windows protected your
-                                            PC,&quot; verify the release checksum,
-                                            then choose More info and Run
-                                            anyway.
+                                            Authenticode signed, so Windows warns
+                                            that the publisher is unknown — this
+                                            is expected. On the &quot;Open File -
+                                            Security Warning&quot; dialog shown
+                                            below (or a SmartScreen &quot;Windows
+                                            protected your PC&quot; prompt, where
+                                            you choose More info), verify the
+                                            release checksum first, then choose
+                                            Run.
                                         </p>
+                                        <figure className="mt-4">
+                                            <img
+                                                src="/desktop-preview/windows/security-warning-unsigned.png"
+                                                width="990"
+                                                height="740"
+                                                alt='Windows "Open File - Security Warning" dialog reading "The publisher could not be verified" with Publisher: Unknown Publisher for the unsigned NSIS setup .exe, and Run and Cancel buttons.'
+                                                loading="lazy"
+                                                decoding="async"
+                                                className="block h-auto w-full rounded-lg border border-hairline"
+                                                data-testid="download-windows-security-warning"
+                                            />
+                                            <figcaption className="mt-2 text-xs leading-relaxed text-ink-3">
+                                                The real warning on the unsigned
+                                                Experimental build: &quot;Unknown
+                                                Publisher.&quot; It appears
+                                                because the installer is
+                                                unsigned, not because anything is
+                                                wrong with the download.
+                                            </figcaption>
+                                        </figure>
                                     </div>
                                 )}
                             </div>
