@@ -24,7 +24,7 @@ const FLOW_REPO = 'https://github.com/OpenAdaptAI/openadapt-flow'
 // The canonical end-user quickstart enters through the flagship OpenAdapt
 // package while source links below continue to point to the engine repository.
 const DEMO_QUICKSTART = [
-    { cmd: 'pip install openadapt', what: 'Install the OpenAdapt launcher and governed compiler.' },
+    { cmd: 'pip install openadapt', what: 'Install the OpenAdapt launcher and governed workflow compiler.' },
     { cmd: 'openadapt flow demo-record --out rec', what: 'Serve the bundled MockMed clinic app locally and record the canonical triage demonstration.' },
     { cmd: 'openadapt flow compile rec --out bundle --name triage-note', what: 'Compile the recording into a deterministic, locally executable bundle.' },
     { cmd: 'openadapt flow lint bundle', what: 'Report the bundle’s coverage gaps — expected: it finds the demo’s unarmed irreversible final click.' },
@@ -33,7 +33,7 @@ const DEMO_QUICKSTART = [
 ]
 
 const RECORD_YOUR_OWN = [
-    { cmd: 'pip install openadapt', what: 'Install the OpenAdapt launcher and governed compiler.' },
+    { cmd: 'pip install openadapt', what: 'Install the OpenAdapt launcher and governed workflow compiler.' },
     { cmd: 'openadapt flow record --url https://your.app --out rec', what: 'Open a headed browser on your app and demonstrate the workflow once; Ctrl-C to finish.' },
     { cmd: 'openadapt flow compile rec --out bundle --name my-task', what: 'Compile the recording into a deterministic bundle with auto-classified risk per step.' },
     { cmd: 'openadapt flow lint bundle && openadapt flow certify bundle --policy permissive', what: 'Surface coverage gaps, then gate the bundle against a policy before it ever deploys.' },
