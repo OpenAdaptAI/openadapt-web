@@ -5,9 +5,16 @@
  * Honesty contract (enforced by tests/desktopPreview.test.js and documented in
  * public/desktop-preview/MANIFEST.json):
  *  - Every image is a capture of real product code in the state it honestly
- *    renders: the cockpit's connect screen without a running engine, and the
- *    separately installed openadapt-tray package in its standalone state.
- *  - No fabricated UI, no synthetic screens, no retouching beyond cropping.
+ *    renders: the cockpit's connect screen from the actual launched desktop
+ *    app (the published v0.6.2 DMG, which fixes the earlier launch panic —
+ *    issue #26) with no engine attached, and the separately installed
+ *    openadapt-tray package in its standalone state.
+ *  - No fabricated UI, no synthetic screens, no retouching beyond cropping
+ *    (the cockpit still is cropped to the webview content; the app's real
+ *    macOS title bar is trimmed and the frame below supplies representative
+ *    chrome, as the tray still is cropped to its menu).
+ *  - No authenticated or workflow states: with no engine connected, only the
+ *    honest first-run connect screen exists, and that is all that is shown.
  *  - The tray is NOT part of the installers on this page and is not described
  *    as controlling a released desktop build (no released build provides the
  *    companion service it expects).
@@ -17,7 +24,7 @@
  * handling.
  */
 
-const COCKPIT_CAPTURE_VERSION = '0.6.1'
+const COCKPIT_CAPTURE_VERSION = '0.6.2'
 const TRAY_PACKAGE_VERSION = '0.1.1'
 const WINDOWS_INSTALLER_VERSION = '0.6.1'
 
@@ -88,7 +95,7 @@ const WINDOWS_INSTALLER_STEPS = [
         alt: 'Completing page reading "Completing OpenAdapt Desktop Setup" with "Run OpenAdapt Desktop" and "Create desktop shortcut" checked.',
         testid: 'desktop-preview-windows-finish',
         caption:
-            'Finish — files are placed. The shipped prerelease does not launch yet (issue #26), so no app window is shown.',
+            'Finish — files are placed and the app launches. Earlier prereleases panicked on startup (issue #26); v0.6.2 fixes it — the running connect screen above is that first launch.',
     },
 ]
 
@@ -106,7 +113,9 @@ export default function DesktopPreview() {
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
                     These are unretouched captures of the actual Experimental
                     surfaces — shown in the state a first launch honestly
-                    renders, not a mockup of a finished product.
+                    renders, not a mockup of a finished product. The desktop app
+                    now launches: v0.6.2 fixes the earlier startup panic (issue
+                    #26), and the window below is the real app running.
                 </p>
 
                 <div className="mt-8 grid grid-cols-1 items-start gap-8 md:grid-cols-5">
@@ -115,8 +124,8 @@ export default function DesktopPreview() {
                             <img
                                 src="/desktop-preview/cockpit-connect.png"
                                 width="1120"
-                                height="760"
-                                alt="OpenAdapt Desktop connect screen: a Sign in card with a host field, a browser sign-in button, and an ingest-token paste option."
+                                height="732"
+                                alt="OpenAdapt Desktop connect screen from the real launched app: a Sign in card with a host field, a browser sign-in button, and an ingest-token paste option."
                                 loading="lazy"
                                 decoding="async"
                                 className="block h-auto w-full"
@@ -127,14 +136,14 @@ export default function DesktopPreview() {
                             <strong className="font-medium text-ink-2">
                                 The desktop app&apos;s connect screen
                             </strong>{' '}
-                            — rendered from the Experimental prerelease&apos;s
-                            unmodified interface code (v
-                            {COCKPIT_CAPTURE_VERSION}) with no engine attached.
-                            First launch asks you to sign in or paste an ingest
-                            token; workflow authoring surfaces open after the
-                            engine connects. Experimental prerelease, unsigned
-                            or ad-hoc-signed builds — see the release notes
-                            before installing.
+                            — the real window from the launched Experimental app
+                            (the published v{COCKPIT_CAPTURE_VERSION} DMG, which
+                            fixes the earlier startup panic, issue #26) with no
+                            engine attached. First launch asks you to sign in or
+                            paste an ingest token; workflow authoring surfaces
+                            open after the engine connects. Experimental
+                            prerelease, unsigned or ad-hoc-signed builds — see
+                            the release notes before installing.
                         </figcaption>
                     </figure>
 
