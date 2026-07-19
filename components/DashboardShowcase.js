@@ -476,12 +476,30 @@ export default function DashboardShowcase() {
                                 </article>
 
                                 <div className={styles.referenceMedia}>
+                                    {/*
+                                     * Reference footage follows the same
+                                     * mechanism as the How-it-works Clips: an
+                                     * <img> pointed DIRECTLY at the animated
+                                     * GIF, which always plays and loops via
+                                     * the GIF's own loop flag. Footage
+                                     * playback is deliberately independent of
+                                     * the guided-tour state: selecting a
+                                     * reference or view pauses the tour, and
+                                     * an earlier version also swapped this
+                                     * src to the static .jpg still — freezing
+                                     * the footage after any tab click. Only
+                                     * prefers-reduced-motion shows the still.
+                                     * The key remounts the <img> per
+                                     * reference/view so a newly selected
+                                     * reference restarts from its first
+                                     * frame.
+                                     */}
                                     <img
-                                        key={`${reference.key}-${viewKey}-${tourPlaying}`}
+                                        key={`${reference.key}-${viewKey}`}
                                         src={
-                                            tourPlaying
-                                                ? media.animated
-                                                : media.still
+                                            reducedMotion
+                                                ? media.still
+                                                : media.animated
                                         }
                                         width="880"
                                         height="550"

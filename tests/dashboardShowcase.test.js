@@ -43,6 +43,29 @@ test('homepage shows a code-native interactive Cloud preview', () => {
     assert.doesNotMatch(component, /mediaLabel/)
 })
 
+test('reference footage animates independently of the guided-tour state', () => {
+    const component = read('components/DashboardShowcase.js')
+
+    // Regression guard: an earlier version swapped the footage <img> to the
+    // static .jpg still whenever the tour was paused — and selecting any
+    // reference tab pauses the tour, so one click froze the footage. The GIF
+    // must be gated only on prefers-reduced-motion.
+    assert.match(
+        component,
+        /reducedMotion\s*\?\s*media\.still\s*:\s*media\.animated/
+    )
+    assert.doesNotMatch(
+        component,
+        /tourPlaying\s*\?\s*media\.animated\s*:\s*media\.still/
+    )
+    // Switching reference/view remounts the <img> so the newly selected
+    // footage restarts from its first frame.
+    assert.match(
+        component,
+        /key=\{`\$\{reference\.key\}-\$\{viewKey\}`\}/
+    )
+})
+
 test('dashboard preview reuses the three reference applications and provenance-backed media', () => {
     const component = read('components/DashboardShowcase.js')
     const howItWorks = JSON.parse(
