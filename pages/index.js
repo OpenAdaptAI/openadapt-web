@@ -32,7 +32,7 @@ const organizationSchema = {
         height: 512,
     },
     description:
-        'Open-source governed compiler for repeated GUI work. OpenAdapt turns a recorded demonstration into a deterministic, locally executable workflow, proposes reviewable repairs under drift, and halts when configured verification fails.',
+        'Open-source governed workflow compiler for repeated GUI work. OpenAdapt turns a recorded demonstration into a deterministic, locally executable workflow, proposes reviewable repairs under drift, and halts when configured verification fails.',
     foundingDate: '2023',
     sameAs: [
         'https://github.com/OpenAdaptAI/OpenAdapt',
@@ -60,7 +60,7 @@ const softwareSchema = {
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Windows, macOS, Linux (browser workflow path)',
     description:
-        'Open-source governed compiler for repeated GUI work. Record a browser workflow, compile it into a deterministic local program, and use configured verification to resolve, repair, or halt under interface drift.',
+        'Open-source governed workflow compiler for repeated GUI work. Record a browser workflow, compile it into a deterministic local program, and use configured verification to resolve, repair, or halt under interface drift.',
     url: 'https://openadapt.ai',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     author: {
@@ -96,7 +96,7 @@ const websiteSchema = {
     alternateName: 'OpenAdapt',
     url: 'https://openadapt.ai',
     description:
-        'Open-source governed compiler: compile a bounded GUI demonstration into deterministic local replay, and resolve, review, or refuse interface drift.',
+        'Open-source governed workflow compiler: compile a bounded GUI demonstration into deterministic local replay, and resolve, repair, or halt interface drift.',
     publisher: {
         '@type': 'Organization',
         name: 'OpenAdapt.AI',

@@ -67,7 +67,7 @@ export default function MyApp({ Component, pageProps }) {
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="OpenAdapt.AI" />
                 <meta property="og:title" content="OpenAdapt — Governed, deterministic automation for repeated GUI work" />
-                <meta property="og:description" content="Compile a bounded demonstration into local deterministic replay, then resolve, review, or refuse interface drift. MIT licensed." />
+                <meta property="og:description" content="Compile a bounded demonstration into local deterministic replay, then resolve, repair, or halt interface drift. MIT licensed." />
                 <meta property="og:image" content="https://openadapt.ai/og.png" />
                 <meta property="og:image:type" content="image/png" />
                 <meta property="og:image:width" content="1024" />
@@ -78,7 +78,7 @@ export default function MyApp({ Component, pageProps }) {
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@OpenAdaptAI" />
                 <meta name="twitter:title" content="OpenAdapt — Governed, deterministic GUI automation" />
-                <meta name="twitter:description" content="Compile a bounded demonstration into local deterministic replay, then resolve, review, or refuse interface drift. MIT licensed." />
+                <meta name="twitter:description" content="Compile a bounded demonstration into local deterministic replay, then resolve, repair, or halt interface drift. MIT licensed." />
                 <meta name="twitter:image" content="https://openadapt.ai/og.png" />
 
             </Head>

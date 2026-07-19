@@ -55,7 +55,7 @@ export default function DriftOutcomes() {
                     ))}
                 </div>
                 <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-relaxed text-ink-3">
-                    Availability and refusal depend on recorded evidence and
+                    Availability and refusal depend on retained evidence and
                     configuration. Identity checks cover armed steps only;
                     system-of-record verification requires declared effects and
                     a configured verifier.{' '}
