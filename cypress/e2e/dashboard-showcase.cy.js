@@ -100,7 +100,16 @@ describe('Cloud product preview', () => {
             // shows the static still.
             cy.get('[data-testid="dashboard-reference-media"]')
                 .should('have.attr', 'src')
-                .and('include', '/lending-demo/replay-frappe.gif')
+                .and('include', '/cloud-preview/lending-evidence.gif')
+            // EVERY view renders real Cloud app footage as an animated .gif
+            // in normal motion mode — no view is a static-only slot.
+            for (const view of ['workflow', 'run', 'evidence', 'report']) {
+                cy.get(`[data-testid="dashboard-view-${view}"]`).click()
+                cy.get('[data-testid="dashboard-reference-media"]')
+                    .should('be.visible')
+                    .and('have.attr', 'src')
+                    .and('include', `/cloud-preview/lending-${view}.gif`)
+            }
             cy.contains('button', 'Play tour').click()
             cy.get('[data-reference="lending"]').should(
                 'have.attr',
@@ -146,7 +155,7 @@ describe('Cloud product preview', () => {
             cy.get('[data-testid="dashboard-reference-media"]')
                 .should('be.visible')
                 .and('have.attr', 'src')
-                .and('include', '/how-it-works/record_openemr.jpg')
+                .and('include', '/cloud-preview/healthcare-workflow.jpg')
         })
         cy.get('[data-testid="dashboard-reference-insurance"]')
             .click()
@@ -164,7 +173,7 @@ describe('Cloud product preview', () => {
             )
             cy.get('[data-testid="dashboard-reference-media"]')
                 .should('have.attr', 'src')
-                .and('include', '/insurance-demo/replay-openimis.jpg')
+                .and('include', '/cloud-preview/insurance-report.jpg')
             cy.contains('button', /tour/i).should('not.exist')
         })
 
