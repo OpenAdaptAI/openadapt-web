@@ -161,9 +161,14 @@ const packageColors = {
 // githubStats ({ stars, forks }) is server-rendered by the page's
 // getStaticProps — the browser must never call api.github.com (60 req/hr
 // per visitor IP means shared IPs get 403s).
-const PyPIDownloadChart = ({ githubStats = null }) => {
-    const [historyData, setHistoryData] = useState(null);
-    const [loading, setLoading] = useState(true);
+// compact: render only the cumulative line chart (no header/stats/controls/
+//   attribution) for embedding on the homepage. seedHistory: an initial
+//   historyData-shaped value (built from the committed snapshot) so the chart
+//   paints instantly and never blank/loading before the live fetch resolves;
+//   the live fetch then replaces it, and on failure the seed stays shown.
+const PyPIDownloadChart = ({ githubStats = null, compact = false, seedHistory = null }) => {
+    const [historyData, setHistoryData] = useState(seedHistory);
+    const [loading, setLoading] = useState(!seedHistory);
     const [error, setError] = useState(null);
     const [chartType, setChartType] = useState('cumulative'); // 'cumulative', 'combined', or 'packages'
     const [period, setPeriod] = useState('month');
@@ -174,7 +179,9 @@ const PyPIDownloadChart = ({ githubStats = null }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
+            // When seeded (homepage compact embed) keep the seed line visible
+            // during the refresh instead of flashing a spinner over it.
+            if (!seedHistory) setLoading(true);
             setError(null);
             try {
                 // Determine limit based on time range
@@ -190,7 +197,8 @@ const PyPIDownloadChart = ({ githubStats = null }) => {
 
                 if (!data.combined || data.combined.length === 0) {
                     setError('No download data available');
-                    setHistoryData(null);
+                    // Keep any seed so the embed never goes blank on empty data.
+                    if (!seedHistory) setHistoryData(null);
                 } else {
                     setHistoryData(data);
                     setGrowthStats(calculateGrowthStats(data.combined));
@@ -207,8 +215,11 @@ const PyPIDownloadChart = ({ githubStats = null }) => {
     }, [period, timeRange]);
 
     // Fetch recent stats and version history once on mount. GitHub stats
-    // are NOT fetched here — they arrive server-rendered via props.
+    // are NOT fetched here — they arrive server-rendered via props. In compact
+    // mode these feed only the hidden chrome, so skip them (the homepage
+    // caption does its own recent-stats fetch).
     useEffect(() => {
+        if (compact) return;
         const fetchAdditionalStats = async () => {
             try {
                 // Use Promise.allSettled to ensure all promises complete even if some fail
@@ -577,6 +588,29 @@ const PyPIDownloadChart = ({ githubStats = null }) => {
     const totalCumulative = historyData?.cumulativeHistory?.length > 0
         ? historyData.cumulativeHistory[historyData.cumulativeHistory.length - 1].downloads
         : 0;
+
+    // Compact homepage embed: just the cumulative line. The seed keeps a line
+    // on screen through refresh and failure, so we only surface the error
+    // overlay when there is nothing at all to draw.
+    if (compact) {
+        return (
+            <div className={styles.compactChart}>
+                {loading && (
+                    <div className={styles.loadingOverlay}>
+                        <div className={styles.spinner}></div>
+                        <span>Loading statistics...</span>
+                    </div>
+                )}
+                {chartData && <Line data={chartData} options={chartOptions} />}
+                {error && !chartData && (
+                    <div className={styles.errorOverlay}>
+                        <FontAwesomeIcon icon={faChartLine} className={styles.errorIcon} />
+                        <span>{error}</span>
+                    </div>
+                )}
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>
