@@ -1,0 +1,149 @@
+.section {
+    padding: 76px 20px 80px;
+    border-top: 2px solid var(--rule);
+    background: var(--paper);
+    scroll-margin-top: 72px;
+}
+
+.inner {
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.intro {
+    max-width: 780px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.heading {
+    margin: 10px 0 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+}
+
+.summary {
+    max-width: 720px;
+    margin: 16px auto 0;
+    color: var(--ink-2);
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+.queueCode,
+.figureCode {
+    margin: 16px auto 0;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 12px 14px;
+    border: 1px solid var(--hairline);
+    border-radius: 9px;
+    background: var(--panel);
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.figures {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+@media (max-width: 860px) {
+    .figures {
+        grid-template-columns: 1fr;
+    }
+}
+
+.figure {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    background: var(--panel);
+    overflow: hidden;
+}
+
+.figureHead {
+    padding: 22px 22px 6px;
+}
+
+.figureEyebrow {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.figureTitle {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+}
+
+.figureBody {
+    margin: 10px 0 0;
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.6;
+}
+
+.figureCode {
+    margin: 14px 0 0;
+}
+
+.shot {
+    margin: 18px 16px 0;
+    max-height: 480px;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--ground, var(--paper));
+}
+
+.shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: top;
+}
+
+.caption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px 22px 22px;
+    color: var(--ink-2);
+    font-size: 13px;
+}
+
+.caption small {
+    color: var(--ink-3);
+    font-size: 11.5px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 36px;
+}
