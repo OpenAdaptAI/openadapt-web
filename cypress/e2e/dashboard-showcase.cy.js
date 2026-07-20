@@ -1,184 +1,126 @@
-function preferReducedMotion(win) {
-    const defaultMatchMedia = win.matchMedia.bind(win)
-    win.matchMedia = (query) => {
-        if (query !== '(prefers-reduced-motion: reduce)') {
-            return defaultMatchMedia(query)
-        }
-        return {
-            matches: true,
-            media: query,
-            onchange: null,
-            addEventListener() {},
-            removeEventListener() {},
-            addListener() {},
-            removeListener() {},
-            dispatchEvent() {
-                return false
-            },
-        }
-    }
-}
+describe('Cloud product showcase', () => {
+    const TAB_LABELS = [
+        'Dashboard',
+        'Run detail',
+        'Halt evidence',
+        'Program visualizer',
+        'Workflow catalog',
+    ]
 
-function preferMotion(win) {
-    const defaultMatchMedia = win.matchMedia.bind(win)
-    win.matchMedia = (query) => {
-        if (query !== '(prefers-reduced-motion: reduce)') {
-            return defaultMatchMedia(query)
-        }
-        return {
-            matches: false,
-            media: query,
-            onchange: null,
-            addEventListener() {},
-            removeEventListener() {},
-            addListener() {},
-            removeListener() {},
-            dispatchEvent() {
-                return false
-            },
-        }
-    }
-}
-
-function emulateReducedMotion(value) {
-    return Cypress.automation('remote:debugger:protocol', {
-        command: 'Emulation.setEmulatedMedia',
-        params: {
-            features: [
-                {
-                    name: 'prefers-reduced-motion',
-                    value,
-                },
-            ],
-        },
-    })
-}
-
-describe('Cloud product preview', () => {
-    it('supports the guided tour and interactive reference states', () => {
-        cy.viewport(1280, 1700)
-        cy.then(() => emulateReducedMotion('no-preference'))
-        cy.visit('/hosted/welcome', { onBeforeLoad: preferMotion })
+    it('rotates the real hosted product through labeled tabs on desktop', () => {
+        cy.viewport(1440, 1700)
+        cy.visit('/hosted/welcome')
 
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
+
         cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            cy.get('[data-testid="dashboard-preview-brand"]')
-                .should('be.visible')
-                .and('contain.text', 'OpenAdapt')
-                .and('contain.text', 'Cloud')
-            cy.get('[data-reference="healthcare"]')
-                .should('have.attr', 'data-view', 'workflow')
-                .and('have.attr', 'data-playing', 'true')
-            cy.wait(4300)
-            cy.get('[data-reference="healthcare"]').should(
-                'have.attr',
-                'data-view',
-                'run'
+            // Five real frames are stacked in the rotating stage; the dashboard
+            // is the default active frame, framed as app.openadapt.ai.
+            cy.get('[data-testid="dashboard-slide"]').should('have.length', 5)
+            cy.get('[data-testid="dashboard-slide"]').each(($img) => {
+                cy.wrap($img).should('have.attr', 'loading', 'lazy')
+            })
+            cy.get('[data-testid="dashboard-slide"][data-active="true"]')
+                .should('have.length', 1)
+                .and('have.attr', 'data-slide', 'dashboard')
+                .and('have.attr', 'src')
+                .and('include', '/product-preview/dashboard-workflows.png')
+            cy.contains('app.openadapt.ai/dashboard').should('be.visible')
+
+            // Labeled, clickable tabs for every frame, plus progress dots.
+            cy.get('[data-testid="dashboard-tab"]').should('have.length', 5)
+            TAB_LABELS.forEach((label) => {
+                cy.get('[data-testid="dashboard-tabs"]').should(
+                    'contain.text',
+                    label
+                )
+            })
+            cy.get('[data-testid="dashboard-dots"] button').should(
+                'have.length',
+                5
             )
-            cy.contains('button', 'Pause tour').click()
-            cy.get('[data-reference="healthcare"]').should(
-                'have.attr',
-                'data-playing',
-                'false'
+
+            // The Dashboard tab is highlighted as active by default.
+            cy.get('[data-testid="dashboard-tab"][data-slide="dashboard"]')
+                .should('have.attr', 'aria-selected', 'true')
+                .and('have.attr', 'data-active', 'true')
+
+            // Each tab is a real thumbnail image plus a label.
+            cy.get('[data-testid="dashboard-tab"] img').should(
+                'have.length',
+                5
             )
-        })
-        cy.get('[data-testid="dashboard-reference-lending"]')
-            .focus()
-            .should('be.focused')
-            .click()
-        cy.get('[data-testid="dashboard-reference-lending"]')
-            .should('have.attr', 'aria-pressed', 'true')
-        cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            cy.contains('h3', 'Frappe Lending').should('be.visible')
-            cy.get('[data-testid="dashboard-view-evidence"]')
-                .click()
-                .should('have.attr', 'aria-pressed', 'true')
-            cy.contains('h4', 'Independent readback').should('be.visible')
-            cy.contains('dt', 'SQL delta').should('be.visible')
-            // Footage keeps playing (animated GIF) even though selecting a
-            // reference/view pauses the guided tour — only reduced motion
-            // shows the static still.
-            cy.get('[data-testid="dashboard-reference-media"]')
-                .should('have.attr', 'src')
-                .and('include', '/cloud-preview/lending-evidence.gif')
-            // EVERY view renders real Cloud app footage as an animated .gif
-            // in normal motion mode — no view is a static-only slot.
-            for (const view of ['workflow', 'run', 'evidence', 'report']) {
-                cy.get(`[data-testid="dashboard-view-${view}"]`).click()
-                cy.get('[data-testid="dashboard-reference-media"]')
-                    .should('be.visible')
-                    .and('have.attr', 'src')
-                    .and('include', `/cloud-preview/lending-${view}.gif`)
-            }
-            cy.contains('button', 'Play tour').click()
-            cy.get('[data-reference="lending"]').should(
-                'have.attr',
-                'data-playing',
-                'true'
-            )
+            // A visible countdown sits on the active thumbnail.
+            cy.get('[data-testid="dashboard-countdown"]').should('have.length', 1)
+
+            // Honest labeling, trimmed: just the real-interface line.
+            cy.contains('Real OpenAdapt Cloud interface').should('be.visible')
         })
 
-        cy.contains('Reference workflows using synthetic records').should(
-            'be.visible'
+        // The verbose sample/mock-data disclaimer is trimmed away.
+        cy.get('#cloud-product').should(
+            'not.contain.text',
+            'mock-data mode with synthetic records'
         )
+
+        // No fake mini-app scaffolding and no unverifiable domain.
+        cy.get('#cloud-product').should('not.contain.text', 'Operating view')
         cy.get('#cloud-product').should(
             'not.contain.text',
             'demo.openadapt.ai'
         )
-        cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            cy.contains('button', 'Pause tour').click()
-            cy.get('[data-playing="false"]').should('exist')
-        })
-        cy.get('[data-testid="dashboard-preview-brand"]').scrollIntoView({
-            offset: { top: -70, left: 0 },
-        })
-        cy.screenshot('dashboard-showcase-desktop', {
-            capture: 'viewport',
-        })
-        cy.get('[data-reference="lending"]').screenshot(
-            'dashboard-showcase-detail-desktop'
+
+        // The CTA opens the real hosted app.
+        cy.get('#cloud-product')
+            .contains('a', 'Open the Cloud app')
+            .should('have.attr', 'href')
+            .and('include', 'app.openadapt.ai')
+
+        // Clicking a tab jumps the large slot to that real frame and moves the
+        // highlight and browser address with it.
+        cy.get('[data-testid="dashboard-tab"][data-slide="evidence"]').click()
+        cy.get('[data-testid="dashboard-slide"][data-active="true"]')
+            .should('have.attr', 'data-slide', 'evidence')
+            .and('have.attr', 'src')
+            .and('include', '/cloud-preview/healthcare-evidence.jpg')
+        cy.get('[data-testid="dashboard-tab"][data-slide="evidence"]').should(
+            'have.attr',
+            'aria-selected',
+            'true'
         )
+
+        cy.get('[data-testid="dashboard-tab"][data-slide="program"]').click()
+        cy.get('[data-testid="dashboard-slide"][data-active="true"]')
+            .should('have.attr', 'data-slide', 'program')
+            .and('have.attr', 'src')
+            .and('include', '/cloud-preview/program-graph.png')
+
+        // Wait for the active capture to decode, then screenshot.
+        cy.get('#cloud-product').scrollIntoView()
+        cy.get('[data-testid="dashboard-slide"][data-active="true"]').should(
+            ($img) => expect($img[0].naturalWidth).to.be.greaterThan(0)
+        )
+        cy.get('#cloud-product').screenshot('dashboard-showcase-desktop')
     })
 
-    it('keeps the interactive preview static for reduced motion on mobile', () => {
-        cy.viewport(390, 844)
-        cy.then(() => emulateReducedMotion('reduce'))
-        cy.visit('/hosted/welcome', { onBeforeLoad: preferReducedMotion })
+    it('renders the showcase without horizontal overflow on mobile', () => {
+        cy.viewport(375, 900)
+        cy.visit('/hosted/welcome')
 
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
-        cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            cy.get('[data-reduced-motion="true"]')
-                .should('have.attr', 'data-playing', 'false')
-            cy.get('[data-testid="dashboard-tour-status"]')
-                .should('be.visible')
-                .and('have.text', 'Tour paused for reduced motion')
-            cy.get('[data-testid="dashboard-reference-media"]')
-                .should('be.visible')
-                .and('have.attr', 'src')
-                .and('include', '/cloud-preview/healthcare-workflow.jpg')
-        })
-        cy.get('[data-testid="dashboard-reference-insurance"]')
-            .click()
-            .should('have.attr', 'aria-pressed', 'true')
-        cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            cy.get('[data-testid="dashboard-view-report"]')
-                .focus()
-                .should('be.focused')
-                .click()
-            cy.get('[data-testid="dashboard-view-report"]')
-                .should('have.attr', 'aria-pressed', 'true')
-            cy.contains('h4', 'openIMIS reference').should('be.visible')
-            cy.contains('dt', 'Wrong-policyholder writes').should(
-                'be.visible'
-            )
-            cy.get('[data-testid="dashboard-reference-media"]')
-                .should('have.attr', 'src')
-                .and('include', '/cloud-preview/insurance-report.jpg')
-            cy.contains('button', /tour/i).should('not.exist')
+
+        // The active slide stays within the viewport (no horizontal overflow).
+        cy.get('[data-testid="dashboard-slide"][data-active="true"]').then(
+            ($img) => {
+                expect($img[0].getBoundingClientRect().width).to.be.at.most(375)
+            }
+        )
+        // The tabs remain available on mobile.
+        cy.get('[data-testid="dashboard-tab"]').should('have.length', 5)
+        cy.document().then((doc) => {
+            expect(doc.documentElement.scrollWidth).to.be.at.most(375)
         })
 
-        cy.get('#cloud-product').screenshot(
-            'dashboard-showcase-mobile-reduced-motion'
-        )
+        cy.get('#cloud-product').screenshot('dashboard-showcase-mobile')
     })
 })

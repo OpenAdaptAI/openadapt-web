@@ -7,7 +7,7 @@
     "commit": "5bcd074deead7ee818592b62a83fcca2d2f56f0c",
     "branch": "main",
     "mode": "OPENADAPT_CLOUD_MODE=mock (local development simulator; no live backend)",
-    "capture": "Playwright Chromium, 1320x825 viewport downscaled to 880x550, real page navigations of the actual dashboard UI",
+    "capture": "Playwright Chromium, real page navigations of the actual dashboard UI. The healthcare-run.jpg (run detail) and healthcare-evidence.jpg (halt evidence) stills are recaptured at 1280x800 viewport with --force-device-scale-factor=2 for crisp 2560x1600 output shown large in the web showcase; the remaining industry GIF/JPG sequences are 1320x825 downscaled to 880x550.",
     "data": "Synthetic workflows, runs, halts, and taught fixes seeded through the app\u2019s own public API surface (POST /api/workflows, /api/runs, /api/runs/ingest-report, /api/teach); the product\u2019s own LOCAL MOCK MODE banner is visible in every frame."
   },
   "media": {
@@ -20,10 +20,10 @@
       "loop": "infinite (NETSCAPE2.0)"
     },
     "healthcare-evidence.jpg": {
-      "sha256": "78c1d7d59be11196878b5754e534576af215af3c3ba2f669b864db8a306cb76d",
-      "kind": "first frame still (reduced-motion fallback)",
-      "width": 880,
-      "height": 550
+      "sha256": "6ee328ef4d0838a02cbed704e6c4c8dd230986d6bd85ee6afad5d3588439d026",
+      "kind": "high-resolution still of the real halt-evidence run detail (locally reported stop, resolver rung, provenance, metrics)",
+      "width": 2560,
+      "height": 1600
     },
     "healthcare-report.gif": {
       "sha256": "c22e77baf4ba888358caed5972d3bdf7f75ef5ef304759cd32a8893981430e5a",
@@ -48,10 +48,10 @@
       "loop": "infinite (NETSCAPE2.0)"
     },
     "healthcare-run.jpg": {
-      "sha256": "fc2dea52f0c5d5ddfd6118ed6b3a52f25839dacdd27c0be955ab732a5c8c39b0",
-      "kind": "first frame still (reduced-motion fallback)",
-      "width": 880,
-      "height": 550
+      "sha256": "08e4bee44dedbae3fdc2868041367d57265cd4f12b928d3cc3cfd59c9d9caf84",
+      "kind": "high-resolution still of the real run detail (run metrics and verified-effect timeline)",
+      "width": 2560,
+      "height": 1600
     },
     "healthcare-workflow.gif": {
       "sha256": "dc01266c4403fccb3cf4c2b6528a5825c5601efc8ddb37ab13d9142f91d8a7a4",
