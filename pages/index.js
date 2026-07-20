@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import CompiledProgramSection from '@components/CompiledProgramSection'
 import ContactBookingSection from '@components/ContactBookingSection'
 import DashboardShowcase from '@components/DashboardShowcase'
 import Developers from '@components/Developers'
@@ -275,6 +276,9 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
              */}
             <Reveal>
                 <DashboardShowcase />
+            </Reveal>
+            <Reveal>
+                <CompiledProgramSection />
             </Reveal>
             <Reveal>
                 <DriftOutcomes />
