@@ -23,11 +23,11 @@ const webPageSchema = {
 
 function Field({ label, children }) {
     return (
-        <div className="border-t border-hairline pt-4">
+        <div className="min-w-0 border-t border-hairline pt-4">
             <dt className="font-display text-xs font-semibold uppercase tracking-wide text-ink-3">
                 {label}
             </dt>
-            <dd className="mt-2 text-sm leading-relaxed text-ink-2">
+            <dd className="mt-2 break-words text-sm leading-relaxed text-ink-2">
                 {children}
             </dd>
         </div>
@@ -41,7 +41,7 @@ function CatalogEntry({ entry }) {
             className="rounded-2xl border-2 border-ink bg-panel p-6 md:p-8"
         >
             <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
+                <div className="min-w-0">
                     <p className="eyebrow">{entry.industry}</p>
                     <h2 className="font-display mt-2 text-2xl font-semibold tracking-tight text-ink">
                         {entry.application}{' '}
@@ -82,7 +82,7 @@ function CatalogEntry({ entry }) {
                 </p>
             </div>
 
-            <dl className="mt-6 grid gap-5 md:grid-cols-2">
+            <dl className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
                 <Field label="Task">{entry.task}</Field>
                 <Field label="Recording / bundle">
                     {entry.recording}{' '}
@@ -199,7 +199,7 @@ export default function WorkflowsPage() {
                     <p className="font-display text-sm font-semibold text-ink">
                         Execution substrates
                     </p>
-                    <ul className="mt-3 grid gap-2 text-sm text-ink-2 sm:grid-cols-2">
+                    <ul className="mt-3 grid grid-cols-1 gap-2 text-sm text-ink-2 sm:grid-cols-2">
                         <li>
                             <strong className="text-ink">Browser</strong> —{' '}
                             {SUBSTRATE_MATURITY.browser} (every catalog entry
@@ -226,7 +226,7 @@ export default function WorkflowsPage() {
             </div>
 
             <div className="mx-auto max-w-4xl px-4 pb-16">
-                <div className="grid gap-8">
+                <div className="grid grid-cols-1 gap-8">
                     {CATALOG.map((entry) => (
                         <CatalogEntry key={entry.id} entry={entry} />
                     ))}
