@@ -52,7 +52,7 @@ describe('public product truth', () => {
         // evaluation CTA. The full "use APIs first" qualification moved LOW on
         // the page (next to the /compare link it feeds).
         cy.contains(
-            'Purpose-built for repeated, high-stakes GUI work'
+            'Purpose-built for repeated, high-stakes GUI work with no clean API'
         ).should('be.visible')
         cy.contains('a', 'Start with OpenAdapt Cloud').should(
             'have.attr',

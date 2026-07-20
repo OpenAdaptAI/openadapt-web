@@ -4,10 +4,9 @@ import Link from 'next/link'
 import Footer from '@components/Footer'
 import { getOpenAdaptRepositoryStats } from '../lib/openAdaptRepositoryStats'
 
-// Canonical location of the technical paper source (LaTeX + figures) until a
-// built PDF ships. A concurrent PR may add public/openadapt-paper.pdf or a
-// richer /paper route; this placeholder forwards readers to the source and
-// links the PDF path defensively so a landed PDF needs no further wiring.
+// The typeset PDF is live at public/openadapt-paper.pdf. PAPER_SOURCE_URL is
+// the canonical location of the paper source (LaTeX + figures) for readers who
+// want the raw materials behind the PDF.
 const PAPER_SOURCE_URL =
     'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper'
 const PAPER_PDF_PATH = '/openadapt-paper.pdf'
@@ -81,8 +80,8 @@ export default function PaperPage({ githubStats }) {
                 </div>
 
                 <p className="mt-6 text-sm leading-relaxed text-ink-3">
-                    The typeset PDF is being finalized. Until it lands, the
-                    complete LaTeX source, figures, and evidence live in the{' '}
+                    The typeset PDF is available to read above. The complete
+                    LaTeX source, figures, and evidence live in the{' '}
                     <a
                         href={PAPER_SOURCE_URL}
                         target="_blank"
@@ -91,7 +90,12 @@ export default function PaperPage({ githubStats }) {
                     >
                         openadapt-flow paper directory
                     </a>
-                    . For measured benchmark results, see the{' '}
+                    , and the{' '}
+                    <Link href="/research" className="text-accent underline">
+                        research overview
+                    </Link>{' '}
+                    walks through the same method. For measured benchmark
+                    results, see the{' '}
                     <Link href="/compare" className="text-accent underline">
                         comparison page
                     </Link>
