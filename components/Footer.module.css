@@ -2,126 +2,288 @@
     background: var(--ground);
     border-top: 1px solid var(--hairline);
     color: var(--ink-2);
-    padding: 2rem;
+    padding: 3rem 1.5rem 2rem;
 }
 
-.footerContent {
-    text-align: center;
+.footer {
+    max-width: 72rem;
+    margin: 0 auto;
+}
+
+/* ── Upper region: brand block + link columns ───────────────────────────── */
+.top {
+    display: grid;
+    grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    min-width: 0;
+}
+
+.wordmark {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.wordmark:hover {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.tagline {
+    margin: 0;
+    max-width: 34ch;
+    font-size: 13px;
     line-height: 1.6;
-    margin-bottom: 2rem;
+    color: var(--ink-3);
 }
 
+.brandCta {
+    display: inline-block;
+    padding: 7px 16px;
+    border-radius: 9999px;
+    background: var(--ink);
+    color: var(--ground);
+    border: 1.5px solid var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--dur-2, 180ms) var(--ease-out, ease);
+}
+
+.brandCta:hover {
+    background: #3a4133;
+    border-color: #3a4133;
+    color: var(--ground);
+    text-decoration: none;
+}
+
+/* ── Link columns ───────────────────────────────────────────────────────── */
+.columns {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.75rem 1rem;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.columnTitle {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+}
+
+.columnList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.columnLink {
+    font-size: 13.5px;
+    line-height: 1.3;
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: color var(--dur-2, 180ms) var(--ease-out, ease);
+}
+
+.columnLink:hover,
+.columnLink:focus-visible {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* ── GitHub-official star / fork lookalike ──────────────────────────────── */
 .repositoryProof {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 1rem;
+    gap: 8px;
     flex-wrap: wrap;
+    margin-top: 0.2rem;
 }
 
-.repositoryStats {
+.ghButton {
     display: inline-flex;
-    overflow: hidden;
-    border: 1px solid var(--hairline);
-    border-radius: 7px;
-    background: var(--paper);
-}
-
-.repositoryStat {
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
     align-items: center;
-    gap: 0 6px;
-    min-width: 128px;
-    padding: 7px 10px;
-    color: var(--ink);
+    gap: 4px;
+    height: 28px;
+    padding: 0 8px 0 10px;
+    font-family:
+        -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+        sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #24292f;
     text-decoration: none;
+    background-color: #ebf0f4;
+    background-image: linear-gradient(180deg, #f6f8fa, #ebeef2);
+    border: 1px solid rgba(31, 35, 40, 0.15);
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: background-image var(--dur-2, 180ms) var(--ease-out, ease);
 }
 
-.repositoryStat + .repositoryStat {
-    border-left: 1px solid var(--hairline);
+.ghButton:hover {
+    color: #24292f;
+    text-decoration: none;
+    background-image: linear-gradient(180deg, #f3f4f6, #e1e6ea);
+    border-color: rgba(31, 35, 40, 0.2);
 }
 
-.repositoryStat:hover,
-.repositoryStat:focus-visible {
+.ghButton svg {
+    fill: #57606a;
+    flex: 0 0 auto;
+}
+
+/* The count bubble sits to the right of the label with the classic
+   GitHub triangle pointing back toward the button. */
+.ghCount {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    padding: 0 8px;
+    height: 22px;
     background: var(--panel);
+    border: 1px solid rgba(31, 35, 40, 0.15);
+    border-radius: 6px;
 }
 
-.repositoryStat > span {
-    grid-row: 1 / 3;
-    color: var(--accent);
-    font-size: 13px;
+.ghCount::before,
+.ghCount::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    width: 0;
+    height: 0;
+    margin-top: -5px;
+    border: 5px solid transparent;
+    border-right-color: rgba(31, 35, 40, 0.15);
 }
 
-.repositoryStat strong {
+.ghCount::after {
+    margin-right: -1px;
+    border-right-color: var(--panel);
+}
+
+.ghCount strong {
     font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 700;
-    line-height: 1.2;
-}
-
-.repositoryStat small {
-    color: var(--ink-3);
-    font-family: var(--font-mono);
-    font-size: 8px;
-    line-height: 1.3;
+    line-height: 1;
+    color: #24292f;
 }
 
 .repositorySource {
-    flex: 0 0 100%;
-    margin: -4px 0 0;
+    width: 100%;
+    margin: 0.1rem 0 0;
     color: var(--ink-3);
     font-family: var(--font-mono);
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.03em;
-    text-align: center;
 }
 
-.footerLinks {
-    list-style: none;
-    padding: 0;
+/* ── Lower bar: legal + social ──────────────────────────────────────────── */
+.bottom {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
     gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
 }
 
-@media (max-width: 520px) {
-    .footerContainer {
-        padding: 2rem 1rem;
-    }
-
-    .repositoryProof {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .repositoryProof iframe {
-        align-self: center;
-    }
-
-    .repositoryStats {
-        align-self: center;
-    }
-
-    .repositoryStat {
-        min-width: 120px;
-    }
-
-    .footerLinks {
-        gap: 0.7rem;
-        flex-wrap: wrap;
-    }
+.legal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
 }
 
-.link {
-    color: var(--accent);
+.copyright,
+.license {
+    margin: 0;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--ink-3);
+}
+
+.social {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.socialLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: var(--ink-2);
+    font-size: 16px;
     text-decoration: none;
-    transition: color 0.3s;
+    transition:
+        color var(--dur-2, 180ms) var(--ease-out, ease),
+        background-color var(--dur-2, 180ms) var(--ease-out, ease);
 }
 
-.link:hover,
-.link:focus {
-    color: var(--ink);
+.socialLink:hover,
+.socialLink:focus-visible {
+    color: var(--accent);
+    background: var(--panel);
+    text-decoration: none;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .top {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .columns {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .footerContainer {
+        padding: 2.5rem 1.25rem 2rem;
+    }
+
+    .columns {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.75rem 1rem;
+    }
+
+    .bottom {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
 }
