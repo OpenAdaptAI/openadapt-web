@@ -415,20 +415,23 @@ describe('public product truth', () => {
     it('keeps buyer claims inside the shipped browser and tested safety scope', () => {
         // FAQ moved to /compare; the per-application HowItWorks selector and
         // the buyer-fit grid moved to the solution pages. The homepage now
-        // links each reference workflow directly and shows one real reference.
+        // shares ONE selected vertical between the reference list and the
+        // reference-workflow section (defaulting to the verified Lending
+        // reference); see cypress/e2e/homepage-vertical-sync.cy.js.
         cy.get('#references').within(() => {
             cy.contains('Healthcare workflow reference').should('be.visible')
             cy.contains('Lending operations reference').should('be.visible')
             cy.contains('Insurance claims reference').should('be.visible')
         })
-        cy.get('[data-testid="frappe-lending-workflow-demo"]')
+        cy.get('[data-testid="home-reference-workflow"]')
             .scrollIntoView()
             .should('be.visible')
+            .and('have.attr', 'data-reference', 'lending')
         cy.contains('6/6 compiled trials correct').should('be.visible')
 
         cy.viewport(375, 812)
         cy.visit('/')
-        cy.get('[data-testid="frappe-lending-workflow-demo"]')
+        cy.get('[data-testid="home-reference-workflow"]')
             .scrollIntoView()
             .should('be.visible')
         cy.document().then((document) => {
