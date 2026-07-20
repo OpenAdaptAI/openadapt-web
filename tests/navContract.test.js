@@ -73,10 +73,17 @@ test('top navigation consolidates solutions, product and developer destinations'
     }
     assert.match(nav, /dropdown: PRODUCT_LINKS/)
 
-    assert.match(nav, /\{ label: 'Launch', href: '\/#pricing' \}/)
-    assert.match(nav, /label: BLOG_LINK\.label, href: BLOG_LINK\.href/)
+    // "Launch" was renamed to the clearer, conventional "Pricing".
+    assert.match(nav, /\{ label: 'Pricing', href: '\/#pricing' \}/)
+    assert.doesNotMatch(nav, /label: 'Launch'/)
 
-    assert.match(nav, /label: 'Developers',\s+dropdown: DEVELOPER_LINKS/)
+    // Blog is consolidated into the Developers dropdown rather than sitting
+    // as its own top-level item, still sourced from the canonical BLOG_LINK.
+    assert.match(
+        nav,
+        /const DEVELOPER_MENU_LINKS = \[\.\.\.DEVELOPER_LINKS, BLOG_LINK\]/
+    )
+    assert.match(nav, /label: 'Developers',\s+dropdown: DEVELOPER_MENU_LINKS/)
     assert.match(
         nav,
         /label: 'Open source',\s+href: 'https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt'/
@@ -85,6 +92,12 @@ test('top navigation consolidates solutions, product and developer destinations'
         links,
         /label: 'Compiler\/runtime source',\s+href: 'https:\/\/github\.com\/OpenAdaptAI\/OpenAdapt'/
     )
+
+    // The hosted control plane is reachable from the top nav as a secondary
+    // "Sign in" affordance distinct from the primary evaluation CTA.
+    assert.match(nav, /const CLOUD_APP_URL = 'https:\/\/app\.openadapt\.ai'/)
+    assert.match(nav, /className=\{styles\.signIn\}[\s\S]*?Sign in/)
+    assert.match(nav, /className=\{styles\.cta\}[\s\S]*?Evaluate a workflow/)
 
     assert.doesNotMatch(nav, /'\/about'/)
     assert.match(footer, /href="\/about"/)
@@ -96,7 +109,10 @@ test('all dropdowns share the same keyboard, pointer and ARIA behavior', () => {
         1,
         'one reusable dropdown trigger implementation'
     )
-    assert.match(nav, /function NavDropdown\(\{ label, links, menuId, align \}\)/)
+    assert.match(
+        nav,
+        /function NavDropdown\(\{ label, links, menuId, align \}\)/
+    )
     for (const menuId of [
         'nav-solutions-menu',
         'nav-product-menu',
