@@ -199,13 +199,9 @@ describe('public product truth', () => {
                 cy.contains('a', 'Docs')
                     .should('be.visible')
                     .and('have.attr', 'href', 'https://docs.openadapt.ai')
-                cy.contains('a', 'Technical paper source')
+                cy.contains('a', 'Technical paper')
                     .should('be.visible')
-                    .and(
-                        'have.attr',
-                        'href',
-                        'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper'
-                    )
+                    .and('have.attr', 'href', '/openadapt-paper.pdf')
                 cy.contains('a', 'Discord')
                     .should('be.visible')
                     .and('have.attr', 'href', 'https://discord.gg/yF527cQbDG')
@@ -395,12 +391,9 @@ describe('public product truth', () => {
             cy.contains('a', 'Docs')
                 .should('have.attr', 'href')
                 .and('equal', 'https://docs.openadapt.ai')
-            cy.contains('a', 'Technical paper source')
+            cy.contains('a', 'Technical paper')
                 .should('have.attr', 'href')
-                .and(
-                    'equal',
-                    'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper'
-                )
+                .and('equal', '/openadapt-paper.pdf')
             cy.contains('a', 'Discord')
                 .should('have.attr', 'href')
                 .and('equal', 'https://discord.gg/yF527cQbDG')

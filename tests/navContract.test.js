@@ -20,10 +20,7 @@ test('developer ecosystem links have a single canonical source', () => {
             'https://github.com/OpenAdaptAI/openadapt-flow',
         ],
         ['Docs', 'https://docs.openadapt.ai'],
-        [
-            'Technical paper source',
-            'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper',
-        ],
+        ['Technical paper', '/openadapt-paper.pdf'],
         ['Discord', 'https://discord.gg/yF527cQbDG'],
         [
             'Report an issue',
@@ -42,6 +39,7 @@ test('developer ecosystem links have a single canonical source', () => {
         nav,
         /import \{ BLOG_LINK, DEVELOPER_LINKS \} from 'data\/developerLinks'/
     )
+    assert.doesNotMatch(developers, /from 'data\/developerLinks'/)
     assert.doesNotMatch(developers, /https:\/\/docs\.openadapt\.ai/)
     assert.doesNotMatch(nav, /https:\/\/docs\.openadapt\.ai/)
 })
