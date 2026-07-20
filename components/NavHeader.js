@@ -25,6 +25,7 @@ const SOLUTIONS_LINKS = [
 
 const PRODUCT_LINKS = [
     { label: 'How it runs', href: '/#product-status' },
+    { label: 'Workflows', href: '/workflows' },
     { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },
     { label: 'Templates', href: '/templates' },
