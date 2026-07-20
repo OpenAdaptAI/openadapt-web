@@ -10,7 +10,8 @@
     },
     "scripts": {
         "dev": "next dev",
-        "prebuild": "npm test",
+        "fetch:paper": "node scripts/fetch-paper-pdf.js",
+        "prebuild": "npm run fetch:paper && npm test",
         "build": "next build",
         "start": "next start -H 127.0.0.1 -p 3000",
         "test": "node --test tests/*.test.js",
