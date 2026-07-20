@@ -1,19 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPython } from '@fortawesome/free-brands-svg-icons'
 
+import { getRecentDownloadStats } from 'utils/pypistatsHistory'
 import styles from './InstallStats.module.css'
 
-// Compact homepage adoption strip. Complements the hero's GitHub stars/forks
-// social proof with the one number the hero lacks: real PyPI installs.
+// Homepage adoption section: the SAME cumulative downloads-over-time chart the
+// /download page shows (components/PyPIDownloadChart in its compact cumulative
+// mode), plus a headline caption.
 //
-// Renders entirely from a COMMITTED snapshot (data/installStats.json, refreshed
-// out-of-band by scripts/fetch-install-stats.js via the refresh-install-stats
-// workflow) that the page passes in through getStaticProps. It never fetches at
-// build or request time, so the strip is in the initial HTML and can never
-// block or break the page over a flaky/rate-limited pypistats.org -- unlike the
-// runtime-fetching chart on /download, this instance is non-blocking by
-// construction. `stats` may be null/empty -> the strip renders nothing.
+// Fast + robust:
+//   - The caption's headline numbers are seeded from the committed snapshot
+//     (data/installStats.json) passed in via getStaticProps, so they are in the
+//     initial HTML and the section is never blank.
+//   - The chart is lazy-loaded (next/dynamic, ssr:false) so chart.js never
+//     bloats the initial homepage bundle or blocks first paint; a lightweight
+//     placeholder holds its space until it loads.
+//   - Both the chart and the caption then fetch LIVE client-side (same proxy /
+//     caching / 429 backoff as /download). The snapshot seeds the chart line and
+//     the caption so nothing waits on the network; live values replace them when
+//     they arrive, and if the fetch fails the snapshot simply stays shown.
+
+const PyPIDownloadChart = dynamic(() => import('./PyPIDownloadChart'), {
+    ssr: false,
+    loading: () => <div className={styles.chartPlaceholder} aria-hidden="true" />,
+})
 
 function formatCount(n) {
     const value = Number(n) || 0
@@ -22,107 +34,108 @@ function formatCount(n) {
     return value.toLocaleString()
 }
 
-function formatAsOf(asOf) {
-    if (!asOf) return ''
-    const date = new Date(`${asOf}T00:00:00Z`)
-    if (Number.isNaN(date.getTime())) return asOf
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        timeZone: 'UTC',
-    })
-}
-
-// Tiny dependency-free inline-SVG sparkline of installs over time. No chart.js,
-// no client fetch; uses the site's CSS custom properties so it tracks the theme.
-function Sparkline({ history }) {
-    const points = (Array.isArray(history) ? history : []).filter(
-        (p) => p && Number.isFinite(Number(p.downloads))
-    )
-    if (points.length < 2) return null
-
-    const width = 96
-    const height = 26
-    const pad = 3
-    const values = points.map((p) => Number(p.downloads))
-    const max = Math.max(...values, 1)
-    const stepX = (width - pad * 2) / (points.length - 1)
-
-    const coords = points.map((p, i) => ({
-        x: pad + i * stepX,
-        y: pad + (height - pad * 2) * (1 - Number(p.downloads) / max),
+// Build a historyData-shaped seed from the committed snapshot so the reused
+// chart can paint a cumulative line instantly, before its live fetch resolves.
+function buildSeedHistory(stats) {
+    const history = Array.isArray(stats?.history) ? stats.history : []
+    if (history.length < 2) return null
+    const combined = history.map((h) => ({
+        date: `${h.month}-01`,
+        downloads: Number(h.downloads) || 0,
     }))
-    const linePath = coords
-        .map((c, i) => `${i === 0 ? 'M' : 'L'}${c.x.toFixed(1)},${c.y.toFixed(1)}`)
-        .join(' ')
-    const last = coords[coords.length - 1]
-
-    return (
-        <svg
-            className={styles.spark}
-            viewBox={`0 0 ${width} ${height}`}
-            role="img"
-            aria-label="PyPI installs trend over recent months"
-        >
-            <path className={styles.sparkLine} d={linePath} />
-            <circle className={styles.sparkDot} cx={last.x} cy={last.y} r={2.4} />
-        </svg>
-    )
+    let running = 0
+    const cumulativeHistory = combined.map((point) => {
+        running += point.downloads
+        return { date: point.date, downloads: running }
+    })
+    return {
+        combined,
+        cumulativeHistory,
+        packages: {},
+        packageNames: Array.isArray(stats?.packages)
+            ? stats.packages.map((p) => p.name)
+            : [],
+    }
 }
 
 export default function InstallStats({ stats = null }) {
-    const hasData =
+    const hasSeed =
         stats &&
         Number(stats.totalLastMonth) > 0 &&
         Array.isArray(stats.packages) &&
         stats.packages.length > 0
 
-    // Graceful empty state: render nothing rather than a broken strip. A valid
-    // snapshot is committed, so this should never trigger in practice.
-    if (!hasData) return null
+    const seedTop = hasSeed ? stats.topPackage || stats.packages[0] : null
 
-    const top = stats.topPackage || stats.packages[0]
-    const asOf = formatAsOf(stats.asOf)
-    const sourceUrl = stats.sourceUrl || 'https://pypistats.org/packages/openadapt'
+    // Headline numbers: seed from the snapshot, then update with live values.
+    const [totalMonth, setTotalMonth] = useState(
+        hasSeed ? stats.totalLastMonth : 0
+    )
+    const [topName, setTopName] = useState(seedTop ? seedTop.name : '')
+
+    useEffect(() => {
+        let cancelled = false
+        getRecentDownloadStats()
+            .then((live) => {
+                if (cancelled || !live) return
+                if (live.totals && live.totals.last_month > 0) {
+                    setTotalMonth(live.totals.last_month)
+                }
+                if (live.topPackage && live.topPackage.name) {
+                    setTopName(live.topPackage.name)
+                }
+            })
+            .catch(() => {
+                // Keep the snapshot-seeded numbers on any failure.
+            })
+        return () => {
+            cancelled = true
+        }
+    }, [])
+
+    // Graceful empty state: without a snapshot seed, render nothing rather than
+    // a blank/broken section. A valid snapshot is committed, so this should not
+    // trigger in practice.
+    if (!hasSeed) return null
+
+    const seedHistory = buildSeedHistory(stats)
 
     return (
-        <aside className={styles.strip} aria-label="PyPI install statistics">
+        <section className={styles.section} id="adoption" aria-label="Adoption">
             <div className={styles.inner}>
-                <span className={styles.metric}>
-                    <FontAwesomeIcon
-                        icon={faPython}
-                        className={styles.icon}
-                        aria-hidden="true"
-                    />
-                    <strong className={styles.value}>
-                        {formatCount(stats.totalLastMonth)}
-                    </strong>
-                    <span className={styles.label}>installs / month on PyPI</span>
-                </span>
+                <p className={styles.kicker}>Adoption</p>
+                <h2 className={styles.heading}>Installed from PyPI, and growing</h2>
+                <p className={styles.subtitle}>
+                    <strong className={styles.headline}>
+                        {formatCount(totalMonth)}
+                    </strong>{' '}
+                    installs a month across the OpenAdapt packages
+                    {topName ? (
+                        <>
+                            {' '}&middot; top package{' '}
+                            <span className={styles.top}>{topName}</span>
+                        </>
+                    ) : null}
+                </p>
 
-                <span className={styles.sep} aria-hidden="true" />
+                <div className={styles.chartCard}>
+                    <PyPIDownloadChart compact seedHistory={seedHistory} />
+                </div>
 
-                <span className={styles.metric}>
-                    <span className={styles.label}>top package</span>
-                    <strong className={styles.valueSmall}>{top.name}</strong>
-                </span>
-
-                <span className={styles.sep} aria-hidden="true" />
-
-                <Sparkline history={stats.history} />
-
-                <a
-                    className={styles.source}
-                    href={sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={`Source: ${stats.source || 'pypistats.org'}`}
-                >
-                    {stats.source || 'pypistats.org'}
-                    {asOf ? ` · snapshot as of ${asOf}` : ''}
-                </a>
+                <p className={styles.attribution}>
+                    <FontAwesomeIcon icon={faPython} aria-hidden="true" /> Cumulative
+                    downloads over time, live from{' '}
+                    <a
+                        className={styles.sourceLink}
+                        href="https://pypistats.org/packages/openadapt-flow"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        pypistats.org
+                    </a>
+                    .
+                </p>
             </div>
-        </aside>
+        </section>
     )
 }
