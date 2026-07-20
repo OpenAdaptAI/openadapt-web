@@ -121,46 +121,121 @@
     transition: opacity 700ms ease;
 }
 
-/* Labeled tabs to jump to any frame. The active tab is highlighted. */
+/* Clickable thumbnail strip: a small real screenshot of every frame, each a tab
+   that jumps the large stage to that slide. The active thumbnail is highlighted
+   and carries a countdown bar. */
 .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 16px 0 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 18px 0 0;
 }
 
 .tab {
-    flex: 0 1 auto;
-    padding: 7px 14px;
-    border: 1px solid var(--hairline);
-    border-radius: 999px;
-    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 0;
+    border: 0;
+    background: transparent;
     color: var(--ink-2);
     font-family: var(--font-display);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
-    line-height: 1;
+    line-height: 1.2;
+    text-align: center;
     cursor: pointer;
-    transition:
-        background 160ms ease,
-        border-color 160ms ease,
-        color 160ms ease;
 }
 
-.tab:hover {
+/* The thumbnail image frame. Its border is the active/hover affordance. */
+.thumb {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    background: var(--ground);
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.thumbImg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* object-position is set per slide inline (tall captures are top-anchored). */
+    object-position: top;
+}
+
+.thumbLabel {
+    color: var(--ink-3);
+    transition: color 160ms ease;
+}
+
+.tab:hover .thumb {
     border-color: var(--accent);
+}
+
+.tab:hover .thumbLabel {
     color: var(--ink);
 }
 
 .tab:focus-visible {
+    outline: none;
+}
+
+.tab:focus-visible .thumb {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
 
-.tab[data-active='true'] {
+.tab[data-active='true'] .thumb {
     border-color: var(--ink);
-    background: var(--ink);
-    color: var(--panel);
+    box-shadow: 0 0 0 1px var(--ink);
+}
+
+.tab[data-active='true'] .thumbLabel {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+/* Visible countdown: a bar that fills left-to-right across the active thumbnail
+   over one dwell so the visitor sees time-to-next-slide. It restarts with the
+   active slide (via its React key) and pauses in lockstep with the auto-advance
+   timer. It deliberately keeps animating under reduced motion so the rotation
+   still reads as live. */
+.timer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: rgba(35, 40, 31, 0.18);
+}
+
+.timerFill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-origin: left center;
+    transform: scaleX(0);
+    background: var(--accent);
+    animation-name: cloudCountdown;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes cloudCountdown {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
 }
 
 /* Progress dots: a quick visual index of position in the rotation. The tabs
@@ -205,10 +280,6 @@
 }
 
 .caption {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 24px;
     margin: 12px 2px 0;
     padding-top: 12px;
     border-top: 1px solid var(--hairline);
@@ -221,10 +292,6 @@
 .caption strong {
     color: var(--ink);
     font-weight: 600;
-}
-
-.caption span {
-    text-align: right;
 }
 
 .actions {
@@ -258,19 +325,12 @@
         aspect-ratio: 4 / 3;
     }
 
+    .tabs {
+        gap: 6px;
+    }
+
     .tab {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-
-    .caption {
-        display: block;
-    }
-
-    .caption span {
-        display: block;
-        margin-top: 3px;
-        text-align: left;
+        font-size: 10px;
     }
 
     .actions {
