@@ -1,15 +1,56 @@
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowPointer } from '@fortawesome/free-solid-svg-icons'
+import {
+    faGithub,
+    faXTwitter,
+    faLinkedinIn,
+    faDiscord,
+} from '@fortawesome/free-brands-svg-icons'
+import { useRouter } from 'next/router'
 
 import {
     OPENADAPT_REPOSITORY_URL,
     OPENADAPT_STATS_SNAPSHOT,
 } from 'data/repositoryStats'
+import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks'
 import { track, EVENTS } from 'utils/analytics'
 import styles from './Footer.module.css'
+
+// The hosted control plane. Mirrors NEXT_PUBLIC_CLOUD_APP_URL (.env.example)
+// and the top-nav "Sign in" destination so the two surfaces never drift.
+const CLOUD_APP_URL = 'https://app.openadapt.ai'
+
+// Official GitHub octicons (MIT-licensed, 16px) so the star/fork widget is a
+// faithful lookalike of GitHub's own star/fork buttons, rendered entirely in
+// our own markup. We deliberately avoid the third-party embed widget, which
+// makes every visitor's browser call api.github.com.
+function StarOcticon() {
+    return (
+        <svg
+            viewBox="0 0 16 16"
+            width="16"
+            height="16"
+            aria-hidden="true"
+            focusable="false"
+        >
+            <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" />
+        </svg>
+    )
+}
+
+function ForkOcticon() {
+    return (
+        <svg
+            viewBox="0 0 16 16"
+            width="16"
+            height="16"
+            aria-hidden="true"
+            focusable="false"
+        >
+            <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z" />
+        </svg>
+    )
+}
 
 function validStats(value) {
     return (
@@ -31,6 +72,57 @@ function snapshotLabel(stats) {
     return 'GitHub snapshot · refreshed when available'
 }
 
+// Attach the right funnel event to an external footer destination.
+function externalEvent(href) {
+    if (!href) return null
+    if (href.includes('github.com')) return EVENTS.GITHUB_CLICK
+    if (href.includes('docs.openadapt.ai')) return EVENTS.DOCS_CLICK
+    if (href.includes('discord.gg')) return EVENTS.DISCORD_CLICK
+    return null
+}
+
+function FooterLink({ href, children, external }) {
+    const isExternal = external ?? /^https?:\/\//.test(href)
+    const event = isExternal ? externalEvent(href) : null
+    return (
+        <a
+            href={href}
+            className={styles.columnLink}
+            {...(isExternal
+                ? { target: '_blank', rel: 'noopener noreferrer' }
+                : {})}
+            onClick={
+                event ? () => track(event, { location: 'footer' }) : undefined
+            }
+        >
+            {children}
+        </a>
+    )
+}
+
+// Developer ecosystem destinations come from the single canonical source
+// (data/developerLinks) so the footer can never drift from the top nav.
+const byLabel = (label) => DEVELOPER_LINKS.find((item) => item.label === label)
+
+// Build-time guard: fail loudly if the canonical list is renamed out from
+// under the footer instead of silently dropping a column entry.
+const DEVELOPER_COLUMN = [
+    'Compiler/runtime source',
+    'Docs',
+    'Technical paper source',
+    'Report an issue',
+].map((label) => {
+    const link = byLabel(label)
+    if (!link) throw new Error(`Missing canonical developer link: ${label}`)
+    return link
+})
+
+const CONNECT_COLUMN = [
+    BLOG_LINK,
+    byLabel('Discord'),
+    { label: 'GitHub', href: OPENADAPT_REPOSITORY_URL },
+]
+
 export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
     const router = useRouter()
     const currentYear = new Date().getFullYear()
@@ -38,9 +130,7 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
     const bookHref = isHome ? '#book' : '/book'
     const contactHref = isHome ? '#book' : '/contact'
     const [stats, setStats] = useState(
-        validStats(repositoryStats)
-            ? repositoryStats
-            : OPENADAPT_STATS_SNAPSHOT
+        validStats(repositoryStats) ? repositoryStats : OPENADAPT_STATS_SNAPSHOT
     )
 
     useEffect(() => {
@@ -68,70 +158,21 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
 
     return (
         <div className={styles.footerContainer}>
-            <footer className="grid grid-flow-row auto-rows-max gap-3 max-w-4xl mx-auto">
-                <div className="m-auto pb-4">
-                    <div className="flex items-center justify-center z-10 opacity-70">
-                        <Image
-                            className=""
-                            priority
-                            src="/images/favicon.svg"
-                            height={24}
-                            width={24}
-                            alt="OpenAdapt"
-                        />
-                        <FontAwesomeIcon
-                            icon={faArrowPointer}
-                            className="ml-1 text-ink-3 text-sm"
-                        />
-                    </div>
-                </div>
-                <div className={styles.repositoryProof}>
-                    <iframe
-                        src="https://github.com/sponsors/OpenAdaptAI/button"
-                        title="Sponsor OpenAdaptAI"
-                        height="32"
-                        width="114"
-                        style={{ border: '0', borderRadius: '6px' }}
-                    ></iframe>
-                    <div
-                        className={styles.repositoryStats}
-                        data-testid="footer-repository-stats"
-                    >
-                        <a
-                            href={OPENADAPT_REPOSITORY_URL}
-                            className={styles.repositoryStat}
-                            aria-label={`${stats.stars.toLocaleString('en-US')} stars on OpenAdapt`}
-                        >
-                            <span aria-hidden="true">★</span>
-                            <strong data-testid="footer-star-count">
-                                {stats.stars.toLocaleString('en-US')}
-                            </strong>
-                            <small>stars on OpenAdapt</small>
+            <footer className={styles.footer}>
+                <div className={styles.top}>
+                    <div className={styles.brand}>
+                        <a href="/" className={styles.wordmark}>
+                            <span className="font-extralight">Open</span>
+                            <span className="font-semibold">Adapt</span>
                         </a>
-                        <a
-                            href={`${OPENADAPT_REPOSITORY_URL}/fork`}
-                            className={styles.repositoryStat}
-                            aria-label={`${stats.forks.toLocaleString('en-US')} forks of OpenAdapt`}
-                        >
-                            <span aria-hidden="true">⑂</span>
-                            <strong data-testid="footer-fork-count">
-                                {stats.forks.toLocaleString('en-US')}
-                            </strong>
-                            <small>forks</small>
-                        </a>
-                    </div>
-                    <p
-                        className={styles.repositorySource}
-                        data-testid="footer-repository-source"
-                    >
-                        {snapshotLabel(stats)}
-                    </p>
-                </div>
-                <div className={styles.footerContent}>
-                    <div className={`${styles.footerLinks} pt-4`}>
+                        <p className={styles.tagline}>
+                            OpenAdapt compiles demonstrated GUI workflows into
+                            deterministic, locally executable programs — and
+                            halts when it can’t verify the result.
+                        </p>
                         <a
                             href={bookHref}
-                            className={styles.link}
+                            className={styles.brandCta}
                             onClick={() =>
                                 track(EVENTS.BOOK_PILOT_CLICK, {
                                     location: 'footer',
@@ -140,129 +181,263 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
                         >
                             Evaluate a workflow
                         </a>
-                        <a href={contactHref} className={styles.link}>
-                            Contact
-                        </a>
-                        <a
-                            href="mailto:hello@openadapt.ai"
-                            className={styles.link}
+                        <div
+                            className={styles.repositoryProof}
+                            data-testid="footer-repository-stats"
                         >
-                            Email
-                        </a>
+                            <a
+                                href={OPENADAPT_REPOSITORY_URL}
+                                className={styles.ghButton}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${stats.stars.toLocaleString(
+                                    'en-US'
+                                )} stars on OpenAdapt`}
+                                onClick={() =>
+                                    track(EVENTS.GITHUB_CLICK, {
+                                        location: 'footer_star',
+                                    })
+                                }
+                            >
+                                <StarOcticon />
+                                <span>Star</span>
+                                <span className={styles.ghCount}>
+                                    <strong data-testid="footer-star-count">
+                                        {stats.stars.toLocaleString('en-US')}
+                                    </strong>
+                                </span>
+                            </a>
+                            <a
+                                href={`${OPENADAPT_REPOSITORY_URL}/fork`}
+                                className={styles.ghButton}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${stats.forks.toLocaleString(
+                                    'en-US'
+                                )} forks of OpenAdapt`}
+                                onClick={() =>
+                                    track(EVENTS.GITHUB_CLICK, {
+                                        location: 'footer_fork',
+                                    })
+                                }
+                            >
+                                <ForkOcticon />
+                                <span>Fork</span>
+                                <span className={styles.ghCount}>
+                                    <strong data-testid="footer-fork-count">
+                                        {stats.forks.toLocaleString('en-US')}
+                                    </strong>
+                                </span>
+                            </a>
+                        </div>
+                        <p
+                            className={styles.repositorySource}
+                            data-testid="footer-repository-source"
+                        >
+                            {snapshotLabel(stats)}
+                        </p>
                     </div>
-                    <div className={styles.footerLinks}>
-                        <a href="/solutions/healthcare" className={styles.link}>
-                            Healthcare
-                        </a>
-                        <a href="/solutions/lending" className={styles.link}>
-                            Lending
-                        </a>
-                        <a href="/solutions/insurance" className={styles.link}>
-                            Insurance
-                        </a>
-                        <a href="/workflows" className={styles.link}>
-                            Workflows
-                        </a>
-                        <a href="/compare" className={styles.link}>
-                            Compare
-                        </a>
-                        <a href="/#product-status" className={styles.link}>
-                            How it runs
-                        </a>
-                        <a href="/download" className={styles.link}>
-                            Download
-                        </a>
-                        <a href="/about" className={styles.link}>
-                            About
-                        </a>
+
+                    <nav className={styles.columns} aria-label="Footer">
+                        <div className={styles.column}>
+                            <h2 className={styles.columnTitle}>Product</h2>
+                            <ul className={styles.columnList}>
+                                <li>
+                                    <FooterLink href="/#product-status">
+                                        How it runs
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/workflows">
+                                        Workflows
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/templates">
+                                        Templates
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/compare">
+                                        Compare
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/safety">
+                                        Safety
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/download">
+                                        Download
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/#pricing">
+                                        Pricing
+                                    </FooterLink>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className={styles.column}>
+                            <h2 className={styles.columnTitle}>Solutions</h2>
+                            <ul className={styles.columnList}>
+                                <li>
+                                    <FooterLink href="/solutions/healthcare">
+                                        Healthcare
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/solutions/lending">
+                                        Lending
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/solutions/insurance">
+                                        Insurance
+                                    </FooterLink>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className={styles.column}>
+                            <h2 className={styles.columnTitle}>Developers</h2>
+                            <ul className={styles.columnList}>
+                                {DEVELOPER_COLUMN.map((item) => (
+                                    <li key={item.label}>
+                                        <FooterLink href={item.href}>
+                                            {item.label}
+                                        </FooterLink>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className={styles.column}>
+                            <h2 className={styles.columnTitle}>Connect</h2>
+                            <ul className={styles.columnList}>
+                                {CONNECT_COLUMN.map((item) => (
+                                    <li key={item.label}>
+                                        <FooterLink href={item.href}>
+                                            {item.label}
+                                        </FooterLink>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className={styles.column}>
+                            <h2 className={styles.columnTitle}>Company</h2>
+                            <ul className={styles.columnList}>
+                                <li>
+                                    <FooterLink href="/about">About</FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href={CLOUD_APP_URL}>
+                                        Hosted dashboard
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href={contactHref}>
+                                        Contact
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <a
+                                        href="mailto:hello@openadapt.ai"
+                                        className={styles.columnLink}
+                                    >
+                                        Email
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className={styles.column}>
+                            <h2 className={styles.columnTitle}>
+                                Trust &amp; legal
+                            </h2>
+                            <ul className={styles.columnList}>
+                                <li>
+                                    <FooterLink href="/security">
+                                        Trust center
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/privacy-policy">
+                                        Privacy Notice
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/terms-of-service">
+                                        Terms of Service
+                                    </FooterLink>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+
+                <div className={styles.bottom}>
+                    <div className={styles.legal}>
+                        <p className={styles.copyright}>
+                            © 2023–{currentYear} OpenAdapt.AI and MLDSAI Inc.
+                            All rights reserved.
+                        </p>
+                        <p className={styles.license}>
+                            Our software is open source and licensed under the
+                            MIT License.
+                        </p>
                     </div>
-                    <div className={styles.footerLinks}>
-                        <a href="/security" className={styles.link}>
-                            Security
-                        </a>{' '}
-                        <a href="/privacy-policy" className={styles.link}>
-                            Privacy Notice
-                        </a>{' '}
-                        <a href="/terms-of-service" className={styles.link}>
-                            Terms of Service
-                        </a>
-                    </div>
-                    <div className={styles.footerLinks}>
+                    <div className={styles.social} aria-label="Social links">
                         <a
-                            href="https://docs.openadapt.ai"
-                            className={styles.link}
-                            onClick={() =>
-                                track(EVENTS.DOCS_CLICK, { location: 'footer' })
-                            }
-                        >
-                            Docs
-                        </a>
-                        <a
-                            href="https://blog.openadapt.ai"
-                            className={styles.link}
-                        >
-                            Blog
-                        </a>
-                        <a
-                            href="https://app.openadapt.ai"
-                            className={styles.link}
-                        >
-                            Hosted dashboard
-                        </a>
-                        <a
-                            href="https://github.com/OpenAdaptAI/OpenAdapt"
-                            className={styles.link}
+                            href={OPENADAPT_REPOSITORY_URL}
+                            className={styles.socialLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="OpenAdapt on GitHub"
                             onClick={() =>
                                 track(EVENTS.GITHUB_CLICK, {
-                                    location: 'footer',
+                                    location: 'footer_social',
                                 })
                             }
                         >
-                            OpenAdapt project
-                        </a>
-                        <a
-                            href="https://github.com/OpenAdaptAI/openadapt-flow"
-                            className={styles.link}
-                            onClick={() =>
-                                track(EVENTS.GITHUB_CLICK, {
-                                    location: 'footer_engine',
-                                })
-                            }
-                        >
-                            Compiler/runtime source
-                        </a>
-                        <a
-                            href="https://discord.gg/yF527cQbDG"
-                            className={styles.link}
-                            onClick={() =>
-                                track(EVENTS.DISCORD_CLICK, {
-                                    location: 'footer',
-                                })
-                            }
-                        >
-                            Discord
+                            <FontAwesomeIcon icon={faGithub} />
                         </a>
                         <a
                             href="https://x.com/OpenAdaptAI"
-                            className={styles.link}
+                            className={styles.socialLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="OpenAdapt on X"
                         >
-                            X
+                            <FontAwesomeIcon icon={faXTwitter} />
                         </a>
                         <a
                             href="https://www.linkedin.com/company/95677624"
-                            className={styles.link}
+                            className={styles.socialLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="OpenAdapt on LinkedIn"
                         >
-                            LinkedIn
+                            <FontAwesomeIcon icon={faLinkedinIn} />
+                        </a>
+                        <a
+                            href="https://discord.gg/yF527cQbDG"
+                            className={styles.socialLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="OpenAdapt on Discord"
+                            onClick={() =>
+                                track(EVENTS.DISCORD_CLICK, {
+                                    location: 'footer_social',
+                                })
+                            }
+                        >
+                            <FontAwesomeIcon icon={faDiscord} />
                         </a>
                     </div>
-                    <p className="mt-6 text-ink-3 text-xs">
-                        © 2023–{currentYear} OpenAdapt.AI and MLDSAI Inc. All
-                        rights reserved.
-                    </p>
-                    <p className="text-ink-3 text-xs">
-                        Our software is open source and licensed under the MIT
-                        License.
-                    </p>
                 </div>
             </footer>
         </div>

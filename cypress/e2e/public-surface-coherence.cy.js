@@ -10,8 +10,10 @@ describe('public surface coherence', () => {
                 'href',
                 'https://github.com/OpenAdaptAI/OpenAdapt'
             )
-        cy.get('[data-testid="github-proof"]')
-            .should('contain.text', 'stars on OpenAdapt')
+        cy.get('[data-testid="github-proof"]').should(
+            'contain.text',
+            'stars on OpenAdapt'
+        )
         cy.get('a.btn-ink')
             .contains('Evaluate a workflow')
             .should('have.attr', 'href', '/#book')
@@ -65,14 +67,23 @@ describe('public surface coherence', () => {
                 .scrollIntoView()
                 .should('be.visible')
                 .within(() => {
+                    // GitHub-official-style star/fork buttons: icon + label +
+                    // a count bubble. The descriptive count lives in the
+                    // accessible name of each button.
+                    cy.contains('Star').should('be.visible')
                     cy.get('[data-testid="footer-star-count"]')
                         .invoke('text')
                         .should('match', /^\d{1,3}(,\d{3})*$/)
-                    cy.contains('stars on OpenAdapt').should('be.visible')
+                    cy.get('a[aria-label*="stars on OpenAdapt"]').should(
+                        'exist'
+                    )
+                    cy.contains('Fork').should('be.visible')
                     cy.get('[data-testid="footer-fork-count"]')
                         .invoke('text')
                         .should('match', /^\d{1,3}(,\d{3})*$/)
-                    cy.contains('forks').should('be.visible')
+                    cy.get('a[aria-label*="forks of OpenAdapt"]').should(
+                        'exist'
+                    )
                     cy.get(
                         'a[href="https://github.com/OpenAdaptAI/OpenAdapt"]'
                     ).should('exist')

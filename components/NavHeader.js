@@ -17,6 +17,10 @@ const externalEvent = (href) => {
 
 const isExternal = (href) => /^https?:\/\//.test(href)
 
+// The hosted control plane. Kept in sync with NEXT_PUBLIC_CLOUD_APP_URL
+// (.env.example) and the footer "Hosted dashboard" destination.
+const CLOUD_APP_URL = 'https://app.openadapt.ai'
+
 const SOLUTIONS_LINKS = [
     { label: 'Healthcare', href: '/solutions/healthcare' },
     { label: 'Lending', href: '/solutions/lending' },
@@ -32,6 +36,11 @@ const PRODUCT_LINKS = [
     { label: 'Download', href: '/download' },
 ]
 
+// The Developers dropdown consumes the canonical ecosystem list and adds
+// the blog, so the engineering-facing content lives under one menu instead
+// of scattering Blog across the top bar.
+const DEVELOPER_MENU_LINKS = [...DEVELOPER_LINKS, BLOG_LINK]
+
 const NAV_LINKS = [
     {
         label: 'Solutions',
@@ -45,11 +54,10 @@ const NAV_LINKS = [
         menuId: 'nav-product-menu',
         align: 'left',
     },
-    { label: 'Launch', href: '/#pricing' },
-    { label: BLOG_LINK.label, href: BLOG_LINK.href, external: true },
+    { label: 'Pricing', href: '/#pricing' },
     {
         label: 'Developers',
-        dropdown: DEVELOPER_LINKS,
+        dropdown: DEVELOPER_MENU_LINKS,
         menuId: 'nav-developers-menu',
         align: 'right',
     },
@@ -137,8 +145,7 @@ function NavDropdown({ label, links, menuId, align }) {
         if (!open || !pendingFocus.current || !panelRef.current) return
         const items = panelRef.current.querySelectorAll('a')
         if (items.length > 0) {
-            const index =
-                pendingFocus.current === 'last' ? items.length - 1 : 0
+            const index = pendingFocus.current === 'last' ? items.length - 1 : 0
             items[index].focus()
         }
         pendingFocus.current = null
@@ -324,6 +331,28 @@ export default function NavHeader() {
                         )
                     })}
                 </nav>
+                <div className={styles.actions}>
+                    <a
+                        href={CLOUD_APP_URL}
+                        className={styles.signIn}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Sign in
+                    </a>
+                    <Link
+                        href="/#book"
+                        className={styles.cta}
+                        onClick={() =>
+                            track(EVENTS.HERO_CTA_CLICK, {
+                                location: 'nav',
+                                cta: 'evaluate_workflow',
+                            })
+                        }
+                    >
+                        Evaluate a workflow
+                    </Link>
+                </div>
                 <button
                     type="button"
                     className={styles.menuButton}
@@ -334,18 +363,6 @@ export default function NavHeader() {
                 >
                     {menuOpen ? 'CLOSE' : 'MENU'}
                 </button>
-                <Link
-                    href="/#book"
-                    className={styles.cta}
-                    onClick={() =>
-                        track(EVENTS.HERO_CTA_CLICK, {
-                            location: 'nav',
-                            cta: 'evaluate_workflow',
-                        })
-                    }
-                >
-                    Evaluate a workflow
-                </Link>
             </div>
             {menuOpen && (
                 <nav
@@ -396,6 +413,14 @@ export default function NavHeader() {
                             </Link>
                         )
                     })}
+                    <a
+                        href={CLOUD_APP_URL}
+                        className={styles.mobileLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Sign in
+                    </a>
                 </nav>
             )}
         </header>
