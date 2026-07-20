@@ -178,6 +178,18 @@
       "kind": "first frame still (reduced-motion fallback)",
       "width": 880,
       "height": 550
+    },
+    "program-graph.png": {
+      "sha256": "9acd3e155a6240cd4d76346f54e94ae9fb6502fe920fb56d94aa04ea85866b4f",
+      "kind": "full-page still of the real OpenAdapt Cloud program-graph view of a compiled bundle",
+      "width": 1800,
+      "height": 5096
+    },
+    "workflow-catalog.png": {
+      "sha256": "c9b18e32389f23cbdb16d646287fd17b8e70cf0b89ca361e57e974aa469937c1",
+      "kind": "full-page still of the real OpenAdapt Cloud workflow catalog and step-level halt map",
+      "width": 1280,
+      "height": 2200
     }
   }
 }
