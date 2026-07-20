@@ -12,11 +12,11 @@ const FIGURES = [
         title: 'See what a demonstration compiled into.',
         body:
             'A recording under-specifies intent. The compiler turns it into a ' +
-            'program you can read before it ever runs: each step, the ' +
-            'resolution ladder it will try, where an identity gate is armed, ' +
-            'which writes carry an effect check, and every point the run is ' +
-            'allowed to halt. Render it from the CLI as a self-contained page ' +
-            'or Mermaid, or open the same graph in Cloud.',
+            'program you can read before it runs: each step, the resolution ' +
+            'ladder, where an identity gate is armed, which writes carry an ' +
+            'effect check, and every point the run can halt. Render it from the ' +
+            'CLI as a self-contained page or Mermaid, or open the same graph in ' +
+            'Cloud.',
         code: 'openadapt-flow visualize my-bundle --format html -o graph.html',
         image: '/cloud-preview/program-graph.png',
         alt:
@@ -32,9 +32,9 @@ const FIGURES = [
         body:
             'The catalog is a read-only readout across every compiled ' +
             'workflow: what each one automates, how its trials went, and the ' +
-            'return it stands to return. The step-level halt map shows where ' +
-            'runs stop and why, so you fix the demonstration or the policy at ' +
-            'the exact step instead of guessing.',
+            'return it stands to make. The step-level halt map shows where runs ' +
+            'stop and why, so you fix the demonstration or policy at the exact ' +
+            'step.',
         image: '/cloud-preview/workflow-catalog.png',
         alt:
             'OpenAdapt Cloud workflow catalog: a portfolio ROI readout with a ' +
@@ -57,12 +57,11 @@ export default function CompiledProgramSection() {
                         A demonstration compiles into a program you can inspect.
                     </h2>
                     <p className={styles.summary}>
-                        Compiling doesn&apos;t just replay one recorded path. A
-                        single demonstration can be authored into a governed
-                        loop that runs once per record of a worklist, bounded,
-                        identity-gated and effect-verified per record, and
-                        halting on ambiguity instead of guessing. That turns a
-                        replay of one path into governed execution over a queue.
+                        A single demonstration can become a governed loop that
+                        runs once per record in a worklist: bounded,
+                        identity-gated, and effect-verified per record, halting
+                        on ambiguity instead of guessing. One recorded path
+                        becomes governed execution over a queue.
                     </p>
                     <pre className={styles.queueCode}>
                         <code>

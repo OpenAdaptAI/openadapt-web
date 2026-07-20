@@ -110,7 +110,7 @@ export default function HomeReferenceWorkflow({ vertical, onSelectVertical }) {
             number: '1.0',
             name: 'Demonstrate',
             description:
-                'Complete one bounded, synthetic instance while OpenAdapt captures the browser evidence and input events.',
+                'Complete one bounded, synthetic instance while OpenAdapt captures browser evidence and input events.',
             visual: (
                 <Clip
                     key={`${reference.key}-record`}
@@ -134,7 +134,7 @@ export default function HomeReferenceWorkflow({ vertical, onSelectVertical }) {
             number: '3.0',
             name: 'Replay',
             description:
-                'Execute the compiled steps locally without asking a model to reinterpret the task.',
+                'Execute the compiled steps locally, with no model reinterpreting the task.',
             visual: (
                 <Clip
                     key={`${reference.key}-replay`}

@@ -21,14 +21,14 @@ export default function Qualification() {
             className="border-b border-hairline bg-panel px-5 py-14 md:py-16"
         >
             <div className="mx-auto max-w-5xl">
-                <p className="eyebrow text-center">Is this the right tool?</p>
+                <p className="eyebrow text-center">The right fit</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Use APIs first. Use OpenAdapt for the UI-only last mile.
+                    Use OpenAdapt for the UI-only last mile.
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    OpenAdapt is deliberately narrow. It&rsquo;s for repeated,
-                    high-stakes GUI work that has no real API and can be checked
-                    against an independent source of truth.
+                    OpenAdapt is deliberately narrow: repeated, high-stakes GUI
+                    work that has no real API and can be checked against an
+                    independent source of truth.
                 </p>
                 <article className="mx-auto mt-8 max-w-2xl rounded-2xl border border-hairline bg-ground p-6 md:p-7">
                     <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
@@ -50,10 +50,9 @@ export default function Qualification() {
                 </article>
                 <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-ink-3">
                     When work fits that shape, OpenAdapt runs it across every
-                    interface it touches, under one governed loop. That covers
-                    browser, Windows, macOS, RDP, and Citrix. See how it
-                    compares with RPA, computer-use agents, and browser recorders
-                    on the{' '}
+                    interface it touches under one governed loop: browser,
+                    Windows, macOS, RDP, and Citrix. See how it compares with
+                    RPA, computer-use agents, and browser recorders on the{' '}
                     <Link href="/compare" className="text-accent underline">
                         comparison page
                     </Link>
