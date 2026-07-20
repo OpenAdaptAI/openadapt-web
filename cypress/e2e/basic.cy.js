@@ -207,16 +207,20 @@ describe('public product truth', () => {
 
         // A primary evaluation CTA and a secondary "Sign in" affordance
         // (the hosted control plane) sit in the header action cluster.
-        cy.get('header').within(() => {
-            cy.contains('a', 'Evaluate a workflow').should(
-                'have.attr',
-                'href',
-                '/#book'
-            )
-            cy.contains('a', 'Sign in')
-                .should('be.visible')
-                .and('have.attr', 'href', 'https://app.openadapt.ai')
-        })
+        // Scope to the first <header> (the site banner): other homepage
+        // sections may render their own decorative <header> elements.
+        cy.get('header')
+            .first()
+            .within(() => {
+                cy.contains('a', 'Evaluate a workflow').should(
+                    'have.attr',
+                    'href',
+                    '/#book'
+                )
+                cy.contains('a', 'Sign in')
+                    .should('be.visible')
+                    .and('have.attr', 'href', 'https://app.openadapt.ai')
+            })
 
         // Escape closes and returns focus to the trigger.
         cy.contains('button', 'Developers').type('{esc}')
