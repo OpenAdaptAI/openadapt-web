@@ -581,6 +581,53 @@ describe('public product truth', () => {
         ).should('be.visible')
     })
 
+    it('renders /workflows fully readable with no horizontal overflow on mobile', () => {
+        // Regression guard: catalog entries embed long unbreakable tokens
+        // (64-char SHA-256 hashes, commit ids) and a non-wrapping <pre>
+        // reproduction command. In implicit `auto` grid tracks these stretched
+        // each card far past the viewport, and body { overflow-x: hidden }
+        // clipped the excess with no way to scroll to it. Note that
+        // documentElement.scrollWidth is itself clamped by overflow-x: hidden,
+        // so we assert on real element geometry instead: no element may extend
+        // past the viewport's right edge.
+        cy.viewport(375, 812)
+        cy.visit('/workflows')
+        cy.contains('The workflows we').should('be.visible')
+        cy.contains('12/12 model-free rows correct')
+            .scrollIntoView()
+            .should('be.visible')
+        cy.window().then((win) => {
+            const doc = win.document
+            const viewportWidth = doc.documentElement.clientWidth
+            // Overflow is only acceptable when it lives inside a reachable
+            // scroll container (e.g. the reproduction <pre> with overflow-x
+            // auto). Any element extending past the viewport that is NOT inside
+            // such a container is clipped-and-unreachable — the reported bug.
+            const inScrollContainer = (el) => {
+                let node = el.parentElement
+                while (node) {
+                    const overflowX =
+                        win.getComputedStyle(node).overflowX
+                    if (overflowX === 'auto' || overflowX === 'scroll') {
+                        return true
+                    }
+                    node = node.parentElement
+                }
+                return false
+            }
+            const clipped = []
+            doc.querySelectorAll('body *').forEach((el) => {
+                if (
+                    el.getBoundingClientRect().right > viewportWidth + 1 &&
+                    !inScrollContainer(el)
+                ) {
+                    clipped.push(el.tagName + '.' + el.className)
+                }
+            })
+            expect(clipped, 'elements clipped past viewport').to.deep.equal([])
+        })
+    })
+
     it('starts the configured hosted checkout path', () => {
         cy.intercept('GET', '**/_next/data/**/pricing.json*', {
             statusCode: 200,
