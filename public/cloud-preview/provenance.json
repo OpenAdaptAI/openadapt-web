@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-19T00:00:00Z",
+  "generated_at": "2026-07-20T00:00:00Z",
   "synthetic_fixture": true,
   "source": {
     "repository": "https://github.com/OpenAdaptAI/openadapt-cloud",
-    "commit": "5bcd074deead7ee818592b62a83fcca2d2f56f0c",
+    "commit": "9eee511959db1c33739e0567102c0f65fb7ccc2a",
     "branch": "main",
     "mode": "OPENADAPT_CLOUD_MODE=mock (local development simulator; no live backend)",
-    "capture": "Playwright Chromium, real page navigations of the actual dashboard UI. The healthcare-run.jpg (run detail) and healthcare-evidence.jpg (halt evidence) stills are recaptured at 1280x800 viewport with --force-device-scale-factor=2 for crisp 2560x1600 output shown large in the web showcase; the remaining industry GIF/JPG sequences are 1320x825 downscaled to 880x550.",
-    "data": "Synthetic workflows, runs, halts, and taught fixes seeded through the app\u2019s own public API surface (POST /api/workflows, /api/runs, /api/runs/ingest-report, /api/teach); the product\u2019s own LOCAL MOCK MODE banner is visible in every frame."
+    "capture": "Playwright Chromium, real page navigations of the actual dashboard UI at a 1280x800 viewport with --force-device-scale-factor=2 (2560px-wide output). The four showcase stills (healthcare-run.jpg run detail, healthcare-evidence.jpg halt evidence, program-graph.png program visualizer, workflow-catalog.png workflow catalog) are FULL-PAGE captures so the web showcase can pan through the whole page. Dev-only chrome that is not part of the product is suppressed for the marketing capture: the LOCAL MOCK MODE developer banner is hidden, the sticky top nav is unstuck so it renders once at the top of the full-page image, and the program view's local-preview sample notice is hidden. The remaining industry GIF/JPG sequences are unchanged 880x550 assets and are not used by the showcase.",
+    "data": "Synthetic workflows, runs, halts, and taught fixes. The showcase workspace is seeded with production-plausible names (Invoice entry, Patient intake - insurance verify, Prior-auth submission for the Riverside Clinic workspace) via the mock seed, with the halt-evidence run reported through the app's own POST /api/runs/ingest-report. No customer or production data is present."
   },
   "media": {
     "healthcare-evidence.gif": {
@@ -20,10 +20,10 @@
       "loop": "infinite (NETSCAPE2.0)"
     },
     "healthcare-evidence.jpg": {
-      "sha256": "6ee328ef4d0838a02cbed704e6c4c8dd230986d6bd85ee6afad5d3588439d026",
-      "kind": "high-resolution still of the real halt-evidence run detail (locally reported stop, resolver rung, provenance, metrics)",
+      "sha256": "13e157999053899601782a5819d12e80db2395f0c79b470b6211272d71a56638",
+      "kind": "full-page still of the real halt-evidence run detail (locally reported stop, resolver rung, provenance, metrics, governed repair page)",
       "width": 2560,
-      "height": 1600
+      "height": 6594
     },
     "healthcare-report.gif": {
       "sha256": "c22e77baf4ba888358caed5972d3bdf7f75ef5ef304759cd32a8893981430e5a",
@@ -48,10 +48,10 @@
       "loop": "infinite (NETSCAPE2.0)"
     },
     "healthcare-run.jpg": {
-      "sha256": "08e4bee44dedbae3fdc2868041367d57265cd4f12b928d3cc3cfd59c9d9caf84",
-      "kind": "high-resolution still of the real run detail (run metrics and verified-effect timeline)",
+      "sha256": "991f35b43ecc1bb2e20519546fb52fa451e1ba8603c37f51cda873a3d8bfc7bb",
+      "kind": "full-page still of the real run detail (run metrics, verified-effect timeline, run report, machine-readable report)",
       "width": 2560,
-      "height": 1600
+      "height": 4620
     },
     "healthcare-workflow.gif": {
       "sha256": "dc01266c4403fccb3cf4c2b6528a5825c5601efc8ddb37ab13d9142f91d8a7a4",
@@ -180,16 +180,16 @@
       "height": 550
     },
     "program-graph.png": {
-      "sha256": "9acd3e155a6240cd4d76346f54e94ae9fb6502fe920fb56d94aa04ea85866b4f",
-      "kind": "full-page still of the real OpenAdapt Cloud program-graph view of a compiled bundle",
-      "width": 1800,
-      "height": 5096
+      "sha256": "f7332ac6de56fd86c5019c4deeb9cc10ee65da1e39bdb3c7cc1242cf0bffe47a",
+      "kind": "full-page still of the real OpenAdapt Cloud program-graph view of a compiled bundle, in the app shell with the top nav",
+      "width": 2560,
+      "height": 3882
     },
     "workflow-catalog.png": {
-      "sha256": "c9b18e32389f23cbdb16d646287fd17b8e70cf0b89ca361e57e974aa469937c1",
-      "kind": "full-page still of the real OpenAdapt Cloud workflow catalog and step-level halt map",
-      "width": 1280,
-      "height": 2200
+      "sha256": "e554373d836572dd7d043ddae7eec714a1022885b266882ebbc4c0765b3125cb",
+      "kind": "full-page still of the real OpenAdapt Cloud workflow catalog, ROI readout, and step-level halt map",
+      "width": 2560,
+      "height": 4290
     }
   }
 }

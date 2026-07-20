@@ -25,10 +25,11 @@
         },
         "dashboard-workflows.png": {
             "source_name": "shots/02-workflows.png",
-            "sha256": "8e524193520f65bf7ea0e7f0362a40673bf31242ab60045709b2d8968ca6fd52",
-            "bytes": 177204,
-            "width": 2880,
-            "height": 1800
+            "sha256": "3b0420a109954a9d06a001ac73c3cafd4668f2ab2da09f45e536bdfd6bb968cd",
+            "bytes": 202483,
+            "width": 2560,
+            "height": 1600,
+            "note": "Full-page capture of the real workflows dashboard at 1280x800 viewport, device scale 2. Production-plausible seed names (no demo labels); LOCAL MOCK MODE developer banner suppressed for the marketing capture."
         }
     }
 }
