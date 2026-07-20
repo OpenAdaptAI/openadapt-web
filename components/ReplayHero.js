@@ -5,15 +5,26 @@ import benchmark from '../data/benchmark.json'
 import styles from './ReplayHero.module.css'
 
 /**
- * ReplayHero — real proof, not a stylized mockup.
+ * ReplayHero — real proof, not a stylized mockup (Primary v2).
  *
  * Left: real footage of a compiled OpenAdapt workflow replaying against
  * OpenEMR's live public demo (public/how-it-works/run_openemr.*, provenance in
- * public/how-it-works/MANIFEST.json — source "real"). Right: the measured
- * OpenEMR benchmark numbers, read straight from data/benchmark.json (figures
- * copied verbatim from the openadapt-flow benchmark results and guarded so the
- * published numbers cannot drift from /compare). Below: a real OpenAdapt Cloud
- * capture showing the same run in the shipping hosted product.
+ * public/how-it-works/MANIFEST.json — source "real"). The reduced-motion / poster
+ * still is a rich late frame of the run — the patient-intake form with fields
+ * populated (run_openemr_intake.jpg, derived from that same real footage), not
+ * the empty landing calendar.
+ *
+ * Right: the measured OpenEMR benchmark numbers, read straight from
+ * data/benchmark.json (figures copied verbatim from the openadapt-flow benchmark
+ * results and guarded so the published numbers cannot drift from /compare), plus
+ * the effect-verification thesis: success is judged by an arm-independent oracle
+ * reading the record itself — not the application's own "saved" banner.
+ *
+ * Below the two-up: the governed drift beat — the most differentiated moment —
+ * shown from the real reproducible drift drill (heal_resolve.jpg, a frame of the
+ * MANIFEST "heal" capture, source "real"): a drifted target re-resolved via the
+ * geometry rung and a governed repair proposed as a reviewable diff, applied only
+ * after sign-off, with zero model calls. Then a real OpenAdapt Cloud capture.
  *
  * The footage is gated on prefers-reduced-motion (static poster frame when
  * motion is reduced) and paused while off-screen. Nothing here is illustrative.
@@ -85,7 +96,7 @@ export default function ReplayHero() {
                         <video
                             ref={videoRef}
                             className={styles.video}
-                            poster="/how-it-works/run_openemr.jpg"
+                            poster="/how-it-works/run_openemr_intake.jpg"
                             width="880"
                             height="550"
                             autoPlay
@@ -93,7 +104,7 @@ export default function ReplayHero() {
                             loop
                             playsInline
                             preload="metadata"
-                            aria-label="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo, locally and with no per-run model calls."
+                            aria-label="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo — logging in and filling the patient-intake form — locally and with no per-run model calls."
                         >
                             <source
                                 src="/how-it-works/run_openemr.webm"
@@ -123,6 +134,18 @@ export default function ReplayHero() {
                         </span>
                         <span className={styles.stamp}>Verified</span>
                     </div>
+
+                    {/* The effect-verification thesis: what "verified" means. */}
+                    <p className={styles.effectPill}>
+                        <span className={styles.effectMark} aria-hidden="true">
+                            ✓
+                        </span>
+                        <span>
+                            Effect-verified against the system of record — an{' '}
+                            <b>arm-independent oracle reads OpenEMR itself</b>, not
+                            the app&rsquo;s own &ldquo;saved&rdquo; banner.
+                        </span>
+                    </p>
 
                     <div className={styles.statGrid}>
                         <div className={styles.stat}>
@@ -195,6 +218,46 @@ export default function ReplayHero() {
                         <Link href="/compare">Method &amp; raw results →</Link>
                     </div>
                 </aside>
+            </div>
+
+            {/* Governed drift beat — the differentiated moment — from the real
+                reproducible drift drill (MANIFEST "heal" capture, source "real"). */}
+            <div className={styles.drift}>
+                <div className={styles.driftBody}>
+                    <span className={styles.driftEyebrow}>
+                        Governed drift handling
+                    </span>
+                    <p className={styles.driftHead}>
+                        When the interface drifts, OpenAdapt re-resolves from
+                        retained evidence — it doesn&rsquo;t guess.
+                    </p>
+                    <p className={styles.driftCallout}>
+                        <span className={styles.driftWarn} aria-hidden="true">
+                            ⚠
+                        </span>
+                        UI drift → re-resolved via the geometry rung ·{' '}
+                        <b>governed repair saved</b> · 0 model calls
+                    </p>
+                    <p className={styles.driftFoot}>
+                        Real capture · reviewable diff · nothing is applied without
+                        sign-off
+                    </p>
+                </div>
+                <figure className={styles.driftShotWrap}>
+                    <span className={styles.driftTag}>
+                        <span className={styles.realDot} aria-hidden="true" />
+                        Real capture
+                    </span>
+                    <img
+                        className={styles.driftShot}
+                        src="/how-it-works/heal_resolve.jpg"
+                        width="880"
+                        height="550"
+                        alt="Real drift-drill capture: a drifted target re-resolved via the geometry rung — identity confirmed as the same record, ocr_text 'Open' repaired to 'View', proposed as a reviewable anchor patch with zero model calls."
+                        loading="lazy"
+                        decoding="async"
+                    />
+                </figure>
             </div>
 
             {/* Shipping product: the same run, inspectable in OpenAdapt Cloud. */}
