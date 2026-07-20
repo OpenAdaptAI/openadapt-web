@@ -127,10 +127,10 @@
       "caption": "Run \u2014 real footage \u00b7 driving a live OpenEMR instance",
       "alt": "OpenAdapt replaying a compiled workflow against a live OpenEMR electronic health record, locally and with no per-run model calls.",
       "bytes": {
-        "webm": 148464,
-        "mp4": 251032,
-        "gif": 817188,
-        "jpg": 24980
+        "webm": 199337,
+        "mp4": 301664,
+        "gif": 1070419,
+        "jpg": 20210
       }
     }
   },
