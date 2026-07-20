@@ -117,6 +117,39 @@ describe('download page is server-rendered', () => {
     })
 })
 
+describe('download page does not scroll horizontally on mobile', () => {
+    // Common small-phone widths (iPhone SE / mini and iPhone 12/13/14).
+    for (const width of [375, 390]) {
+        it(`fits the viewport at ${width}px with no horizontal overflow`, () => {
+            cy.viewport(width, 800)
+            cy.visit('/download')
+            // The desktop-preview section always renders; wait for it so the
+            // measurement covers the real, fully laid-out page.
+            cy.get('[data-testid="desktop-preview"]').should('exist')
+            // Let the async PyPI chart and any client hints settle.
+            cy.wait(1500)
+
+            // globals.css sets `overflow-x: hidden` on html/body. That clamps
+            // documentElement.scrollWidth in Chrome, so measuring it directly
+            // would trivially pass and hide a real regression — and it does NOT
+            // reliably stop horizontal panning on iOS Safari, which is exactly
+            // the surface this guards. Neutralize the mask so scrollWidth
+            // reflects the true content width before asserting.
+            cy.document().then((doc) => {
+                const style = doc.createElement('style')
+                style.setAttribute('data-test-unmask', 'overflow')
+                style.innerHTML =
+                    'html, body { overflow-x: visible !important; width: auto !important; }'
+                doc.head.appendChild(style)
+            })
+
+            cy.document()
+                .its('documentElement.scrollWidth')
+                .should('be.lte', width)
+        })
+    }
+})
+
 describe('desktop release contract', () => {
     it('ignores legacy, draft, and incomplete releases', () => {
         const legacy = {
