@@ -167,7 +167,7 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
                         </a>
                         <p className={styles.tagline}>
                             OpenAdapt compiles demonstrated GUI workflows into
-                            deterministic, locally executable programs — and
+                            deterministic, locally executable programs, and
                             halts when it can’t verify the result.
                         </p>
                         <a

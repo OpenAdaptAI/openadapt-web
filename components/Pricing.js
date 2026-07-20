@@ -136,7 +136,7 @@ export default function Pricing({ hostedOffer = null }) {
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Run the MIT-licensed engine yourself for free. Subscribe to
-                    OpenAdapt Cloud &mdash; the managed control plane that runs
+                    OpenAdapt Cloud, the managed control plane that runs
                     your approved workflows across every substrate with assisted
                     onboarding. Or start a scoped paid pilot to bring regulated
                     data and customer-controlled deployments under the same
@@ -214,9 +214,9 @@ export default function Pricing({ hostedOffer = null }) {
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
                             The managed control plane for governed workflow
                             execution across every substrate. Your approved
-                            workflows &mdash; browser, Windows, macOS, RDP, and
-                            Citrix &mdash; run in the managed runner with run
-                            history, reporting, and governed updates. Onboarding
+                            workflows run in the managed runner with run history,
+                            reporting, and governed updates, across browser,
+                            Windows, macOS, RDP, and Citrix. Onboarding
                             is assisted: we qualify the first workflow with you.
                         </p>
                         <FeatureList
