@@ -46,34 +46,68 @@ test('install-stats snapshot is dated and attributed', () => {
     assert.match(snapshot.source, /pypistats/i, 'source names pypistats')
 })
 
-test('install-stats section shows the snapshot date and source, not a live claim', () => {
+// The section shows LIVE numbers with pypistats.org attribution. It must not
+// reintroduce the stale "snapshot as of <date>" wording (it is live now), but
+// it must still name the data source.
+test('install-stats section is attributed to pypistats and reads as live', () => {
     const component = read('components/InstallStats.js')
-    assert.match(component, /snapshot as of/, 'renders an "as of" freshness label')
-    assert.match(component, /stats\.source/, 'renders the data source')
+    assert.match(component, /pypistats\.org/, 'names the data source')
+    assert.match(component, /live from/i, 'reads as live, not a static snapshot')
     assert.doesNotMatch(
         component,
-        /\blive\b/i,
-        'must not imply the numbers are live — it is a dated snapshot'
+        /snapshot as of/i,
+        'must not show the stale "snapshot as of" label now that it is live'
     )
 })
 
-// The whole point of the snapshot pipeline: this section must never fetch at
-// build or request time. No runtime data fetch, no pypistats.org URL, no
-// api.github.com URL constructed in the component. It renders from props only.
-test('install-stats section never fetches at runtime', () => {
+// The section renders instantly without blocking on the network: the committed
+// snapshot seeds both the headline numbers and the chart line, and the LIVE
+// pypistats fetch is a client-side enhancement with a graceful fallback (it
+// keeps the seed on failure). The heavy chart is lazy-loaded so it never blocks
+// first paint or bloats the initial bundle.
+test('install-stats seeds from the snapshot, then fetches live client-side with a fallback', () => {
     const component = read('components/InstallStats.js')
-    assert.doesNotMatch(component, /\bfetch\s*\(/, 'no fetch() in the section')
-    assert.doesNotMatch(component, /useEffect/, 'no client data-loading effect')
-    assert.doesNotMatch(
+    // Seed / instant fallback: initial state comes from the `stats` prop.
+    assert.match(
         component,
-        /pypistats\.org\/api/,
-        'no pypistats API URL in the section'
+        /useState\(\s*\n?\s*hasSeed \? stats\.totalLastMonth/,
+        'headline seeds from the snapshot prop'
     )
-    assert.doesNotMatch(
+    assert.match(component, /buildSeedHistory/, 'chart line seeds from the snapshot')
+    assert.match(
         component,
-        /api\.github\.com/,
-        'no api.github.com URL in the section'
+        /seedHistory=\{seedHistory\}/,
+        'the seed is passed to the reused chart'
     )
+    // Live client-side fetch with a graceful catch that keeps the seed.
+    assert.match(component, /useEffect/, 'fetches live after render')
+    assert.match(
+        component,
+        /getRecentDownloadStats\(\)/,
+        'uses the same pypistats util as /download'
+    )
+    assert.match(component, /\.catch\(/, 'live fetch has a graceful fallback')
+    // Lazy-load the chart.js component so it does not block first paint.
+    assert.match(component, /next\/dynamic/, 'chart is lazy-loaded via next/dynamic')
+    assert.match(component, /ssr:\s*false/, 'chart is client-only (ssr: false)')
+    assert.match(component, /chartPlaceholder/, 'a placeholder holds space while it loads')
+})
+
+// The reused chart supports a compact, seedable embed without changing its
+// default /download behavior.
+test('PyPIDownloadChart supports a compact, seedable embed', () => {
+    const chart = read('components/PyPIDownloadChart.js')
+    assert.match(
+        chart,
+        /compact = false, seedHistory = null/,
+        'compact + seedHistory props default to the original /download behavior'
+    )
+    assert.match(
+        chart,
+        /useState\(seedHistory\)/,
+        'history state can be seeded so the embed is never blank'
+    )
+    assert.match(chart, /if \(compact\) \{/, 'compact mode renders a bare chart')
 })
 
 // The homepage must feed the snapshot in through getStaticProps (server-side),

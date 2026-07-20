@@ -221,6 +221,20 @@
     border: 1px solid var(--hairline);
 }
 
+/* Compact homepage embed: modest height, bare (the homepage section owns the
+   surrounding card/caption). */
+.compactChart {
+    position: relative;
+    height: 260px;
+    width: 100%;
+}
+
+@media (max-width: 560px) {
+    .compactChart {
+        height: 220px;
+    }
+}
+
 /* Taller container for packages view with side legend */
 .chartContainerPackages {
     position: relative;

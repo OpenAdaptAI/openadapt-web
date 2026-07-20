@@ -1,117 +1,118 @@
-/* Compact adoption strip: a slim social-proof band that sits under the hero and
-   complements the GitHub stars/forks proof with real PyPI install counts. */
-.strip {
-    background: var(--panel);
+/* Homepage adoption section: a modest cumulative-downloads chart (reused from
+   /download) with a headline caption. Sized to complement the page, not
+   dominate it. Theme-aware via the site's CSS custom properties. */
+.section {
+    background: var(--ground);
     border-top: 1px solid var(--hairline);
     border-bottom: 1px solid var(--hairline);
-    padding: 0.7rem 1.25rem;
+    padding: 2.75rem 1.5rem;
 }
 
 .inner {
-    max-width: 960px;
+    max-width: 720px;
     margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem 1rem;
+    text-align: center;
 }
 
-.metric {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.4rem;
-    min-width: 0;
-}
-
-.icon {
+.kicker {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
     color: var(--accent);
-    font-size: 0.9rem;
-    align-self: center;
+    margin: 0 0 0.4rem;
 }
 
-.value {
+.heading {
+    font-family: var(--font-display);
+    color: var(--ink);
+    font-size: clamp(1.35rem, 3vw, 1.8rem);
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+}
+
+.subtitle {
+    color: var(--ink-2);
+    font-size: 0.98rem;
+    line-height: 1.5;
+    margin: 0 auto 1.5rem;
+    max-width: 48ch;
+}
+
+.headline {
     font-family: var(--font-display);
     font-weight: 700;
     color: var(--ink);
-    font-size: 1.05rem;
-    line-height: 1;
+    font-size: 1.15em;
 }
 
-.valueSmall {
+.top {
     font-family: var(--font-mono);
-    font-weight: 600;
-    color: var(--ink);
-    font-size: 0.9rem;
+    color: var(--accent);
     overflow-wrap: anywhere;
 }
 
-.label {
+.chartCard {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 0.75rem;
+}
+
+/* Reserve the chart's height so lazy-loading never shifts the layout. */
+.chartPlaceholder {
+    height: 260px;
+    width: 100%;
+    border-radius: 8px;
+    background: linear-gradient(
+        100deg,
+        var(--panel) 30%,
+        var(--ground) 50%,
+        var(--panel) 70%
+    );
+    background-size: 200% 100%;
+    animation: installStatsShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes installStatsShimmer {
+    0% {
+        background-position: 150% 0;
+    }
+    100% {
+        background-position: -50% 0;
+    }
+}
+
+.attribution {
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    letter-spacing: 0.02em;
     color: var(--ink-3);
-    text-transform: uppercase;
+    margin: 0.85rem 0 0;
 }
 
-.sep {
-    width: 1px;
-    align-self: stretch;
-    min-height: 1rem;
-    background: var(--hairline);
-}
-
-.spark {
-    width: 96px;
-    height: 26px;
-    display: block;
-}
-
-.sparkLine {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 2;
-    stroke-linejoin: round;
-    stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
-}
-
-.sparkDot {
-    fill: var(--accent);
-    stroke: var(--panel);
-    stroke-width: 1.5;
-}
-
-.source {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: var(--ink-3);
+.sourceLink {
+    color: var(--accent);
     text-decoration: underline;
     text-decoration-color: var(--link-underline);
     text-underline-offset: 2px;
-    white-space: nowrap;
 }
 
-.source:hover {
+.sourceLink:hover {
     color: var(--accent-hover);
 }
 
-@media (max-width: 620px) {
-    .strip {
-        padding: 0.65rem 1rem;
+@media (max-width: 560px) {
+    .section {
+        padding: 2.25rem 1rem;
     }
 
-    .inner {
-        gap: 0.4rem 0.75rem;
+    .chartPlaceholder {
+        height: 220px;
     }
+}
 
-    /* Hide the vertical dividers on small screens; the wrap gap is enough. */
-    .sep {
-        display: none;
-    }
-
-    .source {
-        white-space: normal;
-        text-align: center;
+@media (prefers-reduced-motion: reduce) {
+    .chartPlaceholder {
+        animation: none;
     }
 }
