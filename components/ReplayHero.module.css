@@ -203,6 +203,43 @@
     }
 }
 
+/* Effect-verification thesis pill — what "Verified" actually means. */
+.effectPill {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 12px 0 0;
+    padding: 9px 11px;
+    border: 1px solid rgba(62, 107, 79, 0.28);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    background: rgba(62, 107, 79, 0.06);
+    font-size: 0.74rem;
+    line-height: 1.45;
+    color: var(--ink-2);
+}
+
+.effectPill b {
+    color: var(--accent-hover);
+    font-weight: 600;
+}
+
+.effectMark {
+    flex-shrink: 0;
+    margin-top: 1px;
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.64rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
 .statGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -367,6 +404,138 @@
 .ledgerFoot a {
     color: var(--accent);
     white-space: nowrap;
+}
+
+/* ── Governed-drift proof card ─────────────────────────────────────────── */
+.drift {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 18px;
+    align-items: stretch;
+    margin-top: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    background: var(--panel);
+    box-shadow: 0 8px 28px -16px rgba(35, 40, 31, 0.22);
+    min-width: 0;
+}
+
+.driftBody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.driftEyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+}
+
+.driftHead {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(0.98rem, 2.1vw, 1.14rem);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+
+.driftCallout {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 2px 0 0;
+    padding: 8px 11px;
+    border-radius: 8px;
+    border: 1px solid var(--inset-border);
+    background: var(--inset-bg);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--inset-text);
+}
+
+.driftCallout b {
+    color: var(--inset-ok);
+    font-weight: 600;
+}
+
+.driftWarn {
+    flex-shrink: 0;
+    color: var(--inset-warn);
+    font-size: 0.82rem;
+    line-height: 1;
+}
+
+.driftFoot {
+    margin: auto 0 0;
+    padding-top: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    line-height: 1.4;
+    color: var(--ink-3);
+}
+
+.driftShotWrap {
+    position: relative;
+    margin: 0;
+    min-width: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--inset-border);
+    background: var(--inset-bg);
+    aspect-ratio: 880 / 360;
+}
+
+.driftTag {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--inset-ok);
+    border: 1px solid rgba(134, 217, 168, 0.4);
+    border-radius: 999px;
+    padding: 2px 8px;
+    background: rgba(10, 14, 18, 0.72);
+}
+
+.driftTag .realDot {
+    background: var(--inset-ok);
+    box-shadow: 0 0 0 3px rgba(134, 217, 168, 0.18);
+}
+
+.driftShot {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top left;
+}
+
+@media (max-width: 720px) {
+    .drift {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .driftShotWrap {
+        order: -1;
+    }
 }
 
 /* ── Shipping-product proof strip ──────────────────────────────────────── */
