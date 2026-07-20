@@ -1,0 +1,46 @@
+name: Paper Redeploy
+
+# openadapt.ai deploys via Netlify's own git integration (see netlify.toml),
+# not GitHub Actions, so a repository_dispatch cannot rebuild the site directly.
+# Instead, openadapt-flow's Paper workflow fires a `paper-updated` dispatch when
+# it publishes a fresh paper PDF; this workflow relays that into a Netlify build
+# hook, which triggers a deploy whose prebuild step (scripts/fetch-paper-pdf.js)
+# re-fetches the latest release asset.
+#
+# Propagation is best-effort. Even with no dispatch and no build hook, every
+# Netlify deploy re-runs the fetch, so the served PDF converges to the latest
+# build on the next deploy regardless.
+#
+# Setup: add repository secret NETLIFY_BUILD_HOOK_URL (Netlify: Site
+# configuration -> Build & deploy -> Build hooks). Without it this workflow is a
+# logged no-op.
+
+on:
+  repository_dispatch:
+    types: [paper-updated]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paper-redeploy
+  cancel-in-progress: true
+
+jobs:
+  trigger-netlify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build hook
+        env:
+          NETLIFY_BUILD_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
+        run: |
+          set -uo pipefail
+          if [ -z "${NETLIFY_BUILD_HOOK_URL:-}" ]; then
+            echo "::warning::NETLIFY_BUILD_HOOK_URL is not set; cannot trigger a redeploy. The paper PDF will refresh on the next Netlify deploy via the build-time fetch."
+            exit 0
+          fi
+          curl --fail --retry 5 --retry-all-errors --show-error --silent \
+            -X POST -d '{}' "${NETLIFY_BUILD_HOOK_URL}" \
+            && echo "Triggered Netlify redeploy to refresh the paper PDF." \
+            || { echo "::error::Netlify build hook POST failed after retries."; exit 1; }

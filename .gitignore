@@ -35,3 +35,6 @@ yarn-error.log*
 .netlify
 
 *.sw[m-p]
+
+# Transient temp file written by scripts/fetch-paper-pdf.js during build
+public/.openadapt-paper.pdf.tmp
