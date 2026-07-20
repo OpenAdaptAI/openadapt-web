@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import benchmark from '../data/benchmark.json'
@@ -8,11 +7,8 @@ import styles from './ReplayHero.module.css'
  * ReplayHero — real proof, not a stylized mockup (Primary v2).
  *
  * Left: real footage of a compiled OpenAdapt workflow replaying against
- * OpenEMR's live public demo (public/how-it-works/run_openemr.*, provenance in
- * public/how-it-works/MANIFEST.json — source "real"). The reduced-motion / poster
- * still is a rich late frame of the run — the patient-intake form with fields
- * populated (run_openemr_intake.jpg, derived from that same real footage), not
- * the empty landing calendar.
+ * OpenEMR's live public demo (public/how-it-works/run_openemr.gif, provenance in
+ * public/how-it-works/MANIFEST.json, source "real").
  *
  * Right: the measured OpenEMR benchmark numbers, read straight from
  * data/benchmark.json (figures copied verbatim from the openadapt-flow benchmark
@@ -31,8 +27,10 @@ import styles from './ReplayHero.module.css'
  * animates: it is an image, so it is exempt from the browser's muted-<video>
  * autoplay policy, which silently blocks autoplay under Low Power Mode / data
  * saver and leaves only the poster frame (the earlier <video> hero froze on its
- * still for those users). It is gated on prefers-reduced-motion: when motion is
- * reduced we hold the static late-frame still instead. Nothing here is
+ * still for those users). It plays for everyone and is intentionally NOT gated
+ * on prefers-reduced-motion: this is the primary demo, so it always animates
+ * (like the reference clip), matching Clip.js which deliberately overrides the
+ * reduced-motion preference for its primary footage. Nothing here is
  * illustrative.
  */
 
@@ -42,21 +40,6 @@ const secs = (n) => `${Math.round(Number(n))}s`
 const per1k = Math.round(em.agent.cost_usd_per_run * 1000).toLocaleString()
 
 export default function ReplayHero() {
-    const [reduced, setReduced] = useState(false)
-
-    // Track the user's motion preference so we can hold a static frame.
-    // The GIF itself autoplays for everyone (no play/pause or IntersectionObserver
-    // gate is needed, or wanted: an in-view gate can get stuck and freeze the
-    // still). We only swap the source to the static frame when motion is reduced.
-    useEffect(() => {
-        if (typeof window === 'undefined' || !window.matchMedia) return undefined
-        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-        const apply = () => setReduced(mq.matches)
-        apply()
-        mq.addEventListener?.('change', apply)
-        return () => mq.removeEventListener?.('change', apply)
-    }, [])
-
     const compiled = em.compiled
     const agent = em.agent
 
@@ -81,17 +64,14 @@ export default function ReplayHero() {
                         {/*
                           Animated GIF via <img>: always animates (exempt from the
                           muted-<video> autoplay policy that silently blocks
-                          playback under Low Power Mode / data saver). Under
-                          prefers-reduced-motion we hold the static late-frame
-                          still (the populated patient-intake form) instead.
+                          playback under Low Power Mode / data saver). This is the
+                          primary demo, so it plays for everyone and is NOT gated on
+                          prefers-reduced-motion (matching the reference clip in
+                          Clip.js).
                         */}
                         <img
                             className={styles.video}
-                            src={
-                                reduced
-                                    ? '/how-it-works/run_openemr_intake.jpg'
-                                    : '/how-it-works/run_openemr.gif'
-                            }
+                            src="/how-it-works/run_openemr.gif"
                             width="880"
                             height="550"
                             decoding="async"
