@@ -39,6 +39,14 @@ const usd = (n) => `$${Number(n).toFixed(2)}`
 const secs = (n) => `${Math.round(Number(n))}s`
 const per1k = Math.round(em.agent.cost_usd_per_run * 1000).toLocaleString()
 
+// The floating OpenAdapt system overlay (bottom-right HUD) is the intended end
+// state. It stays dormant until the run_openemr footage is re-recorded WITHOUT
+// the "replaying · local · $0" badge that is currently burned into the footage
+// top-left in post by openadapt-flow scripts/demo_media.py (build_run_openemr).
+// Rendering both at once would double up the indicator. Flip this to true in
+// the SAME change that ships pill-free run_openemr.{mp4,webm,gif}. See PR #246.
+const SHOW_SYSTEM_OVERLAY = false
+
 export default function ReplayHero() {
     const compiled = em.compiled
     const agent = em.agent
@@ -82,56 +90,69 @@ export default function ReplayHero() {
                           TOP of whatever app is running (here OpenEMR), a
                           distinct visual layer from the browser chrome. It
                           reinforces that OpenAdapt runs over your existing
-                          apps rather than replacing them.
+                          apps rather than replacing them. Held dormant behind
+                          SHOW_SYSTEM_OVERLAY until the footage is re-recorded
+                          without its own baked-in top-left status badge.
                         */}
-                        <div className={styles.sysOverlay}>
-                            <span className={styles.sysMark} aria-hidden="true">
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    width="16"
-                                    height="16"
-                                    role="img"
+                        {SHOW_SYSTEM_OVERLAY && (
+                            <div className={styles.sysOverlay}>
+                                <span
+                                    className={styles.sysMark}
+                                    aria-hidden="true"
                                 >
-                                    <rect
-                                        x="1.5"
-                                        y="1.5"
-                                        width="21"
-                                        height="21"
-                                        rx="6"
-                                        fill="url(#sysMarkFill)"
-                                    />
-                                    <path
-                                        d="M9.5 8 L16 12 L9.5 16 Z"
-                                        fill="#fdfcf9"
-                                    />
-                                    <defs>
-                                        <linearGradient
-                                            id="sysMarkFill"
-                                            x1="0"
-                                            y1="0"
-                                            x2="24"
-                                            y2="24"
-                                            gradientUnits="userSpaceOnUse"
-                                        >
-                                            <stop offset="0" stopColor="#4f7f60" />
-                                            <stop offset="1" stopColor="#2f5340" />
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <span className={styles.sysMeta}>
-                                <span className={styles.sysBrand}>
-                                    OpenAdapt
-                                    <span
-                                        className={styles.sysDot}
-                                        aria-hidden="true"
-                                    />
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        width="16"
+                                        height="16"
+                                        role="img"
+                                    >
+                                        <rect
+                                            x="1.5"
+                                            y="1.5"
+                                            width="21"
+                                            height="21"
+                                            rx="6"
+                                            fill="url(#sysMarkFill)"
+                                        />
+                                        <path
+                                            d="M9.5 8 L16 12 L9.5 16 Z"
+                                            fill="#fdfcf9"
+                                        />
+                                        <defs>
+                                            <linearGradient
+                                                id="sysMarkFill"
+                                                x1="0"
+                                                y1="0"
+                                                x2="24"
+                                                y2="24"
+                                                gradientUnits="userSpaceOnUse"
+                                            >
+                                                <stop
+                                                    offset="0"
+                                                    stopColor="#4f7f60"
+                                                />
+                                                <stop
+                                                    offset="1"
+                                                    stopColor="#2f5340"
+                                                />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
                                 </span>
-                                <span className={styles.sysStatus}>
-                                    replaying · local · $0
+                                <span className={styles.sysMeta}>
+                                    <span className={styles.sysBrand}>
+                                        OpenAdapt
+                                        <span
+                                            className={styles.sysDot}
+                                            aria-hidden="true"
+                                        />
+                                    </span>
+                                    <span className={styles.sysStatus}>
+                                        running · local · $0
+                                    </span>
                                 </span>
-                            </span>
-                        </div>
+                            </div>
+                        )}
                     </div>
                     <figcaption className={styles.frameCaption}>
                         A compiled workflow replaying against OpenEMR&rsquo;s live
