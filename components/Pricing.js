@@ -1,21 +1,17 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-import status from '../public/status.json'
-
 const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
 
 /*
  * Three delivery paths. The hosted amount is retrieved from Stripe at build
  * time rather than duplicated in site code; Checkout confirms the same
- * configured product and price before payment. The hosted maturity label is
- * read from the canonical status manifest (public/status.json) so it can never
- * drift from the single source of truth.
+ * configured product and price before payment. OpenAdapt Cloud is a live
+ * managed offer, so its chip reads "Live" rather than a maturity gate; the
+ * honest readiness detail (and the "first external payment-to-run lifecycle
+ * has not completed yet" caveat) stays in the status manifest and the
+ * product-status section.
  */
-
-const hostedStatusLabel =
-    status.substrates.find((substrate) => substrate.name === 'Hosted Cloud')
-        ?.public_label || 'Beta'
 
 function Check() {
     return (
@@ -136,10 +132,10 @@ export default function Pricing({ hostedOffer = null }) {
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Run the MIT-licensed engine yourself for free. Subscribe to
-                    managed browser execution &mdash; a live offer in Beta, with
-                    assisted onboarding as we qualify your first workflow. Bring
-                    OpenAdapt to desktop, Citrix, and regulated workflows through
-                    a scoped paid pilot.
+                    OpenAdapt Cloud &mdash; the managed control plane that runs
+                    browser workflows for you and governs desktop, Citrix, and
+                    RDP workflows on your own runner. Start a scoped pilot for
+                    regulated or on-prem deployments.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -182,9 +178,9 @@ export default function Pricing({ hostedOffer = null }) {
                             className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2"
                             data-testid="hosted-status-label"
                         >
-                            {hostedStatusLabel}
+                            Live
                         </span>
-                        <p className="eyebrow">Hosted browser</p>
+                        <p className="eyebrow">OpenAdapt Cloud</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
                                 {hostedOfferAvailable
@@ -211,17 +207,19 @@ export default function Pricing({ hostedOffer = null }) {
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            A live, managed subscription for an approved browser
-                            workflow: a control plane for repeat execution,
-                            reporting, and governed updates. Onboarding is
-                            assisted &mdash; we qualify the first workflow with
-                            you rather than one-click self-serve.
+                            The managed control plane for governed workflow
+                            execution. Browser workflows run in our managed
+                            runner; desktop, Citrix, and RDP workflows run on
+                            your own runner under the same approvals, audit, and
+                            analytics. One place to review runs, catch failures,
+                            and ship governed updates.
                         </p>
                         <FeatureList
                             items={[
-                                'Managed execution of approved browser workflows',
+                                'Managed runner for approved browser workflows',
+                                'Desktop, Citrix & RDP via your own runner under cloud governance',
                                 'Deterministic healthy replay with zero model calls',
-                                'Run history, failure reports, usage, and governed updates',
+                                'Approvals, run history, failure reports, usage, and governed updates',
                                 'Sanitized uploads admitted under declared policy',
                                 'Price and billing period confirmed in Stripe',
                             ]}
@@ -309,7 +307,7 @@ export default function Pricing({ hostedOffer = null }) {
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
                     {hostedOfferAvailable
                         ? 'The hosted subscription price shown above comes directly from Stripe and is confirmed again at checkout.'
-                        : 'Managed browser subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
+                        : 'OpenAdapt Cloud subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
                     Regulated deployment and service terms are scoped separately.
                 </p>
             </div>
