@@ -46,13 +46,15 @@ describe('public product truth', () => {
     it('leads with the governed compiler and qualifies the buyer', () => {
         cy.get('h1').should(
             'contain.text',
-            'Compile repeated GUI work. Verify the result. Halt when you can’t.'
+            'Automate the GUI work that has to be right.'
         )
+        cy.contains('Where OpenAdapt fits best').should('be.visible')
         cy.contains(
-            'Use APIs first. Use OpenAdapt for the UI-only last mile.'
+            'Built for the repeated GUI work you can’t afford to get wrong'
         ).should('be.visible')
-        cy.contains('When OpenAdapt fits').should('be.visible')
-        cy.contains('When it isn’t the right tool').should('be.visible')
+        // The disqualifier column was reframed to a positive best-fit block;
+        // the full category breakdown now lives on /compare.
+        cy.contains('When it isn’t the right tool').should('not.exist')
         cy.get('a[href$="#open-source"]').should('exist')
         cy.get('a[href$="#product-status"]').should('exist')
         cy.get('a[href="/security"]').should('exist')
@@ -216,7 +218,14 @@ describe('public product truth', () => {
                 'be.visible'
             )
             cy.contains('Scoped paid pilot').should('be.visible')
-            cy.contains('Beta / public offer').should('be.visible')
+            // Hosted plan reframed to "OpenAdapt Cloud" (control plane); the
+            // status chip reads "Live" and no longer leads with "Beta".
+            cy.contains('OpenAdapt Cloud').should('be.visible')
+            cy.get('[data-testid="hosted-status-label"]').should(
+                'contain.text',
+                'Live'
+            )
+            cy.contains('Beta').should('not.exist')
             cy.contains('Offer unavailable').should('not.exist')
             cy.contains('Hosted checkout unavailable').should('not.exist')
             cy.contains('approved sanitized copy').should('be.visible')
