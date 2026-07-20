@@ -1,333 +1,118 @@
 import { useEffect, useState } from 'react'
-
 import styles from './DashboardShowcase.module.css'
 
-const TOUR_INTERVAL_MS = 4200
-
-const VIEW_ORDER = ['workflow', 'run', 'evidence', 'report']
-const VIEW_LABELS = {
-    workflow: 'Workflow',
-    run: 'Run',
-    evidence: 'Evidence',
-    report: 'Report',
-}
-
-const REFERENCES = [
+// Real screenshots of the shipping OpenAdapt Cloud product (openadapt-cloud),
+// captured from the actual dashboard UI. This is a rotating showcase: the large
+// slot cycles through the real product frames (dashboard, run detail, halt
+// evidence, program visualizer, workflow catalog) so each gets time on screen
+// big enough to read. Every frame is the real interface running in its local
+// mock-data mode with synthetic records (see /product-preview/MANIFEST.json and
+// /cloud-preview/provenance.json). Nothing here is a hand-drawn or synthetic
+// mockup of an app that does not exist.
+//
+// Order matters: the dashboard is first so it is the default (and SSR / no-JS)
+// frame, which is why the browser address bar reads app.openadapt.ai/dashboard
+// before any rotation. Aspect ratios differ a lot (the dashboard is wide, the
+// program graph and catalog are very tall), so each slide carries an explicit
+// object-position; the tall captures are top-anchored so their meaningful top
+// content renders big.
+const SLIDES = [
     {
-        key: 'healthcare',
-        label: 'Healthcare',
-        application: 'OpenEMR',
-        workflow: 'Patient note entry',
-        media: {
-            workflow: {
-                animated: '/cloud-preview/healthcare-workflow.gif',
-                still: '/cloud-preview/healthcare-workflow.jpg',
-                alt: 'The OpenAdapt Cloud workflows list opening the synthetic OpenEMR workflow: approved bundle versions and run history in the real dashboard.',
-            },
-            run: {
-                animated: '/cloud-preview/healthcare-run.gif',
-                still: '/cloud-preview/healthcare-run.jpg',
-                alt: 'OpenAdapt Cloud run detail for a completed synthetic OpenEMR run: step metrics and the live timeline with verified effects.',
-            },
-            evidence: {
-                animated: '/cloud-preview/healthcare-evidence.gif',
-                still: '/cloud-preview/healthcare-evidence.jpg',
-                alt: 'OpenAdapt Cloud halt evidence for the synthetic OpenEMR workflow: the locally reported stop, resolver metrics, and the governed repair page.',
-            },
-            report: {
-                animated: '/cloud-preview/healthcare-report.gif',
-                still: '/cloud-preview/healthcare-report.jpg',
-                alt: 'OpenAdapt Cloud run report for the synthetic OpenEMR run: structured step receipts bound to the compiled bundle.',
-            },
-        },
-        views: {
-            workflow: {
-                eyebrow: 'Reference workflow',
-                title: 'Patient note entry',
-                status: 'Compiled',
-                tone: 'good',
-                summary:
-                    'A demonstrated OpenEMR task compiled into an inspectable, governed workflow.',
-                details: [
-                    ['Workflow', 'openemr-browser-reference'],
-                    ['Inputs', 'Workflow-defined parameters'],
-                    ['Target', 'Bounded OpenEMR browser task'],
-                    ['Effect contract', 'One matching note persisted'],
-                ],
-            },
-            run: {
-                eyebrow: 'Compiled replay',
-                title: 'OpenEMR reference run',
-                status: 'Verified',
-                tone: 'good',
-                summary:
-                    'The compiled task replays without per-run model calls and stops if its declared checks cannot be established.',
-                details: [
-                    ['Execution', 'Compiled local replay'],
-                    ['Targeting', 'Recorded OpenEMR evidence'],
-                    ['Identity policy', 'Patient context matched'],
-                    ['Model calls', '0 per healthy run'],
-                ],
-            },
-            evidence: {
-                eyebrow: 'Run evidence',
-                title: 'Effect verification',
-                status: 'Effect verified',
-                tone: 'good',
-                summary:
-                    'Screen evidence and an independent application readback establish the intended note effect separately.',
-                details: [
-                    ['Recorded media', 'Demonstration and replay footage'],
-                    ['Effect oracle', 'Exact patient note readback'],
-                    ['Acceptance', 'Identity and effect checks passed'],
-                    ['Collateral audit', 'Non-target record unchanged'],
-                ],
-            },
-            report: {
-                eyebrow: 'Run report',
-                title: 'OpenEMR reference',
-                status: 'Approved',
-                tone: 'good',
-                summary:
-                    'The report binds the compiled revision, operator decision, action receipts, and independently verified outcome.',
-                details: [
-                    ['Workflow revision', 'Exact hash retained'],
-                    ['Identity decision', 'Verified'],
-                    ['Effect decision', 'Verified'],
-                    ['Outcome', 'Completed'],
-                ],
-            },
-        },
+        key: 'dashboard',
+        src: '/product-preview/dashboard-workflows.png',
+        width: 2880,
+        height: 1800,
+        focus: '50% 0%',
+        address: 'app.openadapt.ai/dashboard',
+        label: 'Dashboard',
+        caption:
+            'Approved workflows, compiled bundle versions, and run history in one hosted dashboard.',
+        alt: 'The OpenAdapt Cloud workflows dashboard at app.openadapt.ai: approved workflows, compiled bundle versions, and run history in the real hosted product.',
     },
     {
-        key: 'lending',
-        label: 'Lending',
-        application: 'Frappe Lending',
-        workflow: 'Loan application entry',
-        media: {
-            workflow: {
-                animated: '/cloud-preview/lending-workflow.gif',
-                still: '/cloud-preview/lending-workflow.jpg',
-                alt: 'The OpenAdapt Cloud workflows list opening the synthetic Frappe Lending workflow: approved bundle versions and run history in the real dashboard.',
-            },
-            run: {
-                animated: '/cloud-preview/lending-run.gif',
-                still: '/cloud-preview/lending-run.jpg',
-                alt: 'OpenAdapt Cloud run detail for a completed synthetic Frappe Lending run: step metrics and the live timeline with verified effects.',
-            },
-            evidence: {
-                animated: '/cloud-preview/lending-evidence.gif',
-                still: '/cloud-preview/lending-evidence.jpg',
-                alt: 'OpenAdapt Cloud halt evidence for the synthetic Frappe Lending workflow: the locally reported stop, resolver metrics, and the governed repair page.',
-            },
-            report: {
-                animated: '/cloud-preview/lending-report.gif',
-                still: '/cloud-preview/lending-report.jpg',
-                alt: 'OpenAdapt Cloud run report for the synthetic Frappe Lending run: structured step receipts bound to the compiled bundle.',
-            },
-        },
-        views: {
-            workflow: {
-                eyebrow: 'Reference workflow',
-                title: 'Loan application entry',
-                status: 'Approved reference',
-                tone: 'good',
-                summary:
-                    'A synthetic application-entry demonstration compiled into a bounded workflow.',
-                details: [
-                    ['Workflow', 'create-loan-application'],
-                    ['Inputs', 'Email · phone · product · amount · term'],
-                    ['Target', 'Frappe Loan Application form'],
-                    ['Effect contract', 'Exactly one matching application'],
-                ],
-            },
-            run: {
-                eyebrow: 'Compiled runs',
-                title: 'Frappe Lending trials',
-                status: '6 / 6 verified',
-                tone: 'good',
-                summary:
-                    'Baseline and cosmetic-drift trials completed with no per-run model calls.',
-                details: [
-                    ['Conditions', 'Baseline + cosmetic drift'],
-                    ['Compiled trials', '6'],
-                    ['Verified correct', '6'],
-                    ['Model calls', '0'],
-                ],
-            },
-            evidence: {
-                eyebrow: 'Run evidence',
-                title: 'Independent readback',
-                status: 'Effect verified',
-                tone: 'good',
-                summary:
-                    'Acceptance requires the independent REST, SQL, and non-target audits to agree.',
-                details: [
-                    ['REST readback', 'Exact fields matched'],
-                    ['SQL delta', '+1 Loan Application'],
-                    ['Collateral audit', 'Non-target digest unchanged'],
-                    ['Silent incorrect success', '0'],
-                ],
-            },
-            report: {
-                eyebrow: 'Bounded report',
-                title: 'Frappe Lending reference',
-                status: '6 / 6 verified',
-                tone: 'good',
-                summary:
-                    'Published local reference evidence, not a customer deployment or broad reliability claim.',
-                details: [
-                    ['Compiled trials', '6'],
-                    ['Over-halts', '0'],
-                    ['Silent incorrect success', '0'],
-                    ['Scope', 'One pinned synthetic task'],
-                ],
-            },
-        },
+        key: 'run',
+        src: '/cloud-preview/healthcare-run.jpg',
+        width: 2560,
+        height: 1600,
+        focus: '50% 0%',
+        address: 'app.openadapt.ai/runs',
+        label: 'Run detail',
+        caption:
+            'Step timeline and independently verified effects for a completed run.',
+        alt: 'OpenAdapt Cloud run detail: step metrics and the timeline with verified effects for a completed synthetic OpenEMR run.',
     },
     {
-        key: 'insurance',
-        label: 'Insurance',
-        application: 'openIMIS',
-        workflow: 'Claim intake',
-        media: {
-            workflow: {
-                animated: '/cloud-preview/insurance-workflow.gif',
-                still: '/cloud-preview/insurance-workflow.jpg',
-                alt: 'The OpenAdapt Cloud workflows list opening the synthetic openIMIS workflow: approved bundle versions and run history in the real dashboard.',
-            },
-            run: {
-                animated: '/cloud-preview/insurance-run.gif',
-                still: '/cloud-preview/insurance-run.jpg',
-                alt: 'OpenAdapt Cloud run detail for a completed synthetic openIMIS run: step metrics and the live timeline with verified effects.',
-            },
-            evidence: {
-                animated: '/cloud-preview/insurance-evidence.gif',
-                still: '/cloud-preview/insurance-evidence.jpg',
-                alt: 'OpenAdapt Cloud halt evidence for the synthetic openIMIS workflow: the locally reported stop, resolver metrics, and the governed repair page.',
-            },
-            report: {
-                animated: '/cloud-preview/insurance-report.gif',
-                still: '/cloud-preview/insurance-report.jpg',
-                alt: 'OpenAdapt Cloud run report for the synthetic openIMIS run: structured step receipts bound to the compiled bundle.',
-            },
-        },
-        views: {
-            workflow: {
-                eyebrow: 'Reference workflow',
-                title: 'Health-facility claim intake',
-                status: 'Approved reference',
-                tone: 'good',
-                summary:
-                    'A synthetic openIMIS claim-entry demonstration compiled into a bounded workflow.',
-                details: [
-                    ['Workflow', 'openimis-claim-intake'],
-                    ['Inputs', 'Insuree no. · claim no. · explanation'],
-                    ['Target', 'openIMIS Health Facility Claim form'],
-                    ['Effect contract', 'Exactly one claim in status Entered'],
-                ],
-            },
-            run: {
-                eyebrow: 'Compiled runs',
-                title: 'openIMIS replays',
-                status: '3 / 3 verified',
-                tone: 'good',
-                summary:
-                    'Three compiled replays completed with fresh claim numbers and no model calls.',
-                details: [
-                    ['Compiled replays', '3'],
-                    ['Verified correct', '3'],
-                    ['Duplicate claims', '0'],
-                    ['Model calls', '0'],
-                ],
-            },
-            evidence: {
-                eyebrow: 'Run evidence',
-                title: 'Claims database oracle',
-                status: 'Effect verified',
-                tone: 'good',
-                summary:
-                    'Acceptance requires exactly one matching, non-voided claim row in the claims database.',
-                details: [
-                    ['SQL claim readback', 'Exactly one new row'],
-                    ['Claim status', 'Entered'],
-                    ['Record context', 'Insuree and facility matched'],
-                    ['Wrong-policyholder writes', '0'],
-                ],
-            },
-            report: {
-                eyebrow: 'Bounded report',
-                title: 'openIMIS reference',
-                status: '3 / 3 verified',
-                tone: 'good',
-                summary:
-                    'Published local reference evidence, not a customer deployment or reliability benchmark.',
-                details: [
-                    ['Compiled replays', '3'],
-                    ['Duplicate claims', '0'],
-                    ['Wrong-policyholder writes', '0'],
-                    ['Scope', 'One pinned synthetic task'],
-                ],
-            },
-        },
+        key: 'evidence',
+        src: '/cloud-preview/healthcare-evidence.jpg',
+        width: 2560,
+        height: 1600,
+        focus: '50% 0%',
+        address: 'app.openadapt.ai/runs/evidence',
+        label: 'Halt evidence',
+        caption:
+            'The locally reported stop, resolver metrics, and the governed repair page.',
+        alt: 'OpenAdapt Cloud halt evidence: the locally reported stop, resolver metrics, and the governed repair page for a synthetic OpenEMR workflow.',
+    },
+    {
+        key: 'program',
+        src: '/cloud-preview/program-graph.png',
+        width: 1800,
+        height: 5096,
+        // Tall full-page capture. Nudge past the empty grey app-chrome band at
+        // the very top so the compiled-program header and stats fill the frame.
+        focus: '50% 8%',
+        address: 'app.openadapt.ai/workflows/program',
+        label: 'Program visualizer',
+        caption:
+            'The compiled workflow rendered as an inspectable program graph.',
+        alt: 'OpenAdapt Cloud program visualizer: a compiled workflow rendered as an inspectable program graph.',
+    },
+    {
+        key: 'catalog',
+        src: '/cloud-preview/workflow-catalog.png',
+        width: 1280,
+        height: 2200,
+        // Tall full-page capture: top-anchored so the portfolio and ROI readout
+        // lead the frame.
+        focus: '50% 0%',
+        address: 'app.openadapt.ai/workflows',
+        label: 'Workflow catalog',
+        caption:
+            'Approved workflows and their compiled bundle versions in one catalog.',
+        alt: 'OpenAdapt Cloud workflow catalog: approved workflows and their compiled bundle versions.',
     },
 ]
 
+const ROTATE_MS = 4600
+
 export default function DashboardShowcase() {
-    const [referenceIndex, setReferenceIndex] = useState(0)
-    const [viewIndex, setViewIndex] = useState(0)
-    const [playing, setPlaying] = useState(true)
-    const [reducedMotion, setReducedMotion] = useState(false)
+    const [active, setActive] = useState(0)
+    const [paused, setPaused] = useState(false)
+    // Bumping this restarts the auto-advance timer so a manual jump gives the
+    // chosen slide its full dwell time instead of flipping a moment later.
+    const [cycle, setCycle] = useState(0)
+    const count = SLIDES.length
 
+    // The showcase auto-advances for everyone, including visitors with
+    // "reduce motion" enabled. This is a deliberate product decision (matching
+    // the hero): the founder browses with reduced motion on and the section must
+    // visibly rotate rather than look static or broken. The manual tabs are
+    // always present so nothing depends on the timer, and the crossfade is a
+    // gentle opacity fade rather than movement.
     useEffect(() => {
-        const preference = window.matchMedia(
-            '(prefers-reduced-motion: reduce)'
-        )
-        const syncPreference = () => setReducedMotion(preference.matches)
+        if (paused) return undefined
+        const id = setInterval(() => {
+            setActive((index) => (index + 1) % count)
+        }, ROTATE_MS)
+        return () => clearInterval(id)
+    }, [paused, cycle, count])
 
-        syncPreference()
-        preference.addEventListener?.('change', syncPreference)
-        return () => preference.removeEventListener?.('change', syncPreference)
-    }, [])
-
-    useEffect(() => {
-        if (!playing || reducedMotion) return undefined
-
-        const timer = window.setInterval(() => {
-            setViewIndex((currentView) => {
-                const nextView = (currentView + 1) % VIEW_ORDER.length
-                if (nextView === 0) {
-                    setReferenceIndex(
-                        (currentReference) =>
-                            (currentReference + 1) % REFERENCES.length
-                    )
-                }
-                return nextView
-            })
-        }, TOUR_INTERVAL_MS)
-
-        return () => window.clearInterval(timer)
-    }, [playing, reducedMotion])
-
-    const reference = REFERENCES[referenceIndex]
-    const viewKey = VIEW_ORDER[viewIndex]
-    const view = reference.views[viewKey]
-    // Every reference x view slot has its own footage of the real Cloud
-    // dashboard (captured from openadapt-cloud in local mock mode with
-    // synthetic seed data — see /cloud-preview/provenance.json).
-    const media = reference.media[viewKey]
-    const tourPlaying = playing && !reducedMotion
-
-    const selectReference = (index) => {
-        setReferenceIndex(index)
-        setViewIndex(0)
-        setPlaying(false)
+    const jumpTo = (index) => {
+        setActive(index)
+        setCycle((value) => value + 1)
     }
 
-    const selectView = (index) => {
-        setViewIndex(index)
-        setPlaying(false)
-    }
+    const activeSlide = SLIDES[active]
 
     return (
         <section
@@ -345,218 +130,166 @@ export default function DashboardShowcase() {
                         From approved workflow to reviewable outcome.
                     </h2>
                     <p className={styles.summary}>
-                        Explore how workflows, runs, evidence, and reports stay
-                        connected across three real reference applications.
+                        This is the hosted product running today at
+                        app.openadapt.ai. Workflows, runs, evidence, and
+                        reports stay connected in one reviewable dashboard.
                     </p>
-                </div>
-
-                <div
-                    className={styles.referencePicker}
-                    role="group"
-                    aria-label="Choose a reference workflow"
-                >
-                    {REFERENCES.map((item, index) => (
-                        <button
-                            key={item.key}
-                            type="button"
-                            className={
-                                index === referenceIndex
-                                    ? styles.referenceActive
-                                    : styles.referenceButton
-                            }
-                            aria-pressed={index === referenceIndex}
-                            data-testid={`dashboard-reference-${item.key}`}
-                            onClick={() => selectReference(index)}
-                        >
-                            <span>{item.label}</span>
-                            <strong>{item.application}</strong>
-                        </button>
-                    ))}
                 </div>
 
                 <figure
                     className={styles.figure}
                     data-testid="dashboard-product-preview"
+                    onMouseEnter={() => setPaused(true)}
+                    onMouseLeave={() => setPaused(false)}
+                    onFocus={() => setPaused(true)}
+                    onBlur={() => setPaused(false)}
                 >
-                    <div
-                        className={styles.dashboard}
-                        data-reference={reference.key}
-                        data-view={viewKey}
-                        data-playing={tourPlaying ? 'true' : 'false'}
-                        data-reduced-motion={
-                            reducedMotion ? 'true' : 'false'
-                        }
-                    >
-                        <header className={styles.topbar}>
-                            <div
-                                className={styles.brand}
-                                data-testid="dashboard-preview-brand"
-                            >
-                                <span aria-hidden="true">OA</span>
-                                <strong>OpenAdapt</strong>
-                                <small>Cloud</small>
-                            </div>
-                            <div className={styles.workspace}>
-                                Reference workflows
-                            </div>
-                        </header>
-
-                        <aside className={styles.sidebar}>
-                            <p className={styles.sidebarLabel}>
-                                Operating view
-                            </p>
-                            <div
-                                className={styles.viewControls}
-                                role="group"
-                                aria-label="Choose a Cloud preview state"
-                            >
-                                {VIEW_ORDER.map((item, index) => (
-                                    <button
-                                        key={item}
-                                        type="button"
-                                        className={
-                                            index === viewIndex
-                                                ? styles.viewActive
-                                                : styles.viewButton
-                                        }
-                                        aria-pressed={index === viewIndex}
-                                        data-testid={`dashboard-view-${item}`}
-                                        onClick={() => selectView(index)}
-                                    >
-                                        <span aria-hidden="true">
-                                            {String(index + 1).padStart(2, '0')}
-                                        </span>
-                                        {VIEW_LABELS[item]}
-                                    </button>
-                                ))}
-                            </div>
-                            <div className={styles.tourControls}>
-                                {reducedMotion ? (
-                                    <span
-                                        className={styles.reducedStatus}
-                                        data-testid="dashboard-tour-status"
-                                    >
-                                        Tour paused for reduced motion
-                                    </span>
-                                ) : (
-                                    <button
-                                        type="button"
-                                        className={styles.playback}
-                                        onClick={() =>
-                                            setPlaying((current) => !current)
-                                        }
-                                        aria-label={
-                                            playing
-                                                ? 'Pause guided Cloud tour'
-                                                : 'Play guided Cloud tour'
-                                        }
-                                    >
-                                        <span aria-hidden="true">
-                                            {playing ? 'Ⅱ' : '▶'}
-                                        </span>
-                                        {playing ? 'Pause tour' : 'Play tour'}
-                                    </button>
-                                )}
-                            </div>
-                        </aside>
-
+                    <div className={styles.browser}>
                         <div
-                            className={styles.preview}
-                            id="cloud-preview-panel"
+                            className={styles.browserBar}
+                            aria-hidden="true"
                         >
-                            <div className={styles.previewHeader}>
-                                <div>
-                                    <p>{reference.label} reference</p>
-                                    <h3>{reference.application}</h3>
-                                </div>
-                                <span>{reference.workflow}</span>
-                            </div>
-
-                            <div
-                                className={styles.previewGrid}
-                                key={`${reference.key}-${viewKey}`}
-                            >
-                                <article className={styles.stateCard}>
-                                    <div className={styles.stateHeading}>
-                                        <div>
-                                            <p>{view.eyebrow}</p>
-                                            <h4>{view.title}</h4>
-                                        </div>
-                                        <span
-                                            className={
-                                                view.tone === 'attention'
-                                                    ? styles.statusAttention
-                                                    : styles.statusGood
-                                            }
-                                        >
-                                            {view.status}
-                                        </span>
-                                    </div>
-                                    <p className={styles.stateSummary}>
-                                        {view.summary}
-                                    </p>
-                                    <dl className={styles.details}>
-                                        {view.details.map(([label, value]) => (
-                                            <div key={label}>
-                                                <dt>{label}</dt>
-                                                <dd>{value}</dd>
-                                            </div>
-                                        ))}
-                                    </dl>
-                                </article>
-
-                                <div className={styles.referenceMedia}>
-                                    {/*
-                                     * Product footage follows the same
-                                     * mechanism as the How-it-works Clips: an
-                                     * <img> pointed DIRECTLY at the animated
-                                     * GIF, which always plays and loops via
-                                     * the GIF's own loop flag. Footage
-                                     * playback is deliberately independent of
-                                     * the guided-tour state: selecting a
-                                     * reference or view pauses the tour, and
-                                     * an earlier version also swapped this
-                                     * src to the static .jpg still — freezing
-                                     * the footage after any tab click. Only
-                                     * prefers-reduced-motion shows the still.
-                                     * The key remounts the <img> per
-                                     * reference/view so a newly selected
-                                     * reference restarts from its first
-                                     * frame.
-                                     */}
-                                    <img
-                                        key={`${reference.key}-${viewKey}`}
-                                        src={
-                                            reducedMotion
-                                                ? media.still
-                                                : media.animated
-                                        }
-                                        width="880"
-                                        height="550"
-                                        alt={media.alt}
-                                        loading="lazy"
-                                        decoding="async"
-                                        data-testid="dashboard-reference-media"
-                                    />
-                                    <span>
-                                        Real OpenAdapt Cloud app · synthetic{' '}
-                                        {reference.application} workflow
-                                    </span>
-                                </div>
-                            </div>
+                            <span className={styles.dots}>
+                                <i />
+                                <i />
+                                <i />
+                            </span>
+                            <span className={styles.address}>
+                                {activeSlide.address}
+                            </span>
+                        </div>
+                        <div
+                            className={styles.stage}
+                            id="cloud-stage"
+                            data-testid="dashboard-stage"
+                        >
+                            {SLIDES.map((slide, index) => (
+                                <img
+                                    key={slide.key}
+                                    className={styles.slide}
+                                    src={slide.src}
+                                    width={slide.width}
+                                    height={slide.height}
+                                    alt={slide.alt}
+                                    loading="lazy"
+                                    decoding="async"
+                                    aria-hidden={index !== active}
+                                    data-testid="dashboard-slide"
+                                    data-slide={slide.key}
+                                    data-active={
+                                        index === active ? 'true' : undefined
+                                    }
+                                    style={{
+                                        opacity: index === active ? 1 : 0,
+                                        objectPosition: slide.focus,
+                                    }}
+                                />
+                            ))}
                         </div>
                     </div>
+
+                    {/* Clickable thumbnail strip: small real screenshots of every
+                        frame, each a tab that jumps the large stage to that slide.
+                        The active thumbnail is highlighted and carries a visible
+                        countdown bar that fills over one dwell (ROTATE_MS) so the
+                        visitor sees time-to-next-slide. The countdown restarts on
+                        every slide change / manual jump / pause toggle (its React
+                        key), staying in lockstep with the auto-advance timer, and
+                        it deliberately keeps animating under reduced motion so the
+                        rotation reads as live. */}
+                    <div
+                        className={styles.tabs}
+                        role="tablist"
+                        aria-label="OpenAdapt Cloud views"
+                        data-testid="dashboard-tabs"
+                    >
+                        {SLIDES.map((slide, index) => (
+                            <button
+                                key={slide.key}
+                                type="button"
+                                role="tab"
+                                id={`cloud-tab-${slide.key}`}
+                                aria-selected={index === active}
+                                aria-controls="cloud-stage"
+                                className={styles.tab}
+                                data-testid="dashboard-tab"
+                                data-slide={slide.key}
+                                data-active={
+                                    index === active ? 'true' : undefined
+                                }
+                                onClick={() => jumpTo(index)}
+                            >
+                                <span className={styles.thumb}>
+                                    <img
+                                        className={styles.thumbImg}
+                                        src={slide.src}
+                                        width={slide.width}
+                                        height={slide.height}
+                                        alt=""
+                                        loading="lazy"
+                                        decoding="async"
+                                        aria-hidden="true"
+                                        style={{ objectPosition: slide.focus }}
+                                    />
+                                    {index === active && (
+                                        <span
+                                            key={`${active}-${cycle}-${paused}`}
+                                            className={styles.timer}
+                                            data-testid="dashboard-countdown"
+                                            aria-hidden="true"
+                                        >
+                                            <span
+                                                className={styles.timerFill}
+                                                style={{
+                                                    animationDuration: `${ROTATE_MS}ms`,
+                                                    animationPlayState: paused
+                                                        ? 'paused'
+                                                        : 'running',
+                                                }}
+                                            />
+                                        </span>
+                                    )}
+                                </span>
+                                <span className={styles.thumbLabel}>
+                                    {slide.label}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+
+                    <div
+                        className={styles.progress}
+                        data-testid="dashboard-dots"
+                    >
+                        {SLIDES.map((slide, index) => (
+                            <button
+                                key={slide.key}
+                                type="button"
+                                className={styles.dot}
+                                data-active={
+                                    index === active ? 'true' : undefined
+                                }
+                                tabIndex={-1}
+                                aria-hidden="true"
+                                onClick={() => jumpTo(index)}
+                            />
+                        ))}
+                    </div>
+
+                    <p
+                        className={styles.slideCaption}
+                        aria-live="polite"
+                        data-testid="dashboard-slide-caption"
+                    >
+                        <strong>{activeSlide.label}.</strong>{' '}
+                        {activeSlide.caption}
+                    </p>
+
                     <figcaption
                         className={styles.caption}
                         id="dashboard-preview-caption"
                     >
-                        <strong>
-                            Interactive product preview · no live backend
-                            dependency
-                        </strong>
-                        <span>
-                            Reference workflows using synthetic records
-                        </span>
+                        <strong>Real OpenAdapt Cloud interface</strong>
                     </figcaption>
                 </figure>
 
