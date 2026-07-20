@@ -197,9 +197,6 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
             </Head>
             <MastHead githubStats={githubStats} />
             <Reveal>
-                <Qualification />
-            </Reveal>
-            <Reveal>
                 <HowItWorksCondensed />
             </Reveal>
             <Reveal>
@@ -258,6 +255,17 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
                     </div>
                 </div>
             </section>
+            {/*
+             * OpenAdapt Cloud is surfaced UPPER-MIDDLE — right after the
+             * reference-workflow sections — so "there is a hosted product you
+             * can start now" is visible mid-page. The DashboardShowcase is the
+             * condensed hosted-product teaser (real Cloud footage + "Open the
+             * Cloud app" / "See launch plans"); the full Pricing detail stays
+             * lower.
+             */}
+            <Reveal>
+                <DashboardShowcase />
+            </Reveal>
             <Reveal>
                 <DriftOutcomes />
             </Reveal>
@@ -265,10 +273,17 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
                 <ProductStatus />
             </Reveal>
             <Reveal>
-                <DashboardShowcase />
-            </Reveal>
-            <Reveal>
                 <Pricing hostedOffer={hostedOffer} />
+            </Reveal>
+            {/*
+             * Buyer qualification ("use APIs first / UI-only last mile") sits
+             * LOW, next to the /compare link it feeds — the page leads with
+             * value and qualifies later. A brief positive-fit line lives in the
+             * hero; the full fit criteria and the RPA / agent / recorder
+             * breakdown live here and on /compare.
+             */}
+            <Reveal>
+                <Qualification />
             </Reveal>
             <Reveal>
                 <ContactBookingSection />

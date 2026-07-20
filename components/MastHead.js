@@ -50,7 +50,7 @@ export default function Home({ githubStats }) {
                                 Compile repeated GUI work. Verify the result.
                                 Halt when you can&rsquo;t.
                             </h1>
-                            <p className="mt-0 mb-6 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
+                            <p className="mt-0 mb-4 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 Demonstrate a repeated GUI task once. OpenAdapt
                                 compiles it into a local program that makes no
                                 model calls on a healthy run. The same governed
@@ -64,8 +64,13 @@ export default function Home({ githubStats }) {
                                     See how it runs across every interface.
                                 </Link>
                             </p>
+                            <p className={styles.fitLine}>
+                                Purpose-built for repeated, high-stakes GUI work
+                                that has no clean API and can be checked against
+                                an independent source of truth.
+                            </p>
                             <div id="register">
-                                <div className="flex flex-wrap items-center justify-center gap-3 mt-0 mb-8">
+                                <div className="flex flex-wrap items-center justify-center gap-3 mt-0 mb-4">
                                     <Link
                                         className="btn-ink"
                                         href="#book"
@@ -76,6 +81,17 @@ export default function Home({ githubStats }) {
                                         }
                                     >
                                         Evaluate a workflow
+                                    </Link>
+                                    <Link
+                                        className={styles.heroCloud}
+                                        href="#cloud-product"
+                                        onClick={() =>
+                                            track(EVENTS.HERO_CTA_CLICK, {
+                                                cta: 'start_cloud',
+                                            })
+                                        }
+                                    >
+                                        Start with OpenAdapt Cloud
                                     </Link>
                                     <Link
                                         className="btn-ghost-ink"
@@ -89,9 +105,15 @@ export default function Home({ githubStats }) {
                                         Try locally
                                     </Link>
                                 </div>
+                                <p className="mb-2 text-sm text-ink-3">
+                                    Hosted runs in minutes · or run it entirely on
+                                    your own machine · zero per-run model cost ·
+                                    deterministic replay you can audit
+                                </p>
                                 <p className="mb-8 text-sm text-ink-3">
-                                    Runs on your own machine · zero per-run model
-                                    cost · deterministic replay you can audit
+                                    <Link href="/paper">
+                                        Read the technical paper
+                                    </Link>
                                 </p>
                             </div>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
