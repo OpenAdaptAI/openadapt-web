@@ -1,3 +1,25 @@
+.figure {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 640px;
+    min-width: 0;
+}
+
+.illustrative {
+    margin: 0.6rem auto 0;
+    max-width: 640px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--ink-3);
+}
+
+.illustrative a {
+    color: var(--accent);
+}
+
 .frame {
     width: 100%;
     max-width: 640px;

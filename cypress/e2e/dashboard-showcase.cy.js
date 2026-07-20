@@ -58,7 +58,7 @@ describe('Cloud product preview', () => {
     it('supports the guided tour and interactive reference states', () => {
         cy.viewport(1280, 1700)
         cy.then(() => emulateReducedMotion('no-preference'))
-        cy.visit('/', { onBeforeLoad: preferMotion })
+        cy.visit('/hosted/welcome', { onBeforeLoad: preferMotion })
 
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
         cy.get('[data-testid="dashboard-product-preview"]').within(() => {
@@ -143,7 +143,7 @@ describe('Cloud product preview', () => {
     it('keeps the interactive preview static for reduced motion on mobile', () => {
         cy.viewport(390, 844)
         cy.then(() => emulateReducedMotion('reduce'))
-        cy.visit('/', { onBeforeLoad: preferReducedMotion })
+        cy.visit('/hosted/welcome', { onBeforeLoad: preferReducedMotion })
 
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
         cy.get('[data-testid="dashboard-product-preview"]').within(() => {

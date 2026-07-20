@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './Developers.module.css';
 import InstallSection from '@components/InstallSection';
-import PyPIDownloadChart from './PyPIDownloadChart';
 import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks';
 
 // Canonical hrefs live in data/developerLinks.js (shared with the nav
@@ -58,8 +57,7 @@ export default function Developers({ buildWarnings = [], githubStats = null }) {
                     {/* uv-first Installation Section */}
                     <InstallSection />
 
-                    {/* PyPI Download Statistics */}
-                    <PyPIDownloadChart githubStats={githubStats} />
+                    {/* Package adoption stats live on the Download page. */}
 
                     <div className="mt-8 mb-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
                         {ecosystemLinks.map((link) => (

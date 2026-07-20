@@ -53,7 +53,10 @@ test('insurance reference is linked from the buyer-fit grid and llms.txt', () =>
     assert.match(industries, /\/solutions\/insurance/)
     assert.match(footer, /\/solutions\/insurance/)
     assert.match(nav, /\/solutions\/insurance/)
-    assert.match(home, /<HowItWorks showUseCases \/>/)
+    // The homepage links every reference workflow directly (the full
+    // per-application HowItWorks selector now lives on the solution pages).
+    assert.match(home, /\/solutions\/insurance/)
+    assert.match(home, /Insurance claims reference/)
     for (const useCase of ['Healthcare', 'Lending', 'Insurance']) {
         assert.match(howItWorks, new RegExp(`label: '${useCase}'`))
     }

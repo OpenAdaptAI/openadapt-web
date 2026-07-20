@@ -1,23 +1,18 @@
-import { useRef, useState } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 
 import ContactBookingSection from '@components/ContactBookingSection'
-import DashboardShowcase from '@components/DashboardShowcase'
 import Developers from '@components/Developers'
 import DriftOutcomes from '@components/DriftOutcomes'
 import EmailForm from '@components/EmailForm'
-import Faq, { faqItems } from '@components/Faq'
 import Footer from '@components/Footer'
-import HowItWorks from '@components/HowItWorks'
-import IndustriesGrid from '@components/IndustriesGrid'
+import HowItWorksCondensed from '@components/HowItWorksCondensed'
+import LendingWorkflowDemo from '@components/LendingWorkflowDemo'
 import MastHead from '@components/MastHead'
 import Pricing from '@components/Pricing'
 import ProductStatus from '@components/ProductStatus'
-import ProofBand from '@components/ProofBand'
-import AudiencePaths from '@components/AudiencePaths'
+import Qualification from '@components/Qualification'
 import Reveal from '@components/Reveal'
-import SafetyBand from '@components/SafetyBand'
-// import SocialSection from '@components/SocialSection' // Temporarily disabled - feeds not working
 
 const organizationSchema = {
     '@context': 'https://schema.org',
@@ -105,18 +100,11 @@ const websiteSchema = {
     inLanguage: 'en',
 }
 
-const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqItems.map((item) => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.answer,
-        },
-    })),
-}
+const referenceLinks = [
+    { label: 'Healthcare workflow reference', href: '/solutions/healthcare' },
+    { label: 'Lending operations reference', href: '/solutions/lending' },
+    { label: 'Insurance claims reference', href: '/solutions/insurance' },
+]
 
 export async function getStaticProps() {
     // Seed the initial HTML with the shared cached/verified repository stats.
@@ -140,13 +128,6 @@ export async function getStaticProps() {
 }
 
 export default function Home({ githubStats, buildWarnings, hostedOffer }) {
-    const [feedbackData, setFeedbackData] = useState({
-        email: '',
-        message: '',
-    })
-
-    const sectionRef = useRef(null)
-
     return (
         <div>
             <Head>
@@ -169,23 +150,40 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
                         __html: JSON.stringify(websiteSchema),
                     }}
                 />
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify(faqSchema),
-                    }}
-                />
             </Head>
             <MastHead githubStats={githubStats} />
             <Reveal>
-                <AudiencePaths />
+                <Qualification />
             </Reveal>
             <Reveal>
-                <DashboardShowcase />
+                <HowItWorksCondensed />
             </Reveal>
             <Reveal>
-                <HowItWorks showUseCases />
+                <LendingWorkflowDemo />
             </Reveal>
+            <section
+                id="references"
+                className="border-b border-hairline bg-panel px-5 py-10"
+            >
+                <div className="mx-auto max-w-5xl text-center">
+                    <p className="eyebrow">More reference workflows</p>
+                    <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-ink-2">
+                        Each reference is a bounded, synthetic fixture with its
+                        own honest evidence and caveats.
+                    </p>
+                    <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+                        {referenceLinks.map((reference) => (
+                            <Link
+                                key={reference.href}
+                                href={reference.href}
+                                className="font-medium text-accent hover:underline"
+                            >
+                                {reference.label}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
             <Reveal>
                 <DriftOutcomes />
             </Reveal>
@@ -193,33 +191,16 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
                 <ProductStatus />
             </Reveal>
             <Reveal>
-                <ProofBand />
-            </Reveal>
-            <Reveal>
-                <SafetyBand />
-            </Reveal>
-            <Reveal>
-                <IndustriesGrid
-                    feedbackData={feedbackData}
-                    setFeedbackData={setFeedbackData}
-                    sectionRef={sectionRef}
-                />
-            </Reveal>
-            <Reveal>
                 <Pricing hostedOffer={hostedOffer} />
+            </Reveal>
+            <Reveal>
+                <ContactBookingSection />
             </Reveal>
             <Reveal>
                 <Developers
                     buildWarnings={buildWarnings}
                     githubStats={githubStats}
                 />
-            </Reveal>
-            {/* <SocialSection /> */} {/* Temporarily disabled - feeds not working */}
-            <Reveal>
-                <Faq />
-            </Reveal>
-            <Reveal>
-                <ContactBookingSection prefill={feedbackData} />
             </Reveal>
             <Reveal>
                 <EmailForm />
