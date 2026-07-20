@@ -1,0 +1,117 @@
+/* Compact adoption strip: a slim social-proof band that sits under the hero and
+   complements the GitHub stars/forks proof with real PyPI install counts. */
+.strip {
+    background: var(--panel);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    padding: 0.7rem 1.25rem;
+}
+
+.inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem 1rem;
+}
+
+.metric {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.icon {
+    color: var(--accent);
+    font-size: 0.9rem;
+    align-self: center;
+}
+
+.value {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.valueSmall {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+}
+
+.label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+}
+
+.sep {
+    width: 1px;
+    align-self: stretch;
+    min-height: 1rem;
+    background: var(--hairline);
+}
+
+.spark {
+    width: 96px;
+    height: 26px;
+    display: block;
+}
+
+.sparkLine {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.sparkDot {
+    fill: var(--accent);
+    stroke: var(--panel);
+    stroke-width: 1.5;
+}
+
+.source {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--ink-3);
+    text-decoration: underline;
+    text-decoration-color: var(--link-underline);
+    text-underline-offset: 2px;
+    white-space: nowrap;
+}
+
+.source:hover {
+    color: var(--accent-hover);
+}
+
+@media (max-width: 620px) {
+    .strip {
+        padding: 0.65rem 1rem;
+    }
+
+    .inner {
+        gap: 0.4rem 0.75rem;
+    }
+
+    /* Hide the vertical dividers on small screens; the wrap gap is enough. */
+    .sep {
+        display: none;
+    }
+
+    .source {
+        white-space: normal;
+        text-align: center;
+    }
+}

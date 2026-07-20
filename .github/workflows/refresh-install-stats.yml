@@ -1,0 +1,69 @@
+name: Refresh install stats
+
+# Scheduled snapshot for the homepage adoption section.
+#
+# The homepage renders installs-this-month / top-package / installs-over-time
+# from a COMMITTED snapshot at data/installStats.json. The site never calls
+# pypistats.org at build or request time (pypistats.org 429s aggressively), so
+# the section is always fast and can never break the page.
+#
+# This workflow is the only thing that refreshes that snapshot: weekly (and on
+# demand) it runs scripts/fetch-install-stats.js and, if the numbers changed,
+# opens a PR. Per repo policy it never pushes to main directly. If the fetch
+# fails the script keeps the committed snapshot and exits 0, so this workflow is
+# a safe no-op on a bad upstream day.
+
+on:
+  schedule:
+    # Mondays 06:00 UTC.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: refresh-install-stats
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Fetch latest PyPI install stats
+        run: node scripts/fetch-install-stats.js
+
+      - name: Open a PR if the snapshot changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          if git diff --quiet -- data/installStats.json; then
+            echo "Install stats snapshot unchanged; nothing to do."
+            exit 0
+          fi
+
+          AS_OF=$(node -e "process.stdout.write(require('./data/installStats.json').asOf || 'unknown')")
+          TOTAL=$(node -e "process.stdout.write(String(require('./data/installStats.json').totalLastMonth || 0))")
+          BRANCH="chore/install-stats-${AS_OF}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "${BRANCH}"
+          git add data/installStats.json
+          git commit -m "chore(stats): refresh homepage install snapshot (as of ${AS_OF})"
+          git push --force-with-lease origin "${BRANCH}"
+
+          gh pr create \
+            --base main \
+            --head "${BRANCH}" \
+            --title "chore(stats): refresh homepage install snapshot (${AS_OF})" \
+            --body "Automated weekly refresh of \`data/installStats.json\` (the committed snapshot the homepage adoption section renders from). Total installs last month: ${TOTAL}. Source: pypistats.org, mirror traffic excluded." \
+            || echo "::warning::Could not open PR (a PR for ${BRANCH} may already exist)."

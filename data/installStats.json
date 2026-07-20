@@ -1,0 +1,75 @@
+{
+  "asOf": "2026-07-20",
+  "source": "pypistats.org",
+  "sourceUrl": "https://pypistats.org/packages/openadapt",
+  "note": "Excludes mirror traffic. Aggregated across core openadapt-* PyPI packages.",
+  "totalLastMonth": 16027,
+  "topPackage": {
+    "name": "openadapt-flow",
+    "lastMonth": 8139
+  },
+  "packages": [
+    {
+      "name": "openadapt-flow",
+      "lastDay": 1209,
+      "lastWeek": 7804,
+      "lastMonth": 8139
+    },
+    {
+      "name": "openadapt-capture",
+      "lastDay": 665,
+      "lastWeek": 2190,
+      "lastMonth": 2677
+    },
+    {
+      "name": "openadapt",
+      "lastDay": 227,
+      "lastWeek": 1317,
+      "lastMonth": 1841
+    },
+    {
+      "name": "openadapt-privacy",
+      "lastDay": 311,
+      "lastWeek": 1294,
+      "lastMonth": 1522
+    },
+    {
+      "name": "openadapt-types",
+      "lastDay": 114,
+      "lastWeek": 788,
+      "lastMonth": 954
+    },
+    {
+      "name": "openadapt-ml",
+      "lastDay": 121,
+      "lastWeek": 443,
+      "lastMonth": 894
+    }
+  ],
+  "history": [
+    {
+      "month": "2026-01",
+      "downloads": 882
+    },
+    {
+      "month": "2026-02",
+      "downloads": 3519
+    },
+    {
+      "month": "2026-03",
+      "downloads": 9122
+    },
+    {
+      "month": "2026-04",
+      "downloads": 1944
+    },
+    {
+      "month": "2026-05",
+      "downloads": 2304
+    },
+    {
+      "month": "2026-06",
+      "downloads": 3476
+    }
+  ]
+}
