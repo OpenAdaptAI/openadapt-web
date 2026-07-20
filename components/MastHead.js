@@ -63,8 +63,8 @@ export default function Home({ githubStats }) {
                             </p>
                             <p className={styles.fitLine}>
                                 Purpose-built for repeated, high-stakes GUI work
-                                that has no clean API and can be checked against
-                                an independent source of truth.
+                                with no clean API, where a wrong action is costly
+                                and the result should be verified, not assumed.
                             </p>
                             <div id="register">
                                 <div className="flex flex-wrap items-center justify-center gap-3 mt-0 mb-4">
