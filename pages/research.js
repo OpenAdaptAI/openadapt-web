@@ -16,9 +16,14 @@ const scholarlyArticleSchema = {
     url: 'https://openadapt.ai/research',
     inLanguage: 'en',
     author: {
-        '@type': 'Organization',
-        name: 'OpenAdapt.AI',
-        url: 'https://openadapt.ai',
+        '@type': 'Person',
+        name: 'Richard Abrich',
+        email: 'richard@openadapt.ai',
+        affiliation: {
+            '@type': 'Organization',
+            name: 'OpenAdapt (MLDSAI Inc.)',
+            url: 'https://openadapt.ai',
+        },
     },
     publisher: {
         '@type': 'Organization',
