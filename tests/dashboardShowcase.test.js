@@ -185,9 +185,11 @@ test('every showcase screenshot is a real, provenance-backed Cloud capture', () 
         typeof manifest.assets['dashboard-workflows.png']?.sha256,
         'string'
     )
-    // Displayed large: the intrinsic capture is high-resolution.
-    assert.equal(manifest.assets['dashboard-workflows.png'].width, 2880)
-    assert.equal(manifest.assets['dashboard-workflows.png'].height, 1800)
+    // Displayed large: the intrinsic capture is high-resolution. It is a
+    // full-page capture at a 1280px viewport with device scale 2 (2560px wide),
+    // matching the other four frames so the five share one product look.
+    assert.equal(manifest.assets['dashboard-workflows.png'].width, 2560)
+    assert.equal(manifest.assets['dashboard-workflows.png'].height, 1600)
 
     // Supporting shots: real run/evidence frames plus the newly added program
     // visualizer and workflow catalog captures. Each must exist on disk.
