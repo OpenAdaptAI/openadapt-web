@@ -1,5 +1,4 @@
-const BOOKING_URL =
-    'https://cal.com/richard-abrich/30min?overlayCalendar=true'
+const BOOKING_URL = 'https://cal.com/richard-abrich/30min?overlayCalendar=true'
 
 function isProductionDeployment() {
     const baseUrl = Cypress.config('baseUrl')
@@ -63,8 +62,11 @@ describe('public product truth', () => {
                 .should('be.visible')
         })
         cy.get('h1').click()
-        cy.get('[data-testid="github-proof"]')
-            .should('have.attr', 'href', 'https://github.com/OpenAdaptAI/OpenAdapt')
+        cy.get('[data-testid="github-proof"]').should(
+            'have.attr',
+            'href',
+            'https://github.com/OpenAdaptAI/OpenAdapt'
+        )
         cy.get('[data-testid="github-proof"]')
             .should('contain.text', 'stars on OpenAdapt')
             .and('contain.text', 'forks')
@@ -87,47 +89,75 @@ describe('public product truth', () => {
         cy.get('#nav-product-menu a').first().should('be.focused')
         cy.focused().type('{downarrow}')
         cy.get('#nav-product-menu a').eq(1).should('be.focused')
-        cy.contains('nav[aria-label="Primary"] a', 'Launch').focus()
+        cy.contains('nav[aria-label="Primary"] a', 'Pricing').focus()
         cy.get('#nav-product-menu').should('not.exist')
 
         cy.get('nav[aria-label="Primary"]').within(() => {
-            cy.contains('a', 'Launch')
+            cy.contains('a', 'Pricing')
                 .should('be.visible')
                 .and('have.attr', 'href', '/#pricing')
-            cy.contains('a', 'Blog')
-                .should('be.visible')
-                .and('have.attr', 'href', 'https://blog.openadapt.ai')
             cy.contains('a', 'Open source')
                 .should('be.visible')
-                .and('have.attr', 'href', 'https://github.com/OpenAdaptAI/OpenAdapt')
+                .and(
+                    'have.attr',
+                    'href',
+                    'https://github.com/OpenAdaptAI/OpenAdapt'
+                )
             cy.contains('a', 'About').should('not.exist')
+            // Blog consolidated into the Developers dropdown, so it is not a
+            // top-level link while every dropdown is closed.
+            cy.contains('a', 'Blog').should('not.exist')
 
             cy.contains('button', 'Solutions')
                 .should('be.visible')
                 .and('have.attr', 'aria-expanded', 'false')
             cy.contains('button', 'Solutions').click()
             cy.get('#nav-solutions-menu').within(() => {
-                cy.contains('a', 'Healthcare')
-                    .should('have.attr', 'href', '/solutions/healthcare')
-                cy.contains('a', 'Lending')
-                    .should('have.attr', 'href', '/solutions/lending')
-                cy.contains('a', 'Insurance')
-                    .should('have.attr', 'href', '/solutions/insurance')
+                cy.contains('a', 'Healthcare').should(
+                    'have.attr',
+                    'href',
+                    '/solutions/healthcare'
+                )
+                cy.contains('a', 'Lending').should(
+                    'have.attr',
+                    'href',
+                    '/solutions/lending'
+                )
+                cy.contains('a', 'Insurance').should(
+                    'have.attr',
+                    'href',
+                    '/solutions/insurance'
+                )
             })
 
             cy.contains('button', 'Product').click()
             cy.get('#nav-solutions-menu').should('not.exist')
             cy.get('#nav-product-menu').within(() => {
-                cy.contains('a', 'How it runs')
-                    .should('have.attr', 'href', '/#product-status')
-                cy.contains('a', 'Safety')
-                    .should('have.attr', 'href', '/safety')
-                cy.contains('a', 'Compare')
-                    .should('have.attr', 'href', '/compare')
-                cy.contains('a', 'Templates')
-                    .should('have.attr', 'href', '/templates')
-                cy.contains('a', 'Download')
-                    .should('have.attr', 'href', '/download')
+                cy.contains('a', 'How it runs').should(
+                    'have.attr',
+                    'href',
+                    '/#product-status'
+                )
+                cy.contains('a', 'Safety').should(
+                    'have.attr',
+                    'href',
+                    '/safety'
+                )
+                cy.contains('a', 'Compare').should(
+                    'have.attr',
+                    'href',
+                    '/compare'
+                )
+                cy.contains('a', 'Templates').should(
+                    'have.attr',
+                    'href',
+                    '/templates'
+                )
+                cy.contains('a', 'Download').should(
+                    'have.attr',
+                    'href',
+                    '/download'
+                )
             })
 
             cy.contains('button', 'Developers')
@@ -168,9 +198,24 @@ describe('public product truth', () => {
                         'href',
                         'https://github.com/OpenAdaptAI/openadapt-flow/issues/new/choose'
                     )
-                // Blog is top-level, not duplicated inside the dropdown.
-                cy.contains('a', 'Blog').should('not.exist')
+                // Blog is consolidated into the Developers dropdown.
+                cy.contains('a', 'Blog')
+                    .should('be.visible')
+                    .and('have.attr', 'href', 'https://blog.openadapt.ai')
             })
+        })
+
+        // A primary evaluation CTA and a secondary "Sign in" affordance
+        // (the hosted control plane) sit in the header action cluster.
+        cy.get('header').within(() => {
+            cy.contains('a', 'Evaluate a workflow').should(
+                'have.attr',
+                'href',
+                '/#book'
+            )
+            cy.contains('a', 'Sign in')
+                .should('be.visible')
+                .and('have.attr', 'href', 'https://app.openadapt.ai')
         })
 
         // Escape closes and returns focus to the trigger.
@@ -183,23 +228,31 @@ describe('public product truth', () => {
         )
         cy.contains('button', 'Developers').should('be.focused')
 
-        // Reopen, then a click outside the dropdown closes it.
+        // Reopen, then a click outside the dropdown closes it. The
+        // right-aligned Developers panel overlays the hero heading, so
+        // dismiss from a point on the left that the panel never covers.
         cy.contains('button', 'Developers').click()
         cy.get('#nav-developers-menu').should('be.visible')
-        cy.get('h1').click()
+        cy.get('body').click(20, 500)
         cy.get('#nav-developers-menu').should('not.exist')
     })
 
     it('explains the governed workflow and execution choices', () => {
-        cy.contains('What “repair” means, and where it stops').should('be.visible')
+        cy.contains('What “repair” means, and where it stops').should(
+            'be.visible'
+        )
         cy.contains('Unsupported drift').should('be.visible')
         cy.get('#product-status').within(() => {
-            cy.contains('One governed workflow, end to end').should('be.visible')
+            cy.contains('One governed workflow, end to end').should(
+                'be.visible'
+            )
             cy.contains('Capture the workflow').should('be.visible')
             cy.contains('Run through the governed gate').should('be.visible')
             cy.contains('Managed browser execution').should('be.visible')
             cy.contains('Customer-controlled deployment').should('be.visible')
-            cy.contains('Built for the interfaces your work depends on').should('be.visible')
+            cy.contains('Built for the interfaces your work depends on').should(
+                'be.visible'
+            )
             cy.contains('Web applications').should('be.visible')
             cy.contains('Windows applications').should('be.visible')
             cy.contains('RDP, Citrix & VDI').should('be.visible')
@@ -303,7 +356,7 @@ describe('public product truth', () => {
             cy.contains('a', 'Download')
                 .should('have.attr', 'href')
                 .and('equal', '/download')
-            cy.contains('a', 'Launch').should('have.attr', 'href', '/#pricing')
+            cy.contains('a', 'Pricing').should('have.attr', 'href', '/#pricing')
             cy.contains('a', 'Blog')
                 .should('have.attr', 'href')
                 .and('equal', 'https://blog.openadapt.ai')
@@ -311,10 +364,7 @@ describe('public product truth', () => {
             cy.contains('Developers').scrollIntoView().should('be.visible')
             cy.contains('a', 'Compiler/runtime source')
                 .should('have.attr', 'href')
-                .and(
-                    'equal',
-                    'https://github.com/OpenAdaptAI/openadapt-flow'
-                )
+                .and('equal', 'https://github.com/OpenAdaptAI/openadapt-flow')
             cy.contains('a', 'Docs')
                 .should('have.attr', 'href')
                 .and('equal', 'https://docs.openadapt.ai')
@@ -337,6 +387,10 @@ describe('public product truth', () => {
                 .scrollIntoView()
                 .should('have.attr', 'href')
                 .and('equal', 'https://github.com/OpenAdaptAI/OpenAdapt')
+            cy.contains('a', 'Sign in')
+                .scrollIntoView()
+                .should('have.attr', 'href')
+                .and('equal', 'https://app.openadapt.ai')
         })
         cy.get('#nav-mobile-menu').then(($menu) => {
             expect($menu[0].scrollHeight).to.be.greaterThan(
@@ -380,20 +434,20 @@ describe('public product truth', () => {
         })
         cy.get('#benchmark-evidence').within(() => {
             cy.contains('On MockMed').should('be.visible')
-            cy.contains('Faster repeat runs without per-run model spend.').should(
-                'be.visible'
-            )
+            cy.contains(
+                'Faster repeat runs without per-run model spend.'
+            ).should('be.visible')
             cy.contains('100 compiled replays').should('not.exist')
             cy.contains('$3/$15').should('not.exist')
             cy.contains('introductory').should('not.exist')
             cy.contains('resets daily').should('not.exist')
             cy.contains('N=10').should('not.exist')
-            cy.contains(
-                'Method, raw results, and rerun instructions'
-            ).should('have.attr', 'href').and('include', 'benchmark/BENCHMARK.md')
-            cy.contains(
-                'OpenEMR cross-check'
-            ).should('have.attr', 'href').and('include', 'openemr/BENCHMARK.md')
+            cy.contains('Method, raw results, and rerun instructions')
+                .should('have.attr', 'href')
+                .and('include', 'benchmark/BENCHMARK.md')
+            cy.contains('OpenEMR cross-check')
+                .should('have.attr', 'href')
+                .and('include', 'openemr/BENCHMARK.md')
         })
         cy.contains("We'd rather tell you").should('not.exist')
         cy.contains('Versus traditional RPA platforms').should('not.exist')
@@ -406,9 +460,7 @@ describe('public product truth', () => {
         cy.get('#side-by-side [role="region"]')
             .should('be.visible')
             .and('have.attr', 'tabindex', '0')
-        cy.contains('Evaluate a workflow')
-            .scrollIntoView()
-            .should('be.visible')
+        cy.contains('Evaluate a workflow').scrollIntoView().should('be.visible')
         cy.contains('Try locally').should('be.visible')
     })
 
@@ -440,7 +492,9 @@ describe('public product truth', () => {
 
         cy.visit('/solutions/healthcare')
         cy.get('h1').should('contain.text', 'structured healthcare workflows')
-        cy.contains('document processing, eligibility, routing').should('be.visible')
+        cy.contains('document processing, eligibility, routing').should(
+            'be.visible'
+        )
         cy.contains('public safety gallery').should('be.visible')
         cy.contains('OpenAdapt does the retyping').should('not.exist')
         cy.contains('Certified workflows halt before').should('not.exist')
@@ -453,7 +507,9 @@ describe('public product truth', () => {
         cy.contains('supported APIs and exports').should('be.visible')
         cy.contains('customer-controlled deployment').should('be.visible')
         cy.contains('experimental').should('not.exist')
-        cy.get('[data-testid="frappe-lending-workflow-demo"]').should('be.visible')
+        cy.get('[data-testid="frappe-lending-workflow-demo"]').should(
+            'be.visible'
+        )
         cy.get('img[alt*="Frappe Lending frames"]')
             .scrollIntoView()
             .should('be.visible')
@@ -500,9 +556,9 @@ describe('public product truth', () => {
 
         cy.visit('/safety')
         cy.get('h1').should('contain.text', 'needs verified identity')
-        cy.contains('do not establish end-to-end or production EMR reliability').should(
-            'be.visible'
-        )
+        cy.contains(
+            'do not establish end-to-end or production EMR reliability'
+        ).should('be.visible')
     })
 
     it('starts the configured hosted checkout path', () => {
@@ -553,9 +609,7 @@ describe('public product truth', () => {
                 )
             } else {
                 expect(response.status).to.equal(503)
-                expect(response.body.error).to.equal(
-                    'checkout_not_configured'
-                )
+                expect(response.body.error).to.equal('checkout_not_configured')
             }
         })
     })
@@ -591,7 +645,9 @@ describe('public product truth', () => {
                 'STRIPE_EXPECTED_MODE',
                 'NEXT_PUBLIC_SITE_URL',
                 'NEXT_PUBLIC_CLOUD_APP_URL',
-            ].forEach((name) => expect(source).to.include(`process.env.${name}`))
+            ].forEach((name) =>
+                expect(source).to.include(`process.env.${name}`)
+            )
             expect(source.indexOf('stripe.prices.retrieve')).to.be.lessThan(
                 source.indexOf('stripe.checkout.sessions.create')
             )
@@ -607,7 +663,9 @@ describe('public product truth', () => {
         cy.contains('Subscription, Renewal, and Usage').should('be.visible')
         cy.contains('renews automatically').should('be.visible')
         cy.contains('Cancellation and Refunds').should('be.visible')
-        cy.contains('charges already paid are non-refundable').should('be.visible')
+        cy.contains('charges already paid are non-refundable').should(
+            'be.visible'
+        )
         cy.contains('Artifact and Runtime Data Boundaries').should('be.visible')
         cy.contains('Managed browser recording is a different path').should(
             'be.visible'
@@ -618,9 +676,9 @@ describe('public product truth', () => {
         cy.contains('A BAA applies only when expressly included').should(
             'be.visible'
         )
-        cy.contains('no uptime, response-time, support, retention, recovery').should(
-            'be.visible'
-        )
+        cy.contains(
+            'no uptime, response-time, support, retention, recovery'
+        ).should('be.visible')
     })
 })
 
@@ -638,19 +696,25 @@ describe('security boundary', () => {
         cy.contains('OpenAdapt does not yet hold a SOC 2 report').should(
             'be.visible'
         )
-        cy.contains('Scrubbing creates a reviewable derivative').should('be.visible')
+        cy.contains('Scrubbing creates a reviewable derivative').should(
+            'be.visible'
+        )
         cy.contains('approve that exact hash').should('be.visible')
         cy.contains('Risk-based hybrid').should('be.visible')
         cy.contains('Hosted runtime gate').should('be.visible')
         cy.contains('operator self-attestation').should('be.visible')
         cy.contains('its policy and risk-class allowlists').should('be.visible')
         cy.contains('deployed compiler-version allowlist').should('be.visible')
-        cy.contains('Does Cloud independently witness local sanitation review?').should('be.visible')
-        cy.contains('Can managed execution reach private-network targets?').should('be.visible')
+        cy.contains(
+            'Does Cloud independently witness local sanitation review?'
+        ).should('be.visible')
+        cy.contains(
+            'Can managed execution reach private-network targets?'
+        ).should('be.visible')
         cy.contains('What does break reporting send?').should('be.visible')
-        cy.contains('It does not upload the recording or compiled bundle').should(
-            'be.visible'
-        )
+        cy.contains(
+            'It does not upload the recording or compiled bundle'
+        ).should('be.visible')
     })
 
     it('states the same boundary in privacy and hosted onboarding', () => {
@@ -663,7 +727,9 @@ describe('security boundary', () => {
             'be.visible'
         )
         cy.contains('approved by exact archive hash').should('be.visible')
-        cy.contains('Managed browser recording is separate').should('be.visible')
+        cy.contains('Managed browser recording is separate').should(
+            'be.visible'
+        )
         cy.contains('Current Service Providers').should('be.visible')
         cy.contains('Healthy deterministic replay makes no model calls').should(
             'be.visible'
@@ -672,7 +738,9 @@ describe('security boundary', () => {
 
         cy.visit('/hosted/welcome')
         cy.contains('Continue hosted onboarding').should('be.visible')
-        cy.contains('Sign in with the email used at checkout').should('be.visible')
+        cy.contains('Sign in with the email used at checkout').should(
+            'be.visible'
+        )
         cy.contains('review the captured demonstration').should('be.visible')
         cy.contains('Run under supervision').should('be.visible')
         cy.contains('Monitor usage, outcomes').should('be.visible')
