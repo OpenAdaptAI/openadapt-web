@@ -137,9 +137,9 @@ export default function Pricing({ hostedOffer = null }) {
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Run the MIT-licensed engine yourself for free. Subscribe to
                     managed browser execution &mdash; a live offer in Beta, with
-                    assisted onboarding rather than one-click self-serve. For
-                    consequential desktop, Citrix, or regulated workflows, start
-                    a scoped paid pilot as a design partner.
+                    assisted onboarding as we qualify your first workflow. Bring
+                    OpenAdapt to desktop, Citrix, and regulated workflows through
+                    a scoped paid pilot.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -268,9 +268,8 @@ export default function Pricing({ hostedOffer = null }) {
                             Priced after qualification
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            The way to start on Windows, macOS, RDP, Citrix, or
-                            regulated data &mdash; substrates offered to design
-                            partners only. We qualify the substrate, artifact
+                            Bring the governed loop to Windows, macOS, RDP, Citrix,
+                            or regulated data. We qualify the substrate, artifact
                             policy, effect oracle, and operating model with you in
                             a customer-controlled boundary, then scope and price
                             the pilot before production use.
