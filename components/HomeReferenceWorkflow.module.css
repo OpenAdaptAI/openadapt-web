@@ -1,0 +1,30 @@
+/*
+ * Homepage reference-workflow selector: honest status treatment.
+ *
+ * The verified verticals reuse the accent "verified" pill from
+ * LendingWorkflowDemo.module.css. The Healthcare reference is NOT verified, so
+ * it must not borrow the accent/verified look — this attention pill and the
+ * neutral pending marker keep the qualification-required state visually
+ * distinct from a passed audit.
+ */
+
+.statusAttention {
+    padding: 3px 8px;
+    border: 1px solid color-mix(in srgb, var(--ink-3) 45%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink-3) 10%, transparent);
+    color: var(--ink-2);
+}
+
+.pendingMark {
+    color: var(--ink-3);
+    font-weight: 700;
+}
+
+.selectorNote {
+    margin: 12px 0 0;
+    color: var(--ink-3);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+}
