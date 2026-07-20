@@ -12,6 +12,7 @@ import EmailForm from '@components/EmailForm'
 import Footer from '@components/Footer'
 import HomeReferenceWorkflow from '@components/HomeReferenceWorkflow'
 import HowItWorksCondensed from '@components/HowItWorksCondensed'
+import InstallStats from '@components/InstallStats'
 import MastHead from '@components/MastHead'
 import Pricing from '@components/Pricing'
 import ProductStatus from '@components/ProductStatus'
@@ -138,13 +139,18 @@ export async function getStaticProps() {
     ])
     const { getHostedOffer } = await import('../lib/hostedOffer')
     const hostedOffer = await getHostedOffer()
+    // Adoption proof renders from a committed snapshot (data/installStats.json),
+    // refreshed out-of-band by the refresh-install-stats workflow. Reading it
+    // here means the homepage never calls pypistats.org at build or request
+    // time, so this section can never block or break the page.
+    const { default: installStats } = await import('../data/installStats.json')
     return {
-        props: { githubStats, buildWarnings, hostedOffer },
+        props: { githubStats, buildWarnings, hostedOffer, installStats },
         revalidate: 300,
     }
 }
 
-export default function Home({ githubStats, buildWarnings, hostedOffer }) {
+export default function Home({ githubStats, buildWarnings, hostedOffer, installStats }) {
     const router = useRouter()
     // ONE lifted selection shared by every reference-aware homepage section:
     // the process/reference-workflow demo and the "More reference workflows"
@@ -197,6 +203,7 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
                 />
             </Head>
             <MastHead githubStats={githubStats} />
+            <InstallStats stats={installStats} />
             <Reveal>
                 <HowItWorksCondensed />
             </Reveal>
