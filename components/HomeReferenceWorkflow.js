@@ -46,7 +46,7 @@ function CompilePanel({ compile }) {
                 </div>
             </dl>
             <figcaption className={panelStyles.caption}>
-                Compile — inspectable task contract derived from the recorded
+                Compile: inspectable task contract derived from the recorded
                 synthetic workflow
             </figcaption>
         </figure>

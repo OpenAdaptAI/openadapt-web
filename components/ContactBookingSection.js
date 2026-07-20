@@ -231,7 +231,7 @@ export default function ContactBookingSection({
                     <div className="mt-8 space-y-4">
                         <div className="rounded-xl border border-accent/40 bg-accent/10 px-4 py-4">
                             <p className="text-sm text-accent">
-                                Thanks — you&apos;ll hear from a founder within
+                                Thanks. You&apos;ll hear from a founder within
                                 one business day. Or skip the wait and book a
                                 time directly below.
                             </p>

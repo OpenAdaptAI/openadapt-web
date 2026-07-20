@@ -104,7 +104,7 @@ export default function ReplayHero() {
                             loop
                             playsInline
                             preload="metadata"
-                            aria-label="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo — logging in and filling the patient-intake form — locally and with no per-run model calls."
+                            aria-label="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo, logging in and filling the patient-intake form, locally and with no per-run model calls."
                         >
                             <source
                                 src="/how-it-works/run_openemr.webm"
@@ -141,7 +141,7 @@ export default function ReplayHero() {
                             ✓
                         </span>
                         <span>
-                            Effect-verified against the system of record — an{' '}
+                            Effect-verified against the system of record. An{' '}
                             <b>arm-independent oracle reads OpenEMR itself</b>, not
                             the app&rsquo;s own &ldquo;saved&rdquo; banner.
                         </span>
@@ -229,7 +229,7 @@ export default function ReplayHero() {
                     </span>
                     <p className={styles.driftHead}>
                         When the interface drifts, OpenAdapt re-resolves from
-                        retained evidence — it doesn&rsquo;t guess.
+                        retained evidence. It doesn&rsquo;t guess.
                     </p>
                     <p className={styles.driftCallout}>
                         <span className={styles.driftWarn} aria-hidden="true">
@@ -253,7 +253,7 @@ export default function ReplayHero() {
                         src="/how-it-works/heal_resolve.jpg"
                         width="880"
                         height="550"
-                        alt="Real drift-drill capture: a drifted target re-resolved via the geometry rung — identity confirmed as the same record, ocr_text 'Open' repaired to 'View', proposed as a reviewable anchor patch with zero model calls."
+                        alt="Real drift-drill capture: a drifted target re-resolved via the geometry rung. Identity confirmed as the same record, ocr_text 'Open' repaired to 'View', proposed as a reviewable anchor patch with zero model calls."
                         loading="lazy"
                         decoding="async"
                     />
@@ -277,7 +277,7 @@ export default function ReplayHero() {
                     <b>Every run is inspectable in OpenAdapt Cloud.</b>
                     <span className={styles.hostedSub}>
                         Run history, per-step evidence, and verified effects in the
-                        shipping hosted product — app.openadapt.ai
+                        shipping hosted product: app.openadapt.ai
                     </span>
                 </span>
                 <span className={styles.hostedArrow} aria-hidden="true">

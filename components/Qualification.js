@@ -50,8 +50,8 @@ export default function Qualification() {
                 </article>
                 <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-ink-3">
                     When work fits that shape, OpenAdapt runs it across every
-                    interface it touches &mdash; browser, Windows, macOS, RDP,
-                    and Citrix &mdash; under one governed loop. See how it
+                    interface it touches, under one governed loop. That covers
+                    browser, Windows, macOS, RDP, and Citrix. See how it
                     compares with RPA, computer-use agents, and browser recorders
                     on the{' '}
                     <Link href="/compare" className="text-accent underline">
