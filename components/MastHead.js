@@ -56,8 +56,9 @@ export default function Home({ githubStats }) {
                                 healthy replay makes no model calls. Under interface
                                 drift OpenAdapt re-resolves from retained evidence,
                                 proposes a governed repair, or halts for an
-                                operator. Browser workflows are proven today;
-                                Windows and macOS are experimental.{' '}
+                                operator. Browser workflows run in Beta today;
+                                Windows, macOS, and remote desktops are
+                                design-partner only.{' '}
                                 <Link href="#product-status">
                                     See where it runs.
                                 </Link>

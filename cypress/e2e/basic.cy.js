@@ -212,9 +212,11 @@ describe('public product truth', () => {
             cy.contains('Product maturity').should('not.exist')
         })
         cy.get('#pricing').within(() => {
-            cy.contains('Start as a design partner').should('be.visible')
+            cy.contains('Run it yourself, subscribe, or start a pilot').should(
+                'be.visible'
+            )
             cy.contains('Scoped paid pilot').should('be.visible')
-            cy.contains('Early access').should('be.visible')
+            cy.contains('Beta / public offer').should('be.visible')
             cy.contains('Offer unavailable').should('not.exist')
             cy.contains('Hosted checkout unavailable').should('not.exist')
             cy.contains('approved sanitized copy').should('be.visible')
