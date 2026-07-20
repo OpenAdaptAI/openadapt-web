@@ -2,11 +2,10 @@ import React from 'react';
 import styles from './Developers.module.css';
 import InstallSection from '@components/InstallSection';
 
-// The developer ecosystem destinations (compiler/runtime source, Docs,
-// Technical paper, Blog, Discord, Report an issue) live in the top-nav
-// "Developers" dropdown and the footer, both sourced from
-// data/developerLinks.js. They are intentionally not restated in the homepage
-// body, so the page keeps a single install path instead of a duplicate list.
+// The developer ecosystem links (Compiler/runtime source, Docs, Technical
+// paper source, Blog, Discord, Report an issue) now live in the site nav and
+// footer only. They were removed from this in-funnel open-source section as a
+// conversion cleanup so the primary path stays focused on installing/trying.
 
 export default function Developers({ buildWarnings = [], githubStats = null }) {
     // Known engine breakage (open main-broken issues) and GitHub social
@@ -53,8 +52,8 @@ export default function Developers({ buildWarnings = [], githubStats = null }) {
                     {/* uv-first Installation Section */}
                     <InstallSection />
 
-                    {/* Package adoption stats live on the Download page. */}
-                    {/* Developer ecosystem links live in the nav + footer. */}
+                    {/* Package adoption stats live on the Download page.
+                        Developer ecosystem links moved to the nav + footer. */}
                 </div>
             </div>
         </div>

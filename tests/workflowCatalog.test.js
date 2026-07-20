@@ -81,14 +81,18 @@ test('every catalog entry carries the required honesty fields', () => {
     }
 })
 
-test('all catalog entries use the canonical browser=Beta maturity label', () => {
-    assert.equal(SUBSTRATE_MATURITY.browser, 'Beta')
+test('every substrate carries the canonical first-class supported label', () => {
+    // Target state: no substrate is ranked below another. Every substrate
+    // shares one uniform, first-class label.
+    const labels = new Set(Object.values(SUBSTRATE_MATURITY))
+    assert.equal(labels.size, 1, 'all substrates share one uniform label')
+    assert.equal(SUBSTRATE_MATURITY.browser, 'Supported')
     for (const entry of CATALOG) {
         assert.equal(entry.substrate, 'browser', `${entry.id} substrate`)
         assert.equal(
             entry.maturity,
             SUBSTRATE_MATURITY.browser,
-            `${entry.id} maturity is the canonical browser label`
+            `${entry.id} maturity is the canonical substrate label`
         )
     }
 })

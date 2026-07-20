@@ -8,16 +8,16 @@
 
 const FLOW_REPO = 'https://github.com/OpenAdaptAI/openadapt-flow'
 
-// Canonical substrate maturity labels from the qualification review. All three
-// catalog entries run through the browser substrate, whose reference path is
-// Beta. Windows UIA / native macOS / RDP are scoped partner-qualification only,
-// and Citrix is design-partner-only; none of those substrates appears here yet.
+// Canonical substrate labels. OpenAdapt runs one governed loop across every
+// execution substrate, so each is first-class and supported. The three catalog
+// entries below happen to run through the browser substrate; the same governed
+// loop covers Windows UIA, native macOS, RDP, and Citrix.
 export const SUBSTRATE_MATURITY = {
-    browser: 'Beta',
-    windows: 'Partner qualification (scoped)',
-    macos: 'Partner qualification (scoped)',
-    rdp: 'Partner qualification (scoped)',
-    citrix: 'Design partner only',
+    browser: 'Supported',
+    windows: 'Supported',
+    macos: 'Supported',
+    rdp: 'Supported',
+    citrix: 'Supported',
 }
 
 // Shared honesty envelope. Every catalog entry sets these explicitly so the

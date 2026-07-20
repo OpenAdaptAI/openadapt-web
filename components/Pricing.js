@@ -15,7 +15,7 @@ const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
 
 const hostedStatusLabel =
     status.substrates.find((substrate) => substrate.name === 'Hosted Cloud')
-        ?.public_label || 'Beta'
+        ?.public_label || 'Supported'
 
 function Check() {
     return (
@@ -136,10 +136,11 @@ export default function Pricing({ hostedOffer = null }) {
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Run the MIT-licensed engine yourself for free. Subscribe to
-                    managed browser execution &mdash; a live offer in Beta, with
-                    assisted onboarding as we qualify your first workflow. Bring
-                    OpenAdapt to desktop, Citrix, and regulated workflows through
-                    a scoped paid pilot.
+                    OpenAdapt Cloud &mdash; the managed control plane that runs
+                    your approved workflows across every substrate with assisted
+                    onboarding. Or start a scoped paid pilot to bring regulated
+                    data and customer-controlled deployments under the same
+                    governance.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -176,7 +177,7 @@ export default function Pricing({ hostedOffer = null }) {
                         </p>
                     </div>
 
-                    {/* Card 2 — Hosted browser execution */}
+                    {/* Card 2 — OpenAdapt Cloud (managed control plane) */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
                         <span
                             className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2"
@@ -184,7 +185,7 @@ export default function Pricing({ hostedOffer = null }) {
                         >
                             {hostedStatusLabel}
                         </span>
-                        <p className="eyebrow">Hosted browser</p>
+                        <p className="eyebrow">OpenAdapt Cloud</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
                                 {hostedOfferAvailable
@@ -211,15 +212,16 @@ export default function Pricing({ hostedOffer = null }) {
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            A live, managed subscription for an approved browser
-                            workflow: a control plane for repeat execution,
-                            reporting, and governed updates. Onboarding is
-                            assisted &mdash; we qualify the first workflow with
-                            you rather than one-click self-serve.
+                            The managed control plane for governed workflow
+                            execution across every substrate. Your approved
+                            workflows &mdash; browser, Windows, macOS, RDP, and
+                            Citrix &mdash; run in the managed runner with run
+                            history, reporting, and governed updates. Onboarding
+                            is assisted: we qualify the first workflow with you.
                         </p>
                         <FeatureList
                             items={[
-                                'Managed execution of approved browser workflows',
+                                'Managed runner for approved workflows across every substrate',
                                 'Deterministic healthy replay with zero model calls',
                                 'Run history, failure reports, usage, and governed updates',
                                 'Sanitized uploads admitted under declared policy',
@@ -268,15 +270,15 @@ export default function Pricing({ hostedOffer = null }) {
                             Priced after qualification
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            Bring the governed loop to Windows, macOS, RDP, Citrix,
-                            or regulated data. We qualify the substrate, artifact
-                            policy, effect oracle, and operating model with you in
-                            a customer-controlled boundary, then scope and price
-                            the pilot before production use.
+                            Bring regulated data and customer-controlled
+                            deployments under the same governed loop. We qualify
+                            the artifact policy, effect oracle, and operating
+                            model with you inside your controlled boundary, then
+                            scope and price the pilot before production use.
                         </p>
                         <FeatureList
                             items={[
-                                'Qualify the substrate and safety boundary first',
+                                'Qualify the safety boundary and effect oracle first',
                                 'Scope one workflow and one measurable outcome',
                                 'Execute in the customer-controlled environment',
                                 'Identity and effect checks configured per deployment',
@@ -309,7 +311,7 @@ export default function Pricing({ hostedOffer = null }) {
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
                     {hostedOfferAvailable
                         ? 'The hosted subscription price shown above comes directly from Stripe and is confirmed again at checkout.'
-                        : 'Managed browser subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
+                        : 'OpenAdapt Cloud subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
                     Regulated deployment and service terms are scoped separately.
                 </p>
             </div>

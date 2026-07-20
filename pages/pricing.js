@@ -17,13 +17,13 @@ export default function PricingPage({ hostedOffer }) {
                 <title>Pricing | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="Launch OpenAdapt with the MIT engine, managed hosted browser execution, or a scoped customer-controlled deployment."
+                    content="Launch OpenAdapt with the MIT engine, managed cloud execution across every substrate, or a scoped customer-controlled deployment."
                 />
                 <link rel="canonical" href="https://openadapt.ai/pricing" />
                 <meta property="og:title" content="Pricing | OpenAdapt" />
                 <meta
                     property="og:description"
-                    content="OpenAdapt launch options: self-host the MIT engine, qualify managed browser execution, or scope a regulated deployment."
+                    content="OpenAdapt launch options: self-host the MIT engine, qualify managed cloud execution, or scope a regulated deployment."
                 />
                 <meta property="og:url" content="https://openadapt.ai/pricing" />
             </Head>

@@ -51,16 +51,17 @@ export default function Home({ githubStats }) {
                                 Halt when you can&rsquo;t.
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                Demonstrate a bounded, repeated GUI workflow and
-                                compile it into a locally executable program whose
-                                healthy replay makes no model calls. OpenAdapt brings
-                                the same governed loop to the interfaces your work is
-                                trapped behind &mdash; browser, Windows, RDP, and
-                                Citrix/VDI &mdash; re-resolving from retained
-                                evidence, proposing a governed repair, or halting for
-                                an operator when verification fails.{' '}
+                                Demonstrate a repeated GUI task once. OpenAdapt
+                                compiles it into a local program that makes no
+                                model calls on a healthy run. The same governed
+                                loop runs across every interface your work is
+                                trapped behind &mdash; browser, Windows, macOS,
+                                RDP, and Citrix &mdash; as one product. When
+                                the screen changes, it re-checks its evidence and
+                                either repairs the step or stops for a person
+                                instead of guessing.{' '}
                                 <Link href="#product-status">
-                                    See where each capability stands.
+                                    See how it runs across every interface.
                                 </Link>
                             </p>
                             <div id="register">
@@ -88,6 +89,10 @@ export default function Home({ githubStats }) {
                                         Try locally
                                     </Link>
                                 </div>
+                                <p className="mb-8 text-sm text-ink-3">
+                                    Runs on your own machine · zero per-run model
+                                    cost · deterministic replay you can audit
+                                </p>
                             </div>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
