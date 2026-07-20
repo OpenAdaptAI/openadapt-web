@@ -6,16 +6,25 @@ import Footer from '@components/Footer'
 const REPO_URL = 'https://github.com/OpenAdaptAI/openadapt-flow'
 const ADVISORY_URL =
     'https://github.com/OpenAdaptAI/openadapt-flow/security/advisories/new'
+const SECURITY_POLICY_URL =
+    'https://github.com/OpenAdaptAI/openadapt-flow/blob/main/SECURITY.md'
 const PRIVACY_BOUNDARY_URL =
     'https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/PRIVACY.md'
+const LIMITS_URL =
+    'https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/LIMITS.md'
+const RELEASES_URL =
+    'https://github.com/OpenAdaptAI/openadapt-desktop/blob/main/RELEASES.md'
+// Security reports go through GitHub private advisories or hello@openadapt.ai.
+// There is no security@openadapt.ai mailbox today — do not advertise one.
+const CONTACT_EMAIL = 'hello@openadapt.ai'
 
 const webPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'Security and trust',
+    name: 'Trust center',
     url: 'https://openadapt.ai/security',
     description:
-        'OpenAdapt security controls, local-first execution, governed artifact boundaries, assurance status, and vulnerability reporting.',
+        'OpenAdapt trust center: architecture and data-flow boundaries, encryption, retention, subprocessors, access control, release integrity, vulnerability disclosure, incident response, and compliance status — each with its honest current state.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -27,6 +36,90 @@ const webPageSchema = {
         url: 'https://openadapt.ai',
     },
     inLanguage: 'en',
+}
+
+// Every status label below describes public, verifiable evidence in our repos —
+// not an external certification. "In place" means the control ships today;
+// "Operator-controlled" means the control exists but you own its configuration;
+// "Roadmap" means it is designed but not generally available; "Not held" means
+// we do not have it and will not imply otherwise.
+
+const summary = [
+    {
+        area: 'Architecture & data flow',
+        anchor: 'architecture',
+        status: 'yes',
+        note: 'Local-first; PHI boundary documented artifact-by-artifact.',
+    },
+    {
+        area: 'Encryption & key boundaries',
+        anchor: 'encryption',
+        status: 'partial',
+        note: 'Optional AES-256-GCM at rest; TLS in transit; HMAC-bound ingest.',
+    },
+    {
+        area: 'Data retention & deletion',
+        anchor: 'retention',
+        status: 'operator',
+        note: 'Local retention is operator-owned; hosted has no fixed schedule yet.',
+    },
+    {
+        area: 'Subprocessors',
+        anchor: 'subprocessors',
+        status: 'yes',
+        note: 'Named and current. No default model provider.',
+    },
+    {
+        area: 'Identity, access & tenancy',
+        anchor: 'access',
+        status: 'partial',
+        note: 'Org RBAC + row-level tenant isolation today; SSO / SAML / SCIM not yet.',
+    },
+    {
+        area: 'Release integrity',
+        anchor: 'release-integrity',
+        status: 'partial',
+        note: 'Build provenance today; code signing not yet — desktop is unsigned/ad-hoc.',
+    },
+    {
+        area: 'Secure development',
+        anchor: 'secure-development',
+        status: 'yes',
+        note: 'Open source, SHA-pinned CI, Dependabot, private advisories.',
+    },
+    {
+        area: 'Vulnerability disclosure',
+        anchor: 'disclosure',
+        status: 'yes',
+        note: 'Private advisory channel; 5-business-day acknowledgment target.',
+    },
+    {
+        area: 'Incident response',
+        anchor: 'incident-response',
+        status: 'partial',
+        note: 'Reporter-facing process defined; formal program is early.',
+    },
+    {
+        area: 'DPA & BAA',
+        anchor: 'legal',
+        status: 'scoped',
+        note: 'Scoped per engagement; no standing BAA program.',
+    },
+    {
+        area: 'SOC 2',
+        anchor: 'assurance',
+        status: 'none',
+        note: 'No active audit. Not held today.',
+    },
+]
+
+const chip = {
+    yes: { label: 'In place', color: 'var(--accent)' },
+    partial: { label: 'Partial', color: 'var(--inset-warn)' },
+    operator: { label: 'Operator-controlled', color: 'var(--inset-warn)' },
+    roadmap: { label: 'Roadmap', color: 'var(--inset-warn)' },
+    scoped: { label: 'Scoped per engagement', color: 'var(--inset-warn)' },
+    none: { label: 'Not held', color: 'var(--inset-warn)' },
 }
 
 // Status labels describe public evidence, not an external certification.
@@ -61,16 +154,6 @@ const posture = [
         title: 'Open source and auditable',
         body: 'The engine is MIT-licensed. You can read the code, run it yourself, and verify these claims rather than take them on trust.',
     },
-    {
-        status: 'planned',
-        title: 'SOC 2',
-        body: 'OpenAdapt does not hold a SOC 2 attestation today. Architecture and source code are not substitutes for an independent report.',
-    },
-    {
-        status: 'planned',
-        title: 'BAA (Business Associate Agreement)',
-        body: 'We do not run a standing BAA program today. If an enterprise pilot requires a BAA, talk to us and we will scope it as part of the engagement. We would rather tell you this up front than imply a program we have not stood up.',
-    },
 ]
 
 const statusLabel = {
@@ -84,6 +167,65 @@ const statusColor = {
     progress: 'var(--inset-warn)',
     planned: 'var(--inset-warn)',
 }
+
+// A truthful map of where data lives and what can leave the operator boundary.
+// Lifted from openadapt-flow docs/PRIVACY.md (the PHI touchpoint map) and
+// docs/LIMITS.md. Each destination names its control honestly.
+const flowZones = [
+    {
+        title: 'Operator boundary (local, default)',
+        tone: 'ground',
+        lead: 'Everything below stays on the operator machine unless an explicit, configured action moves a derivative out.',
+        items: [
+            [
+                'Raw recording',
+                'Full screenshots, literal typed values, and structured identity DOM text. Not scrubbed — it is the compile input. Control: filesystem permissions + your retention policy.',
+            ],
+            [
+                'Compiled bundle',
+                'Anchor OCR/context text, identity band (name/DOB/MRN), templates, and identifier crops. Not scrubbed — the identity evidence is what powers the wrong-patient check. Control: filesystem + retention.',
+            ],
+            [
+                'Run report (report.json)',
+                'Parameters, per-step intent, and recorded-vs-live identity text. The audit trail. Not scrubbed by design. The shareable REPORT.md derivative is scrubbed.',
+            ],
+            [
+                'Persisted step / heal frames',
+                'Redacted through Presidio image scrubbing when image scrubbing is enabled, and implied whenever scrubbing is pinned on.',
+            ],
+        ],
+    },
+    {
+        title: 'Optional on-prem model appliance',
+        tone: 'warn',
+        lead: 'Only when an operator explicitly enables model-assisted repair. The appliance binds to loopback by default and warns loudly if exposed without a token or TLS.',
+        items: [
+            [
+                'Identity crops & screenshots',
+                'Sent to the appliance to answer "same record or different?" These are PHI in flight and are deliberately NOT scrubbed — the crop is the identifier. Control is a data-flow boundary: on-prem-only destination + no retention (no disk or log writes), not scrubbing.',
+            ],
+        ],
+    },
+    {
+        title: 'OpenAdapt hosted control plane (optional)',
+        tone: 'panel',
+        lead: 'Used only for the hosted service. PHI-bearing runtime frames do not cross this boundary; only the artifacts below do.',
+        items: [
+            [
+                'Sanitized artifact ingest',
+                'Accepts the reviewed, scrubbed derivative frozen to its exact approved archive hash — never the raw local source. Unsupported types refuse the whole derivative.',
+            ],
+            [
+                'Break report',
+                'A schema-minimal, PHI-scrubbed halt descriptor. No intents, reasons, errors, screenshots, DOM, or field values. Fails closed to local-only if the PHI boundary rejects it.',
+            ],
+            [
+                'Account & run metadata',
+                'Account, organization, subscription, run status, usage, and audit records needed to operate the service.',
+            ],
+        ],
+    },
+]
 
 const boundaries = [
     {
@@ -124,38 +266,160 @@ const boundaries = [
     },
 ]
 
+const encryption = [
+    [
+        'Bundle & checkpoint at rest',
+        'Compiled bundles and durable checkpoints support optional AES-256-GCM authenticated encryption at rest. It is opt-in, not automatic: unencrypted artifacts on disk are protected by filesystem permissions and your retention policy until you enable it. Raw recordings and run reports are PHI-at-rest and are not encrypted for you.',
+    ],
+    [
+        'Secret fields (local)',
+        'Browser password and declared secret fields are injected at replay time and are not written into recording events or the compiled bundle. Other typed values are recorded literally. On the desktop, the hosted auth token lives in the OS keychain (macOS Keychain, Windows Credential Manager, Linux Secret Service), not in a plaintext config file.',
+    ],
+    [
+        'Hosted secrets vault',
+        'The hosted service stores workflow secrets per organization, encrypted app-side with AES-256-GCM before they reach the database, so the store only ever holds ciphertext. Values are write-only (never returned to a browser) and are released to a runner once, through a single-use, short-lived token exchange at run time. The encryption key lives only in the control plane and supports zero-downtime rotation.',
+    ],
+    [
+        'Bundle integrity',
+        'A compiled bundle carries a schema-versioned manifest: a whole-bundle SHA-256 content digest, per-asset hashes, and provenance (source-recording and compiler-config hashes, compiler version, certification). It is sealed on save and re-verified on load. A content digest proves byte identity, not publisher identity, and is not a tamper-proof audit ledger.',
+    ],
+    [
+        'In transit',
+        'Hosted and provider traffic uses TLS. The Windows desktop control channel adds per-run self-signed certificates with SHA-256 fingerprint pinning and refuses a plaintext downgrade to a non-loopback host. The optional on-prem model appliance expects TLS terminated at a reverse proxy and a service token; it warns loudly at startup if bound off-loopback without one.',
+    ],
+    [
+        'Hosted ingest integrity',
+        'Artifact ingest is bound by an attestation the operator HMAC-signs with their ingest token, over exact evidence hashes and a single-use, time-bound, organization-scoped challenge, so a mutated or replayed upload is refused. This detects tampering; it is not a third-party certification of the workflow.',
+    ],
+]
+
 const scrubStages = [
-    ['Inventory', 'Enumerate every file and channel. Symlinks, archives, databases, media, metadata, and unknown types require an explicit handler or the operation stops.'],
-    ['Transform a copy', 'Keep the sensitive original local. Redact or parameterize supported text, structured records, screenshots, and metadata in a separate derivative.'],
-    ['Rescan and manifest', 'Scan the derivative again, record tool and policy versions, list unresolved findings, and compute a cryptographic hash over the exact result.'],
-    ['Review and approve', 'When policy requires it, inspect the derivative locally, correct missed or excessive redactions, then approve its hash. Any later modification invalidates approval.'],
+    [
+        'Inventory',
+        'Enumerate every file and channel. Symlinks, archives, databases, media, metadata, and unknown types require an explicit handler or the operation stops.',
+    ],
+    [
+        'Transform a copy',
+        'Keep the sensitive original local. Redact or parameterize supported text, structured records, screenshots, and metadata in a separate derivative.',
+    ],
+    [
+        'Rescan and manifest',
+        'Scan the derivative again, record tool and policy versions, list unresolved findings, and compute a cryptographic hash over the exact result.',
+    ],
+    [
+        'Review and approve',
+        'When policy requires it, inspect the derivative locally, correct missed or excessive redactions, then approve its hash. Any later modification invalidates approval.',
+    ],
 ]
 
 const reviewPolicies = [
-    ['Automatic', 'Lowest friction for schema-minimized diagnostics with complete handler coverage.', 'A detector false negative can cross the boundary.'],
-    ['Human required', 'Adds contextual review for screenshots, free text, and consequential artifacts.', 'Costs operator time and human approval is not proof of de-identification.'],
-    ['Risk-based hybrid', 'Automatic for narrow diagnostics; review required for recordings and bundles unless an administrator approves a measured policy.', 'Requires explicit artifact classes, thresholds, and audit configuration.'],
+    [
+        'Automatic',
+        'Lowest friction for schema-minimized diagnostics with complete handler coverage.',
+        'A detector false negative can cross the boundary.',
+    ],
+    [
+        'Human required',
+        'Adds contextual review for screenshots, free text, and consequential artifacts.',
+        'Costs operator time and human approval is not proof of de-identification.',
+    ],
+    [
+        'Risk-based hybrid',
+        'Automatic for narrow diagnostics; review required for recordings and bundles unless an administrator approves a measured policy.',
+        'Requires explicit artifact classes, thresholds, and audit configuration.',
+    ],
+]
+
+const subprocessors = [
+    [
+        'Netlify',
+        'Website hosting and form submissions',
+        'Marketing site, contact/update forms',
+    ],
+    [
+        'Supabase',
+        'Hosted authentication, database, and private object storage',
+        'Hosted service accounts and artifacts',
+    ],
+    [
+        'Modal',
+        'Managed browser recording and run compute; optional hosted compilation only when explicitly enabled',
+        'Hosted service runtime',
+    ],
+    [
+        'Stripe',
+        'Checkout, billing, and subscription state',
+        'Hosted service billing',
+    ],
+    [
+        'PostHog',
+        'Launch-funnel analytics when a key is configured (autocapture, persistence, and session recording disabled)',
+        'Marketing site only',
+    ],
+    ['Cal.com', 'Meeting booking', 'Marketing site booking flow'],
+    [
+        'GitHub',
+        'Source links, repository widgets, and public repository data',
+        'Marketing site + open source',
+    ],
+]
+
+const releaseIntegrity = [
+    {
+        title: 'Build provenance & attestations',
+        status: 'yes',
+        body: 'The PyPI engine publishes wheel and sdist with PEP 740 publish attestations. Native desktop installers ship a SHA256SUMS manifest with SLSA provenance-v1 build attestations you can verify with sha256sum -c and gh attestation verify. Provenance answers "was this built from our source by our CI"; it is not the same as code signing.',
+    },
+    {
+        title: 'Code signing',
+        status: 'partial',
+        body: 'Desktop installers are currently UNSIGNED (Windows, Linux) or ad-hoc signed (macOS), and their filenames say so. Apple Developer ID + notarization and Windows Authenticode are not yet configured; the signing workflow fails closed on partial credentials. Until signing lands, verify downloads with the published checksums and attestations.',
+    },
+    {
+        title: 'Software bill of materials (SBOM)',
+        status: 'roadmap',
+        body: 'We do not currently publish a machine-readable SBOM as a release asset. Dependencies are visible in the open-source lockfiles, and dependency updates flow through Dependabot. A published SBOM is a roadmap item.',
+    },
+]
+
+const secureDev = [
+    [
+        'Open source, reviewable',
+        'The compiler and runtime are MIT-licensed and public. Anyone can read the code, reproduce the behavior, and file findings.',
+    ],
+    [
+        'Pinned, monitored supply chain',
+        'GitHub Actions are pinned by commit SHA and dependency updates flow through Dependabot. A pinning gap is explicitly in scope for a security report.',
+    ],
+    [
+        'Change control',
+        'Changes land through pull requests with automated checks (build, contract, and truth tests on this site; engine test suites upstream) before release.',
+    ],
+    [
+        'Privacy as a choke point',
+        'PHI/PII scrubbing is wired through a single documented choke point with fail-closed and fail-loud modes, so a missing scrubber cannot silently leak.',
+    ],
 ]
 
 export default function SecurityPage() {
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
-                <title>Security and trust | OpenAdapt</title>
+                <title>Trust center | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="Review OpenAdapt security controls, local-first execution, governed artifact boundaries, assurance status, and vulnerability reporting."
+                    content="OpenAdapt trust center: architecture and data-flow boundaries, encryption, retention, subprocessors, access control, release integrity, vulnerability disclosure, incident response, and compliance status — each with its honest current state."
                 />
                 <link rel="canonical" href="https://openadapt.ai/security" />
-                <meta
-                    property="og:title"
-                    content="Security and trust | OpenAdapt"
-                />
+                <meta property="og:title" content="Trust center | OpenAdapt" />
                 <meta
                     property="og:description"
-                    content="Local-first execution, governed artifact boundaries, assurance status, and vulnerability reporting."
+                    content="Architecture and data boundaries, encryption, retention, subprocessors, access, release integrity, disclosure, incident response, and compliance status — each with its honest current state."
                 />
-                <meta property="og:url" content="https://openadapt.ai/security" />
+                <meta
+                    property="og:url"
+                    content="https://openadapt.ai/security"
+                />
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
@@ -165,42 +429,183 @@ export default function SecurityPage() {
             </Head>
 
             <div className="mx-auto max-w-4xl px-4 py-14">
-                <p className="eyebrow">Security and trust</p>
+                <p className="eyebrow">Trust center</p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Controls, data boundaries, and assurance
+                    Security, data boundaries, and assurance
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    OpenAdapt is built to run where your data already lives. Use
-                    this page to map local, managed, and customer-controlled
-                    execution to the controls and assurance commitments required
-                    for your workflow.
+                    OpenAdapt is built to run where your data already lives.
+                    This page is written for a security reviewer: every area
+                    below states what actually exists today, what you control,
+                    and what we do not have yet. Where a control is not in
+                    place, we say so rather than imply it.
                 </p>
 
-                <div className="mt-10 space-y-4">
-                    {posture.map((item) => (
-                        <div
-                            key={item.title}
-                            className="rounded-xl border border-hairline bg-panel p-5"
-                            style={{
-                                borderLeft: `4px solid ${statusColor[item.status]}`,
-                            }}
-                        >
-                            <div className="flex flex-wrap items-baseline justify-between gap-2">
-                                <strong className="font-display text-base font-semibold text-ink">
-                                    {item.title}
-                                </strong>
-                                <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
-                                    {statusLabel[item.status]}
-                                </span>
-                            </div>
-                            <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                                {item.body}
-                            </p>
-                        </div>
-                    ))}
+                {/* At a glance */}
+                <div
+                    id="summary"
+                    className="mt-10 overflow-x-auto rounded-xl border border-hairline bg-panel"
+                >
+                    <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+                        <caption className="sr-only">
+                            Trust center summary: each area with its current
+                            status and a link to detail.
+                        </caption>
+                        <thead className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-3">
+                            <tr>
+                                <th className="border-b border-hairline px-4 py-3">
+                                    Area
+                                </th>
+                                <th className="border-b border-hairline px-4 py-3">
+                                    Status
+                                </th>
+                                <th className="border-b border-hairline px-4 py-3">
+                                    In short
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {summary.map((row) => (
+                                <tr key={row.area} className="align-top">
+                                    <th className="border-b border-hairline px-4 py-3 font-medium text-ink">
+                                        <a
+                                            href={`#${row.anchor}`}
+                                            className="text-accent hover:underline"
+                                        >
+                                            {row.area}
+                                        </a>
+                                    </th>
+                                    <td className="border-b border-hairline px-4 py-3">
+                                        <span
+                                            className="inline-block rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em]"
+                                            style={{
+                                                color: chip[row.status].color,
+                                                border: `1px solid ${chip[row.status].color}`,
+                                            }}
+                                        >
+                                            {chip[row.status].label}
+                                        </span>
+                                    </td>
+                                    <td className="border-b border-hairline px-4 py-3 text-ink-2">
+                                        {row.note}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
 
-                <div className="mt-12 border-t border-hairline pt-10">
+                {/* Architecture & data flow */}
+                <div
+                    id="architecture"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Architecture &amp; data flow</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        Where data lives, and what can leave the boundary
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
+                        OpenAdapt is local-first. Recording, compilation, and
+                        healthy replay run entirely on the operator machine.
+                        Data only leaves that boundary through the explicit,
+                        configured paths shown below. This map mirrors the
+                        engine&#39;s own artifact-by-artifact PHI documentation.
+                    </p>
+                    <div className="mt-6 space-y-4">
+                        {flowZones.map((zone) => (
+                            <div
+                                key={zone.title}
+                                className="rounded-xl border border-hairline bg-panel p-5"
+                                style={{
+                                    borderLeft:
+                                        zone.tone === 'warn'
+                                            ? '4px solid var(--inset-warn)'
+                                            : '4px solid var(--accent)',
+                                }}
+                            >
+                                <h3 className="font-display text-base font-semibold text-ink">
+                                    {zone.title}
+                                </h3>
+                                <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                    {zone.lead}
+                                </p>
+                                <dl className="mt-4 space-y-3">
+                                    {zone.items.map(([term, def]) => (
+                                        <div key={term}>
+                                            <dt className="font-mono text-xs uppercase tracking-[0.08em] text-ink-3">
+                                                {term}
+                                            </dt>
+                                            <dd className="mt-1 text-sm leading-relaxed text-ink-2">
+                                                {def}
+                                            </dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            </div>
+                        ))}
+                    </div>
+                    <p className="mt-5 text-sm text-ink-2">
+                        Full detail:{' '}
+                        <a
+                            href={PRIVACY_BOUNDARY_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-accent underline"
+                        >
+                            the PHI/PII threat model
+                        </a>{' '}
+                        and{' '}
+                        <a
+                            href={LIMITS_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-accent underline"
+                        >
+                            the limits and guarantees doc
+                        </a>
+                        .
+                    </p>
+                </div>
+
+                {/* Control posture */}
+                <div
+                    id="posture"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Control posture</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        Controls that ship in the product today
+                    </h2>
+                    <div className="mt-6 space-y-4">
+                        {posture.map((item) => (
+                            <div
+                                key={item.title}
+                                className="rounded-xl border border-hairline bg-panel p-5"
+                                style={{
+                                    borderLeft: `4px solid ${statusColor[item.status]}`,
+                                }}
+                            >
+                                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                                    <strong className="font-display text-base font-semibold text-ink">
+                                        {item.title}
+                                    </strong>
+                                    <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
+                                        {statusLabel[item.status]}
+                                    </span>
+                                </div>
+                                <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                    {item.body}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Data boundary Q&A */}
+                <div
+                    id="data-boundary"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
                     <p className="eyebrow">Data boundary</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
                         Questions a security review should answer first
@@ -221,7 +626,8 @@ export default function SecurityPage() {
                         ))}
                     </dl>
                     <p className="mt-5 text-sm text-ink-2">
-                        The engine documents its artifact-by-artifact boundary in{' '}
+                        The engine documents its artifact-by-artifact boundary
+                        in{' '}
                         <a
                             href={PRIVACY_BOUNDARY_URL}
                             target="_blank"
@@ -234,35 +640,80 @@ export default function SecurityPage() {
                     </p>
                 </div>
 
-                <div className="mt-12 border-t border-hairline pt-10">
+                {/* Encryption */}
+                <div
+                    id="encryption"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Encryption &amp; keys</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        Encryption boundaries, stated plainly
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
+                        We describe encryption by what is actually enforced, not
+                        by a blanket &ldquo;encrypted everywhere&rdquo; claim.
+                        Some of it is opt-in, and some sensitive artifacts are
+                        not encrypted for you by default.
+                    </p>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                        {encryption.map(([title, body]) => (
+                            <div
+                                key={title}
+                                className="rounded-xl border border-hairline bg-panel p-5"
+                            >
+                                <h3 className="font-display text-base font-semibold text-ink">
+                                    {title}
+                                </h3>
+                                <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                    {body}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* PHI sanitation */}
+                <div
+                    id="sanitation"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
                     <p className="eyebrow">PHI sanitation</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
                         Scrubbing creates a reviewable derivative
                     </h2>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                        Scrubbing is not a boolean claim attached to a bundle. It
-                        is a local transformation and approval protocol. The raw
-                        source never becomes safe merely because a derivative
-                        exists, and a sanitized recording does not prevent live
-                        PHI from appearing during execution.
+                        Scrubbing is not a boolean claim attached to a bundle.
+                        It is a local transformation and approval protocol. The
+                        raw source never becomes safe merely because a
+                        derivative exists, and a sanitized recording does not
+                        prevent live PHI from appearing during execution.
                     </p>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
                         Sanitation and runnability are separate gates. Register
                         the approved recording derivative, compile it locally,
                         pass strict lint and policy certification, and produce a
-                        successful matching replay report. Then sanitize, review,
-                        and approve a bundle whose execution-bearing content is
-                        unchanged. If recording sanitation changed execution
-                        content, hosted ingest marks it{' '}
+                        successful matching replay report. Then sanitize,
+                        review, and approve a bundle whose execution-bearing
+                        content is unchanged. If recording sanitation changed
+                        execution content, hosted ingest marks it{' '}
                         <code>needs_parameterization</code>; parameterize before
                         compilation.
                     </p>
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                         {scrubStages.map(([title, body], index) => (
-                            <article key={title} className="rounded-xl border border-hairline bg-panel p-5">
-                                <p className="font-mono text-xs text-accent">{index + 1}</p>
-                                <h3 className="mt-2 font-display text-base font-semibold text-ink">{title}</h3>
-                                <p className="mt-2 text-sm leading-relaxed text-ink-2">{body}</p>
+                            <article
+                                key={title}
+                                className="rounded-xl border border-hairline bg-panel p-5"
+                            >
+                                <p className="font-mono text-xs text-accent">
+                                    {index + 1}
+                                </p>
+                                <h3 className="mt-2 font-display text-base font-semibold text-ink">
+                                    {title}
+                                </h3>
+                                <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                    {body}
+                                </p>
                             </article>
                         ))}
                     </div>
@@ -270,19 +721,33 @@ export default function SecurityPage() {
                         <table className="w-full min-w-[680px] border-collapse text-left text-sm">
                             <thead className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-3">
                                 <tr>
-                                    <th className="border-b border-hairline px-4 py-3">Review policy</th>
-                                    <th className="border-b border-hairline px-4 py-3">Best fit</th>
-                                    <th className="border-b border-hairline px-4 py-3">Tradeoff</th>
+                                    <th className="border-b border-hairline px-4 py-3">
+                                        Review policy
+                                    </th>
+                                    <th className="border-b border-hairline px-4 py-3">
+                                        Best fit
+                                    </th>
+                                    <th className="border-b border-hairline px-4 py-3">
+                                        Tradeoff
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {reviewPolicies.map(([policy, fit, tradeoff]) => (
-                                    <tr key={policy} className="align-top">
-                                        <th className="border-b border-hairline px-4 py-3 font-medium text-ink">{policy}</th>
-                                        <td className="border-b border-hairline px-4 py-3 text-ink-2">{fit}</td>
-                                        <td className="border-b border-hairline px-4 py-3 text-ink-2">{tradeoff}</td>
-                                    </tr>
-                                ))}
+                                {reviewPolicies.map(
+                                    ([policy, fit, tradeoff]) => (
+                                        <tr key={policy} className="align-top">
+                                            <th className="border-b border-hairline px-4 py-3 font-medium text-ink">
+                                                {policy}
+                                            </th>
+                                            <td className="border-b border-hairline px-4 py-3 text-ink-2">
+                                                {fit}
+                                            </td>
+                                            <td className="border-b border-hairline px-4 py-3 text-ink-2">
+                                                {tradeoff}
+                                            </td>
+                                        </tr>
+                                    )
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -295,30 +760,31 @@ export default function SecurityPage() {
                     <div className="mt-6 rounded-xl border-2 border-ink bg-panel p-5 md:p-6">
                         <p className="eyebrow">Hosted runtime gate</p>
                         <h3 className="mt-2 font-display text-lg font-semibold text-ink">
-                            Approval, validation, and certification are different
+                            Approval, validation, and certification are
+                            different
                         </h3>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
                             The cross-engine sequence is recording sanitize →
                             review → approve → push; local compile → strict lint
                             → certify → successful replay; bundle sanitize →
-                            review → approve; then <code>validate-hosted</code> →
-                            attested bundle push → configure → run. The validation
-                            envelope binds exact artifact hashes, compiler and
-                            parameter-schema provenance, the exact non-PHI HTTPS
-                            entry URL, target boundary, and actual replay origin,
-                            lint/certification
-                            and report hashes, the derived <code>low</code> or{' '}
+                            review → approve; then <code>validate-hosted</code>{' '}
+                            → attested bundle push → configure → run. The
+                            validation envelope binds exact artifact hashes,
+                            compiler and parameter-schema provenance, the exact
+                            non-PHI HTTPS entry URL, target boundary, and actual
+                            replay origin, lint/certification and report hashes,
+                            the derived <code>low</code> or{' '}
                             <code>consequential</code> risk class, and a fresh
-                            one-time challenge. Cloud additionally requires exact
-                            policy, risk-class, and deployed compiler-version
-                            allowlist membership.
+                            one-time challenge. Cloud additionally requires
+                            exact policy, risk-class, and deployed
+                            compiler-version allowlist membership.
                         </p>
                         <p className="mt-3 text-xs leading-relaxed text-ink-3">
                             This is operator self-attestation, not third-party
-                            certification. It proves that the token holder signed
-                            a non-mutated evidence envelope; it does not prove an
-                            independent party witnessed the replay or that the
-                            workflow is universally safe.
+                            certification. It proves that the token holder
+                            signed a non-mutated evidence envelope; it does not
+                            prove an independent party witnessed the replay or
+                            that the workflow is universally safe.
                         </p>
                         <a
                             href="https://docs.openadapt.ai/guides/hosted/"
@@ -329,8 +795,262 @@ export default function SecurityPage() {
                     </div>
                 </div>
 
-                <div className="mt-12 border-t-2 border-ink pt-10">
-                    <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+                {/* Retention & deletion */}
+                <div
+                    id="retention"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Retention &amp; deletion</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        Retention is operator-owned; hosted has no fixed
+                        schedule yet
+                    </h2>
+                    <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-2 md:text-base">
+                        <p>
+                            <strong className="text-ink">
+                                Local artifacts.
+                            </strong>{' '}
+                            The engine does not automatically delete raw
+                            recordings, bundles, machine reports, or
+                            checkpoints. Retention and deletion of local data
+                            are controlled by the operator through filesystem
+                            and backup policy.
+                        </p>
+                        <p>
+                            <strong className="text-ink">
+                                Hosted service.
+                            </strong>{' '}
+                            The hosted service persists account and organization
+                            data, managed recordings, approved artifacts,
+                            bundles, reports, run and usage records, and billing
+                            references in its configured stores. Short-lived
+                            signed runner URLs limit object access but do not
+                            delete the stored objects.
+                        </p>
+                        <p>
+                            <strong className="text-ink">
+                                No fixed schedule yet.
+                            </strong>{' '}
+                            The self-serve service currently publishes no fixed
+                            retention, backup-deletion, or recovery period. Do
+                            not send data that requires a specific schedule
+                            until that schedule and deletion process are
+                            documented in a qualified written deployment scope.
+                            Providers can retain billing, security, or service
+                            records under their own obligations.
+                        </p>
+                        <p>
+                            Deletion requests for personal information can be
+                            sent to{' '}
+                            <a
+                                href={`mailto:${CONTACT_EMAIL}`}
+                                className="text-accent underline"
+                            >
+                                {CONTACT_EMAIL}
+                            </a>
+                            ; see the{' '}
+                            <Link
+                                href="/privacy-policy"
+                                className="text-accent underline"
+                            >
+                                Privacy Notice
+                            </Link>
+                            .
+                        </p>
+                    </div>
+                </div>
+
+                {/* Subprocessors */}
+                <div
+                    id="subprocessors"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Subprocessors</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        The third parties in our current product paths
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
+                        These providers can receive the network and service data
+                        needed for the selected interaction and process it under
+                        their own terms. A customer-controlled deployment can
+                        use a different approved provider set documented in its
+                        scope.
+                    </p>
+                    <div className="mt-6 overflow-x-auto rounded-xl border border-hairline bg-panel">
+                        <table className="w-full min-w-[680px] border-collapse text-left text-sm">
+                            <thead className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-3">
+                                <tr>
+                                    <th className="border-b border-hairline px-4 py-3">
+                                        Provider
+                                    </th>
+                                    <th className="border-b border-hairline px-4 py-3">
+                                        Purpose
+                                    </th>
+                                    <th className="border-b border-hairline px-4 py-3">
+                                        Where used
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {subprocessors.map(([name, purpose, where]) => (
+                                    <tr key={name} className="align-top">
+                                        <th className="border-b border-hairline px-4 py-3 font-medium text-ink">
+                                            {name}
+                                        </th>
+                                        <td className="border-b border-hairline px-4 py-3 text-ink-2">
+                                            {purpose}
+                                        </td>
+                                        <td className="border-b border-hairline px-4 py-3 text-ink-2">
+                                            {where}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p className="mt-4 text-sm leading-relaxed text-ink-2">
+                        <strong className="text-ink">
+                            No default model provider.
+                        </strong>{' '}
+                        Healthy replay makes no model calls, so no AI provider
+                        is a standing subprocessor. If an operator explicitly
+                        enables model-assisted repair, they choose the endpoint
+                        (a local or on-prem model, or a remote provider under
+                        that provider&#39;s own terms).
+                    </p>
+                </div>
+
+                {/* Identity, access & tenancy */}
+                <div
+                    id="access"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Identity, access &amp; tenancy</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        Access control: honest current state
+                    </h2>
+                    <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-2 md:text-base">
+                        <p>
+                            The hosted service authenticates users through
+                            Supabase Auth and enforces{' '}
+                            <strong className="text-ink">
+                                per-organization role-based access control
+                            </strong>{' '}
+                            with owner, admin, and member roles. Every tenant
+                            table is protected by Postgres row-level security
+                            scoped to organization membership, so data is
+                            isolated per organization rather than shared across
+                            tenants.
+                        </p>
+                        <p>
+                            What is <strong className="text-ink">not</strong>{' '}
+                            yet available:{' '}
+                            <strong className="text-ink">
+                                enterprise SSO / SAML
+                            </strong>{' '}
+                            and{' '}
+                            <strong className="text-ink">
+                                SCIM provisioning
+                            </strong>
+                            . Login is handled by Supabase Auth (email and OAuth
+                            providers), not by an external enterprise identity
+                            provider. We would rather say that than imply an
+                            enterprise SSO program we have not shipped.
+                        </p>
+                        <p>
+                            If you need enterprise identity integration now, a{' '}
+                            <strong className="text-ink">
+                                customer-controlled deployment
+                            </strong>{' '}
+                            lets you own the identity provider, access model,
+                            and audit inside your boundary. The open-source
+                            engine itself has no account system: installing it
+                            does not create an account or send anything to the
+                            hosted service.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Release integrity */}
+                <div
+                    id="release-integrity"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Release integrity</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        Signing, provenance, and SBOMs — what actually ships
+                    </h2>
+                    <div className="mt-6 space-y-4">
+                        {releaseIntegrity.map((item) => (
+                            <div
+                                key={item.title}
+                                className="rounded-xl border border-hairline bg-panel p-5"
+                                style={{
+                                    borderLeft: `4px solid ${chip[item.status].color}`,
+                                }}
+                            >
+                                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                                    <strong className="font-display text-base font-semibold text-ink">
+                                        {item.title}
+                                    </strong>
+                                    <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
+                                        {chip[item.status].label}
+                                    </span>
+                                </div>
+                                <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                    {item.body}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                    <p className="mt-5 text-sm text-ink-2">
+                        The two-lane release policy and its planned convergence
+                        after signing lands is documented in{' '}
+                        <a
+                            href={RELEASES_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-accent underline"
+                        >
+                            the desktop release policy
+                        </a>
+                        .
+                    </p>
+                </div>
+
+                {/* Secure development */}
+                <div
+                    id="secure-development"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Secure development</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        How the software is built
+                    </h2>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                        {secureDev.map(([title, body]) => (
+                            <div
+                                key={title}
+                                className="rounded-xl border border-hairline bg-panel p-5"
+                            >
+                                <h3 className="font-display text-base font-semibold text-ink">
+                                    {title}
+                                </h3>
+                                <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                    {body}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Vulnerability disclosure */}
+                <div
+                    id="disclosure"
+                    className="mt-14 scroll-mt-20 border-t-2 border-ink pt-10"
+                >
+                    <p className="eyebrow">Vulnerability disclosure</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
                         Report a vulnerability
                     </h2>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
@@ -338,8 +1058,12 @@ export default function SecurityPage() {
                         privately so we can fix it before it is disclosed. The
                         fastest path is GitHub&#39;s private vulnerability
                         reporting on the repository. You can also email us with
-                        &ldquo;Security&rdquo; in the subject line. Please do not
-                        open a public issue for a suspected vulnerability.
+                        &ldquo;Security&rdquo; in the subject line. Please do
+                        not open a public issue for a suspected vulnerability.
+                        We aim to acknowledge a report within{' '}
+                        <strong className="text-ink">five business days</strong>
+                        , confirm affected versions, prepare a fix, and credit
+                        reporters who wish to be credited.
                     </p>
                     <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm">
                         <a
@@ -351,10 +1075,18 @@ export default function SecurityPage() {
                             Report privately on GitHub →
                         </a>
                         <a
-                            href="mailto:hello@openadapt.ai?subject=Security"
+                            href={SECURITY_POLICY_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="text-accent hover:underline"
                         >
-                            hello@openadapt.ai
+                            Read the security policy
+                        </a>
+                        <a
+                            href={`mailto:${CONTACT_EMAIL}?subject=Security`}
+                            className="text-accent hover:underline"
+                        >
+                            {CONTACT_EMAIL}
                         </a>
                         <a
                             href={REPO_URL}
@@ -367,7 +1099,145 @@ export default function SecurityPage() {
                     </div>
                 </div>
 
-                <div className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
+                {/* Incident response */}
+                <div
+                    id="incident-response"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Incident response</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        Incident response: honest posture
+                    </h2>
+                    <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-2 md:text-base">
+                        <p>
+                            We have a defined intake and handling path for
+                            reported vulnerabilities (above): private triage,
+                            affected-version analysis, a forward-shipped fix,
+                            and reporter credit. That is the part of incident
+                            response that is real and operating today.
+                        </p>
+                        <p>
+                            A{' '}
+                            <strong className="text-ink">
+                                formal, contractual incident-response program
+                            </strong>{' '}
+                            — customer breach notification timelines, on-call
+                            rotation, and post-incident reporting — is early and
+                            is scoped per engagement rather than offered as a
+                            standing SLA. For the open-source engine running
+                            inside your own boundary, incident response for the
+                            surrounding environment (firewall, KMS, storage,
+                            identity, backups) is your responsibility; the
+                            engine supplies audit primitives, egress checks, and
+                            run reports to support it.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Legal readiness */}
+                <div
+                    id="legal"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Legal readiness</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        DPA and BAA
+                    </h2>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                        <div
+                            className="rounded-xl border border-hairline bg-panel p-5"
+                            style={{
+                                borderLeft: '4px solid var(--inset-warn)',
+                            }}
+                        >
+                            <div className="flex flex-wrap items-baseline justify-between gap-2">
+                                <strong className="font-display text-base font-semibold text-ink">
+                                    Data Processing Agreement (DPA)
+                                </strong>
+                                <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
+                                    Scoped per engagement
+                                </span>
+                            </div>
+                            <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                If your evaluation of the hosted service
+                                requires a DPA, contact us and we will scope one
+                                as part of the engagement. We are not publishing
+                                a self-serve DPA template we have not stood up.
+                            </p>
+                        </div>
+                        <div
+                            className="rounded-xl border border-hairline bg-panel p-5"
+                            style={{
+                                borderLeft: '4px solid var(--inset-warn)',
+                            }}
+                        >
+                            <div className="flex flex-wrap items-baseline justify-between gap-2">
+                                <strong className="font-display text-base font-semibold text-ink">
+                                    Business Associate Agreement (BAA)
+                                </strong>
+                                <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
+                                    Not held
+                                </span>
+                            </div>
+                            <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                We do not run a standing BAA program today. If
+                                an enterprise pilot requires a BAA, talk to us
+                                and we will scope it as part of the engagement.
+                                We would rather tell you this up front than
+                                imply a program we have not stood up.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Assurance / SOC 2 */}
+                <div
+                    id="assurance"
+                    className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
+                >
+                    <p className="eyebrow">Assurance &amp; certifications</p>
+                    <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
+                        SOC 2 and independent attestation
+                    </h2>
+                    <div className="mt-6 rounded-xl border-2 border-ink bg-panel p-5 md:p-6">
+                        <div className="flex flex-wrap items-baseline justify-between gap-2">
+                            <strong className="font-display text-base font-semibold text-ink">
+                                SOC 2
+                            </strong>
+                            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
+                                No active audit
+                            </span>
+                        </div>
+                        <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                            OpenAdapt does{' '}
+                            <strong className="text-ink">not</strong> hold a SOC
+                            2 report today. There is no SOC 2 Type I or Type II
+                            attestation, and no SOC 2 audit is currently in
+                            progress. SOC 2 evaluates a service organization and
+                            its operating controls over a period of time — an
+                            architecture or a public codebase is not a
+                            substitute for an independent auditor&#39;s report,
+                            and we will not describe our design as &ldquo;built
+                            to meet SOC 2&rdquo; in place of an actual
+                            engagement.
+                        </p>
+                        <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                            We are designing internal controls with SOC 2
+                            criteria in mind. When an audit is genuinely
+                            underway, this page will name the report type, the
+                            auditor, and the period — and not before.
+                        </p>
+                    </div>
+                    <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                        Open source lets you verify these controls yourself
+                        rather than take them on trust — but self-verification
+                        and an independent attestation are different things, and
+                        we keep them clearly separate here.
+                    </p>
+                </div>
+
+                {/* CTA */}
+                <div className="mt-14 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
                         Reviewing OpenAdapt for a regulated deployment?
                     </h2>
