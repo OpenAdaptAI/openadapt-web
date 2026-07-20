@@ -14,8 +14,8 @@ const manifest = JSON.parse(read('public/status.json'))
 // all reconcile to. A label must never claim more than its evidence supports.
 const CANONICAL_LABELS = {
     Browser: 'Beta',
-    'Windows / macOS / RDP': 'Scoped acceptance — design partners only',
-    'Citrix / VDI': 'Research / design-partner qualification',
+    'Windows / macOS / RDP': 'Early access',
+    'Citrix / VDI': 'Exploratory',
     'Hosted Cloud': 'Beta / public offer',
 }
 

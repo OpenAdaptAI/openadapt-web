@@ -136,10 +136,11 @@ export default function Pricing({ hostedOffer = null }) {
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Run the MIT-licensed engine yourself for free. Subscribe to
-                    managed browser execution &mdash; a live offer in Beta, with
-                    assisted onboarding as we qualify your first workflow. Bring
-                    OpenAdapt to desktop, Citrix, and regulated workflows through
-                    a scoped paid pilot.
+                    OpenAdapt Cloud &mdash; the managed control plane that runs
+                    your approved browser workflows, a live offer in Beta with
+                    assisted onboarding. Bring Windows, macOS, RDP, Citrix, and
+                    regulated workflows under the same governance through a
+                    scoped paid pilot.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -176,7 +177,7 @@ export default function Pricing({ hostedOffer = null }) {
                         </p>
                     </div>
 
-                    {/* Card 2 — Hosted browser execution */}
+                    {/* Card 2 — OpenAdapt Cloud (managed control plane) */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
                         <span
                             className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2"
@@ -184,7 +185,7 @@ export default function Pricing({ hostedOffer = null }) {
                         >
                             {hostedStatusLabel}
                         </span>
-                        <p className="eyebrow">Hosted browser</p>
+                        <p className="eyebrow">OpenAdapt Cloud</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
                                 {hostedOfferAvailable
@@ -211,15 +212,18 @@ export default function Pricing({ hostedOffer = null }) {
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            A live, managed subscription for an approved browser
-                            workflow: a control plane for repeat execution,
-                            reporting, and governed updates. Onboarding is
-                            assisted &mdash; we qualify the first workflow with
-                            you rather than one-click self-serve.
+                            The managed control plane for governed workflow
+                            execution. Your approved browser workflows run in our
+                            managed runner with run history, reporting, and
+                            governed updates. Desktop, Citrix, and RDP workflows
+                            are governed the same way through a scoped pilot on a
+                            customer-controlled runner. Onboarding is assisted
+                            &mdash; we qualify the first workflow with you rather
+                            than one-click self-serve.
                         </p>
                         <FeatureList
                             items={[
-                                'Managed execution of approved browser workflows',
+                                'Managed runner for approved browser workflows',
                                 'Deterministic healthy replay with zero model calls',
                                 'Run history, failure reports, usage, and governed updates',
                                 'Sanitized uploads admitted under declared policy',
@@ -309,7 +313,7 @@ export default function Pricing({ hostedOffer = null }) {
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
                     {hostedOfferAvailable
                         ? 'The hosted subscription price shown above comes directly from Stripe and is confirmed again at checkout.'
-                        : 'Managed browser subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
+                        : 'OpenAdapt Cloud subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
                     Regulated deployment and service terms are scoped separately.
                 </p>
             </div>
