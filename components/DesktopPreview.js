@@ -1,18 +1,20 @@
 /**
  * DesktopPreview — real screenshots of the Experimental desktop surfaces on
- * the download page.
+ * the download page, plus an honest per-OS representation of where the
+ * separate tray companion places its icon.
  *
  * Honesty contract (enforced by tests/desktopPreview.test.js and documented in
  * public/desktop-preview/MANIFEST.json):
- *  - Every image is a capture of real product code in the state it honestly
- *    renders: the cockpit's connect screen from the actual launched desktop
- *    app (the published v0.6.2 DMG, which fixes the earlier launch panic —
- *    issue #26) with no engine attached, and the separately installed
- *    openadapt-tray package in its standalone state.
- *  - No fabricated UI, no synthetic screens, no retouching beyond cropping
- *    (the cockpit still is cropped to the webview content; the app's real
- *    macOS title bar is trimmed and the frame below supplies representative
- *    chrome, as the tray still is cropped to its menu).
+ *  - Every /desktop-preview/ image is a capture of real product code in the
+ *    state it honestly renders: the cockpit's connect screen from the actual
+ *    launched desktop app (the published v0.6.2 DMG, which fixes the earlier
+ *    launch panic — issue #26) with no engine attached, and the real NSIS
+ *    installer flow on Windows 11.
+ *  - No fabricated UI, no synthetic screens, no retouching beyond cropping.
+ *  - The tray section is a labelled *representation* (OS chrome strips with the
+ *    real OpenAdapt mark placed in the tray area), NOT a screenshot and not
+ *    presented as one. It shows where the openadapt-tray icon appears on each
+ *    OS; the mark is the project's own favicon silhouette.
  *  - No authenticated or workflow states: with no engine connected, only the
  *    honest first-run connect screen exists, and that is all that is shown.
  *  - The tray is NOT part of the installers on this page and is not described
@@ -27,6 +29,42 @@
 const COCKPIT_CAPTURE_VERSION = '0.6.2'
 const TRAY_PACKAGE_VERSION = '0.1.1'
 const WINDOWS_INSTALLER_VERSION = '0.6.1'
+
+// The OpenAdapt mark is rendered as a CSS mask over the project's own favicon
+// silhouette (public/safari-pinned-tab.svg), so the glyph inherits the current
+// text colour and reads correctly in both light and dark themes — exactly how
+// a real template tray/menu-bar icon behaves.
+const TRAY_GLYPH_STYLE = {
+    WebkitMaskImage: 'url(/safari-pinned-tab.svg)',
+    maskImage: 'url(/safari-pinned-tab.svg)',
+    WebkitMaskRepeat: 'no-repeat',
+    maskRepeat: 'no-repeat',
+    WebkitMaskSize: 'contain',
+    maskSize: 'contain',
+    WebkitMaskPosition: 'center',
+    maskPosition: 'center',
+}
+
+function TrayGlyph({ className = 'h-4 w-4' }) {
+    return (
+        <span
+            aria-hidden="true"
+            style={TRAY_GLYPH_STYLE}
+            className={`inline-block bg-current ${className}`}
+        />
+    )
+}
+
+// A faint neighbouring tray/menu-bar item, so the OpenAdapt mark reads as one
+// indicator among the usual system items rather than a lone floating glyph.
+function FauxTrayItem({ className = 'h-3 w-3 rounded-[3px]' }) {
+    return (
+        <span
+            aria-hidden="true"
+            className={`inline-block bg-ink-3/40 ${className}`}
+        />
+    )
+}
 
 function WindowFrame({ title, children }) {
     return (
@@ -55,9 +93,12 @@ function WindowFrame({ title, children }) {
 
 // A neutral Windows-style chrome (title left, window controls right) so the
 // installer stills read as Windows without borrowing the macOS traffic lights.
+// Note: no `h-full` here — these frames are figure children inside a stretched
+// grid, and stretching the frame to the figure's full height would push the
+// figcaption out of its box and overlap the following content.
 function WindowsFrame({ title, children }) {
     return (
-        <div className="flex h-full flex-col overflow-hidden rounded-xl border border-hairline bg-panel shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-hairline bg-panel shadow-sm">
             <div className="flex items-center justify-between border-b border-hairline px-4 py-2.5">
                 <span className="text-xs font-medium text-ink-3">{title}</span>
                 <span aria-hidden="true" className="flex items-center gap-2">
@@ -72,6 +113,115 @@ function WindowsFrame({ title, children }) {
         </div>
     )
 }
+
+// Highlight chip that marks the OpenAdapt mark as the active/selected tray
+// indicator (as an OS renders the icon when its menu is open).
+function TrayIndicator() {
+    return (
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-ink/10 text-ink ring-1 ring-inset ring-ink/15">
+            <TrayGlyph className="h-4 w-4" />
+        </span>
+    )
+}
+
+// macOS: top menu bar. Active app title at the left, status items (with the
+// OpenAdapt indicator) and the clock at the right.
+function MacTray() {
+    return (
+        <div className="overflow-hidden rounded-xl border border-hairline bg-ground shadow-sm">
+            <div className="flex items-center justify-between gap-2 border-b border-hairline bg-panel px-3 py-1.5">
+                <div className="flex items-center gap-2.5 text-[11px] leading-none">
+                    <span className="font-semibold text-ink">OpenAdapt</span>
+                    <span className="hidden text-ink-3 sm:inline">File</span>
+                    <span className="hidden text-ink-3 sm:inline">Edit</span>
+                </div>
+                <div className="flex items-center gap-2 text-ink-3">
+                    <FauxTrayItem className="h-3 w-3 rounded-[3px]" />
+                    <FauxTrayItem className="h-3 w-3 rounded-full" />
+                    <TrayIndicator />
+                    <span className="text-[11px] leading-none tabular-nums text-ink-2">
+                        9:41
+                    </span>
+                </div>
+            </div>
+            <div className="h-20 bg-ground" />
+        </div>
+    )
+}
+
+// Linux (GNOME-style): top panel. Activities at the left, clock centred,
+// indicator area (with the OpenAdapt indicator) at the right.
+function LinuxTray() {
+    return (
+        <div className="overflow-hidden rounded-xl border border-hairline bg-ground shadow-sm">
+            <div className="flex items-center justify-between gap-2 border-b border-hairline bg-panel px-3 py-1.5">
+                <span className="text-[11px] font-medium leading-none text-ink-2">
+                    Activities
+                </span>
+                <span className="text-[11px] leading-none tabular-nums text-ink-2">
+                    9:41
+                </span>
+                <div className="flex items-center gap-2 text-ink-3">
+                    <FauxTrayItem className="h-3 w-3 rounded-full" />
+                    <FauxTrayItem className="h-3 w-3 rounded-[3px]" />
+                    <TrayIndicator />
+                </div>
+            </div>
+            <div className="h-20 bg-ground" />
+        </div>
+    )
+}
+
+// Windows: bottom taskbar. Start + pinned apps at the left, the system-tray
+// cluster (with the OpenAdapt indicator) and clock at the right.
+function WindowsTray() {
+    return (
+        <div className="flex flex-col overflow-hidden rounded-xl border border-hairline bg-ground shadow-sm">
+            <div className="h-20 bg-ground" />
+            <div className="flex items-center justify-between gap-2 border-t border-hairline bg-panel px-3 py-1.5">
+                <div className="flex items-center gap-2 text-ink-3">
+                    <FauxTrayItem className="h-3.5 w-3.5 rounded-[3px]" />
+                    <FauxTrayItem className="h-3.5 w-3.5 rounded-[3px]" />
+                    <FauxTrayItem className="h-3.5 w-3.5 rounded-[3px]" />
+                </div>
+                <div className="flex items-center gap-2 text-ink-3">
+                    <span
+                        aria-hidden="true"
+                        className="text-[10px] leading-none text-ink-3"
+                    >
+                        &and;
+                    </span>
+                    <FauxTrayItem className="h-3 w-3 rounded-[3px]" />
+                    <TrayIndicator />
+                    <span className="text-right text-[10px] leading-tight tabular-nums text-ink-2">
+                        9:41 AM
+                    </span>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const TRAY_SURFACES = [
+    {
+        id: 'macos',
+        label: 'macOS menu bar',
+        note: 'The OpenAdapt icon sits with the status items at the right of the menu bar.',
+        Chrome: MacTray,
+    },
+    {
+        id: 'windows',
+        label: 'Windows system tray',
+        note: 'The OpenAdapt icon appears in the notification area at the corner of the taskbar.',
+        Chrome: WindowsTray,
+    },
+    {
+        id: 'linux',
+        label: 'Linux panel',
+        note: 'The OpenAdapt icon shows in the top panel indicator area (GNOME and compatible shells).',
+        Chrome: LinuxTray,
+    },
+]
 
 const WINDOWS_INSTALLER_STEPS = [
     {
@@ -118,61 +268,69 @@ export default function DesktopPreview() {
                     #26), and the window below is the real app running.
                 </p>
 
-                <div className="mt-8 grid grid-cols-1 items-start gap-8 md:grid-cols-5">
-                    <figure className="md:col-span-3">
-                        <WindowFrame title="OpenAdapt Desktop">
-                            <img
-                                src="/desktop-preview/cockpit-connect.png"
-                                width="1120"
-                                height="732"
-                                alt="OpenAdapt Desktop connect screen from the real launched app: a Sign in card with a host field, a browser sign-in button, and an ingest-token paste option."
-                                loading="lazy"
-                                decoding="async"
-                                className="block h-auto w-full"
-                                data-testid="desktop-preview-cockpit"
-                            />
-                        </WindowFrame>
-                        <figcaption className="mt-3 text-xs leading-relaxed text-ink-3">
-                            <strong className="font-medium text-ink-2">
-                                The desktop app&apos;s connect screen
-                            </strong>{' '}
-                            — the real window from the launched Experimental app
-                            (the published v{COCKPIT_CAPTURE_VERSION} DMG, which
-                            fixes the earlier startup panic, issue #26) with no
-                            engine attached. First launch asks you to sign in or
-                            paste an ingest token; workflow authoring surfaces
-                            open after the engine connects. Experimental
-                            prerelease, unsigned or ad-hoc-signed builds — see
-                            the release notes before installing.
-                        </figcaption>
-                    </figure>
+                <figure className="mt-8">
+                    <WindowFrame title="OpenAdapt Desktop">
+                        <img
+                            src="/desktop-preview/cockpit-connect.png"
+                            width="1120"
+                            height="732"
+                            alt="OpenAdapt Desktop connect screen from the real launched app: a Sign in card with a host field, a browser sign-in button, and an ingest-token paste option."
+                            loading="lazy"
+                            decoding="async"
+                            className="block h-auto w-full"
+                            data-testid="desktop-preview-cockpit"
+                        />
+                    </WindowFrame>
+                    <figcaption className="mt-3 max-w-2xl text-xs leading-relaxed text-ink-3">
+                        <strong className="font-medium text-ink-2">
+                            The desktop app&apos;s connect screen
+                        </strong>{' '}
+                        — the real window from the launched Experimental app (the
+                        published v{COCKPIT_CAPTURE_VERSION} DMG, which fixes the
+                        earlier startup panic, issue #26) with no engine
+                        attached. First launch asks you to sign in or paste an
+                        ingest token; workflow authoring surfaces open after the
+                        engine connects. Experimental prerelease,{' '}
+                        <span className="whitespace-nowrap">
+                            unsigned or ad-hoc-signed
+                        </span>{' '}
+                        builds — see the release notes before installing.
+                    </figcaption>
+                </figure>
 
-                    <figure className="md:col-span-2">
-                        <WindowFrame title="macOS menu bar">
-                            <img
-                                src="/desktop-preview/tray-menu.png"
-                                width="290"
-                                height="320"
-                                alt="The openadapt-tray menu open in the macOS menu bar with items for Start Recording, Recent Captures, Open Desktop App, Open Cloud Dashboard, Sync (offline), Login, Settings, and Quit."
-                                loading="lazy"
-                                decoding="async"
-                                className="mx-auto block h-auto w-full max-w-[290px]"
-                                data-testid="desktop-preview-tray"
-                            />
-                        </WindowFrame>
-                        <figcaption className="mt-3 text-xs leading-relaxed text-ink-3">
-                            <strong className="font-medium text-ink-2">
-                                The experimental tray companion
-                            </strong>{' '}
-                            — <code>openadapt-tray</code> {TRAY_PACKAGE_VERSION}
-                            , a separate <code>pip install openadapt-tray</code>{' '}
-                            package, captured live on macOS in its real
-                            standalone state. It mirrors status and launches
-                            surfaces; it is not included in the installers on
-                            this page, and no released desktop build provides
-                            the companion service it connects to yet.
-                        </figcaption>
-                    </figure>
+                <div className="mt-12 border-t border-hairline pt-10">
+                    <p className="eyebrow">The tray companion</p>
+                    <h3 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
+                        OpenAdapt in the tray, on macOS, Windows, and Linux
+                    </h3>
+                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
+                        <code>openadapt-tray</code> {TRAY_PACKAGE_VERSION} is a
+                        separate <code>pip install openadapt-tray</code> package
+                        that puts an OpenAdapt indicator in the menu bar or
+                        system tray to mirror status and launch surfaces. The
+                        panels below are a representation of where that icon
+                        appears on each OS — they are not screenshots. The tray
+                        is not included in the installers on this page, and{' '}
+                        {'no released desktop build provides the companion service'}{' '}
+                        it connects to yet.
+                    </p>
+
+                    <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:grid-cols-3">
+                        {TRAY_SURFACES.map(({ id, label, note, Chrome }) => (
+                            <figure
+                                key={id}
+                                data-testid={`desktop-preview-tray-${id}`}
+                            >
+                                <Chrome />
+                                <figcaption className="mt-3 text-xs leading-relaxed text-ink-3">
+                                    <span className="font-medium text-ink-2">
+                                        {label}.
+                                    </span>{' '}
+                                    {note}
+                                </figcaption>
+                            </figure>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="mt-12 border-t border-hairline pt-10">
@@ -191,7 +349,7 @@ export default function DesktopPreview() {
                         launch below for how to proceed safely.
                     </p>
 
-                    <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:grid-cols-3">
                         {WINDOWS_INSTALLER_STEPS.map((item) => (
                             <figure key={item.step}>
                                 <WindowsFrame title="OpenAdapt Desktop Setup">

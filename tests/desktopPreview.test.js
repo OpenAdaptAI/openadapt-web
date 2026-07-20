@@ -102,6 +102,17 @@ test('desktop preview labels match the Experimental reality', () => {
     )
     assert.doesNotMatch(component, /controls? the desktop app/i)
 
+    // The tray is shown as a per-OS representation of where the icon lives,
+    // across macOS, Windows, and Linux — and it is labelled a representation,
+    // not passed off as a screenshot.
+    assert.match(component, /macOS menu bar/)
+    assert.match(component, /Windows system tray/)
+    assert.match(component, /Linux panel/)
+    assert.match(component, /are not screenshots/)
+    // The mark is the project's own favicon silhouette, rendered as a CSS mask
+    // so it is theme-aware — no fabricated blue-dot placeholder.
+    assert.match(component, /safari-pinned-tab\.svg/)
+
     // Static section: no animation or client state, so it cannot violate the
     // motion tokens or shift layout.
     assert.doesNotMatch(component, /useState|useEffect|setInterval/)
@@ -109,7 +120,6 @@ test('desktop preview labels match the Experimental reality', () => {
     // launched-app capture with the macOS title bar trimmed) so it causes no
     // layout shift.
     assert.match(component, /width="1120"\s+height="732"/)
-    assert.match(component, /width="290"\s+height="320"/)
 })
 
 test('cockpit still is the real launched v0.6.2 app window with provenance', () => {
