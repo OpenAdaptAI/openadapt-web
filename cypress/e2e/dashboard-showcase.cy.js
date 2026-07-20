@@ -45,12 +45,23 @@ describe('Cloud product showcase', () => {
                 .should('have.attr', 'aria-selected', 'true')
                 .and('have.attr', 'data-active', 'true')
 
-            // Honest labeling: real interface, mock-data mode.
+            // Each tab is a real thumbnail image plus a label.
+            cy.get('[data-testid="dashboard-tab"] img').should(
+                'have.length',
+                5
+            )
+            // A visible countdown sits on the active thumbnail.
+            cy.get('[data-testid="dashboard-countdown"]').should('have.length', 1)
+
+            // Honest labeling, trimmed: just the real-interface line.
             cy.contains('Real OpenAdapt Cloud interface').should('be.visible')
-            cy.contains(
-                'Shown in mock-data mode with synthetic records, not a customer or production run'
-            ).should('be.visible')
         })
+
+        // The verbose sample/mock-data disclaimer is trimmed away.
+        cy.get('#cloud-product').should(
+            'not.contain.text',
+            'mock-data mode with synthetic records'
+        )
 
         // No fake mini-app scaffolding and no unverifiable domain.
         cy.get('#cloud-product').should('not.contain.text', 'Operating view')

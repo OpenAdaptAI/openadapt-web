@@ -32,8 +32,8 @@ const SLIDES = [
     {
         key: 'run',
         src: '/cloud-preview/healthcare-run.jpg',
-        width: 880,
-        height: 550,
+        width: 2560,
+        height: 1600,
         focus: '50% 0%',
         address: 'app.openadapt.ai/runs',
         label: 'Run detail',
@@ -44,8 +44,8 @@ const SLIDES = [
     {
         key: 'evidence',
         src: '/cloud-preview/healthcare-evidence.jpg',
-        width: 880,
-        height: 550,
+        width: 2560,
+        height: 1600,
         focus: '50% 0%',
         address: 'app.openadapt.ai/runs/evidence',
         label: 'Halt evidence',
@@ -188,6 +188,15 @@ export default function DashboardShowcase() {
                         </div>
                     </div>
 
+                    {/* Clickable thumbnail strip: small real screenshots of every
+                        frame, each a tab that jumps the large stage to that slide.
+                        The active thumbnail is highlighted and carries a visible
+                        countdown bar that fills over one dwell (ROTATE_MS) so the
+                        visitor sees time-to-next-slide. The countdown restarts on
+                        every slide change / manual jump / pause toggle (its React
+                        key), staying in lockstep with the auto-advance timer, and
+                        it deliberately keeps animating under reduced motion so the
+                        rotation reads as live. */}
                     <div
                         className={styles.tabs}
                         role="tablist"
@@ -210,7 +219,40 @@ export default function DashboardShowcase() {
                                 }
                                 onClick={() => jumpTo(index)}
                             >
-                                {slide.label}
+                                <span className={styles.thumb}>
+                                    <img
+                                        className={styles.thumbImg}
+                                        src={slide.src}
+                                        width={slide.width}
+                                        height={slide.height}
+                                        alt=""
+                                        loading="lazy"
+                                        decoding="async"
+                                        aria-hidden="true"
+                                        style={{ objectPosition: slide.focus }}
+                                    />
+                                    {index === active && (
+                                        <span
+                                            key={`${active}-${cycle}-${paused}`}
+                                            className={styles.timer}
+                                            data-testid="dashboard-countdown"
+                                            aria-hidden="true"
+                                        >
+                                            <span
+                                                className={styles.timerFill}
+                                                style={{
+                                                    animationDuration: `${ROTATE_MS}ms`,
+                                                    animationPlayState: paused
+                                                        ? 'paused'
+                                                        : 'running',
+                                                }}
+                                            />
+                                        </span>
+                                    )}
+                                </span>
+                                <span className={styles.thumbLabel}>
+                                    {slide.label}
+                                </span>
                             </button>
                         ))}
                     </div>
@@ -248,10 +290,6 @@ export default function DashboardShowcase() {
                         id="dashboard-preview-caption"
                     >
                         <strong>Real OpenAdapt Cloud interface</strong>
-                        <span>
-                            Shown in mock-data mode with synthetic records, not
-                            a customer or production run
-                        </span>
                     </figcaption>
                 </figure>
 

@@ -96,6 +96,19 @@ test('the large slot rotates through the real frames with labeled tabs', () => {
         )
     }
 
+    // The tabs are real clickable THUMBNAILS (small screenshots), not plain
+    // text: each tab renders a thumbnail <img> bound to the slide src, plus a
+    // short label. The founder wants to see the small screenshots.
+    assert.match(component, /className=\{styles\.thumbImg\}/)
+    assert.match(component, /className=\{styles\.thumbLabel\}/)
+
+    // A visible countdown fills across the active thumbnail so the visitor sees
+    // time-to-next-slide. It is keyed so it restarts each slide and pauses with
+    // the timer, and it is NOT gated on reduced motion (keeps rotating).
+    assert.match(component, /data-testid="dashboard-countdown"/)
+    assert.match(component, /className=\{styles\.timerFill\}/)
+    assert.match(component, /animationPlayState: paused/)
+
     // Pause on hover/focus so a visitor reading a frame is not yanked forward.
     assert.match(component, /onMouseEnter=\{\(\) => setPaused\(true\)\}/)
     assert.match(component, /onMouseLeave=\{\(\) => setPaused\(false\)\}/)
@@ -114,14 +127,28 @@ test('the large slot rotates through the real frames with labeled tabs', () => {
     assert.doesNotMatch(timerEffect, /matchMedia/)
 })
 
-test('the showcase honestly labels the mock-data mode of the real UI', () => {
+test('the showcase honestly labels the real UI without over-disclaiming', () => {
     const component = read('components/DashboardShowcase.js')
 
-    // The interface is real; the data shown is synthetic mock-mode seed data.
-    // Keep the honesty note that these are not customer or production runs.
-    assert.match(component, /mock-data mode/)
-    assert.match(component, /synthetic records/)
-    assert.match(component, /not\s+a customer or production run/)
+    // Founder decision: these are real product screenshots, so the visible
+    // honesty note is simply that this is the real interface. The verbose
+    // sample/mock-data caveat is intentionally dropped from the caption. We
+    // still guard against the fabricated "mini app" mockup ever returning.
+    assert.match(component, /Real OpenAdapt Cloud interface/)
+    assert.doesNotMatch(component, /Operating view/)
+    assert.doesNotMatch(component, /Choose a Cloud preview state/)
+    assert.doesNotMatch(component, /guided Cloud tour/)
+
+    // The trimmed caption no longer carries the long sample-data disclaimer.
+    // Assert the exact figcaption is just the real-interface line (the phrase
+    // may still appear in explanatory code comments, so scope to the JSX).
+    const figcaption = component.slice(
+        component.indexOf('<figcaption'),
+        component.indexOf('</figcaption>')
+    )
+    assert.match(figcaption, /Real OpenAdapt Cloud interface/)
+    assert.doesNotMatch(figcaption, /mock-data mode with synthetic records/)
+    assert.doesNotMatch(figcaption, /not a customer or production run/)
 })
 
 test('every showcase screenshot is a real, provenance-backed Cloud capture', () => {
