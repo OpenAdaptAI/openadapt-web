@@ -1,13 +1,30 @@
 .figure {
     margin: 0 auto;
     width: 100%;
-    max-width: 640px;
+    max-width: 980px;
     min-width: 0;
 }
 
+/* Two-up stage: the animated governed-replay trace beside a real product
+   screenshot. Collapses to a single column on narrow viewports. */
+.stage {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 16px;
+    align-items: stretch;
+    min-width: 0;
+}
+
+@media (max-width: 860px) {
+    .stage {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
 .illustrative {
-    margin: 0.6rem auto 0;
-    max-width: 640px;
+    margin: 0.7rem auto 0;
+    max-width: 980px;
     text-align: center;
     font-family: var(--font-mono);
     font-size: 0.72rem;
@@ -20,17 +37,19 @@
     color: var(--accent);
 }
 
+/* ── The animated replay trace ─────────────────────────────────────────── */
 .frame {
+    position: relative;
     width: 100%;
-    max-width: 640px;
     min-width: 0;
-    margin: 0 auto;
     border: 1px solid var(--inset-border);
     border-radius: 12px;
     background: var(--inset-bg);
     box-shadow: 0 8px 32px rgba(35, 40, 31, 0.18);
     overflow: hidden;
     text-align: left;
+    display: flex;
+    flex-direction: column;
 }
 
 .titlebar {
@@ -54,10 +73,16 @@
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: rgba(217, 222, 230, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    transition: color 0.4s ease;
 }
 
 .badge {
     margin-left: auto;
+    flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -79,12 +104,98 @@
     animation: badgePulse 2.4s ease-in-out infinite;
 }
 
+/* Substrate strip — the one governed loop, every interface. */
+.substrates {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--inset-border);
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.substrate {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(217, 222, 230, 0.4);
+    border: 1px solid rgba(217, 222, 230, 0.14);
+    border-radius: 999px;
+    padding: 2px 9px;
+    transition: color 0.4s ease, border-color 0.4s ease,
+        background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.substrateOn {
+    color: var(--inset-bg);
+    background: #86d9a8;
+    border-color: #86d9a8;
+    box-shadow: 0 0 0 3px rgba(134, 217, 168, 0.14);
+}
+
+.substrateNote {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(217, 222, 230, 0.32);
+}
+
 .body {
+    position: relative;
+    flex: 1;
     padding: 14px 16px 16px;
     font-family: var(--font-mono);
     font-size: 0.8rem;
     line-height: 1.9;
     font-variant-numeric: tabular-nums;
+    overflow: hidden;
+}
+
+/* Scan sweep — a light bar that rakes down the trace on the drift beat,
+   reading as "re-checking its evidence." */
+.scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 46px;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        rgba(227, 179, 79, 0) 0%,
+        rgba(227, 179, 79, 0.16) 50%,
+        rgba(227, 179, 79, 0) 100%
+    );
+    opacity: 0;
+    animation: scanSweep 12s linear forwards;
+}
+
+@keyframes scanSweep {
+    0%,
+    40% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+    41% {
+        opacity: 1;
+        transform: translateY(30px);
+    }
+    52% {
+        opacity: 0.9;
+        transform: translateY(150px);
+    }
+    56% {
+        opacity: 0;
+        transform: translateY(170px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(170px);
+    }
 }
 
 /* Replay rail — one tick per compiled step, filling at real row cadence.
@@ -189,6 +300,22 @@
     color: #e3b34f;
 }
 
+/* The drift row flashes amber as it is detected, then settles. */
+.drift {
+    animation: rowIn 0.35s ease forwards, driftFlash 1.15s ease forwards;
+}
+
+@keyframes driftFlash {
+    0%,
+    100% {
+        background: transparent;
+    }
+    30%,
+    70% {
+        background: rgba(227, 179, 79, 0.1);
+    }
+}
+
 .healText {
     color: #86d9a8;
     padding-left: 2.2em;
@@ -207,12 +334,14 @@
     align-items: center;
 }
 
-/* The one "stamp" moment: rotated bordered chip in the summary row */
+/* The one "stamp" moment: rotated bordered chip punches into the summary
+   row as the run verifies — the emotional peak. */
 .stamp {
     margin-left: auto;
     flex-shrink: 0;
     display: inline-block;
-    transform: rotate(-6deg);
+    transform: rotate(-6deg) scale(1);
+    transform-origin: center;
     font-family: var(--font-mono);
     font-size: 0.58rem;
     font-weight: 600;
@@ -223,7 +352,27 @@
     border: 1.5px solid #86d9a8;
     border-radius: 4px;
     padding: 2px 7px;
-    opacity: 0.9;
+    opacity: 0;
+    animation: stampPunch 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) forwards;
+    animation-delay: 8.6s;
+    box-shadow: 0 0 0 0 rgba(134, 217, 168, 0.5);
+}
+
+@keyframes stampPunch {
+    0% {
+        opacity: 0;
+        transform: rotate(-6deg) scale(2.1);
+        box-shadow: 0 0 0 0 rgba(134, 217, 168, 0.55);
+    }
+    70% {
+        opacity: 0.95;
+        transform: rotate(-6deg) scale(0.92);
+    }
+    100% {
+        opacity: 0.9;
+        transform: rotate(-6deg) scale(1);
+        box-shadow: 0 0 0 10px rgba(134, 217, 168, 0);
+    }
 }
 
 @keyframes rowIn {
@@ -235,6 +384,90 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ── Real-product proof card ───────────────────────────────────────────── */
+.proof {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    background: var(--panel);
+    box-shadow: 0 8px 32px rgba(35, 40, 31, 0.1);
+    overflow: hidden;
+}
+
+.proofChrome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--hairline);
+    background: var(--ground);
+}
+
+.proofBrand {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-2);
+}
+
+.proofBrand b {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.proofUrl {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: var(--ink-3);
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 1px 9px;
+}
+
+.proofShot {
+    display: block;
+    width: 100%;
+    height: auto;
+    flex: 1;
+    object-fit: cover;
+    object-position: top left;
+}
+
+.proofFoot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-top: 1px solid var(--hairline);
+}
+
+.proofPill {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 2px 9px;
+}
+
+.proofLink {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.proofLink:hover {
+    text-decoration: underline;
 }
 
 @media (max-width: 640px) {
@@ -297,7 +530,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .row {
+    .row,
+    .drift {
         animation: none;
         opacity: 1;
         transform: none;
@@ -309,8 +543,22 @@
         background: #86d9a8;
     }
 
+    .scan {
+        display: none;
+    }
+
+    .stamp {
+        animation: none;
+        opacity: 0.9;
+        transform: rotate(-6deg) scale(1);
+    }
+
     .badgeDot,
     .cursor {
         animation: none;
+    }
+
+    .substrate {
+        transition: none;
     }
 }
