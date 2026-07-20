@@ -22,26 +22,30 @@
     color: var(--ink-3);
 }
 
-/* Elevated OpenAdapt Cloud CTA — an accent-tinted pill that stands out from
-   the ink primary and ghost secondary without competing as a second solid. */
+/* Primary hero CTA: the elevated OpenAdapt Cloud action. A single solid
+   accent pill sized to match the ghost secondaries (Evaluate a workflow / Try
+   locally) so the row reads as one primary plus a consistent secondary set,
+   not three competing styles. */
 .heroCloud {
     display: inline-flex;
     align-items: center;
     gap: 0.4em;
-    padding: 0.5rem 1.1rem;
+    padding: 10px 22px;
     border-radius: 9999px;
     border: 1.5px solid var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    color: var(--accent);
+    background: var(--accent);
+    color: var(--ground);
+    font-size: 14px;
     font-weight: 600;
     text-decoration: none;
     transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
 .heroCloud:hover {
-    background: var(--accent);
+    background: var(--accent-hover);
     color: var(--ground);
-    border-color: var(--accent);
+    border-color: var(--accent-hover);
+    text-decoration: none;
 }
 
 /* Mono green bordered pill above the H2 */

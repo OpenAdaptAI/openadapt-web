@@ -14,7 +14,12 @@ describe('public surface coherence', () => {
             'contain.text',
             'stars on OpenAdapt'
         )
-        cy.get('a.btn-ink')
+        cy.contains('a', 'Start with OpenAdapt Cloud').should(
+            'have.attr',
+            'href',
+            '/#cloud-product'
+        )
+        cy.get('a.btn-ghost-ink')
             .contains('Evaluate a workflow')
             .should('have.attr', 'href', '/#book')
         cy.get('a.btn-ghost-ink')
