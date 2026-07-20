@@ -334,6 +334,11 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
                                     <FooterLink href="/about">About</FooterLink>
                                 </li>
                                 <li>
+                                    <FooterLink href="/research">
+                                        Research
+                                    </FooterLink>
+                                </li>
+                                <li>
                                     <FooterLink href={CLOUD_APP_URL}>
                                         Hosted dashboard
                                     </FooterLink>
