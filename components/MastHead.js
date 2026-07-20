@@ -51,15 +51,12 @@ export default function Home({ githubStats }) {
                                 Halt when you can&rsquo;t.
                             </h1>
                             <p className="mt-0 mb-4 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                Demonstrate a repeated GUI task once. OpenAdapt
-                                compiles it into a local program that makes no
-                                model calls on a healthy run. The same governed
-                                loop runs across every interface your work is
-                                trapped behind &mdash; browser, Windows, macOS,
-                                RDP, and Citrix &mdash; as one product. When
-                                the screen changes, it re-checks its evidence and
-                                either repairs the step or stops for a person
-                                instead of guessing.{' '}
+                                Demonstrate a repeated task once. OpenAdapt
+                                compiles it into a local program that replays at
+                                $0 per healthy run across browser, Windows,
+                                macOS, RDP, and Citrix &mdash; re-checking its
+                                evidence each step and halting for a person
+                                instead of guessing when the screen changes.{' '}
                                 <Link href="#product-status">
                                     See how it runs across every interface.
                                 </Link>
