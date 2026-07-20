@@ -109,7 +109,7 @@ const byLabel = (label) => DEVELOPER_LINKS.find((item) => item.label === label)
 const DEVELOPER_COLUMN = [
     'Compiler/runtime source',
     'Docs',
-    'Technical paper source',
+    'Technical paper',
     'Report an issue',
 ].map((label) => {
     const link = byLabel(label)
@@ -332,11 +332,6 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
                             <ul className={styles.columnList}>
                                 <li>
                                     <FooterLink href="/about">About</FooterLink>
-                                </li>
-                                <li>
-                                    <FooterLink href="/research">
-                                        Research
-                                    </FooterLink>
                                 </li>
                                 <li>
                                     <FooterLink href={CLOUD_APP_URL}>

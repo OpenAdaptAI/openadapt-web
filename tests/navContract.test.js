@@ -20,10 +20,7 @@ test('developer ecosystem links have a single canonical source', () => {
             'https://github.com/OpenAdaptAI/openadapt-flow',
         ],
         ['Docs', 'https://docs.openadapt.ai'],
-        [
-            'Technical paper source',
-            'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper',
-        ],
+        ['Technical paper', '/openadapt-paper.pdf'],
         ['Discord', 'https://discord.gg/yF527cQbDG'],
         [
             'Report an issue',
@@ -34,13 +31,14 @@ test('developer ecosystem links have a single canonical source', () => {
         assert.ok(links.includes(`href: '${href}'`), `${label} → ${href}`)
     }
 
-    // Both surfaces consume the shared module rather than restating hrefs.
-    for (const source of [nav, developers]) {
-        assert.match(
-            source,
-            /import \{ BLOG_LINK, DEVELOPER_LINKS \} from 'data\/developerLinks'/
-        )
-    }
+    // The nav dropdown consumes the shared module rather than restating hrefs.
+    assert.match(
+        nav,
+        /import \{ BLOG_LINK, DEVELOPER_LINKS \} from 'data\/developerLinks'/
+    )
+    // The homepage body no longer restates the ecosystem link list; the links
+    // live in the nav dropdown and the footer only.
+    assert.doesNotMatch(developers, /from 'data\/developerLinks'/)
     assert.doesNotMatch(developers, /https:\/\/docs\.openadapt\.ai/)
     assert.doesNotMatch(nav, /https:\/\/docs\.openadapt\.ai/)
 })
