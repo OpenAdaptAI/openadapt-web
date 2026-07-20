@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
+import DashboardShowcase from '@components/DashboardShowcase'
 import Footer from '@components/Footer'
 
 /*
@@ -123,6 +124,7 @@ export default function HostedWelcome() {
                     </Link>
                 </div>
             </div>
+            <DashboardShowcase />
             <Footer />
         </div>
     )

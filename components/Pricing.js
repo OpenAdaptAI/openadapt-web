@@ -122,14 +122,15 @@ export default function Pricing({ hostedOffer = null }) {
             className="border-t-2 border-ink bg-ground px-5 py-16 md:py-20"
         >
             <div className="mx-auto max-w-5xl">
-                <p className="eyebrow text-center">Launch options</p>
+                <p className="eyebrow text-center">Early access</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Run it yourself or launch with us
+                    Start as a design partner
                 </h2>
                 <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    Run the MIT-licensed engine yourself, use managed browser
-                    execution, or qualify a customer-controlled deployment.
-                    Hosted prices are confirmed by Stripe before payment.
+                    OpenAdapt is in early access. We lead with a scoped, paid
+                    pilot: we qualify one workflow with you, then price the
+                    engagement. You can also run the MIT-licensed engine yourself
+                    for free, or join early access for managed browser execution.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -169,9 +170,9 @@ export default function Pricing({ hostedOffer = null }) {
                     {/* Card 2 — Hosted browser execution */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
                         <span className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
-                            Managed browser
+                            Early access
                         </span>
-                        <p className="eyebrow">Hosted</p>
+                        <p className="eyebrow">Hosted browser</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
                                 {hostedOfferAvailable
@@ -198,9 +199,9 @@ export default function Pricing({ hostedOffer = null }) {
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            Bring an approved browser workflow to a managed
-                            control plane for repeat execution, reporting, and
-                            governed updates.
+                            Early-access managed execution for an approved browser
+                            workflow: a control plane for repeat execution,
+                            reporting, and governed updates.
                         </p>
                         <FeatureList
                             items={[
@@ -241,19 +242,23 @@ export default function Pricing({ hostedOffer = null }) {
                         className="relative flex h-full flex-col rounded-2xl border-2 border-ink bg-panel p-6 shadow-[0_8px_32px_rgba(35,40,31,0.10)] md:p-7"
                     >
                         <span className="absolute -top-3 left-6 rounded-full bg-ink px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ground">
-                            Regulated deployment
+                            Design partner
                         </span>
-                        <p className="eyebrow">Enterprise</p>
+                        <p className="eyebrow">Scoped pilot</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
-                                Contact sales
+                                Scoped paid pilot
                             </span>
                         </div>
+                        <p className="mt-1 text-sm text-ink-3">
+                            Priced after qualification
+                        </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            For consequential workflows that require a
-                            customer-controlled data boundary. We qualify the
-                            substrate, artifact policy, effect oracle, and
-                            operating model before production use.
+                            The primary way to start. For consequential workflows
+                            that require a customer-controlled data boundary, we
+                            qualify the substrate, artifact policy, effect oracle,
+                            and operating model with you, then scope and price the
+                            pilot before production use.
                         </p>
                         <FeatureList
                             items={[

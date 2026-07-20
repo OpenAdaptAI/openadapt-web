@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 
 import styles from './ReplayHero.module.css'
 
 /**
- * ReplayHero — the hero visual is the product: a compiled workflow replaying
- * as a live run report. Steps resolve through the deterministic ladder, one
- * hits UI drift and re-resolves deterministically, and the run closes with
- * zero model calls.
+ * ReplayHero — a stylized, illustrative depiction of a compiled workflow
+ * replaying as a run report. Steps resolve through the deterministic ladder,
+ * one hits UI drift and re-resolves deterministically, and the run closes
+ * with zero model calls. The numbers shown are an illustration of the
+ * intended behavior, not captured benchmark data — a visible caption says so,
+ * and measured results live on the Compare page.
  * Pure DOM + CSS (no video, no canvas); plays while visible and restarts
  * from the top whenever it scrolls back into view, so every viewing starts
  * at step 1.0; static final frame under prefers-reduced-motion.
@@ -78,19 +81,20 @@ export default function ReplayHero() {
     }, [])
 
     return (
+        <figure className={styles.figure}>
         <div
             ref={frameRef}
             className={styles.frame}
-            aria-label="Example of a compiled workflow replaying and re-resolving UI drift"
+            aria-label="Illustrative example of a compiled workflow replaying and re-resolving UI drift"
         >
             <div className={styles.titlebar}>
                 <span className={styles.dot} />
                 <span className={styles.dot} />
                 <span className={styles.dot} />
-                <span className={styles.title}>referral-intake · compiled replay</span>
+                <span className={styles.title}>referral-intake · illustrative replay</span>
                 <span className={styles.badge}>
                     <span className={styles.badgeDot} aria-hidden="true" />
-                    local
+                    illustrative
                 </span>
             </div>
             <div className={styles.body} key={cycle}>
@@ -150,5 +154,11 @@ export default function ReplayHero() {
                 </div>
             </div>
         </div>
+            <figcaption className={styles.illustrative}>
+                Illustrative — a stylized depiction of a compiled replay, not
+                captured benchmark data. See{' '}
+                <Link href="/compare">measured results</Link>.
+            </figcaption>
+        </figure>
     )
 }

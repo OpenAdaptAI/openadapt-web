@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import DesktopPreview from '@components/DesktopPreview'
 import Footer from '@components/Footer'
+import PyPIDownloadChart from '@components/PyPIDownloadChart'
 import { track } from 'utils/analytics'
 import {
     assetForPlatform,
@@ -480,6 +481,10 @@ export default function DownloadPage({ release, fetchFailed }) {
                         </a>
                     </div>
                 </div>
+            </div>
+
+            <div className="mx-auto w-full max-w-5xl px-4 pb-12">
+                <PyPIDownloadChart />
             </div>
 
             <Footer />

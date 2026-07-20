@@ -3,7 +3,21 @@ import Link from 'next/link'
 
 import Footer from '@components/Footer'
 import BenchmarkCharts from '@components/BenchmarkCharts'
+import Faq, { faqItems } from '@components/Faq'
 import benchmark from '../data/benchmark.json'
+
+const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+        },
+    })),
+}
 
 const description =
     'See when OpenAdapt, traditional RPA, computer-use agents, or browser recorders fit repeated GUI work. Compare authoring, run economics, change handling, verification, and deployment.'
@@ -115,6 +129,12 @@ export default function ComparePage() {
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify(webPageSchema),
+                    }}
+                />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(faqSchema),
                     }}
                 />
             </Head>
@@ -371,6 +391,10 @@ export default function ComparePage() {
                         </Link>
                     </p>
                 </section>
+
+                <div className="mt-14">
+                    <Faq />
+                </div>
 
                 <section className="mt-14 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
                     <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">

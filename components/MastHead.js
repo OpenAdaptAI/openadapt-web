@@ -47,32 +47,23 @@ export default function Home({ githubStats }) {
                                 )}
                             </div>
                             <h1 className="font-display text-2xl md:text-3xl mt-0 mb-4 font-semibold tracking-tight text-ink">
-                                Compile repeated GUI work into governed,
-                                deterministic workflows.
+                                Compile repeated GUI work. Verify the result.
+                                Halt when you can&rsquo;t.
                             </h1>
-                            <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                Demonstrate a bounded, repeated GUI workflow.
-                                Compile it into a locally executable workflow
-                                whose healthy replay makes no model calls. When the
-                                interface changes, OpenAdapt re-resolves from
-                                retained evidence, proposes a governed repair, or
-                                halts for an operator.
+                            <p className="mt-0 mb-6 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
+                                Demonstrate a bounded, repeated GUI workflow and
+                                compile it into a locally executable program whose
+                                healthy replay makes no model calls. Under interface
+                                drift OpenAdapt re-resolves from retained evidence,
+                                proposes a governed repair, or halts for an
+                                operator. Browser workflows are proven today;
+                                Windows and macOS are experimental.{' '}
+                                <Link href="#product-status">
+                                    See where it runs.
+                                </Link>
                             </p>
-                            <p className="mt-0 mb-6 mx-auto max-w-3xl font-sans font-normal text-base md:text-lg text-ink-3">
-                                Use the same compiled workflow model across browser,
-                                Windows, macOS, Linux, RDP, Citrix, and VDI targets,
-                                running locally, through OpenAdapt Cloud, or inside
-                                a customer-controlled boundary. Browser workflows
-                                are proven today; Windows and macOS are
-                                experimental, and remote-display targets (RDP,
-                                Citrix, VDI) are research-stage.{' '}
-                                <Link href="#product-status">See how deployment works.</Link>
-                            </p>
-                            <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
-                                <ReplayHero />
-                            </div>
                             <div id="register">
-                                <div className="flex items-center justify-center gap-3 mt-6 mb-4">
+                                <div className="flex flex-wrap items-center justify-center gap-3 mt-0 mb-8">
                                     <Link
                                         className="btn-ink"
                                         href="#book"
@@ -96,6 +87,9 @@ export default function Home({ githubStats }) {
                                         Try locally
                                     </Link>
                                 </div>
+                            </div>
+                            <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
+                                <ReplayHero />
                             </div>
                         </div>
                     </div>
