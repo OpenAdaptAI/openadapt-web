@@ -54,15 +54,14 @@ export default function Home({ githubStats }) {
                                 Demonstrate a repeated GUI task once. OpenAdapt
                                 compiles it into a local program that makes no
                                 model calls on a healthy run. The same governed
-                                loop reaches the interfaces your work is trapped
-                                behind &mdash; proven end to end in the browser
-                                today, with Windows, macOS, RDP, and Citrix
-                                advancing behind it at their own readiness. When
+                                loop runs across every interface your work is
+                                trapped behind &mdash; browser, Windows, macOS,
+                                RDP, and Citrix &mdash; as one product. When
                                 the screen changes, it re-checks its evidence and
                                 either repairs the step or stops for a person
                                 instead of guessing.{' '}
                                 <Link href="#product-status">
-                                    See where each interface stands today.
+                                    See how it runs across every interface.
                                 </Link>
                             </p>
                             <div id="register">

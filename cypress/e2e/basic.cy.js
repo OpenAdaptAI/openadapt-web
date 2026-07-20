@@ -51,9 +51,11 @@ describe('public product truth', () => {
             'Use APIs first. Use OpenAdapt for the UI-only last mile.'
         ).should('be.visible')
         cy.contains('When OpenAdapt fits').should('be.visible')
-        // Fit signal leads; the "when it isn't" detail is demoted to a single
-        // honest line plus the full /compare breakdown, not a co-equal column.
-        cy.contains('another tool fits better').should('be.visible')
+        // Fit signal leads and resolves into a confident, positive statement:
+        // when work fits, OpenAdapt runs it across every interface. No
+        // disqualifier column, no "when it isn't the right tool" section.
+        cy.contains('OpenAdapt runs it across every').should('be.visible')
+        cy.contains('another tool fits better').should('not.exist')
         cy.contains('When it isn’t the right tool').should('not.exist')
         cy.get('a[href$="#open-source"]').should('exist')
         cy.get('a[href$="#product-status"]').should('exist')
@@ -255,7 +257,8 @@ describe('public product truth', () => {
             )
             cy.contains('Capture the workflow').should('be.visible')
             cy.contains('Run through the governed gate').should('be.visible')
-            cy.contains('Managed browser execution').should('be.visible')
+            cy.contains('Managed cloud execution').should('be.visible')
+            cy.contains('Managed browser execution').should('not.exist')
             cy.contains('Customer-controlled deployment').should('be.visible')
             cy.contains('Built for the interfaces your work depends on').should(
                 'be.visible'
@@ -276,7 +279,11 @@ describe('public product truth', () => {
                 'be.visible'
             )
             cy.contains('Scoped paid pilot').should('be.visible')
-            cy.contains('Beta / public offer').should('be.visible')
+            cy.get('[data-testid="hosted-status-label"]').should(
+                'contain.text',
+                'Supported'
+            )
+            cy.contains('Beta / public offer').should('not.exist')
             cy.contains('Offer unavailable').should('not.exist')
             cy.contains('Hosted checkout unavailable').should('not.exist')
             cy.contains('approved sanitized copy').should('be.visible')

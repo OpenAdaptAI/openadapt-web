@@ -15,7 +15,7 @@ const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
 
 const hostedStatusLabel =
     status.substrates.find((substrate) => substrate.name === 'Hosted Cloud')
-        ?.public_label || 'Beta'
+        ?.public_label || 'Supported'
 
 function Check() {
     return (
@@ -137,10 +137,10 @@ export default function Pricing({ hostedOffer = null }) {
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Run the MIT-licensed engine yourself for free. Subscribe to
                     OpenAdapt Cloud &mdash; the managed control plane that runs
-                    your approved browser workflows, a live offer in Beta with
-                    assisted onboarding. Bring Windows, macOS, RDP, Citrix, and
-                    regulated workflows under the same governance through a
-                    scoped paid pilot.
+                    your approved workflows across every substrate with assisted
+                    onboarding. Or start a scoped paid pilot to bring regulated
+                    data and customer-controlled deployments under the same
+                    governance.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -213,17 +213,15 @@ export default function Pricing({ hostedOffer = null }) {
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
                             The managed control plane for governed workflow
-                            execution. Your approved browser workflows run in our
-                            managed runner with run history, reporting, and
-                            governed updates. Desktop, Citrix, and RDP workflows
-                            are governed the same way through a scoped pilot on a
-                            customer-controlled runner. Onboarding is assisted
-                            &mdash; we qualify the first workflow with you rather
-                            than one-click self-serve.
+                            execution across every substrate. Your approved
+                            workflows &mdash; browser, Windows, macOS, RDP, and
+                            Citrix &mdash; run in the managed runner with run
+                            history, reporting, and governed updates. Onboarding
+                            is assisted: we qualify the first workflow with you.
                         </p>
                         <FeatureList
                             items={[
-                                'Managed runner for approved browser workflows',
+                                'Managed runner for approved workflows across every substrate',
                                 'Deterministic healthy replay with zero model calls',
                                 'Run history, failure reports, usage, and governed updates',
                                 'Sanitized uploads admitted under declared policy',
@@ -272,15 +270,15 @@ export default function Pricing({ hostedOffer = null }) {
                             Priced after qualification
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            Bring the governed loop to Windows, macOS, RDP, Citrix,
-                            or regulated data. We qualify the substrate, artifact
-                            policy, effect oracle, and operating model with you in
-                            a customer-controlled boundary, then scope and price
-                            the pilot before production use.
+                            Bring regulated data and customer-controlled
+                            deployments under the same governed loop. We qualify
+                            the artifact policy, effect oracle, and operating
+                            model with you inside your controlled boundary, then
+                            scope and price the pilot before production use.
                         </p>
                         <FeatureList
                             items={[
-                                'Qualify the substrate and safety boundary first',
+                                'Qualify the safety boundary and effect oracle first',
                                 'Scope one workflow and one measurable outcome',
                                 'Execute in the customer-controlled environment',
                                 'Identity and effect checks configured per deployment',

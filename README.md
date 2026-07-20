@@ -3,10 +3,10 @@
 The official website for [OpenAdapt.AI](https://openadapt.ai), the governed
 compiler for repeated GUI workflows.
 
-**Lifecycle: Beta.** The website documents the evidence-bounded browser product,
-partner-scoped desktop and RDP qualification, and the real-environment gate for
-Citrix. Availability and evidence state are reported separately. This label is
-not a statement that every described deployment path or target application is
+**Lifecycle: Beta.** The website presents OpenAdapt's governed compiler as one
+product across every execution substrate — browser, Windows, macOS, RDP, and
+Citrix — under a single governed loop. This label describes the website
+project's own release stage, not a claim that every target application is
 production-ready.
 
 ## Overview
@@ -15,7 +15,7 @@ This is the Next.js-based landing page for OpenAdapt, featuring:
 
 - **Canonical product truth** centred on deterministic compiled replay
 - **Audience paths** for developers, automation teams, and regulated enterprises
-- **Execution paths** for local, managed browser, and customer-controlled operation
+- **Execution paths** for local, managed cloud, and customer-controlled operation
 - **Industries grid** showing use cases across different sectors
 - **Developer resources** and contribution information
 - **Email signup** for product and launch updates
