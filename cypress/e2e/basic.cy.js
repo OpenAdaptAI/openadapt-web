@@ -51,7 +51,10 @@ describe('public product truth', () => {
             'Use APIs first. Use OpenAdapt for the UI-only last mile.'
         ).should('be.visible')
         cy.contains('When OpenAdapt fits').should('be.visible')
-        cy.contains('When it isn’t the right tool').should('be.visible')
+        // Fit signal leads; the "when it isn't" detail is demoted to a single
+        // honest line plus the full /compare breakdown, not a co-equal column.
+        cy.contains('another tool fits better').should('be.visible')
+        cy.contains('When it isn’t the right tool').should('not.exist')
         cy.get('a[href$="#open-source"]').should('exist')
         cy.get('a[href$="#product-status"]').should('exist')
         cy.get('a[href="/security"]').should('exist')
@@ -206,8 +209,12 @@ describe('public product truth', () => {
         })
 
         // A primary evaluation CTA and a secondary "Sign in" affordance
-        // (the hosted control plane) sit in the header action cluster.
-        cy.get('header').within(() => {
+        // (the hosted control plane) sit in the header action cluster. Scope to
+        // the first <header> (the site banner); the homepage DashboardShowcase
+        // renders its own decorative <header> inside a section further down.
+        cy.get('header')
+            .first()
+            .within(() => {
             cy.contains('a', 'Evaluate a workflow').should(
                 'have.attr',
                 'href',
