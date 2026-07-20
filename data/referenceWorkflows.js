@@ -30,7 +30,7 @@ export const HOME_REFERENCES = [
         // Exact label kept in sync with the reference list rendered from
         // pages/index.js (asserted by tests/insuranceReference.test.js).
         linkLabel: 'Healthcare workflow reference',
-        eyebrow: 'Real reference footage',
+        eyebrow: 'Real reference workflow',
         heading: 'From demonstration to a qualification-gated OpenEMR write',
         subheading:
             'Real OpenEMR footage on a pinned local instance. The effect oracle is deployment-specific and not established by this media.',

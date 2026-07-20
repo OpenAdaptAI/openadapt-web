@@ -64,7 +64,7 @@ describe('public product truth', () => {
         // into a confident, positive statement — no disqualifier column, no
         // "when it isn't the right tool" section.
         cy.contains(
-            'Use APIs first. Use OpenAdapt for the UI-only last mile.'
+            'Use OpenAdapt for the UI-only last mile.'
         ).should('be.visible')
         cy.contains('When OpenAdapt fits').should('be.visible')
         cy.contains('OpenAdapt runs it across every').should('be.visible')

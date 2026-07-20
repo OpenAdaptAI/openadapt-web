@@ -11,7 +11,7 @@ const workflow = [
     {
         number: '01',
         title: 'Capture the workflow',
-        detail: 'Demonstrate a bounded, repeated task, including the evidence OpenAdapt needs to identify targets and verify outcomes.',
+        detail: 'Demonstrate a bounded, repeated task, plus the evidence OpenAdapt needs to identify targets and verify outcomes.',
     },
     {
         number: '02',
@@ -79,9 +79,8 @@ export default function ProductStatus() {
                     One governed workflow, end to end
                 </h2>
                 <p className="mx-auto mt-3 max-w-3xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    OpenAdapt turns a demonstration into an inspectable workflow
-                    that moves from local development to governed operation without
-                    changing the workflow model.
+                    A demonstration becomes an inspectable workflow that runs the
+                    same from local development through governed operation.
                 </p>
 
                 <ol className="mt-9 grid gap-4 md:grid-cols-2">
@@ -143,8 +142,8 @@ export default function ProductStatus() {
                         One governed loop across every surface
                     </h3>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2">
-                        Every surface below runs the same governed loop, with its
-                        label read directly from a single{' '}
+                        Every surface below runs the same governed loop. Each
+                        label is read from one{' '}
                         <a
                             href="/status.json"
                             target="_blank"
@@ -152,8 +151,8 @@ export default function ProductStatus() {
                             className="text-accent underline"
                         >
                             machine-readable status manifest
-                        </a>{' '}
-                        so the website, docs, launcher, and packages stay in
+                        </a>
+                        , so the website, docs, launcher, and packages stay in
                         lockstep.
                     </p>
                     <ul className="mt-6 grid gap-4 md:grid-cols-2">
