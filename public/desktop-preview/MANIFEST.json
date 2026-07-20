@@ -1,24 +1,99 @@
 {
     "schema_version": 1,
-    "captured_at": "2026-07-19T13:32:00-04:00",
+    "captured_at": "2026-07-20T18:49:00-04:00",
     "presentation": {
         "required_media_label": "Experimental prerelease surfaces",
-        "claim_boundary": "Screenshots of real product surfaces in their honest disconnected/standalone states. Not a working end-to-end workflow demonstration."
+        "claim_boundary": "Screenshots of the real Experimental desktop app running the real wired engine. The workflow, run, and halt data shown is a real local demo recording (recorded via demo-record, compiled, and replayed on this machine), not production or customer data. The signed-in session was authenticated against a locally-run instance of the OpenAdapt cloud in mock mode, not a production org."
+    },
+    "cockpit_capture": {
+        "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+        "channel": "Experimental prerelease (unsigned or ad-hoc-signed)",
+        "engine": "real wired engine sidecar",
+        "session": "Signed in against a locally-run instance of the OpenAdapt cloud in mock mode (not a production org).",
+        "data": "Two real local demo workflows -- \"MockMed refill triage\" and \"Patient intake -- insurance verify\" -- recorded via demo-record, compiled, and replayed on this machine. All run, step, timing, halt, and cost values shown are from those real local replays.",
+        "capture_method": "Captured from the live OpenAdapt Desktop (Tauri) Experimental app running the real wired engine, at native retina 2x with the macOS screencapture utility, then resized to 1600px wide for the web. No DOM injected, no pixels retouched.",
+        "boundary": "Local demo data only. Not production data, not customer data, not a hosted production org."
     },
     "assets": {
-        "cockpit-connect.png": {
+        "cockpit/10_dashboard_workflows.png": {
             "source": {
-                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
-                "version": "0.6.2",
-                "release_tag": "desktop-v0.6.2",
-                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.2-macos-arm64-adhoc.dmg",
-                "installer_sha256": "d2f343c7136f310fabaad987fc4f6cfdaf1fd79f04c5243346724258d8a901cf",
-                "capture_method": "The actual launched desktop app from the published `desktop-v0.6.2` macOS arm64 DMG (downloaded via `gh release download`, sha256 verified against the release SHA256SUMS). The DMG was mounted, the .app installed with `ditto` to a scratch dir, and launched with `open` — the real packaged Tauri window, not `tauri dev` or a `vite build` render. v0.6.2 fixes the launch panic (issue #26); the process was observed alive with no panic. No engine sidecar was connected, so the app rendered its real first-run connect (Sign in) surface. The window was located via Quartz CGWindowListCopyWindowInfo and captured at native retina scale (2x) with the macOS `screencapture -l<windowID>` utility, then cropped only to trim the app's real macOS title bar (the download page's WindowFrame supplies representative chrome). No DOM injected, no pixels retouched.",
-                "shows": "First-run \"Connect to OpenAdapt / Sign in\" screen: host field prefilled https://app.openadapt.ai, a browser sign-in button, and an ingest-token paste option. The full untrimmed capture (with the real macOS title bar) and the launch process evidence are archived in the openadapt monorepo at .private/desktop_capture_2026_07_19/macos/."
+                "surface": "Home / Workflows library",
+                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
+                "shows": "The local workflow library with two real replayed demo workflows: \"MockMed refill triage\" (halted, needs attention) and \"Patient intake -- insurance verify\" (verified). Engine-ready / sync status rail at the bottom."
             },
-            "sha256": "96c0c1bc1b66ae3030ed80471a14107b22689350817f4cd96993b4d51fa5175f",
-            "width": 2240,
-            "height": 1464
+            "sha256": "9d4d546052e93796e8661301291ac355456890ff05c868355fa75b72798383f2",
+            "width": 1600,
+            "height": 1085
+        },
+        "cockpit/40_watchrun_halted.png": {
+            "source": {
+                "surface": "Run detail -- halted with effect-verification evidence",
+                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
+                "shows": "The \"MockMed refill triage\" replay stopped safely at step 9 of 11 (9 verified, 1 halted). The \"This run stopped safely\" card shows the real verification-failure reason: typed input could not be verified for step_009 because the field region changed and the value is not readable there, so retyping is unsafe. Real local demo data."
+            },
+            "sha256": "93fd5309713ee0acc5dc15012012c4a0ac0d74bde4d657ec1c67758fe00da7a8",
+            "width": 1600,
+            "height": 1085
+        },
+        "cockpit/45_watchrun_verified.png": {
+            "source": {
+                "surface": "Run detail -- fully verified with metrics",
+                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
+                "shows": "The \"Patient intake -- insurance verify\" replay fully verified (11 of 11 steps), with the real run report: 11 steps, 8.2s duration, $0.000 model cost. Real local demo data."
+            },
+            "sha256": "ba39be125d333c7040509a9c3a96ef038e3c0b38c5924279ebb94912e6ebe118",
+            "width": 1600,
+            "height": 1085
+        },
+        "cockpit/50_teach.png": {
+            "source": {
+                "surface": "Teach the fix",
+                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
+                "shows": "The correction surface for the halted step: the halted \"type <note>\" step with its verification-failure reason, and the options to re-record the step or describe the correct target. Correction stays local. Real local demo data."
+            },
+            "sha256": "c22bc954460ff0335ea60a8e539b3ee997a768c01d2699913aeb0da401afd459",
+            "width": 1600,
+            "height": 1085
+        },
+        "cockpit/20_settings.png": {
+            "source": {
+                "surface": "Settings / policy",
+                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
+                "shows": "The settings surface: deployment lane (Cloud non-PHI vs BYOC / self-hosted PHI), PHI mode, and the hosted-organization connection with host https://app.openadapt.ai and a signed-in ingest-token session. The signed-in state was validated against a locally-run instance of the cloud in mock mode, not a production org."
+            },
+            "sha256": "d45f27cce96e01d12f63eaa6e461762262013ff8ce6e10827ead726e7104905a",
+            "width": 1600,
+            "height": 1348
+        },
+        "cockpit/05_onboarding.png": {
+            "source": {
+                "surface": "First-run onboarding",
+                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
+                "shows": "The first-run \"Record your first workflow\" onboarding: the screen and input permission checks (granted) and the macOS first-launch guidance."
+            },
+            "sha256": "16db2011ecf4878e333986f6d679b5155600f9ac4f6265bf067c8bb5d56acb28",
+            "width": 1600,
+            "height": 1085
+        },
+        "cockpit/30_record.png": {
+            "source": {
+                "surface": "Record & review",
+                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
+                "shows": "The record surface in its idle state, ready to capture a demonstration."
+            },
+            "sha256": "8d9fb8cde8d45f7501e5b056c1d3f4165fbbb93b6135d3662d36a7a7e1ac0fbf",
+            "width": 1600,
+            "height": 1085
+        },
+        "cockpit/01_login.png": {
+            "source": {
+                "surface": "Sign in",
+                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
+                "shows": "The sign-in surface with a host field, a browser sign-in option, and an ingest-token paste option. Sign-in was validated against a locally-run instance of the cloud in mock mode, not a production org."
+            },
+            "sha256": "59bf18a2cf8c4588172d93111461c4820a93a9c7ba4173bc4d66019bce039016",
+            "width": 1600,
+            "height": 1085
         },
         "tray-menu.png": {
             "source": {
@@ -66,7 +141,7 @@
                 "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
                 "installer_sha256_prefix": "ef30d798f03be2b3",
                 "capture_method": "Live console capture (`prlctl capture`) of the NSIS installer's Completing page inside the Parallels Windows 11 guest, cropped to the dialog. The install itself completes in ~1s. No pixels retouched.",
-                "shows": "\"Completing OpenAdapt Desktop Setup\" with \"Run OpenAdapt Desktop\" and \"Create desktop shortcut\" checked. NOTE: this still is from the v0.6.1 NSIS installer; the launch panic it originally noted (openadapt-desktop issue #26) is fixed in v0.6.2, and the real launched app window is now shown by cockpit-connect.png above."
+                "shows": "\"Completing OpenAdapt Desktop Setup\" with \"Run OpenAdapt Desktop\" and \"Create desktop shortcut\" checked. NOTE: this still is from the v0.6.1 NSIS installer; the launch panic it originally noted (openadapt-desktop issue #26) is fixed in v0.6.2, and the real launched app surfaces are now shown by the cockpit gallery above."
             },
             "sha256": "5898e4e54286d6875adfbb7079d6e0d9ea41a4f1a82f6878900529413d3c120d",
             "width": 1044,

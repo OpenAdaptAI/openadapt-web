@@ -43,8 +43,18 @@ test('desktop preview uses only provenance-backed real captures', () => {
         ),
     ]
     assert.ok(rendered.length >= 2, 'expected at least two captures')
-    // The Windows install-flow stills and the unsigned-warning capture ship.
+    // The real cockpit gallery (live app on the real wired engine), the Windows
+    // install-flow stills, and the unsigned-warning capture all ship. The lead
+    // pair is the differentiator: the workflow library and the halt evidence.
     for (const required of [
+        'cockpit/10_dashboard_workflows.png',
+        'cockpit/40_watchrun_halted.png',
+        'cockpit/45_watchrun_verified.png',
+        'cockpit/50_teach.png',
+        'cockpit/20_settings.png',
+        'cockpit/05_onboarding.png',
+        'cockpit/30_record.png',
+        'cockpit/01_login.png',
         'windows/installer-welcome.png',
         'windows/installer-location.png',
         'windows/installer-finish.png',
@@ -116,53 +126,86 @@ test('desktop preview labels match the Experimental reality', () => {
     // Static section: no animation or client state, so it cannot violate the
     // motion tokens or shift layout.
     assert.doesNotMatch(component, /useState|useEffect|setInterval/)
-    // The cockpit still reserves its real pixel aspect ratio (2240x1464 → the
-    // launched-app capture with the macOS title bar trimmed) so it causes no
-    // layout shift.
-    assert.match(component, /width="1120"\s+height="732"/)
+    // The cockpit captures reserve their real pixel dimensions (1600px-wide
+    // retina resizes) so they cause no layout shift.
+    assert.match(component, /width: 1600/)
+    assert.match(component, /height: 1085/)
+    assert.match(component, /height: 1348/)
 })
 
-test('cockpit still is the real launched v0.6.2 app window with provenance', () => {
+test('cockpit gallery is the real wired-engine app on honest local demo data', () => {
     const component = read('components/DesktopPreview.js')
     const manifest = JSON.parse(read('public/desktop-preview/MANIFEST.json'))
 
-    // The cockpit asset must be declared, exist on disk, and match its hash.
-    const cockpit = manifest.assets['cockpit-connect.png']
-    assert.ok(cockpit, 'manifest must declare cockpit-connect.png')
-    const bytes = fs.readFileSync(
-        path.join(root, 'public/desktop-preview/cockpit-connect.png')
-    )
-    const sha256 = crypto.createHash('sha256').update(bytes).digest('hex')
-    assert.equal(
-        sha256,
-        cockpit.sha256,
-        'cockpit-connect.png on disk does not match its manifest hash'
-    )
-    assert.equal(
-        cockpit.sha256,
-        '96c0c1bc1b66ae3030ed80471a14107b22689350817f4cd96993b4d51fa5175f'
-    )
+    // Every cockpit capture must be declared, exist on disk, and match its
+    // recorded hash. These are the real Experimental app on the real wired
+    // engine, not the old single connect-screen still.
+    const cockpitAssets = [
+        'cockpit/10_dashboard_workflows.png',
+        'cockpit/40_watchrun_halted.png',
+        'cockpit/45_watchrun_verified.png',
+        'cockpit/50_teach.png',
+        'cockpit/20_settings.png',
+        'cockpit/05_onboarding.png',
+        'cockpit/30_record.png',
+        'cockpit/01_login.png',
+    ]
+    for (const name of cockpitAssets) {
+        const entry = manifest.assets[name]
+        assert.ok(entry, `manifest must declare ${name}`)
+        const bytes = fs.readFileSync(
+            path.join(root, 'public/desktop-preview', name)
+        )
+        const sha256 = crypto.createHash('sha256').update(bytes).digest('hex')
+        assert.equal(
+            sha256,
+            entry.sha256,
+            `${name} on disk does not match its manifest hash`
+        )
+        assert.match(
+            entry.source.capture_method,
+            /wired engine/,
+            `${name} provenance must name the real wired engine`
+        )
+    }
 
-    // Provenance: the published v0.6.2 DMG (the launch-panic fix), captured
-    // from the actual launched app — not a vite/Playwright render.
-    assert.equal(cockpit.source.version, '0.6.2')
-    assert.equal(cockpit.source.release_tag, 'desktop-v0.6.2')
-    assert.match(cockpit.source.capture_method, /launched desktop app/)
-    assert.match(cockpit.source.capture_method, /real packaged Tauri window/)
-    assert.match(cockpit.source.capture_method, /screencapture/)
-
-    // Real recorded dimensions (title bar trimmed): 2240x1464.
-    assert.equal(cockpit.width, 2240)
-    assert.equal(cockpit.height, 1464)
-
-    // The copy states the app now launches and names the v0.6.2 fix; the stale
-    // "does not launch yet" claim is gone.
-    assert.match(component, /v0\.6\.2 fixes it/)
-    assert.match(component, /the real app running/)
-    assert.match(
-        component,
-        /the real window from the launched Experimental app/
+    // The stale single connect-screen still is gone from both the manifest and
+    // the component.
+    assert.ok(
+        !manifest.assets['cockpit-connect.png'],
+        'the stale cockpit-connect.png entry must be removed'
     )
+    assert.doesNotMatch(component, /cockpit-connect\.png/)
+
+    // The manifest carries a shared cockpit provenance block that states the
+    // honest boundary: real wired engine, local demo data, mock-mode cloud.
+    assert.ok(manifest.cockpit_capture, 'manifest must declare cockpit_capture')
+    assert.match(manifest.cockpit_capture.engine, /wired engine/)
+    assert.match(manifest.cockpit_capture.session, /mock mode/)
+    assert.match(manifest.cockpit_capture.session, /not a production org/)
+    assert.match(manifest.cockpit_capture.data, /demo-record/)
+    assert.match(manifest.cockpit_capture.boundary, /Not production data/)
+
+    // The component leads with the differentiator (the workflow library and the
+    // halt evidence) and shows the connected surfaces.
+    assert.match(component, /desktop-preview\/cockpit\/10_dashboard_workflows/)
+    assert.match(component, /desktop-preview\/cockpit\/40_watchrun_halted/)
+    assert.match(component, /The workflow library/)
+    assert.match(component, /Halt evidence/)
+
+    // Honest captions: the app is real and wired, but the data is a LOCAL demo
+    // recording validated against a mock-mode cloud, never a production org and
+    // never customer data.
+    assert.match(component, /real wired engine/)
+    assert.match(component, /local demo/i)
+    assert.match(component, /mock mode/)
+    assert.match(component, /not a production org/)
+    assert.match(component, /not production or customer data/)
+    assert.match(component, /recorded\s+via demo-record/)
+
+    // No overclaiming: no mockup language survives (the captures are real, not
+    // mockups), and the stale launch caveat is gone because the app runs.
+    assert.doesNotMatch(component, /\bmockups?\b/i)
     assert.doesNotMatch(component, /does not launch yet/)
 })
 
