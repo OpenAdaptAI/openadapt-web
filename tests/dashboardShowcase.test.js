@@ -30,16 +30,88 @@ test('the Cloud showcase renders real product screenshots, not a mockup', () => 
 
     // The stylized dark-theme fake "mini app" mockup is gone: no synthetic
     // sidebar/guided-tour scaffolding may return. Regression guard against the
-    // hand-drawn app UI the founder found confusing.
+    // hand-drawn app UI the founder found confusing. (These guard the fabricated
+    // mockup, not motion in general: the real-screenshot showcase below does
+    // legitimately auto-rotate.)
     assert.doesNotMatch(component, /Operating view/)
     assert.doesNotMatch(component, /Choose a Cloud preview state/)
     assert.doesNotMatch(component, /guided Cloud tour/)
     assert.doesNotMatch(component, /Tour paused for reduced motion/)
-    assert.doesNotMatch(component, /setInterval/)
 
     // No unverifiable domain and no em dashes in the copy.
     assert.doesNotMatch(component, /demo\.openadapt\.ai/)
     assert.doesNotMatch(component, /—/)
+})
+
+test('the large slot rotates through the real frames with labeled tabs', () => {
+    const component = read('components/DashboardShowcase.js')
+
+    // Rotation is real: an auto-advancing timer cycles the large slot.
+    assert.match(component, /setInterval/)
+    assert.match(component, /useEffect/)
+
+    // Every real frame is a slide, in order: dashboard, run detail, halt
+    // evidence, program visualizer, workflow catalog.
+    const orderedSlides = [
+        { key: 'dashboard', src: '/product-preview/dashboard-workflows.png' },
+        { key: 'run', src: '/cloud-preview/healthcare-run.jpg' },
+        { key: 'evidence', src: '/cloud-preview/healthcare-evidence.jpg' },
+        { key: 'program', src: '/cloud-preview/program-graph.png' },
+        { key: 'catalog', src: '/cloud-preview/workflow-catalog.png' },
+    ]
+    let previousIndex = -1
+    for (const slide of orderedSlides) {
+        const index = component.indexOf(`key: '${slide.key}'`)
+        assert.ok(index > 0, `slide ${slide.key} should be defined`)
+        assert.ok(
+            index > previousIndex,
+            `slide ${slide.key} should keep the display order`
+        )
+        previousIndex = index
+        assert.match(
+            component,
+            new RegExp(slide.src.replaceAll('/', '\\/')),
+            `slide ${slide.key} should reference ${slide.src}`
+        )
+    }
+
+    // Labeled, clickable tabs to jump to any frame, plus progress dots. The
+    // active tab is tracked for highlighting.
+    assert.match(component, /role="tablist"/)
+    assert.match(component, /role="tab"/)
+    assert.match(component, /data-testid="dashboard-tab"/)
+    assert.match(component, /data-testid="dashboard-dots"/)
+    assert.match(component, /aria-selected=\{index === active\}/)
+    for (const label of [
+        'Dashboard',
+        'Run detail',
+        'Halt evidence',
+        'Program visualizer',
+        'Workflow catalog',
+    ]) {
+        assert.match(
+            component,
+            new RegExp(`label: '${label}'`),
+            `tab label ${label} should exist`
+        )
+    }
+
+    // Pause on hover/focus so a visitor reading a frame is not yanked forward.
+    assert.match(component, /onMouseEnter=\{\(\) => setPaused\(true\)\}/)
+    assert.match(component, /onMouseLeave=\{\(\) => setPaused\(false\)\}/)
+    assert.match(component, /onFocus=\{\(\) => setPaused\(true\)\}/)
+    assert.match(component, /onBlur=\{\(\) => setPaused\(false\)\}/)
+
+    // Founder decision: auto-advance is NOT gated on prefers-reduced-motion, so
+    // the section visibly rotates even with reduce-motion enabled. The timer
+    // effect must not branch on a reduced-motion media query.
+    const timerEffect = component.slice(
+        component.indexOf('useEffect(() => {'),
+        component.indexOf('const jumpTo')
+    )
+    assert.ok(timerEffect.includes('setInterval'))
+    assert.doesNotMatch(timerEffect, /prefers-reduced-motion/)
+    assert.doesNotMatch(timerEffect, /matchMedia/)
 })
 
 test('the showcase honestly labels the mock-data mode of the real UI', () => {
@@ -123,13 +195,19 @@ test('every showcase screenshot is a real, provenance-backed Cloud capture', () 
         )
     }
 
-    // Every image is lazy-loaded with intrinsic dimensions so the large
-    // captures do not tank performance (primary shot + the mapped gallery img).
+    // Every rotating slide is lazy-loaded with intrinsic dimensions so the large
+    // captures do not tank performance. The slides share one mapped <img> whose
+    // src/width/height come from the slide record.
     const imgTags = component.match(/<img[\s\S]*?\/>/g) || []
-    assert.ok(imgTags.length >= 2)
+    assert.ok(imgTags.length >= 1)
     for (const tag of imgTags) {
         assert.match(tag, /loading="lazy"/)
         assert.match(tag, /width=/)
         assert.match(tag, /height=/)
     }
+    // Each slide record carries explicit intrinsic width and height.
+    const widthDecls = component.match(/\bwidth:\s*\d+/g) || []
+    const heightDecls = component.match(/\bheight:\s*\d+/g) || []
+    assert.equal(widthDecls.length, 5)
+    assert.equal(heightDecls.length, 5)
 })

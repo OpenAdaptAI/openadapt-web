@@ -1,32 +1,49 @@
 describe('Cloud product showcase', () => {
-    it('shows the real hosted product with large screenshots on desktop', () => {
+    const TAB_LABELS = [
+        'Dashboard',
+        'Run detail',
+        'Halt evidence',
+        'Program visualizer',
+        'Workflow catalog',
+    ]
+
+    it('rotates the real hosted product through labeled tabs on desktop', () => {
         cy.viewport(1440, 1700)
         cy.visit('/hosted/welcome')
 
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
 
         cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            // The large primary shot is the real workflows dashboard capture,
-            // framed as the hosted product at app.openadapt.ai.
-            cy.contains('app.openadapt.ai/dashboard').should('be.visible')
-            cy.get('[data-testid="dashboard-primary-shot"]')
-                .should('be.visible')
+            // Five real frames are stacked in the rotating stage; the dashboard
+            // is the default active frame, framed as app.openadapt.ai.
+            cy.get('[data-testid="dashboard-slide"]').should('have.length', 5)
+            cy.get('[data-testid="dashboard-slide"]').each(($img) => {
+                cy.wrap($img).should('have.attr', 'loading', 'lazy')
+            })
+            cy.get('[data-testid="dashboard-slide"][data-active="true"]')
+                .should('have.length', 1)
+                .and('have.attr', 'data-slide', 'dashboard')
                 .and('have.attr', 'src')
                 .and('include', '/product-preview/dashboard-workflows.png')
-            cy.get('[data-testid="dashboard-primary-shot"]')
-                .should('have.attr', 'loading', 'lazy')
+            cy.contains('app.openadapt.ai/dashboard').should('be.visible')
 
-            // A small gallery of real supporting frames.
-            cy.get('[data-testid="dashboard-gallery-shot"]')
-                .should('have.length', 4)
-                .each(($img) => {
-                    cy.wrap($img).should('have.attr', 'loading', 'lazy')
-                })
-            cy.get('[data-testid="dashboard-gallery"]')
-                .should('contain.text', 'Program visualizer')
-                .and('contain.text', 'Workflow catalog')
-                .and('contain.text', 'Run detail')
-                .and('contain.text', 'Halt evidence')
+            // Labeled, clickable tabs for every frame, plus progress dots.
+            cy.get('[data-testid="dashboard-tab"]').should('have.length', 5)
+            TAB_LABELS.forEach((label) => {
+                cy.get('[data-testid="dashboard-tabs"]').should(
+                    'contain.text',
+                    label
+                )
+            })
+            cy.get('[data-testid="dashboard-dots"] button').should(
+                'have.length',
+                5
+            )
+
+            // The Dashboard tab is highlighted as active by default.
+            cy.get('[data-testid="dashboard-tab"][data-slide="dashboard"]')
+                .should('have.attr', 'aria-selected', 'true')
+                .and('have.attr', 'data-active', 'true')
 
             // Honest labeling: real interface, mock-data mode.
             cy.contains('Real OpenAdapt Cloud interface').should('be.visible')
@@ -48,16 +65,30 @@ describe('Cloud product showcase', () => {
             .should('have.attr', 'href')
             .and('include', 'app.openadapt.ai')
 
-        // Wait for the large lazy captures to decode before screenshotting.
+        // Clicking a tab jumps the large slot to that real frame and moves the
+        // highlight and browser address with it.
+        cy.get('[data-testid="dashboard-tab"][data-slide="evidence"]').click()
+        cy.get('[data-testid="dashboard-slide"][data-active="true"]')
+            .should('have.attr', 'data-slide', 'evidence')
+            .and('have.attr', 'src')
+            .and('include', '/cloud-preview/healthcare-evidence.jpg')
+        cy.get('[data-testid="dashboard-tab"][data-slide="evidence"]').should(
+            'have.attr',
+            'aria-selected',
+            'true'
+        )
+
+        cy.get('[data-testid="dashboard-tab"][data-slide="program"]').click()
+        cy.get('[data-testid="dashboard-slide"][data-active="true"]')
+            .should('have.attr', 'data-slide', 'program')
+            .and('have.attr', 'src')
+            .and('include', '/cloud-preview/program-graph.png')
+
+        // Wait for the active capture to decode, then screenshot.
         cy.get('#cloud-product').scrollIntoView()
-        cy.get('[data-testid="dashboard-primary-shot"]').should(
+        cy.get('[data-testid="dashboard-slide"][data-active="true"]').should(
             ($img) => expect($img[0].naturalWidth).to.be.greaterThan(0)
         )
-        cy.get('[data-testid="dashboard-gallery-shot"]').each(($img) => {
-            cy.wrap($img).should(
-                ($el) => expect($el[0].naturalWidth).to.be.greaterThan(0)
-            )
-        })
         cy.get('#cloud-product').screenshot('dashboard-showcase-desktop')
     })
 
@@ -67,14 +98,14 @@ describe('Cloud product showcase', () => {
 
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
 
-        // Images stay within the viewport (no horizontal overflow at 375px).
-        cy.get('[data-testid="dashboard-primary-shot"]').then(($img) => {
-            expect($img[0].getBoundingClientRect().width).to.be.at.most(375)
-        })
-        cy.get('[data-testid="dashboard-gallery-shot"]').should(
-            'have.length',
-            4
+        // The active slide stays within the viewport (no horizontal overflow).
+        cy.get('[data-testid="dashboard-slide"][data-active="true"]').then(
+            ($img) => {
+                expect($img[0].getBoundingClientRect().width).to.be.at.most(375)
+            }
         )
+        // The tabs remain available on mobile.
+        cy.get('[data-testid="dashboard-tab"]').should('have.length', 5)
         cy.document().then((doc) => {
             expect(doc.documentElement.scrollWidth).to.be.at.most(375)
         })

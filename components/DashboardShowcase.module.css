@@ -48,8 +48,8 @@
     margin: 0;
 }
 
-/* Primary shot: the real workflows dashboard, framed as a browser window so it
-   reads unmistakably as the hosted product at app.openadapt.ai. */
+/* The rotating large slot, framed as a browser window so it reads unmistakably
+   as the hosted product at app.openadapt.ai. */
 .browser {
     overflow: hidden;
     border: 1px solid var(--hairline);
@@ -98,71 +98,110 @@
     white-space: nowrap;
 }
 
-.primaryShot {
-    display: block;
+/* Fixed-height stage: a single aspect-ratio slot that every slide fills, so
+   there is no layout jump between frames of different aspect ratios. Slides are
+   stacked and crossfaded. */
+.stage {
+    position: relative;
     width: 100%;
-    height: auto;
-    /* Real 2880x1800 capture, top-anchored. Trim only the empty canvas below
-       the workflows table; the nav and full table stay in frame. */
-    aspect-ratio: 2880 / 1120;
-    object-fit: cover;
-    object-position: top;
-}
-
-/* Supporting gallery: a clean grid of real supporting frames. */
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
-    margin: 18px 0 0;
-    padding: 0;
-    list-style: none;
-}
-
-.tile {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.tileFrame {
-    overflow: hidden;
-    border: 1px solid var(--hairline);
-    border-radius: 10px;
+    aspect-ratio: 16 / 9;
     background: var(--ground);
-    /* Uniform landscape thumbnails. Landscape frames (880x550) fit exactly;
-       the tall program/catalog captures reveal their top region. */
-    aspect-ratio: 16 / 10;
-    box-shadow: 0 10px 26px rgba(35, 40, 31, 0.08);
 }
 
-.tileFrame img {
+.slide {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* object-position is set per slide inline (tall captures are top-anchored).
+       Default top so wide captures keep their nav and header in frame. */
     object-position: top;
+    transition: opacity 700ms ease;
 }
 
-.tileMeta {
+/* Labeled tabs to jump to any frame. The active tab is highlighted. */
+.tabs {
     display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: 3px;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 0;
 }
 
-.tileMeta strong {
+.tab {
+    flex: 0 1 auto;
+    padding: 7px 14px;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--ink-2);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        color 160ms ease;
+}
+
+.tab:hover {
+    border-color: var(--accent);
+    color: var(--ink);
+}
+
+.tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.tab[data-active='true'] {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--panel);
+}
+
+/* Progress dots: a quick visual index of position in the rotation. The tabs
+   above are the accessible control; the dots are a decorative shortcut. */
+.progress {
+    display: flex;
+    gap: 8px;
+    margin: 14px 0 0;
+}
+
+.dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    transition:
+        background 200ms ease,
+        border-color 200ms ease,
+        transform 200ms ease;
+}
+
+.dot[data-active='true'] {
+    border-color: var(--accent);
+    background: var(--accent);
+    transform: scale(1.15);
+}
+
+.slideCaption {
+    margin: 14px 2px 0;
+    color: var(--ink-3);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.slideCaption strong {
     color: var(--ink);
     font-family: var(--font-display);
-    font-size: 14px;
     font-weight: 600;
-}
-
-.tileMeta span {
-    color: var(--ink-3);
-    font-size: 12px;
-    line-height: 1.45;
 }
 
 .caption {
@@ -170,7 +209,9 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 24px;
-    margin: 18px 2px 0;
+    margin: 12px 2px 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--hairline);
     color: var(--ink-3);
     font-family: var(--font-mono);
     font-size: 11px;
@@ -193,12 +234,6 @@
     margin-top: 32px;
 }
 
-@media (max-width: 840px) {
-    .gallery {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
 @media (max-width: 620px) {
     .section {
         padding: 56px 16px 62px;
@@ -218,8 +253,14 @@
         font-size: 10px;
     }
 
-    .gallery {
-        gap: 12px;
+    /* A slightly taller slot on narrow screens so the frames stay readable. */
+    .stage {
+        aspect-ratio: 4 / 3;
+    }
+
+    .tab {
+        padding: 6px 12px;
+        font-size: 12px;
     }
 
     .caption {
@@ -242,8 +283,11 @@
     }
 }
 
-@media (max-width: 400px) {
-    .gallery {
-        grid-template-columns: 1fr;
+/* Respect reduced motion for the crossfade transition only. The rotation itself
+   is intentionally kept (see DashboardShowcase.js) so the section is never
+   static; here we simply make the frame swap instant rather than animated. */
+@media (prefers-reduced-motion: reduce) {
+    .slide {
+        transition-duration: 1ms;
     }
 }
