@@ -290,9 +290,6 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
                 <DriftOutcomes />
             </Reveal>
             <Reveal>
-                <InstallStats stats={installStats} />
-            </Reveal>
-            <Reveal>
                 <ProductStatus />
             </Reveal>
             <Reveal>
@@ -316,6 +313,9 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
                     buildWarnings={buildWarnings}
                     githubStats={githubStats}
                 />
+            </Reveal>
+            <Reveal>
+                <InstallStats stats={installStats} />
             </Reveal>
             <Reveal>
                 <EmailForm />
