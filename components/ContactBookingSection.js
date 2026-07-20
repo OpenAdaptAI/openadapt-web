@@ -90,8 +90,8 @@ export default function ContactBookingSection({
                 <p className="mt-3 text-sm text-ink-2 md:text-base">
                     Tell us the substrate, repetition, consequence of error,
                     data boundary, and current verification path. We&apos;ll tell
-                    you whether it fits managed browser execution, a
-                    customer-controlled deployment, or neither.
+                    you whether it fits managed cloud execution or a
+                    customer-controlled deployment, and how we&apos;d qualify it.
                 </p>
 
                 {!isSubmitted ? (

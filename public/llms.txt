@@ -10,7 +10,7 @@
 ## Core Concepts
 - [How It Works](https://openadapt.ai/#how-it-works): Record, compile, replay, resolve or halt, then verify and report
 - [Compare Approaches](https://openadapt.ai/compare): When to choose OpenAdapt, traditional RPA, computer-use agents, browser recorders, or a direct API
-- [How It Runs](https://openadapt.ai/#product-status): Governed workflow lifecycle and local, managed browser, or customer-controlled execution
+- [How It Runs](https://openadapt.ai/#product-status): Governed workflow lifecycle and local, managed cloud, or customer-controlled execution
 - [FAQ](https://openadapt.ai/#faq): How OpenAdapt differs from RPA tools and AI computer-use agents, data locality, licensing
 - [Security and Data Boundaries](https://openadapt.ai/security): Screenshot, model, secret, report, certification, and commercial deployment boundaries
 - [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
@@ -50,10 +50,10 @@ Real, runnable workflow templates. Every template corresponds to something that 
 
 ## Commercial Status
 - The open-source browser engine is available now.
-- Managed browser execution is available as a $500/month subscription through verified Stripe Checkout and account onboarding.
+- Managed cloud execution across every substrate is available as a $500/month subscription through verified Stripe Checkout and account onboarding.
 - Credentials alone cannot expose the launch price or create Checkout. Web also refuses a configured Stripe offer that differs from the launch contract.
 - Customer-controlled regulated deployments are scoped to the actual substrate, runtime boundary, verifier, and operating responsibilities.
-- Hosted subscriptions cover managed browser execution; customer-controlled regulated deployments and service terms are qualified separately for the workflow boundary.
+- Hosted subscriptions cover managed execution across every substrate; customer-controlled regulated deployments and service terms are qualified separately for the workflow boundary.
 
 ## Hosted Data Boundary
 - Compiled bundles can contain screenshots, typed values, and literal identity evidence. Compilation does not make a bundle PHI-free.
