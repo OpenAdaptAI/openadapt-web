@@ -12,7 +12,7 @@
 
 .intro {
     max-width: 760px;
-    margin: 0 auto 28px;
+    margin: 0 auto 32px;
     text-align: center;
 }
 
@@ -44,409 +44,133 @@
     line-height: 1.65;
 }
 
-.referencePicker {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    max-width: 780px;
-    margin: 0 auto 14px;
-}
-
-.referenceButton,
-.referenceActive {
-    min-width: 0;
-    padding: 12px 15px;
-    border: 1px solid var(--hairline);
-    border-radius: 9px;
-    background: var(--paper);
-    color: var(--ink-2);
-    text-align: left;
-    transition:
-        border-color 150ms ease,
-        background 150ms ease,
-        color 150ms ease;
-}
-
-.referenceButton:hover {
-    border-color: var(--ink-3);
-    color: var(--ink);
-}
-
-.referenceActive {
-    border-color: var(--ink);
-    background: var(--ink);
-    color: #fff;
-}
-
-.referenceButton span,
-.referenceActive span,
-.referenceButton strong,
-.referenceActive strong {
-    display: block;
-}
-
-.referenceButton span,
-.referenceActive span {
-    margin-bottom: 2px;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.referenceButton strong,
-.referenceActive strong {
-    overflow: hidden;
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 600;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 .figure {
     margin: 0;
 }
 
-.dashboard {
-    display: grid;
-    grid-template-columns: 190px minmax(0, 1fr);
-    grid-template-rows: 52px minmax(0, 1fr);
-    min-height: 575px;
+/* Primary shot: the real workflows dashboard, framed as a browser window so it
+   reads unmistakably as the hosted product at app.openadapt.ai. */
+.browser {
     overflow: hidden;
-    border: 1px solid #2b3137;
+    border: 1px solid var(--hairline);
     border-radius: 14px;
-    background: #0d1115;
+    background: var(--panel);
     box-shadow: 0 24px 60px rgba(35, 40, 31, 0.16);
-    color: #f7f8f4;
 }
 
-.topbar {
-    z-index: 1;
-    grid-column: 1 / -1;
+.browserBar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    border-bottom: 1px solid #2b3137;
-    background: #11161a;
+    gap: 14px;
+    height: 42px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--hairline);
+    background: var(--ground);
 }
 
-.brand {
-    display: flex;
-    align-items: center;
+.dots {
+    display: inline-flex;
+    flex: 0 0 auto;
     gap: 7px;
 }
 
-.brand > span {
-    display: grid;
-    width: 25px;
-    height: 25px;
-    place-items: center;
-    border: 1px solid #6fbb91;
-    border-radius: 6px;
-    color: #9ee2ba;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 700;
+.dots i {
+    width: 11px;
+    height: 11px;
+    border-radius: 999px;
+    background: var(--hairline-dotted);
 }
 
-.brand strong {
-    font-family: var(--font-display);
-    font-size: 15px;
-    font-weight: 600;
-}
-
-.brand small {
-    color: #8c979e;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.workspace {
-    color: #8c979e;
-    font-family: var(--font-mono);
-    font-size: 10px;
-}
-
-.sidebar {
-    display: flex;
+.address {
+    flex: 1 1 auto;
     min-width: 0;
-    padding: 21px 13px 15px;
-    border-right: 1px solid #2b3137;
-    background: #11161a;
-    flex-direction: column;
-}
-
-.sidebarLabel {
-    margin: 0 8px 12px;
-    color: #77828a;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-}
-
-.viewControls {
-    display: grid;
-    gap: 5px;
-}
-
-.viewButton,
-.viewActive {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid transparent;
-    border-radius: 7px;
-    background: transparent;
-    color: #9ba5ab;
+    max-width: 360px;
+    padding: 5px 12px;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--ink-3);
     font-family: var(--font-mono);
     font-size: 11px;
-    text-align: left;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.viewButton:hover {
-    background: #1a2025;
-    color: #fff;
-}
-
-.viewActive {
-    border-color: #39444c;
-    background: #20272d;
-    color: #fff;
-}
-
-.viewButton span,
-.viewActive span {
-    color: #6fbb91;
-    font-size: 9px;
-}
-
-.tourControls {
-    margin-top: auto;
-}
-
-.playback {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    width: 100%;
-    padding: 8px 9px;
-    border: 1px solid #39444c;
-    border-radius: 999px;
-    background: transparent;
-    color: #c9d0d4;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-}
-
-.playback:hover {
-    border-color: #6fbb91;
-    color: #fff;
-}
-
-.reducedStatus {
+.primaryShot {
     display: block;
-    color: #89949b;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    line-height: 1.45;
-    text-align: center;
+    width: 100%;
+    height: auto;
+    /* Real 2880x1800 capture, top-anchored. Trim only the empty canvas below
+       the workflows table; the nav and full table stay in frame. */
+    aspect-ratio: 2880 / 1120;
+    object-fit: cover;
+    object-position: top;
 }
 
-.preview {
-    min-width: 0;
-    padding: 24px;
-}
-
-.previewHeader {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 17px;
-}
-
-.previewHeader p,
-.stateHeading p {
-    margin: 0 0 4px;
-    color: #7f8b92;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.previewHeader h3 {
-    margin: 0;
-    color: #fff;
-    font-family: var(--font-display);
-    font-size: 23px;
-    font-weight: 600;
-}
-
-.previewHeader > span {
-    color: #a9b2b7;
-    font-family: var(--font-mono);
-    font-size: 10px;
-}
-
-.previewGrid {
+/* Supporting gallery: a clean grid of real supporting frames. */
+.gallery {
     display: grid;
-    grid-template-columns: minmax(0, 1.02fr) minmax(280px, 0.98fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 14px;
-    min-width: 0;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
 }
 
-.stateCard,
-.referenceMedia {
-    min-width: 0;
-    overflow: hidden;
-    border: 1px solid #2b3339;
-    border-radius: 10px;
-    background: #151b20;
-}
-
-.stateCard {
-    padding: 19px;
-}
-
-.stateHeading {
+.tile {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.stateHeading h4 {
-    margin: 0;
-    color: #fff;
-    font-family: var(--font-display);
-    font-size: 19px;
-    font-weight: 600;
-    line-height: 1.2;
-}
-
-.statusGood,
-.statusAttention {
-    flex: 0 0 auto;
-    max-width: 130px;
-    padding: 5px 7px;
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 8px;
-    font-weight: 700;
-    line-height: 1.2;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.statusGood {
-    background: rgba(111, 187, 145, 0.14);
-    color: #9ee2ba;
-}
-
-.statusAttention {
-    background: rgba(224, 169, 82, 0.14);
-    color: #efc679;
-}
-
-.stateSummary {
-    min-height: 62px;
-    margin: 16px 0;
-    color: #a9b2b7;
-    font-size: 12px;
-    line-height: 1.55;
-}
-
-.details {
-    margin: 0;
-    border-top: 1px solid #2b3339;
-}
-
-.details > div {
-    display: grid;
-    grid-template-columns: minmax(95px, 0.8fr) minmax(0, 1.2fr);
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #2b3339;
-}
-
-.details dt,
-.details dd {
     min-width: 0;
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    line-height: 1.45;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.details dt {
-    color: #758188;
+.tileFrame {
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--ground);
+    /* Uniform landscape thumbnails. Landscape frames (880x550) fit exactly;
+       the tall program/catalog captures reveal their top region. */
+    aspect-ratio: 16 / 10;
+    box-shadow: 0 10px 26px rgba(35, 40, 31, 0.08);
 }
 
-.details dd {
-    color: #dce1e3;
-    overflow-wrap: anywhere;
-}
-
-.referenceMedia {
-    position: relative;
-    align-self: stretch;
-    min-height: 365px;
-    background: #080b0e;
-}
-
-.referenceMedia::after {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(8, 11, 14, 0.92),
-        transparent 38%
-    );
-    content: '';
-    pointer-events: none;
-}
-
-.referenceMedia img {
+.tileFrame img {
     display: block;
     width: 100%;
     height: 100%;
-    min-height: 365px;
-    /* The footage is the real Cloud dashboard; never crop product chrome.
-     * Letterbox inside the dark media panel instead of cover-cropping. */
-    object-fit: contain;
+    object-fit: cover;
+    object-position: top;
 }
 
-.referenceMedia span {
-    position: absolute;
-    z-index: 1;
-    right: 13px;
-    bottom: 12px;
-    left: 13px;
-    color: #fff;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    line-height: 1.4;
+.tileMeta {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.tileMeta strong {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tileMeta span {
+    color: var(--ink-3);
+    font-size: 12px;
+    line-height: 1.45;
 }
 
 .caption {
     display: flex;
+    align-items: baseline;
     justify-content: space-between;
     gap: 24px;
-    margin: 12px 2px 0;
+    margin: 18px 2px 0;
     color: var(--ink-3);
     font-family: var(--font-mono);
     font-size: 11px;
@@ -466,25 +190,12 @@
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 28px;
+    margin-top: 32px;
 }
 
 @media (max-width: 840px) {
-    .dashboard {
-        grid-template-columns: 150px minmax(0, 1fr);
-    }
-
-    .previewGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .referenceMedia {
-        min-height: 260px;
-    }
-
-    .referenceMedia img {
-        min-height: 260px;
-        max-height: 320px;
+    .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -497,120 +208,18 @@
         font-size: 15px;
     }
 
-    .referencePicker {
-        grid-template-columns: 1fr;
-        gap: 6px;
+    .browserBar {
+        height: 38px;
+        padding: 0 12px;
+        gap: 10px;
     }
 
-    .referenceButton,
-    .referenceActive {
-        display: grid;
-        grid-template-columns: 90px minmax(0, 1fr);
-        align-items: center;
-        padding: 10px 12px;
+    .address {
+        font-size: 10px;
     }
 
-    .referenceButton span,
-    .referenceActive span {
-        margin: 0;
-    }
-
-    .dashboard {
-        display: block;
-        min-height: 0;
-    }
-
-    .topbar {
-        height: 48px;
-        padding: 0 13px;
-    }
-
-    .workspace {
-        display: none;
-    }
-
-    .sidebar {
-        display: block;
-        padding: 10px;
-        overflow-x: auto;
-        border-right: 0;
-        border-bottom: 1px solid #2b3137;
-    }
-
-    .sidebarLabel {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
-
-    .viewControls {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(78px, 1fr));
-        gap: 4px;
-        min-width: 0;
-    }
-
-    .viewButton,
-    .viewActive {
-        justify-content: center;
-        gap: 5px;
-        padding: 8px 6px;
-        font-size: 9px;
-    }
-
-    .tourControls {
-        margin-top: 8px;
-    }
-
-    .playback {
-        width: auto;
-        padding: 7px 12px;
-    }
-
-    .reducedStatus {
-        text-align: left;
-    }
-
-    .preview {
-        padding: 17px 13px 14px;
-    }
-
-    .previewHeader {
-        display: block;
-    }
-
-    .previewHeader > span {
-        display: block;
-        margin-top: 5px;
-    }
-
-    .stateCard {
-        padding: 15px;
-    }
-
-    .stateHeading {
-        display: block;
-    }
-
-    .statusGood,
-    .statusAttention {
-        display: inline-block;
-        margin-top: 9px;
-    }
-
-    .stateSummary {
-        min-height: 0;
-    }
-
-    .referenceMedia,
-    .referenceMedia img {
-        min-height: 205px;
-        max-height: 240px;
+    .gallery {
+        gap: 12px;
     }
 
     .caption {
@@ -633,9 +242,8 @@
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .referenceButton,
-    .referenceActive {
-        transition: none;
+@media (max-width: 400px) {
+    .gallery {
+        grid-template-columns: 1fr;
     }
 }

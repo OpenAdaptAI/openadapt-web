@@ -7,10 +7,10 @@ const root = path.join(__dirname, '..')
 const read = (relativePath) =>
     fs.readFileSync(path.join(root, relativePath), 'utf8')
 
-test('hosted onboarding shows a code-native interactive Cloud preview', () => {
-    // The Cloud product preview renders on the hosted onboarding page (where
-    // the Cloud product is the relevant context) and, as lower-funnel product
-    // proof, on the marketing homepage.
+test('the Cloud showcase renders real product screenshots, not a mockup', () => {
+    // The Cloud showcase renders on the hosted onboarding page (where the Cloud
+    // product is the relevant context) and, as lower-funnel product proof, on
+    // the marketing homepage.
     const hosted = read('pages/hosted/welcome.js')
     const home = read('pages/index.js')
     const component = read('components/DashboardShowcase.js')
@@ -19,67 +19,53 @@ test('hosted onboarding shows a code-native interactive Cloud preview', () => {
     assert.match(hosted, /<DashboardShowcase \/>/)
     assert.match(home, /import DashboardShowcase/)
     assert.match(home, /<DashboardShowcase \/>/)
+
     assert.match(component, /OpenAdapt/)
     assert.match(component, /Cloud/)
-    assert.match(component, /Choose a reference workflow/)
-    assert.match(component, /Choose a Cloud preview state/)
-    assert.match(component, /Reference workflows using synthetic records/)
-    assert.match(component, /no live backend\s+dependency/)
 
-    for (const application of [
-        'OpenEMR',
-        'Frappe Lending',
-        'openIMIS',
-    ]) {
-        assert.match(component, new RegExp(application))
-    }
-    for (const view of ['Workflow', 'Run', 'Evidence', 'Report']) {
-        assert.match(component, new RegExp(`${view.toLowerCase()}: '${view}'`))
-    }
+    // It is framed as the real shipping hosted product, not a concept.
+    assert.match(component, /app\.openadapt\.ai/)
+    assert.match(component, /Real OpenAdapt Cloud interface/)
+    assert.match(component, /hosted product running today/)
 
-    assert.match(component, /window\.setInterval/)
-    assert.match(component, /Pause guided Cloud tour/)
-    assert.match(component, /Play guided Cloud tour/)
-    assert.match(component, /prefers-reduced-motion: reduce/)
-    assert.match(component, /Tour paused for reduced motion/)
+    // The stylized dark-theme fake "mini app" mockup is gone: no synthetic
+    // sidebar/guided-tour scaffolding may return. Regression guard against the
+    // hand-drawn app UI the founder found confusing.
+    assert.doesNotMatch(component, /Operating view/)
+    assert.doesNotMatch(component, /Choose a Cloud preview state/)
+    assert.doesNotMatch(component, /guided Cloud tour/)
+    assert.doesNotMatch(component, /Tour paused for reduced motion/)
+    assert.doesNotMatch(component, /setInterval/)
 
+    // No unverifiable domain and no em dashes in the copy.
     assert.doesNotMatch(component, /demo\.openadapt\.ai/)
-    assert.doesNotMatch(component, /dashboard-workflows\.png/)
-    assert.doesNotMatch(component, /dashboard-walkthrough\.mp4/)
-    assert.doesNotMatch(component, /mediaLabel/)
+    assert.doesNotMatch(component, /—/)
 })
 
-test('reference footage animates independently of the guided-tour state', () => {
+test('the showcase honestly labels the mock-data mode of the real UI', () => {
     const component = read('components/DashboardShowcase.js')
 
-    // Regression guard: an earlier version swapped the footage <img> to the
-    // static .jpg still whenever the tour was paused — and selecting any
-    // reference tab pauses the tour, so one click froze the footage. The GIF
-    // must be gated only on prefers-reduced-motion.
-    assert.match(
-        component,
-        /reducedMotion\s*\?\s*media\.still\s*:\s*media\.animated/
-    )
-    assert.doesNotMatch(
-        component,
-        /tourPlaying\s*\?\s*media\.animated\s*:\s*media\.still/
-    )
-    // Switching reference/view remounts the <img> so the newly selected
-    // footage restarts from its first frame.
-    assert.match(
-        component,
-        /key=\{`\$\{reference\.key\}-\$\{viewKey\}`\}/
-    )
+    // The interface is real; the data shown is synthetic mock-mode seed data.
+    // Keep the honesty note that these are not customer or production runs.
+    assert.match(component, /mock-data mode/)
+    assert.match(component, /synthetic records/)
+    assert.match(component, /not\s+a customer or production run/)
 })
 
-test('every reference x view slot uses provenance-backed real Cloud app footage', () => {
+test('every showcase screenshot is a real, provenance-backed Cloud capture', () => {
     const component = read('components/DashboardShowcase.js')
+    const manifest = JSON.parse(read('public/product-preview/MANIFEST.json'))
     const provenance = JSON.parse(
         read('public/cloud-preview/provenance.json')
     )
 
-    // The footage is the REAL app.openadapt.ai product (openadapt-cloud) in
-    // its explicit local mock mode, with obviously synthetic seed data.
+    // The captures come from the real app.openadapt.ai product (openadapt-cloud)
+    // in its explicit local mock mode, with obviously synthetic seed data.
+    assert.equal(
+        manifest.source.repository,
+        'https://github.com/OpenAdaptAI/openadapt-cloud'
+    )
+    assert.match(manifest.source.mode, /mock/)
     assert.equal(provenance.synthetic_fixture, true)
     assert.equal(
         provenance.source.repository,
@@ -88,49 +74,62 @@ test('every reference x view slot uses provenance-backed real Cloud app footage'
     assert.match(provenance.source.commit, /^[a-f0-9]{40}$/)
     assert.match(provenance.source.mode, /mock/)
 
-    for (const referenceKey of ['healthcare', 'lending', 'insurance']) {
-        for (const view of ['workflow', 'run', 'evidence', 'report']) {
-            for (const extension of ['gif', 'jpg']) {
-                const asset = `/cloud-preview/${referenceKey}-${view}.${extension}`
-                assert.match(
-                    component,
-                    new RegExp(asset.replaceAll('/', '\\/')),
-                    `component should reference ${asset}`
-                )
-                assert.equal(
-                    fs.existsSync(path.join(root, 'public', asset)),
-                    true,
-                    `${asset} should exist`
-                )
-                assert.equal(
-                    typeof provenance.media[
-                        `${referenceKey}-${view}.${extension}`
-                    ]?.sha256,
-                    'string',
-                    `${asset} should be provenance-backed`
-                )
-            }
-        }
-    }
+    // The large primary shot is the real workflows dashboard and is manifested.
+    assert.match(component, /\/product-preview\/dashboard-workflows\.png/)
+    assert.equal(
+        fs.existsSync(
+            path.join(root, 'public/product-preview/dashboard-workflows.png')
+        ),
+        true
+    )
+    assert.equal(
+        typeof manifest.assets['dashboard-workflows.png']?.sha256,
+        'string'
+    )
+    // Displayed large: the intrinsic capture is high-resolution.
+    assert.equal(manifest.assets['dashboard-workflows.png'].width, 2880)
+    assert.equal(manifest.assets['dashboard-workflows.png'].height, 1800)
 
-    // Animated slots loop forever and stay at the shared 880x550 footprint.
-    for (const [name, entry] of Object.entries(provenance.media)) {
-        if (!name.endsWith('.gif')) continue
-        assert.equal(entry.width, 880)
-        assert.equal(entry.height, 550)
-        assert.match(entry.loop, /infinite/)
-        const bytes = fs.readFileSync(
-            path.join(root, 'public', 'cloud-preview', name)
+    // Supporting shots: real run/evidence frames plus the newly added program
+    // visualizer and workflow catalog captures. Each must exist on disk.
+    const supporting = [
+        '/cloud-preview/healthcare-run.jpg',
+        '/cloud-preview/healthcare-evidence.jpg',
+        '/cloud-preview/program-graph.png',
+        '/cloud-preview/workflow-catalog.png',
+    ]
+    for (const asset of supporting) {
+        assert.match(
+            component,
+            new RegExp(asset.replaceAll('/', '\\/')),
+            `component should reference ${asset}`
         )
         assert.equal(
-            bytes.subarray(0, 2000).includes('NETSCAPE2.0'),
+            fs.existsSync(path.join(root, 'public', asset)),
             true,
-            `${name} should carry the NETSCAPE2.0 loop extension`
+            `${asset} should exist`
         )
     }
 
-    // The per-view media selection is total: no view falls back to a shared
-    // record/replay clip.
-    assert.match(component, /reference\.media\[viewKey\]/)
-    assert.doesNotMatch(component, /reference\.media\.replay/)
+    // The real run/evidence frames are provenance-backed with a sha256.
+    for (const name of [
+        'healthcare-run.jpg',
+        'healthcare-evidence.jpg',
+    ]) {
+        assert.equal(
+            typeof provenance.media[name]?.sha256,
+            'string',
+            `${name} should be provenance-backed`
+        )
+    }
+
+    // Every image is lazy-loaded with intrinsic dimensions so the large
+    // captures do not tank performance (primary shot + the mapped gallery img).
+    const imgTags = component.match(/<img[\s\S]*?\/>/g) || []
+    assert.ok(imgTags.length >= 2)
+    for (const tag of imgTags) {
+        assert.match(tag, /loading="lazy"/)
+        assert.match(tag, /width=/)
+        assert.match(tag, /height=/)
+    }
 })
