@@ -46,9 +46,8 @@ export default function InstallSection() {
             <p className={styles.subtitle}>
                 One command installs the OpenAdapt launcher and governed
                 workflow compiler. The same CLI records, compiles, and replays
-                across browser, Windows, macOS, RDP, and Citrix &mdash; browser
-                is the path proven end to end today. No account or hosted
-                service is required.
+                across browser, Windows, macOS, RDP, and Citrix under one
+                governed loop. No account or hosted service is required.
             </p>
 
             <div className={styles.codeContainer}>
@@ -96,9 +95,9 @@ export default function InstallSection() {
                 </h4>
                 <p className={styles.note} style={{ marginBottom: '0.75rem' }}>
                     Try the whole loop right now against the bundled demo app,
-                    which runs in the browser &mdash; the substrate proven end to
-                    end today: record, compile, inspect, certify, replay,
-                    and induce known test drift. No account or cloud service. Once it is
+                    which runs in the browser: record, compile, inspect, certify,
+                    replay, and induce known test drift. No account or cloud
+                    service. Once it is
                     installed, your workflow data stays on your machine. One
                     heads-up on first run: the first <code>demo-record</code> or{' '}
                     <code>replay</code> downloads a bundled Chromium (~150&nbsp;MB)

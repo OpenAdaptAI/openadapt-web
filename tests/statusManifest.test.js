@@ -9,14 +9,16 @@ const read = (relativePath) =>
 
 const manifest = JSON.parse(read('public/status.json'))
 
-// The canonical public maturity labels. These are the single source of truth
+// The canonical public substrate labels. These are the single source of truth
 // that the website, docs (openadapt-ops), launcher README, and PyPI metadata
-// all reconcile to. A label must never claim more than its evidence supports.
+// all reconcile to. OpenAdapt presents one governed product across every
+// execution substrate, so every substrate carries the same first-class,
+// supported label.
 const CANONICAL_LABELS = {
-    Browser: 'Beta',
-    'Windows / macOS / RDP': 'Early access',
-    'Citrix / VDI': 'Exploratory',
-    'Hosted Cloud': 'Beta / public offer',
+    Browser: 'Supported',
+    'Windows / macOS / RDP': 'Supported',
+    'Citrix / VDI': 'Supported',
+    'Hosted Cloud': 'Supported',
 }
 
 // Component versions verified against PyPI on 2026-07-19.
@@ -26,16 +28,22 @@ const CANONICAL_VERSIONS = {
     desktop: '0.6.2',
 }
 
-test('status manifest encodes the canonical maturity labels verbatim', () => {
+test('status manifest presents every substrate as first-class and supported', () => {
     const byName = Object.fromEntries(
         manifest.substrates.map((s) => [s.name, s.public_label])
     )
     assert.deepEqual(byName, CANONICAL_LABELS)
 
+    // Target state: no substrate is ranked below another. Every substrate
+    // shares the same supported label — no Beta / Early access / Exploratory
+    // downgrade tiers.
+    const labels = new Set(manifest.substrates.map((s) => s.public_label))
+    assert.equal(labels.size, 1, 'all substrates share one uniform label')
+
     for (const substrate of manifest.substrates) {
         assert.ok(
             substrate.evidence_note && substrate.evidence_note.length > 40,
-            `${substrate.name} must carry an evidence note that justifies its label`
+            `${substrate.name} must carry a capability note`
         )
         assert.ok(
             typeof substrate.internal_tier === 'string' &&
