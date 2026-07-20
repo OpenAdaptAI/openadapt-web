@@ -54,9 +54,10 @@ export default function Home({ githubStats }) {
                                 Demonstrate a repeated task once. OpenAdapt
                                 compiles it into a local program that replays at
                                 $0 per healthy run across browser, Windows,
-                                macOS, RDP, and Citrix. It re-checks its
-                                evidence at each step and halts for a person
-                                instead of guessing when the screen changes.{' '}
+                                macOS, RDP, and Citrix. When the screen changes,
+                                it re-checks its evidence, repairs with AI when
+                                it can, and halts for a person instead of
+                                guessing.{' '}
                                 <Link href="#product-status">
                                     See how it runs across every interface.
                                 </Link>
@@ -69,17 +70,6 @@ export default function Home({ githubStats }) {
                             <div id="register">
                                 <div className="flex flex-wrap items-center justify-center gap-3 mt-0 mb-4">
                                     <Link
-                                        className="btn-ink"
-                                        href="#book"
-                                        onClick={() =>
-                                            track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'qualify_workflow',
-                                            })
-                                        }
-                                    >
-                                        Evaluate a workflow
-                                    </Link>
-                                    <Link
                                         className={styles.heroCloud}
                                         href="#cloud-product"
                                         onClick={() =>
@@ -89,6 +79,17 @@ export default function Home({ githubStats }) {
                                         }
                                     >
                                         Start with OpenAdapt Cloud
+                                    </Link>
+                                    <Link
+                                        className="btn-ghost-ink"
+                                        href="#book"
+                                        onClick={() =>
+                                            track(EVENTS.HERO_CTA_CLICK, {
+                                                cta: 'qualify_workflow',
+                                            })
+                                        }
+                                    >
+                                        Evaluate a workflow
                                     </Link>
                                     <Link
                                         className="btn-ghost-ink"
