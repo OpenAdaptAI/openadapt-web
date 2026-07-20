@@ -157,6 +157,35 @@
     text-decoration: none;
 }
 
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.signIn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--hairline);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+        border-color var(--dur-2, 180ms) var(--ease-out, ease),
+        color var(--dur-2, 180ms) var(--ease-out, ease);
+}
+
+.signIn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+}
+
 .cta {
     display: inline-block;
     padding: 7px 16px;
@@ -206,13 +235,18 @@
         display: none;
     }
 
-    .menuButton {
-        display: inline-block;
+    .actions {
         margin-left: auto;
     }
 
-    .cta {
-        margin-left: 0;
+    /* On mobile the CTA and hamburger carry the header; "Sign in" lives
+       inside the expandable panel instead of crowding the top bar. */
+    .signIn {
+        display: none;
+    }
+
+    .menuButton {
+        display: inline-block;
     }
 
     .mobilePanel {
