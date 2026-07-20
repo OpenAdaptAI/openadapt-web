@@ -9,6 +9,41 @@
     border-bottom: 1px solid var(--hairline);
 }
 
+/* Brief, confident positive-fit line under the hero subhead. The full
+   qualification / "use APIs first" detail moved lower on the page and to
+   /compare — this leads with fit instead of disqualifying up top. */
+.fitLine {
+    margin: 0 auto 1.25rem;
+    max-width: 40rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    color: var(--ink-3);
+}
+
+/* Elevated OpenAdapt Cloud CTA — an accent-tinted pill that stands out from
+   the ink primary and ghost secondary without competing as a second solid. */
+.heroCloud {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.5rem 1.1rem;
+    border-radius: 9999px;
+    border: 1.5px solid var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.heroCloud:hover {
+    background: var(--accent);
+    color: var(--ground);
+    border-color: var(--accent);
+}
+
 /* Mono green bordered pill above the H2 */
 .heroPill {
     display: inline-block;

@@ -47,13 +47,26 @@ describe('public product truth', () => {
             'contain.text',
             'Compile repeated GUI work. Verify the result. Halt when you can’t.'
         )
+        // The hero leads with value: a brief, confident positive-fit line and
+        // an elevated OpenAdapt Cloud call to action next to the primary
+        // evaluation CTA. The full "use APIs first" qualification moved LOW on
+        // the page (next to the /compare link it feeds).
+        cy.contains(
+            'Purpose-built for repeated, high-stakes GUI work'
+        ).should('be.visible')
+        cy.contains('a', 'Start with OpenAdapt Cloud').should(
+            'have.attr',
+            'href',
+            '/#cloud-product'
+        )
+        cy.get('a[href="/paper"]').should('exist')
+        // Qualification is still present, now lower on the page: it resolves
+        // into a confident, positive statement — no disqualifier column, no
+        // "when it isn't the right tool" section.
         cy.contains(
             'Use APIs first. Use OpenAdapt for the UI-only last mile.'
         ).should('be.visible')
         cy.contains('When OpenAdapt fits').should('be.visible')
-        // Fit signal leads and resolves into a confident, positive statement:
-        // when work fits, OpenAdapt runs it across every interface. No
-        // disqualifier column, no "when it isn't the right tool" section.
         cy.contains('OpenAdapt runs it across every').should('be.visible')
         cy.contains('another tool fits better').should('not.exist')
         cy.contains('When it isn’t the right tool').should('not.exist')
