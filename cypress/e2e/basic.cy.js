@@ -631,7 +631,8 @@ describe('security boundary', () => {
         cy.contains('not a signed, append-only audit ledger').should(
             'be.visible'
         )
-        cy.contains('OpenAdapt does not hold a SOC 2 attestation today').should(
+        cy.contains('SOC 2 readiness program underway').should('be.visible')
+        cy.contains('OpenAdapt does not yet hold a SOC 2 report').should(
             'be.visible'
         )
         cy.contains('Scrubbing creates a reviewable derivative').should('be.visible')
