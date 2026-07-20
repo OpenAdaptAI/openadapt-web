@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import ContactBookingSection from '@components/ContactBookingSection'
+import DashboardShowcase from '@components/DashboardShowcase'
 import Developers from '@components/Developers'
 import DriftOutcomes from '@components/DriftOutcomes'
 import EmailForm from '@components/EmailForm'
@@ -272,6 +273,9 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
             </Reveal>
             <Reveal>
                 <ProductStatus />
+            </Reveal>
+            <Reveal>
+                <DashboardShowcase />
             </Reveal>
             <Reveal>
                 <Pricing hostedOffer={hostedOffer} />

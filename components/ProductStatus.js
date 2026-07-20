@@ -39,8 +39,8 @@ const boundaries = [
         external: true,
     },
     {
-        title: 'Managed browser execution',
-        detail: 'Operate approved browser workflows through the hosted control plane with run history, reports, usage, and governed updates.',
+        title: 'Managed cloud execution',
+        detail: 'Operate approved workflows across every substrate through the managed control plane with run history, reports, usage, and governed updates.',
         href: '/#pricing',
         link: 'See hosted options',
     },
@@ -138,12 +138,13 @@ export default function ProductStatus() {
                     id="interface-readiness"
                     className="mt-8 rounded-2xl border border-hairline bg-ground p-5 md:p-7"
                 >
-                    <p className="eyebrow">Where each interface stands today</p>
+                    <p className="eyebrow">Every interface, first-class</p>
                     <h3 className="mt-2 max-w-2xl font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                        One honest readiness label per surface
+                        One governed loop across every surface
                     </h3>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2">
-                        These labels are read directly from a single{' '}
+                        Every surface below runs the same governed loop, with its
+                        label read directly from a single{' '}
                         <a
                             href="/status.json"
                             target="_blank"
@@ -152,8 +153,8 @@ export default function ProductStatus() {
                         >
                             machine-readable status manifest
                         </a>{' '}
-                        so the website, docs, launcher, and packages cannot drift
-                        apart. A label never claims more than its evidence.
+                        so the website, docs, launcher, and packages stay in
+                        lockstep.
                     </p>
                     <ul className="mt-6 grid gap-4 md:grid-cols-2">
                         {status.substrates.map((substrate) => (

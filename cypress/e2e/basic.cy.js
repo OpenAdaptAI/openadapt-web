@@ -51,7 +51,12 @@ describe('public product truth', () => {
             'Use APIs first. Use OpenAdapt for the UI-only last mile.'
         ).should('be.visible')
         cy.contains('When OpenAdapt fits').should('be.visible')
-        cy.contains('When it isn’t the right tool').should('be.visible')
+        // Fit signal leads and resolves into a confident, positive statement:
+        // when work fits, OpenAdapt runs it across every interface. No
+        // disqualifier column, no "when it isn't the right tool" section.
+        cy.contains('OpenAdapt runs it across every').should('be.visible')
+        cy.contains('another tool fits better').should('not.exist')
+        cy.contains('When it isn’t the right tool').should('not.exist')
         cy.get('a[href$="#open-source"]').should('exist')
         cy.get('a[href$="#product-status"]').should('exist')
         cy.get('a[href="/security"]').should('exist')
@@ -206,17 +211,21 @@ describe('public product truth', () => {
         })
 
         // A primary evaluation CTA and a secondary "Sign in" affordance
-        // (the hosted control plane) sit in the header action cluster.
-        cy.get('header').within(() => {
-            cy.contains('a', 'Evaluate a workflow').should(
-                'have.attr',
-                'href',
-                '/#book'
-            )
-            cy.contains('a', 'Sign in')
-                .should('be.visible')
-                .and('have.attr', 'href', 'https://app.openadapt.ai')
-        })
+        // (the hosted control plane) sit in the header action cluster. Scope to
+        // the first <header> (the site banner); the homepage DashboardShowcase
+        // renders its own decorative <header> inside a section further down.
+        cy.get('header')
+            .first()
+            .within(() => {
+                cy.contains('a', 'Evaluate a workflow').should(
+                    'have.attr',
+                    'href',
+                    '/#book'
+                )
+                cy.contains('a', 'Sign in')
+                    .should('be.visible')
+                    .and('have.attr', 'href', 'https://app.openadapt.ai')
+            })
 
         // Escape closes and returns focus to the trigger.
         cy.contains('button', 'Developers').type('{esc}')
@@ -248,7 +257,8 @@ describe('public product truth', () => {
             )
             cy.contains('Capture the workflow').should('be.visible')
             cy.contains('Run through the governed gate').should('be.visible')
-            cy.contains('Managed browser execution').should('be.visible')
+            cy.contains('Managed cloud execution').should('be.visible')
+            cy.contains('Managed browser execution').should('not.exist')
             cy.contains('Customer-controlled deployment').should('be.visible')
             cy.contains('Built for the interfaces your work depends on').should(
                 'be.visible'
@@ -269,7 +279,11 @@ describe('public product truth', () => {
                 'be.visible'
             )
             cy.contains('Scoped paid pilot').should('be.visible')
-            cy.contains('Beta / public offer').should('be.visible')
+            cy.get('[data-testid="hosted-status-label"]').should(
+                'contain.text',
+                'Supported'
+            )
+            cy.contains('Beta / public offer').should('not.exist')
             cy.contains('Offer unavailable').should('not.exist')
             cy.contains('Hosted checkout unavailable').should('not.exist')
             cy.contains('approved sanitized copy').should('be.visible')
