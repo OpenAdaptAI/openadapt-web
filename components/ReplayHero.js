@@ -77,6 +77,61 @@ export default function ReplayHero() {
                             decoding="async"
                             alt="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo, logging in and filling the patient-intake form, locally and with no per-run model calls."
                         />
+                        {/*
+                          Floating OpenAdapt system overlay: a HUD painted ON
+                          TOP of whatever app is running (here OpenEMR), a
+                          distinct visual layer from the browser chrome. It
+                          reinforces that OpenAdapt runs over your existing
+                          apps rather than replacing them.
+                        */}
+                        <div className={styles.sysOverlay}>
+                            <span className={styles.sysMark} aria-hidden="true">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    width="16"
+                                    height="16"
+                                    role="img"
+                                >
+                                    <rect
+                                        x="1.5"
+                                        y="1.5"
+                                        width="21"
+                                        height="21"
+                                        rx="6"
+                                        fill="url(#sysMarkFill)"
+                                    />
+                                    <path
+                                        d="M9.5 8 L16 12 L9.5 16 Z"
+                                        fill="#fdfcf9"
+                                    />
+                                    <defs>
+                                        <linearGradient
+                                            id="sysMarkFill"
+                                            x1="0"
+                                            y1="0"
+                                            x2="24"
+                                            y2="24"
+                                            gradientUnits="userSpaceOnUse"
+                                        >
+                                            <stop offset="0" stopColor="#4f7f60" />
+                                            <stop offset="1" stopColor="#2f5340" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </span>
+                            <span className={styles.sysMeta}>
+                                <span className={styles.sysBrand}>
+                                    OpenAdapt
+                                    <span
+                                        className={styles.sysDot}
+                                        aria-hidden="true"
+                                    />
+                                </span>
+                                <span className={styles.sysStatus}>
+                                    replaying · local · $0
+                                </span>
+                            </span>
+                        </div>
                     </div>
                     <figcaption className={styles.frameCaption}>
                         A compiled workflow replaying against OpenEMR&rsquo;s live
@@ -130,28 +185,70 @@ export default function ReplayHero() {
                         </div>
                     </div>
 
-                    <div className={styles.compare}>
-                        <div className={styles.compareRow}>
-                            <span className={styles.compareWho}>
-                                AI agent, same task
-                            </span>
-                            <span className={`${styles.compareVals} tnum`}>
-                                {usd(agent.cost_usd_per_run)}/run ·{' '}
-                                {agent.model_calls_per_run} model calls ·{' '}
-                                {secs(agent.wall_s_p50)}
-                            </span>
-                        </div>
-                        <div className={`${styles.compareRow} ${styles.compareUs}`}>
-                            <span className={styles.compareWho}>
-                                OpenAdapt, compiled
-                            </span>
-                            <span className={`${styles.compareVals} tnum`}>
-                                {usd(compiled.cost_usd_per_run)}/run ·{' '}
-                                {compiled.model_calls_per_run} model calls ·{' '}
-                                {secs(compiled.wall_s_p50)}
-                            </span>
-                        </div>
-                    </div>
+                    {/* Head-to-head evidence: the same task, agent vs the
+                        compiled OpenAdapt run. Rendered as a real comparison
+                        table so the win reads at a glance; OpenAdapt's winning
+                        cells are emphasized. Numbers come straight from
+                        data/benchmark.json (guarded against /compare drift). */}
+                    <table className={styles.vs}>
+                        <caption className={styles.vsCaption}>
+                            Same task, head to head
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th scope="col" className={styles.vsMetric}>
+                                    Per run
+                                </th>
+                                <th scope="col" className={styles.vsAgentCol}>
+                                    AI agent
+                                </th>
+                                <th scope="col" className={styles.vsUsCol}>
+                                    OpenAdapt
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row" className={styles.vsMetric}>
+                                    Model cost
+                                </th>
+                                <td className={`${styles.vsAgentCol} tnum`}>
+                                    {usd(agent.cost_usd_per_run)}
+                                </td>
+                                <td
+                                    className={`${styles.vsUsCol} ${styles.vsWin} tnum`}
+                                >
+                                    {usd(compiled.cost_usd_per_run)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" className={styles.vsMetric}>
+                                    Model calls
+                                </th>
+                                <td className={`${styles.vsAgentCol} tnum`}>
+                                    {agent.model_calls_per_run}
+                                </td>
+                                <td
+                                    className={`${styles.vsUsCol} ${styles.vsWin} tnum`}
+                                >
+                                    {compiled.model_calls_per_run}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" className={styles.vsMetric}>
+                                    Latency (p50)
+                                </th>
+                                <td className={`${styles.vsAgentCol} tnum`}>
+                                    {secs(agent.wall_s_p50)}
+                                </td>
+                                <td
+                                    className={`${styles.vsUsCol} ${styles.vsWin} tnum`}
+                                >
+                                    {secs(compiled.wall_s_p50)}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                     <div className={styles.per1k}>
                         <span className={styles.per1kHead}>
