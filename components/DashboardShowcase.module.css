@@ -98,26 +98,29 @@
     white-space: nowrap;
 }
 
-/* Fixed-height stage: a single aspect-ratio slot that every slide fills, so
-   there is no layout jump between frames of different aspect ratios. Slides are
-   stacked and crossfaded. */
+/* Fixed aspect-ratio viewport. Every capture is a full-height page taller than
+   this slot; the active one is panned top-to-bottom over its dwell so the whole
+   page is revealed. Slides are stacked and crossfaded. overflow-x is always
+   clipped so a wide capture never pushes the page sideways on mobile. */
 .stage {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
+    overflow: hidden;
     background: var(--ground);
 }
 
 .slide {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* object-position is set per slide inline (tall captures are top-anchored).
-       Default top so wide captures keep their nav and header in frame. */
-    object-position: top;
+    /* Natural height (the full page) so the auto-pan has somewhere to travel.
+       The active slide is translated upward in JS via the Web Animations API. */
+    height: auto;
+    transform-origin: top center;
+    will-change: transform;
     transition: opacity 700ms ease;
 }
 
@@ -343,11 +346,31 @@
     }
 }
 
-/* Respect reduced motion for the crossfade transition only. The rotation itself
-   is intentionally kept (see DashboardShowcase.js) so the section is never
-   static; here we simply make the frame swap instant rather than animated. */
+/* Respect reduced motion. The rotation itself is intentionally kept (see
+   DashboardShowcase.js) so the section is never static, but the crossfade is made
+   instant and the vertical auto-pan is dropped. So the visitor can still see the
+   WHOLE page of each frame without any movement, the stage becomes a normal
+   scroll viewport showing the active frame at its natural height: the active
+   capture is laid out in flow (so the stage scrolls exactly its height, with no
+   dead space) and the JS pan is suppressed by the same media query in the
+   component. */
 @media (prefers-reduced-motion: reduce) {
     .slide {
         transition-duration: 1ms;
+    }
+
+    .stage {
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .slide {
+        position: relative;
+        transform: none !important;
+    }
+
+    .slide:not([data-active='true']) {
+        display: none;
     }
 }
