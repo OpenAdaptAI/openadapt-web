@@ -34,13 +34,14 @@ test('developer ecosystem links have a single canonical source', () => {
         assert.ok(links.includes(`href: '${href}'`), `${label} → ${href}`)
     }
 
-    // Both surfaces consume the shared module rather than restating hrefs.
-    for (const source of [nav, developers]) {
-        assert.match(
-            source,
-            /import \{ BLOG_LINK, DEVELOPER_LINKS \} from 'data\/developerLinks'/
-        )
-    }
+    // The nav consumes the shared module rather than restating hrefs. The
+    // in-funnel open-source section (components/Developers.js) no longer
+    // renders these developer ecosystem links — they live in the nav and
+    // footer only (conversion cleanup) — so it does not import the module.
+    assert.match(
+        nav,
+        /import \{ BLOG_LINK, DEVELOPER_LINKS \} from 'data\/developerLinks'/
+    )
     assert.doesNotMatch(developers, /https:\/\/docs\.openadapt\.ai/)
     assert.doesNotMatch(nav, /https:\/\/docs\.openadapt\.ai/)
 })

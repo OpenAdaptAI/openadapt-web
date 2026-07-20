@@ -8,14 +8,17 @@ const read = (relativePath) =>
     fs.readFileSync(path.join(root, relativePath), 'utf8')
 
 test('hosted onboarding shows a code-native interactive Cloud preview', () => {
-    // The Cloud product preview was relocated off the (deliberately shorter)
-    // marketing homepage to the hosted onboarding page, where the Cloud
-    // product is the relevant context.
+    // The Cloud product preview renders on the hosted onboarding page (where
+    // the Cloud product is the relevant context) and, as lower-funnel product
+    // proof, on the marketing homepage.
     const hosted = read('pages/hosted/welcome.js')
+    const home = read('pages/index.js')
     const component = read('components/DashboardShowcase.js')
 
     assert.match(hosted, /import DashboardShowcase/)
     assert.match(hosted, /<DashboardShowcase \/>/)
+    assert.match(home, /import DashboardShowcase/)
+    assert.match(home, /<DashboardShowcase \/>/)
     assert.match(component, /OpenAdapt/)
     assert.match(component, /Cloud/)
     assert.match(component, /Choose a reference workflow/)
