@@ -1,16 +1,12 @@
 import React from 'react';
 import styles from './Developers.module.css';
 import InstallSection from '@components/InstallSection';
-import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks';
 
-// Canonical hrefs live in data/developerLinks.js (shared with the nav
-// "Developers" dropdown). Keep the historical on-page order: compiler/runtime
-// source, Docs, Technical paper source, Blog, Discord, Report an issue.
-const ecosystemLinks = [
-    ...DEVELOPER_LINKS.slice(0, 3),
-    BLOG_LINK,
-    ...DEVELOPER_LINKS.slice(3),
-];
+// The developer ecosystem destinations (compiler/runtime source, Docs,
+// Technical paper, Blog, Discord, Report an issue) live in the top-nav
+// "Developers" dropdown and the footer, both sourced from
+// data/developerLinks.js. They are intentionally not restated in the homepage
+// body, so the page keeps a single install path instead of a duplicate list.
 
 export default function Developers({ buildWarnings = [], githubStats = null }) {
     // Known engine breakage (open main-broken issues) and GitHub social
@@ -58,20 +54,7 @@ export default function Developers({ buildWarnings = [], githubStats = null }) {
                     <InstallSection />
 
                     {/* Package adoption stats live on the Download page. */}
-
-                    <div className="mt-8 mb-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center">
-                        {ecosystemLinks.map((link) => (
-                            <a
-                                key={link.label}
-                                href={link.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-sm"
-                            >
-                                {link.label}
-                            </a>
-                        ))}
-                    </div>
+                    {/* Developer ecosystem links live in the nav + footer. */}
                 </div>
             </div>
         </div>

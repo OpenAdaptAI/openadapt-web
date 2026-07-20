@@ -22,8 +22,8 @@ export const DEVELOPER_LINKS = [
         href: 'https://docs.openadapt.ai',
     },
     {
-        label: 'Technical paper source',
-        href: 'https://github.com/OpenAdaptAI/openadapt-flow/tree/main/paper',
+        label: 'Technical paper',
+        href: '/openadapt-paper.pdf',
     },
     {
         label: 'Discord',

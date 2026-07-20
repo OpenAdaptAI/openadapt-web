@@ -52,7 +52,7 @@ test('developer and connect links come from the single canonical source', () => 
     // body live in the Developers and Connect columns.
     assert.match(footer, /'Compiler\/runtime source'/)
     assert.match(footer, /'Docs'/)
-    assert.match(footer, /'Technical paper source'/)
+    assert.match(footer, /'Technical paper'/)
     assert.match(footer, /'Report an issue'/)
     assert.match(footer, /const CONNECT_COLUMN = \[/)
     assert.match(footer, /BLOG_LINK/)
