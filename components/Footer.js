@@ -160,6 +160,9 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
                         <a href="/solutions/insurance" className={styles.link}>
                             Insurance
                         </a>
+                        <a href="/workflows" className={styles.link}>
+                            Workflows
+                        </a>
                         <a href="/compare" className={styles.link}>
                             Compare
                         </a>
