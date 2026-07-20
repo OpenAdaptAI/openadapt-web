@@ -132,6 +132,98 @@
     object-position: top left;
 }
 
+/* ── Floating OpenAdapt system overlay (HUD) ────────────────────────────────
+   A dark-glass widget the OpenAdapt system paints ON TOP of the running app.
+   It is a deliberately distinct visual layer from the light OpenEMR content
+   and the browser chrome: real elevation (layered drop shadow) so it reads as
+   floating above the page, reinforcing "OpenAdapt runs over your existing
+   apps." Absolutely positioned inside .screen (which clips overflow), so it
+   can never spill past the frame or cause page-level horizontal scroll. */
+.sysOverlay {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    max-width: calc(100% - 28px);
+    padding: 8px 12px 8px 9px;
+    border-radius: 12px;
+    background: rgba(18, 21, 24, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 14px 34px -10px rgba(6, 9, 7, 0.62),
+        0 3px 10px rgba(6, 9, 7, 0.34), 0 0 0 1px rgba(6, 9, 7, 0.18);
+    -webkit-backdrop-filter: blur(9px) saturate(1.15);
+    backdrop-filter: blur(9px) saturate(1.15);
+    pointer-events: none;
+}
+
+.sysMark {
+    flex-shrink: 0;
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    box-shadow: 0 2px 6px rgba(6, 9, 7, 0.4);
+}
+
+.sysMark svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+.sysMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.sysBrand {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    color: #f3f5f2;
+}
+
+.sysDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--inset-ok);
+    box-shadow: 0 0 0 3px rgba(134, 217, 168, 0.2);
+    animation: livePulse 2.4s ease-in-out infinite;
+}
+
+.sysStatus {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--inset-ok);
+    white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+    .sysOverlay {
+        right: 10px;
+        bottom: 10px;
+        gap: 7px;
+        padding: 7px 10px 7px 8px;
+    }
+
+    .sysStatus {
+        font-size: 0.62rem;
+    }
+}
+
 .frameCaption {
     padding: 11px 15px;
     border-top: 1px solid var(--hairline);
@@ -272,48 +364,93 @@
     line-height: 1.25;
 }
 
-.compare {
+/* ── Head-to-head comparison table (agent vs compiled) ─────────────────────
+   A real table, not monospace rows: metric column plus one column per arm,
+   OpenAdapt's winning cells emphasized. Short labels + tabular numerals keep
+   it inside the ledger with no horizontal overflow down to 320px. */
+.vs {
     margin-top: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.compareRow {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 8px 11px;
-    border-radius: 8px;
-    background: var(--ground);
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
     border: 1px solid var(--hairline);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.compareUs {
-    background: rgba(62, 107, 79, 0.07);
-    border-color: rgba(62, 107, 79, 0.28);
+.vsCaption {
+    caption-side: top;
+    text-align: left;
+    padding: 0 0 8px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
 }
 
-.compareWho {
-    font-size: 0.78rem;
+.vs th,
+.vs td {
+    padding: 8px 10px;
+    text-align: right;
+    font-size: 0.82rem;
+    line-height: 1.15;
+    border-bottom: 1px solid var(--hairline);
+}
+
+.vs tbody tr:last-child th,
+.vs tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.vs thead th {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: var(--ground);
+    vertical-align: bottom;
+}
+
+/* Metric column: left-aligned row labels. */
+.vsMetric {
+    width: 40%;
+    text-align: left !important;
     font-weight: 600;
     color: var(--ink-2);
-    white-space: nowrap;
 }
 
-.compareUs .compareWho {
-    color: var(--accent-hover);
-}
-
-.compareVals {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
+.vs thead .vsMetric {
     color: var(--ink-3);
-    text-align: right;
 }
 
-.compareUs .compareVals {
+/* Agent column stays quiet, tertiary. */
+.vsAgentCol {
+    width: 30%;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+}
+
+/* OpenAdapt column is the emphasized winner: accent tint down the column. */
+.vsUsCol {
+    width: 30%;
+    background: rgba(62, 107, 79, 0.08);
+    color: var(--accent-hover);
+    box-shadow: inset 1px 0 0 rgba(62, 107, 79, 0.24);
+    font-variant-numeric: tabular-nums;
+}
+
+.vs thead .vsUsCol {
+    color: var(--accent);
+    background: rgba(62, 107, 79, 0.14);
+}
+
+/* Winning value cells: bold, accent, so the $0.00 / 0 / faster time pop. */
+.vsWin {
+    font-weight: 700;
     color: var(--accent-hover);
 }
 
@@ -604,14 +741,10 @@
 }
 
 @media (max-width: 480px) {
-    .compareRow {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 3px;
-    }
-
-    .compareVals {
-        text-align: left;
+    .vs th,
+    .vs td {
+        padding: 7px 8px;
+        font-size: 0.78rem;
     }
 
     .hostedShotWrap {
@@ -621,6 +754,7 @@
 
 @media (prefers-reduced-motion: reduce) {
     .realDot,
+    .sysDot,
     .stamp {
         animation: none;
     }
