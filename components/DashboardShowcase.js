@@ -1,28 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './DashboardShowcase.module.css'
 
 // Real screenshots of the shipping OpenAdapt Cloud product (openadapt-cloud),
 // captured from the actual dashboard UI. This is a rotating showcase: the large
 // slot cycles through the real product frames (dashboard, run detail, halt
 // evidence, program visualizer, workflow catalog) so each gets time on screen
-// big enough to read. Every frame is the real interface running in its local
-// mock-data mode with synthetic records (see /product-preview/MANIFEST.json and
-// /cloud-preview/provenance.json). Nothing here is a hand-drawn or synthetic
-// mockup of an app that does not exist.
+// big enough to read. Every frame is a full-height capture of the real
+// interface (see /product-preview/MANIFEST.json and /cloud-preview/provenance.json).
+// Nothing here is a hand-drawn or synthetic mockup of an app that does not exist.
+//
+// The captures are full pages, not top crops, and the large stage reveals each
+// one with a slow top-to-bottom vertical auto-pan over its dwell so the visitor
+// sees the WHOLE page rather than just the first screenful. Under reduced motion
+// the pan is dropped and the whole frame is shown at once (see the module CSS),
+// so nothing depends on movement to be legible.
 //
 // Order matters: the dashboard is first so it is the default (and SSR / no-JS)
 // frame, which is why the browser address bar reads app.openadapt.ai/dashboard
-// before any rotation. Aspect ratios differ a lot (the dashboard is wide, the
-// program graph and catalog are very tall), so each slide carries an explicit
-// object-position; the tall captures are top-anchored so their meaningful top
-// content renders big.
+// before any rotation. Every capture is 2560px wide at the same device scale, so
+// the five frames share one product look; their heights differ because each real
+// page is a different length.
 const SLIDES = [
     {
         key: 'dashboard',
         src: '/product-preview/dashboard-workflows.png',
-        width: 2880,
-        height: 1800,
-        focus: '50% 0%',
+        width: 2560,
+        height: 1600,
         address: 'app.openadapt.ai/dashboard',
         label: 'Dashboard',
         caption:
@@ -33,34 +36,29 @@ const SLIDES = [
         key: 'run',
         src: '/cloud-preview/healthcare-run.jpg',
         width: 2560,
-        height: 1600,
-        focus: '50% 0%',
+        height: 4620,
         address: 'app.openadapt.ai/runs',
         label: 'Run detail',
         caption:
             'Step timeline and independently verified effects for a completed run.',
-        alt: 'OpenAdapt Cloud run detail: step metrics and the timeline with verified effects for a completed synthetic OpenEMR run.',
+        alt: 'OpenAdapt Cloud run detail: run metrics, the verified-effect timeline, and the full machine-readable run report.',
     },
     {
         key: 'evidence',
         src: '/cloud-preview/healthcare-evidence.jpg',
         width: 2560,
-        height: 1600,
-        focus: '50% 0%',
+        height: 6594,
         address: 'app.openadapt.ai/runs/evidence',
         label: 'Halt evidence',
         caption:
             'The locally reported stop, resolver metrics, and the governed repair page.',
-        alt: 'OpenAdapt Cloud halt evidence: the locally reported stop, resolver metrics, and the governed repair page for a synthetic OpenEMR workflow.',
+        alt: 'OpenAdapt Cloud halt evidence: the locally reported stop, resolver metrics, and the governed repair page.',
     },
     {
         key: 'program',
         src: '/cloud-preview/program-graph.png',
-        width: 1800,
-        height: 5096,
-        // Tall full-page capture. Nudge past the empty grey app-chrome band at
-        // the very top so the compiled-program header and stats fill the frame.
-        focus: '50% 8%',
+        width: 2560,
+        height: 3882,
         address: 'app.openadapt.ai/workflows/program',
         label: 'Program visualizer',
         caption:
@@ -70,20 +68,20 @@ const SLIDES = [
     {
         key: 'catalog',
         src: '/cloud-preview/workflow-catalog.png',
-        width: 1280,
-        height: 2200,
-        // Tall full-page capture: top-anchored so the portfolio and ROI readout
-        // lead the frame.
-        focus: '50% 0%',
+        width: 2560,
+        height: 4290,
         address: 'app.openadapt.ai/workflows',
         label: 'Workflow catalog',
         caption:
-            'Approved workflows and their compiled bundle versions in one catalog.',
-        alt: 'OpenAdapt Cloud workflow catalog: approved workflows and their compiled bundle versions.',
+            'Approved workflows, their ROI readout, and a step-level halt map in one catalog.',
+        alt: 'OpenAdapt Cloud workflow catalog: approved workflows, their ROI readout, and a step-level halt map.',
     },
 ]
 
-const ROTATE_MS = 4600
+// One dwell per frame. The vertical auto-pan runs slightly shorter so it settles
+// at the bottom of the page before the rotation advances to the next frame.
+const ROTATE_MS = 6200
+const PAN_MS = 5600
 
 export default function DashboardShowcase() {
     const [active, setActive] = useState(0)
@@ -111,6 +109,71 @@ export default function DashboardShowcase() {
         setActive(index)
         setCycle((value) => value + 1)
     }
+
+    // Vertical auto-pan of the active full-height capture. The stage is a fixed
+    // aspect-ratio viewport; the capture is taller, so we translate it upward
+    // from its top edge to its bottom edge across the dwell (a slow downward
+    // reveal). We use the Web Animations API because the pan distance depends on
+    // the rendered image height, which is responsive and known only at runtime.
+    const slideRefs = useRef([])
+    const stageRef = useRef(null)
+    const panRef = useRef(null)
+    const pausedRef = useRef(paused)
+    pausedRef.current = paused
+
+    useEffect(() => {
+        const img = slideRefs.current[active]
+        const stage = stageRef.current
+        if (!img || !stage) return undefined
+        // Respect reduced motion: no auto-pan. The module CSS instead fits the
+        // whole capture into the stage so the entire page stays visible.
+        if (
+            typeof window !== 'undefined' &&
+            window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ) {
+            return undefined
+        }
+        let cancelled = false
+        const start = () => {
+            if (cancelled) return
+            const shift =
+                img.getBoundingClientRect().height -
+                stage.getBoundingClientRect().height
+            // Short captures (already fully visible) do not need a pan.
+            if (shift <= 4) return
+            const anim = img.animate(
+                [
+                    { transform: 'translateY(0)' },
+                    { transform: `translateY(${-shift}px)` },
+                ],
+                { duration: PAN_MS, easing: 'linear', fill: 'forwards' }
+            )
+            panRef.current = anim
+            if (pausedRef.current) anim.pause()
+        }
+        if (img.complete && img.naturalWidth) start()
+        else img.addEventListener('load', start, { once: true })
+        return () => {
+            cancelled = true
+            img.removeEventListener('load', start)
+            if (panRef.current) {
+                panRef.current.cancel()
+                panRef.current = null
+            }
+            img.style.transform = ''
+        }
+    }, [active, cycle])
+
+    // Pause and resume the pan in lockstep with the rotation timer (hover/focus)
+    // without restarting it, so a visitor reading a frame keeps their position.
+    useEffect(() => {
+        const anim = panRef.current
+        if (!anim) return undefined
+        if (paused) anim.pause()
+        else anim.play()
+        return undefined
+    }, [paused])
 
     const activeSlide = SLIDES[active]
 
@@ -158,14 +221,23 @@ export default function DashboardShowcase() {
                                 {activeSlide.address}
                             </span>
                         </div>
+                        {/* Fixed aspect-ratio viewport. Each full-height capture
+                            is taller than the viewport; the active one pans
+                            top-to-bottom over its dwell. Under reduced motion the
+                            viewport becomes scrollable and the capture is fit so
+                            the whole page is reachable without any movement. */}
                         <div
                             className={styles.stage}
                             id="cloud-stage"
                             data-testid="dashboard-stage"
+                            ref={stageRef}
                         >
                             {SLIDES.map((slide, index) => (
                                 <img
                                     key={slide.key}
+                                    ref={(node) => {
+                                        slideRefs.current[index] = node
+                                    }}
                                     className={styles.slide}
                                     src={slide.src}
                                     width={slide.width}
@@ -181,7 +253,6 @@ export default function DashboardShowcase() {
                                     }
                                     style={{
                                         opacity: index === active ? 1 : 0,
-                                        objectPosition: slide.focus,
                                     }}
                                 />
                             ))}
@@ -229,7 +300,6 @@ export default function DashboardShowcase() {
                                         loading="lazy"
                                         decoding="async"
                                         aria-hidden="true"
-                                        style={{ objectPosition: slide.focus }}
                                     />
                                     {index === active && (
                                         <span
