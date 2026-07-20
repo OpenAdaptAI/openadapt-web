@@ -1,13 +1,21 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
+import status from '../public/status.json'
+
 const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
 
 /*
  * Three delivery paths. The hosted amount is retrieved from Stripe at build
  * time rather than duplicated in site code; Checkout confirms the same
- * configured product and price before payment.
+ * configured product and price before payment. The hosted maturity label is
+ * read from the canonical status manifest (public/status.json) so it can never
+ * drift from the single source of truth.
  */
+
+const hostedStatusLabel =
+    status.substrates.find((substrate) => substrate.name === 'Hosted Cloud')
+        ?.public_label || 'Beta'
 
 function Check() {
     return (
@@ -122,15 +130,16 @@ export default function Pricing({ hostedOffer = null }) {
             className="border-t-2 border-ink bg-ground px-5 py-16 md:py-20"
         >
             <div className="mx-auto max-w-5xl">
-                <p className="eyebrow text-center">Early access</p>
+                <p className="eyebrow text-center">Ways to start</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Start as a design partner
+                    Run it yourself, subscribe, or start a pilot
                 </h2>
-                <p className="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    OpenAdapt is in early access. We lead with a scoped, paid
-                    pilot: we qualify one workflow with you, then price the
-                    engagement. You can also run the MIT-licensed engine yourself
-                    for free, or join early access for managed browser execution.
+                <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
+                    Run the MIT-licensed engine yourself for free. Subscribe to
+                    managed browser execution &mdash; a live offer in Beta, with
+                    assisted onboarding rather than one-click self-serve. For
+                    consequential desktop, Citrix, or regulated workflows, start
+                    a scoped paid pilot as a design partner.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -169,8 +178,11 @@ export default function Pricing({ hostedOffer = null }) {
 
                     {/* Card 2 — Hosted browser execution */}
                     <div className="relative flex h-full flex-col rounded-2xl border border-hairline bg-panel p-6 md:p-7">
-                        <span className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
-                            Early access
+                        <span
+                            className="absolute -top-3 left-6 rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2"
+                            data-testid="hosted-status-label"
+                        >
+                            {hostedStatusLabel}
                         </span>
                         <p className="eyebrow">Hosted browser</p>
                         <div className="mt-2 flex items-baseline gap-2">
@@ -199,9 +211,11 @@ export default function Pricing({ hostedOffer = null }) {
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            Early-access managed execution for an approved browser
+                            A live, managed subscription for an approved browser
                             workflow: a control plane for repeat execution,
-                            reporting, and governed updates.
+                            reporting, and governed updates. Onboarding is
+                            assisted &mdash; we qualify the first workflow with
+                            you rather than one-click self-serve.
                         </p>
                         <FeatureList
                             items={[
@@ -254,11 +268,12 @@ export default function Pricing({ hostedOffer = null }) {
                             Priced after qualification
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            The primary way to start. For consequential workflows
-                            that require a customer-controlled data boundary, we
-                            qualify the substrate, artifact policy, effect oracle,
-                            and operating model with you, then scope and price the
-                            pilot before production use.
+                            The way to start on Windows, macOS, RDP, Citrix, or
+                            regulated data &mdash; substrates offered to design
+                            partners only. We qualify the substrate, artifact
+                            policy, effect oracle, and operating model with you in
+                            a customer-controlled boundary, then scope and price
+                            the pilot before production use.
                         </p>
                         <FeatureList
                             items={[
