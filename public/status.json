@@ -1,0 +1,35 @@
+{
+    "$comment": "Canonical machine-readable maturity + version status for OpenAdapt. This file is the single source of truth: every public surface (website, docs, launcher README, PyPI metadata, in-product copy) reconciles its substrate maturity labels and component versions to this manifest. Served at https://openadapt.ai/status.json and imported directly by the homepage so rendered labels cannot drift from it. Honesty rule: a public_label never claims more than its evidence_note supports.",
+    "generated_at": "2026-07-19",
+    "versions": {
+        "launcher": "1.7.1",
+        "flow": "1.19.0",
+        "desktop": "0.6.2"
+    },
+    "substrates": [
+        {
+            "name": "Browser",
+            "public_label": "Beta",
+            "internal_tier": "reference",
+            "evidence_note": "Reference record -> compile -> replay path. Runs end to end in CI with no OS permissions and is the substrate the public managed subscription executes on. A clean run is still not automatically safe; identity, effect, and policy coverage are audited per bundle."
+        },
+        {
+            "name": "Windows / macOS / RDP",
+            "public_label": "Scoped acceptance — design partners only",
+            "internal_tier": "scoped-acceptance",
+            "evidence_note": "Each passed a real, counted scoped qualification with 0 silent incorrect successes, 0 over-halts, and 0 model calls: Windows UIA 3/3 on an in-tree WinForms matrix with an independent SQLite oracle and 3/3 stale/ambiguity refusals; native macOS TextEdit 3/3 exact-byte effects plus a two-window ambiguity refusal; real-network RDP 3/3 unique-file trials with independent guest-tools readback. These qualify only their named tasks and environments — not arbitrary applications, clean-machine support, or hosted-desktop availability. No external customer has run these in production yet, so public availability is design-partner only."
+        },
+        {
+            "name": "Citrix / VDI",
+            "public_label": "Research / design-partner qualification",
+            "internal_tier": "design-partner-qualification",
+            "evidence_note": "No validated ICA/HDX integration exists. The generic pixel-only remote-window safety floor can begin qualification only inside a design partner's real Citrix/VDI environment; RDP evidence does not transfer. Client, latency, compression, DPI, lock-screen, input, identity, and effect behavior all require that real environment."
+        },
+        {
+            "name": "Hosted Cloud",
+            "public_label": "Beta / public offer",
+            "internal_tier": "beta-public-offer",
+            "evidence_note": "A live $500/month managed browser-workflow subscription backed by the configured live Stripe Product and Price. Three reversible production pre-payment trials verified tenant-bound Checkout creation and confirmed unpaid sessions grant no entitlement; the first genuine external customer payment-to-run lifecycle has not completed yet. Production uses live dependencies and fails closed rather than simulating success. Non-browser hosted substrates (Windows/RDP/Citrix desktops) remain separately scoped design-partner deployments."
+        }
+    ]
+}
