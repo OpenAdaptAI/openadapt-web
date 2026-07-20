@@ -56,7 +56,7 @@ const outcomes = [
     },
     {
         title: 'Control the runtime boundary',
-        body: 'Choose local, managed browser, customer-cloud, or on-prem execution for the supported workflow.',
+        body: 'Choose local, managed cloud, customer-controlled, or on-prem execution for the workflow.',
     },
 ]
 
@@ -98,7 +98,7 @@ const rows = [
     },
     {
         dimension: 'Execution boundary',
-        openadapt: 'Local, managed browser, customer cloud, or on-prem',
+        openadapt: 'Local, managed cloud, customer cloud, or on-prem',
         rpa: 'Customer infrastructure or vendor cloud',
         agents: 'Local or cloud, depending on the provider',
         browser: 'Browser with local or cloud services',

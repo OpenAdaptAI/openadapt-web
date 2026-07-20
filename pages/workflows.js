@@ -194,16 +194,16 @@ export default function WorkflowsPage() {
                     <Link href="/#book">evaluate a workflow with us</Link>.
                 </p>
 
-                {/* Maturity legend — canonical substrate labels */}
+                {/* Execution substrates — one governed loop, every surface */}
                 <div className="mt-8 rounded-xl border border-hairline bg-panel p-5">
                     <p className="font-display text-sm font-semibold text-ink">
-                        Substrate maturity labels
+                        Execution substrates
                     </p>
                     <ul className="mt-3 grid gap-2 text-sm text-ink-2 sm:grid-cols-2">
                         <li>
                             <strong className="text-ink">Browser</strong> —{' '}
-                            {SUBSTRATE_MATURITY.browser} (the reference path;
-                            every catalog entry below runs here)
+                            {SUBSTRATE_MATURITY.browser} (every catalog entry
+                            below runs here)
                         </li>
                         <li>
                             <strong className="text-ink">Windows UIA</strong> —{' '}
