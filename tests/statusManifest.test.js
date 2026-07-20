@@ -13,10 +13,10 @@ const manifest = JSON.parse(read('public/status.json'))
 // that the website, docs (openadapt-ops), launcher README, and PyPI metadata
 // all reconcile to. A label must never claim more than its evidence supports.
 const CANONICAL_LABELS = {
-    Browser: 'Beta',
-    'Windows / macOS / RDP': 'Scoped acceptance — design partners only',
-    'Citrix / VDI': 'Research / design-partner qualification',
-    'Hosted Cloud': 'Beta / public offer',
+    Browser: 'Available — managed cloud & local',
+    'Windows / macOS / RDP': 'Available — deploy with a guided pilot',
+    'Citrix / VDI': 'Pilot-ready for design partners',
+    'Hosted Cloud': 'Available — managed control plane',
 }
 
 // Component versions verified against PyPI on 2026-07-19.

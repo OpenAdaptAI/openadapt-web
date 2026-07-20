@@ -46,19 +46,17 @@ export default function Home({ githubStats }) {
                                     </a>
                                 )}
                             </div>
-                            <h1 className="font-display text-2xl md:text-3xl mt-0 mb-4 font-semibold tracking-tight text-ink">
-                                Compile repeated GUI work. Verify the result.
-                                Halt when you can&rsquo;t.
+                            <h1 className="font-display text-3xl md:text-4xl mt-0 mb-4 font-semibold tracking-tight text-ink">
+                                Automate the GUI work that has to be right.
                             </h1>
                             <p className="mt-0 mb-6 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                Demonstrate a bounded, repeated GUI workflow and
-                                compile it into a locally executable program whose
-                                healthy replay makes no model calls. OpenAdapt brings
-                                the same governed loop to the interfaces your work is
-                                trapped behind &mdash; browser, Windows, RDP, and
-                                Citrix/VDI &mdash; re-resolving from retained
-                                evidence, proposing a governed repair, or halting for
-                                an operator when verification fails.{' '}
+                                Demonstrate a bounded workflow once. OpenAdapt
+                                compiles it into a deterministic program that
+                                replays with zero model calls, proposes a governed
+                                repair under review when the interface drifts, and
+                                halts for an operator when it can&rsquo;t verify the
+                                result &mdash; across browser, Windows, RDP, and
+                                Citrix/VDI.{' '}
                                 <Link href="#product-status">
                                     See where each capability stands.
                                 </Link>
@@ -88,6 +86,10 @@ export default function Home({ githubStats }) {
                                         Try locally
                                     </Link>
                                 </div>
+                                <p className="mb-8 text-sm text-ink-3">
+                                    Runs on your own machine · zero per-run model
+                                    cost · deterministic replay you can audit
+                                </p>
                             </div>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />

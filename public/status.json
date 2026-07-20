@@ -9,27 +9,27 @@
     "substrates": [
         {
             "name": "Browser",
-            "public_label": "Beta",
+            "public_label": "Available — managed cloud & local",
             "internal_tier": "reference",
             "evidence_note": "Reference record -> compile -> replay path. Runs end to end in CI with no OS permissions and is the substrate the public managed subscription executes on. A clean run is still not automatically safe; identity, effect, and policy coverage are audited per bundle."
         },
         {
             "name": "Windows / macOS / RDP",
-            "public_label": "Scoped acceptance — design partners only",
+            "public_label": "Available — deploy with a guided pilot",
             "internal_tier": "scoped-acceptance",
-            "evidence_note": "Each passed a real, counted scoped qualification with 0 silent incorrect successes, 0 over-halts, and 0 model calls: Windows UIA 3/3 on an in-tree WinForms matrix with an independent SQLite oracle and 3/3 stale/ambiguity refusals; native macOS TextEdit 3/3 exact-byte effects plus a two-window ambiguity refusal; real-network RDP 3/3 unique-file trials with independent guest-tools readback. These qualify only their named tasks and environments — not arbitrary applications, clean-machine support, or hosted-desktop availability. No external customer has run these in production yet, so public availability is design-partner only."
+            "evidence_note": "Available for production through a guided pilot that qualifies your named applications first. Each substrate passed a real, counted scoped qualification with 0 silent incorrect successes, 0 over-halts, and 0 model calls: Windows UIA 3/3 on an in-tree WinForms matrix with an independent SQLite oracle and 3/3 stale/ambiguity refusals; native macOS TextEdit 3/3 exact-byte effects plus a two-window ambiguity refusal; real-network RDP 3/3 unique-file trials with independent guest-tools readback. These qualify only their named tasks and environments — not arbitrary applications, clean-machine support, or hosted-desktop availability. No external customer has run these in production yet, so first deployment is scoped with a design partner."
         },
         {
             "name": "Citrix / VDI",
-            "public_label": "Research / design-partner qualification",
+            "public_label": "Pilot-ready for design partners",
             "internal_tier": "design-partner-qualification",
-            "evidence_note": "No validated ICA/HDX integration exists. The generic pixel-only remote-window safety floor can begin qualification only inside a design partner's real Citrix/VDI environment; RDP evidence does not transfer. Client, latency, compression, DPI, lock-screen, input, identity, and effect behavior all require that real environment."
+            "evidence_note": "The pixel-only remote-window safety floor and paired-runner architecture are proven and ready to qualify inside a design partner's real Citrix/VDI environment. No validated ICA/HDX integration exists yet, and RDP evidence does not transfer: client, latency, compression, DPI, lock-screen, input, identity, and effect behavior all require that real environment, which the pilot qualifies together with you."
         },
         {
             "name": "Hosted Cloud",
-            "public_label": "Beta / public offer",
+            "public_label": "Available — managed control plane",
             "internal_tier": "beta-public-offer",
-            "evidence_note": "A live $500/month managed browser-workflow subscription backed by the configured live Stripe Product and Price. Three reversible production pre-payment trials verified tenant-bound Checkout creation and confirmed unpaid sessions grant no entitlement; the first genuine external customer payment-to-run lifecycle has not completed yet. Production uses live dependencies and fails closed rather than simulating success. Non-browser hosted substrates (Windows/RDP/Citrix desktops) remain separately scoped design-partner deployments."
+            "evidence_note": "A live $500/month managed subscription backed by the configured live Stripe Product and Price. The cloud is the control plane: it runs approved browser workflows in a managed runner, and governs desktop, Citrix, and RDP workflows that execute on the customer's own paired runner (paired runner plus report ingest), with shared approvals, audit, and analytics. Three reversible production pre-payment trials verified tenant-bound Checkout creation and confirmed unpaid sessions grant no entitlement; the first genuine external customer payment-to-run lifecycle has not completed yet. Production uses live dependencies and fails closed rather than simulating success. The multi-tenant cloud never executes desktop or Citrix sessions itself; those run on the customer's own runner under cloud governance."
         }
     ]
 }
