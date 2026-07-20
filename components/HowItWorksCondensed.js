@@ -8,19 +8,19 @@ const steps = [
         number: '1',
         name: 'Record & compile',
         description:
-            'Demonstrate one bounded, repeated instance. OpenAdapt compiles the trace into a reviewable, parameterized program, not a prompt a model reinterprets each run.',
+            'Demonstrate one bounded, repeated task. OpenAdapt compiles the trace into a reviewable, parameterized program. Not a prompt a model rereads each run.',
     },
     {
         number: '2',
         name: 'Replay deterministically',
         description:
-            'Healthy runs execute the compiled steps locally with zero model calls, so repeat runs are fast and cost nothing per run.',
+            'Healthy runs execute the compiled steps locally with zero model calls. Repeat runs are fast and cost nothing per run.',
     },
     {
         number: '3',
         name: 'Resolve, repair, or halt',
         description:
-            'Under interface drift, deterministic evidence re-finds the target, an optional model proposes a governed repair, or configured verification halts and preserves a run report.',
+            'When the interface drifts, deterministic evidence re-finds the target, an optional model proposes a governed repair, or verification halts and keeps a run report.',
     },
 ]
 

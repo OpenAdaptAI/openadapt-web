@@ -10,7 +10,7 @@ const outcomes = [
     {
         status: 'Optional',
         title: 'AI-assisted proposal',
-        body: 'If deterministic evidence is insufficient and a model is configured, it can propose a target or confirm limited visual state. The model can be wrong; identity, policy, and postcondition gates still decide whether execution continues.',
+        body: 'If deterministic evidence is insufficient and a model is configured, it can propose a target or confirm limited visual state. The model can be wrong, so identity, policy, and postcondition gates still decide whether execution continues.',
     },
     {
         status: 'Operator path',
