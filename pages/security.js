@@ -103,13 +103,13 @@ const summary = [
         area: 'DPA & BAA',
         anchor: 'legal',
         status: 'scoped',
-        note: 'Scoped per engagement; no standing BAA program.',
+        note: 'DPA (GDPR/CCPA/PIPEDA) available on request; on-prem BAA scoped following review — no standing offer.',
     },
     {
         area: 'SOC 2',
         anchor: 'assurance',
-        status: 'none',
-        note: 'No active audit. Not held today.',
+        status: 'readiness',
+        note: 'Type II readiness program underway; controls mapped to AICPA Trust Services Criteria. No report yet.',
     },
 ]
 
@@ -119,6 +119,7 @@ const chip = {
     operator: { label: 'Operator-controlled', color: 'var(--inset-warn)' },
     roadmap: { label: 'Roadmap', color: 'var(--inset-warn)' },
     scoped: { label: 'Scoped per engagement', color: 'var(--inset-warn)' },
+    readiness: { label: 'Readiness program', color: 'var(--inset-warn)' },
     none: { label: 'Not held', color: 'var(--inset-warn)' },
 }
 
@@ -1155,14 +1156,21 @@ export default function SecurityPage() {
                                     Data Processing Agreement (DPA)
                                 </strong>
                                 <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
-                                    Scoped per engagement
+                                    Available on request
                                 </span>
                             </div>
                             <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                                If your evaluation of the hosted service
-                                requires a DPA, contact us and we will scope one
-                                as part of the engagement. We are not publishing
-                                a self-serve DPA template we have not stood up.
+                                A Data Processing Agreement covering GDPR, CCPA,
+                                and PIPEDA is available on request for
+                                hosted-service customers. Email{' '}
+                                <a
+                                    href={`mailto:${CONTACT_EMAIL}`}
+                                    className="underline decoration-hairline underline-offset-2 hover:text-ink"
+                                >
+                                    {CONTACT_EMAIL}
+                                </a>{' '}
+                                and we will provide our DPA as part of your
+                                evaluation.
                             </p>
                         </div>
                         <div
@@ -1176,15 +1184,18 @@ export default function SecurityPage() {
                                     Business Associate Agreement (BAA)
                                 </strong>
                                 <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
-                                    Not held
+                                    On-prem; following review
                                 </span>
                             </div>
                             <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                                We do not run a standing BAA program today. If
-                                an enterprise pilot requires a BAA, talk to us
-                                and we will scope it as part of the engagement.
-                                We would rather tell you this up front than
-                                imply a program we have not stood up.
+                                For healthcare workflows, OpenAdapt runs
+                                on-premise so PHI stays inside your network — we
+                                provide the on-prem software substrate and PHI
+                                does not enter our infrastructure. We do not
+                                currently sign a Business Associate Agreement as
+                                a standing offer; a BAA scoped to qualified
+                                on-premise deployments can be discussed following
+                                review. Contact us to scope a deployment.
                             </p>
                         </div>
                     </div>
@@ -1195,7 +1206,7 @@ export default function SecurityPage() {
                     id="assurance"
                     className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
                 >
-                    <p className="eyebrow">Assurance &amp; certifications</p>
+                    <p className="eyebrow">Assurance &amp; attestation</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
                         SOC 2 and independent attestation
                     </h2>
@@ -1205,23 +1216,39 @@ export default function SecurityPage() {
                                 SOC 2
                             </strong>
                             <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
-                                No active audit
+                                Readiness program underway
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            OpenAdapt does not hold a SOC 2 attestation today.
-                            There is no SOC 2 Type I or Type II report, and no
-                            SOC 2 audit is currently in progress. SOC 2
-                            evaluates a service organization and its operating
-                            controls over a period of time — an architecture or
-                            a public codebase is not a substitute for an
-                            independent auditor&#39;s report, and we will not
-                            describe our design as &ldquo;built to meet SOC
-                            2&rdquo; in place of an actual engagement.
+                            <strong className="font-semibold text-ink">
+                                SOC 2 readiness program underway.
+                            </strong>{' '}
+                            Security controls are implemented and mapped to the
+                            AICPA Trust Services Criteria; a SOC 2 Type II
+                            attestation is being pursued. Status and timeline
+                            available on request.
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            We are designing internal controls with SOC 2
-                            criteria in mind. When an audit is genuinely
+                            OpenAdapt operates a formal information-security
+                            program built around the AICPA SOC 2 Trust Services
+                            Criteria (Security, Availability, and
+                            Confidentiality). We maintain a documented policy
+                            suite, a controls matrix mapped to the Common
+                            Criteria (CC1&ndash;CC9) plus Availability (A1) and
+                            Confidentiality (C1), and an evidence-based internal
+                            gap assessment. Core technical controls are already
+                            in production, including tenant isolation (row-level
+                            security), encryption of secrets at rest
+                            (AES-256-GCM) and data in transit (TLS),
+                            least-privilege access, a hardened CI/CD supply
+                            chain, and automated PII/PHI sanitization. We are
+                            pursuing a SOC 2 Type II attestation; our roadmap,
+                            current control status, and security documentation
+                            are available under NDA on request.
+                        </p>
+                        <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                            OpenAdapt does not yet hold a SOC 2 report. We do not
+                            claim certification. When an audit is genuinely
                             underway, this page will name the report type, the
                             auditor, and the period — and not before.
                         </p>
