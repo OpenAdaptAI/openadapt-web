@@ -1,245 +1,289 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 
+import benchmark from '../data/benchmark.json'
 import styles from './ReplayHero.module.css'
 
 /**
- * ReplayHero — a stylized, illustrative depiction of a compiled workflow
- * replaying as a run report. The same governed loop is shown running across
- * every interface the work is trapped behind (browser, Windows, macOS, RDP,
- * Citrix): a substrate strip cycles while steps resolve through the
- * deterministic ladder, one hits UI drift and re-resolves deterministically,
- * and the run closes with zero model calls. A cursor tracks the trace, a scan
- * sweep fires on the drift beat, and a VERIFIED stamp punches in as the
- * emotional peak. A real OpenAdapt Cloud screenshot sits alongside as
- * shipping-product proof.
+ * ReplayHero — real proof, not a stylized mockup (Primary v2).
  *
- * The numbers shown are an illustration of the intended behavior, not
- * captured benchmark data — a visible caption says so, and measured results
- * live on the Compare page.
+ * Left: real footage of a compiled OpenAdapt workflow replaying against
+ * OpenEMR's live public demo (public/how-it-works/run_openemr.*, provenance in
+ * public/how-it-works/MANIFEST.json — source "real"). The reduced-motion / poster
+ * still is a rich late frame of the run — the patient-intake form with fields
+ * populated (run_openemr_intake.jpg, derived from that same real footage), not
+ * the empty landing calendar.
  *
- * Pure DOM + CSS (no video, no canvas); plays while visible and restarts from
- * the top whenever it scrolls back into view, so every viewing starts at step
- * 1.0; static final frame under prefers-reduced-motion.
+ * Right: the measured OpenEMR benchmark numbers, read straight from
+ * data/benchmark.json (figures copied verbatim from the openadapt-flow benchmark
+ * results and guarded so the published numbers cannot drift from /compare), plus
+ * the effect-verification thesis: success is judged by an arm-independent oracle
+ * reading the record itself — not the application's own "saved" banner.
+ *
+ * Below the two-up: the governed drift beat — the most differentiated moment —
+ * shown from the real reproducible drift drill (heal_resolve.jpg, a frame of the
+ * MANIFEST "heal" capture, source "real"): a drifted target re-resolved via the
+ * geometry rung and a governed repair proposed as a reviewable diff, applied only
+ * after sign-off, with zero model calls. Then a real OpenAdapt Cloud capture.
+ *
+ * The footage is gated on prefers-reduced-motion (static poster frame when
+ * motion is reduced) and paused while off-screen. Nothing here is illustrative.
  */
 
-// The substrate set OpenAdapt runs the one governed loop across. Target-state:
-// every interface is first-class. The strip cycles through them so the hero
-// reads as "the same loop, every interface," not a browser-only demo.
-const SUBSTRATES = [
-    { key: 'browser', label: 'Browser', chrome: 'app.openemr — referral-intake' },
-    { key: 'windows', label: 'Windows', chrome: 'OpenEMR (Win32) — referral-intake' },
-    { key: 'macos', label: 'macOS', chrome: 'OpenEMR.app — referral-intake' },
-    { key: 'rdp', label: 'RDP', chrome: 'RDP · win-emr-01 — referral-intake' },
-    { key: 'citrix', label: 'Citrix', chrome: 'Citrix HDX · EMR — referral-intake' },
-]
-
-const ROWS = [
-    { n: '1.0', action: 'click', target: "'Sign In'", rung: 'template', ms: '12ms', status: 'ok' },
-    { n: '2.0', action: 'type', target: 'username', rung: '—', ms: '8ms', status: 'ok' },
-    { n: '3.0', action: 'click', target: "'Tasks'", rung: 'template', ms: '9ms', status: 'ok' },
-    { n: '4.0', action: 'click', target: "'Open referral'", rung: 'template', ms: '11ms', status: 'ok' },
-    { n: '5.0', action: 'click', target: "'Save Encounter'", rung: 'drift', ms: '', status: 'drift' },
-    { n: '', action: '', target: 're-resolved via geometry — anchor update saved as diff', rung: '', ms: '', status: 'heal' },
-    { n: '', action: '', target: 'postconditions verified · run complete', rung: '', ms: '', status: 'done' },
-]
-
-const ROW_DELAY_S = (i) => 0.5 + i * 1.15
-const STEP_COUNT = 5 // rows with a decimal step number feed the replay rail
-const DRIFT_INDEX = 4
-const LOOP_MS = 12000
+const em = benchmark.openemr
+const usd = (n) => `$${Number(n).toFixed(2)}`
+const secs = (n) => `${Math.round(Number(n))}s`
+const per1k = Math.round(em.agent.cost_usd_per_run * 1000).toLocaleString()
 
 export default function ReplayHero() {
-    const frameRef = useRef(null)
-    const [cycle, setCycle] = useState(0)
-    // The substrate label advances one notch per loop so the run visibly
-    // repeats across every interface over successive plays.
-    const [substrateIndex, setSubstrateIndex] = useState(0)
+    const videoRef = useRef(null)
+    const [reduced, setReduced] = useState(false)
 
+    // Track the user's motion preference so we can hold a static frame.
     useEffect(() => {
-        if (
-            typeof window === 'undefined' ||
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ) {
-            return undefined
-        }
-
-        let timer = null
-        const startLoop = () => {
-            if (timer) return
-            timer = setInterval(() => {
-                setCycle((c) => c + 1)
-                setSubstrateIndex((s) => (s + 1) % SUBSTRATES.length)
-            }, LOOP_MS)
-        }
-        const stopLoop = () => {
-            if (!timer) return
-            clearInterval(timer)
-            timer = null
-        }
-
-        const node = frameRef.current
-        if (!node || typeof IntersectionObserver === 'undefined') {
-            startLoop()
-            return stopLoop
-        }
-
-        let everHidden = false
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    // Restart from step 1.0 when scrolling back to the hero.
-                    if (everHidden) setCycle((c) => c + 1)
-                    startLoop()
-                } else {
-                    everHidden = true
-                    stopLoop()
-                }
-            },
-            { threshold: 0.3 }
-        )
-        observer.observe(node)
-        return () => {
-            observer.disconnect()
-            stopLoop()
-        }
+        if (typeof window === 'undefined' || !window.matchMedia) return undefined
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+        const apply = () => setReduced(mq.matches)
+        apply()
+        mq.addEventListener?.('change', apply)
+        return () => mq.removeEventListener?.('change', apply)
     }, [])
 
-    const substrate = SUBSTRATES[substrateIndex]
+    // Play only while visible and only when motion is allowed.
+    useEffect(() => {
+        const video = videoRef.current
+        if (!video) return undefined
+        if (reduced) {
+            video.pause()
+            return undefined
+        }
+        if (typeof IntersectionObserver === 'undefined') {
+            video.play?.().catch(() => {})
+            return undefined
+        }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) video.play?.().catch(() => {})
+                else video.pause?.()
+            },
+            { threshold: 0.25 }
+        )
+        observer.observe(video)
+        return () => observer.disconnect()
+    }, [reduced])
+
+    const compiled = em.compiled
+    const agent = em.agent
 
     return (
         <figure className={styles.figure}>
             <div className={styles.stage}>
-                <div
-                    ref={frameRef}
-                    className={styles.frame}
-                    aria-label="Illustrative example of one governed workflow replaying and re-resolving UI drift across every interface"
-                >
+                {/* Real footage: a compiled replay driving a live OpenEMR. */}
+                <div className={styles.frame}>
                     <div className={styles.titlebar}>
-                        <span className={styles.dot} />
-                        <span className={styles.dot} />
-                        <span className={styles.dot} />
-                        <span className={styles.title}>{substrate.chrome}</span>
-                        <span className={styles.badge}>
-                            <span className={styles.badgeDot} aria-hidden="true" />
-                            illustrative
+                        <span className={`${styles.dot} ${styles.dotR}`} />
+                        <span className={`${styles.dot} ${styles.dotY}`} />
+                        <span className={`${styles.dot} ${styles.dotG}`} />
+                        <span className={styles.urlPill}>
+                            demo.openemr.io · referral-intake
+                        </span>
+                        <span className={styles.realTag}>
+                            <span className={styles.realDot} aria-hidden="true" />
+                            Real run
                         </span>
                     </div>
-
-                    {/* Substrate strip: the one governed loop, every interface. */}
-                    <div
-                        className={styles.substrates}
-                        aria-label="Runs across every interface"
-                    >
-                        {SUBSTRATES.map((item, i) => (
-                            <span
-                                key={item.key}
-                                className={`${styles.substrate} ${
-                                    i === substrateIndex ? styles.substrateOn : ''
-                                }`}
-                            >
-                                {item.label}
-                            </span>
-                        ))}
-                        <span className={styles.substrateNote}>one loop</span>
-                    </div>
-
-                    <div className={styles.body} key={cycle}>
-                        {/* Scan sweep fires on the drift beat. */}
-                        <span className={styles.scan} aria-hidden="true" />
-
-                        <div className={styles.rail} aria-hidden="true">
-                            {Array.from({ length: STEP_COUNT }, (_, i) => (
-                                <span
-                                    key={`${cycle}-tick-${i}`}
-                                    className={`${styles.tick} ${
-                                        i === DRIFT_INDEX ? styles.tickDrift : ''
-                                    }`}
-                                    style={{ animationDelay: `${ROW_DELAY_S(i)}s` }}
-                                />
-                            ))}
-                        </div>
-                        {ROWS.map((row, i) => (
-                            <div
-                                key={`${cycle}-${i}`}
-                                className={`${styles.row} ${styles[row.status]}`}
-                                style={{ animationDelay: `${ROW_DELAY_S(i)}s` }}
-                            >
-                                {row.status === 'heal' ? (
-                                    <span className={styles.healText}>
-                                        {'└'} {row.target}
-                                    </span>
-                                ) : row.status === 'done' ? (
-                                    <span className={styles.doneText}>{row.target}</span>
-                                ) : (
-                                    <>
-                                        <span className={styles.num}>{row.n}</span>
-                                        <span className={styles.action}>{row.action}</span>
-                                        <span className={styles.target}>{row.target}</span>
-                                        <span className={styles.rung}>
-                                            {row.status === 'drift'
-                                                ? '⚠ UI drift detected'
-                                                : row.rung}
-                                        </span>
-                                        <span className={styles.ms}>{row.ms}</span>
-                                        <span className={styles.check}>
-                                            {row.status === 'drift' ? '' : '✓'}
-                                        </span>
-                                    </>
-                                )}
-                            </div>
-                        ))}
-                        <div
-                            className={`${styles.row} ${styles.summary}`}
-                            style={{ animationDelay: `${ROW_DELAY_S(ROWS.length)}s` }}
+                    <div className={styles.screen}>
+                        <video
+                            ref={videoRef}
+                            className={styles.video}
+                            poster="/how-it-works/run_openemr_intake.jpg"
+                            width="880"
+                            height="550"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            preload="metadata"
+                            aria-label="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo, logging in and filling the patient-intake form, locally and with no per-run model calls."
                         >
-                            <span>
-                                total 2.4s &nbsp;·&nbsp; model calls: 0 &nbsp;·&nbsp;
-                                cost per run: $0.00
-                                <span className={styles.cursor} aria-hidden="true" />
-                            </span>
-                            <span className={styles.stamp}>
-                                VERIFIED · 0 MODEL CALLS
-                            </span>
-                        </div>
+                            <source
+                                src="/how-it-works/run_openemr.webm"
+                                type="video/webm"
+                            />
+                            <source
+                                src="/how-it-works/run_openemr.mp4"
+                                type="video/mp4"
+                            />
+                        </video>
                     </div>
+                    <figcaption className={styles.frameCaption}>
+                        A compiled workflow replaying against OpenEMR&rsquo;s live
+                        public demo. The same governed loop runs across browser,
+                        Windows, macOS, RDP, and Citrix.
+                    </figcaption>
                 </div>
 
-                {/* Shipping-product proof: a real OpenAdapt Cloud capture that
-                    reads the same run out of the hosted dashboard. */}
+                {/* Measured proof: numbers straight from data/benchmark.json. */}
                 <aside
-                    className={styles.proof}
-                    aria-label="The same run in OpenAdapt Cloud"
+                    className={styles.ledger}
+                    aria-label="Measured OpenEMR benchmark results"
                 >
-                    <div className={styles.proofChrome}>
-                        <span className={styles.proofBrand}>
-                            <b>OpenAdapt</b> Cloud
+                    <div className={styles.ledgerHead}>
+                        <span className={styles.eyebrow}>
+                            Measured · OpenEMR public demo
                         </span>
-                        <span className={styles.proofUrl}>app.openadapt.ai</span>
+                        <span className={styles.stamp}>Verified</span>
                     </div>
-                    <img
-                        className={styles.proofShot}
-                        src="/cloud-preview/healthcare-run.jpg"
-                        width="880"
-                        height="550"
-                        alt="OpenAdapt Cloud run detail for a completed synthetic OpenEMR run: step metrics and a verified-effect timeline in the real hosted dashboard."
-                        loading="lazy"
-                        decoding="async"
-                    />
-                    <div className={styles.proofFoot}>
-                        <span className={styles.proofPill}>Effect verified</span>
-                        <Link href="#cloud-product" className={styles.proofLink}>
-                            See the shipping product →
-                        </Link>
+
+                    {/* The effect-verification thesis: what "verified" means. */}
+                    <p className={styles.effectPill}>
+                        <span className={styles.effectMark} aria-hidden="true">
+                            ✓
+                        </span>
+                        <span>
+                            Effect-verified against the system of record. An{' '}
+                            <b>arm-independent oracle reads OpenEMR itself</b>, not
+                            the app&rsquo;s own &ldquo;saved&rdquo; banner.
+                        </span>
+                    </p>
+
+                    <div className={styles.statGrid}>
+                        <div className={styles.stat}>
+                            <span className={`${styles.statNum} tnum`}>
+                                {compiled.success_count}/{compiled.n}
+                            </span>
+                            <span className={styles.statLabel}>runs verified</span>
+                        </div>
+                        <div className={styles.stat}>
+                            <span className={`${styles.statNum} tnum`}>
+                                {usd(compiled.cost_usd_per_run)}
+                            </span>
+                            <span className={styles.statLabel}>model cost / run</span>
+                        </div>
+                        <div className={styles.stat}>
+                            <span className={`${styles.statNum} tnum`}>
+                                {compiled.model_calls_per_run}
+                            </span>
+                            <span className={styles.statLabel}>model calls / run</span>
+                        </div>
+                    </div>
+
+                    <div className={styles.compare}>
+                        <div className={styles.compareRow}>
+                            <span className={styles.compareWho}>
+                                AI agent, same task
+                            </span>
+                            <span className={`${styles.compareVals} tnum`}>
+                                {usd(agent.cost_usd_per_run)}/run ·{' '}
+                                {agent.model_calls_per_run} model calls ·{' '}
+                                {secs(agent.wall_s_p50)}
+                            </span>
+                        </div>
+                        <div className={`${styles.compareRow} ${styles.compareUs}`}>
+                            <span className={styles.compareWho}>
+                                OpenAdapt, compiled
+                            </span>
+                            <span className={`${styles.compareVals} tnum`}>
+                                {usd(compiled.cost_usd_per_run)}/run ·{' '}
+                                {compiled.model_calls_per_run} model calls ·{' '}
+                                {secs(compiled.wall_s_p50)}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className={styles.per1k}>
+                        <span className={styles.per1kHead}>
+                            Cost per 1,000 runs
+                        </span>
+                        <div className={styles.barRow}>
+                            <span className={styles.barLabel}>AI agent</span>
+                            <span className={styles.barTrack}>
+                                <span className={styles.barFillAgent} />
+                            </span>
+                            <span className={`${styles.barVal} tnum`}>
+                                ${per1k}
+                            </span>
+                        </div>
+                        <div className={`${styles.barRow} ${styles.barRowUs}`}>
+                            <span className={styles.barLabel}>OpenAdapt</span>
+                            <span className={styles.barTrack}>
+                                <span className={styles.barFillUs} />
+                            </span>
+                            <span className={`${styles.barVal} tnum`}>$0</span>
+                        </div>
+                    </div>
+
+                    <div className={styles.ledgerFoot}>
+                        <span>{em.workflow_steps}-step add-note workflow</span>
+                        <Link href="/compare">Method &amp; raw results →</Link>
                     </div>
                 </aside>
             </div>
 
-            <figcaption className={styles.illustrative}>
-                Illustrative — a stylized depiction of a compiled replay, not
-                captured benchmark data. See{' '}
-                <Link href="/compare">measured results</Link>.
-            </figcaption>
+            {/* Governed drift beat — the differentiated moment — from the real
+                reproducible drift drill (MANIFEST "heal" capture, source "real"). */}
+            <div className={styles.drift}>
+                <div className={styles.driftBody}>
+                    <span className={styles.driftEyebrow}>
+                        Governed drift handling
+                    </span>
+                    <p className={styles.driftHead}>
+                        When the interface drifts, OpenAdapt re-resolves from
+                        retained evidence. It doesn&rsquo;t guess.
+                    </p>
+                    <p className={styles.driftCallout}>
+                        <span className={styles.driftWarn} aria-hidden="true">
+                            ⚠
+                        </span>
+                        UI drift → re-resolved via the geometry rung ·{' '}
+                        <b>governed repair saved</b> · 0 model calls
+                    </p>
+                    <p className={styles.driftFoot}>
+                        Real capture · reviewable diff · nothing is applied without
+                        sign-off
+                    </p>
+                </div>
+                <figure className={styles.driftShotWrap}>
+                    <span className={styles.driftTag}>
+                        <span className={styles.realDot} aria-hidden="true" />
+                        Real capture
+                    </span>
+                    <img
+                        className={styles.driftShot}
+                        src="/how-it-works/heal_resolve.jpg"
+                        width="880"
+                        height="550"
+                        alt="Real drift-drill capture: a drifted target re-resolved via the geometry rung. Identity confirmed as the same record, ocr_text 'Open' repaired to 'View', proposed as a reviewable anchor patch with zero model calls."
+                        loading="lazy"
+                        decoding="async"
+                    />
+                </figure>
+            </div>
+
+            {/* Shipping product: the same run, inspectable in OpenAdapt Cloud. */}
+            <Link href="#cloud-product" className={styles.hosted}>
+                <span className={styles.hostedShotWrap}>
+                    <img
+                        className={styles.hostedShot}
+                        src="/cloud-preview/healthcare-run.jpg"
+                        width="880"
+                        height="550"
+                        alt="OpenAdapt Cloud run detail: per-step metrics and a verified-effect timeline in the hosted dashboard."
+                        loading="lazy"
+                        decoding="async"
+                    />
+                </span>
+                <span className={styles.hostedText}>
+                    <b>Every run is inspectable in OpenAdapt Cloud.</b>
+                    <span className={styles.hostedSub}>
+                        Run history, per-step evidence, and verified effects in the
+                        shipping hosted product: app.openadapt.ai
+                    </span>
+                </span>
+                <span className={styles.hostedArrow} aria-hidden="true">
+                    →
+                </span>
+            </Link>
         </figure>
     )
 }

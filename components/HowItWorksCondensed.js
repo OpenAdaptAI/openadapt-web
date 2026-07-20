@@ -8,7 +8,7 @@ const steps = [
         number: '1',
         name: 'Record & compile',
         description:
-            'Demonstrate one bounded, repeated instance. OpenAdapt compiles the trace into a reviewable, parameterized program — not a prompt a model reinterprets each run.',
+            'Demonstrate one bounded, repeated instance. OpenAdapt compiles the trace into a reviewable, parameterized program, not a prompt a model reinterprets each run.',
     },
     {
         number: '2',
