@@ -39,13 +39,12 @@ const usd = (n) => `$${Number(n).toFixed(2)}`
 const secs = (n) => `${Math.round(Number(n))}s`
 const per1k = Math.round(em.agent.cost_usd_per_run * 1000).toLocaleString()
 
-// The floating OpenAdapt system overlay (bottom-right HUD) is the intended end
-// state. It stays dormant until the run_openemr footage is re-recorded WITHOUT
-// the "replaying · local · $0" badge that is currently burned into the footage
-// top-left in post by openadapt-flow scripts/demo_media.py (build_run_openemr).
-// Rendering both at once would double up the indicator. Flip this to true in
-// the SAME change that ships pill-free run_openemr.{mp4,webm,gif}. See PR #246.
-const SHOW_SYSTEM_OVERLAY = false
+// The run_openemr footage is now recorded clean (no burned-in status badge;
+// openadapt-flow scripts/demo_media.py build_run_openemr composites no overlay),
+// so the floating OpenAdapt HUD below is the SOLE "running · local · $0"
+// indicator, painted as a DOM system overlay on top of the app. Set to false
+// only if the footage is ever reverted to a variant with a baked-in badge.
+const SHOW_SYSTEM_OVERLAY = true
 
 export default function ReplayHero() {
     const compiled = em.compiled
@@ -90,9 +89,8 @@ export default function ReplayHero() {
                           TOP of whatever app is running (here OpenEMR), a
                           distinct visual layer from the browser chrome. It
                           reinforces that OpenAdapt runs over your existing
-                          apps rather than replacing them. Held dormant behind
-                          SHOW_SYSTEM_OVERLAY until the footage is re-recorded
-                          without its own baked-in top-left status badge.
+                          apps rather than replacing them. The footage is clean
+                          (no baked-in badge), so this is the sole indicator.
                         */}
                         {SHOW_SYSTEM_OVERLAY && (
                             <div className={styles.sysOverlay}>
