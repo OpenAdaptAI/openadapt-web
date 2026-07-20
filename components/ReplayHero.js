@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import benchmark from '../data/benchmark.json'
@@ -26,8 +26,14 @@ import styles from './ReplayHero.module.css'
  * geometry rung and a governed repair proposed as a reviewable diff, applied only
  * after sign-off, with zero model calls. Then a real OpenAdapt Cloud capture.
  *
- * The footage is gated on prefers-reduced-motion (static poster frame when
- * motion is reduced) and paused while off-screen. Nothing here is illustrative.
+ * The footage is rendered as an animated GIF via an <img>, matching the
+ * reference-workflow section (components/Clip.js). A GIF in an <img> always
+ * animates: it is an image, so it is exempt from the browser's muted-<video>
+ * autoplay policy, which silently blocks autoplay under Low Power Mode / data
+ * saver and leaves only the poster frame (the earlier <video> hero froze on its
+ * still for those users). It is gated on prefers-reduced-motion: when motion is
+ * reduced we hold the static late-frame still instead. Nothing here is
+ * illustrative.
  */
 
 const em = benchmark.openemr
@@ -36,10 +42,12 @@ const secs = (n) => `${Math.round(Number(n))}s`
 const per1k = Math.round(em.agent.cost_usd_per_run * 1000).toLocaleString()
 
 export default function ReplayHero() {
-    const videoRef = useRef(null)
     const [reduced, setReduced] = useState(false)
 
     // Track the user's motion preference so we can hold a static frame.
+    // The GIF itself autoplays for everyone (no play/pause or IntersectionObserver
+    // gate is needed, or wanted: an in-view gate can get stuck and freeze the
+    // still). We only swap the source to the static frame when motion is reduced.
     useEffect(() => {
         if (typeof window === 'undefined' || !window.matchMedia) return undefined
         const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -48,29 +56,6 @@ export default function ReplayHero() {
         mq.addEventListener?.('change', apply)
         return () => mq.removeEventListener?.('change', apply)
     }, [])
-
-    // Play only while visible and only when motion is allowed.
-    useEffect(() => {
-        const video = videoRef.current
-        if (!video) return undefined
-        if (reduced) {
-            video.pause()
-            return undefined
-        }
-        if (typeof IntersectionObserver === 'undefined') {
-            video.play?.().catch(() => {})
-            return undefined
-        }
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) video.play?.().catch(() => {})
-                else video.pause?.()
-            },
-            { threshold: 0.25 }
-        )
-        observer.observe(video)
-        return () => observer.disconnect()
-    }, [reduced])
 
     const compiled = em.compiled
     const agent = em.agent
@@ -93,28 +78,25 @@ export default function ReplayHero() {
                         </span>
                     </div>
                     <div className={styles.screen}>
-                        <video
-                            ref={videoRef}
+                        {/*
+                          Animated GIF via <img>: always animates (exempt from the
+                          muted-<video> autoplay policy that silently blocks
+                          playback under Low Power Mode / data saver). Under
+                          prefers-reduced-motion we hold the static late-frame
+                          still (the populated patient-intake form) instead.
+                        */}
+                        <img
                             className={styles.video}
-                            poster="/how-it-works/run_openemr_intake.jpg"
+                            src={
+                                reduced
+                                    ? '/how-it-works/run_openemr_intake.jpg'
+                                    : '/how-it-works/run_openemr.gif'
+                            }
                             width="880"
                             height="550"
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            preload="metadata"
-                            aria-label="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo, logging in and filling the patient-intake form, locally and with no per-run model calls."
-                        >
-                            <source
-                                src="/how-it-works/run_openemr.webm"
-                                type="video/webm"
-                            />
-                            <source
-                                src="/how-it-works/run_openemr.mp4"
-                                type="video/mp4"
-                            />
-                        </video>
+                            decoding="async"
+                            alt="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo, logging in and filling the patient-intake form, locally and with no per-run model calls."
+                        />
                     </div>
                     <figcaption className={styles.frameCaption}>
                         A compiled workflow replaying against OpenEMR&rsquo;s live
