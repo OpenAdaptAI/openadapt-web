@@ -1209,17 +1209,15 @@ export default function SecurityPage() {
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            OpenAdapt does{' '}
-                            <strong className="text-ink">not</strong> hold a SOC
-                            2 report today. There is no SOC 2 Type I or Type II
-                            attestation, and no SOC 2 audit is currently in
-                            progress. SOC 2 evaluates a service organization and
-                            its operating controls over a period of time — an
-                            architecture or a public codebase is not a
-                            substitute for an independent auditor&#39;s report,
-                            and we will not describe our design as &ldquo;built
-                            to meet SOC 2&rdquo; in place of an actual
-                            engagement.
+                            OpenAdapt does not hold a SOC 2 attestation today.
+                            There is no SOC 2 Type I or Type II report, and no
+                            SOC 2 audit is currently in progress. SOC 2
+                            evaluates a service organization and its operating
+                            controls over a period of time — an architecture or
+                            a public codebase is not a substitute for an
+                            independent auditor&#39;s report, and we will not
+                            describe our design as &ldquo;built to meet SOC
+                            2&rdquo; in place of an actual engagement.
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
                             We are designing internal controls with SOC 2
