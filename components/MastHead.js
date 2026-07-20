@@ -53,14 +53,14 @@ export default function Home({ githubStats }) {
                             <p className="mt-0 mb-6 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 Demonstrate a bounded, repeated GUI workflow and
                                 compile it into a locally executable program whose
-                                healthy replay makes no model calls. Under interface
-                                drift OpenAdapt re-resolves from retained evidence,
-                                proposes a governed repair, or halts for an
-                                operator. Browser workflows run in Beta today;
-                                Windows, macOS, and remote desktops are
-                                design-partner only.{' '}
+                                healthy replay makes no model calls. OpenAdapt brings
+                                the same governed loop to the interfaces your work is
+                                trapped behind &mdash; browser, Windows, RDP, and
+                                Citrix/VDI &mdash; re-resolving from retained
+                                evidence, proposing a governed repair, or halting for
+                                an operator when verification fails.{' '}
                                 <Link href="#product-status">
-                                    See where it runs.
+                                    See where each capability stands.
                                 </Link>
                             </p>
                             <div id="register">
