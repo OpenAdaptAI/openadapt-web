@@ -253,6 +253,16 @@ export default function Home({ githubStats, buildWarnings, hostedOffer }) {
                             )
                         })}
                     </div>
+                    <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-ink-2">
+                        Want the full method and evidence?{' '}
+                        <Link
+                            href="/research"
+                            className="text-accent hover:underline"
+                        >
+                            Read the technical paper
+                        </Link>
+                        .
+                    </p>
                 </div>
             </section>
             {/*

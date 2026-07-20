@@ -109,7 +109,7 @@ const byLabel = (label) => DEVELOPER_LINKS.find((item) => item.label === label)
 const DEVELOPER_COLUMN = [
     'Compiler/runtime source',
     'Docs',
-    'Technical paper source',
+    'Technical paper',
     'Report an issue',
 ].map((label) => {
     const link = byLabel(label)
