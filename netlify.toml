@@ -11,11 +11,12 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# PR deploy previews build and deploy on Netlify. The site is now on the
-# Pro/Personal plan (25,000 build-min/mo), so the Free-plan quota that forced
-# us to skip preview builds in #261 no longer applies. Deploy previews give
-# reviewers a live, rendered URL per PR, which the GitHub Actions
-# `build-and-e2e` job (headless `next build` + Cypress) cannot.
+# PR deploy previews build and deploy on Netlify. The intended paid tier is
+# Personal; Deploy Previews do not require Pro. Once Personal is active on the
+# team that owns this site, the Free-plan quota that forced us to skip preview
+# builds in #261 no longer applies. Deploy previews give reviewers a live,
+# rendered URL per PR, which the GitHub Actions `build-and-e2e` job (headless
+# `next build` + Cypress) cannot.
 #
 # `ignore` runs before each build: exit 0 cancels the build, non-zero proceeds.
 # The production context has no `ignore`, so pushes to main always build and
