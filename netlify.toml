@@ -11,14 +11,19 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[[plugins]]
-  package = "netlify-plugin-cypress"
-  # `.next` is an internal runtime artifact, not a static site. Exercise the
-  # deployed Next.js preview instead of serving `.next` directly in postBuild.
-  [plugins.inputs]
-    skip = true
-  [plugins.inputs.onSuccess]
-    enable = true
+# Preview and branch builds are skipped to protect the production build-minute
+# budget. `ignore` runs before each build: exit 0 cancels the build, non-zero
+# proceeds. Deploy-preview (PR) and branch-deploy contexts are already covered
+# by the GitHub Actions `build-and-e2e` job (real `next build` + Cypress
+# browser contract), so rebuilding them on Netlify only spends minutes that the
+# production context needs. The production context has no `ignore`, so pushes to
+# main always build and deploy.
+[context.deploy-preview]
+  ignore = "exit 0"
+
+[context.branch-deploy]
+  ignore = "exit 0"
+
 [[headers]]
   for = "/*"
   [headers.values]
