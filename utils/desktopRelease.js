@@ -3,8 +3,18 @@ export const DESKTOP_REPO = 'OpenAdaptAI/openadapt-desktop'
 // build/revalidate time). Visitor browsers must never call api.github.com.
 export const DESKTOP_RELEASES_PAGE = `https://github.com/${DESKTOP_REPO}/releases`
 
-const EXPERIMENTAL_TAG = /^desktop-v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/
-const EXPERIMENTAL_PREFIX = /^OpenAdapt-Desktop-Experimental-/i
+const DESKTOP_TAG = /^desktop-v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/
+const RELEASE_PREFIXES = {
+    beta: /^OpenAdapt-Desktop-Beta-/i,
+    experimental: /^OpenAdapt-Desktop-Experimental-/i,
+}
+const RELEASE_LIFECYCLES = ['beta', 'experimental']
+
+function lifecycleForAsset(name) {
+    return RELEASE_LIFECYCLES.find((lifecycle) =>
+        RELEASE_PREFIXES[lifecycle].test(name || '')
+    )
+}
 
 export const DESKTOP_PLATFORMS = [
     {
@@ -13,7 +23,7 @@ export const DESKTOP_PLATFORMS = [
         arch: 'x64',
         hint: '.msi installer (or .exe)',
         match: (name) =>
-            EXPERIMENTAL_PREFIX.test(name) &&
+            Boolean(lifecycleForAsset(name)) &&
             /-windows-x86_64-(?:(?:unsigned|authenticode)\.msi|(?:unsigned|authenticode)-nsis-setup\.exe)$/i.test(
                 name
             ),
@@ -25,7 +35,7 @@ export const DESKTOP_PLATFORMS = [
         arch: 'Apple Silicon',
         hint: '.dmg for M1 and later',
         match: (name) =>
-            EXPERIMENTAL_PREFIX.test(name) &&
+            Boolean(lifecycleForAsset(name)) &&
             /-macos-arm64-(?:adhoc|developer-id-notarized)\.dmg$/i.test(name),
         rank: () => 0,
     },
@@ -35,7 +45,7 @@ export const DESKTOP_PLATFORMS = [
         arch: 'Intel',
         hint: '.dmg for Intel Macs',
         match: (name) =>
-            EXPERIMENTAL_PREFIX.test(name) &&
+            Boolean(lifecycleForAsset(name)) &&
             /-macos-x86_64-(?:adhoc|developer-id-notarized)\.dmg$/i.test(
                 name
             ),
@@ -47,7 +57,7 @@ export const DESKTOP_PLATFORMS = [
         arch: 'x64',
         hint: '.AppImage (or .deb)',
         match: (name) =>
-            EXPERIMENTAL_PREFIX.test(name) &&
+            Boolean(lifecycleForAsset(name)) &&
             /-linux-x86_64-unsigned\.(?:AppImage|deb)$/i.test(name),
         rank: (name) => (/\.AppImage$/i.test(name) ? 0 : 1),
     },
@@ -62,6 +72,17 @@ const REQUIRED_ASSETS = [
     /-linux-x86_64-unsigned\.deb$/i,
 ]
 
+// Beta releases add one machine-readable provenance record for every platform
+// build. Existing Experimental releases predate that contract and remain
+// discoverable during the transition, but a new Beta set is never accepted
+// without all four metadata records and the checksum manifest.
+const BETA_PROVENANCE_ASSETS = [
+    /-macos-arm64-(?:adhoc|developer-id-notarized)-metadata\.json$/i,
+    /-macos-x86_64-(?:adhoc|developer-id-notarized)-metadata\.json$/i,
+    /-windows-x86_64-(?:unsigned|authenticode)-metadata\.json$/i,
+    /-linux-x86_64-unsigned-metadata\.json$/i,
+]
+
 function hasDownloadUrl(asset) {
     return Boolean(
         asset &&
@@ -71,19 +92,30 @@ function hasDownloadUrl(asset) {
     )
 }
 
-export function assetForPlatform(assets, platform) {
+export function assetForPlatform(assets, platform, preferredLifecycle = null) {
     return assets
         .filter(hasDownloadUrl)
         .filter((asset) => platform.match(asset.name))
-        .sort((a, b) => platform.rank(a.name) - platform.rank(b.name))[0]
+        .filter(
+            (asset) =>
+                !preferredLifecycle ||
+                lifecycleForAsset(asset.name) === preferredLifecycle
+        )
+        .sort((a, b) => {
+            const lifecycleRank =
+                RELEASE_LIFECYCLES.indexOf(lifecycleForAsset(a.name)) -
+                RELEASE_LIFECYCLES.indexOf(lifecycleForAsset(b.name))
+            return lifecycleRank || platform.rank(a.name) - platform.rank(b.name)
+        })[0]
 }
 
-export function isCompleteExperimentalDesktopRelease(release) {
+function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
+    const prefix = RELEASE_PREFIXES[lifecycle]
     if (
         !release ||
         release.draft ||
         release.prerelease !== true ||
-        !EXPERIMENTAL_TAG.test(release.tag_name || '') ||
+        !DESKTOP_TAG.test(release.tag_name || '') ||
         !Array.isArray(release.assets)
     ) {
         return false
@@ -91,21 +123,33 @@ export function isCompleteExperimentalDesktopRelease(release) {
 
     const assets = release.assets.filter(hasDownloadUrl)
     const hasChecksums = assets.some((asset) => asset.name === 'SHA256SUMS')
+    const required =
+        lifecycle === 'beta'
+            ? [...REQUIRED_ASSETS, ...BETA_PROVENANCE_ASSETS]
+            : REQUIRED_ASSETS
     return (
         hasChecksums &&
-        REQUIRED_ASSETS.every((pattern) =>
-            assets.some(
-                (asset) =>
-                    EXPERIMENTAL_PREFIX.test(asset.name) &&
-                    pattern.test(asset.name)
-            )
+        required.every((pattern) =>
+            assets.some((asset) => prefix.test(asset.name) && pattern.test(asset.name))
         )
     )
 }
 
-export function selectExperimentalDesktopRelease(releases) {
+export function desktopReleaseLifecycle(release) {
+    return (
+        RELEASE_LIFECYCLES.find((lifecycle) =>
+            isCompleteDesktopReleaseForLifecycle(release, lifecycle)
+        ) || null
+    )
+}
+
+export function isCompleteDesktopRelease(release) {
+    return desktopReleaseLifecycle(release) !== null
+}
+
+export function selectDesktopRelease(releases) {
     if (!Array.isArray(releases)) return null
-    const complete = releases.filter(isCompleteExperimentalDesktopRelease)
+    const complete = releases.filter(isCompleteDesktopRelease)
     if (complete.length === 0) return null
 
     // The GitHub endpoint is normally newest-first, but select by publication
@@ -125,9 +169,22 @@ export function selectExperimentalDesktopRelease(releases) {
         ) {
             return candidate
         }
+        if (
+            candidateTime === latestTime &&
+            desktopReleaseLifecycle(candidate) === 'beta' &&
+            desktopReleaseLifecycle(latest) !== 'beta'
+        ) {
+            return candidate
+        }
         return latest
     })
 }
+
+// Compatibility exports for consumers that still use the old names. Their
+// behavior intentionally includes both Beta and legacy Experimental releases,
+// avoiding a flag day while callers migrate to the lifecycle-neutral names.
+export const isCompleteExperimentalDesktopRelease = isCompleteDesktopRelease
+export const selectExperimentalDesktopRelease = selectDesktopRelease
 
 export function detectDesktopPlatform(navigatorValue) {
     if (!navigatorValue) return null
@@ -179,9 +236,14 @@ export async function detectDesktopPlatformWithHints(navigatorValue) {
     return detected
 }
 
-export function releaseSigningState(assets) {
+export function releaseSigningState(assets, lifecycle = null) {
     const names = Array.isArray(assets)
-        ? assets.map((asset) => asset.name || '')
+        ? assets
+              .map((asset) => asset.name || '')
+              .filter(
+                  (name) =>
+                      !lifecycle || lifecycleForAsset(name) === lifecycle
+              )
         : []
     return {
         macosNotarized: ['arm64', 'x86_64'].every((architecture) =>
