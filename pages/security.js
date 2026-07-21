@@ -49,7 +49,7 @@ const summary = [
         area: 'Architecture & data flow',
         anchor: 'architecture',
         status: 'yes',
-        note: 'Local-first; PHI boundary documented artifact-by-artifact.',
+        note: 'Local-first; PHI/PII boundary documented artifact-by-artifact.',
     },
     {
         area: 'Encryption & key boundaries',
@@ -103,7 +103,7 @@ const summary = [
         area: 'DPA & BAA',
         anchor: 'legal',
         status: 'scoped',
-        note: 'DPA (GDPR/CCPA/PIPEDA) available on request; on-prem BAA scoped following review — no standing offer.',
+        note: 'DPA (GDPR/CCPA/PIPEDA) available on request. In the self-hosted deployment PHI/PII stays in your environment, so a BAA is not the operative instrument for that shape; where procurement requires written terms we can sign a US HIPAA BAA, or for an Ontario clinic a PHIPA service-provider agreement, following review.',
     },
     {
         area: 'SOC 2',
@@ -203,14 +203,14 @@ const flowZones = [
         items: [
             [
                 'Identity crops & screenshots',
-                'Sent to the appliance to answer "same record or different?" These are PHI in flight and are deliberately NOT scrubbed — the crop is the identifier. Control is a data-flow boundary: on-prem-only destination + no retention (no disk or log writes), not scrubbing.',
+                'Sent to the appliance to answer "same record or different?" These are PHI/PII in flight and are deliberately NOT scrubbed — the crop is the identifier. Control is a data-flow boundary: on-prem-only destination + no retention (no disk or log writes), not scrubbing.',
             ],
         ],
     },
     {
         title: 'OpenAdapt hosted control plane (optional)',
         tone: 'panel',
-        lead: 'Used only for the hosted service. PHI-bearing runtime frames do not cross this boundary; only the artifacts below do.',
+        lead: 'Used only for the hosted service. PHI/PII-bearing runtime frames do not cross this boundary; only the artifacts below do.',
         items: [
             [
                 'Sanitized artifact ingest',
@@ -218,7 +218,7 @@ const flowZones = [
             ],
             [
                 'Break report',
-                'A schema-minimal, PHI-scrubbed halt descriptor. No intents, reasons, errors, screenshots, DOM, or field values. Fails closed to local-only if the PHI boundary rejects it.',
+                'A schema-minimal, PHI/PII-scrubbed halt descriptor. No intents, reasons, errors, screenshots, DOM, or field values. Fails closed to local-only if the PHI/PII boundary rejects it.',
             ],
             [
                 'Account & run metadata',
@@ -238,12 +238,12 @@ const boundaries = [
         answer: 'Local healthy replay does not transmit screenshots. An explicitly configured remote model can receive relevant screenshots or crops. Hosted upload accepts the sanitized derivative bound to its reviewed manifest hash, not the local original. Runtime screenshots can reintroduce sensitive data and follow the destination policy of the declared trusted execution boundary.',
     },
     {
-        question: 'Where are secrets and PHI?',
+        question: 'Where are secrets and PHI/PII?',
         answer: 'Password and declared secret fields are injected at replay rather than written to the recording. Other screenshots, typed values, identity strings, compiled bundles, and machine-readable reports may contain PHI or PII and require customer-controlled storage and retention. Do not infer that compilation de-identifies a workflow.',
     },
     {
         question: 'What does break reporting send?',
-        answer: 'report-break parses the local run report, scrubs it fail-closed, and sends a PHI-minimized break descriptor. It does not upload the recording or compiled bundle. If the control plane rejects the descriptor at the PHI boundary, the client retries with harder scrubbing and then falls back to local-only.',
+        answer: 'report-break parses the local run report, scrubs it fail-closed, and sends a PHI/PII-minimized break descriptor. It does not upload the recording or compiled bundle. If the control plane rejects the descriptor at the PHI/PII boundary, the client retries with harder scrubbing and then falls back to local-only.',
     },
     {
         question: 'What cryptographic guarantees exist?',
@@ -263,14 +263,14 @@ const boundaries = [
     },
     {
         question: 'What is the regulated deployment product?',
-        answer: 'Regulated workflows run in a declared customer-controlled boundary when their live screens necessarily expose PHI. Sanitized authoring derivatives and minimized control-plane metadata may cross an approved boundary; PHI-bearing runtime frames do not. Deployment scope records the substrate, operators, effect oracle, storage, update, retention, support, and legal controls.',
+        answer: 'Regulated workflows run in a declared customer-controlled boundary when their live screens necessarily expose PHI/PII. Sanitized authoring derivatives and minimized control-plane metadata may cross an approved boundary; PHI/PII-bearing runtime frames do not. Deployment scope records the substrate, operators, effect oracle, storage, update, retention, support, and legal controls.',
     },
 ]
 
 const encryption = [
     [
         'Bundle & checkpoint at rest',
-        'Compiled bundles and durable checkpoints support optional AES-256-GCM authenticated encryption at rest. It is opt-in, not automatic: unencrypted artifacts on disk are protected by filesystem permissions and your retention policy until you enable it. Raw recordings and run reports are PHI-at-rest and are not encrypted for you.',
+        'Compiled bundles and durable checkpoints support optional AES-256-GCM authenticated encryption at rest. It is opt-in, not automatic: unencrypted artifacts on disk are protected by filesystem permissions and your retention policy until you enable it. Raw recordings and run reports are PHI/PII-at-rest and are not encrypted for you.',
     ],
     [
         'Secret fields (local)',
@@ -510,7 +510,7 @@ export default function SecurityPage() {
                         healthy replay run entirely on the operator machine.
                         Data only leaves that boundary through the explicit,
                         configured paths shown below. This map mirrors the
-                        engine&#39;s own artifact-by-artifact PHI documentation.
+                        engine&#39;s own artifact-by-artifact PHI/PII documentation.
                     </p>
                     <div className="mt-6 space-y-4">
                         {flowZones.map((zone) => (
@@ -673,12 +673,12 @@ export default function SecurityPage() {
                     </div>
                 </div>
 
-                {/* PHI sanitation */}
+                {/* PHI/PII sanitation */}
                 <div
                     id="sanitation"
                     className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
                 >
-                    <p className="eyebrow">PHI sanitation</p>
+                    <p className="eyebrow">PHI/PII sanitation</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
                         Scrubbing creates a reviewable derivative
                     </h2>
@@ -687,7 +687,7 @@ export default function SecurityPage() {
                         It is a local transformation and approval protocol. The
                         raw source never becomes safe merely because a
                         derivative exists, and a sanitized recording does not
-                        prevent live PHI from appearing during execution.
+                        prevent live PHI/PII from appearing during execution.
                     </p>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
                         Sanitation and runnability are separate gates. Register
@@ -1184,18 +1184,28 @@ export default function SecurityPage() {
                                     Business Associate Agreement (BAA)
                                 </strong>
                                 <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
-                                    On-prem; following review
+                                    On-prem; signable on review
                                 </span>
                             </div>
                             <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                                For healthcare workflows, OpenAdapt runs
-                                on-premise so PHI stays inside your network — we
-                                provide the on-prem software substrate and PHI
-                                does not enter our infrastructure. We do not
-                                currently sign a Business Associate Agreement as
-                                a standing offer; a BAA scoped to qualified
-                                on-premise deployments can be discussed following
-                                review. Contact us to scope a deployment.
+                                For healthcare workflows, the default deployment
+                                is self-hosted: OpenAdapt runs entirely inside
+                                your environment and PHI stays in your network.
+                                Because the software does not create, receive,
+                                maintain, or transmit PHI on your behalf in that
+                                shape, OpenAdapt is positioned as an on-premise
+                                software vendor rather than a business associate,
+                                and PHI does not enter our infrastructure. Your
+                                compliance officer or counsel makes the
+                                determination for your environment. Where your
+                                procurement requires written terms, we can sign a
+                                US HIPAA Business Associate Agreement, or for an
+                                Ontario clinic a PHIPA service-provider agreement,
+                                following review. Hosted processing of PHI inside
+                                our infrastructure, which would require a BAA and
+                                a HIPAA risk analysis, is not offered today. This
+                                describes the deployment architecture and what we
+                                can sign, not legal advice.
                             </p>
                         </div>
                     </div>

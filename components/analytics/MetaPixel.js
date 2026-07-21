@@ -14,7 +14,7 @@ import { analyticsAllowed } from 'utils/consent'
  * Fires PageView on load and on every client-side route change.
  * Conversion events (Lead / Contact / Schedule) are fired through
  * utils/conversion.js — never inline. Only ever use this on public
- * marketing pages; never on any surface that could see PHI-adjacent
+ * marketing pages; never on any surface that could see PHI/PII-adjacent
  * traffic (see docs/ANALYTICS.md and the E1 runbook).
  */
 

@@ -241,7 +241,7 @@ export default function Pricing({ hostedOffer = null }) {
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
                             Hosted upload accepts an approved sanitized copy, not
                             the original recording. Live screens can contain
-                            sensitive data again; workflows that expose PHI require
+                            sensitive data again; workflows that expose PHI/PII require
                             a separately qualified customer-controlled boundary.{' '}
                             <Link href="/security" className="text-accent underline">
                                 Review the security boundary.
@@ -293,7 +293,7 @@ export default function Pricing({ hostedOffer = null }) {
                                 'Execute in the customer-controlled environment',
                                 'Identity and effect checks configured per deployment',
                                 'Sanitized derivatives may cross approved boundaries',
-                                'Runtime PHI remains in the trusted execution environment',
+                                'Runtime PHI/PII remains in the trusted execution environment',
                                 'Deployment, support, and compliance terms documented in scope',
                             ]}
                         />
