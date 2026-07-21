@@ -60,7 +60,8 @@ describe('download page is server-rendered', () => {
         cy.request('/download').its('body').then((html) => {
             expect(html).to.not.include('Finding the latest release')
             const definiteStates = [
-                'Experimental prerelease', // ready
+                'Beta release', // complete Beta release
+                'Compatibility release', // complete legacy release during transition
                 'No public desktop installer yet', // none
                 'We could not reach GitHub just now', // build-time fetch miss
             ]

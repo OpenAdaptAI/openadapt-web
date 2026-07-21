@@ -125,8 +125,8 @@ test('visitor browsers never call api.github.com', () => {
     // so the release data is in the initial HTML for every visitor.
     const download = read('pages/download.js')
     assert.match(download, /export async function getStaticProps/)
-    assert.match(download, /getExperimentalDesktopRelease/)
-    assert.match(download, /revalidate: 3600/)
+    assert.match(download, /getDesktopRelease/)
+    assert.match(download, /revalidate: 300/)
 })
 
 test('launch surfaces lead with capabilities instead of temporary gap labels', () => {

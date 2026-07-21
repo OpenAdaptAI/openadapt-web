@@ -25,9 +25,9 @@ export async function getStaticProps() {
     // The release list is fetched at build/revalidate time so visitor
     // browsers never call api.github.com (60 unauthenticated req/hr per
     // client IP means shared IPs got 403s and a broken download page).
-    const { getExperimentalDesktopRelease } = await import('../lib/githubApi')
-    const { release, fetchFailed } = await getExperimentalDesktopRelease()
-    return { props: { release, fetchFailed }, revalidate: 3600 }
+    const { getDesktopRelease } = await import('../lib/githubApi')
+    const { release, fetchFailed } = await getDesktopRelease()
+    return { props: { release, fetchFailed }, revalidate: 300 }
 }
 
 export default function DownloadPage({ release, fetchFailed }) {
@@ -50,15 +50,18 @@ export default function DownloadPage({ release, fetchFailed }) {
 
     const assets =
         release && Array.isArray(release.assets) ? release.assets : []
+    const lifecycle = release?.lifecycle === 'beta' ? 'beta' : 'experimental'
+    const releaseLabel =
+        lifecycle === 'beta' ? 'Beta release' : 'Compatibility release'
 
     // Resolve a download for each platform card.
     const platformDownloads = useMemo(
         () =>
             DESKTOP_PLATFORMS.map((p) => ({
                 platform: p,
-                asset: assetForPlatform(assets, p),
+                asset: assetForPlatform(assets, p, lifecycle),
             })),
-        [assets]
+        [assets, lifecycle]
     )
 
     const recommended = useMemo(
@@ -77,7 +80,10 @@ export default function DownloadPage({ release, fetchFailed }) {
     )
 
     const version = release ? release.tag_name || release.name : null
-    const signing = useMemo(() => releaseSigningState(assets), [assets])
+    const signing = useMemo(
+        () => releaseSigningState(assets, lifecycle),
+        [assets, lifecycle]
+    )
     const checksumAsset = assets.find((asset) => asset.name === 'SHA256SUMS')
 
     return (
@@ -120,9 +126,9 @@ export default function DownloadPage({ release, fetchFailed }) {
                         OpenAdapt project
                     </a>{' '}
                     installs the compiler and governed runtime under the unified{' '}
-                    <code>openadapt flow</code> command. Native installers are
-                    generated separately from the latest complete Experimental
-                    desktop prerelease.
+                    <code>openadapt flow</code> command. Native OpenAdapt
+                    Desktop Beta installers package that workflow engine for
+                    Windows, macOS, and Linux.
                 </p>
                 <pre className="mt-6 max-w-2xl overflow-x-auto rounded-xl border border-hairline bg-panel p-4 font-mono text-sm text-ink">
                     <code>pip install openadapt</code>
@@ -144,7 +150,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                 <div id="desktop-builds" className="mt-12 scroll-mt-8">
                     <p className="eyebrow">Desktop packaging</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                        Native installer preview
+                        Native desktop Beta
                     </h2>
                     {status === 'ready' && recommended && (
                         <div className="rounded-2xl border-2 border-ink bg-panel p-6 md:p-7">
@@ -180,7 +186,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                             </div>
                             {version && (
                                 <p className="mt-3 text-xs text-ink-3">
-                                    Experimental prerelease {version}
+                                    {releaseLabel} {version}
                                 </p>
                             )}
                         </div>
@@ -232,7 +238,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                         detectedId !== 'macos' && (
                         <div>
                             <p className="eyebrow">
-                                Experimental prerelease {version}
+                                {releaseLabel} {version}
                             </p>
                             <p className="mt-2 text-sm text-ink-2">
                                 Choose the build that matches your operating
@@ -244,14 +250,13 @@ export default function DownloadPage({ release, fetchFailed }) {
                     {status === 'none' && (
                         <div className="rounded-2xl border border-hairline bg-panel p-6">
                             <p className="font-display text-lg font-semibold text-ink">
-                                No public desktop installer yet
+                                No complete native desktop release yet
                             </p>
                             <p className="mt-2 max-w-2xl text-sm text-ink-2">
-                                No complete Experimental desktop prerelease has
-                                been published. Use{' '}
+                                The next complete Beta set has not been
+                                published yet. Use{' '}
                                 <code>pip install openadapt</code>, or watch the
-                                desktop releases page for the next native
-                                preview.
+                                desktop releases page for the native build.
                             </p>
                             <div className="mt-4 flex flex-wrap gap-3">
                                 <a
@@ -306,7 +311,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                         All downloads
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
-                        Every installer for the latest Experimental prerelease
+                        Every installer in the latest {releaseLabel.toLowerCase()}
                         {version ? ` (${version})` : ''}. Choose the one that
                         matches your machine.
                     </p>
@@ -364,7 +369,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                 </div>
             )}
 
-            {/* Real captures of the Experimental surfaces (see component). */}
+            {/* Real captures of the native desktop surfaces (see component). */}
             <DesktopPreview />
 
             {/* Guidance is tied to the signing labels in the published assets. */}
@@ -376,7 +381,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                                 First launch
                             </h2>
                             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
-                                Current Experimental builds may trigger an
+                                Current native builds may trigger an
                                 operating-system publisher warning. Verify the
                                 release checksum before overriding it.
                             </p>
@@ -426,8 +431,8 @@ export default function DownloadPage({ release, fetchFailed }) {
                                                 data-testid="download-windows-security-warning"
                                             />
                                             <figcaption className="mt-2 text-xs leading-relaxed text-ink-3">
-                                                The real warning on the unsigned
-                                                Experimental build: &quot;Unknown
+                                                The real warning on the pictured
+                                                unsigned build: &quot;Unknown
                                                 Publisher.&quot; It appears
                                                 because the installer is
                                                 unsigned, not because anything is
