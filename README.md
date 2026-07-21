@@ -11,16 +11,19 @@ of guessing. Every execution substrate is first-class under one governed loop:
 browser, Windows, macOS, Linux, RDP, and Citrix/VDI. OpenAdapt is local-first
 and open-core (MIT); managed cloud is optional.
 
-This repository is the public website only. The product itself lives in
-[OpenAdaptAI/openadapt](https://github.com/OpenAdaptAI/openadapt), and product
-documentation lives at [docs.openadapt.ai](https://docs.openadapt.ai).
+This repository is the public website only. Installers and the unified CLI live
+in [OpenAdaptAI/OpenAdapt](https://github.com/OpenAdaptAI/OpenAdapt), the
+compiler/runtime lives in
+[OpenAdaptAI/openadapt-flow](https://github.com/OpenAdaptAI/openadapt-flow), and
+product documentation lives at [docs.openadapt.ai](https://docs.openadapt.ai).
 
-## Substrate maturity
+## Technical status data
 
 `public/status.json` is the canonical, machine-readable source of truth for
-substrate labels and component versions. The homepage imports it directly so
-rendered labels cannot drift, and `tests/statusManifest.test.js` guards it. Do
-not restate substrate maturity here; read the manifest instead.
+substrate lifecycle evidence and component versions, and
+`tests/statusManifest.test.js` guards it. The marketing homepage deliberately
+does not render this temporary maturity ledger; technical consumers can read the
+manifest directly.
 
 ## Tech stack
 
@@ -65,9 +68,9 @@ Next.js plugin are configured in `netlify.toml`.
 
 | Repository | Description |
 |------------|-------------|
-| [openadapt](https://github.com/OpenAdaptAI/openadapt) | Installer and unified CLI, the entry point to the product |
+| [OpenAdapt](https://github.com/OpenAdaptAI/OpenAdapt) | Installer and unified CLI, the entry point to the product |
 | [openadapt-flow](https://github.com/OpenAdaptAI/openadapt-flow) | Canonical engine: compiler, governed runtime, validation, and limits |
-| [openadapt-desktop](https://github.com/OpenAdaptAI/openadapt-desktop) | Desktop authoring and operator surface, in development |
+| [openadapt-desktop](https://github.com/OpenAdaptAI/openadapt-desktop) | Native authoring and local operator application |
 | [openadapt-evals](https://github.com/OpenAdaptAI/openadapt-evals) | Evaluation and benchmark research |
 | [openadapt-privacy](https://github.com/OpenAdaptAI/openadapt-privacy) | Optional PII/PHI scrubbing library |
 
