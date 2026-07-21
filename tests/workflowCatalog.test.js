@@ -81,18 +81,32 @@ test('every catalog entry carries the required honesty fields', () => {
     }
 })
 
-test('every substrate carries the canonical first-class supported label', () => {
-    // Target state: no substrate is ranked below another. Every substrate
-    // shares one uniform, first-class label.
-    const labels = new Set(Object.values(SUBSTRATE_MATURITY))
-    assert.equal(labels.size, 1, 'all substrates share one uniform label')
-    assert.equal(SUBSTRATE_MATURITY.browser, 'Supported')
+test('every substrate carries a canonical maturity tier reconciled to status.json', () => {
+    // Labels reconcile to public/status.json (the single source of truth):
+    // Beta = broadly exercised (browser); Early access = validated on specific
+    // named tasks (Windows / macOS / RDP); Exploratory = no validated
+    // real-environment integration yet (Citrix). "Supported" and the ambiguous
+    // "scoped" are never used as public labels here.
+    const expected = {
+        browser: 'Beta',
+        windows: 'Early access',
+        macos: 'Early access',
+        rdp: 'Early access',
+        citrix: 'Exploratory',
+    }
+    // Field-by-field: SUBSTRATE_MATURITY comes from a vm sandbox, so its
+    // prototype is not reference-equal to a plain object literal here.
+    assert.deepEqual({ ...SUBSTRATE_MATURITY }, expected)
+    for (const label of Object.values(SUBSTRATE_MATURITY)) {
+        assert.doesNotMatch(label, /scoped|supported/i)
+    }
+    // The three catalog entries are all browser fixtures, so they carry Beta.
     for (const entry of CATALOG) {
         assert.equal(entry.substrate, 'browser', `${entry.id} substrate`)
         assert.equal(
             entry.maturity,
             SUBSTRATE_MATURITY.browser,
-            `${entry.id} maturity is the canonical substrate label`
+            `${entry.id} maturity is the canonical browser label`
         )
     }
 })

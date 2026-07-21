@@ -21,15 +21,15 @@ export const faqItems = [
     },
     {
         question: 'Is OpenAdapt free?',
-        answer: 'The engine is MIT-licensed and free to use or modify. Managed cloud execution across every substrate is available as a $500/month subscription, with the price and billing period confirmed again in Stripe Checkout. Customer-controlled deployments are scoped separately because the data boundary, verifier, and operating responsibilities differ.',
+        answer: 'The engine is MIT-licensed and free to use or modify. Managed cloud execution of approved browser workflows is available as a $500/month subscription (Beta), with the price and billing period confirmed again in Stripe Checkout. Desktop, RDP, and Citrix run self-hosted or through a customer-controlled deployment, which is scoped separately because the data boundary, verifier, and operating responsibilities differ.',
     },
     {
         question: 'Is managed hosted execution available?',
-        answer: 'Yes. The hosted subscription provides managed execution for approved workflows across every substrate, including run history, reports, usage, and governed workflow updates. Start the subscription from the pricing section, then qualify the workflow and its verification boundary during onboarding.',
+        answer: 'Yes, for approved browser workflows. The hosted subscription provides managed browser execution (Beta), including run history, reports, usage, and governed workflow updates. Desktop, RDP, and Citrix workflows run self-hosted or through a scoped customer-controlled deployment, not in the managed subscription. Start the subscription from the pricing section, then qualify the workflow and its verification boundary during onboarding.',
     },
     {
         question: 'What software does OpenAdapt work with?',
-        answer: 'OpenAdapt targets repeated workflows across browser applications, Windows UI Automation, native macOS, and remote desktop environments. Managed subscriptions cover approved workflows across every substrate. Private systems and regulated runtime data are delivered through a scoped customer-controlled deployment.',
+        answer: 'OpenAdapt targets repeated workflows across browser applications, Windows UI Automation, native macOS, and remote desktop environments. The managed subscription covers approved browser workflows today; desktop, RDP, and Citrix run self-hosted or through a scoped customer-controlled deployment. Private systems and regulated runtime data are delivered through a customer-controlled deployment.',
     },
 ]
 
