@@ -256,10 +256,14 @@ describe('public product truth', () => {
     })
 
     it('explains the governed workflow and execution choices', () => {
-        cy.contains('What “repair” means, and where it stops').should(
-            'be.visible'
+        // The deep "what repair means, and where it stops" explanation now
+        // lives on /how-it-works (see the dedicated test below); the homepage
+        // links to it via a compact teaser instead of stacking the deep dive.
+        cy.contains('a', 'See how it works').should(
+            'have.attr',
+            'href',
+            '/how-it-works'
         )
-        cy.contains('Unsupported drift').should('be.visible')
         cy.get('#product-status').within(() => {
             cy.contains('One governed workflow, end to end').should(
                 'be.visible'
@@ -315,6 +319,23 @@ describe('public product truth', () => {
                 cy.contains('Start hosted subscription').should('not.exist')
             }
         })
+    })
+
+    it('keeps the drift-outcome deep dive on the how-it-works page', () => {
+        // The compiled-program and drift-outcome deep dives moved off the
+        // landing to /how-it-works. Assert they still exist there so the
+        // "what repair means, and where it stops" honesty coverage travels
+        // with the content instead of being deleted.
+        cy.visit('/how-it-works')
+        cy.contains('What “repair” means, and where it stops').should(
+            'be.visible'
+        )
+        cy.contains('Unsupported drift').should('be.visible')
+        cy.contains('Deterministic re-resolution').should('be.visible')
+        cy.contains('Refuse instead of improvise').should('be.visible')
+        cy.contains('See what a demonstration compiled into').should(
+            'be.visible'
+        )
     })
 
     it('renders the Stripe Product run allowance without a website fallback', () => {
