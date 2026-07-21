@@ -1,5 +1,7 @@
 # openadapt-web
 
+**Lifecycle: Beta**
+
 Source for the [openadapt.ai](https://openadapt.ai) marketing site.
 
 OpenAdapt is a governed demonstration compiler for GUI workflows: record a task
