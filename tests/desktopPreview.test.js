@@ -92,12 +92,13 @@ test('desktop preview uses only provenance-backed real captures', () => {
     }
 })
 
-test('desktop preview labels match the Experimental reality', () => {
+test('desktop preview distinguishes native Beta from historical capture provenance', () => {
     const component = read('components/DesktopPreview.js')
 
-    // The desktop build is an Experimental prerelease with unsigned or
-    // ad-hoc-signed artifacts, and the section says so.
-    assert.match(component, /Experimental prerelease/)
+    // The consumer surface leads with the native app and Beta lane without
+    // rewriting the provenance of screenshots from the earlier release.
+    assert.match(component, /real native desktop/)
+    assert.match(component, /predates the Beta lane/)
     assert.match(component, /unsigned\s+or ad-hoc-signed/)
 
     // The tray is a separate package, carries its real version, and is not
@@ -209,17 +210,16 @@ test('cockpit gallery is the real wired-engine app on honest local demo data', (
     assert.doesNotMatch(component, /does not launch yet/)
 })
 
-test('windows install-flow captions stay honest about the unsigned prerelease', () => {
+test('windows install-flow captions stay honest about the pictured unsigned predecessor', () => {
     const component = read('components/DesktopPreview.js')
     const download = read('pages/download.js')
 
-    // The required honesty phrase for the Windows installer visuals: an
-    // Experimental, unsigned build for which Windows shows an Unknown
-    // Publisher warning, and that warning is expected.
+    // The captured predecessor is unsigned, Windows shows an Unknown Publisher
+    // warning, and that warning is expected.
     assert.match(
         component,
-        /Experimental prerelease, unsigned/,
-        'windows section must state the build is an unsigned Experimental prerelease'
+        /pictured predecessor is unsigned/,
+        'windows section must state the pictured build is an unsigned predecessor'
     )
     assert.match(
         component,
