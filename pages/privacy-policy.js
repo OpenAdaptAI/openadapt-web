@@ -74,7 +74,7 @@ const PrivacyPolicy = () => {
                 service storage for compilation. It is not sanitized merely by
                 capture or compilation. Managed execution can also observe live
                 application data and produce reports after a design-time artifact
-                was sanitized. Workflows that necessarily expose PHI or other
+                was sanitized. Workflows that necessarily expose PHI/PII or other
                 restricted runtime data require a separately qualified,
                 customer-controlled boundary.
             </p>

@@ -104,7 +104,7 @@ export default function HostedWelcome() {
                     </div>
                     <p className="mt-3 text-xs leading-relaxed text-ink-3">
                         Managed subscriptions run approved workflows across every
-                        substrate. Workflows involving PHI, private systems, or
+                        substrate. Workflows involving PHI/PII, private systems, or
                         other regulated runtime data use a separately scoped
                         customer-controlled deployment. Working with regulated
                         data?{' '}
@@ -115,7 +115,7 @@ export default function HostedWelcome() {
                             Enterprise
                         </Link>{' '}
                         uses a customer-controlled execution environment for
-                        PHI-bearing runtime data.
+                        PHI/PII-bearing runtime data.
                     </p>
                 </div>
 

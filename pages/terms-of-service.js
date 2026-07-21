@@ -128,7 +128,7 @@ const TermsOfService = () => {
             <h2 className={styles.subheading}>5. Artifact and Runtime Data Boundaries</h2>
             <p className={styles.paragraph}>
                 Compilation does not make a recording or bundle de-identified or
-                PHI-free. The explicit artifact-ingest path accepts only the exact
+                PHI/PII-free. The explicit artifact-ingest path accepts only the exact
                 approved sanitized derivative admitted by destination policy and
                 bound to its reviewed manifest and cryptographic hash. The original
                 remains sensitive inside your trusted boundary. Unknown,
@@ -147,7 +147,7 @@ const TermsOfService = () => {
             <p className={styles.paragraph}>
                 A live application can reintroduce PII, PHI, credentials, or other
                 sensitive data after authoring artifacts were sanitized. Do not run
-                a workflow whose managed runtime necessarily exposes PHI or other
+                a workflow whose managed runtime necessarily exposes PHI/PII or other
                 restricted data in the self-serve hosted service. Use a
                 customer-controlled execution boundary governed by a signed order
                 and any required data-processing agreement. A BAA applies only when
