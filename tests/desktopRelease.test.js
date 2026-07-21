@@ -74,6 +74,22 @@ test('keeps complete legacy Experimental sets discoverable during transition', (
     assert.equal(desktopReleaseLifecycle(candidate), 'experimental')
 })
 
+test('binds every Beta asset version to the release tag', () => {
+    const candidate = release('Beta', '0.8.0', '2026-07-21T12:00:00Z')
+    candidate.tag_name = 'desktop-v0.9.0'
+    assert.equal(isCompleteDesktopRelease(candidate), false)
+})
+
+test('binds every legacy asset version to the release tag', () => {
+    const candidate = release(
+        'Experimental',
+        '0.6.2',
+        '2026-07-20T12:00:00Z'
+    )
+    candidate.tag_name = 'desktop-v0.6.3'
+    assert.equal(isCompleteDesktopRelease(candidate), false)
+})
+
 test('never assembles a complete release by mixing lifecycle asset families', () => {
     const candidate = release('Beta', '0.7.0', '2026-07-21T12:00:00Z')
     const missing = candidate.assets.findIndex((asset) =>
@@ -94,6 +110,16 @@ test('selects the newest complete release and preserves Experimental fallback', 
     const beta = release('Beta', '0.7.0', '2026-07-21T12:00:00Z')
     assert.equal(selectDesktopRelease([legacy, beta]), beta)
     assert.equal(selectDesktopRelease([legacy]), legacy)
+})
+
+test('a complete Beta remains primary when a legacy release is newer', () => {
+    const beta = release('Beta', '0.7.0', '2026-07-21T12:00:00Z')
+    const laterLegacy = release(
+        'Experimental',
+        '0.6.3',
+        '2026-07-22T12:00:00Z'
+    )
+    assert.equal(selectDesktopRelease([laterLegacy, beta]), beta)
 })
 
 test('platform selection stays in the chosen release lifecycle', () => {

@@ -62,7 +62,7 @@ describe('download page is server-rendered', () => {
             const definiteStates = [
                 'Beta release', // complete Beta release
                 'Compatibility release', // complete legacy release during transition
-                'No public desktop installer yet', // none
+                'No complete native desktop release yet', // none
                 'We could not reach GitHub just now', // build-time fetch miss
             ]
             expect(
