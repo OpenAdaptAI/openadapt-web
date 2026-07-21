@@ -61,7 +61,9 @@ function HostedCheckoutButton({ available }) {
             })
             const payload = await response.json()
             if (!response.ok || !payload.url) {
-                throw new Error('We could not open secure checkout. Please try again.')
+                throw new Error(
+                    'We could not open secure checkout. Please try again.'
+                )
             }
             window.location.assign(payload.url)
         } catch (error) {
@@ -114,7 +116,10 @@ function HostedCheckoutButton({ available }) {
                     : 'Start hosted subscription'}
             </button>
             {state === 'error' && (
-                <p role="alert" className="mt-3 text-xs leading-relaxed text-ink-3">
+                <p
+                    role="alert"
+                    className="mt-3 text-xs leading-relaxed text-ink-3"
+                >
                     {message}{' '}
                     <Link href="/#book" className="text-accent underline">
                         Contact us to complete setup.
@@ -146,10 +151,10 @@ export default function Pricing({ hostedOffer = null }) {
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Run the MIT-licensed engine yourself for free. Subscribe to
-                    OpenAdapt Cloud, the managed control plane that runs approved
-                    browser workflows today. Or start a scoped paid pilot for
-                    desktop, RDP, Citrix, regulated data, and customer-controlled
-                    deployments.
+                    OpenAdapt Cloud, the managed control plane that runs
+                    approved browser workflows today. Or start a scoped paid
+                    pilot for desktop, RDP, Citrix, regulated data, and
+                    customer-controlled deployments.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -163,8 +168,8 @@ export default function Pricing({ hostedOffer = null }) {
                             <span className="text-sm text-ink-3">MIT</span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            For builders and self-hosters running it on their own
-                            machines.
+                            For builders and self-hosters running it on their
+                            own machines.
                         </p>
                         <FeatureList
                             items={[
@@ -222,12 +227,13 @@ export default function Pricing({ hostedOffer = null }) {
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
                             The managed control plane for governed execution of
-                            approved browser workflows (Beta). Approved workflows
-                            run in the managed runner with run history, reporting,
-                            and governed updates. Desktop, RDP, and Citrix run
-                            self-hosted or in a customer-controlled deployment, not
-                            in the managed subscription. Onboarding is assisted: we
-                            qualify the first workflow with you.
+                            approved browser workflows (Beta). Approved
+                            workflows run in the managed runner with run
+                            history, reporting, and governed updates. Desktop,
+                            RDP, and Citrix run self-hosted or in a
+                            customer-controlled deployment, not in the managed
+                            subscription. Onboarding is assisted: we qualify the
+                            first workflow with you.
                         </p>
                         <FeatureList
                             items={[
@@ -239,23 +245,35 @@ export default function Pricing({ hostedOffer = null }) {
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
-                            Hosted upload accepts an approved sanitized copy, not
-                            the original recording. Live screens can contain
-                            sensitive data again; workflows that expose PHI require
-                            a separately qualified customer-controlled boundary.{' '}
-                            <Link href="/security" className="text-accent underline">
+                            Hosted upload accepts an approved sanitized copy,
+                            not the original recording. Live screens can contain
+                            sensitive data again; workflows that expose PHI
+                            require a separately qualified customer-controlled
+                            boundary.{' '}
+                            <Link
+                                href="/security"
+                                className="text-accent underline"
+                            >
                                 Review the security boundary.
                             </Link>
                         </div>
                         <div className="mt-6 flex-grow" />
-                        <HostedCheckoutButton available={hostedOfferAvailable} />
+                        <HostedCheckoutButton
+                            available={hostedOfferAvailable}
+                        />
                         <p className="mt-3 text-center text-xs leading-relaxed text-ink-3">
                             By subscribing, you agree to the{' '}
-                            <Link href="/terms-of-service" className="text-accent underline">
+                            <Link
+                                href="/terms-of-service"
+                                className="text-accent underline"
+                            >
                                 Terms of Service
                             </Link>{' '}
                             and{' '}
-                            <Link href="/privacy-policy" className="text-accent underline">
+                            <Link
+                                href="/privacy-policy"
+                                className="text-accent underline"
+                            >
                                 acknowledge the Privacy Notice
                             </Link>
                             .
@@ -318,11 +336,40 @@ export default function Pricing({ hostedOffer = null }) {
                     </div>
                 </div>
 
+                {/*
+                 * Option A (chosen): a credits callout under the tiers, not a
+                 * fourth "pay-with-data" tier. Frames credits as extending your
+                 * monthly run cap, which is what the mechanism does. Marked
+                 * early access; links to /contribute for the full program.
+                 */}
+                <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-hairline bg-panel p-6 md:p-7">
+                    <div className="flex flex-wrap items-center gap-3">
+                        <p className="eyebrow">Earn credits by contributing</p>
+                        <span className="rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
+                            Early access
+                        </span>
+                    </div>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                        Contribute a sanitized, de-identified derivative to the
+                        shared hardening corpus and earn run credits that extend
+                        your monthly run cap. Raw recordings never leave your
+                        machine, you approve every byte, and it stays opt-in and
+                        revocable.{' '}
+                        <Link
+                            href="/contribute"
+                            className="text-accent underline"
+                        >
+                            Request access to the contributor program.
+                        </Link>
+                    </p>
+                </div>
+
                 <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-ink-3">
                     {hostedOfferAvailable
                         ? 'The hosted subscription price shown above comes directly from Stripe and is confirmed again at checkout.'
                         : 'OpenAdapt Cloud subscriptions open only after the live checkout and account-return path pass launch qualification.'}{' '}
-                    Regulated deployment and service terms are scoped separately.
+                    Regulated deployment and service terms are scoped
+                    separately.
                 </p>
             </div>
         </section>

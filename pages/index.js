@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import ContactBookingSection from '@components/ContactBookingSection'
+import ContributeSection from '@components/ContributeSection'
 import DashboardShowcase from '@components/DashboardShowcase'
 import Developers from '@components/Developers'
 import EmailForm from '@components/EmailForm'
@@ -126,9 +127,8 @@ export async function getStaticProps() {
     // Seed the initial HTML with the shared cached/verified repository stats.
     // The footer may refresh through our same-origin endpoint after hydration.
     const { getOpenIssuesByLabel } = await import('../lib/githubApi')
-    const { getOpenAdaptRepositoryStats } = await import(
-        '../lib/openAdaptRepositoryStats'
-    )
+    const { getOpenAdaptRepositoryStats } =
+        await import('../lib/openAdaptRepositoryStats')
     const [githubStats, buildWarnings] = await Promise.all([
         getOpenAdaptRepositoryStats(),
         // Known engine breakage surfaced server-side so visitor browsers
@@ -148,7 +148,12 @@ export async function getStaticProps() {
     }
 }
 
-export default function Home({ githubStats, buildWarnings, hostedOffer, installStats }) {
+export default function Home({
+    githubStats,
+    buildWarnings,
+    hostedOffer,
+    installStats,
+}) {
     const router = useRouter()
     // ONE lifted selection shared by every reference-aware homepage section:
     // the process/reference-workflow demo and the "More reference workflows"
@@ -160,7 +165,10 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
 
     useEffect(() => {
         const requested = router.query.ref
-        if (typeof requested === 'string' && VERTICAL_KEYS.includes(requested)) {
+        if (
+            typeof requested === 'string' &&
+            VERTICAL_KEYS.includes(requested)
+        ) {
             setVertical(requested)
         }
     }, [router.query.ref])
@@ -328,6 +336,16 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
             </Reveal>
             <Reveal>
                 <InstallStats stats={installStats} />
+            </Reveal>
+            {/*
+             * Contribute-for-credits sits in the open-source / adoption
+             * cluster (right after the Adoption stats) because it is a
+             * commons / flywheel message: sanitized contributions strengthen
+             * the shared hardening corpus. It is intentionally NOT in the hero
+             * or the pricing tiers. Early access, opt-in, links to /contribute.
+             */}
+            <Reveal>
+                <ContributeSection />
             </Reveal>
             <Reveal>
                 <EmailForm />
