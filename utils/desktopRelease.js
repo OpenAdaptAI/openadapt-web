@@ -8,6 +8,10 @@ const RELEASE_PREFIXES = {
     beta: /^OpenAdapt-Desktop-Beta-/i,
     experimental: /^OpenAdapt-Desktop-Experimental-/i,
 }
+const RELEASE_ASSET_FAMILIES = {
+    beta: 'Beta',
+    experimental: 'Experimental',
+}
 const RELEASE_LIFECYCLES = ['beta', 'experimental']
 
 function lifecycleForAsset(name) {
@@ -64,12 +68,12 @@ export const DESKTOP_PLATFORMS = [
 ]
 
 const REQUIRED_ASSETS = [
-    /-macos-arm64-(?:adhoc|developer-id-notarized)\.dmg$/i,
-    /-macos-x86_64-(?:adhoc|developer-id-notarized)\.dmg$/i,
-    /-windows-x86_64-(?:unsigned|authenticode)\.msi$/i,
-    /-windows-x86_64-(?:unsigned|authenticode)-nsis-setup\.exe$/i,
-    /-linux-x86_64-unsigned\.AppImage$/i,
-    /-linux-x86_64-unsigned\.deb$/i,
+    /^-macos-arm64-(?:adhoc|developer-id-notarized)\.dmg$/i,
+    /^-macos-x86_64-(?:adhoc|developer-id-notarized)\.dmg$/i,
+    /^-windows-x86_64-(?:unsigned|authenticode)\.msi$/i,
+    /^-windows-x86_64-(?:unsigned|authenticode)-nsis-setup\.exe$/i,
+    /^-linux-x86_64-unsigned\.AppImage$/i,
+    /^-linux-x86_64-unsigned\.deb$/i,
 ]
 
 // Beta releases add one machine-readable provenance record for every platform
@@ -77,10 +81,10 @@ const REQUIRED_ASSETS = [
 // discoverable during the transition, but a new Beta set is never accepted
 // without all four metadata records and the checksum manifest.
 const BETA_PROVENANCE_ASSETS = [
-    /-macos-arm64-(?:adhoc|developer-id-notarized)-metadata\.json$/i,
-    /-macos-x86_64-(?:adhoc|developer-id-notarized)-metadata\.json$/i,
-    /-windows-x86_64-(?:unsigned|authenticode)-metadata\.json$/i,
-    /-linux-x86_64-unsigned-metadata\.json$/i,
+    /^-macos-arm64-(?:adhoc|developer-id-notarized)-metadata\.json$/i,
+    /^-macos-x86_64-(?:adhoc|developer-id-notarized)-metadata\.json$/i,
+    /^-windows-x86_64-(?:unsigned|authenticode)-metadata\.json$/i,
+    /^-linux-x86_64-unsigned-metadata\.json$/i,
 ]
 
 function hasDownloadUrl(asset) {
@@ -110,7 +114,6 @@ export function assetForPlatform(assets, platform, preferredLifecycle = null) {
 }
 
 function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
-    const prefix = RELEASE_PREFIXES[lifecycle]
     if (
         !release ||
         release.draft ||
@@ -121,6 +124,8 @@ function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
         return false
     }
 
+    const version = release.tag_name.slice('desktop-v'.length)
+    const expectedPrefix = `OpenAdapt-Desktop-${RELEASE_ASSET_FAMILIES[lifecycle]}-v${version}-`
     const assets = release.assets.filter(hasDownloadUrl)
     const hasChecksums = assets.some((asset) => asset.name === 'SHA256SUMS')
     const required =
@@ -130,7 +135,13 @@ function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
     return (
         hasChecksums &&
         required.every((pattern) =>
-            assets.some((asset) => prefix.test(asset.name) && pattern.test(asset.name))
+            assets.some(
+                (asset) =>
+                    asset.name.startsWith(expectedPrefix) &&
+                    pattern.test(
+                        asset.name.slice(expectedPrefix.length - 1)
+                    )
+            )
         )
     )
 }
@@ -152,11 +163,20 @@ export function selectDesktopRelease(releases) {
     const complete = releases.filter(isCompleteDesktopRelease)
     if (complete.length === 0) return null
 
+    // Once a complete Beta exists, legacy Experimental compatibility releases
+    // can never become primary again—even if one is published later. This
+    // makes the lifecycle transition monotonic while retaining the newest
+    // complete Experimental release as a fallback before Beta is available.
+    const beta = complete.filter(
+        (release) => desktopReleaseLifecycle(release) === 'beta'
+    )
+    const candidates = beta.length > 0 ? beta : complete
+
     // The GitHub endpoint is normally newest-first, but select by publication
     // metadata so a stable release interleaved in the response or a changed
     // API ordering cannot make the download page advertise an older desktop
     // prerelease.
-    return complete.reduce((latest, candidate) => {
+    return candidates.reduce((latest, candidate) => {
         const latestTime = Date.parse(
             latest.published_at || latest.created_at || ''
         )
@@ -166,13 +186,6 @@ export function selectDesktopRelease(releases) {
         if (
             Number.isFinite(candidateTime) &&
             (!Number.isFinite(latestTime) || candidateTime > latestTime)
-        ) {
-            return candidate
-        }
-        if (
-            candidateTime === latestTime &&
-            desktopReleaseLifecycle(candidate) === 'beta' &&
-            desktopReleaseLifecycle(latest) !== 'beta'
         ) {
             return candidate
         }
