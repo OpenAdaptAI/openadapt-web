@@ -1,7 +1,5 @@
 import Link from 'next/link'
 
-import status from '../public/status.json'
-
 const FLOW_URL = 'https://github.com/OpenAdaptAI/openadapt-flow'
 const LIMITS_URL = `${FLOW_URL}/blob/main/docs/LIMITS.md`
 const EVIDENCE_URL = `${FLOW_URL}/tree/main/benchmark`
@@ -131,70 +129,6 @@ export default function ProductStatus() {
                             </div>
                         ))}
                     </div>
-                </div>
-
-                <div
-                    id="interface-readiness"
-                    className="mt-8 rounded-2xl border border-hairline bg-ground p-5 md:p-7"
-                >
-                    <p className="eyebrow">Every interface, first-class</p>
-                    <h3 className="mt-2 max-w-2xl font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                        One governed loop across every surface
-                    </h3>
-                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2">
-                        Every surface below runs the same governed loop, and each
-                        carries a maturity label that says how broadly it has been
-                        exercised today. Each label is read from one{' '}
-                        <a
-                            href="/status.json"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-accent underline"
-                        >
-                            machine-readable status manifest
-                        </a>
-                        , so the website, docs, launcher, and packages stay in
-                        lockstep.
-                    </p>
-                    <ul className="mt-6 grid gap-4 md:grid-cols-2">
-                        {status.substrates.map((substrate) => (
-                            <li
-                                key={substrate.name}
-                                className="rounded-xl border border-hairline bg-panel p-5"
-                            >
-                                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                                    <h4 className="font-display font-semibold text-ink">
-                                        {substrate.name}
-                                    </h4>
-                                    <span className="rounded-full border border-hairline px-2.5 py-0.5 font-mono text-xs font-medium text-accent">
-                                        {substrate.public_label}
-                                    </span>
-                                </div>
-                                <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                                    {substrate.evidence_note}
-                                </p>
-                            </li>
-                        ))}
-                    </ul>
-                    <dl className="mt-6 grid gap-x-6 gap-y-2 rounded-xl border border-hairline bg-panel p-5 text-sm leading-relaxed sm:grid-cols-2">
-                        <p className="col-span-full font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-3">
-                            What the labels mean
-                        </p>
-                        {Object.entries(status.tiers).map(([tier, meaning]) => (
-                            <div key={tier} className="flex gap-2">
-                                <dt className="flex-shrink-0 font-mono text-xs font-medium text-accent">
-                                    {tier}
-                                </dt>
-                                <dd className="text-ink-2">{meaning}</dd>
-                            </div>
-                        ))}
-                    </dl>
-                    <p className="mt-5 font-mono text-xs text-ink-3">
-                        Current components: launcher{' '}
-                        <span className="text-ink-2">openadapt {status.versions.launcher}</span>{' '}
-                        · <span className="text-ink-2">openadapt-flow {status.versions.flow}</span>{' '}
-                        · <span className="text-ink-2">desktop {status.versions.desktop}</span>
-                    </p>
                 </div>
 
                 <div className="mt-8 rounded-2xl border border-hairline bg-ground p-5 md:p-7">

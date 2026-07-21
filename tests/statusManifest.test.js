@@ -104,30 +104,24 @@ test('status manifest encodes the verified component versions', () => {
     assert.match(manifest.generated_at, /^\d{4}-\d{2}-\d{2}$/)
 })
 
-test('homepage substrate matrix renders labels, tiers, and versions from the manifest', () => {
-    // The rendered labels must come from the manifest, not hardcoded strings,
-    // so a label change in status.json is the only edit needed and the homepage
-    // can never disagree with the source of truth.
+test('homepage presents capabilities without exposing the maturity ledger', () => {
+    // The sales page describes the target product capability. The public status
+    // manifest remains available to technical consumers, but transient maturity
+    // labels and component versions do not belong in the homepage narrative.
     const product = read('components/ProductStatus.js')
 
-    assert.match(product, /import status from '\.\.\/public\/status\.json'/)
-    assert.match(product, /status\.substrates\.map/)
-    assert.match(product, /substrate\.public_label/)
-    assert.match(product, /substrate\.evidence_note/)
-    // The tier legend is rendered from the manifest ladder.
-    assert.match(product, /status\.tiers/)
-    assert.match(product, /status\.versions\.launcher/)
-    assert.match(product, /status\.versions\.flow/)
-    assert.match(product, /status\.versions\.desktop/)
-    assert.match(product, /status\.json/)
+    assert.doesNotMatch(product, /public\/status\.json/)
+    assert.doesNotMatch(product, /status\.substrates|substrate\.public_label/)
+    assert.doesNotMatch(product, /status\.tiers|status\.versions/)
+    assert.match(product, /Web applications/)
+    assert.match(product, /Windows applications/)
+    assert.match(product, /RDP, Citrix & VDI/)
 
-    // The canonical label strings must not be hardcoded into the component —
-    // that would let them drift from the manifest.
     for (const label of Object.values(CANONICAL_LABELS)) {
         assert.doesNotMatch(
             product,
             new RegExp(`['"\\s]${label}['"\\s]`),
-            `ProductStatus must read "${label}" from the manifest, not inline it`
+            `ProductStatus must not render the temporary "${label}" label`
         )
     }
 })
