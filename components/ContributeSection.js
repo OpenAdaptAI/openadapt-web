@@ -18,7 +18,7 @@ const GUARANTEES = [
     'Sanitized, de-identified derivatives only. Raw recordings never leave your machine.',
     'You approve every byte through hash-bound local review before anything is shared.',
     'Opt-in, off by default, and revocable going forward.',
-    'Contributions strengthen the shared hardening corpus, and you earn run credits that extend your usage allowance.',
+    'De-identified derivatives are not PHI, so no BAA is required, and you attest to the standard.',
 ]
 
 export default function ContributeSection() {
