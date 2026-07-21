@@ -14,7 +14,19 @@ import {
 } from 'data/repositoryStats'
 import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks'
 import { track, EVENTS } from 'utils/analytics'
+import repositoryStatsView from 'utils/repositoryStatsView'
 import styles from './Footer.module.css'
+
+const { sourceLabel } = repositoryStatsView
+
+// Client refresh cadence for the same-origin stats endpoint. Stars/forks move
+// over hours, so a static Netlify site does not need (and cannot host) a
+// streaming server: a light visibility-aware poll is the right tool. See the
+// PR description for the SSE-vs-poll evaluation. Responses are CDN- and
+// server-cached (s-maxage=600), so this poll almost always hits cache rather
+// than GitHub.
+const POLL_INTERVAL_MS = 90 * 1000
+const MAX_BACKOFF_MS = 10 * 60 * 1000
 
 // The hosted control plane. Mirrors NEXT_PUBLIC_CLOUD_APP_URL (.env.example)
 // and the top-nav "Sign in" destination so the two surfaces never drift.
@@ -62,14 +74,68 @@ function validStats(value) {
     )
 }
 
-function snapshotLabel(stats) {
-    if (stats.source === 'github' && !stats.stale) {
-        return 'GitHub · refreshed recently'
-    }
-    if (stats.source === 'stale') {
-        return 'GitHub · last-known counts'
-    }
-    return 'GitHub snapshot · refreshed when available'
+function usePrefersReducedMotion() {
+    const [reduced, setReduced] = useState(false)
+    useEffect(() => {
+        if (typeof window === 'undefined' || !window.matchMedia) return
+        const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+        const update = () => setReduced(media.matches)
+        update()
+        media.addEventListener?.('change', update)
+        return () => media.removeEventListener?.('change', update)
+    }, [])
+    return reduced
+}
+
+// The honest, live-ticking "GitHub · updated Ns ago" line. The relative time
+// is recomputed locally (no network) on a gentle cadence: 1s normally so the
+// seconds counter reads true, or 30s under prefers-reduced-motion so there is
+// no visible per-second animation. The tick pauses while the tab is hidden and
+// snaps to the current time when it returns. `suppressHydrationWarning` is the
+// documented escape hatch for timestamps whose server and client renders may
+// legitimately differ by a second.
+function RepositorySource({ stats }) {
+    const reducedMotion = usePrefersReducedMotion()
+    const [now, setNow] = useState(() => Date.now())
+
+    useEffect(() => {
+        const cadence = reducedMotion ? 30 * 1000 : 1000
+        let timer = null
+        const tick = () => setNow(Date.now())
+        const start = () => {
+            if (document.visibilityState === 'hidden') return
+            timer = setInterval(tick, cadence)
+        }
+        const onVisibility = () => {
+            clearInterval(timer)
+            if (document.visibilityState === 'visible') {
+                tick()
+                start()
+            }
+        }
+        start()
+        document.addEventListener('visibilitychange', onVisibility)
+        return () => {
+            clearInterval(timer)
+            document.removeEventListener('visibilitychange', onVisibility)
+        }
+    }, [reducedMotion])
+
+    const label = sourceLabel(stats, now)
+    return (
+        <p
+            className={styles.repositorySource}
+            data-testid="footer-repository-source"
+        >
+            {stats.observedAt ? (
+                <time dateTime={stats.observedAt} suppressHydrationWarning>
+                    {label}
+                </time>
+            ) : (
+                label
+            )}
+        </p>
+    )
 }
 
 // Attach the right funnel event to an external footer destination.
@@ -134,26 +200,72 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
     )
 
     useEffect(() => {
-        const controller = new AbortController()
-        fetch('/api/repository-stats', {
-            headers: { Accept: 'application/json' },
-            signal: controller.signal,
-        })
-            .then((response) => {
+        // Live-refresh the counts with a visibility-aware poll. We never blank
+        // the widget: a failed fetch or a server-reported stale/snapshot value
+        // simply keeps the last good numbers and backs the poll off (up to
+        // MAX_BACKOFF_MS) so a rate-limited or down endpoint is not hammered.
+        let cancelled = false
+        let timer = null
+        let controller = null
+        let backoff = POLL_INTERVAL_MS
+
+        const schedule = () => {
+            clearTimeout(timer)
+            // A hidden tab schedules nothing; it resumes on visibilitychange.
+            if (document.visibilityState === 'hidden') return
+            timer = setTimeout(fetchOnce, backoff)
+        }
+
+        const fetchOnce = async () => {
+            controller = new AbortController()
+            try {
+                const response = await fetch('/api/repository-stats', {
+                    headers: { Accept: 'application/json' },
+                    signal: controller.signal,
+                })
                 if (!response.ok) {
-                    throw new Error(
-                        `Repository stats request failed: ${response.status}`
-                    )
+                    throw new Error(`stats request failed: ${response.status}`)
                 }
-                return response.json()
-            })
-            .then((nextStats) => {
-                if (validStats(nextStats)) setStats(nextStats)
-            })
-            .catch(() => {
-                // Keep the server-rendered snapshot/last-known value.
-            })
-        return () => controller.abort()
+                const next = await response.json()
+                if (cancelled) return
+                if (validStats(next)) setStats(next)
+                // Fresh live data resets the cadence; a server-reported
+                // stale/snapshot value means GitHub was unreachable, so back
+                // off rather than re-poll a struggling upstream every 90s.
+                if (next && next.source === 'github' && !next.stale) {
+                    backoff = POLL_INTERVAL_MS
+                } else {
+                    backoff = Math.min(backoff * 2, MAX_BACKOFF_MS)
+                }
+            } catch {
+                // Network error, non-OK, or rate limit: keep the last good
+                // value and back off exponentially.
+                if (cancelled) return
+                backoff = Math.min(backoff * 2, MAX_BACKOFF_MS)
+            } finally {
+                controller = null
+                if (!cancelled) schedule()
+            }
+        }
+
+        const onVisibility = () => {
+            if (document.visibilityState === 'visible') {
+                // Refresh immediately on return, then resume the poll.
+                fetchOnce()
+            } else {
+                clearTimeout(timer)
+                if (controller) controller.abort()
+            }
+        }
+
+        fetchOnce()
+        document.addEventListener('visibilitychange', onVisibility)
+        return () => {
+            cancelled = true
+            clearTimeout(timer)
+            if (controller) controller.abort()
+            document.removeEventListener('visibilitychange', onVisibility)
+        }
     }, [])
 
     return (
@@ -230,12 +342,7 @@ export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
                                 </span>
                             </a>
                         </div>
-                        <p
-                            className={styles.repositorySource}
-                            data-testid="footer-repository-source"
-                        >
-                            {snapshotLabel(stats)}
-                        </p>
+                        <RepositorySource stats={stats} />
                     </div>
 
                     <nav className={styles.columns} aria-label="Footer">
