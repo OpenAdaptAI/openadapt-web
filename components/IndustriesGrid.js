@@ -14,7 +14,7 @@ export default function IndustriesGrid({
             title: 'Automation teams & BPO operators',
             href: '#book',
             descriptions:
-                'High-volume repeated operations with structured inputs, established business logic, and a UI-only last-mile gap that can be checked against an independent effect source of truth.',
+                'High-volume repeated operations with structured inputs, established business logic, and a UI-only last-mile gap. Where an independent effect source of truth is available the write is verified end to end; where it is not, the run halts instead of guessing.',
             logo: '/images/noun-finance.svg',
             example: {
                 label: 'Insurance claims reference',
@@ -25,7 +25,7 @@ export default function IndustriesGrid({
             title: 'RCM & vertical-software vendors',
             href: '#book',
             descriptions:
-                'Products with supported APIs for the core path and a bounded UI-only step at the edge, where volume and a separate system of record make verification practical.',
+                'Products with supported APIs for the core path and a bounded UI-only step at the edge, where volume justifies compiling it and a separate system of record, when present, makes the write verifiable end to end.',
             logo: '/images/noun-healthcare.svg',
             example: {
                 label: 'Healthcare workflow reference',
@@ -36,7 +36,7 @@ export default function IndustriesGrid({
             title: 'Regulated enterprise operations',
             href: '#book',
             descriptions:
-                'Governed teams that already know the inputs and rules, repeat the task at material volume, and can verify the external effect independently of the GUI run.',
+                'Governed teams that already know the inputs and rules and repeat the task at material volume. Where the external effect can be verified independently of the GUI run OpenAdapt confirms it end to end; where it cannot, it halts for review.',
             logo: '/images/noun-law.svg',
             example: {
                 label: 'Lending operations reference',
@@ -47,11 +47,11 @@ export default function IndustriesGrid({
 
     const industryMessages = {
         'Automation teams & BPO operators':
-            "I'm evaluating a high-volume workflow with a UI-only last-mile gap and an independent effect source of truth.",
+            "I'm evaluating a high-volume workflow with a UI-only last-mile gap (independent effect source of truth optional).",
         'RCM & vertical-software vendors':
             "I'm evaluating a bounded UI step that remains after using supported APIs.",
         'Regulated enterprise operations':
-            "I'm evaluating a governed repeated workflow with structured inputs and an independent effect source of truth.",
+            "I'm evaluating a governed repeated workflow with structured inputs (independent effect source of truth optional).",
     }
 
     const getDataFromTitle = (title) => {
