@@ -28,7 +28,7 @@ export default function HowItWorksCondensed() {
     return (
         <section
             id="how-it-works"
-            className="border-b border-hairline bg-ground px-5 py-14 md:py-16"
+            className="border-b border-hairline bg-ground px-5 py-20 md:py-28"
         >
             <div className="mx-auto max-w-5xl">
                 <p className="eyebrow text-center">How it works</p>

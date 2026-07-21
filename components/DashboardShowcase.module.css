@@ -1,5 +1,5 @@
 .section {
-    padding: 76px 20px 80px;
+    padding: 96px 20px 112px;
     border-top: 2px solid var(--rule);
     background: var(--panel);
     scroll-margin-top: 72px;
@@ -306,7 +306,7 @@
 
 @media (max-width: 620px) {
     .section {
-        padding: 56px 16px 62px;
+        padding: 72px 16px 80px;
     }
 
     .summary {
