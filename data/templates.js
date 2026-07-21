@@ -128,7 +128,7 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/tree/main/benchmark/frappe_lending`,
         evidence:
-            '6/6 compiled trials correct across the pinned baseline and a cosmetic-drift variant — 0 silent incorrect successes, 0 over-halts, 0 model calls, $0 model cost. An initial engineering matrix, not a publication benchmark; the full comparative matrix (paid agent arm, 10 fresh trials per cell) is still open.',
+            '6/6 compiled trials correct across the pinned baseline and a cosmetic-drift variant — 0 silent incorrect successes, 0 over-halts, 0 model calls, $0 model cost. A separate small-N paid-agent run completed 6/6 correct writes (5/6 clean), with 1/6 post-write cost-cap over-halt, 0/6 silent incorrect, and $0.4240/run. The baselines were not matched, so this remains engineering evidence, not a publication benchmark.',
     },
     {
         slug: 'openimis-claim-intake',
@@ -156,7 +156,7 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/tree/main/benchmark/openimis_claims`,
         evidence:
-            'A reference environment, deliberately not a benchmark: no timing matrix and no agent arm. Any future reliability claim requires the full matched protocol the Frappe Lending and OpenEMR references define.',
+            'A reference environment, deliberately not a benchmark: 3/3 compiled replays and, in a separate small-N run, 3/3 paid-agent trials were correct, with 0/3 over-halt, 0/3 silent incorrect, and $0.4793/run. There is no matched timing matrix or publication protocol.',
     },
 
     // ------------------------------------------------------------------

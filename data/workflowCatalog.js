@@ -59,8 +59,11 @@ export const CATALOG = [
         recordingHref: `${FLOW_REPO}/tree/main/benchmark/openemr_local`,
         policy:
             'Model-free run: healthy compiled replay makes 0 model calls at ' +
-            '$0 model cost. The paid computer-use agent arm is intentionally ' +
-            'omitted, so full_matrix_complete and publication_ready are false.',
+            '$0 model cost. A separate small-N paid-agent run produced 0/6 ' +
+            'correct writes and 6/6 missing_write outcomes, with 0/6 ' +
+            'over-halt, 0/6 silent incorrect, and $0.8901/run. ' +
+            'Because it used a separately provisioned baseline, ' +
+            'full_matrix_complete and publication_ready remain false.',
         identityContract:
             'Two distinct OAuth clients. The actor holds ' +
             'openid api:oemr user/patient.crus; the oracle holds ' +
@@ -88,14 +91,16 @@ export const CATALOG = [
             'that is a field result on a daily-resetting shared instance, not a ' +
             'CI-reproducible benchmark.',
         knownLimits: [
-            'Agent arm omitted; not a full three-arm comparison.',
+            'The 6 paid-agent trials used a separate baseline and all ended ' +
+                'missing-write; this is not a matched three-arm comparison.',
             'Synthetic PHI-shaped data only (all values fictional); not ' +
                 'regulated, clean-machine, or design-partner evidence.',
             'Not customer-proven and not a broad reliability claim.',
         ],
         scope:
             'Synthetic fixtures only; one pinned local macOS arm64 environment; ' +
-            '12 model-free trials; not customer-proven.',
+            '12 model-free trials plus 6 separately provisioned paid-agent ' +
+            'trials; not customer-proven.',
         reproduction:
             '.venv/bin/python scripts/openemr_local_demo.py run --profile ' +
             'initial --model-free --bundle benchmark/openemr_local/out/bundle ' +
@@ -133,7 +138,10 @@ export const CATALOG = [
             'Model-free run: 0 model calls at $0 model cost. Frappe exposes a ' +
             'good REST API, so a real deployment should prefer the API arm; the ' +
             'browser arm isolates the value of compiled replay when a UI path is ' +
-            'required. Agent arm omitted; publication_ready false.',
+            'required. A separate paid-agent run completed 6/6 correct writes ' +
+            '(5/6 clean), with 1/6 post-write cost-cap over-halt, 0/6 silent ' +
+            'incorrect, and $0.4240/run; its baseline was not matched to the ' +
+            'model-free subset, so publication_ready is false.',
         identityContract:
             'A read-only REST fixture user (openadapt.oracle@example.invalid) ' +
             'with a custom read-only Loan Application permission — distinct from ' +
@@ -151,18 +159,20 @@ export const CATALOG = [
                 '0 silent incorrect successes, 0 over-halts, 0 model calls, $0.',
             scope:
                 'Local model-free compiled-vs-API engineering subset ' +
-                '(2026-07-16); the paid agent arm and a 10-trial publication ' +
-                'matrix are not included.',
+                '(2026-07-16), plus a separate 6-trial paid-agent run ' +
+                '(2026-07-21); no matched 10-trial publication matrix.',
         },
         knownLimits: [
-            'Agent arm omitted; not a full three-arm comparison.',
+            'The paid-agent arm used a separately provisioned baseline; not a ' +
+                'matched three-arm comparison.',
             'Frappe is API-rich and is NOT a legacy Windows/Citrix LOS; this is ' +
                 'not evidence for a proprietary system such as Encompass or Calyx.',
             'Not customer-proven and not a broad reliability claim.',
         ],
         scope:
             'Synthetic fixtures only; one pinned local macOS arm64 environment; ' +
-            '6 compiled + 6 direct-API trials; not customer-proven.',
+            '6 compiled + 6 direct-API trials, plus 6 separately provisioned ' +
+            'paid-agent trials; not customer-proven.',
         reproduction:
             '.venv/bin/python scripts/frappe_lending_demo.py run --profile ' +
             'initial --model-free --bundle benchmark/frappe_lending/out/bundle ' +
@@ -199,9 +209,10 @@ export const CATALOG = [
             '3276ad2b537c558211a5a357fd7ac1e19f0a029e (openadapt-flow #141).',
         recordingHref: `${FLOW_REPO}/tree/main/benchmark/openimis_claims`,
         policy:
-            'Model-free compiled replays: 0 model calls. This directory is a ' +
-            'reference/demo environment — there is no timing matrix, no agent ' +
-            'arm, and no publication protocol.',
+            'Model-free compiled replays: 0 model calls. A separate 3-trial ' +
+            'paid-agent run was 3/3 correct, with 0/3 over-halt, 0/3 silent ' +
+            'incorrect, and $0.4793/run. This remains a reference/demo ' +
+            'environment: no matched timing matrix or publication protocol.',
         identityContract:
             'The openIMIS demo actor credential (Admin) with a fixed health ' +
             'facility (VIHOS001) and claim-administrator context as unmeasured ' +
@@ -219,13 +230,14 @@ export const CATALOG = [
                 'SQL-verified. 0 duplicate claims, 0 wrong-policyholder writes, ' +
                 '0 model calls. Replay wall times 25.6s / 26.6s / 30.3s.',
             scope:
-                'A local reference demonstration, NOT a benchmark: no agent arm, ' +
-                'no trial matrix, no publication protocol.',
+                'A local reference demonstration plus a separate 3-trial ' +
+                'paid-agent run; NOT a benchmark and no publication protocol.',
         },
         knownLimits: [
             'openIMIS is AGPL-3.0 — the reference environment stays ' +
                 'repository-only and is never shipped in a packaged artifact.',
-            'Reference/demo only: no agent arm, no timing matrix; not ' +
+            'Reference/demo only: the 3 paid-agent trials were separate, with ' +
+                'no matched timing matrix; not ' +
                 'adjudication automation.',
             'Not a customer deployment, not Windows/RDP/Citrix, and not ' +
                 'customer-proven. OpenAdapt is not affiliated with the openIMIS ' +
@@ -234,7 +246,8 @@ export const CATALOG = [
         scope:
             'Synthetic fixtures only (upstream demo dataset plus one bootstrapped ' +
             'synthetic policyholder); one pinned local macOS arm64 environment; ' +
-            '3 verified replays; not customer-proven.',
+            '3 verified compiled replays plus 3 separately provisioned ' +
+            'paid-agent trials; not customer-proven.',
         reproduction:
             '.venv/bin/python scripts/openimis_claims_demo.py replay --bundle ' +
             'benchmark/openimis_claims/out/bundle --headed',
