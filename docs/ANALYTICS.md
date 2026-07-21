@@ -57,8 +57,10 @@ the **same** PostHog project (same `NEXT_PUBLIC_POSTHOG_KEY` / host).
   (`utils/consent.js`, and PostHog's own `respect_dnt`).
 - **Opt-out by default in dev/CI.** With no `NEXT_PUBLIC_POSTHOG_KEY` set, the
   entire layer (`utils/analytics.js`) is a no-op; nothing loads.
-- **No PHI, ever.** This site handles no patient/customer runtime data, and the
-  tracker only sees clicks on public marketing CTAs.
+- **No PHI or product runtime data, ever.** This site handles no patient/customer
+  runtime data. Analytics is limited to ordinary website telemetry and public
+  marketing CTA events described in the privacy policy; never add names, email
+  addresses, workflow values, or other customer-supplied fields to event payloads.
 - **No public counts.** Usage numbers are never rendered on the site (pre-launch
   they'd be zero — anti-proof). The funnel lives only in the PostHog dashboard.
 
@@ -138,6 +140,6 @@ attributed per campaign/ad set/placement.
   remarketing). GA4 does not log or store IP addresses.
 - The Meta Pixel is inherently a third-party ad tracker: enable it only
   while a Meta campaign is live, and never on any surface that could
-  receive PHI-adjacent traffic. The site has no CMP today; the consent
+  receive PHI or product/customer runtime data. The site has no CMP today; the consent
   discussion and regional considerations live in the E1 tracking runbook
   (private), which gates turning the pixel on.

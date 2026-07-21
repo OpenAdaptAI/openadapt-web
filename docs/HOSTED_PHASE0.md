@@ -106,7 +106,7 @@ mistake from presenting simulated development behavior to a paying customer.
 
 ## Artifact admission
 
-A subscription is not an egress bypass. Compilation does not remove PHI.
+A subscription is not an egress bypass. Compilation does not remove PHI/PII.
 
 1. Sanitize the recording locally, inspect it in the loopback-only viewer,
    approve its exact derivative hash, and push that approved recording.
@@ -135,8 +135,8 @@ Privacy approval is not runtime validation, and the operator attestation is not
 independent certification: it is signed by the ingest-token holder, not by an
 external evaluator that witnessed the replay.
 
-Sanitized authoring artifacts and PHI-bearing runtime observations are separate
-data classes. A live application can reintroduce PHI after sanitized recording
+Sanitized authoring artifacts and PHI/PII-bearing runtime observations are separate
+data classes. A live application can reintroduce PHI/PII after sanitized recording
 upload. Those frames, values, and logs remain inside the declared trusted
 execution boundary.
 
