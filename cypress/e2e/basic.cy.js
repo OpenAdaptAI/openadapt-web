@@ -290,7 +290,7 @@ describe('public product truth', () => {
             cy.contains('Scoped paid pilot').should('be.visible')
             cy.get('[data-testid="hosted-status-label"]').should(
                 'contain.text',
-                'Supported'
+                'Beta'
             )
             cy.contains('Beta / public offer').should('not.exist')
             cy.contains('Offer unavailable').should('not.exist')

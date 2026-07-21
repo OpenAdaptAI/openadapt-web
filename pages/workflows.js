@@ -231,6 +231,20 @@ export default function WorkflowsPage() {
                             {SUBSTRATE_MATURITY.citrix}
                         </li>
                     </ul>
+                    <p className="mt-3 text-xs leading-relaxed text-ink-3">
+                        Labels reconcile to the canonical{' '}
+                        <a
+                            href="/status.json"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-accent underline"
+                        >
+                            status manifest
+                        </a>
+                        . Beta means broadly exercised; Early access means
+                        validated on specific named tasks; Exploratory means no
+                        validated real-environment integration yet.
+                    </p>
                 </div>
             </div>
 
