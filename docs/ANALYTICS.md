@@ -10,36 +10,65 @@ and it never touches PHI or the OpenAdapt tool's runtime.
 
 ## What is tracked
 
-Page views (captured manually on each client-side route change) plus these
+Page views (captured manually on each client-side route change), PostHog
+**autocapture** of clicks/interactions on the public funnel pages, plus these
 named funnel events:
 
 | Event                     | Fires when the visitor…                              | Where                                   |
 | ------------------------- | ---------------------------------------------------- | --------------------------------------- |
-| `hero_cta_click`          | clicks a hero button ("Book a demo" / "See how it works") | `components/MastHead.js`           |
+| `hero_cta_click`          | clicks a hero button ("Book a demo" / "See how it works") | `components/MastHead.js`, `components/NavHeader.js` |
 | `book_pilot_click`        | clicks a "Book a demo" / "Book a Call" CTA           | `components/NavHeader.js`, `components/Footer.js` |
 | `github_click`            | clicks a GitHub link                                 | `components/NavHeader.js`, `components/Footer.js`, `components/MastHead.js` |
 | `install_command_copied`  | copies an install command (one-liner or step-by-step) | `components/InstallSection.js`         |
 | `docs_click`              | clicks the Docs link                                 | `components/Footer.js`                  |
 | `discord_click`           | clicks the Discord link                              | `components/Footer.js`                  |
+| `open_cloud_app_click`    | clicks any outbound link to `app.openadapt.ai` ("Sign in" / "Hosted dashboard") | `components/NavHeader.js`, `components/Footer.js` |
+| `download_click`          | clicks a desktop/CLI download asset                  | `pages/download.js`                     |
+| `compare_cta_click`       | clicks a CTA on `/compare`                            | `pages/compare.js`                      |
+| `workflow_card_click`     | opens a reference from the `/workflows` catalog      | `pages/workflows.js`                    |
+| `pricing_cta_click`       | starts hosted checkout or the "start with our team" path | `components/Pricing.js`             |
 
 Event properties are limited to non-identifying context such as the platform
 tab selected (`macOS`/`Linux`/`Windows`), the copy variant
-(`one_liner`/`step_by_step`), and the on-page `location` (`nav`, `footer`,
-`hero_stars`, …). No form contents, emails, or free-text are captured.
+(`one_liner`/`step_by_step`), the plan (`hosted`), the reference `industry`,
+and the on-page `location` (`nav`, `footer`, `compare_hero`, …). No form
+contents, emails, amounts, or free-text are captured.
+
+This taxonomy is shared across all OpenAdapt web properties. The docs site
+(`openadapt-ops`) also emits `outbound_click` and `docs_search`; the hosted app
+(`openadapt-cloud`) emits the product/activation funnel. All three report into
+the **same** PostHog project (same `NEXT_PUBLIC_POSTHOG_KEY` / host).
 
 ## Privacy posture
 
-- **Cookieless.** PostHog is initialized with `persistence: 'memory'` — no
-  cookies, no `localStorage`. Nothing survives a full page reload.
+- **Cookieless by default.** PostHog is initialized with `persistence:
+  'memory'` — no cookies, no `localStorage`. Nothing survives a full page
+  reload.
 - **No profiles.** `person_profiles: 'identified_only'` means no anonymous
-  person profiles are created; we never call `identify`.
-- **No session recording**, **no autocapture** — only the named events above.
+  person profiles are created; we never call `identify` on the marketing site.
+- **Autocapture ON.** This is a low-sensitivity public marketing site with no
+  PHI, so autocapture is enabled to record clicks/pageviews on the funnel pages
+  without hand-instrumenting every element.
+- **Session replay OFF by default, opt-in.** Set
+  `NEXT_PUBLIC_POSTHOG_ENABLE_REPLAY=true` to enable it; when on, all input
+  text is masked (`maskAllInputs`). Never enable on a PHI-adjacent surface.
+- **Do-Not-Track respected.** If the browser sends a DNT signal, PostHog, GA4,
+  and the Meta Pixel never initialize and no tracker script loads
+  (`utils/consent.js`, and PostHog's own `respect_dnt`).
 - **Opt-out by default in dev/CI.** With no `NEXT_PUBLIC_POSTHOG_KEY` set, the
   entire layer (`utils/analytics.js`) is a no-op; nothing loads.
 - **No PHI, ever.** This site handles no patient/customer runtime data, and the
   tracker only sees clicks on public marketing CTAs.
 - **No public counts.** Usage numbers are never rendered on the site (pre-launch
   they'd be zero — anti-proof). The funnel lives only in the PostHog dashboard.
+
+## Consent posture (and follow-up)
+
+The site is cookieless by default and honors Do-Not-Track, so it ships **no
+cookie-consent banner** today. If session replay or the Meta Pixel is turned on
+for a region that requires opt-in consent, add a lightweight consent manager as
+a follow-up and gate those two sinks behind it. That is a deliberate follow-up,
+not part of this layer.
 
 ## Enabling it
 

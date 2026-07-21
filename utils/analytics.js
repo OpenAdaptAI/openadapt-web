@@ -15,6 +15,8 @@
  * in the PostHog dashboard. See docs/ANALYTICS.md.
  */
 
+import { analyticsAllowed } from 'utils/consent'
+
 // Named funnel events. Keep this list in sync with docs/ANALYTICS.md.
 export const EVENTS = {
     HERO_CTA_CLICK: 'hero_cta_click',
@@ -23,6 +25,19 @@ export const EVENTS = {
     INSTALL_COMMAND_COPIED: 'install_command_copied',
     DOCS_CLICK: 'docs_click',
     DISCORD_CLICK: 'discord_click',
+    // Signup / hosted-app funnel: every outbound click to app.openadapt.ai
+    // (the "Sign in" / "Open Cloud app" / "Hosted dashboard" destinations).
+    OPEN_CLOUD_APP_CLICK: 'open_cloud_app_click',
+    // Formalized name for the /download page's per-asset click (the page
+    // already fires the string 'download_click'; this keeps the taxonomy
+    // in one place). Properties: { platform, kind, location }.
+    DOWNLOAD_CLICK: 'download_click',
+    // Named CTA clicks on the comparison / catalog / pricing funnel pages.
+    // Generic in-page interactions on these pages are also picked up by
+    // autocapture; these named events mark the load-bearing conversions.
+    COMPARE_CTA_CLICK: 'compare_cta_click',
+    WORKFLOW_CARD_CLICK: 'workflow_card_click',
+    PRICING_CTA_CLICK: 'pricing_cta_click',
 }
 
 const POSTHOG_KEY =
@@ -33,12 +48,27 @@ const POSTHOG_HOST =
     (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_HOST) ||
     'https://us.i.posthog.com'
 
+// Opt-in session replay. Off by default so the layer stays cookieless; the
+// founder can enable it on this low-sensitivity marketing site by setting
+// NEXT_PUBLIC_POSTHOG_ENABLE_REPLAY=true. When on, all input text is masked.
+const ENABLE_REPLAY =
+    typeof process !== 'undefined' &&
+    process.env.NEXT_PUBLIC_POSTHOG_ENABLE_REPLAY === 'true'
+
 let client = null
 let initialized = false
 
-/** True when a PostHog key is configured and we're in the browser. */
+/**
+ * True when a PostHog key is configured, we're in the browser, and the
+ * visitor has not asked not to be tracked (Do-Not-Track is respected via
+ * utils/consent.js).
+ */
 function isEnabled() {
-    return Boolean(POSTHOG_KEY) && typeof window !== 'undefined'
+    return (
+        Boolean(POSTHOG_KEY) &&
+        typeof window !== 'undefined' &&
+        analyticsAllowed()
+    )
 }
 
 /**
@@ -54,11 +84,23 @@ export async function initAnalytics() {
             api_host: POSTHOG_HOST,
             // Privacy-respecting, local-first-friendly defaults:
             persistence: 'memory', // no cookies, no localStorage
-            disable_session_recording: true,
-            autocapture: false, // only the named funnel events below
+            // Autocapture is ON for the marketing site: it records clicks and
+            // pageviews on the public funnel pages (/compare, /workflows,
+            // /pricing, /download) so we do not have to hand-instrument every
+            // CTA. This is a low-sensitivity marketing site with no PHI.
+            autocapture: true,
             capture_pageview: false, // we capture pageviews manually on route change
             capture_pageleave: false,
             person_profiles: 'identified_only', // no anonymous profiles
+            // Session replay is opt-in (off by default to stay cookieless).
+            // When enabled it masks all input text as a defensive default even
+            // though this public site handles no sensitive data.
+            disable_session_recording: !ENABLE_REPLAY,
+            session_recording: {
+                maskAllInputs: true,
+            },
+            // Honor the browser Do-Not-Track signal at the SDK level too.
+            respect_dnt: true,
         })
         client = posthog
     } catch (err) {

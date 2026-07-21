@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
+import { track, EVENTS } from 'utils/analytics'
 import BenchmarkCharts from '@components/BenchmarkCharts'
 import Faq, { faqItems } from '@components/Faq'
 import benchmark from '../data/benchmark.json'
@@ -152,10 +153,28 @@ export default function ComparePage() {
                     halts.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                    <a href="#side-by-side" className="btn-ink">
+                    <a
+                        href="#side-by-side"
+                        className="btn-ink"
+                        onClick={() =>
+                            track(EVENTS.COMPARE_CTA_CLICK, {
+                                cta: 'compare_approaches',
+                                location: 'compare_hero',
+                            })
+                        }
+                    >
                         Compare approaches
                     </a>
-                    <a href="#benchmark-evidence" className="btn-ghost-ink">
+                    <a
+                        href="#benchmark-evidence"
+                        className="btn-ghost-ink"
+                        onClick={() =>
+                            track(EVENTS.COMPARE_CTA_CLICK, {
+                                cta: 'see_results',
+                                location: 'compare_hero',
+                            })
+                        }
+                    >
                         See measured results
                     </a>
                 </div>
