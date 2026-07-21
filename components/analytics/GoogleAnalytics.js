@@ -1,6 +1,8 @@
 import Script from 'next/script'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+
+import { analyticsAllowed } from 'utils/consent'
 
 /**
  * GA4 loader — reusable, env-gated page-level integration.
@@ -39,15 +41,23 @@ export function gaPageview(url) {
 
 export default function GoogleAnalytics() {
     const router = useRouter()
+    // Gate on Do-Not-Track after mount. Server + first client render return
+    // null (DNT is a browser-only value), so there is no hydration mismatch;
+    // once mounted we load gtag only when the visitor allows analytics.
+    const [allowed, setAllowed] = useState(false)
 
     useEffect(() => {
-        if (!GA_MEASUREMENT_ID) return undefined
+        setAllowed(analyticsAllowed())
+    }, [])
+
+    useEffect(() => {
+        if (!GA_MEASUREMENT_ID || !allowed) return undefined
         const handleRouteChange = (url) => gaPageview(url)
         router.events.on('routeChangeComplete', handleRouteChange)
         return () => router.events.off('routeChangeComplete', handleRouteChange)
-    }, [router.events])
+    }, [router.events, allowed])
 
-    if (!GA_MEASUREMENT_ID) return null
+    if (!GA_MEASUREMENT_ID || !allowed) return null
 
     return (
         <>

@@ -9,6 +9,7 @@ import styles from './NavHeader.module.css'
 // Map an external nav link to its funnel event, if any.
 const externalEvent = (href) => {
     if (!href) return null
+    if (href.includes('app.openadapt.ai')) return EVENTS.OPEN_CLOUD_APP_CLICK
     if (href.includes('github.com')) return EVENTS.GITHUB_CLICK
     if (href.includes('docs.openadapt.ai')) return EVENTS.DOCS_CLICK
     if (href.includes('discord.gg')) return EVENTS.DISCORD_CLICK
@@ -337,6 +338,11 @@ export default function NavHeader() {
                         className={styles.signIn}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                            track(EVENTS.OPEN_CLOUD_APP_CLICK, {
+                                location: 'nav',
+                            })
+                        }
                     >
                         Sign in
                     </a>
@@ -418,6 +424,11 @@ export default function NavHeader() {
                         className={styles.mobileLink}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                            track(EVENTS.OPEN_CLOUD_APP_CLICK, {
+                                location: 'nav_mobile',
+                            })
+                        }
                     >
                         Sign in
                     </a>

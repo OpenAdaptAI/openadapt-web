@@ -1,6 +1,8 @@
 import Script from 'next/script'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+
+import { analyticsAllowed } from 'utils/consent'
 
 /**
  * Meta (Facebook) Pixel loader — reusable, env-gated.
@@ -34,15 +36,22 @@ function pixelPageview() {
 
 export default function MetaPixel() {
     const router = useRouter()
+    // Gate on Do-Not-Track after mount (browser-only value), so SSR and the
+    // first client render agree and there is no hydration mismatch.
+    const [allowed, setAllowed] = useState(false)
 
     useEffect(() => {
-        if (!META_PIXEL_ID) return undefined
+        setAllowed(analyticsAllowed())
+    }, [])
+
+    useEffect(() => {
+        if (!META_PIXEL_ID || !allowed) return undefined
         const handleRouteChange = () => pixelPageview()
         router.events.on('routeChangeComplete', handleRouteChange)
         return () => router.events.off('routeChangeComplete', handleRouteChange)
-    }, [router.events])
+    }, [router.events, allowed])
 
-    if (!META_PIXEL_ID) return null
+    if (!META_PIXEL_ID || !allowed) return null
 
     return (
         <Script id="meta-pixel-init" strategy="afterInteractive">
