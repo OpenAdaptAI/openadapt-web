@@ -52,9 +52,7 @@ export default function DownloadPage({ release, fetchFailed }) {
         release && Array.isArray(release.assets) ? release.assets : []
     const lifecycle = release?.lifecycle === 'beta' ? 'beta' : 'experimental'
     const releaseLabel =
-        lifecycle === 'beta'
-            ? 'Beta release'
-            : 'Experimental compatibility prerelease'
+        lifecycle === 'beta' ? 'Beta release' : 'Compatibility release'
 
     // Resolve a download for each platform card.
     const platformDownloads = useMemo(

@@ -109,9 +109,9 @@ test('platform selection stays in the chosen release lifecycle', () => {
     )
 })
 
-test('download copy leads with Beta while naming the compatibility path', () => {
+test('download copy leads with Beta without exposing the predecessor lifecycle', () => {
     const page = readFileSync(new URL('../pages/download.js', import.meta.url), 'utf8')
     assert.match(page, /Native desktop Beta/)
-    assert.match(page, /Experimental compatibility prerelease/)
-    assert.doesNotMatch(page, /latest complete Experimental desktop prerelease/)
+    assert.match(page, /Compatibility release/)
+    assert.doesNotMatch(page, /Experimental/)
 })
