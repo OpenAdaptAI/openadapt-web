@@ -40,7 +40,7 @@ const boundaries = [
     },
     {
         title: 'Managed cloud execution',
-        detail: 'Operate approved workflows across every substrate through the managed control plane with run history, reports, usage, and governed updates.',
+        detail: 'Operate approved browser workflows through the managed control plane with run history, reports, usage, and governed updates. Desktop, RDP, and Citrix run self-hosted or in a customer-controlled deployment.',
         href: '/#pricing',
         link: 'See hosted options',
     },
@@ -142,8 +142,9 @@ export default function ProductStatus() {
                         One governed loop across every surface
                     </h3>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2">
-                        Every surface below runs the same governed loop. Each
-                        label is read from one{' '}
+                        Every surface below runs the same governed loop, and each
+                        carries a maturity label that says how broadly it has been
+                        exercised today. Each label is read from one{' '}
                         <a
                             href="/status.json"
                             target="_blank"
@@ -175,6 +176,19 @@ export default function ProductStatus() {
                             </li>
                         ))}
                     </ul>
+                    <dl className="mt-6 grid gap-x-6 gap-y-2 rounded-xl border border-hairline bg-panel p-5 text-sm leading-relaxed sm:grid-cols-2">
+                        <p className="col-span-full font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-3">
+                            What the labels mean
+                        </p>
+                        {Object.entries(status.tiers).map(([tier, meaning]) => (
+                            <div key={tier} className="flex gap-2">
+                                <dt className="flex-shrink-0 font-mono text-xs font-medium text-accent">
+                                    {tier}
+                                </dt>
+                                <dd className="text-ink-2">{meaning}</dd>
+                            </div>
+                        ))}
+                    </dl>
                     <p className="mt-5 font-mono text-xs text-ink-3">
                         Current components: launcher{' '}
                         <span className="text-ink-2">openadapt {status.versions.launcher}</span>{' '}

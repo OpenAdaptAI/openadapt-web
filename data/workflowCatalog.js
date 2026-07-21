@@ -8,16 +8,19 @@
 
 const FLOW_REPO = 'https://github.com/OpenAdaptAI/openadapt-flow'
 
-// Canonical substrate labels. OpenAdapt runs one governed loop across every
-// execution substrate, so each is first-class and supported. The three catalog
-// entries below happen to run through the browser substrate; the same governed
-// loop covers Windows UIA, native macOS, RDP, and Citrix.
+// Canonical substrate maturity labels, reconciled to public/status.json (the
+// single source of truth). The same governed loop covers every substrate; the
+// label says how broadly each has been exercised today. Beta = broadly
+// exercised (browser); Early access = validated on specific named tasks
+// (Windows UIA, native macOS, RDP); Exploratory = no validated real-environment
+// integration yet (Citrix / VDI). The three catalog entries below all run
+// through the browser substrate.
 export const SUBSTRATE_MATURITY = {
-    browser: 'Supported',
-    windows: 'Supported',
-    macos: 'Supported',
-    rdp: 'Supported',
-    citrix: 'Supported',
+    browser: 'Beta',
+    windows: 'Early access',
+    macos: 'Early access',
+    rdp: 'Early access',
+    citrix: 'Exploratory',
 }
 
 // Shared honesty envelope. Every catalog entry sets these explicitly so the

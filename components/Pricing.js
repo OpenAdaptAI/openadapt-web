@@ -16,7 +16,7 @@ const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
 
 const hostedStatusLabel =
     status.substrates.find((substrate) => substrate.name === 'Hosted Cloud')
-        ?.public_label || 'Supported'
+        ?.public_label || 'Beta'
 
 function Check() {
     return (
@@ -147,8 +147,9 @@ export default function Pricing({ hostedOffer = null }) {
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Run the MIT-licensed engine yourself for free. Subscribe to
                     OpenAdapt Cloud, the managed control plane that runs approved
-                    workflows across every substrate. Or start a scoped paid
-                    pilot for regulated data and customer-controlled deployments.
+                    browser workflows today. Or start a scoped paid pilot for
+                    desktop, RDP, Citrix, regulated data, and customer-controlled
+                    deployments.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -220,16 +221,17 @@ export default function Pricing({ hostedOffer = null }) {
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            The managed control plane for governed execution
-                            across every substrate: browser, Windows, macOS, RDP,
-                            and Citrix. Approved workflows run in the managed
-                            runner with run history, reporting, and governed
-                            updates. Onboarding is assisted: we qualify the first
-                            workflow with you.
+                            The managed control plane for governed execution of
+                            approved browser workflows (Beta). Approved workflows
+                            run in the managed runner with run history, reporting,
+                            and governed updates. Desktop, RDP, and Citrix run
+                            self-hosted or in a customer-controlled deployment, not
+                            in the managed subscription. Onboarding is assisted: we
+                            qualify the first workflow with you.
                         </p>
                         <FeatureList
                             items={[
-                                'Managed runner for approved workflows across every substrate',
+                                'Managed runner for approved browser workflows',
                                 'Deterministic healthy replay with zero model calls',
                                 'Run history, failure reports, usage, and governed updates',
                                 'Sanitized uploads admitted under declared policy',

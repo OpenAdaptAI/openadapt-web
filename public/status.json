@@ -1,35 +1,41 @@
 {
-    "$comment": "Canonical machine-readable status for OpenAdapt. This file is the single source of truth: every public surface (website, docs, launcher README, PyPI metadata, in-product copy) reconciles its substrate labels and component versions to this manifest. Served at https://openadapt.ai/status.json and imported directly by the homepage so rendered labels cannot drift from it. OpenAdapt presents one governed product across every execution substrate; each substrate is first-class and supported.",
-    "generated_at": "2026-07-20",
+    "$comment": "Canonical machine-readable status for OpenAdapt. This file is the single source of truth: every public surface (website, docs, launcher README, masthead, PyPI metadata, in-product copy) reconciles its substrate labels and component versions to this manifest. Served at https://openadapt.ai/status.json and imported directly by the homepage so rendered labels cannot drift from it. OpenAdapt is one governed product across every execution substrate; each substrate carries a maturity tier from the canonical ladder defined in `tiers`. The tiers describe how broadly a substrate has been exercised today, not whether it is first-class in the product.",
+    "generated_at": "2026-07-21",
     "versions": {
         "launcher": "1.7.1",
         "flow": "1.19.0",
         "desktop": "0.6.2"
     },
+    "tiers": {
+        "Beta": "Works and is broadly exercised. Available today through the managed hosted product for browser workflows.",
+        "Early access": "Works and is validated on specific named tasks, but not yet broadly exercised. Real UI Automation, accessibility, and RDP backends run under the governed loop.",
+        "Exploratory": "No validated real-environment integration yet. Qualification begins inside a design partner's real environment.",
+        "Research": "Experimental and not yet part of the governed product."
+    },
     "substrates": [
         {
             "name": "Browser",
-            "public_label": "Supported",
+            "public_label": "Beta",
             "internal_tier": "reference",
-            "evidence_note": "Record, compile, and replay browser workflows end to end. Healthy runs make no model calls, and identity, effect, and policy coverage are enforced per bundle before anything executes."
+            "evidence_note": "Record, compile, and replay browser workflows end to end. Healthy runs make no model calls, and identity, effect, and policy coverage are enforced per bundle before anything executes. This is the reference loop that backs the managed hosted product."
         },
         {
             "name": "Windows / macOS / RDP",
-            "public_label": "Supported",
+            "public_label": "Early access",
             "internal_tier": "scoped-acceptance",
-            "evidence_note": "Operate native Windows, macOS, and RDP applications under the same governed loop: structured UI Automation and accessibility evidence, effect verification against an independent oracle, and fail-closed halting when verification does not pass."
+            "evidence_note": "Operate native Windows, macOS, and RDP applications under the same governed loop: structured UI Automation and accessibility evidence, effect verification against an independent oracle, and fail-closed halting when verification does not pass. Validated on specific named tasks and environments, and run self-hosted or in a customer-controlled deployment, not in the managed subscription."
         },
         {
             "name": "Citrix / VDI",
-            "public_label": "Supported",
+            "public_label": "Exploratory",
             "internal_tier": "remote-window",
-            "evidence_note": "Run the governed loop across Citrix and VDI environments with a pixel-and-evidence safety floor. Identity, effect, and policy checks and halt-on-uncertainty carry into remote application delivery."
+            "evidence_note": "Bringing the governed loop to Citrix and VDI remote application delivery, carrying identity, effect, and policy checks and halt-on-uncertainty into a pixel-and-evidence safety floor. No validated real-environment ICA/HDX integration yet; qualification begins inside a design partner's real Citrix or VDI environment."
         },
         {
             "name": "Hosted Cloud",
-            "public_label": "Supported",
+            "public_label": "Beta",
             "internal_tier": "managed-control-plane",
-            "evidence_note": "The managed control plane runs your approved workflows across every substrate with run history, reporting, usage, and governed updates, backed by live billing. Runtime data handling and customer-controlled boundaries are configured per deployment."
+            "evidence_note": "The managed control plane runs your approved browser workflows today, with run history, reporting, usage, and governed updates, backed by live billing. Desktop, RDP, and Citrix workflows run self-hosted or in a customer-controlled deployment, not in the managed subscription. Runtime data handling and customer-controlled boundaries are configured per deployment."
         }
     ]
 }
