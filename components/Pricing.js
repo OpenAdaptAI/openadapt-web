@@ -137,7 +137,7 @@ export default function Pricing({ hostedOffer = null }) {
     return (
         <section
             id="pricing"
-            className="border-t-2 border-ink bg-ground px-5 py-16 md:py-20"
+            className="border-t border-hairline bg-ground px-5 py-20 md:py-28"
         >
             <div className="mx-auto max-w-5xl">
                 <p className="eyebrow text-center">Ways to start</p>

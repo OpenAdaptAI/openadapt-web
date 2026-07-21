@@ -3,11 +3,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import CompiledProgramSection from '@components/CompiledProgramSection'
 import ContactBookingSection from '@components/ContactBookingSection'
 import DashboardShowcase from '@components/DashboardShowcase'
 import Developers from '@components/Developers'
-import DriftOutcomes from '@components/DriftOutcomes'
 import EmailForm from '@components/EmailForm'
 import Footer from '@components/Footer'
 import HomeReferenceWorkflow from '@components/HomeReferenceWorkflow'
@@ -206,6 +204,26 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
             <Reveal>
                 <HowItWorksCondensed />
             </Reveal>
+            {/*
+             * The deep concept explanations — what a demonstration compiles
+             * into (CompiledProgramSection) and what "repair" means and where it
+             * stops (DriftOutcomes) — now live on /how-it-works so the landing
+             * keeps one clear arc. This compact teaser links there instead of
+             * stacking both deep-dives inline.
+             */}
+            <div className="border-b border-hairline bg-ground px-5 pb-16 md:pb-20">
+                <p className="mx-auto max-w-2xl text-center text-sm leading-relaxed text-ink-2">
+                    Want the full method — what a demonstration compiles into,
+                    and exactly where repair stops?{' '}
+                    <Link
+                        href="/how-it-works"
+                        className="font-medium text-accent hover:underline"
+                    >
+                        See how it works
+                    </Link>
+                    .
+                </p>
+            </div>
             <Reveal>
                 <HomeReferenceWorkflow
                     vertical={vertical}
@@ -214,7 +232,7 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
             </Reveal>
             <section
                 id="references"
-                className="border-b border-hairline bg-panel px-5 py-10"
+                className="border-b border-hairline bg-panel px-5 py-16 md:py-20"
             >
                 <div className="mx-auto max-w-5xl text-center">
                     <p className="eyebrow">More reference workflows</p>
@@ -282,12 +300,6 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
              */}
             <Reveal>
                 <DashboardShowcase />
-            </Reveal>
-            <Reveal>
-                <CompiledProgramSection />
-            </Reveal>
-            <Reveal>
-                <DriftOutcomes />
             </Reveal>
             <Reveal>
                 <ProductStatus />

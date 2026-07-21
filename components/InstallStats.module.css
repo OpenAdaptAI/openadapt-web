@@ -5,7 +5,7 @@
     background: var(--ground);
     border-top: 1px solid var(--hairline);
     border-bottom: 1px solid var(--hairline);
-    padding: 2.75rem 1.5rem;
+    padding: 6rem 1.5rem;
 }
 
 .inner {
@@ -103,7 +103,7 @@
 
 @media (max-width: 560px) {
     .section {
-        padding: 2.25rem 1rem;
+        padding: 4rem 1rem;
     }
 
     .chartPlaceholder {
