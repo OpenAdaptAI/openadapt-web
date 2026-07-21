@@ -20,7 +20,7 @@ export default function Qualification() {
     return (
         <section
             id="qualification"
-            className="border-b border-hairline bg-panel px-5 py-14 md:py-16"
+            className="border-b border-hairline bg-panel px-5 py-20 md:py-28"
         >
             <div className="mx-auto max-w-5xl">
                 <p className="eyebrow text-center">The right fit</p>
