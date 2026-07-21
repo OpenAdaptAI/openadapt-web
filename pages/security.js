@@ -1202,10 +1202,11 @@ export default function SecurityPage() {
                                 US HIPAA Business Associate Agreement, or for an
                                 Ontario clinic a PHIPA service-provider agreement,
                                 following review. Hosted processing of PHI inside
-                                our infrastructure, which would require a BAA and
-                                a HIPAA risk analysis, is not offered today. This
-                                describes the deployment architecture and what we
-                                can sign, not legal advice.
+                                our infrastructure is governed by a signed BAA
+                                and a deployment-specific HIPAA risk analysis
+                                before regulated data is admitted. This describes
+                                the deployment architecture and what we can sign,
+                                not legal advice.
                             </p>
                         </div>
                     </div>
