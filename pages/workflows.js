@@ -240,9 +240,9 @@ export default function WorkflowsPage() {
                     </h2>
                     <p className="mx-auto mt-3 max-w-2xl text-sm text-ink-2 md:text-base">
                         These references show the method: record once, compile,
-                        and verify against an independent source of truth. The
-                        next entry can be yours — on your application, under your
-                        policy and identity contract.
+                        and, where a system of record is available, verify the
+                        effect against it. The next entry can be yours, on your
+                        application, under your policy and identity contract.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
                         <Link href="/#book" className="btn-ink">
