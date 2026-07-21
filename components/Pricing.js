@@ -353,8 +353,8 @@ export default function Pricing({ hostedOffer = null }) {
                         Contribute a sanitized, de-identified derivative to the
                         shared hardening corpus and earn run credits that extend
                         your monthly run cap. Raw recordings never leave your
-                        machine, you approve every byte, and it stays opt-in and
-                        revocable.{' '}
+                        machine, you approve every byte, and it stays opt-in.
+                        You can stop future contributions at any time.{' '}
                         <Link
                             href="/contribute"
                             className="text-accent underline"

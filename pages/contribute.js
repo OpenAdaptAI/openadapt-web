@@ -28,8 +28,8 @@ const GUARANTEES = [
         body: 'Nothing is shared until you review the exact bytes locally and approve them through hash-bound review.',
     },
     {
-        title: 'Opt-in and revocable',
-        body: 'The program is opt-in and off by default. You can stop contributing going forward at any time.',
+        title: 'Opt-in and under your control',
+        body: 'The program is opt-in and off by default. You can stop future contributions at any time. Accepted contributions remain governed by the versioned terms you approved.',
     },
     {
         title: 'De-identification standard',
@@ -72,15 +72,15 @@ const FAQ = [
     },
     {
         q: 'Is this PHI?',
-        a: 'No. You contribute de-identified derivatives only, sanitized to a de-identification standard. You attest that a contribution meets that standard and you approve the exact bytes before anything is shared.',
+        a: 'The program accepts only derivatives that your organization has de-identified to the required named standard and attests are eligible to contribute. Sanitization alone is not a legal determination. If your organization cannot make that attestation, the derivative is not eligible and must not be shared.',
     },
     {
         q: 'Can I stop?',
-        a: 'Yes. The program is opt-in, off by default, and revocable going forward.',
+        a: 'Yes. The program is opt-in and off by default, and you can stop future contributions at any time. A contribution already accepted remains governed by the versioned terms you approved when you submitted it.',
     },
     {
         q: 'What is the standard?',
-        a: 'Contributions are sanitized to a de-identification standard, your organization attests the contribution meets it, and you approve the exact bytes through hash-bound local review.',
+        a: 'The required de-identification standard is named in the versioned contribution terms before access opens. Your organization attests that each derivative meets it, and you approve the exact bytes through hash-bound local review.',
     },
     {
         q: 'What do I get?',
@@ -94,7 +94,7 @@ const webPageSchema = {
     name: 'Contribute data for credits',
     url: 'https://openadapt.ai/contribute',
     description:
-        'Early-access contributor program: contribute sanitized, de-identified derivatives to the shared hardening corpus and earn run credits that extend your usage allowance. Raw recordings never leave your machine; you approve every byte; opt-in and revocable.',
+        'Early-access contributor program: contribute sanitized, de-identified derivatives to the shared hardening corpus and earn run credits that extend your usage allowance. Raw recordings never leave your machine; you approve every byte; future contributions can stop at any time.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -115,7 +115,7 @@ export default function ContributePage() {
                 <title>Contribute data for credits | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="Early access. Contribute sanitized, de-identified derivatives to the shared hardening corpus and earn run credits that extend your usage allowance. Raw recordings never leave your machine; you approve every byte; opt-in and revocable."
+                    content="Early access. Contribute sanitized, de-identified derivatives to the shared hardening corpus and earn run credits that extend your usage allowance. Raw recordings never leave your machine; you approve every byte; future contributions can stop at any time."
                 />
                 <link rel="canonical" href="https://openadapt.ai/contribute" />
                 <meta
@@ -124,7 +124,7 @@ export default function ContributePage() {
                 />
                 <meta
                     property="og:description"
-                    content="Early access. Contribute sanitized, de-identified derivatives to the shared hardening corpus and earn run credits. Raw recordings never leave your machine; you approve every byte; opt-in and revocable."
+                    content="Early access. Contribute sanitized, de-identified derivatives to the shared hardening corpus and earn run credits. Raw recordings never leave your machine; you approve every byte; future contributions can stop at any time."
                 />
                 <meta
                     property="og:url"

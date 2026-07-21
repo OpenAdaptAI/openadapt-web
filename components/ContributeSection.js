@@ -17,8 +17,8 @@ import Link from 'next/link'
 const GUARANTEES = [
     'Sanitized, de-identified derivatives only. Raw recordings never leave your machine.',
     'You approve every byte through hash-bound local review before anything is shared.',
-    'Opt-in, off by default, and revocable going forward.',
-    'De-identified derivatives are not PHI, so no BAA is required, and you attest to the standard.',
+    'Opt-in and off by default. You can stop future contributions at any time.',
+    'Every contribution must meet the named de-identification standard in the versioned terms, and your organization attests before sharing.',
 ]
 
 export default function ContributeSection() {
