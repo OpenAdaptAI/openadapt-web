@@ -75,6 +75,7 @@ function snapshotLabel(stats) {
 // Attach the right funnel event to an external footer destination.
 function externalEvent(href) {
     if (!href) return null
+    if (href.includes('app.openadapt.ai')) return EVENTS.OPEN_CLOUD_APP_CLICK
     if (href.includes('github.com')) return EVENTS.GITHUB_CLICK
     if (href.includes('docs.openadapt.ai')) return EVENTS.DOCS_CLICK
     if (href.includes('discord.gg')) return EVENTS.DISCORD_CLICK

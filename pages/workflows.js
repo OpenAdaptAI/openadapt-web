@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
+import { track, EVENTS } from 'utils/analytics'
 import { CATALOG, SUBSTRATE_MATURITY } from 'data/workflowCatalog'
 
 const webPageSchema = {
@@ -130,7 +131,15 @@ function CatalogEntry({ entry }) {
                     <code>{entry.reproduction}</code>
                 </pre>
                 <p className="mt-3 text-sm">
-                    <Link href={entry.solutionHref}>
+                    <Link
+                        href={entry.solutionHref}
+                        onClick={() =>
+                            track(EVENTS.WORKFLOW_CARD_CLICK, {
+                                industry: entry.industry,
+                                location: 'workflows_catalog',
+                            })
+                        }
+                    >
                         See the {entry.industry.toLowerCase()} reference →
                     </Link>
                 </p>

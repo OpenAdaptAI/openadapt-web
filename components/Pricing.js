@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
+import { track, EVENTS } from 'utils/analytics'
 import status from '../public/status.json'
 
 const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
@@ -47,6 +48,9 @@ function HostedCheckoutButton({ available }) {
 
     const startCheckout = async (event) => {
         event.preventDefault()
+        // Funnel: intent to start the hosted subscription. No amounts, emails,
+        // or payment details are captured — only that checkout was initiated.
+        track(EVENTS.PRICING_CTA_CLICK, { plan: 'hosted', action: 'checkout' })
         setState('loading')
         setMessage('')
 
@@ -73,6 +77,12 @@ function HostedCheckoutButton({ available }) {
                     href="/#book"
                     data-testid="hosted-contact"
                     className="btn-ink block w-full text-center"
+                    onClick={() =>
+                        track(EVENTS.PRICING_CTA_CLICK, {
+                            plan: 'hosted',
+                            action: 'contact',
+                        })
+                    }
                 >
                     Start with our team
                 </Link>

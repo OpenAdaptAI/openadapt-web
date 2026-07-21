@@ -16,8 +16,13 @@ test('GA4 loader is gated on NEXT_PUBLIC_GA_MEASUREMENT_ID', () => {
     assert.match(source, /process\.env\.NEXT_PUBLIC_GA_MEASUREMENT_ID/)
     assert.match(
         source,
-        /if \(!GA_MEASUREMENT_ID\) return null/,
+        /if \(!GA_MEASUREMENT_ID( \|\| !allowed)?\) return null/,
         'GA4 must render nothing without a measurement id'
+    )
+    assert.match(
+        source,
+        /analyticsAllowed\(\)/,
+        'GA4 must respect Do-Not-Track via the shared consent helper'
     )
     assert.match(
         source,
@@ -31,8 +36,13 @@ test('Meta Pixel is gated on NEXT_PUBLIC_META_PIXEL_ID', () => {
     assert.match(source, /process\.env\.NEXT_PUBLIC_META_PIXEL_ID/)
     assert.match(
         source,
-        /if \(!META_PIXEL_ID\) return null/,
+        /if \(!META_PIXEL_ID( \|\| !allowed)?\) return null/,
         'the pixel must render nothing without a pixel id'
+    )
+    assert.match(
+        source,
+        /analyticsAllowed\(\)/,
+        'the pixel must respect Do-Not-Track via the shared consent helper'
     )
 })
 
