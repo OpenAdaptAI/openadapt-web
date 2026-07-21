@@ -15,7 +15,7 @@ const paths = [
     {
         audience: 'Automation & operations',
         title: 'Launch a managed workflow',
-        body: 'Bring one repeated GUI workflow, its operating boundary, and an independent success oracle. OpenAdapt compiles the demonstrated last mile and keeps its run evidence, review, and repair lifecycle connected.',
+        body: 'Bring one repeated GUI workflow and its operating boundary. Add an independent success oracle where you have one and OpenAdapt verifies the effect end to end; without one it still runs, halting instead of guessing. It compiles the demonstrated last mile and keeps run evidence, review, and repair connected.',
         primary: { label: 'Evaluate a workflow', href: '#book' },
         secondary: { label: 'Review the benchmark', href: '/compare' },
     },

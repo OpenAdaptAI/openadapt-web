@@ -1,17 +1,19 @@
 import Link from 'next/link'
 
 // Buyer qualification lifted from the /compare "start with the right category"
-// guidance: OpenAdapt is for the repeated, consequential UI-only last mile that
-// can be checked against an independent source of truth. We lead with fit, then
-// affirm that when work fits that shape OpenAdapt runs it across every interface
-// (browser, Windows, macOS, RDP, Citrix) under one governed loop, with the full
-// /compare breakdown one click away.
+// guidance: OpenAdapt is for the repeated, consequential UI-only last mile.
+// Where an independent source of truth exists it verifies the effect end to
+// end; where one does not, it halts for a human or an AI instead of trusting
+// the screen. The oracle is an enhancement, never a gate on using the product.
+// We lead with fit, then affirm that when work fits that shape OpenAdapt runs
+// it across every interface (browser, Windows, macOS, RDP, Citrix) under one
+// governed loop, with the full /compare breakdown one click away.
 
 const fits = [
     'The work repeats and the business intent stays stable.',
     'A wrong action matters, so a run has to be verified or halted.',
     "There's no practical API for the last mile, so it's UI-only.",
-    'An independent oracle (REST, SQL, export) can confirm the effect.',
+    'Optional: a system of record (SQL, REST, FHIR, or a file) can confirm the write out of band from the screen. With one, OpenAdapt verifies the effect end to end; without one, it halts instead of guessing.',
 ]
 
 export default function Qualification() {
@@ -27,8 +29,9 @@ export default function Qualification() {
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     OpenAdapt is deliberately narrow: repeated, high-stakes GUI
-                    work that has no real API and can be checked against an
-                    independent source of truth.
+                    work with no practical API. When the result can be checked
+                    against a system of record, OpenAdapt verifies it end to
+                    end; otherwise it halts instead of guessing.
                 </p>
                 <article className="mx-auto mt-8 max-w-2xl rounded-2xl border border-hairline bg-ground p-6 md:p-7">
                     <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
