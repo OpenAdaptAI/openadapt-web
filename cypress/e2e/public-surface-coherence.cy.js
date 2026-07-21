@@ -93,11 +93,13 @@ describe('public surface coherence', () => {
                         'a[href="https://github.com/OpenAdaptAI/OpenAdapt"]'
                     ).should('exist')
                 })
+            // Honest, live-updating attribution tied to the actual last
+            // successful fetch: "GitHub · updated just now / Ns ago / ...".
             cy.get('[data-testid="footer-repository-source"]')
                 .invoke('text')
                 .should(
                     'match',
-                    /^GitHub(?: · (?:refreshed recently|last-known counts)| snapshot · refreshed when available)$/
+                    /^GitHub · updated (?:just now|\d+[smhd] ago)$/
                 )
         }
 
@@ -126,9 +128,11 @@ describe('public surface coherence', () => {
                     '258'
                 )
             })
+        // The refresh failed, so the committed snapshot survives and is
+        // labelled honestly as a snapshot rather than a fresh fetch.
         cy.get('[data-testid="footer-repository-source"]').should(
             'contain.text',
-            'GitHub snapshot'
+            'GitHub · snapshot'
         )
     })
 })

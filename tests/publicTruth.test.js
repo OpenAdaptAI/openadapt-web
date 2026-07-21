@@ -45,7 +45,8 @@ test('GitHub proof uses the canonical repository and a verified fallback', () =>
     assert.match(home, /<Footer repositoryStats=\{githubStats\} \/>/)
     assert.match(footer, /repositoryStats = OPENADAPT_STATS_SNAPSHOT/)
     assert.match(footer, /fetch\('\/api\/repository-stats'/)
-    assert.match(footer, /Keep the server-rendered snapshot\/last-known value/)
+    // A failed/rate-limited refresh must keep the last good value, never blank.
+    assert.match(footer, /keep the last good/i)
     assert.match(loader, /const FRESH_TTL_MS = 10 \* 60 \* 1000/)
     assert.match(loader, /if \(inFlight\) return inFlight/)
     assert.match(loader, /source:[\s\S]*?'stale'[\s\S]*?'snapshot'/)
