@@ -9,7 +9,7 @@
  * This is marketing-site analytics only. It measures the launch funnel
  * (page views + clicks on the load-bearing CTAs). It is cookieless
  * (in-memory persistence), creates no anonymous profiles, records no
- * sessions, and never touches PHI/PII or the OpenAdapt tool's runtime.
+ * sessions, and never touches PHI or the OpenAdapt tool's runtime.
  *
  * Nothing here is ever displayed publicly — the founder reads the funnel
  * in the PostHog dashboard. See docs/ANALYTICS.md.
