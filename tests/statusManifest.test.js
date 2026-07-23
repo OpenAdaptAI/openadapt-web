@@ -83,6 +83,16 @@ test('status manifest defines the canonical ladder with plain definitions', () =
     }
 })
 
+test('status manifest describes its machine-readable role exactly', () => {
+    assert.match(manifest.$comment, /machine-readable status evidence/)
+    assert.match(manifest.$comment, /status-aware website surfaces and tests/)
+    assert.match(
+        manifest.$comment,
+        /homepage presents product capabilities without rendering this maturity ledger/
+    )
+    assert.doesNotMatch(manifest.$comment, /imported directly by the homepage/)
+})
+
 test('hosted cloud scope is browser-only, matching the TOS and checkout gate', () => {
     // The managed subscription is a browser-only Beta by the site's own
     // machinery (lib/hostedOfferContract.js requires substrate=browser +

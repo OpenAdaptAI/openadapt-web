@@ -1,5 +1,5 @@
 {
-    "$comment": "Canonical machine-readable status for OpenAdapt. This file is the single source of truth: every public surface (website, docs, launcher README, masthead, PyPI metadata, in-product copy) reconciles its substrate labels and component versions to this manifest. Served at https://openadapt.ai/status.json and imported directly by the homepage so rendered labels cannot drift from it. OpenAdapt is one governed product across every execution substrate; each substrate carries a maturity tier from the canonical ladder defined in `tiers`. The tiers describe how broadly a substrate has been exercised today, not whether it is first-class in the product.",
+    "$comment": "Canonical machine-readable status evidence for OpenAdapt. Served at https://openadapt.ai/status.json and consumed by status-aware website surfaces and tests for cross-repo reconciliation. The homepage presents product capabilities without rendering this maturity ledger directly. OpenAdapt is one governed product across every execution substrate; each substrate carries a maturity tier from the canonical ladder defined in `tiers`. The tiers describe how broadly a substrate has been exercised today, not whether it is first-class in the product.",
     "generated_at": "2026-07-21",
     "versions": {
         "launcher": "1.7.1",

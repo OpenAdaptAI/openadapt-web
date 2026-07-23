@@ -106,7 +106,7 @@ export default function HostedWelcome() {
                         Your subscription includes managed browser execution and
                         the Cloud review surface. Desktop, RDP, Citrix, private
                         systems, and regulated runtime data connect through a
-                        separately scoped customer-controlled runtime. Working
+                        separately scoped customer-controlled deployment. Working
                         with regulated data?{' '}
                         <Link
                             href="/#pricing-enterprise"
