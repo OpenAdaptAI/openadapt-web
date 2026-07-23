@@ -142,14 +142,13 @@ export default function Pricing({ hostedOffer = null }) {
             <div className="mx-auto max-w-5xl">
                 <p className="eyebrow text-center">Ways to start</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Run it yourself, subscribe, or start a pilot
+                    Run locally, use Cloud, or deploy in your boundary
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    Run the MIT-licensed engine yourself for free. Subscribe to
-                    OpenAdapt Cloud, the managed control plane that runs approved
-                    browser workflows today. Or start a scoped paid pilot for
-                    desktop, RDP, Citrix, regulated data, and customer-controlled
-                    deployments.
+                    Use the MIT-licensed engine on your own machine, subscribe to
+                    OpenAdapt Cloud for managed execution and review, or put the
+                    governed runtime inside a customer-controlled boundary for
+                    desktop, remote, private, and regulated workflows.
                 </p>
 
                 <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
@@ -221,28 +220,26 @@ export default function Pricing({ hostedOffer = null }) {
                             </p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            The managed control plane for governed execution of
-                            approved browser workflows (Beta). Approved workflows
-                            run in the managed runner with run history, reporting,
-                            and governed updates. Desktop, RDP, and Citrix run
-                            self-hosted or in a customer-controlled deployment, not
-                            in the managed subscription. Onboarding is assisted: we
-                            qualify the first workflow with you.
+                            The managed control plane for governed browser
+                            execution, run history, evidence, usage, and workflow
+                            updates. Desktop, RDP, and Citrix connect through a
+                            self-hosted or customer-controlled runtime under the
+                            same governance model. We qualify the first workflow
+                            with you during onboarding.
                         </p>
                         <FeatureList
                             items={[
-                                'Managed runner for approved browser workflows',
+                                'Managed browser runner and Cloud control plane',
                                 'Deterministic healthy replay with zero model calls',
-                                'Run history, failure reports, usage, and governed updates',
+                                'One review surface for runs, evidence, and usage',
                                 'Sanitized uploads admitted under declared policy',
                                 'Price and billing period confirmed in Stripe',
                             ]}
                         />
                         <div className="mt-4 rounded-lg border border-hairline bg-ground p-3 text-xs leading-relaxed text-ink-3">
-                            Hosted upload accepts an approved sanitized copy, not
-                            the original recording. Live screens can contain
-                            sensitive data again; workflows that expose PHI/PII require
-                            a separately qualified customer-controlled boundary.{' '}
+                            Cloud admits an approved sanitized copy, not the
+                            original recording. Sensitive live observations stay
+                            inside the declared execution boundary.{' '}
                             <Link href="/security" className="text-accent underline">
                                 Review the security boundary.
                             </Link>
@@ -268,29 +265,28 @@ export default function Pricing({ hostedOffer = null }) {
                         className="relative flex h-full flex-col rounded-2xl border-2 border-ink bg-panel p-6 shadow-[0_8px_32px_rgba(35,40,31,0.10)] md:p-7"
                     >
                         <span className="absolute -top-3 left-6 rounded-full bg-ink px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ground">
-                            Design partner
+                            Customer-controlled
                         </span>
-                        <p className="eyebrow">Scoped pilot</p>
+                        <p className="eyebrow">Enterprise</p>
                         <div className="mt-2 flex items-baseline gap-2">
                             <span className="font-display text-2xl font-semibold tracking-tight text-ink">
-                                Scoped paid pilot
+                                Customer-controlled deployment
                             </span>
                         </div>
                         <p className="mt-1 text-sm text-ink-3">
-                            Priced after qualification
+                            Qualified and priced to scope
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            Bring regulated data and customer-controlled
-                            deployments under the same governed loop. We qualify
-                            the artifact policy, effect oracle, and operating
-                            model inside your boundary, then scope and price the
-                            pilot before production use.
+                            Run desktop, RDP, Citrix, private-system, and regulated
+                            workflows inside your environment. The same policy,
+                            approval, verification, and audit model follows the
+                            workflow without moving sensitive runtime observations
+                            outside your boundary.
                         </p>
                         <FeatureList
                             items={[
-                                'Qualify the safety boundary and effect oracle first',
-                                'Scope one workflow and one measurable outcome',
-                                'Execute in the customer-controlled environment',
+                                'Desktop and remote execution inside your boundary',
+                                'One workflow and measurable outcome per rollout',
                                 'Identity and effect checks configured per deployment',
                                 'Sanitized derivatives may cross approved boundaries',
                                 'Runtime PHI/PII remains in the trusted execution environment',
@@ -305,8 +301,8 @@ export default function Pricing({ hostedOffer = null }) {
                             >
                                 security posture
                             </Link>
-                            : on-prem data handling, what is and isn&apos;t
-                            certified yet, and how to report a vulnerability.
+                            : data boundaries, runtime controls, release provenance,
+                            and vulnerability reporting.
                         </div>
                         <div className="mt-6 flex-grow" />
                         <Link

@@ -288,10 +288,10 @@ describe('public product truth', () => {
             cy.contains('Product maturity').should('not.exist')
         })
         cy.get('#pricing').within(() => {
-            cy.contains('Run it yourself, subscribe, or start a pilot').should(
-                'be.visible'
-            )
-            cy.contains('Scoped paid pilot').should('be.visible')
+            cy.contains(
+                'Run locally, use Cloud, or deploy in your boundary'
+            ).should('be.visible')
+            cy.contains('Customer-controlled deployment').should('be.visible')
             cy.get('[data-testid="hosted-status-label"]').should(
                 'contain.text',
                 'Beta'
