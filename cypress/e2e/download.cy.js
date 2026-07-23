@@ -61,7 +61,7 @@ describe('download page is server-rendered', () => {
             expect(html).to.not.include('Finding the latest release')
             const definiteStates = [
                 'Beta release', // complete Beta release
-                'Compatibility release', // complete legacy release during transition
+                'Desktop release', // complete legacy asset set during transition
                 'No complete native desktop release yet', // none
                 'We could not reach GitHub just now', // build-time fetch miss
             ]

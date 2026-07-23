@@ -38,7 +38,7 @@ const boundaries = [
     },
     {
         title: 'Managed cloud execution',
-        detail: 'Operate approved browser workflows through the managed control plane with run history, reports, usage, and governed updates. Desktop, RDP, and Citrix run self-hosted or in a customer-controlled deployment.',
+        detail: 'Use Cloud as the control plane for run history, reports, usage, and governed updates. Browser workflows use the managed runner; desktop, RDP, and Citrix connect through self-hosted or customer-controlled runtimes.',
         href: '/#pricing',
         link: 'See hosted options',
     },

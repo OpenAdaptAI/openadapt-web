@@ -1,41 +1,16 @@
 /**
- * DesktopPreview — real screenshots of the native desktop surfaces on
- * the download page, plus an honest per-OS representation of where the
- * separate tray companion places its icon.
- *
- * Honesty contract (enforced by tests/desktopPreview.test.js and documented in
- * public/desktop-preview/MANIFEST.json):
- *  - Every /desktop-preview/cockpit/ image is a capture of the real native
- *    desktop app running the real wired engine, signed in against a locally-run
- *    instance of the OpenAdapt cloud in mock mode (not a production org). The
- *    workflow, run, and halt data shown is a real local demo recording: two
- *    workflows recorded via demo-record, compiled, and replayed on this machine.
- *  - This is LOCAL demo data, not production data and not customer data. The
- *    captions say so and never claim a hosted production org.
- *  - No fabricated UI, no synthetic screens, no retouching beyond resizing.
- *  - The Windows install stills are the real NSIS installer flow on Windows 11.
- *  - The tray section is a labelled *representation* (OS chrome strips with the
- *    real OpenAdapt mark placed in the tray area), NOT a screenshot and not
- *    presented as one. It shows where the openadapt-tray icon appears on each
- *    OS; the mark is the project's own favicon silhouette.
- *  - The tray is NOT part of the installers on this page and is not described
- *    as controlling a released desktop build (no released build provides the
- *    companion service it expects).
- *
- * The section is fully static: no animation, no client state, and explicit
- * image dimensions so it causes no layout shift and needs no reduced-motion
- * handling.
+ * Native app, tray-placement, and Windows installer visuals for /download.
+ * Every screenshot is hash-bound to public/desktop-preview/MANIFEST.json, which
+ * records the exact capture environment and synthetic data boundary. The tray
+ * panels are labelled representations rather than screenshots.
  */
 
 const TRAY_PACKAGE_VERSION = '0.1.1'
 const WINDOWS_INSTALLER_VERSION = '0.6.1'
 
-// Real captures of the live native desktop app running the real wired
-// engine. Signed in against a locally-run instance of the cloud in mock mode
-// (not a production org); the workflows/runs/halt shown are a real local demo
-// recording (recorded via demo-record, compiled, and replayed on this machine).
-// The lead pair is the differentiator: the workflow library and the halt
-// evidence. The supporting grid rounds out the connected surfaces.
+// Native app captures backed by the wired engine and synthetic workflows.
+// The lead pair shows the product differentiator: the workflow library and
+// evidence-bearing halt. Supporting captures complete the lifecycle.
 const COCKPIT_LEAD = [
     {
         src: '/desktop-preview/cockpit/10_dashboard_workflows.png',
@@ -45,7 +20,7 @@ const COCKPIT_LEAD = [
         alt: 'OpenAdapt Desktop workflow library listing two real replayed demo workflows: MockMed refill triage (halted, needs attention) and Patient intake insurance verify (verified), with an engine-ready and synced status rail.',
         testid: 'desktop-preview-cockpit-dashboard',
         caption:
-            'The real desktop app running two real replayed demo workflows: one halted and needing attention, one verified. Both were recorded via demo-record, compiled, and replayed locally on this machine.',
+            'Two compiled workflows in one library: one needs attention and one completed with verified evidence.',
     },
     {
         src: '/desktop-preview/cockpit/40_watchrun_halted.png',
@@ -55,7 +30,7 @@ const COCKPIT_LEAD = [
         alt: 'OpenAdapt Desktop run detail for MockMed refill triage: a replay timeline with 9 of 11 steps verified and one halted, and a "This run stopped safely" card explaining that the typed value could not be verified for step_009.',
         testid: 'desktop-preview-cockpit-halt',
         caption:
-            'The differentiator: a real replay that stopped safely at step 9 of 11 rather than write a value it could not verify. The halt reason is the app\'s real effect-verification output on local demo data: the field region changed, so the typed value is not readable there and retyping is unsafe.',
+            'A replay stops safely at step 9 of 11 because the typed value cannot be verified. The run preserves the evidence instead of retyping blindly.',
     },
 ]
 
@@ -68,7 +43,7 @@ const COCKPIT_GRID = [
         alt: 'OpenAdapt Desktop run detail for Patient intake insurance verify: all 11 of 11 steps verified, with a run report showing 11 steps, 8.2s duration, and $0.000 model cost.',
         testid: 'desktop-preview-cockpit-verified',
         caption:
-            'The other workflow replays clean: 11 of 11 steps verified, 8.2s, $0.000 model cost. Real local demo run.',
+            'A clean replay: 11 of 11 steps verified, 8.2 seconds, and $0.000 model cost.',
     },
     {
         src: '/desktop-preview/cockpit/50_teach.png',
@@ -88,7 +63,7 @@ const COCKPIT_GRID = [
         alt: 'OpenAdapt Desktop settings: deployment lane (Cloud non-PHI vs BYOC self-hosted PHI), PHI mode, and a hosted-organization connection to https://app.openadapt.ai with a signed-in ingest-token session.',
         testid: 'desktop-preview-cockpit-settings',
         caption:
-            'Deployment lane, PHI mode, and the signed-in session. The connection was validated against a locally-run instance of the cloud in mock mode, not a production org.',
+            'Choose the deployment boundary, PHI mode, and connected OpenAdapt Cloud organization.',
     },
     {
         src: '/desktop-preview/cockpit/05_onboarding.png',
@@ -118,7 +93,7 @@ const COCKPIT_GRID = [
         alt: 'OpenAdapt Desktop sign-in surface with a host field, a browser sign-in option, and an ingest-token paste option.',
         testid: 'desktop-preview-cockpit-login',
         caption:
-            'Sign in with a browser or an ingest token. Validated against a locally-run instance of the cloud in mock mode, not a production org.',
+            'Connect to OpenAdapt Cloud through browser sign-in or an ingest token.',
     },
 ]
 
@@ -337,7 +312,7 @@ const WINDOWS_INSTALLER_STEPS = [
         alt: 'Completing page reading "Completing OpenAdapt Desktop Setup" with "Run OpenAdapt Desktop" and "Create desktop shortcut" checked.',
         testid: 'desktop-preview-windows-finish',
         caption:
-            'Finish: files are placed and the app launches. Earlier prereleases panicked on startup (issue #26); v0.6.2 fixes it, and the running app surfaces above are that launched app.',
+            'Finish: files are placed, a desktop shortcut is created if requested, and the app launches.',
     },
 ]
 
@@ -350,22 +325,14 @@ export default function DesktopPreview() {
             <div className="border-t-2 border-ink pt-10">
                 <p className="eyebrow">What you&apos;re installing</p>
                 <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                    Real screenshots, honest state
+                    See the native app
                 </h2>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
-                    These are unretouched captures of the real native desktop
-                    app running the real wired engine, not a rendering of
-                    a finished product. The workflows, runs, and the halt shown
-                    below are a real local demo recording: two workflows recorded
-                    via demo-record, compiled, and replayed on one machine. It is
-                    local demo data, not production or customer data, and the
-                    signed-in session was validated against a locally-run
-                    instance of the cloud in mock mode. The pictured release
-                    predates the Beta lane and uses{' '}
-                    <span className="whitespace-nowrap">
-                        unsigned or ad-hoc-signed
-                    </span>{' '}
-                    installers; see the release notes before installing.
+                    Follow the desktop workflow from capture and replay through a
+                    verified result, a safe halt, teaching, settings, and sign-in.
+                    The gallery uses synthetic workflows captured from the native
+                    app and wired engine. Exact capture provenance is published
+                    below.
                 </p>
 
                 <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -418,12 +385,6 @@ export default function DesktopPreview() {
                     ))}
                 </div>
 
-                <p className="mt-6 max-w-2xl text-xs leading-relaxed text-ink-3">
-                    Every capture above is the real native app on the real
-                    wired engine. The data shown is a local demo recording; it is
-                    not a hosted production org and not customer data.
-                </p>
-
                 <div className="mt-12 border-t border-hairline pt-10">
                     <p className="eyebrow">The tray companion</p>
                     <h3 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
@@ -433,12 +394,10 @@ export default function DesktopPreview() {
                         <code>openadapt-tray</code> {TRAY_PACKAGE_VERSION} is a
                         separate <code>pip install openadapt-tray</code> package
                         that puts an OpenAdapt indicator in the menu bar or
-                        system tray to mirror status and launch surfaces. The
-                        panels below are a representation of where that icon
-                        appears on each OS — they are not screenshots. The tray
-                        is not included in the installers on this page, and{' '}
-                        {'no released desktop build provides the companion service'}{' '}
-                        it connects to yet.
+                        system tray. Install it separately when you want
+                        quick access alongside CLI-based workflows. The panels
+                        below illustrate where the icon appears on each OS; they
+                        are not screenshots.
                     </p>
 
                     <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:grid-cols-3">
@@ -465,14 +424,11 @@ export default function DesktopPreview() {
                         The real NSIS installer, start to finish
                     </h3>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
-                        Captured from the actual{' '}
-                        <code>
-                            windows-x86_64-unsigned-nsis-setup.exe
-                        </code>{' '}
-                        (v{WINDOWS_INSTALLER_VERSION}) running on a real Windows
-                        11 machine. This pictured predecessor is unsigned, so
-                        Windows shows an Unknown Publisher warning (expected);
-                        see First launch below for how to proceed safely.
+                        Captured on Windows 11 from v{WINDOWS_INSTALLER_VERSION}.
+                        The current desktop release follows the same three-step
+                        NSIS flow. Unsigned builds can trigger an Unknown
+                        Publisher warning; follow the First launch guidance below
+                        before overriding it.
                     </p>
 
                     <div className="mt-8 grid grid-cols-1 items-start gap-6 sm:grid-cols-3">
