@@ -103,11 +103,11 @@ export default function HostedWelcome() {
                         </Link>
                     </div>
                     <p className="mt-3 text-xs leading-relaxed text-ink-3">
-                        Managed subscriptions run approved workflows across every
-                        substrate. Workflows involving PHI/PII, private systems, or
-                        other regulated runtime data use a separately scoped
-                        customer-controlled deployment. Working with regulated
-                        data?{' '}
+                        Your subscription includes managed browser execution and
+                        the Cloud review surface. Desktop, RDP, Citrix, private
+                        systems, and regulated runtime data connect through a
+                        separately scoped customer-controlled runtime. Working
+                        with regulated data?{' '}
                         <Link
                             href="/#pricing-enterprise"
                             className="text-accent underline"

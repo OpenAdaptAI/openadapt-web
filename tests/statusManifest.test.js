@@ -90,7 +90,7 @@ test('hosted cloud scope is browser-only, matching the TOS and checkout gate', (
     // manifest note must not resell it as running across every substrate.
     const hosted = manifest.substrates.find((s) => s.name === 'Hosted Cloud')
     assert.equal(hosted.public_label, 'Beta')
-    assert.match(hosted.evidence_note, /browser workflows/i)
+    assert.match(hosted.evidence_note, /browser (workflows|execution)/i)
     assert.doesNotMatch(hosted.evidence_note, /across every substrate/i)
     assert.match(
         hosted.evidence_note,

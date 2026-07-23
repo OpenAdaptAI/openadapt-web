@@ -49,11 +49,11 @@ Real, runnable workflow templates. Every template corresponds to something that 
 - [X/Twitter](https://x.com/OpenAdaptAI): Project news
 
 ## Commercial Status
-- The open-source browser engine is available now.
-- Managed cloud execution of approved browser workflows (Beta) is available as a $500/month subscription through verified Stripe Checkout and account onboarding.
+- The MIT-licensed compiler and governed runtime are available through the OpenAdapt launcher.
+- OpenAdapt Cloud is available as a $500/month subscription through verified Stripe Checkout and account onboarding, combining a managed browser runner with run history, evidence, usage, and governed workflow updates.
 - Credentials alone cannot expose the launch price or create Checkout. Web also refuses a configured Stripe offer that differs from the launch contract.
 - Customer-controlled regulated deployments are scoped to the actual substrate, runtime boundary, verifier, and operating responsibilities.
-- Hosted subscriptions cover managed browser execution today; desktop, RDP, and Citrix run self-hosted or through a customer-controlled deployment, qualified separately for the workflow boundary.
+- Desktop, RDP, and Citrix connect through self-hosted or customer-controlled runtimes under the same governance model.
 
 ## Hosted Data Boundary
 - Compiled bundles can contain screenshots, typed values, and literal identity evidence. Compilation does not make a bundle PHI-free.

@@ -9,7 +9,7 @@
     "tiers": {
         "Beta": "Works and is broadly exercised. Available today through the managed hosted product for browser workflows.",
         "Early access": "Works and is validated on specific named tasks, but not yet broadly exercised. Real UI Automation, accessibility, and RDP backends run under the governed loop.",
-        "Exploratory": "No validated real-environment integration yet. Qualification begins inside a design partner's real environment.",
+        "Exploratory": "The governed integration path is defined; real-environment qualification has not completed.",
         "Research": "Experimental and not yet part of the governed product."
     },
     "substrates": [
@@ -23,19 +23,19 @@
             "name": "Windows / macOS / RDP",
             "public_label": "Early access",
             "internal_tier": "scoped-acceptance",
-            "evidence_note": "Operate native Windows, macOS, and RDP applications under the same governed loop: structured UI Automation and accessibility evidence, effect verification against an independent oracle, and fail-closed halting when verification does not pass. Validated on specific named tasks and environments, and run self-hosted or in a customer-controlled deployment, not in the managed subscription."
+            "evidence_note": "Operate native Windows, macOS, and RDP applications under the same governed loop: structured UI Automation and accessibility evidence, effect verification against an independent oracle, and fail-closed halting when verification does not pass. Validated on specific named tasks and environments, with execution provided by self-hosted or customer-controlled runtimes."
         },
         {
             "name": "Citrix / VDI",
             "public_label": "Exploratory",
             "internal_tier": "remote-window",
-            "evidence_note": "Bringing the governed loop to Citrix and VDI remote application delivery, carrying identity, effect, and policy checks and halt-on-uncertainty into a pixel-and-evidence safety floor. No validated real-environment ICA/HDX integration yet; qualification begins inside a design partner's real Citrix or VDI environment."
+            "evidence_note": "Bringing the governed loop to Citrix and VDI remote application delivery, carrying identity, effect, and policy checks and halt-on-uncertainty into a pixel-and-evidence safety floor. The adapter contract is defined; real-environment ICA/HDX qualification remains the evidence gate."
         },
         {
             "name": "Hosted Cloud",
             "public_label": "Beta",
             "internal_tier": "managed-control-plane",
-            "evidence_note": "The managed control plane runs your approved browser workflows today, with run history, reporting, usage, and governed updates, backed by live billing. Desktop, RDP, and Citrix workflows run self-hosted or in a customer-controlled deployment, not in the managed subscription. Runtime data handling and customer-controlled boundaries are configured per deployment."
+            "evidence_note": "The managed control plane provides governed browser execution, run history, reporting, usage, and workflow updates, backed by live billing. Desktop, RDP, and Citrix connect through self-hosted or customer-controlled runtimes. Runtime data handling and customer-controlled boundaries are configured per deployment."
         }
     ]
 }

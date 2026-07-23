@@ -92,25 +92,18 @@ test('desktop preview uses only provenance-backed real captures', () => {
     }
 })
 
-test('desktop preview distinguishes native Beta from historical capture provenance', () => {
+test('desktop preview leads with the product and keeps provenance accessible', () => {
     const component = read('components/DesktopPreview.js')
 
-    // The consumer surface leads with the native app and Beta lane without
-    // rewriting the provenance of screenshots from the earlier release.
-    assert.match(component, /real native desktop/)
-    assert.match(component, /predates the Beta lane/)
-    assert.match(component, /unsigned\s+or ad-hoc-signed/)
+    assert.match(component, /See the native app/)
+    assert.match(component, /synthetic workflows/)
+    assert.match(component, /desktop-preview\/MANIFEST\.json/)
 
-    // The tray is a separate package, carries its real version, and is not
-    // claimed to control a released desktop build (no released build provides
-    // the companion service it expects).
+    // The tray remains a separate package and is not presented as part of the
+    // native installer.
     assert.match(component, /pip install openadapt-tray/)
     assert.match(component, /TRAY_PACKAGE_VERSION = '0\.1\.1'/)
-    assert.match(component, /not included in the installers/)
-    assert.match(
-        component,
-        /no released desktop build provides\s+the companion service/
-    )
+    assert.match(component, /Install it separately/)
     assert.doesNotMatch(component, /controls? the desktop app/i)
 
     // The tray is shown as a per-OS representation of where the icon lives,
@@ -194,15 +187,13 @@ test('cockpit gallery is the real wired-engine app on honest local demo data', (
     assert.match(component, /The workflow library/)
     assert.match(component, /Halt evidence/)
 
-    // Honest captions: the app is real and wired, but the data is a LOCAL demo
-    // recording validated against a mock-mode cloud, never a production org and
-    // never customer data.
-    assert.match(component, /real wired engine/)
-    assert.match(component, /local demo/i)
-    assert.match(component, /mock mode/)
-    assert.match(component, /not a production org/)
-    assert.match(component, /not production or customer data/)
-    assert.match(component, /recorded\s+via demo-record/)
+    // The consumer page names the synthetic boundary once and links to the full
+    // provenance record instead of repeating development-state narration in
+    // every caption.
+    assert.match(component, /wired engine/)
+    assert.match(component, /synthetic workflows/i)
+    assert.match(component, /desktop-preview\/MANIFEST\.json/)
+    assert.doesNotMatch(component, /mock mode|not a production org/i)
 
     // No overclaiming: no mockup language survives (the captures are real, not
     // mockups), and the stale launch caveat is gone because the app runs.
@@ -210,41 +201,23 @@ test('cockpit gallery is the real wired-engine app on honest local demo data', (
     assert.doesNotMatch(component, /does not launch yet/)
 })
 
-test('windows install-flow captions stay honest about the pictured unsigned predecessor', () => {
+test('windows install-flow keeps current product copy and signing guidance', () => {
     const component = read('components/DesktopPreview.js')
     const download = read('pages/download.js')
 
-    // The captured predecessor is unsigned, Windows shows an Unknown Publisher
-    // warning, and that warning is expected.
+    // The capture version stays explicit and unsigned builds route to the
+    // security-critical first-launch guidance.
+    assert.match(component, /v\{WINDOWS_INSTALLER_VERSION\}/)
     assert.match(
         component,
-        /pictured predecessor is unsigned/,
-        'windows section must state the pictured build is an unsigned predecessor'
-    )
-    assert.match(
-        component,
-        /Unknown Publisher warning \(expected\)/,
-        'windows section must call the Unknown Publisher warning expected'
+        /Unsigned builds can trigger an Unknown\s+Publisher warning/,
+        'windows section must route unsigned builds to first-launch guidance'
     )
 
-    // The app now launches: v0.6.2 fixes the earlier startup panic
-    // (openadapt-desktop issue #26). The finish caption references the fix and
-    // points to the real running connect screen, and the stale "does not
-    // launch / no app window" claim is gone.
+    // Historical implementation defects do not become permanent sales copy.
     assert.doesNotMatch(
         component,
-        /does not launch yet|no app window is shown/,
-        'the stale issue #26 launch caveat must be removed'
-    )
-    assert.match(
-        component,
-        /v0\.6\.2 fixes it/,
-        'the finish caption must credit the v0.6.2 launch fix'
-    )
-    assert.match(
-        component,
-        /issue #26/,
-        'the finish caption must still name the fixed issue for continuity'
+        /does not launch yet|no app window is shown|issue #26|pictured predecessor/i
     )
 
     // The Windows install stills reserve their real pixel aspect ratio so the
