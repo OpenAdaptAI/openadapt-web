@@ -30,6 +30,10 @@ const SOLUTIONS_LINKS = [
 
 const PRODUCT_LINKS = [
     { label: 'How it works', href: '/how-it-works' },
+    {
+        label: 'Customer results',
+        href: '/customers/rvu-audit-heart-care',
+    },
     { label: 'Platforms & deployment', href: '/#product-status' },
     { label: 'Workflows', href: '/workflows' },
     { label: 'Safety', href: '/safety' },

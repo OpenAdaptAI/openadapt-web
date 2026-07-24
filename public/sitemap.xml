@@ -13,6 +13,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://openadapt.ai/customers/rvu-audit-heart-care</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://openadapt.ai/solutions/lending</loc>
     <lastmod>2026-07-18</lastmod>
     <changefreq>monthly</changefreq>
