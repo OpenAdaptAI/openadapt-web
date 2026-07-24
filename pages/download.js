@@ -92,7 +92,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                 <title>Install OpenAdapt | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="Install the working OpenAdapt engine, or inspect native desktop packaging for Windows, macOS, and Linux."
+                    content="Install the OpenAdapt CLI or download OpenAdapt Desktop Beta for Windows, macOS, and Linux."
                 />
                 <link rel="canonical" href="https://openadapt.ai/download" />
                 <meta
@@ -101,7 +101,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                 />
                 <meta
                     property="og:description"
-                    content="Install the OpenAdapt engine and inspect native desktop packaging for Windows, macOS, and Linux."
+                    content="Install the governed workflow engine or download native OpenAdapt Desktop Beta installers for Windows, macOS, and Linux."
                 />
                 <meta
                     property="og:url"
@@ -113,7 +113,7 @@ export default function DownloadPage({ release, fetchFailed }) {
             <div className="mx-auto max-w-4xl px-4 py-14">
                 <p className="eyebrow">Install OpenAdapt</p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Start with the OpenAdapt CLI
+                    Install the CLI or desktop app
                 </h1>
                 <p className="mt-5 max-w-2xl text-base text-ink-2 md:text-lg">
                     The flagship{' '}
@@ -136,19 +136,22 @@ export default function DownloadPage({ release, fetchFailed }) {
 
                 <div className="mt-6 flex flex-wrap gap-3">
                     <a
-                        href="https://docs.openadapt.ai/get-started/"
+                        href="#desktop-builds"
                         className="btn-ink"
                     >
-                        Read docs
+                        Download desktop app
                     </a>
-                    <a href="#desktop-builds" className="btn-ghost-ink">
-                        View desktop builds
+                    <a
+                        href="https://docs.openadapt.ai/get-started/"
+                        className="btn-ghost-ink"
+                    >
+                        CLI quickstart
                     </a>
                 </div>
 
                 {/* Recommended download */}
                 <div id="desktop-builds" className="mt-12 scroll-mt-8">
-                    <p className="eyebrow">Desktop packaging</p>
+                    <p className="eyebrow">Desktop app</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
                         Native desktop Beta
                     </h2>

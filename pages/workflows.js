@@ -223,6 +223,10 @@ export default function WorkflowsPage() {
                             {SUBSTRATE_MATURITY.macos}
                         </li>
                         <li>
+                            <strong className="text-ink">Native Linux</strong> —{' '}
+                            {SUBSTRATE_MATURITY.linux}
+                        </li>
+                        <li>
                             <strong className="text-ink">RDP</strong> —{' '}
                             {SUBSTRATE_MATURITY.rdp}
                         </li>
@@ -241,9 +245,10 @@ export default function WorkflowsPage() {
                         >
                             status manifest
                         </a>
-                        . Beta means broadly exercised; Early access means
-                        validated on specific named tasks; Exploratory means no
-                        validated real-environment integration yet.
+                        . Available means the backend ships in the released
+                        compiler/runtime. The manifest records its exact bounded
+                        evidence and whether execution is managed or
+                        customer-controlled.
                     </p>
                 </div>
             </div>

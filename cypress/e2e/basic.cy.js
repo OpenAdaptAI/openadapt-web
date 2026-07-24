@@ -151,7 +151,7 @@ describe('public product truth', () => {
             cy.contains('button', 'Product').click()
             cy.get('#nav-solutions-menu').should('not.exist')
             cy.get('#nav-product-menu').within(() => {
-                cy.contains('a', 'How it runs').should(
+                cy.contains('a', 'Platforms & deployment').should(
                     'have.attr',
                     'href',
                     '/#product-status'
@@ -277,8 +277,8 @@ describe('public product truth', () => {
                 'be.visible'
             )
             cy.contains('Web applications').should('be.visible')
-            cy.contains('Windows applications').should('be.visible')
-            cy.contains('RDP, Citrix & VDI').should('be.visible')
+            cy.contains('Desktop applications').should('be.visible')
+            cy.contains('Remote applications').should('be.visible')
             cy.contains('qualification evidence')
                 .should('have.attr', 'href')
                 .and('include', '/tree/main/benchmark')
@@ -383,7 +383,7 @@ describe('public product truth', () => {
                 .should('have.attr', 'href')
                 .and('equal', '/solutions/insurance')
             cy.contains('Product').scrollIntoView().should('be.visible')
-            cy.contains('a', 'How it runs').should(
+            cy.contains('a', 'Platforms & deployment').should(
                 'have.attr',
                 'href',
                 '/#product-status'

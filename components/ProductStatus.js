@@ -56,12 +56,12 @@ const executionSurfaces = [
         detail: 'Compile DOM, accessibility, visual, and interaction evidence into deterministic browser workflows.',
     },
     {
-        title: 'Windows applications',
-        detail: 'Use structured UI Automation with retained visual evidence to operate legacy desktop applications.',
+        title: 'Desktop applications',
+        detail: 'Use Windows UI Automation, macOS Accessibility, or Linux AT-SPI with retained visual evidence to operate native applications.',
     },
     {
-        title: 'RDP, Citrix & VDI',
-        detail: 'Carry the same policy, verification, repair, and audit model into remote application environments.',
+        title: 'Remote applications',
+        detail: 'Carry the same policy, verification, repair, and audit model through RDP, Citrix Workspace, and other VDI environments.',
     },
 ]
 
@@ -110,9 +110,10 @@ export default function ProductStatus() {
                         Built for the interfaces your work depends on
                     </h3>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2">
-                        From modern browser apps to legacy Windows and remote desktops,
-                        workflows stay inspectable, policy-bound, and governed by
-                        explicit verification.
+                        From modern browser apps to native Windows, macOS, and
+                        Linux software and remote desktops, workflows stay
+                        inspectable, policy-bound, and governed by explicit
+                        verification.
                     </p>
                     <div className="mt-6 grid gap-4 md:grid-cols-3">
                         {executionSurfaces.map((item) => (
