@@ -957,10 +957,11 @@ export default function SecurityPage() {
                         <p>
                             Enrollment also produces one-time recovery codes.
                             If an authenticator is lost, a recovery code removes
-                            the inaccessible factors and returns the signed-in
-                            user to Security &amp; 2FA to enroll a replacement.
-                            Recovery never grants the protected session by
-                            itself.
+                            the inaccessible factors. Factor removal invalidates
+                            active sessions, so Cloud explicitly returns through
+                            sign-in and then to Security &amp; 2FA to enroll a
+                            replacement. Recovery never grants the protected
+                            session by itself.
                         </p>
                         <p>
                             The signed-in account menu keeps identity and

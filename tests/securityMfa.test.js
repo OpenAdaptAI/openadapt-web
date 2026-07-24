@@ -11,7 +11,7 @@ test('trust center describes the platform-admin MFA and account-menu contract', 
     assert.match(security, /two-factor authentication is[\s\S]*enforced for[\s\S]*platform administration/i)
     assert.match(security, /platform-admin console[\s\S]*server-side administrator[\s\S]*current two-factor session/i)
     assert.match(security, /one current 6-digit code[\s\S]*returns the user to the protected page/i)
-    assert.match(security, /recovery code[\s\S]*returns[\s\S]*signed-in[\s\S]*user to Security[\s\S]*never grants the protected session/i)
+    assert.match(security, /recovery code[\s\S]*invalidates[\s\S]*returns through[\s\S]*sign-in[\s\S]*Security[\s\S]*never grants[\s\S]*protected[\s\S]*session/i)
     assert.match(security, /organization switching[\s\S]*explicit[\s\S]*sign-out action/i)
     assert.match(security, /docs\.openadapt\.ai\/guides\/account-security/)
     assert.doesNotMatch(security, /default policy also requires two-factor[\s\S]*organization owners/i)
