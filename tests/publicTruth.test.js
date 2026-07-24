@@ -126,7 +126,7 @@ test('visitor browsers never call api.github.com', () => {
     const download = read('pages/download.js')
     assert.match(download, /export async function getStaticProps/)
     assert.match(download, /getDesktopRelease/)
-    assert.match(download, /revalidate: 300/)
+    assert.match(download, /revalidate: 180/)
 })
 
 test('launch surfaces lead with capabilities instead of temporary gap labels', () => {
