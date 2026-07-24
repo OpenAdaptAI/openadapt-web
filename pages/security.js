@@ -73,7 +73,7 @@ const summary = [
         area: 'Identity, access & tenancy',
         anchor: 'access',
         status: 'partial',
-        note: 'Org RBAC + row-level tenant isolation today; SSO / SAML / SCIM not yet.',
+        note: 'Org RBAC, row-level tenant isolation, and TOTP step-up protect privileged access; SSO / SAML / SCIM is not included.',
     },
     {
         area: 'Release integrity',
@@ -942,6 +942,34 @@ export default function SecurityPage() {
                             scoped to organization membership, so data is
                             isolated per organization rather than shared across
                             tenants.
+                        </p>
+                        <p>
+                            Authenticator-app two-factor authentication is
+                            available to every account and enforced for
+                            privileged access. The platform-admin console
+                            always requires both the server-side administrator
+                            allowlist and a current two-factor session. The
+                            default policy also requires two-factor
+                            authentication for organization owners and admins.
+                            When a signed-in session needs this additional
+                            assurance, Cloud asks for one current 6-digit code
+                            and returns the user to the protected page after it
+                            is accepted.
+                        </p>
+                        <p>
+                            The signed-in account menu keeps identity and
+                            organization context visible. It provides Security
+                            &amp; 2FA, organization switching when an account
+                            belongs to more than one workspace, and an explicit
+                            sign-out action. The{' '}
+                            <a
+                                href="https://docs.openadapt.ai/guides/account-security/"
+                                className="text-accent underline"
+                            >
+                                account-security guide
+                            </a>{' '}
+                            covers enrollment, step-up, and account or workspace
+                            switching.
                         </p>
                         <p>
                             What is <strong className="text-ink">not</strong>{' '}
