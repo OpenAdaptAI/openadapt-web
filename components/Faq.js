@@ -29,7 +29,7 @@ export const faqItems = [
     },
     {
         question: 'What software does OpenAdapt work with?',
-        answer: 'OpenAdapt targets repeated workflows across browser applications, Windows UI Automation, native macOS, and remote desktop environments. Choose managed browser execution or connect a self-hosted or customer-controlled runtime for desktop, RDP, Citrix, private systems, and regulated data.',
+        answer: 'OpenAdapt targets repeated workflows across browser applications, Windows UI Automation, native macOS Accessibility, Linux AT-SPI, RDP, Citrix, and other remote desktop environments. Choose managed browser execution or connect a local, self-hosted, or customer-controlled runtime for desktop, remote, private-system, and regulated workflows.',
     },
 ]
 

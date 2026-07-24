@@ -8,19 +8,17 @@
 
 const FLOW_REPO = 'https://github.com/OpenAdaptAI/openadapt-flow'
 
-// Canonical substrate maturity labels, reconciled to public/status.json (the
-// single source of truth). The same governed loop covers every substrate; the
-// label says how broadly each has been exercised today. Beta = broadly
-// exercised (browser); Early access = validated on specific named tasks
-// (Windows UIA, native macOS, RDP); Exploratory = no validated real-environment
-// integration yet (Citrix / VDI). The three catalog entries below all run
-// through the browser substrate.
+// Canonical substrate availability labels, reconciled to public/status.json.
+// Each released backend is available behind the same governed loop; its exact
+// evidence scope and deployment boundary live in the status manifest. The
+// catalog entries below all run through the browser substrate.
 export const SUBSTRATE_MATURITY = {
-    browser: 'Beta',
-    windows: 'Early access',
-    macos: 'Early access',
-    rdp: 'Early access',
-    citrix: 'Exploratory',
+    browser: 'Available',
+    windows: 'Available',
+    macos: 'Available',
+    linux: 'Available',
+    rdp: 'Available',
+    citrix: 'Available',
 }
 
 // Shared honesty envelope. Every catalog entry sets these explicitly so the

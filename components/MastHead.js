@@ -54,10 +54,10 @@ export default function Home({ githubStats }) {
                                 Demonstrate a repeated task once. OpenAdapt
                                 compiles it into a local program that replays at
                                 $0 per healthy run across browser, Windows,
-                                macOS, RDP, and Citrix. When the screen changes,
-                                it re-checks its evidence, repairs with AI when
-                                it can, and halts for a person instead of
-                                guessing.{' '}
+                                macOS, Linux, RDP, and Citrix. When the screen
+                                changes, it re-checks its evidence, repairs with
+                                AI when it can, and halts for a person instead
+                                of guessing.{' '}
                                 <Link href="#product-status">
                                     See how it runs across every interface.
                                 </Link>

@@ -9,45 +9,33 @@ const read = (relativePath) =>
 
 const manifest = JSON.parse(read('public/status.json'))
 
-// The canonical public substrate labels. These are the single source of truth
-// that the website, docs (openadapt-ops), launcher README, masthead, and PyPI
-// metadata all reconcile to. Every substrate is first-class in the product; the
-// label is a maturity tier from the canonical ladder (manifest.tiers) that says
-// how broadly the substrate has been exercised today. "Scoped" is never a
-// public label — the ladder is Beta / Early access / Exploratory / Research.
 const CANONICAL_LABELS = {
-    Browser: 'Beta',
-    'Windows / macOS / RDP': 'Early access',
-    'Citrix / VDI': 'Exploratory',
+    Browser: 'Available',
+    Windows: 'Available',
+    macOS: 'Available',
+    Linux: 'Available',
+    RDP: 'Available',
+    'Citrix / VDI': 'Available',
     'Hosted Cloud': 'Beta',
 }
 
-// The canonical maturity ladder. Every public label must be one of these tiers,
-// and each tier must carry a plain-language definition so any surface that shows
-// the ladder can render a legend.
-const CANONICAL_TIERS = ['Beta', 'Early access', 'Exploratory', 'Research']
+const CANONICAL_TIERS = ['Available', 'Beta']
 
-// Component versions verified against PyPI on 2026-07-19.
+// Verified against the public releases on 2026-07-24.
 const CANONICAL_VERSIONS = {
     launcher: '1.7.1',
-    flow: '1.19.0',
-    desktop: '0.6.2',
+    flow: '1.20.1',
+    desktop: '0.9.0',
 }
 
-test('status manifest labels every substrate with a canonical maturity tier', () => {
+test('status manifest separates released substrate availability from evidence scope', () => {
     const byName = Object.fromEntries(
         manifest.substrates.map((s) => [s.name, s.public_label])
     )
     assert.deepEqual(byName, CANONICAL_LABELS)
+    assert.equal(manifest.product_lifecycle, 'Beta')
 
-    // "Scoped" is the confusing label this ladder replaces — it must not appear
-    // as any public label.
     for (const substrate of manifest.substrates) {
-        assert.doesNotMatch(
-            substrate.public_label,
-            /scoped/i,
-            `${substrate.name} public_label must not use the ambiguous "scoped"`
-        )
         assert.ok(
             CANONICAL_TIERS.includes(substrate.public_label),
             `${substrate.name} public_label must be a canonical tier`
@@ -57,81 +45,96 @@ test('status manifest labels every substrate with a canonical maturity tier', ()
             `${substrate.name} must carry a capability note`
         )
         assert.ok(
+            typeof substrate.delivery === 'string' &&
+                substrate.delivery.length > 0,
+            `${substrate.name} must record its delivery boundary`
+        )
+        assert.ok(
             typeof substrate.internal_tier === 'string' &&
                 substrate.internal_tier.length > 0,
             `${substrate.name} must record an internal tier`
         )
+        assert.doesNotMatch(
+            `${substrate.public_label} ${substrate.evidence_note}`,
+            /early access|exploratory|research|design.partner/i
+        )
     }
 })
 
-test('status manifest defines the canonical ladder with plain definitions', () => {
-    assert.ok(manifest.tiers && typeof manifest.tiers === 'object')
+test('status manifest defines its public labels in plain language', () => {
     assert.deepEqual(Object.keys(manifest.tiers), CANONICAL_TIERS)
     for (const tier of CANONICAL_TIERS) {
-        assert.ok(
-            typeof manifest.tiers[tier] === 'string' &&
-                manifest.tiers[tier].length > 20,
-            `tier ${tier} must carry a plain-language definition`
-        )
+        assert.ok(manifest.tiers[tier].length > 20)
     }
-    // Every label actually used must be defined in the ladder.
     for (const substrate of manifest.substrates) {
-        assert.ok(
-            manifest.tiers[substrate.public_label],
-            `${substrate.public_label} must be defined in manifest.tiers`
-        )
+        assert.ok(manifest.tiers[substrate.public_label])
     }
 })
 
-test('status manifest describes its machine-readable role exactly', () => {
-    assert.match(manifest.$comment, /machine-readable status evidence/)
-    assert.match(manifest.$comment, /status-aware website surfaces and tests/)
+test('status manifest describes release, capability, evidence, and deployment status', () => {
     assert.match(
         manifest.$comment,
-        /homepage presents product capabilities without rendering this maturity ledger/
+        /machine-readable release, capability, evidence, and deployment status/
     )
-    assert.doesNotMatch(manifest.$comment, /imported directly by the homepage/)
+    assert.match(manifest.$comment, /Windows, macOS, Linux, RDP, and Citrix/)
+    assert.match(manifest.$comment, /distinct from the deployment boundary/)
 })
 
-test('hosted cloud scope is browser-only, matching the TOS and checkout gate', () => {
-    // The managed subscription is a browser-only Beta by the site's own
-    // machinery (lib/hostedOfferContract.js requires substrate=browser +
-    // lifecycle=beta; the TOS calls it a Beta browser launch service). The
-    // manifest note must not resell it as running across every substrate.
+test('bounded substrate evidence is exact and linked', () => {
+    const byName = Object.fromEntries(
+        manifest.substrates.map((s) => [s.name, s])
+    )
+
+    assert.match(byName.Windows.evidence_note, /3\/3 independently verified effects/)
+    assert.match(byName.Windows.evidence_note, /3\/3 stale targets/)
+    assert.match(byName.Windows.evidence_note, /3\/3 ambiguous targets/)
+
+    assert.match(byName.macOS.evidence_note, /3\/3 exact-byte effects/)
+    assert.match(byName.macOS.evidence_note, /two-window ambiguity refusal/)
+
+    assert.match(byName.Linux.evidence_note, /3\/3 exact-file effects/)
+    assert.match(byName.Linux.evidence_note, /3\/3 ambiguity refusals/)
+    assert.match(byName.Linux.evidence_note, /3\/3 stale-target refusals/)
+    assert.match(byName.Linux.evidence_url, /30059807758\/job\/89378981573/)
+
+    assert.match(byName.RDP.evidence_note, /Aardwolf-over-Windows/)
+    assert.match(byName.RDP.evidence_note, /FreeRDP round trip/)
+    assert.match(byName.RDP.evidence_note, /3\/3 drift safe-halts/)
+
+    const citrix = byName['Citrix / VDI']
+    assert.match(citrix.evidence_note, /dedicated --backend citrix/)
+    assert.match(citrix.evidence_note, /3\/3 healthy effects/)
+    assert.match(citrix.evidence_note, /3\/3 drift safe-halts/)
+    assert.match(citrix.qualification_boundary, /ica_hdx_accepted=false/)
+    assert.match(citrix.qualification_boundary, /not a counted real ICA\/HDX batch/)
+
+    for (const name of ['Windows', 'macOS', 'Linux', 'RDP', 'Citrix / VDI']) {
+        assert.match(byName[name].evidence_url, /^https:\/\/github\.com\//)
+    }
+})
+
+test('hosted cloud scope stays managed-browser-only', () => {
     const hosted = manifest.substrates.find((s) => s.name === 'Hosted Cloud')
     assert.equal(hosted.public_label, 'Beta')
-    assert.match(hosted.evidence_note, /browser (workflows|execution)/i)
+    assert.match(hosted.delivery, /Managed browser runner/)
+    assert.match(hosted.evidence_note, /managed browser execution/i)
     assert.doesNotMatch(hosted.evidence_note, /across every substrate/i)
-    assert.match(
-        hosted.evidence_note,
-        /self-hosted|customer-controlled/i,
-        'hosted note must route non-browser substrates to self-hosted / on-prem'
-    )
+    assert.match(hosted.evidence_note, /local, self-hosted, or customer-controlled/i)
 })
 
 test('status manifest encodes the verified component versions', () => {
     assert.deepEqual(manifest.versions, CANONICAL_VERSIONS)
-    assert.match(manifest.generated_at, /^\d{4}-\d{2}-\d{2}$/)
+    assert.equal(manifest.generated_at, '2026-07-24')
 })
 
-test('homepage presents capabilities without exposing the maturity ledger', () => {
-    // The sales page describes the target product capability. The public status
-    // manifest remains available to technical consumers, but transient maturity
-    // labels and component versions do not belong in the homepage narrative.
+test('homepage presents coherent desktop and remote dimensions', () => {
     const product = read('components/ProductStatus.js')
 
     assert.doesNotMatch(product, /public\/status\.json/)
     assert.doesNotMatch(product, /status\.substrates|substrate\.public_label/)
-    assert.doesNotMatch(product, /status\.tiers|status\.versions/)
     assert.match(product, /Web applications/)
-    assert.match(product, /Windows applications/)
-    assert.match(product, /RDP, Citrix & VDI/)
-
-    for (const label of Object.values(CANONICAL_LABELS)) {
-        assert.doesNotMatch(
-            product,
-            new RegExp(`['"\\s]${label}['"\\s]`),
-            `ProductStatus must not render the temporary "${label}" label`
-        )
-    }
+    assert.match(product, /Desktop applications/)
+    assert.match(product, /Windows UI Automation, macOS Accessibility, or Linux AT-SPI/)
+    assert.match(product, /Remote applications/)
+    assert.match(product, /RDP, Citrix Workspace, and other VDI/)
 })

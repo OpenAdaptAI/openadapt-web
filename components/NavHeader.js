@@ -30,7 +30,7 @@ const SOLUTIONS_LINKS = [
 
 const PRODUCT_LINKS = [
     { label: 'How it works', href: '/how-it-works' },
-    { label: 'How it runs', href: '/#product-status' },
+    { label: 'Platforms & deployment', href: '/#product-status' },
     { label: 'Workflows', href: '/workflows' },
     { label: 'Safety', href: '/safety' },
     { label: 'Compare', href: '/compare' },

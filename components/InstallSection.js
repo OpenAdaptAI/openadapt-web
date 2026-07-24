@@ -46,7 +46,7 @@ export default function InstallSection() {
             <p className={styles.subtitle}>
                 One command installs the OpenAdapt launcher and governed
                 workflow compiler. The same CLI records, compiles, and replays
-                across browser, Windows, macOS, RDP, and Citrix under one
+                across browser, Windows, macOS, Linux, RDP, and Citrix under one
                 governed loop. No account or hosted service is required.
             </p>
 
