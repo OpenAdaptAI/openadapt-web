@@ -247,16 +247,9 @@ describe('public product truth', () => {
             cy.contains('Workflow Qualification Sprint').should('be.visible')
             cy.contains('From $15,000').should('be.visible')
             cy.contains('OpenAdapt Cloud').should('be.visible')
-            if (isProductionDeployment()) {
-                cy.contains('$500.00').should('be.visible')
-                cy.contains('/month').should('be.visible')
-                cy.contains('Up to 10,000 workflow runs/month').should(
-                    'be.visible'
-                )
-            } else {
-                cy.contains('Managed subscription').should('be.visible')
-                cy.contains('$500').should('not.exist')
-            }
+            cy.contains('$500.00').should('be.visible')
+            cy.contains('/month').should('be.visible')
+            cy.contains('Up to 10,000 workflow runs/month').should('be.visible')
         })
     })
 

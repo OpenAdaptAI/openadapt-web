@@ -4,12 +4,17 @@ import Link from 'next/link'
 import { track, EVENTS } from 'utils/analytics'
 import status from '../public/status.json'
 
-const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
+const {
+    LAUNCH_MONTHLY_RUN_CAP,
+    LAUNCH_PRICE_CADENCE,
+    LAUNCH_PRICE_DISPLAY,
+    monthlyRunCapLabel,
+} = require('../lib/hostedOfferContract')
 
 /*
- * Three delivery paths. The hosted amount is retrieved from Stripe at build
- * time rather than duplicated in site code; Checkout confirms the same
- * configured product and price before payment. The hosted maturity label is
+ * Public offer terms come from the same code-owned launch contract that
+ * validates Stripe. Checkout still remains unavailable unless the configured
+ * live Product and Price match that contract exactly. The hosted maturity label is
  * read from the canonical status manifest (public/status.json) so it can never
  * drift from the single source of truth.
  */
@@ -126,7 +131,9 @@ function HostedCheckoutButton({ available }) {
 }
 
 export default function Pricing({ hostedOffer = null }) {
-    const runCapLabel = monthlyRunCapLabel(hostedOffer?.monthlyRunCap)
+    const runCapLabel = monthlyRunCapLabel(
+        hostedOffer?.monthlyRunCap || LAUNCH_MONTHLY_RUN_CAP
+    )
     const hostedOfferAvailable = Boolean(
         hostedOffer?.amount &&
         hostedOffer?.cadence &&
@@ -281,15 +288,11 @@ export default function Pricing({ hostedOffer = null }) {
                             </div>
                             <div className="mt-2 flex items-baseline gap-2">
                                 <span className="font-display text-3xl font-semibold tracking-tight text-ink">
-                                    {hostedOfferAvailable
-                                        ? hostedOffer.amount
-                                        : 'Managed browser subscription'}
+                                    {hostedOffer?.amount || LAUNCH_PRICE_DISPLAY}
                                 </span>
-                                {hostedOffer?.cadence && (
-                                    <span className="text-sm text-ink-3">
-                                        {hostedOffer.cadence}
-                                    </span>
-                                )}
+                                <span className="text-sm text-ink-3">
+                                    {hostedOffer?.cadence || LAUNCH_PRICE_CADENCE}
+                                </span>
                             </div>
                             {runCapLabel && (
                                 <p

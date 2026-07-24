@@ -1,9 +1,16 @@
 import Link from 'next/link'
 
-const { monthlyRunCapLabel } = require('../lib/hostedOfferContract')
+const {
+    LAUNCH_MONTHLY_RUN_CAP,
+    LAUNCH_PRICE_CADENCE,
+    LAUNCH_PRICE_DISPLAY,
+    monthlyRunCapLabel,
+} = require('../lib/hostedOfferContract')
 
 export default function CommercialOffer({ hostedOffer }) {
-    const runCap = monthlyRunCapLabel(hostedOffer?.monthlyRunCap)
+    const runCap = monthlyRunCapLabel(
+        hostedOffer?.monthlyRunCap || LAUNCH_MONTHLY_RUN_CAP
+    )
 
     return (
         <section id="commercial-offer" className="border-b border-hairline bg-ground px-5 py-20 md:py-28">
@@ -36,9 +43,9 @@ export default function CommercialOffer({ hostedOffer }) {
                     <article id="cloud-preview" className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                         <p className="eyebrow">OpenAdapt Cloud</p>
                         <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                            {hostedOffer?.amount || 'Managed subscription'}
+                            {hostedOffer?.amount || LAUNCH_PRICE_DISPLAY}
                             <span className="ml-1 text-sm font-normal text-ink-3">
-                                {hostedOffer?.cadence || '/month'}
+                                {hostedOffer?.cadence || LAUNCH_PRICE_CADENCE}
                             </span>
                         </h3>
                         {runCap && (
