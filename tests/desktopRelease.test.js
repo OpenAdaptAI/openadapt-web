@@ -112,7 +112,7 @@ test('selects the newest complete release and preserves Experimental fallback', 
     assert.equal(selectDesktopRelease([legacy]), legacy)
 })
 
-test('selects desktop-v0.9.0 over desktop-v0.6.2 with package releases interleaved', () => {
+test('selects desktop-v0.9.0 over desktop-v0.6.2 with package and runtime releases interleaved', () => {
     const legacy = release(
         'Experimental',
         '0.6.2',
@@ -125,10 +125,22 @@ test('selects desktop-v0.9.0 over desktop-v0.6.2 with package releases interleav
         published_at: '2026-07-24T02:34:42Z',
         assets: [url('openadapt_desktop-0.9.0-py3-none-any.whl')],
     }
+    const ffmpegRuntime = {
+        tag_name: 'ffmpeg-runtime-v8.1.2-r1',
+        prerelease: true,
+        draft: false,
+        published_at: '2026-07-24T00:30:34Z',
+        assets: [url('ffmpeg-8.1.2-source.tar.xz')],
+    }
     const current = release('Beta', '0.9.0', '2026-07-24T02:52:30Z')
 
     assert.equal(
-        selectDesktopRelease([packageOnly, legacy, current]),
+        selectDesktopRelease([
+            packageOnly,
+            ffmpegRuntime,
+            legacy,
+            current,
+        ]),
         current
     )
 })
