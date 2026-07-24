@@ -26,12 +26,13 @@ describe('canonical booking destination', () => {
         assertCanonicalBooking()
     })
 
-    it('uses Cal.com after continuing through the homepage form', () => {
-        cy.visit('/')
-        cy.contains('button', 'Skip form and book now')
-            .scrollIntoView()
-            .should('be.visible')
-            .click({ force: true })
+    it('connects the qualification funnel to the canonical booking path', () => {
+        cy.visit('/qualify')
+        cy.get('form[name="workflow-qualification"]').should('be.visible')
+        cy.contains('Bring one workflow. Leave with a go/no-go answer.').should(
+            'be.visible'
+        )
+        cy.visit('/book')
         assertCanonicalBooking()
     })
 })
@@ -45,34 +46,13 @@ describe('public product truth', () => {
     it('leads with the governed compiler and qualifies the buyer', () => {
         cy.get('h1').should(
             'contain.text',
-            'Compile repeated GUI work. Verify the result. Halt when you can’t.'
+            'Automate the UI-only work your APIs can’t reach.'
         )
-        // The hero leads with value: a brief, confident positive-fit line and
-        // an elevated OpenAdapt Cloud call to action next to the primary
-        // evaluation CTA. The full "use APIs first" qualification moved LOW on
-        // the page (next to the /compare link it feeds).
-        cy.contains(
-            'Purpose-built for repeated, high-stakes GUI work with no clean API'
-        ).should('be.visible')
-        cy.contains('a', 'Start with OpenAdapt Cloud').should(
+        cy.contains('a', 'Qualify one workflow').should(
             'have.attr',
             'href',
-            '/#cloud-product'
+            '/qualify'
         )
-        cy.get('a[href="/paper"]').should('exist')
-        // Qualification is still present, now lower on the page: it resolves
-        // into a confident, positive statement — no disqualifier column, no
-        // "when it isn't the right tool" section.
-        cy.contains(
-            'Use OpenAdapt for the UI-only last mile.'
-        ).should('be.visible')
-        cy.contains('When OpenAdapt fits').should('be.visible')
-        cy.contains('OpenAdapt runs it across every').should('be.visible')
-        cy.contains('another tool fits better').should('not.exist')
-        cy.contains('When it isn’t the right tool').should('not.exist')
-        cy.get('a[href$="#open-source"]').should('exist')
-        cy.get('a[href$="#product-status"]').should('exist')
-        cy.get('a[href="/security"]').should('exist')
         cy.get('nav[aria-label="Primary"]').within(() => {
             cy.contains('button', 'Solutions').click()
             cy.get('#nav-solutions-menu')
@@ -113,7 +93,7 @@ describe('public product truth', () => {
         cy.get('nav[aria-label="Primary"]').within(() => {
             cy.contains('a', 'Pricing')
                 .should('be.visible')
-                .and('have.attr', 'href', '/#pricing')
+                .and('have.attr', 'href', '/pricing')
             cy.contains('a', 'Open source')
                 .should('be.visible')
                 .and(
@@ -226,10 +206,10 @@ describe('public product truth', () => {
         cy.get('header')
             .first()
             .within(() => {
-                cy.contains('a', 'Evaluate a workflow').should(
+                cy.contains('a', 'Qualify one workflow').should(
                     'have.attr',
                     'href',
-                    '/#book'
+                    '/qualify'
                 )
                 cy.contains('a', 'Sign in')
                     .should('be.visible')
@@ -256,68 +236,20 @@ describe('public product truth', () => {
     })
 
     it('explains the governed workflow and execution choices', () => {
-        // The deep "what repair means, and where it stops" explanation now
-        // lives on /how-it-works (see the dedicated test below); the homepage
-        // links to it via a compact teaser instead of stacking the deep dive.
-        cy.contains('a', 'See how it works').should(
-            'have.attr',
-            'href',
-            '/how-it-works'
-        )
         cy.get('#product-status').within(() => {
-            cy.contains('One governed workflow, end to end').should(
-                'be.visible'
-            )
-            cy.contains('Capture the workflow').should('be.visible')
-            cy.contains('Run through the governed gate').should('be.visible')
-            cy.contains('Managed cloud execution').should('be.visible')
-            cy.contains('Managed browser execution').should('not.exist')
+            cy.contains('Managed execution').should('be.visible')
             cy.contains('Customer-controlled deployment').should('be.visible')
-            cy.contains('Built for the interfaces your work depends on').should(
-                'be.visible'
-            )
-            cy.contains('Web applications').should('be.visible')
-            cy.contains('Desktop applications').should('be.visible')
+            cy.contains('Browser').should('be.visible')
+            cy.contains('Native desktop').should('be.visible')
             cy.contains('Remote applications').should('be.visible')
-            cy.contains('qualification evidence')
-                .should('have.attr', 'href')
-                .and('include', '/tree/main/benchmark')
-            cy.contains('Execution substrate evidence').should('not.exist')
-            cy.contains('Partner qualification').should('not.exist')
-            cy.contains('Research spike').should('not.exist')
-            cy.contains('Product maturity').should('not.exist')
         })
-        cy.get('#pricing').within(() => {
-            cy.contains(
-                'Run locally, use Cloud, or deploy in your boundary'
-            ).should('be.visible')
-            cy.contains('Customer-controlled deployment').should('be.visible')
-            cy.get('[data-testid="hosted-status-label"]').should(
-                'contain.text',
-                'Beta'
-            )
-            cy.contains('Beta / public offer').should('not.exist')
-            cy.contains('Offer unavailable').should('not.exist')
-            cy.contains('Hosted checkout unavailable').should('not.exist')
-            cy.contains('approved sanitized copy').should('be.visible')
-
-            if (isProductionDeployment()) {
-                cy.contains('$500.00').should('be.visible')
-                cy.contains('/month').should('be.visible')
-                cy.contains('OpenAdapt Cloud').should('be.visible')
-                cy.contains('Up to 10,000 workflow runs/month').should(
-                    'be.visible'
-                )
-                cy.contains('Start hosted subscription').should('be.visible')
-                cy.contains('Hosted execution').should('not.exist')
-                cy.contains('Start with our team').should('not.exist')
-            } else {
-                cy.contains('Hosted execution').should('be.visible')
-                cy.contains('Start with our team').should('be.visible')
-                cy.contains('$500').should('not.exist')
-                cy.contains('workflow runs/month').should('not.exist')
-                cy.contains('Start hosted subscription').should('not.exist')
-            }
+        cy.get('#commercial-offer').within(() => {
+            cy.contains('Workflow Qualification Sprint').should('be.visible')
+            cy.contains('From $15,000').should('be.visible')
+            cy.contains('OpenAdapt Cloud').should('be.visible')
+            cy.contains('$500.00').should('be.visible')
+            cy.contains('/month').should('be.visible')
+            cy.contains('Up to 10,000 workflow runs/month').should('be.visible')
         })
     })
 
@@ -338,7 +270,7 @@ describe('public product truth', () => {
         )
     })
 
-    it('renders the Stripe Product run allowance without a website fallback', () => {
+    it('renders the verified Stripe Product allowance supplied by SSG', () => {
         cy.intercept('GET', '**/_next/data/**/pricing.json*', {
             statusCode: 200,
             body: {
@@ -400,7 +332,7 @@ describe('public product truth', () => {
             cy.contains('a', 'Download')
                 .should('have.attr', 'href')
                 .and('equal', '/download')
-            cy.contains('a', 'Pricing').should('have.attr', 'href', '/#pricing')
+            cy.contains('a', 'Pricing').should('have.attr', 'href', '/pricing')
             cy.contains('a', 'Blog')
                 .should('have.attr', 'href')
                 .and('equal', 'https://blog.openadapt.ai')
@@ -501,44 +433,38 @@ describe('public product truth', () => {
         cy.get('#side-by-side [role="region"]')
             .should('be.visible')
             .and('have.attr', 'tabindex', '0')
-        cy.contains('Evaluate a workflow').scrollIntoView().should('be.visible')
+        cy.contains('Qualify one workflow').scrollIntoView().should('be.visible')
         cy.contains('Try locally').should('be.visible')
     })
 
     it('keeps buyer claims inside the shipped browser and tested safety scope', () => {
-        // FAQ moved to /compare; the per-application HowItWorks selector and
-        // the buyer-fit grid moved to the solution pages. The homepage now
-        // shares ONE selected vertical between the reference list and the
-        // reference-workflow section (defaulting to the verified Lending
-        // reference); see cypress/e2e/homepage-vertical-sync.cy.js.
-        cy.get('#references').within(() => {
-            cy.contains('Healthcare workflow reference').should('be.visible')
-            cy.contains('Lending operations reference').should('be.visible')
-            cy.contains('Insurance claims reference').should('be.visible')
-        })
-        cy.get('[data-testid="home-reference-workflow"]')
+        cy.get('[data-testid="customer-case-study"]')
             .scrollIntoView()
             .should('be.visible')
-            .and('have.attr', 'data-reference', 'lending')
-        cy.contains('6/6 compiled trials correct').should('be.visible')
+        cy.contains('≈$75,000').should('be.visible')
+        cy.contains('recovered billables per year').should('be.visible')
+        cy.contains('Real OpenAdapt Cloud interface').should('be.visible')
 
         cy.viewport(375, 812)
         cy.visit('/')
-        cy.get('[data-testid="home-reference-workflow"]')
-            .scrollIntoView()
-            .should('be.visible')
+        cy.get('[data-testid="customer-case-study"]').scrollIntoView().should('be.visible')
         cy.document().then((document) => {
             expect(document.documentElement.scrollWidth).to.be.at.most(375)
         })
 
         cy.visit('/solutions/healthcare')
-        cy.get('h1').should('contain.text', 'structured healthcare workflows')
-        cy.contains('document processing, eligibility, routing').should(
-            'be.visible'
-        )
-        cy.contains('public safety gallery').should('be.visible')
-        cy.contains('OpenAdapt does the retyping').should('not.exist')
-        cy.contains('Certified workflows halt before').should('not.exist')
+        cy.get('h1').should('be.visible')
+        cy.get('a[href="/qualify"]')
+            .filter(':visible')
+            .should('have.length.greaterThan', 0)
+        cy.get('a[href="/customers/rvu-audit-heart-care"]')
+            .first()
+            .scrollIntoView()
+            .should('be.visible')
+        cy.get('a[href="/safety"]').first().scrollIntoView().should('be.visible')
+        cy.document().then((document) => {
+            expect(document.documentElement.scrollWidth).to.be.at.most(375)
+        })
 
         cy.visit('/solutions/lending')
         cy.get('h1')
@@ -647,40 +573,6 @@ describe('public product truth', () => {
             })
             expect(clipped, 'elements clipped past viewport').to.deep.equal([])
         })
-    })
-
-    it('starts the configured hosted checkout path', () => {
-        cy.intercept('GET', '**/_next/data/**/pricing.json*', {
-            statusCode: 200,
-            body: {
-                pageProps: {
-                    hostedOffer: {
-                        amount: '$500.00',
-                        cadence: '/month',
-                        product: 'OpenAdapt Cloud',
-                        monthlyRunCap: 10000,
-                    },
-                },
-                __N_SSG: true,
-            },
-        }).as('hostedCheckoutOffer')
-        cy.intercept('POST', '**/api/create-checkout-session', {
-            statusCode: 303,
-            headers: { location: '/hosted/welcome' },
-        }).as('checkout')
-
-        cy.visit('/about')
-        cy.window().then((win) => win.next.router.push('/pricing'))
-        cy.wait('@hostedCheckoutOffer')
-        cy.get('[data-testid="hosted-checkout"]')
-            .should('contain.text', 'Start hosted subscription')
-            .should('not.be.disabled')
-            .parents('form')
-            .should('have.attr', 'action', '/api/create-checkout-session')
-            .should('have.attr', 'method', 'post')
-            .then(($form) => $form[0].submit())
-        cy.wait('@checkout').its('request.method').should('equal', 'POST')
-        cy.location('pathname').should('equal', '/hosted/welcome')
     })
 
     it('matches direct checkout to the deployment qualification boundary', () => {

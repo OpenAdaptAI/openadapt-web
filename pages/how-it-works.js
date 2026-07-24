@@ -82,7 +82,7 @@ export default function HowItWorksPage() {
                         produces and where the loop deliberately stops.
                     </p>
                     <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                        <Link className="btn-ink" href="/#book">
+                        <Link className="btn-ink" href="/qualify">
                             Evaluate a workflow
                         </Link>
                         <Link className="btn-ghost-ink" href="/research">

@@ -1319,7 +1319,7 @@ export default function SecurityPage() {
                         can&#39;t meet today.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
-                        <Link href="/#book" className="btn-ink">
+                        <Link href="/qualify" className="btn-ink">
                             Evaluate a workflow
                         </Link>
                         <Link href="/compare" className="btn-ghost-ink">

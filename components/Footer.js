@@ -6,7 +6,6 @@ import {
     faLinkedinIn,
     faDiscord,
 } from '@fortawesome/free-brands-svg-icons'
-import { useRouter } from 'next/router'
 
 import {
     OPENADAPT_REPOSITORY_URL,
@@ -178,11 +177,8 @@ export default function Footer({
     repositoryStats = OPENADAPT_STATS_SNAPSHOT,
     pollRepositoryStats = true,
 }) {
-    const router = useRouter()
     const currentYear = new Date().getFullYear()
-    const isHome = router.pathname === '/'
-    const bookHref = isHome ? '#book' : '/book'
-    const contactHref = isHome ? '#book' : '/contact'
+    const qualificationHref = '/qualify'
     const polledStats = useRepositoryStats(repositoryStats, {
         enabled: pollRepositoryStats,
     })
@@ -207,7 +203,7 @@ export default function Footer({
                             halts when it can’t verify the result.
                         </p>
                         <a
-                            href={bookHref}
+                            href={qualificationHref}
                             className={styles.brandCta}
                             onClick={() =>
                                 track(EVENTS.BOOK_PILOT_CLICK, {
@@ -215,7 +211,7 @@ export default function Footer({
                                 })
                             }
                         >
-                            Evaluate a workflow
+                            Qualify one workflow
                         </a>
                         <div
                             className={styles.repositoryProof}
@@ -304,7 +300,7 @@ export default function Footer({
                                     </FooterLink>
                                 </li>
                                 <li>
-                                    <FooterLink href="/#pricing">
+                                    <FooterLink href="/pricing">
                                         Pricing
                                     </FooterLink>
                                 </li>
@@ -370,8 +366,8 @@ export default function Footer({
                                     </FooterLink>
                                 </li>
                                 <li>
-                                    <FooterLink href={contactHref}>
-                                        Contact
+                                    <FooterLink href={qualificationHref}>
+                                        Qualify a workflow
                                     </FooterLink>
                                 </li>
                                 <li>

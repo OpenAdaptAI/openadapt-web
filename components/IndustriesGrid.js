@@ -12,7 +12,7 @@ export default function IndustriesGrid({
     const gridData = [
         {
             title: 'Automation teams & BPO operators',
-            href: '#book',
+            href: '/qualify',
             descriptions:
                 'High-volume repeated operations with structured inputs, established business logic, and a UI-only last-mile gap. Where an independent effect source of truth is available the write is verified end to end; where it is not, the run halts instead of guessing.',
             logo: '/images/noun-finance.svg',
@@ -23,7 +23,7 @@ export default function IndustriesGrid({
         },
         {
             title: 'RCM & vertical-software vendors',
-            href: '#book',
+            href: '/qualify',
             descriptions:
                 'Products with supported APIs for the core path and a bounded UI-only step at the edge, where volume justifies compiling it and a separate system of record, when present, makes the write verifiable end to end.',
             logo: '/images/noun-healthcare.svg',
@@ -34,7 +34,7 @@ export default function IndustriesGrid({
         },
         {
             title: 'Regulated enterprise operations',
-            href: '#book',
+            href: '/qualify',
             descriptions:
                 'Governed teams that already know the inputs and rules and repeat the task at material volume. Where the external effect can be verified independently of the GUI run OpenAdapt confirms it end to end; where it cannot, it halts for review.',
             logo: '/images/noun-law.svg',
@@ -120,7 +120,7 @@ export default function IndustriesGrid({
                         <div className="flex flex-row items-center justify-center mt-3 mb-2">
                             <Link
                                 className="btn-ink"
-                                href="#book"
+                                href="/qualify"
                                 onClick={() =>
                                     handleGetStartedButtonClick(grid.title)
                                 }

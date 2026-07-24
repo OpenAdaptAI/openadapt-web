@@ -92,7 +92,7 @@ export default function HostedWelcome() {
                     )}
                     <div className="mt-6">
                         <Link
-                            href="/#book"
+                            href="/qualify"
                             className={
                                 cloudAppUrl
                                     ? 'btn-ghost-ink w-full text-center'
@@ -109,7 +109,7 @@ export default function HostedWelcome() {
                         separately scoped customer-controlled deployment. Working
                         with regulated data?{' '}
                         <Link
-                            href="/#pricing-enterprise"
+                            href="/pricing#pricing-enterprise"
                             className="text-accent underline"
                         >
                             Enterprise
