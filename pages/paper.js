@@ -2,7 +2,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
-import { getOpenAdaptRepositoryStats } from '../lib/openAdaptRepositoryStats'
 
 // The typeset PDF is live at public/openadapt-paper.pdf. PAPER_SOURCE_URL is
 // the canonical location of the paper source (LaTeX + figures) for readers who
@@ -26,12 +25,7 @@ const webPageSchema = {
     inLanguage: 'en',
 }
 
-export async function getStaticProps() {
-    const githubStats = await getOpenAdaptRepositoryStats()
-    return { props: { githubStats }, revalidate: 300 }
-}
-
-export default function PaperPage({ githubStats }) {
+export default function PaperPage() {
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
@@ -103,7 +97,7 @@ export default function PaperPage({ githubStats }) {
                 </p>
             </section>
 
-            <Footer repositoryStats={githubStats} />
+            <Footer />
         </div>
     )
 }
