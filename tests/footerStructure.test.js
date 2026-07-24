@@ -34,7 +34,7 @@ test('product and solutions destinations are all reachable from the footer', () 
         '/compare',
         '/safety',
         '/download',
-        '/#pricing',
+        '/pricing',
         '/solutions/healthcare',
         '/solutions/lending',
         '/solutions/insurance',

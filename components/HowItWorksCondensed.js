@@ -6,21 +6,21 @@
 const steps = [
     {
         number: '1',
-        name: 'Record & compile',
+        name: 'Demonstrate and qualify',
         description:
-            'Demonstrate one bounded, repeated task. OpenAdapt compiles the trace into a reviewable, parameterized program. Not a prompt a model rereads each run.',
+            'Show one bounded task. Review its program, risks, identities, effects, fault cases, and supported environment before certifying it.',
     },
     {
         number: '2',
-        name: 'Replay deterministically',
+        name: 'Deploy in your boundary',
         description:
-            'Healthy runs execute the compiled steps locally with zero model calls. Repeat runs are fast and cost nothing per run.',
+            'Run approved browser workloads in managed execution or keep sensitive desktop, RDP, Citrix, private-network, and restricted-egress work customer-controlled.',
     },
     {
         number: '3',
-        name: 'Resolve, repair, or halt',
+        name: 'Execute, verify, and repair',
         description:
-            'When the interface drifts, deterministic evidence re-finds the target, an optional model proposes a governed repair, or verification halts and keeps a run report.',
+            'Healthy runs use no generative-model calls. OpenAdapt proves the declared effect, halts on uncertainty, and subjects every candidate repair to the workflow contract.',
     },
 ]
 
@@ -33,12 +33,11 @@ export default function HowItWorksCondensed() {
             <div className="mx-auto max-w-5xl">
                 <p className="eyebrow text-center">How it works</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    A demonstration becomes a reviewable program
+                    From demonstration to verified operation
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    Three steps, one governed loop. Healthy replay is
-                    deterministic; model spend is reserved for compilation or
-                    repair.
+                    One lifecycle connects qualification, execution, evidence,
+                    and governed change.
                 </p>
                 <ol className="mt-9 grid gap-4 md:grid-cols-3">
                     {steps.map((step) => (
