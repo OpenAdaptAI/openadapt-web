@@ -73,7 +73,7 @@ const summary = [
         area: 'Identity, access & tenancy',
         anchor: 'access',
         status: 'partial',
-        note: 'Org RBAC, row-level tenant isolation, and TOTP step-up protect privileged access; SSO / SAML / SCIM is not included.',
+        note: 'Org RBAC, row-level tenant isolation, and TOTP step-up protect platform administration; SSO / SAML / SCIM is not included.',
     },
     {
         area: 'Release integrity',
@@ -946,11 +946,9 @@ export default function SecurityPage() {
                         <p>
                             Authenticator-app two-factor authentication is
                             available to every account and enforced for
-                            privileged access. The platform-admin console
+                            platform administration. The platform-admin console
                             always requires both the server-side administrator
                             allowlist and a current two-factor session. The
-                            default policy also requires two-factor
-                            authentication for organization owners and admins.
                             When a signed-in session needs this additional
                             assurance, Cloud asks for one current 6-digit code
                             and returns the user to the protected page after it
