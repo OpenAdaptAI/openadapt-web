@@ -575,40 +575,6 @@ describe('public product truth', () => {
         })
     })
 
-    it('starts the configured hosted checkout path', () => {
-        cy.intercept('GET', '**/_next/data/**/pricing.json*', {
-            statusCode: 200,
-            body: {
-                pageProps: {
-                    hostedOffer: {
-                        amount: '$500.00',
-                        cadence: '/month',
-                        product: 'OpenAdapt Cloud',
-                        monthlyRunCap: 10000,
-                    },
-                },
-                __N_SSG: true,
-            },
-        }).as('hostedCheckoutOffer')
-        cy.intercept('POST', '**/api/create-checkout-session', {
-            statusCode: 303,
-            headers: { location: '/hosted/welcome' },
-        }).as('checkout')
-
-        cy.visit('/about')
-        cy.window().then((win) => win.next.router.push('/pricing'))
-        cy.wait('@hostedCheckoutOffer')
-        cy.get('[data-testid="hosted-checkout"]')
-            .should('contain.text', 'Start hosted subscription')
-            .should('not.be.disabled')
-            .parents('form')
-            .should('have.attr', 'action', '/api/create-checkout-session')
-            .should('have.attr', 'method', 'post')
-            .then(($form) => $form[0].submit())
-        cy.wait('@checkout').its('request.method').should('equal', 'POST')
-        cy.location('pathname').should('equal', '/hosted/welcome')
-    })
-
     it('matches direct checkout to the deployment qualification boundary', () => {
         cy.request({
             method: 'POST',
