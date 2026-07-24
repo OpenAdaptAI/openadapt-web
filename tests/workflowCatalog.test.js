@@ -81,26 +81,20 @@ test('every catalog entry carries the required honesty fields', () => {
     }
 })
 
-test('every substrate carries a canonical maturity tier reconciled to status.json', () => {
-    // Labels reconcile to public/status.json (the single source of truth):
-    // Beta = broadly exercised (browser); Early access = validated on specific
-    // named tasks (Windows / macOS / RDP); Exploratory = no validated
-    // real-environment integration yet (Citrix). "Supported" and the ambiguous
-    // "scoped" are never used as public labels here.
+test('every released substrate is available and reconciled to status.json', () => {
     const expected = {
-        browser: 'Beta',
-        windows: 'Early access',
-        macos: 'Early access',
-        rdp: 'Early access',
-        citrix: 'Exploratory',
+        browser: 'Available',
+        windows: 'Available',
+        macos: 'Available',
+        linux: 'Available',
+        rdp: 'Available',
+        citrix: 'Available',
     }
     // Field-by-field: SUBSTRATE_MATURITY comes from a vm sandbox, so its
     // prototype is not reference-equal to a plain object literal here.
     assert.deepEqual({ ...SUBSTRATE_MATURITY }, expected)
-    for (const label of Object.values(SUBSTRATE_MATURITY)) {
-        assert.doesNotMatch(label, /scoped|supported/i)
-    }
-    // The three catalog entries are all browser fixtures, so they carry Beta.
+    // The three catalog entries are all browser fixtures, so they carry the
+    // browser availability label. Their task-level evidence remains separate.
     for (const entry of CATALOG) {
         assert.equal(entry.substrate, 'browser', `${entry.id} substrate`)
         assert.equal(

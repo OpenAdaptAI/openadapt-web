@@ -1,41 +1,71 @@
 {
-    "$comment": "Canonical machine-readable status evidence for OpenAdapt. Served at https://openadapt.ai/status.json and consumed by status-aware website surfaces and tests for cross-repo reconciliation. The homepage presents product capabilities without rendering this maturity ledger directly. OpenAdapt is one governed product across every execution substrate; each substrate carries a maturity tier from the canonical ladder defined in `tiers`. The tiers describe how broadly a substrate has been exercised today, not whether it is first-class in the product.",
-    "generated_at": "2026-07-21",
+    "$comment": "Canonical machine-readable release, capability, evidence, and deployment status for OpenAdapt. Served at https://openadapt.ai/status.json and consumed by status-aware public surfaces and tests. OpenAdapt is one Beta product across browser, Windows, macOS, Linux, RDP, and Citrix/VDI. Capability availability is distinct from the deployment boundary and from the bounded evidence scope recorded for each substrate.",
+    "generated_at": "2026-07-24",
+    "product_lifecycle": "Beta",
     "versions": {
         "launcher": "1.7.1",
-        "flow": "1.19.0",
-        "desktop": "0.6.2"
+        "flow": "1.20.1",
+        "desktop": "0.9.0"
     },
     "tiers": {
-        "Beta": "Works and is broadly exercised. Available today through the managed hosted product for browser workflows.",
-        "Early access": "Works and is validated on specific named tasks, but not yet broadly exercised. Real UI Automation, accessibility, and RDP backends run under the governed loop.",
-        "Exploratory": "The governed integration path is defined; real-environment qualification has not completed.",
-        "Research": "Experimental and not yet part of the governed product."
+        "Available": "Implemented in the released compiler and governed runtime. Production use still qualifies the exact workflow, application, environment, identity contract, and effect oracle.",
+        "Beta": "Public Beta product or service with an explicit delivery and evidence boundary."
     },
     "substrates": [
         {
             "name": "Browser",
-            "public_label": "Beta",
+            "public_label": "Available",
             "internal_tier": "reference",
-            "evidence_note": "Record, compile, and replay browser workflows end to end. Healthy runs make no model calls, and identity, effect, and policy coverage are enforced per bundle before anything executes. This is the reference loop that backs the managed hosted product."
+            "delivery": "Local, managed OpenAdapt Cloud, or customer-controlled",
+            "evidence_note": "Record, compile, and replay browser workflows end to end. Healthy runs make no model calls, and identity, effect, and policy coverage are enforced per bundle before governed execution. This is the reference loop behind the managed browser runner."
         },
         {
-            "name": "Windows / macOS / RDP",
-            "public_label": "Early access",
-            "internal_tier": "scoped-acceptance",
-            "evidence_note": "Operate native Windows, macOS, and RDP applications under the same governed loop: structured UI Automation and accessibility evidence, effect verification against an independent oracle, and fail-closed halting when verification does not pass. Validated on specific named tasks and environments, with execution provided by self-hosted or customer-controlled runtimes."
+            "name": "Windows",
+            "public_label": "Available",
+            "internal_tier": "qualified-uia",
+            "delivery": "Local or customer-controlled",
+            "evidence_note": "The released Windows UIA backend records, compiles, and replays native applications. The accepted WinForms matrix completed 3/3 independently verified effects and refused 3/3 stale targets plus 3/3 ambiguous targets, with zero silent incorrect successes, over-halts, or model calls.",
+            "evidence_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/defafbae758a75c8e149d9693f2cffe1f2264b8c/benchmark/windows_uia/results.json"
+        },
+        {
+            "name": "macOS",
+            "public_label": "Available",
+            "internal_tier": "qualified-native-window",
+            "delivery": "Local or customer-controlled",
+            "evidence_note": "The released native macOS backend binds one exact application window and refuses ambiguity before input. Counted TextEdit evidence confirmed 3/3 exact-byte effects plus a two-window ambiguity refusal, with zero silent incorrect successes or over-halts.",
+            "evidence_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/ca1b522cad215875f7471782283f8f8bb8e6c998/benchmark/macos_native/textedit_counted_3plus1_b1b61a5_20260717.adjudication.json"
+        },
+        {
+            "name": "Linux",
+            "public_label": "Available",
+            "internal_tier": "qualified-atspi-x11",
+            "delivery": "Local or customer-controlled",
+            "evidence_note": "The released Linux backend uses exact AT-SPI application and window binding. Required current-main CI confirmed 3/3 exact-file effects, 3/3 ambiguity refusals, and 3/3 stale-target refusals, with zero silent incorrect successes, over-halts, operator interventions, or model calls.",
+            "evidence_url": "https://github.com/OpenAdaptAI/openadapt-flow/actions/runs/30059807758/job/89378981573"
+        },
+        {
+            "name": "RDP",
+            "public_label": "Available",
+            "internal_tier": "qualified-remote-transport-and-lifecycle",
+            "delivery": "Local or customer-controlled",
+            "evidence_note": "RDP has two accepted bounded results: 3/3 real Aardwolf-over-Windows transport/input effects, and a full record-to-compile-to-governed-replay lifecycle over a real FreeRDP round trip with 3/3 healthy effects and 3/3 drift safe-halts. Both report zero model calls, silent incorrect successes, and over-halts.",
+            "evidence_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/affedc5f1f0de533a0744deaa8e30a203c91c6b3/benchmark/rdp_ladder/results.json"
         },
         {
             "name": "Citrix / VDI",
-            "public_label": "Exploratory",
-            "internal_tier": "remote-window",
-            "evidence_note": "Bringing the governed loop to Citrix and VDI remote application delivery, carrying identity, effect, and policy checks and halt-on-uncertainty into a pixel-and-evidence safety floor. The adapter contract is defined; real-environment ICA/HDX qualification remains the evidence gate."
+            "public_label": "Available",
+            "internal_tier": "qualified-citrix-workspace-window-contract",
+            "delivery": "Local or customer-controlled",
+            "evidence_note": "The released dedicated --backend citrix path binds the exact Citrix Workspace window, gates readiness, carries target metadata into durable resume, and runs the same pixel identity, effect, policy, and halt contracts. The accepted no-DOM qualification confirmed 3/3 healthy effects and 3/3 drift safe-halts with zero model calls, silent writes, false completions, or over-halts.",
+            "qualification_boundary": "The accepted artifact explicitly records ica_hdx_accepted=false. It qualifies the shipped Citrix Workspace-window backend contract over a no-DOM canvas stand-in, not a counted real ICA/HDX batch; an exact ICA/HDX environment is qualified separately before consequential use.",
+            "evidence_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/f6faac5b900b78cbda5980de0e983a9f987285ac/benchmark/citrix_workspace/results.json"
         },
         {
             "name": "Hosted Cloud",
             "public_label": "Beta",
             "internal_tier": "managed-control-plane",
-            "evidence_note": "The managed control plane provides governed browser execution, run history, reporting, usage, and workflow updates, backed by live billing. Desktop, RDP, and Citrix connect through self-hosted or customer-controlled runtimes. Runtime data handling and customer-controlled boundaries are configured per deployment."
+            "delivery": "Managed browser runner and control plane",
+            "evidence_note": "OpenAdapt Cloud provides governed managed browser execution, run history, reporting, usage, and workflow updates. Windows, macOS, Linux, RDP, and Citrix/VDI execute through local, self-hosted, or customer-controlled runtimes under the same governance model; they are not silently moved into the shared managed browser boundary."
         }
     ]
 }

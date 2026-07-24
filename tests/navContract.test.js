@@ -58,7 +58,7 @@ test('top navigation consolidates solutions, product and developer destinations'
     assert.match(nav, /dropdown: SOLUTIONS_LINKS/)
 
     for (const [label, href] of [
-        ['How it runs', '/#product-status'],
+        ['Platforms & deployment', '/#product-status'],
         ['Safety', '/safety'],
         ['Compare', '/compare'],
         ['Templates', '/templates'],

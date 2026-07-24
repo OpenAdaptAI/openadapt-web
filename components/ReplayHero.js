@@ -155,7 +155,7 @@ export default function ReplayHero() {
                     <figcaption className={styles.frameCaption}>
                         A compiled workflow replaying against OpenEMR&rsquo;s live
                         public demo. The same governed loop runs across browser,
-                        Windows, macOS, RDP, and Citrix.
+                        Windows, macOS, Linux, RDP, and Citrix.
                     </figcaption>
                 </div>
 

@@ -6,7 +6,7 @@ import Link from 'next/link'
 // end; where one does not, it halts for a human or an AI instead of trusting
 // the screen. The oracle is an enhancement, never a gate on using the product.
 // We lead with fit, then affirm that when work fits that shape OpenAdapt runs
-// it across every interface (browser, Windows, macOS, RDP, Citrix) under one
+// it across every interface (browser, Windows, macOS, Linux, RDP, Citrix) under one
 // governed loop, with the full /compare breakdown one click away.
 
 const fits = [
@@ -54,8 +54,8 @@ export default function Qualification() {
                 <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-ink-3">
                     When work fits that shape, OpenAdapt runs it across every
                     interface it touches under one governed loop: browser,
-                    Windows, macOS, RDP, and Citrix. See how it compares with
-                    RPA, computer-use agents, and browser recorders on the{' '}
+                    Windows, macOS, Linux, RDP, and Citrix. See how it compares
+                    with RPA, computer-use agents, and browser recorders on the{' '}
                     <Link href="/compare" className="text-accent underline">
                         comparison page
                     </Link>

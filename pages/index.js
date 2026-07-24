@@ -59,9 +59,9 @@ const softwareSchema = {
     name: 'OpenAdapt',
     alternateName: 'OpenAdapt.AI',
     applicationCategory: 'DeveloperApplication',
-    operatingSystem: 'Windows, macOS, Linux (browser workflow path)',
+    operatingSystem: 'Windows, macOS, Linux',
     description:
-        'Open-source governed workflow compiler for repeated GUI work. Record a browser workflow, compile it into a deterministic local program, and use configured verification to resolve, repair, or halt under interface drift.',
+        'Open-source governed workflow compiler for repeated GUI work across browser, Windows, macOS, Linux, RDP, and Citrix. Record a workflow, compile it into a deterministic local program, and use configured verification to resolve, repair, or halt under interface drift.',
     url: 'https://openadapt.ai',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     author: {
