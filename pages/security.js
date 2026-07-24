@@ -948,11 +948,19 @@ export default function SecurityPage() {
                             available to every account and enforced for
                             platform administration. The platform-admin console
                             always requires both the server-side administrator
-                            allowlist and a current two-factor session. The
+                            allowlist and a current two-factor session.
                             When a signed-in session needs this additional
                             assurance, Cloud asks for one current 6-digit code
                             and returns the user to the protected page after it
                             is accepted.
+                        </p>
+                        <p>
+                            Enrollment also produces one-time recovery codes.
+                            If an authenticator is lost, a recovery code removes
+                            the inaccessible factors and returns the signed-in
+                            user to Security &amp; 2FA to enroll a replacement.
+                            Recovery never grants the protected session by
+                            itself.
                         </p>
                         <p>
                             The signed-in account menu keeps identity and
@@ -966,8 +974,8 @@ export default function SecurityPage() {
                             >
                                 account-security guide
                             </a>{' '}
-                            covers enrollment, step-up, and account or workspace
-                            switching.
+                            covers enrollment, step-up, recovery, and account or
+                            workspace switching.
                         </p>
                         <p>
                             What is <strong className="text-ink">not</strong>{' '}
