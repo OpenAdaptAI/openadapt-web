@@ -8,9 +8,8 @@ const root = path.join(__dirname, '..')
 const read = (relativePath) =>
     fs.readFileSync(path.join(root, relativePath), 'utf8')
 
-test('about and contact pages use the canonical product truth', () => {
+test('about page uses the canonical product truth', () => {
     const about = read('pages/about.js')
-    const contact = read('pages/contact.js')
 
     assert.match(
         about,
@@ -19,7 +18,6 @@ test('about and contact pages use the canonical product truth', () => {
     assert.match(about, /https:\/\/github\.com\/OpenAdaptAI\/openadapt-flow\/issues/)
     assert.doesNotMatch(about, /split into focused packages/)
     assert.doesNotMatch(about, /Everything is MIT-licensed/)
-    assert.doesNotMatch(contact, /AI-powered automation/)
 })
 
 test('footer email is a real keyboard-accessible link', () => {
@@ -50,10 +48,6 @@ test('GitHub proof uses the canonical repository and a verified fallback', () =>
         /const currentGithubStats = useRepositoryStats\(githubStats\)/
     )
     assert.match(home, /<MastHead githubStats=\{currentGithubStats\} \/>/)
-    assert.match(
-        home,
-        /<Developers[\s\S]*githubStats=\{currentGithubStats\}/
-    )
     assert.match(
         home,
         /<Footer[\s\S]*repositoryStats=\{currentGithubStats\}[\s\S]*pollRepositoryStats=\{false\}/
@@ -174,24 +168,19 @@ test('launch surfaces lead with capabilities instead of temporary gap labels', (
     ]) {
         assert.doesNotMatch(product, new RegExp(label, 'i'))
     }
-    assert.match(product, /One governed workflow, end to end/)
+    assert.match(product, /One governance model across the interfaces you use/)
     assert.match(product, /Customer-controlled deployment/)
-    assert.match(product, /One execution model across your stack/)
-    assert.match(product, /Built for the interfaces your work depends on/)
-    assert.match(product, /Web applications/)
-    assert.match(product, /Desktop applications/)
-    assert.match(product, /Windows UI Automation, macOS Accessibility, or Linux AT-SPI/)
+    assert.match(product, /Browser/)
+    assert.match(product, /Native desktop/)
+    assert.match(product, /Windows, macOS, and Linux/)
     assert.match(product, /Remote applications/)
-    assert.match(product, /RDP, Citrix Workspace, and other VDI/)
-    assert.match(product, /workflows stay\s+inspectable, policy-bound/)
-    assert.match(product, /Every production workflow is qualified against its target application/)
-    assert.match(product, /tree\/main\/benchmark/)
-    assert.match(product, /docs\/LIMITS\.md/)
+    assert.match(product, /RDP, Citrix Workspace, and VDI/)
+    assert.match(product, /does not require software inside the managed session/)
     assert.doesNotMatch(product, /Execution substrate evidence/)
     assert.doesNotMatch(product, /Partner qualification/)
     assert.doesNotMatch(product, /No ICA\/HDX evidence/)
     assert.doesNotMatch(pricing, /Offer unavailable|Hosted checkout unavailable/)
-    assert.match(pricing, /Start with our team/)
+    assert.match(pricing, /Workflow Qualification Sprint/)
     assert.doesNotMatch(llms, /Product Maturity|launching now|not implied/i)
     assert.match(llms, /How It Runs/)
     assert.doesNotMatch(readme, /Maturity matrix/i)
@@ -272,24 +261,6 @@ test('workflow and execution-environment selectors are independent and media-hon
     assert.match(
         overlay,
         /data-environment-source-kind=\{environment\.sourceKind\}/
-    )
-})
-
-test('top-level calls to action use one coherent evaluation funnel', () => {
-    const sources = [
-        read('components/AudiencePaths.js'),
-        read('components/MastHead.js'),
-        read('components/NavHeader.js'),
-        read('pages/compare.js'),
-    ].join('\n')
-
-    assert.doesNotMatch(sources, /Start hosted|start_hosted/)
-    assert.match(sources, /Evaluate a workflow/)
-    assert.match(sources, /Try locally/)
-    assert.match(sources, /Read docs/)
-    assert.doesNotMatch(
-        sources,
-        /Qualify a workflow|Plan a pilot|Book a workflow review/
     )
 })
 

@@ -7,6 +7,10 @@
 - [OpenAdapt Project](https://github.com/OpenAdaptAI/OpenAdapt): Flagship open-source project, stable install route, and unified `openadapt flow` CLI
 - [Compiler/Runtime Source](https://github.com/OpenAdaptAI/openadapt-flow): Engine source, contributor setup, operating boundaries, benchmarks, and known limits
 
+## Evaluate a Workflow
+- [Workflow Qualification](https://openadapt.ai/qualify): Submit one exact application, environment, workflow, volume, verification path, and deployment boundary for a paid qualification
+- [Pricing](https://openadapt.ai/pricing): Community, Workflow Qualification Sprint, supervised production pilot, production, OEM, and OpenAdapt Cloud
+
 ## Core Concepts
 - [How It Works](https://openadapt.ai/#how-it-works): Record, compile, replay, resolve or halt, then verify and report
 - [Compare Approaches](https://openadapt.ai/compare): When to choose OpenAdapt, traditional RPA, computer-use agents, browser recorders, or a direct API

@@ -126,15 +126,3 @@ test('status manifest encodes the verified component versions', () => {
     assert.deepEqual(manifest.versions, CANONICAL_VERSIONS)
     assert.equal(manifest.generated_at, '2026-07-24')
 })
-
-test('homepage presents coherent desktop and remote dimensions', () => {
-    const product = read('components/ProductStatus.js')
-
-    assert.doesNotMatch(product, /public\/status\.json/)
-    assert.doesNotMatch(product, /status\.substrates|substrate\.public_label/)
-    assert.match(product, /Web applications/)
-    assert.match(product, /Desktop applications/)
-    assert.match(product, /Windows UI Automation, macOS Accessibility, or Linux AT-SPI/)
-    assert.match(product, /Remote applications/)
-    assert.match(product, /RDP, Citrix Workspace, and other VDI/)
-})

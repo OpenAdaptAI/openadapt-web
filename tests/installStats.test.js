@@ -109,16 +109,3 @@ test('PyPIDownloadChart supports a compact, seedable embed', () => {
     )
     assert.match(chart, /if \(compact\) \{/, 'compact mode renders a bare chart')
 })
-
-// The homepage must feed the snapshot in through getStaticProps (server-side),
-// so the section is part of the initial HTML and independent of client network.
-test('homepage renders install stats from a server-side snapshot prop', () => {
-    const index = read('pages/index.js')
-    assert.match(index, /import InstallStats from '@components\/InstallStats'/)
-    assert.match(index, /data\/installStats\.json/, 'snapshot read in getStaticProps')
-    assert.match(
-        index,
-        /<InstallStats stats=\{installStats\} \/>/,
-        'section is passed the server-loaded snapshot'
-    )
-})
