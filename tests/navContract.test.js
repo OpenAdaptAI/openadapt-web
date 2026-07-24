@@ -72,7 +72,7 @@ test('top navigation consolidates solutions, product and developer destinations'
     assert.match(nav, /dropdown: PRODUCT_LINKS/)
 
     // "Launch" was renamed to the clearer, conventional "Pricing".
-    assert.match(nav, /\{ label: 'Pricing', href: '\/#pricing' \}/)
+    assert.match(nav, /\{ label: 'Pricing', href: '\/pricing' \}/)
     assert.doesNotMatch(nav, /label: 'Launch'/)
 
     // Blog is consolidated into the Developers dropdown rather than sitting
@@ -95,7 +95,7 @@ test('top navigation consolidates solutions, product and developer destinations'
     // "Sign in" affordance distinct from the primary evaluation CTA.
     assert.match(nav, /const CLOUD_APP_URL = 'https:\/\/app\.openadapt\.ai'/)
     assert.match(nav, /className=\{styles\.signIn\}[\s\S]*?Sign in/)
-    assert.match(nav, /className=\{styles\.cta\}[\s\S]*?Evaluate a workflow/)
+    assert.match(nav, /className=\{styles\.cta\}[\s\S]*?href="\/qualify"|href="\/qualify"[\s\S]*?className=\{styles\.cta\}/)
 
     assert.doesNotMatch(nav, /'\/about'/)
     assert.match(footer, /href="\/about"/)

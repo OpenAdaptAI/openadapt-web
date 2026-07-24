@@ -60,7 +60,7 @@ const NAV_LINKS = [
         menuId: 'nav-product-menu',
         align: 'left',
     },
-    { label: 'Pricing', href: '/#pricing' },
+    { label: 'Pricing', href: '/pricing' },
     {
         label: 'Developers',
         dropdown: DEVELOPER_MENU_LINKS,
@@ -352,16 +352,16 @@ export default function NavHeader() {
                         Sign in
                     </a>
                     <Link
-                        href="/#book"
+                        href="/qualify"
                         className={styles.cta}
                         onClick={() =>
                             track(EVENTS.HERO_CTA_CLICK, {
                                 location: 'nav',
-                                cta: 'evaluate_workflow',
+                                cta: 'qualify_one_workflow',
                             })
                         }
                     >
-                        Evaluate a workflow
+                        Qualify one workflow
                     </Link>
                 </div>
                 <button

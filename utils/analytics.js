@@ -38,6 +38,9 @@ export const EVENTS = {
     COMPARE_CTA_CLICK: 'compare_cta_click',
     WORKFLOW_CARD_CLICK: 'workflow_card_click',
     PRICING_CTA_CLICK: 'pricing_cta_click',
+    QUALIFICATION_FORM_START: 'qualification_form_start',
+    QUALIFICATION_FORM_SUBMIT: 'qualification_form_submit',
+    QUALIFIED_WORKFLOW: 'qualified_workflow',
 }
 
 const POSTHOG_KEY =

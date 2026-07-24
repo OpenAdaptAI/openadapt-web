@@ -10,10 +10,18 @@ import Link from 'next/link'
 // governed loop, with the full /compare breakdown one click away.
 
 const fits = [
-    'The work repeats and the business intent stays stable.',
-    'A wrong action matters, so a run has to be verified or halted.',
-    "There's no practical API for the last mile, so it's UI-only.",
-    'Optional: a system of record (SQL, REST, FHIR, or a file) can confirm the write out of band from the screen. With one, OpenAdapt verifies the effect end to end; without one, it halts instead of guessing.',
+    'Inputs are mostly structured and the business intent stays stable.',
+    'The target application has no practical write API for the last mile.',
+    'A wrong action has operational, financial, or compliance cost.',
+    'The resulting state can be checked independently or by reacquiring the persisted record.',
+    'The workflow repeats often enough to justify qualification.',
+]
+
+const doesNotFit = [
+    'A reliable supported API already completes the work.',
+    'The task depends on open-ended judgment or changes constantly.',
+    'No meaningful success condition can be defined.',
+    'The task is low-volume, low-consequence, and ordinary scripting already works.',
 ]
 
 export default function Qualification() {
@@ -25,37 +33,43 @@ export default function Qualification() {
             <div className="mx-auto max-w-5xl">
                 <p className="eyebrow text-center">The right fit</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Use OpenAdapt for the UI-only last mile.
+                    Built for consequential UI-only work
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    OpenAdapt is deliberately narrow: repeated, high-stakes GUI
-                    work with no practical API. When the result can be checked
-                    against a system of record, OpenAdapt verifies it end to
-                    end; otherwise it halts instead of guessing.
+                    Use the simplest reliable tool. OpenAdapt fits when the
+                    interface is unavoidable and the outcome must be proved.
                 </p>
-                <article className="mx-auto mt-8 max-w-2xl rounded-2xl border border-hairline bg-ground p-6 md:p-7">
-                    <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
-                        When OpenAdapt fits
-                    </h3>
-                    <ul className="mt-4 flex flex-col gap-3 text-sm leading-relaxed text-ink-2">
-                        {fits.map((item) => (
-                            <li key={item} className="flex gap-2.5">
-                                <span
-                                    aria-hidden="true"
-                                    className="mt-[2px] flex-shrink-0 font-mono text-accent"
-                                >
-                                    ✓
-                                </span>
-                                <span>{item}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </article>
+                <div className="mx-auto mt-8 grid max-w-4xl gap-5 md:grid-cols-2">
+                    <article className="rounded-2xl border border-hairline bg-ground p-6 md:p-7">
+                        <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
+                            Use OpenAdapt when
+                        </h3>
+                        <ul className="mt-4 flex flex-col gap-3 text-sm leading-relaxed text-ink-2">
+                            {fits.map((item) => (
+                                <li key={item} className="flex gap-2.5">
+                                    <span aria-hidden="true" className="mt-[2px] flex-shrink-0 font-mono text-accent">✓</span>
+                                    <span>{item}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </article>
+                    <article className="rounded-2xl border border-hairline bg-ground p-6 md:p-7">
+                        <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
+                            Do not use OpenAdapt when
+                        </h3>
+                        <ul className="mt-4 flex flex-col gap-3 text-sm leading-relaxed text-ink-2">
+                            {doesNotFit.map((item) => (
+                                <li key={item} className="flex gap-2.5">
+                                    <span aria-hidden="true" className="mt-[2px] flex-shrink-0 font-mono text-ink-3">—</span>
+                                    <span>{item}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </article>
+                </div>
                 <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-ink-3">
-                    When work fits that shape, OpenAdapt runs it across every
-                    interface it touches under one governed loop: browser,
-                    Windows, macOS, Linux, RDP, and Citrix. See how it compares
-                    with RPA, computer-use agents, and browser recorders on the{' '}
+                    See the complete decision guide for APIs, browser automation,
+                    RPA, computer-use agents, scripts, and OpenAdapt on the{' '}
                     <Link href="/compare" className="text-accent underline">
                         comparison page
                     </Link>

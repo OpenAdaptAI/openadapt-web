@@ -7,49 +7,6 @@ const root = path.join(__dirname, '..')
 const read = (relativePath) =>
     fs.readFileSync(path.join(root, relativePath), 'utf8')
 
-// The homepage reference selector is SHARED: the process/reference-workflow
-// section and the "More reference workflows" list read and write ONE lifted
-// vertical, so selecting a vertical in one updates the other. These tests lock
-// that single-source-of-truth wiring at the source level; the end-to-end
-// click-through sync is asserted in cypress/e2e/homepage-vertical-sync.cy.js.
-
-test('homepage lifts one shared vertical selection to the page and syncs the URL', () => {
-    const home = read('pages/index.js')
-
-    // Exactly one piece of vertical state lives on the shared parent.
-    assert.match(home, /const \[vertical, setVertical\] = useState\(DEFAULT_VERTICAL\)/)
-    assert.match(home, /const selectVertical = \(key\) =>/)
-    assert.match(home, /VERTICAL_KEYS\.includes/)
-
-    // The choice is reflected into ?ref= (shareable + deep-linkable) without a
-    // scroll jump, and read back on mount so the two sections stay in sync.
-    assert.match(home, /router\.query\.ref/)
-    assert.match(home, /router\.replace\(/)
-    assert.match(home, /shallow: true, scroll: false/)
-})
-
-test('both homepage reference sections read and write the same selection', () => {
-    const home = read('pages/index.js')
-
-    // The process/reference-workflow section is driven by the lifted state.
-    assert.match(
-        home,
-        /<HomeReferenceWorkflow\s+vertical=\{vertical\}\s+onSelectVertical=\{selectVertical\}/
-    )
-
-    // The reference list buttons write the SAME selection and reflect it.
-    assert.match(home, /onClick=\{[^}]*selectVertical\(reference\.key\)/s)
-    assert.match(home, /aria-pressed=\{active\}/)
-    assert.match(home, /const active = reference\.key === vertical/)
-
-    // The homepage no longer hard-codes a single-vertical demo.
-    assert.doesNotMatch(home, /LendingWorkflowDemo/)
-
-    // Required reference links remain present on the homepage.
-    assert.match(home, /Insurance claims reference/)
-    assert.match(home, /\/solutions\/insurance/)
-})
-
 test('the process section derives its vertical from the prop, not its own state', () => {
     const component = read('components/HomeReferenceWorkflow.js')
 

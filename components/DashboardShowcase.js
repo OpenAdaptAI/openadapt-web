@@ -370,7 +370,7 @@ export default function DashboardShowcase() {
                     >
                         Open the Cloud app
                     </a>
-                    <a className="btn-ghost-ink" href="#pricing">
+                    <a className="btn-ghost-ink" href="/pricing">
                         See launch plans
                     </a>
                 </div>

@@ -85,7 +85,7 @@ function sendError(req, res, status, payload) {
 
     res.setHeader('content-type', 'text/html; charset=utf-8')
     return res.status(status).send(
-        `<!doctype html><title>Complete your OpenAdapt setup</title><p>${payload.message}</p><p><a href="/#pricing">Return to launch options</a></p>`
+        `<!doctype html><title>Complete your OpenAdapt setup</title><p>${payload.message}</p><p><a href="/pricing#cloud-preview">Return to launch options</a></p>`
     )
 }
 
@@ -143,7 +143,7 @@ export default async function handler(req, res) {
             allow_promotion_codes: true,
             billing_address_collection: 'auto',
             success_url: getSuccessUrl(cloudAppUrl),
-            cancel_url: `${baseUrl}/#pricing`,
+            cancel_url: `${baseUrl}/pricing#cloud-preview`,
             metadata: {
                 plan: 'hosted',
                 onboarding: 'self_serve',

@@ -47,71 +47,51 @@ export default function Home({ githubStats }) {
                                 )}
                             </div>
                             <h1 className="font-display text-2xl md:text-3xl mt-0 mb-4 font-semibold tracking-tight text-ink">
-                                Compile repeated GUI work. Verify the result.
-                                Halt when you can&rsquo;t.
+                                Automate the UI-only work your APIs can&rsquo;t reach.
                             </h1>
                             <p className="mt-0 mb-4 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                Demonstrate a repeated task once. OpenAdapt
-                                compiles it into a local program that replays at
-                                $0 per healthy run across browser, Windows,
-                                macOS, Linux, RDP, and Citrix. When the screen
-                                changes, it re-checks its evidence, repairs with
-                                AI when it can, and halts for a person instead
-                                of guessing.{' '}
-                                <Link href="#product-status">
-                                    See how it runs across every interface.
-                                </Link>
+                                OpenAdapt compiles demonstrations into governed
+                                workflows across browser, desktop, RDP, and
+                                Citrix. It verifies consequential results and
+                                halts when it cannot prove the intended outcome.
                             </p>
                             <p className={styles.fitLine}>
-                                Purpose-built for repeated, high-stakes GUI work
-                                with no clean API, where a wrong action is costly
-                                and the result should be verified, not assumed.
+                                Verified business effects · fail-closed execution ·
+                                customer-controlled sensitive data
                             </p>
                             <div id="register">
                                 <div className="flex flex-wrap items-center justify-center gap-3 mt-0 mb-4">
                                     <Link
                                         className={styles.heroCloud}
-                                        href="#cloud-product"
+                                        href="/qualify"
                                         onClick={() =>
                                             track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'start_cloud',
+                                                cta: 'qualify_one_workflow',
                                             })
                                         }
                                     >
-                                        Start with OpenAdapt Cloud
+                                        Qualify one workflow
                                     </Link>
                                     <Link
                                         className="btn-ghost-ink"
-                                        href="#book"
+                                        href="#verified-execution"
                                         onClick={() =>
                                             track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'qualify_workflow',
+                                                cta: 'see_verified_execution',
                                             })
                                         }
                                     >
-                                        Evaluate a workflow
-                                    </Link>
-                                    <Link
-                                        className="btn-ghost-ink"
-                                        href="#open-source"
-                                        onClick={() =>
-                                            track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'run_browser_quickstart',
-                                            })
-                                        }
-                                    >
-                                        Try locally
+                                        See verified execution
                                     </Link>
                                 </div>
-                                <p className="mb-2 text-sm text-ink-3">
-                                    Hosted runs in minutes · or run it entirely on
-                                    your own machine · zero per-run model cost ·
-                                    deterministic replay you can audit
-                                </p>
                                 <p className="mb-8 text-sm text-ink-3">
-                                    <Link href="/paper">
-                                        Read the technical paper
-                                    </Link>
+                                    <a
+                                        href="https://docs.openadapt.ai/get-started/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Run the open-source demo
+                                    </a>
                                 </p>
                             </div>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">

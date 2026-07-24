@@ -43,7 +43,7 @@ export default function InsurancePage() {
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
-                        href="/#book"
+                        href="/qualify"
                         className="btn-ink"
                     >
                         Evaluate a workflow
@@ -105,7 +105,7 @@ export default function InsurancePage() {
                         verification, shadow run, and supervised rollout.
                     </p>
                     <Link
-                        href="/#book"
+                        href="/qualify"
                         className="btn-ink mt-5 inline-block"
                     >
                         Evaluate a workflow

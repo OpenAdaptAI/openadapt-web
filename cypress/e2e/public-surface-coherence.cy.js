@@ -1,5 +1,5 @@
 describe('public surface coherence', () => {
-    it('keeps the flagship project, evaluation funnel, and local quickstart distinct', () => {
+    it('routes buyers and developers to the intended entry points', () => {
         cy.viewport(1280, 1000)
         // Keep this homepage visit self-contained. Without an immediate
         // response, its asynchronous stats request can outlive the test and
@@ -28,38 +28,13 @@ describe('public surface coherence', () => {
             'contain.text',
             'stars on OpenAdapt'
         )
-        cy.contains('a', 'Start with OpenAdapt Cloud').should(
-            'have.attr',
-            'href',
-            '/#cloud-product'
-        )
-        cy.get('a.btn-ghost-ink')
-            .contains('Evaluate a workflow')
-            .should('have.attr', 'href', '/#book')
-        cy.get('a.btn-ghost-ink')
-            .contains('Try locally')
-            .should('have.attr', 'href', '/#open-source')
-
-        cy.screenshot('public-surface-hero-desktop', {
-            capture: 'viewport',
-        })
-
-        cy.get('[data-testid="local-quickstart"]')
-            .scrollIntoView()
+        cy.contains('a', 'Qualify one workflow')
             .should('be.visible')
-            .within(() => {
-                cy.contains('pip install openadapt').should('be.visible')
-                cy.contains('openadapt flow demo-record --out rec').should(
-                    'be.visible'
-                )
-                cy.contains('a', 'Read docs')
-                    .should('have.attr', 'href')
-                    .and('include', 'docs.openadapt.ai')
-            })
-
-        cy.get('[data-testid="local-quickstart"]').screenshot(
-            'public-surface-local-quickstart-desktop'
-        )
+            .and('have.attr', 'href', '/qualify')
+        cy.contains('a', 'Run the open-source demo')
+            .should('be.visible')
+            .and('have.attr', 'href')
+            .and('include', 'docs.openadapt.ai')
     })
 
     it('updates homepage hero and footer from one repository-stats response', () => {

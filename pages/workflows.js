@@ -200,7 +200,7 @@ export default function WorkflowsPage() {
                     record is exactly the premature step OpenAdapt is built to
                     refuse. To qualify one of these — or your own — for a real
                     deployment,{' '}
-                    <Link href="/#book">evaluate a workflow with us</Link>.
+                    <Link href="/qualify">evaluate a workflow with us</Link>.
                 </p>
 
                 {/* Execution substrates — one governed loop, every surface */}
@@ -273,7 +273,7 @@ export default function WorkflowsPage() {
                         application, under your policy and identity contract.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
-                        <Link href="/#book" className="btn-ink">
+                        <Link href="/qualify" className="btn-ink">
                             Evaluate a workflow
                         </Link>
                         <a
