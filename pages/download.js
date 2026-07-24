@@ -476,7 +476,7 @@ export default function DownloadPage({ release, fetchFailed }) {
                         you most want to automate to a 30-minute call.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
-                        <Link href="/#open-source" className="btn-ink">
+                        <Link href="https://docs.openadapt.ai/get-started/" className="btn-ink">
                             Try locally
                         </Link>
                         <a

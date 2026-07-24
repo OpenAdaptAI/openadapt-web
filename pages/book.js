@@ -41,7 +41,7 @@ export default function BookPage() {
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                     <Link
-                        href="/contact"
+                        href="/qualify"
                         className="btn-ghost-ink"
                     >
                         Need a longer intake form first?

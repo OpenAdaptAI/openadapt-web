@@ -164,7 +164,7 @@ export default function InstallSection() {
                         the openadapt-flow engine
                     </a>
                     . Evaluating a regulated workflow?{' '}
-                    <a href="#book" style={{ textDecoration: 'underline' }}>
+                    <a href="/qualify" style={{ textDecoration: 'underline' }}>
                         Evaluate a workflow
                     </a>
                     .

@@ -164,7 +164,7 @@ export default function RvuAuditHeartCareCaseStudy() {
                                 application, and the business result that proves
                                 it worked.
                             </p>
-                            <Link href="/#book" className="btn-ink mt-6 inline-block">
+                            <Link href="/qualify" className="btn-ink mt-6 inline-block">
                                 Qualify one workflow
                             </Link>
                         </div>

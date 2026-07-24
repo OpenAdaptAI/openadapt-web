@@ -270,7 +270,7 @@ describe('public product truth', () => {
         )
     })
 
-    it('renders the Stripe Product run allowance without a website fallback', () => {
+    it('renders the verified Stripe Product allowance supplied by SSG', () => {
         cy.intercept('GET', '**/_next/data/**/pricing.json*', {
             statusCode: 200,
             body: {
@@ -453,13 +453,18 @@ describe('public product truth', () => {
         })
 
         cy.visit('/solutions/healthcare')
-        cy.get('h1').should('contain.text', 'structured healthcare workflows')
-        cy.contains('document processing, eligibility, routing').should(
-            'be.visible'
-        )
-        cy.contains('public safety gallery').should('be.visible')
-        cy.contains('OpenAdapt does the retyping').should('not.exist')
-        cy.contains('Certified workflows halt before').should('not.exist')
+        cy.get('h1').should('be.visible')
+        cy.get('a[href="/qualify"]')
+            .filter(':visible')
+            .should('have.length.greaterThan', 0)
+        cy.get('a[href="/customers/rvu-audit-heart-care"]')
+            .first()
+            .scrollIntoView()
+            .should('be.visible')
+        cy.get('a[href="/safety"]').first().scrollIntoView().should('be.visible')
+        cy.document().then((document) => {
+            expect(document.documentElement.scrollWidth).to.be.at.most(375)
+        })
 
         cy.visit('/solutions/lending')
         cy.get('h1')

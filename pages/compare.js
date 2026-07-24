@@ -424,10 +424,10 @@ export default function ComparePage() {
                         incorrect-success rate on work your team already repeats.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
-                        <Link href="/#book" className="btn-ink">
+                        <Link href="/qualify" className="btn-ink">
                             Evaluate a workflow
                         </Link>
-                        <Link href="/#open-source" className="btn-ghost-ink">
+                        <Link href="https://docs.openadapt.ai/get-started/" className="btn-ghost-ink">
                             Try locally
                         </Link>
                     </div>

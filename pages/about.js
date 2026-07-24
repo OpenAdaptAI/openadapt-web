@@ -175,7 +175,7 @@ export default function AboutPage() {
                         production deployment.
                     </p>
                     <Link
-                        href="/#book"
+                        href="/qualify"
                         className="btn-ink mt-5 inline-block"
                     >
                         Evaluate a workflow

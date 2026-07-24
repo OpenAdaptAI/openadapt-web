@@ -47,6 +47,22 @@ test('qualification scoring preserves the three routing outcomes', async () => {
                 budget: 'none',
             },
         },
+        {
+            expected: 'community',
+            form: {
+                monthlyVolume: '5000_plus',
+                manualTime: 'over_60',
+                stability: 'stable_year',
+                inputStructure: 'structured',
+                errorConsequence: 'regulated',
+                writeApi: 'unavailable',
+                verifier: 'none',
+                testEnvironment: 'ready',
+                buyerAuthority: 'economic_buyer',
+                budget: 'over_40000',
+                reusePotential: 'multiple_customers',
+            },
+        },
     ]
 
     for (const { expected, form } of cases) {

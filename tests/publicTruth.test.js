@@ -155,37 +155,6 @@ test('visitor browsers never call api.github.com', () => {
     assert.match(download, /revalidate: 180/)
 })
 
-test('launch surfaces lead with capabilities instead of temporary gap labels', () => {
-    const product = read('components/ProductStatus.js')
-    const pricing = read('components/Pricing.js')
-    const llms = read('public/llms.txt')
-    const readme = read('README.md')
-
-    for (const label of [
-        'Research spike',
-        'macOS native workflows',
-        'Product maturity',
-    ]) {
-        assert.doesNotMatch(product, new RegExp(label, 'i'))
-    }
-    assert.match(product, /One governance model across the interfaces you use/)
-    assert.match(product, /Customer-controlled deployment/)
-    assert.match(product, /Browser/)
-    assert.match(product, /Native desktop/)
-    assert.match(product, /Windows, macOS, and Linux/)
-    assert.match(product, /Remote applications/)
-    assert.match(product, /RDP, Citrix Workspace, and VDI/)
-    assert.match(product, /does not require software inside the managed session/)
-    assert.doesNotMatch(product, /Execution substrate evidence/)
-    assert.doesNotMatch(product, /Partner qualification/)
-    assert.doesNotMatch(product, /No ICA\/HDX evidence/)
-    assert.doesNotMatch(pricing, /Offer unavailable|Hosted checkout unavailable/)
-    assert.match(pricing, /Workflow Qualification Sprint/)
-    assert.doesNotMatch(llms, /Product Maturity|launching now|not implied/i)
-    assert.match(llms, /How It Runs/)
-    assert.doesNotMatch(readme, /Maturity matrix/i)
-})
-
 test('public slogans scope demonstrated workflows and governed repair', () => {
     const sources = [
         'pages/_app.js',

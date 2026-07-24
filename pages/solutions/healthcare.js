@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
+import CustomerCaseStudy from '@components/CustomerCaseStudy'
 import Footer from '@components/Footer'
 import HowItWorks from '@components/HowItWorks'
 
@@ -24,7 +25,7 @@ export default function HealthcarePage() {
                     Healthcare execution infrastructure
                 </p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Finish structured healthcare workflows inside legacy systems.
+                    Automate the last mile inside legacy healthcare systems.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     OpenAdapt fits RCM vendors, healthcare BPOs, automation teams,
@@ -41,12 +42,23 @@ export default function HealthcarePage() {
                     write and verify its effect against an independent source of
                     truth.
                 </p>
+                <div className="mt-6 max-w-3xl rounded-2xl border border-hairline bg-panel p-5">
+                    <p className="eyebrow">Citrix-delivered applications</p>
+                    <p className="mt-2 text-sm leading-relaxed text-ink-2 md:text-base">
+                        OpenAdapt runs beside Citrix Workspace on a
+                        customer-controlled machine. It observes the remote
+                        application, checks the patient or record and workflow
+                        state, then clicks and types through the same interface
+                        as an operator. Nothing needs to be installed inside the
+                        remote Citrix session.
+                    </p>
+                </div>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
-                        href="/#book"
+                        href="/qualify"
                         className="btn-ink"
                     >
-                        Evaluate a workflow
+                        Qualify one workflow
                     </Link>
                     <Link
                         href="/"
@@ -57,25 +69,25 @@ export default function HealthcarePage() {
                 </div>
             </div>
 
+            <CustomerCaseStudy />
+
             <HowItWorks />
 
             <div className="mx-auto max-w-4xl px-4 py-12">
                 <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
                     <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-                        Choose the right execution boundary
+                        Keep sensitive execution inside your boundary
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        Original recordings stay local. If a managed or
-                        cross-boundary workflow is enabled, only a sanitized
-                        derivative that passes destination policy may upload;
-                        policy can require a local reviewer to approve its
-                        exact hash first. Live observations can contain PHI
-                        again, so they stay inside the declared managed, BYOC,
-                        or on-prem trusted runtime boundary. Approved public-web
-                        workflows use the managed path; workflows involving PHI,
-                        private systems, or desktop and remote substrates run
-                        inside a scoped customer-controlled deployment with the
-                        required written terms.
+                        Original recordings stay local. Managed execution only
+                        accepts an approved sanitized copy that passes the
+                        destination policy. Live observations can contain PHI
+                        again, so workflows involving PHI, private systems,
+                        desktop applications, RDP, or Citrix run on a
+                        customer-controlled machine. For RDP and Citrix, that
+                        runner operates the existing remote client from outside
+                        the session rather than requiring access to the remote
+                        server.
                     </p>
                 </div>
 
@@ -140,10 +152,10 @@ export default function HealthcarePage() {
                         supervised production rollout.
                     </p>
                     <Link
-                        href="/#book"
+                        href="/qualify"
                         className="btn-ink mt-5 inline-block"
                     >
-                        Evaluate a workflow
+                        Qualify one workflow
                     </Link>
                 </div>
             </div>
