@@ -27,7 +27,7 @@ export async function getStaticProps() {
     // client IP means shared IPs got 403s and a broken download page).
     const { getDesktopRelease } = await import('../lib/githubApi')
     const { release, fetchFailed } = await getDesktopRelease()
-    return { props: { release, fetchFailed }, revalidate: 60 }
+    return { props: { release, fetchFailed }, revalidate: 180 }
 }
 
 export default function DownloadPage({ release, fetchFailed }) {
