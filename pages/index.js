@@ -16,7 +16,9 @@ import Pricing from '@components/Pricing'
 import ProductStatus from '@components/ProductStatus'
 import Qualification from '@components/Qualification'
 import Reveal from '@components/Reveal'
+import useRepositoryStats from 'hooks/useRepositoryStats'
 import { DEFAULT_VERTICAL, VERTICAL_KEYS } from '../data/referenceWorkflows'
+import { OPENADAPT_STATS_SNAPSHOT } from '../data/repositoryStats'
 
 const organizationSchema = {
     '@context': 'https://schema.org',
@@ -123,18 +125,17 @@ const referenceLinks = [
 ]
 
 export async function getStaticProps() {
-    // Seed the initial HTML with the shared cached/verified repository stats.
-    // The footer may refresh through our same-origin endpoint after hydration.
+    // Seed initial HTML with the verified snapshot. One shared same-origin
+    // endpoint refreshes Footer counts after hydration; keeping GitHub stats
+    // out of this five-minute ISR avoids duplicate unauthenticated API calls.
     const { getOpenIssuesByLabel } = await import('../lib/githubApi')
-    const { getOpenAdaptRepositoryStats } = await import(
-        '../lib/openAdaptRepositoryStats'
+    const githubStats = OPENADAPT_STATS_SNAPSHOT
+    // Known engine breakage surfaced server-side so visitor browsers never
+    // call api.github.com (60 req/hr per IP → 403s on shared IPs).
+    const buildWarnings = await getOpenIssuesByLabel(
+        'OpenAdaptAI/openadapt-flow',
+        'main-broken'
     )
-    const [githubStats, buildWarnings] = await Promise.all([
-        getOpenAdaptRepositoryStats(),
-        // Known engine breakage surfaced server-side so visitor browsers
-        // never call api.github.com (60 req/hr per IP → 403s on shared IPs).
-        getOpenIssuesByLabel('OpenAdaptAI/openadapt-flow', 'main-broken'),
-    ])
     const { getHostedOffer } = await import('../lib/hostedOffer')
     const hostedOffer = await getHostedOffer()
     // Adoption proof renders from a committed snapshot (data/installStats.json),
@@ -150,6 +151,10 @@ export async function getStaticProps() {
 
 export default function Home({ githubStats, buildWarnings, hostedOffer, installStats }) {
     const router = useRouter()
+    // Home owns the one live repository-stats request so every social-proof
+    // consumer updates atomically. Footer polling is disabled on this route;
+    // other pages let their Footer own the same shared hook.
+    const currentGithubStats = useRepositoryStats(githubStats)
     // ONE lifted selection shared by every reference-aware homepage section:
     // the process/reference-workflow demo and the "More reference workflows"
     // list read and write this single vertical, so choosing a vertical in one
@@ -200,7 +205,7 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
                     }}
                 />
             </Head>
-            <MastHead githubStats={githubStats} />
+            <MastHead githubStats={currentGithubStats} />
             <Reveal>
                 <HowItWorksCondensed />
             </Reveal>
@@ -323,7 +328,7 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
             <Reveal>
                 <Developers
                     buildWarnings={buildWarnings}
-                    githubStats={githubStats}
+                    githubStats={currentGithubStats}
                 />
             </Reveal>
             <Reveal>
@@ -332,7 +337,10 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
             <Reveal>
                 <EmailForm />
             </Reveal>
-            <Footer repositoryStats={githubStats} />
+            <Footer
+                repositoryStats={currentGithubStats}
+                pollRepositoryStats={false}
+            />
         </div>
     )
 }
