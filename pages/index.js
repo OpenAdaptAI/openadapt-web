@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import ContactBookingSection from '@components/ContactBookingSection'
+import CustomerCaseStudy from '@components/CustomerCaseStudy'
 import DashboardShowcase from '@components/DashboardShowcase'
 import Developers from '@components/Developers'
 import EmailForm from '@components/EmailForm'
@@ -208,6 +209,9 @@ export default function Home({ githubStats, buildWarnings, hostedOffer, installS
             <MastHead githubStats={currentGithubStats} />
             <Reveal>
                 <HowItWorksCondensed />
+            </Reveal>
+            <Reveal>
+                <CustomerCaseStudy />
             </Reveal>
             {/*
              * The deep concept explanations — what a demonstration compiles

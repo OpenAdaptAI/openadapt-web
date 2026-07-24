@@ -16,6 +16,7 @@
 - [Privacy Module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing
 
 ## Use Cases
+- [Customer Case Study — RVU Audits](https://openadapt.ai/customers/rvu-audit-heart-care): How Dr. Victor Abrich used OpenAdapt to automate monthly EMR-based RVU audits, save several hours of manual work each month, and recover approximately $75,000 per year in missed billables
 - [Healthcare Execution Infrastructure](https://openadapt.ai/solutions/healthcare): Governed last-mile execution for RCM vendors, healthcare BPOs, automation teams, and vertical-software companies that already have structured input and business logic
 - [Lending Operations](https://openadapt.ai/solutions/lending): A demonstrated Frappe Lending workflow compiled into model-free replay and checked against independent REST and SQL effect oracles
 - [Insurance Claims Execution](https://openadapt.ai/solutions/insurance): A demonstrated openIMIS claims-intake workflow compiled into model-free replay and checked against a direct SQL claim-row oracle
