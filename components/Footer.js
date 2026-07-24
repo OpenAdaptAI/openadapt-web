@@ -13,20 +13,14 @@ import {
     OPENADAPT_STATS_SNAPSHOT,
 } from 'data/repositoryStats'
 import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks'
+import useRepositoryStats from 'hooks/useRepositoryStats'
 import { track, EVENTS } from 'utils/analytics'
 import repositoryStatsView from 'utils/repositoryStatsView'
+import repositoryStatsSelection from 'utils/repositoryStatsSelection'
 import styles from './Footer.module.css'
 
 const { sourceLabel } = repositoryStatsView
-
-// Client refresh cadence for the same-origin stats endpoint. Stars/forks move
-// over hours, so a static Netlify site does not need (and cannot host) a
-// streaming server: a light visibility-aware poll is the right tool. See the
-// PR description for the SSE-vs-poll evaluation. Responses are CDN- and
-// server-cached (s-maxage=600), so this poll almost always hits cache rather
-// than GitHub.
-const POLL_INTERVAL_MS = 90 * 1000
-const MAX_BACKOFF_MS = 10 * 60 * 1000
+const { validStats } = repositoryStatsSelection
 
 // The hosted control plane. Mirrors NEXT_PUBLIC_CLOUD_APP_URL (.env.example)
 // and the top-nav "Sign in" destination so the two surfaces never drift.
@@ -61,16 +55,6 @@ function ForkOcticon() {
         >
             <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z" />
         </svg>
-    )
-}
-
-function validStats(value) {
-    return (
-        value &&
-        Number.isInteger(value.stars) &&
-        value.stars > 0 &&
-        Number.isInteger(value.forks) &&
-        value.forks >= 0
     )
 }
 
@@ -190,84 +174,23 @@ const CONNECT_COLUMN = [
     { label: 'GitHub', href: OPENADAPT_REPOSITORY_URL },
 ]
 
-export default function Footer({ repositoryStats = OPENADAPT_STATS_SNAPSHOT }) {
+export default function Footer({
+    repositoryStats = OPENADAPT_STATS_SNAPSHOT,
+    pollRepositoryStats = true,
+}) {
     const router = useRouter()
     const currentYear = new Date().getFullYear()
     const isHome = router.pathname === '/'
     const bookHref = isHome ? '#book' : '/book'
     const contactHref = isHome ? '#book' : '/contact'
-    const [stats, setStats] = useState(
-        validStats(repositoryStats) ? repositoryStats : OPENADAPT_STATS_SNAPSHOT
-    )
-
-    useEffect(() => {
-        // Live-refresh the counts with a visibility-aware poll. We never blank
-        // the widget: a failed fetch or a server-reported stale/snapshot value
-        // simply keeps the last good numbers and backs the poll off (up to
-        // MAX_BACKOFF_MS) so a rate-limited or down endpoint is not hammered.
-        let cancelled = false
-        let timer = null
-        let controller = null
-        let backoff = POLL_INTERVAL_MS
-
-        const schedule = () => {
-            clearTimeout(timer)
-            // A hidden tab schedules nothing; it resumes on visibilitychange.
-            if (document.visibilityState === 'hidden') return
-            timer = setTimeout(fetchOnce, backoff)
-        }
-
-        const fetchOnce = async () => {
-            controller = new AbortController()
-            try {
-                const response = await fetch('/api/repository-stats', {
-                    headers: { Accept: 'application/json' },
-                    signal: controller.signal,
-                })
-                if (!response.ok) {
-                    throw new Error(`stats request failed: ${response.status}`)
-                }
-                const next = await response.json()
-                if (cancelled) return
-                if (validStats(next)) setStats(next)
-                // Fresh live data resets the cadence; a server-reported
-                // stale/snapshot value means GitHub was unreachable, so back
-                // off rather than re-poll a struggling upstream every 90s.
-                if (next && next.source === 'github' && !next.stale) {
-                    backoff = POLL_INTERVAL_MS
-                } else {
-                    backoff = Math.min(backoff * 2, MAX_BACKOFF_MS)
-                }
-            } catch {
-                // Network error, non-OK, or rate limit: keep the last good
-                // value and back off exponentially.
-                if (cancelled) return
-                backoff = Math.min(backoff * 2, MAX_BACKOFF_MS)
-            } finally {
-                controller = null
-                if (!cancelled) schedule()
-            }
-        }
-
-        const onVisibility = () => {
-            if (document.visibilityState === 'visible') {
-                // Refresh immediately on return, then resume the poll.
-                fetchOnce()
-            } else {
-                clearTimeout(timer)
-                if (controller) controller.abort()
-            }
-        }
-
-        fetchOnce()
-        document.addEventListener('visibilitychange', onVisibility)
-        return () => {
-            cancelled = true
-            clearTimeout(timer)
-            if (controller) controller.abort()
-            document.removeEventListener('visibilitychange', onVisibility)
-        }
-    }, [])
+    const polledStats = useRepositoryStats(repositoryStats, {
+        enabled: pollRepositoryStats,
+    })
+    const stats = pollRepositoryStats
+        ? polledStats
+        : validStats(repositoryStats)
+          ? repositoryStats
+          : OPENADAPT_STATS_SNAPSHOT
 
     return (
         <div className={styles.footerContainer}>

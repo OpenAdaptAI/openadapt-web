@@ -1,7 +1,21 @@
 describe('public surface coherence', () => {
     it('keeps the flagship project, evaluation funnel, and local quickstart distinct', () => {
         cy.viewport(1280, 1000)
+        // Keep this homepage visit self-contained. Without an immediate
+        // response, its asynchronous stats request can outlive the test and
+        // satisfy the next test's intercept before that test's own visit.
+        cy.intercept('GET', '/api/repository-stats', {
+            statusCode: 200,
+            body: {
+                stars: 1650,
+                forks: 259,
+                observedAt: '2026-07-24T11:00:00.000Z',
+                source: 'github',
+                stale: false,
+            },
+        }).as('initialHomepageRepositoryStats')
         cy.visit('/')
+        cy.wait('@initialHomepageRepositoryStats')
 
         cy.get('nav[aria-label="Primary"]')
             .contains('a', 'Open source')
@@ -48,7 +62,33 @@ describe('public surface coherence', () => {
         )
     })
 
-    it('keeps flagship star and fork counts visible across public pages', () => {
+    it('updates homepage hero and footer from one repository-stats response', () => {
+        cy.intercept('GET', '/api/repository-stats', {
+            statusCode: 200,
+            body: {
+                stars: 1660,
+                forks: 260,
+                observedAt: '2026-07-24T12:00:00.000Z',
+                source: 'github',
+                stale: false,
+            },
+        }).as('homepageRepositoryStats')
+
+        cy.visit('/')
+        cy.wait('@homepageRepositoryStats')
+
+        cy.get('[data-testid="github-proof"]')
+            .should('contain.text', '1.7k stars on OpenAdapt')
+            .and('contain.text', '260 forks')
+        cy.get('[data-testid="footer-star-count"]').should(
+            'have.text',
+            '1,660'
+        )
+        cy.get('[data-testid="footer-fork-count"]').should('have.text', '260')
+        cy.get('@homepageRepositoryStats.all').should('have.length', 1)
+    })
+
+    it('keeps flagship star and fork counts visible across solution pages', () => {
         cy.intercept('GET', '/api/repository-stats', {
             statusCode: 200,
             body: {
@@ -61,7 +101,6 @@ describe('public surface coherence', () => {
         }).as('repositoryStats')
 
         for (const path of [
-            '/',
             '/solutions/healthcare',
             '/solutions/lending',
             '/solutions/insurance',
