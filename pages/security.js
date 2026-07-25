@@ -24,7 +24,7 @@ const webPageSchema = {
     name: 'Trust center',
     url: 'https://openadapt.ai/security',
     description:
-        'OpenAdapt trust center: architecture and data-flow boundaries, encryption, retention, subprocessors, access control, release integrity, vulnerability disclosure, incident response, and compliance status — each with its honest current state.',
+        'OpenAdapt trust center: architecture, data boundaries, encryption, retention, access control, release integrity, incident response, and assurance evidence.',
     isPartOf: {
         '@type': 'WebSite',
         name: 'OpenAdapt.AI',
@@ -39,10 +39,8 @@ const webPageSchema = {
 }
 
 // Every status label below describes public, verifiable evidence in our repos —
-// not an external certification. "In place" means the control ships today;
-// "Operator-controlled" means the control exists but you own its configuration;
-// "Roadmap" means it is designed but not generally available; "Not held" means
-// we do not have it and will not imply otherwise.
+// not an external certification. Prefer the exact control boundary over a
+// generic "partial" label; externally dependent milestones stay explicit.
 
 const summary = [
     {
@@ -54,14 +52,14 @@ const summary = [
     {
         area: 'Encryption & key boundaries',
         anchor: 'encryption',
-        status: 'partial',
-        note: 'Optional AES-256-GCM at rest; TLS in transit; HMAC-bound ingest.',
+        status: 'boundary',
+        note: 'AES-256-GCM protects hosted secrets; TLS protects transit; local artifact encryption follows the selected deployment boundary.',
     },
     {
         area: 'Data retention & deletion',
         anchor: 'retention',
-        status: 'operator',
-        note: 'Local retention is operator-owned; hosted has no fixed schedule yet.',
+        status: 'governed',
+        note: 'Local retention is operator-owned; hosted retention, legal holds, tenant erasure, and deletion receipts are policy-governed.',
     },
     {
         area: 'Subprocessors',
@@ -72,13 +70,13 @@ const summary = [
     {
         area: 'Identity, access & tenancy',
         anchor: 'access',
-        status: 'partial',
+        status: 'core',
         note: 'Org RBAC, row-level tenant isolation, and TOTP step-up protect platform administration; SSO / SAML / SCIM is not included.',
     },
     {
         area: 'Release integrity',
         anchor: 'release-integrity',
-        status: 'partial',
+        status: 'provenance',
         note: 'Build provenance today; code signing not yet — desktop is unsigned/ad-hoc.',
     },
     {
@@ -96,30 +94,40 @@ const summary = [
     {
         area: 'Incident response',
         anchor: 'incident-response',
-        status: 'partial',
-        note: 'Reporter-facing process defined; formal program is early.',
+        status: 'draft',
+        note: 'Private runbook and evidence templates are prepared; policy adoption and the first tabletop are next.',
     },
     {
-        area: 'DPA & BAA',
+        area: 'DPA & regulated terms',
         anchor: 'legal',
-        status: 'scoped',
-        note: 'DPA (GDPR/CCPA/PIPEDA) available on request. In the self-hosted deployment PHI/PII stays in your environment, so a BAA is not the operative instrument for that shape; where procurement requires written terms we can sign a US HIPAA BAA, or for an Ontario clinic a PHIPA service-provider agreement, following review.',
+        status: 'engagement',
+        note: 'The applicable DPA, HIPAA BAA, or PHIPA terms are counsel-reviewed against the qualified deployment before regulated data is admitted.',
     },
     {
         area: 'SOC 2',
         anchor: 'assurance',
-        status: 'readiness',
-        note: 'Type II readiness program underway; controls mapped to AICPA Trust Services Criteria. No report yet.',
+        status: 'none',
+        note: 'Internal controls and evidence are mapped; no auditor-defined observation period or SOC 2 report is held.',
     },
 ]
 
 const chip = {
     yes: { label: 'In place', color: 'var(--accent)' },
-    partial: { label: 'Partial', color: 'var(--inset-warn)' },
+    boundary: { label: 'Boundary-defined', color: 'var(--accent)' },
+    core: { label: 'Core controls in place', color: 'var(--accent)' },
+    provenance: { label: 'Provenance in place', color: 'var(--accent)' },
+    draft: { label: 'Operational draft', color: 'var(--inset-warn)' },
+    engagement: {
+        label: 'Engagement-specific',
+        color: 'var(--inset-warn)',
+    },
+    external: {
+        label: 'External identities required',
+        color: 'var(--inset-warn)',
+    },
+    governed: { label: 'Governed', color: 'var(--accent)' },
     operator: { label: 'Operator-controlled', color: 'var(--inset-warn)' },
     roadmap: { label: 'Roadmap', color: 'var(--inset-warn)' },
-    scoped: { label: 'Scoped per engagement', color: 'var(--inset-warn)' },
-    readiness: { label: 'Readiness program', color: 'var(--inset-warn)' },
     none: { label: 'Not held', color: 'var(--inset-warn)' },
 }
 
@@ -373,7 +381,7 @@ const releaseIntegrity = [
     },
     {
         title: 'Code signing',
-        status: 'partial',
+        status: 'external',
         body: 'Desktop installers are currently UNSIGNED (Windows, Linux) or ad-hoc signed (macOS), and their filenames say so. Apple Developer ID + notarization and Windows Authenticode are not yet configured; the signing workflow fails closed on partial credentials. Until signing lands, verify downloads with the published checksums and attestations.',
     },
     {
@@ -409,13 +417,13 @@ export default function SecurityPage() {
                 <title>Trust center | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt trust center: architecture and data-flow boundaries, encryption, retention, subprocessors, access control, release integrity, vulnerability disclosure, incident response, and compliance status — each with its honest current state."
+                    content="OpenAdapt trust center: architecture, data boundaries, encryption, retention, access control, release integrity, incident response, and assurance evidence."
                 />
                 <link rel="canonical" href="https://openadapt.ai/security" />
                 <meta property="og:title" content="Trust center | OpenAdapt" />
                 <meta
                     property="og:description"
-                    content="Architecture and data boundaries, encryption, retention, subprocessors, access, release integrity, disclosure, incident response, and compliance status — each with its honest current state."
+                    content="Architecture and data boundaries, encryption, retention, access, release integrity, incident response, and assurance evidence."
                 />
                 <meta
                     property="og:url"
@@ -435,11 +443,12 @@ export default function SecurityPage() {
                     Security, data boundaries, and assurance
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
-                    OpenAdapt is built to run where your data already lives.
-                    This page is written for a security reviewer: every area
-                    below states what actually exists today, what you control,
-                    and what we do not have yet. Where a control is not in
-                    place, we say so rather than imply it.
+                    OpenAdapt runs consequential workflows inside a declared
+                    execution boundary, admits hosted artifacts by exact
+                    evidence, and reserves VERIFIED for runs whose full
+                    contract passed. This page maps the enforced controls,
+                    customer responsibilities, and external assurance
+                    milestones a security review should evaluate.
                 </p>
 
                 {/* At a glance */}
@@ -803,8 +812,7 @@ export default function SecurityPage() {
                 >
                     <p className="eyebrow">Retention &amp; deletion</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                        Retention is operator-owned; hosted has no fixed
-                        schedule yet
+                        Local custody, governed hosted retention
                     </h2>
                     <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         <p>
@@ -821,25 +829,44 @@ export default function SecurityPage() {
                             <strong className="text-ink">
                                 Hosted service.
                             </strong>{' '}
-                            The hosted service persists account and organization
-                            data, managed recordings, approved artifacts,
-                            bundles, reports, run and usage records, and billing
-                            references in its configured stores. Short-lived
-                            signed runner URLs limit object access but do not
-                            delete the stored objects.
+                            The live service applies a versioned policy to
+                            recordings, reports, run metadata, and its declared
+                            backup-recovery window. Legal holds pause eligible
+                            deletion without storing case details in the hold
+                            record. Short-lived signed runner URLs limit object
+                            access; retention jobs govern stored-object deletion
+                            separately.
                         </p>
                         <p>
                             <strong className="text-ink">
-                                No fixed schedule yet.
+                                Tenant erasure and evidence.
                             </strong>{' '}
-                            The self-serve service currently publishes no fixed
-                            retention, backup-deletion, or recovery period. Do
-                            not send data that requires a specific schedule
-                            until that schedule and deletion process are
-                            documented in a qualified written deployment scope.
-                            Providers can retain billing, security, or service
-                            records under their own obligations.
+                            Deletion is scoped to the exact organization and
+                            produces an append-only receipt containing resource
+                            identifiers, counts, and digests rather than deleted
+                            payloads. A destructive retention job refuses to run
+                            without a recent restore-drill receipt. The current
+                            database restore receipt does not by itself prove
+                            object-storage recovery or a provider backup SLA;
+                            those remain deployment evidence rather than an
+                            inferred claim.
                         </p>
+                        <p>
+                            Shared billing, security, and service records are
+                            excluded from tenant erasure when they must remain
+                            for platform integrity or legal obligations. Their
+                            handling is governed by the applicable service and
+                            deployment terms, not silently treated as customer
+                            workflow data.
+                        </p>
+                        <a
+                            href="https://app.openadapt.ai/api/health/ready"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block text-sm font-medium text-accent hover:underline"
+                        >
+                            Inspect the live retention readiness signal →
+                        </a>
                         <p>
                             Deletion requests for personal information can be
                             sent to{' '}
@@ -928,7 +955,7 @@ export default function SecurityPage() {
                 >
                     <p className="eyebrow">Identity, access &amp; tenancy</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                        Access control: honest current state
+                        Tenant isolation and administrator MFA
                     </h2>
                     <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         <p>
@@ -1014,7 +1041,7 @@ export default function SecurityPage() {
                 >
                     <p className="eyebrow">Release integrity</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                        Signing, provenance, and SBOMs — what actually ships
+                        Signing, provenance, and software inventory
                     </h2>
                     <div className="mt-6 space-y-4">
                         {releaseIntegrity.map((item) => (
@@ -1142,7 +1169,7 @@ export default function SecurityPage() {
                 >
                     <p className="eyebrow">Incident response</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                        Incident response: honest posture
+                        Incident response with an explicit operating gate
                     </h2>
                     <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         <p>
@@ -1153,19 +1180,16 @@ export default function SecurityPage() {
                             response that is real and operating today.
                         </p>
                         <p>
-                            A{' '}
-                            <strong className="text-ink">
-                                formal, contractual incident-response program
-                            </strong>{' '}
-                            — customer breach notification timelines, on-call
-                            rotation, and post-incident reporting — is early and
-                            is scoped per engagement rather than offered as a
-                            standing SLA. For the open-source engine running
-                            inside your own boundary, incident response for the
-                            surrounding environment (firewall, KMS, storage,
-                            identity, backups) is your responsibility; the
-                            engine supplies audit primitives, egress checks, and
-                            run reports to support it.
+                            A private incident runbook, incident-record template,
+                            and tabletop template are prepared. Policy adoption,
+                            named response delegates, and the first recorded
+                            tabletop are the remaining gate before we describe
+                            this as an operating program. Contractual notice and
+                            response commitments are defined in the qualified
+                            deployment rather than implied as a standing SLA.
+                            For the open-source engine running inside your own
+                            boundary, you remain responsible for the surrounding
+                            firewall, KMS, storage, identity, and backup controls.
                         </p>
                     </div>
                 </div>
@@ -1177,7 +1201,7 @@ export default function SecurityPage() {
                 >
                     <p className="eyebrow">Legal readiness</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                        DPA and BAA
+                        Data-protection terms follow the qualified boundary
                     </h2>
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                         <div
@@ -1191,21 +1215,23 @@ export default function SecurityPage() {
                                     Data Processing Agreement (DPA)
                                 </strong>
                                 <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
-                                    Available on request
+                                    Counsel review
                                 </span>
                             </div>
                             <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                                A Data Processing Agreement covering GDPR, CCPA,
-                                and PIPEDA is available on request for
-                                hosted-service customers. Email{' '}
+                                During qualification we document the parties,
+                                processing purpose, data classes, locations,
+                                subprocessors, retention, deletion, and security
+                                responsibilities. Counsel then reviews the
+                                applicable data-processing terms for the exact
+                                service and jurisdiction. Email{' '}
                                 <a
                                     href={`mailto:${CONTACT_EMAIL}`}
                                     className="underline decoration-hairline underline-offset-2 hover:text-ink"
                                 >
                                     {CONTACT_EMAIL}
                                 </a>{' '}
-                                and we will provide our DPA as part of your
-                                evaluation.
+                                to include that review in your evaluation.
                             </p>
                         </div>
                         <div
@@ -1219,29 +1245,19 @@ export default function SecurityPage() {
                                     Business Associate Agreement (BAA)
                                 </strong>
                                 <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
-                                    On-prem; signable on review
+                                    Qualified deployment
                                 </span>
                             </div>
                             <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                                For healthcare workflows, the default deployment
-                                is self-hosted: OpenAdapt runs entirely inside
-                                your environment and PHI stays in your network.
-                                Because the software does not create, receive,
-                                maintain, or transmit PHI on your behalf in that
-                                shape, OpenAdapt is positioned as an on-premise
-                                software vendor rather than a business associate,
-                                and PHI does not enter our infrastructure. Your
-                                compliance officer or counsel makes the
-                                determination for your environment. Where your
-                                procurement requires written terms, we can sign a
-                                US HIPAA Business Associate Agreement, or for an
-                                Ontario clinic a PHIPA service-provider agreement,
-                                following review. Hosted processing of PHI inside
-                                our infrastructure is governed by a signed BAA
-                                and a deployment-specific HIPAA risk analysis
-                                before regulated data is admitted. This describes
-                                the deployment architecture and what we can sign,
-                                not legal advice.
+                                Healthcare deployments keep raw observations in
+                                the customer-controlled boundary by default. The
+                                actual legal role still depends on the service
+                                and data flow. Before regulated data is admitted,
+                                counsel must approve any required US HIPAA BAA or
+                                Ontario PHIPA service-provider terms together
+                                with the exact deployment, subprocessor, security,
+                                retention, and incident schedules. Hosted Cloud
+                                is not presented as PHI-ready by default.
                             </p>
                         </div>
                     </div>
@@ -1262,41 +1278,32 @@ export default function SecurityPage() {
                                 SOC 2
                             </strong>
                             <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-3">
-                                Readiness program underway
+                                No report held
                             </span>
                         </div>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            <strong className="font-semibold text-ink">
-                                SOC 2 readiness program underway.
-                            </strong>{' '}
-                            Security controls are implemented and mapped to the
-                            AICPA Trust Services Criteria; a SOC 2 Type II
-                            attestation is being pursued. Status and timeline
-                            available on request.
+                            OpenAdapt maintains a private controls matrix, gap
+                            assessment, and evidence plan mapped to Security,
+                            Availability, and Confidentiality criteria. Those
+                            working materials help prioritize real controls; they
+                            are not an audit opinion or an attestation.
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            OpenAdapt operates a formal information-security
-                            program built around the AICPA SOC 2 Trust Services
-                            Criteria (Security, Availability, and
-                            Confidentiality). We maintain a documented policy
-                            suite, a controls matrix mapped to the Common
-                            Criteria (CC1&ndash;CC9) plus Availability (A1) and
-                            Confidentiality (C1), and an evidence-based internal
-                            gap assessment. Core technical controls are already
-                            in production, including tenant isolation (row-level
-                            security), encryption of secrets at rest
-                            (AES-256-GCM) and data in transit (TLS),
-                            least-privilege access, a hardened CI/CD supply
-                            chain, and automated PII/PHI sanitization. We are
-                            pursuing a SOC 2 Type II attestation; our roadmap,
-                            current control status, and security documentation
-                            are available under NDA on request.
+                            Current technical controls include tenant row-level
+                            isolation, server-verified administrator MFA,
+                            encryption of hosted secrets, hash-bound artifact
+                            admission, production non-simulation, constrained
+                            managed-runner egress, release provenance, and
+                            private vulnerability reporting. Operating evidence,
+                            legal review, provider configuration, and independent
+                            examination are tracked separately from code presence.
                         </p>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            OpenAdapt does not yet hold a SOC 2 report. We do not
-                            claim certification. When an audit is genuinely
-                            underway, this page will name the report type, the
-                            auditor, and the period — and not before.
+                            OpenAdapt does not hold a SOC 2 report, has not opened
+                            an auditor-defined observation period, and does not
+                            claim certification. If an examination begins, this
+                            page will name the exact report type, scope, auditor,
+                            and period.
                         </p>
                     </div>
                     <p className="mt-4 text-xs leading-relaxed text-ink-3">
