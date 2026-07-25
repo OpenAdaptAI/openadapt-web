@@ -21,11 +21,12 @@ const CANONICAL_LABELS = {
 
 const CANONICAL_TIERS = ['Available', 'Beta']
 
-// Verified against the public releases on 2026-07-24.
+// Verified against the public releases on 2026-07-25.
 const CANONICAL_VERSIONS = {
-    launcher: '1.7.1',
-    flow: '1.20.1',
-    desktop: '0.9.0',
+    launcher: '1.7.2',
+    flow: '1.21.0',
+    capture: '1.1.1',
+    desktop: '0.10.0',
 }
 
 test('status manifest separates released substrate availability from evidence scope', () => {
@@ -124,5 +125,5 @@ test('hosted cloud scope stays managed-browser-only', () => {
 
 test('status manifest encodes the verified component versions', () => {
     assert.deepEqual(manifest.versions, CANONICAL_VERSIONS)
-    assert.equal(manifest.generated_at, '2026-07-24')
+    assert.equal(manifest.generated_at, '2026-07-25')
 })
