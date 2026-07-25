@@ -54,7 +54,7 @@ function completeRelease(tag, publishedAt) {
 
 describe('download page is server-rendered', () => {
     it('ships the desktop release state in the initial HTML', () => {
-        // The release list is resolved in getStaticProps, so the raw HTML
+        // The release list is resolved server-side, so the raw HTML
         // (before any JavaScript runs) must already contain a definite
         // state — never a client-side loading placeholder.
         cy.request('/download').its('body').then((html) => {
