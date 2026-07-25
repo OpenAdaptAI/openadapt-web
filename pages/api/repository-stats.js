@@ -8,6 +8,7 @@ export default async function handler(request, response) {
         '../../lib/openAdaptRepositoryStats'
     )
     const stats = await getOpenAdaptRepositoryStats()
+    const sharedCacheSeconds = stats.stale ? 60 : 600
 
     response.setHeader(
         'Cache-Control',
@@ -15,7 +16,7 @@ export default async function handler(request, response) {
     )
     response.setHeader(
         'Netlify-CDN-Cache-Control',
-        'public, durable, s-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400'
+        `public, durable, s-maxage=${sharedCacheSeconds}, stale-while-revalidate=86400, stale-if-error=86400`
     )
     return response.status(200).json(stats)
 }
