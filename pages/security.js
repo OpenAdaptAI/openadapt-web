@@ -14,6 +14,8 @@ const LIMITS_URL =
     'https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/LIMITS.md'
 const RELEASES_URL =
     'https://github.com/OpenAdaptAI/openadapt-desktop/blob/main/RELEASES.md'
+const NATIVE_RELEASE_URL =
+    'https://github.com/OpenAdaptAI/openadapt-desktop/releases/tag/desktop-v0.12.1'
 // Security reports go through GitHub private advisories or hello@openadapt.ai.
 // There is no security@openadapt.ai mailbox today — do not advertise one.
 const CONTACT_EMAIL = 'hello@openadapt.ai'
@@ -377,7 +379,9 @@ const releaseIntegrity = [
     {
         title: 'Build provenance & attestations',
         status: 'yes',
-        body: 'The PyPI engine publishes wheel and sdist with PEP 740 publish attestations. Native desktop installers ship a SHA256SUMS manifest with SLSA provenance-v1 build attestations you can verify with sha256sum -c and gh attestation verify. Provenance answers "was this built from our source by our CI"; it is not the same as code signing.',
+        body: 'The PyPI engine publishes wheel and sdist with PEP 740 publish attestations. Desktop Beta 0.12.1 publishes a SHA256SUMS manifest and GitHub build-provenance attestations for every installer, metadata file, and SBOM. Provenance answers "was this built from our source by our CI"; it is not the same as code signing.',
+        evidenceUrl: NATIVE_RELEASE_URL,
+        evidenceLabel: 'Inspect the public checksums and attestations',
     },
     {
         title: 'Code signing',
@@ -386,8 +390,10 @@ const releaseIntegrity = [
     },
     {
         title: 'Software bill of materials (SBOM)',
-        status: 'roadmap',
-        body: 'We do not currently publish a machine-readable SBOM as a release asset. Dependencies are visible in the open-source lockfiles, and dependency updates flow through Dependabot. A published SBOM is a roadmap item.',
+        status: 'yes',
+        body: 'Desktop Beta 0.12.1 publishes a CycloneDX JSON SBOM generated from the exact smoke-tested installer set. The release workflow rejects an empty or malformed SBOM before publication, includes its hash in SHA256SUMS, and attests the SBOM alongside the installers.',
+        evidenceUrl: NATIVE_RELEASE_URL,
+        evidenceLabel: 'Download the public CycloneDX SBOM',
     },
 ]
 
@@ -605,6 +611,19 @@ export default function SecurityPage() {
                                 </div>
                                 <p className="mt-2 text-sm leading-relaxed text-ink-2">
                                     {item.body}
+                                    {item.evidenceUrl && (
+                                        <>
+                                            {' '}
+                                            <a
+                                                href={item.evidenceUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-accent underline underline-offset-4"
+                                            >
+                                                {item.evidenceLabel} →
+                                            </a>
+                                        </>
+                                    )}
                                 </p>
                             </div>
                         ))}
