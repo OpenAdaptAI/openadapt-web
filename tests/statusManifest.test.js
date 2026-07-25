@@ -24,9 +24,9 @@ const CANONICAL_TIERS = ['Available', 'Beta']
 // Verified against the public releases on 2026-07-25.
 const CANONICAL_VERSIONS = {
     launcher: '1.7.3',
-    flow: '1.22.0',
+    flow: '1.23.0',
     capture: '1.1.1',
-    desktop: '0.11.0',
+    desktop: '0.13.0',
 }
 
 test('status manifest separates released substrate availability from evidence scope', () => {
