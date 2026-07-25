@@ -366,9 +366,9 @@ export default function DashboardShowcase() {
                 <div className={styles.actions}>
                     <a
                         className="btn-ink"
-                        href="https://app.openadapt.ai/dashboard"
+                        href="https://app.openadapt.ai/demo"
                     >
-                        Open the Cloud app
+                        Explore the public demo
                     </a>
                     <a className="btn-ghost-ink" href="/pricing">
                         See launch plans
