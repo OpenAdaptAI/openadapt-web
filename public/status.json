@@ -4,9 +4,9 @@
     "product_lifecycle": "Beta",
     "versions": {
         "launcher": "1.7.3",
-        "flow": "1.22.0",
+        "flow": "1.23.0",
         "capture": "1.1.1",
-        "desktop": "0.11.0"
+        "desktop": "0.13.0"
     },
     "tiers": {
         "Available": "Implemented in the released compiler and governed runtime. Production use still qualifies the exact workflow, application, environment, identity contract, and effect oracle.",
