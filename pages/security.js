@@ -611,19 +611,6 @@ export default function SecurityPage() {
                                 </div>
                                 <p className="mt-2 text-sm leading-relaxed text-ink-2">
                                     {item.body}
-                                    {item.evidenceUrl && (
-                                        <>
-                                            {' '}
-                                            <a
-                                                href={item.evidenceUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-accent underline underline-offset-4"
-                                            >
-                                                {item.evidenceLabel} →
-                                            </a>
-                                        </>
-                                    )}
                                 </p>
                             </div>
                         ))}
@@ -1081,6 +1068,19 @@ export default function SecurityPage() {
                                 </div>
                                 <p className="mt-2 text-sm leading-relaxed text-ink-2">
                                     {item.body}
+                                    {item.evidenceUrl && (
+                                        <>
+                                            {' '}
+                                            <a
+                                                href={item.evidenceUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-accent underline underline-offset-4"
+                                            >
+                                                {item.evidenceLabel} →
+                                            </a>
+                                        </>
+                                    )}
                                 </p>
                             </div>
                         ))}
