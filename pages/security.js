@@ -15,7 +15,9 @@ const LIMITS_URL =
 const RELEASES_URL =
     'https://github.com/OpenAdaptAI/openadapt-desktop/blob/main/RELEASES.md'
 const NATIVE_RELEASE_URL =
-    'https://github.com/OpenAdaptAI/openadapt-desktop/releases/tag/desktop-v0.12.1'
+    'https://github.com/OpenAdaptAI/openadapt-desktop/releases/tag/desktop-v0.13.0'
+const CONTROL_OVERLAY_URL =
+    'https://github.com/OpenAdaptAI/openadapt-desktop/blob/desktop-v0.13.0/docs/CONTROL_OVERLAY.md'
 // Security reports go through GitHub private advisories or hello@openadapt.ai.
 // There is no security@openadapt.ai mailbox today — do not advertise one.
 const CONTACT_EMAIL = 'hello@openadapt.ai'
@@ -379,7 +381,7 @@ const releaseIntegrity = [
     {
         title: 'Build provenance & attestations',
         status: 'yes',
-        body: 'The PyPI engine publishes wheel and sdist with PEP 740 publish attestations. Desktop Beta 0.12.1 publishes a SHA256SUMS manifest and GitHub build-provenance attestations for every installer, metadata file, and SBOM. Provenance answers "was this built from our source by our CI"; it is not the same as code signing.',
+        body: 'The PyPI engine publishes wheel and sdist with PEP 740 publish attestations. Desktop Beta 0.13.0 publishes a SHA256SUMS manifest and GitHub build-provenance attestations for every installer, metadata file, and SBOM. Provenance answers "was this built from our source by our CI"; it is not the same as code signing.',
         evidenceUrl: NATIVE_RELEASE_URL,
         evidenceLabel: 'Inspect the public checksums and attestations',
     },
@@ -391,9 +393,16 @@ const releaseIntegrity = [
     {
         title: 'Software bill of materials (SBOM)',
         status: 'yes',
-        body: 'Desktop Beta 0.12.1 publishes a CycloneDX JSON SBOM generated from the exact smoke-tested installer set. The release workflow rejects an empty or malformed SBOM before publication, includes its hash in SHA256SUMS, and attests the SBOM alongside the installers.',
+        body: 'Desktop Beta 0.13.0 publishes a CycloneDX JSON SBOM generated from the exact smoke-tested installer set. The release workflow rejects an empty or malformed SBOM before publication, includes its hash in SHA256SUMS, and attests the SBOM alongside the installers.',
         evidenceUrl: NATIVE_RELEASE_URL,
         evidenceLabel: 'Download the public CycloneDX SBOM',
+    },
+    {
+        title: 'Execution control overlay',
+        status: 'yes',
+        body: 'Desktop Beta 0.13.0 provides a separate native status surface outside the target application. During active observation and execution it is click-through, non-focusable, and excluded from capture before it becomes visible; controls appear only at a safe paused or terminal boundary. Overlay presentation state is never used as target-resolution or verification evidence.',
+        evidenceUrl: CONTROL_OVERLAY_URL,
+        evidenceLabel: 'Inspect the released overlay contract',
     },
 ]
 
