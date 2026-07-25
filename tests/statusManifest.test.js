@@ -24,7 +24,7 @@ const CANONICAL_TIERS = ['Available', 'Beta']
 // Verified against the public releases on 2026-07-25.
 const CANONICAL_VERSIONS = {
     launcher: '1.7.2',
-    flow: '1.21.0',
+    flow: '1.22.0',
     capture: '1.1.1',
     desktop: '0.10.0',
 }
