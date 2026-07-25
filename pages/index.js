@@ -143,7 +143,7 @@ export default function Home({ githubStats, hostedOffer }) {
                 />
             </Head>
             <MastHead githubStats={currentGithubStats} />
-            <div id="verified-execution">
+            <div id="customer-result">
                 <Reveal>
                     <CustomerCaseStudy />
                 </Reveal>

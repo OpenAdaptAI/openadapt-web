@@ -22,7 +22,7 @@ export default function Home({ githubStats }) {
                             </div>
                             <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
                                 <span className={styles.heroPill}>
-                                    LOCAL-FIRST · MIT OPEN SOURCE
+                                    FREE TO RUN LOCALLY · MIT OPEN SOURCE
                                 </span>
                                 {githubStats && githubStats.stars > 0 && (
                                     <a
@@ -72,26 +72,29 @@ export default function Home({ githubStats }) {
                                     >
                                         Qualify one workflow
                                     </Link>
-                                    <Link
-                                        className="btn-ghost-ink"
-                                        href="#verified-execution"
-                                        onClick={() =>
-                                            track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'see_verified_execution',
-                                            })
-                                        }
-                                    >
-                                        See verified execution
-                                    </Link>
-                                </div>
-                                <p className="mb-8 text-sm text-ink-3">
                                     <a
+                                        className="btn-ghost-ink"
                                         href="https://docs.openadapt.ai/get-started/"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        data-testid="local-quickstart-cta"
+                                        onClick={() =>
+                                            track(EVENTS.HERO_CTA_CLICK, {
+                                                cta: 'run_locally_free',
+                                            })
+                                        }
                                     >
-                                        Run the open-source demo
+                                        Run locally for free
                                     </a>
+                                </div>
+                                <p className="mb-8 text-sm leading-relaxed text-ink-3">
+                                    <code className="rounded border border-hairline bg-panel px-2 py-1 text-ink">
+                                        pip install openadapt
+                                    </code>
+                                    <span aria-hidden="true"> · </span>
+                                    MIT licensed
+                                    <span aria-hidden="true"> · </span>
+                                    No account or Cloud required
                                 </p>
                             </div>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
