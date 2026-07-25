@@ -19,7 +19,33 @@ export default function CommercialOffer({ hostedOffer }) {
                 <h2 className="mx-auto mt-2 max-w-3xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
                     Qualify the workflow before scaling the deployment
                 </h2>
-                <div className="mt-9 grid gap-6 md:grid-cols-[1.25fr_0.75fr]">
+                <div className="mt-8 flex flex-col gap-5 rounded-2xl border border-hairline bg-panel p-5 sm:flex-row sm:items-center sm:justify-between md:px-7">
+                    <div>
+                        <p className="eyebrow">OpenAdapt Community</p>
+                        <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                            Free and MIT licensed. Record, compile, qualify, and
+                            run locally with no account or Cloud service.
+                        </p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-4 text-sm">
+                        <a
+                            href="https://docs.openadapt.ai/get-started/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-ghost-ink inline-block"
+                        >
+                            Start locally
+                        </a>
+                        <a
+                            href="https://github.com/OpenAdaptAI/OpenAdapt"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            View source
+                        </a>
+                    </div>
+                </div>
+                <div className="mt-6 grid gap-6 md:grid-cols-[1.25fr_0.75fr]">
                     <article className="rounded-2xl border-2 border-ink bg-panel p-6 md:p-8">
                         <p className="eyebrow">Workflow Qualification Sprint</p>
                         <h3 className="mt-2 font-display text-3xl font-semibold tracking-tight text-ink">
