@@ -26,14 +26,12 @@ describe('canonical booking destination', () => {
         assertCanonicalBooking()
     })
 
-    it('connects the qualification funnel to the canonical booking path', () => {
+    it('publishes the structured qualification entry point', () => {
         cy.visit('/qualify')
         cy.get('form[name="workflow-qualification"]').should('be.visible')
         cy.contains('Bring one workflow. Leave with a go/no-go answer.').should(
             'be.visible'
         )
-        cy.visit('/book')
-        assertCanonicalBooking()
     })
 })
 
@@ -433,7 +431,9 @@ describe('public product truth', () => {
         cy.get('#side-by-side [role="region"]')
             .should('be.visible')
             .and('have.attr', 'tabindex', '0')
-        cy.contains('Qualify one workflow').scrollIntoView().should('be.visible')
+        cy.contains('Qualify one workflow')
+            .scrollIntoView()
+            .should('be.visible')
         cy.contains('Try locally').should('be.visible')
     })
 
@@ -447,7 +447,9 @@ describe('public product truth', () => {
 
         cy.viewport(375, 812)
         cy.visit('/')
-        cy.get('[data-testid="customer-case-study"]').scrollIntoView().should('be.visible')
+        cy.get('[data-testid="customer-case-study"]')
+            .scrollIntoView()
+            .should('be.visible')
         cy.document().then((document) => {
             expect(document.documentElement.scrollWidth).to.be.at.most(375)
         })
@@ -461,7 +463,10 @@ describe('public product truth', () => {
             .first()
             .scrollIntoView()
             .should('be.visible')
-        cy.get('a[href="/safety"]').first().scrollIntoView().should('be.visible')
+        cy.get('a[href="/safety"]')
+            .first()
+            .scrollIntoView()
+            .should('be.visible')
         cy.document().then((document) => {
             expect(document.documentElement.scrollWidth).to.be.at.most(375)
         })
@@ -553,8 +558,7 @@ describe('public product truth', () => {
             const inScrollContainer = (el) => {
                 let node = el.parentElement
                 while (node) {
-                    const overflowX =
-                        win.getComputedStyle(node).overflowX
+                    const overflowX = win.getComputedStyle(node).overflowX
                     if (overflowX === 'auto' || overflowX === 'scroll') {
                         return true
                     }
@@ -591,6 +595,38 @@ describe('public product truth', () => {
                 expect(response.status).to.equal(503)
                 expect(response.body.error).to.equal('checkout_not_configured')
             }
+        })
+    })
+
+    it('presents three entry paths and keeps the Cloud deep link stable', () => {
+        cy.visit('/pricing#cloud-preview')
+        cy.location('hash').should('equal', '#cloud-preview')
+
+        cy.get('[role="list"][aria-label="Ways to start with OpenAdapt"]')
+            .find('[role="listitem"]')
+            .should('have.length', 3)
+
+        cy.get('#cloud-preview')
+            .should('be.visible')
+            .within(() => {
+                cy.contains('OpenAdapt Cloud').should('be.visible')
+                cy.get('[data-testid="hosted-run-cap"]').should('be.visible')
+                cy.get(
+                    '[data-testid="hosted-checkout"], [data-testid="hosted-contact"]'
+                ).should('have.length', 1)
+            })
+
+        cy.get('[aria-labelledby="enterprise-path-title"]').within(() => {
+            cy.contains(/supervised production pilot/i).should('be.visible')
+            cy.contains(/production/i).should('be.visible')
+            cy.contains(/OEM/i).should('be.visible')
+        })
+
+        cy.viewport(375, 812)
+        cy.visit('/pricing#cloud-preview')
+        cy.get('#cloud-preview').scrollIntoView().should('be.visible')
+        cy.document().then((document) => {
+            expect(document.documentElement.scrollWidth).to.be.at.most(375)
         })
     })
 
