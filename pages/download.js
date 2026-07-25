@@ -21,13 +21,18 @@ function formatSize(bytes) {
     return `${mb.toFixed(1)} MB`
 }
 
-export async function getStaticProps() {
-    // The release list is fetched at build/revalidate time so visitor
-    // browsers never call api.github.com (60 unauthenticated req/hr per
-    // client IP means shared IPs got 403s and a broken download page).
+export async function getServerSideProps({ res }) {
+    // Resolve releases on the server at request time, then let the CDN cache
+    // the rendered page briefly. Visitors never call api.github.com, while a
+    // newly published installer becomes visible without waiting for a site
+    // rebuild or relying on host-specific ISR support.
     const { getDesktopRelease } = await import('../lib/githubApi')
     const { release, fetchFailed } = await getDesktopRelease()
-    return { props: { release, fetchFailed }, revalidate: 180 }
+    res.setHeader(
+        'Cache-Control',
+        'public, s-maxage=180, stale-while-revalidate=900'
+    )
+    return { props: { release, fetchFailed } }
 }
 
 export default function DownloadPage({ release, fetchFailed }) {

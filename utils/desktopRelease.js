@@ -1,6 +1,6 @@
 export const DESKTOP_REPO = 'OpenAdaptAI/openadapt-desktop'
-// The releases API is only queried server-side (lib/githubApi.js, at
-// build/revalidate time). Visitor browsers must never call api.github.com.
+// The releases API is only queried server-side (lib/githubApi.js). Visitor
+// browsers must never call api.github.com.
 export const DESKTOP_RELEASES_PAGE = `https://github.com/${DESKTOP_REPO}/releases`
 
 const DESKTOP_TAG = /^desktop-v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/
