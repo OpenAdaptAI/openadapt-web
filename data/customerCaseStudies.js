@@ -9,14 +9,14 @@ export const ABRICH_RVU_AUDIT_CASE = {
     },
     title: 'Recovering missed billables with automated RVU audits',
     summary:
-        'OpenAdapt automated the repetitive EMR navigation, clicking, and data entry behind Dr. Abrich’s monthly RVU audits.',
+        'OpenAdapt automated the repetitive EMR navigation and programmatic reconciliation behind Dr. Abrich’s monthly RVU audits, then produced a review workbook and a ready-to-send recovery email.',
     challenge:
         'RVU audits took several hours every month and still did not consistently surface every missed billable.',
     workflow: [
-        'Review the month’s procedures and expected RVUs.',
-        'Navigate the relevant records in the EMR.',
-        'Enter and reconcile audit information through the existing interface.',
-        'Surface missed billables for correction and follow-through.',
+        'Load the month’s RVU report spreadsheets.',
+        'Navigate the relevant EMR records and collect the clinical-note evidence needed for the audit.',
+        'Programmatically compare documented procedures with the RVUs that were credited.',
+        'Write the findings to an analysis spreadsheet and generate a copy-ready recovery email.',
     ],
     results: [
         {
@@ -28,13 +28,13 @@ export const ABRICH_RVU_AUDIT_CASE = {
             label: 'of manual audit work saved each month',
         },
         {
-            value: 'EMR-native',
-            label: 'navigation, clicking, and data entry automated',
+            value: 'Review-ready',
+            label: 'analysis workbook and recovery email generated',
         },
     ],
     result:
         'The automated audit caught billables that manual review did not consistently find, recovering approximately $75,000 per year while saving several hours of physician time each month.',
-    surface: 'Electronic medical record',
+    surface: 'Electronic medical record and spreadsheets',
     workflowType: 'Monthly physician RVU audit',
     industry: 'Healthcare',
 }
