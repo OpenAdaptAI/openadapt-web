@@ -114,11 +114,10 @@ export default function RvuAuditHeartCareCaseStudy() {
                                     {customerCase.challenge}
                                 </p>
                                 <p className="mt-4 text-base leading-relaxed text-ink-2">
-                                    The job required moving through the existing
-                                    EMR, reconciling procedure and RVU
-                                    information, and entering the audit results
-                                    through the same interface used by the
-                                    clinical team.
+                                    The job required collecting evidence from
+                                    the existing EMR, comparing it with monthly
+                                    RVU spreadsheets, and preparing the findings
+                                    for review and recovery.
                                 </p>
                             </div>
 
@@ -147,7 +146,7 @@ export default function RvuAuditHeartCareCaseStudy() {
                             <p className="eyebrow">The result</p>
                             <h2 className="mt-2 max-w-3xl font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
                                 More complete audits without spending physician
-                                hours clicking through the EMR
+                                hours collecting and reconciling the data by hand
                             </h2>
                             <p className="mt-5 max-w-3xl text-base leading-relaxed text-ink-2 md:text-lg">
                                 {customerCase.result}
