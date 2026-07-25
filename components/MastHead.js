@@ -86,6 +86,20 @@ export default function Home({ githubStats }) {
                                     >
                                         Run locally for free
                                     </a>
+                                    <a
+                                        className="btn-ghost-ink"
+                                        href="https://app.openadapt.ai/demo"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        data-testid="cloud-demo-cta"
+                                        onClick={() =>
+                                            track(EVENTS.HERO_CTA_CLICK, {
+                                                cta: 'explore_cloud_demo',
+                                            })
+                                        }
+                                    >
+                                        Explore the app
+                                    </a>
                                 </div>
                                 <p className="mb-8 text-sm leading-relaxed text-ink-3">
                                     <code className="rounded border border-hairline bg-panel px-2 py-1 text-ink">
