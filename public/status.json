@@ -4,7 +4,7 @@
     "product_lifecycle": "Beta",
     "versions": {
         "launcher": "1.7.2",
-        "flow": "1.21.0",
+        "flow": "1.22.0",
         "capture": "1.1.1",
         "desktop": "0.10.0"
     },
