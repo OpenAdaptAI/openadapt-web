@@ -331,87 +331,87 @@ export default function Pricing({ hostedOffer = null }) {
                     aria-labelledby="enterprise-path-title"
                     className="mt-12 rounded-2xl border border-hairline bg-panel p-6 md:p-8"
                 >
-                    <p className="eyebrow">After a successful qualification</p>
-                    <h2
-                        id="enterprise-path-title"
-                        className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl"
-                    >
-                        Move from evidence to production.
-                    </h2>
-                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2">
-                        A sprint ends with a go/no-go decision. When the
-                        workflow qualifies, the next two scopes take it through
-                        representative cases and into an annual production
-                        deployment.
-                    </p>
+                    <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+                        <div>
+                            <p className="eyebrow">
+                                After a successful qualification
+                            </p>
+                            <h2
+                                id="enterprise-path-title"
+                                className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl"
+                            >
+                                Prove it, then scale it.
+                            </h2>
+                            <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                                Each stage earns the next with measured results.
+                                One qualification conversation scopes the whole
+                                path.
+                            </p>
+                            <Link
+                                href="/qualify"
+                                className="btn-ghost-ink mt-6 inline-block"
+                            >
+                                Qualify one workflow
+                            </Link>
+                        </div>
 
-                    <div className="mt-8 grid gap-8 lg:grid-cols-[1.45fr_0.75fr]">
-                        <ol className="grid gap-4 md:grid-cols-2">
-                            <li className="rounded-xl border border-hairline bg-ground p-5">
-                                <p className="font-mono text-xs font-medium text-accent">
-                                    1 · SUPERVISED PRODUCTION PILOT
-                                </p>
-                                <p className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                                    $30,000–$60,000
-                                </p>
-                                <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                                    One workflow, one application, and one
-                                    environment running representative cases
-                                    under supervision or in shadow mode.
-                                </p>
-                                <p className="mt-3 text-xs leading-relaxed text-ink-3">
-                                    Includes measured VERIFIED, HALTED, and
-                                    intervention rates, security and deployment
-                                    review, and a production acceptance report.
+                        <ol className="divide-y divide-hairline border-y border-hairline">
+                            <li className="grid gap-2 py-5 sm:grid-cols-[1fr_auto] sm:gap-6">
+                                <div>
+                                    <p className="font-mono text-xs font-medium uppercase tracking-[0.12em] text-accent">
+                                        Supervised production pilot
+                                    </p>
+                                    <h3 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
+                                        Prove the workflow on representative
+                                        cases.
+                                    </h3>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                        Measure verified outcomes, halts, and
+                                        intervention time, then leave with a
+                                        production acceptance report.
+                                    </p>
+                                </div>
+                                <p className="text-sm font-semibold text-ink sm:pt-1 sm:text-right">
+                                    Typically $30,000–$60,000
                                 </p>
                             </li>
-                            <li className="rounded-xl border border-hairline bg-ground p-5">
-                                <p className="font-mono text-xs font-medium text-accent">
-                                    2 · PRODUCTION
-                                </p>
-                                <p className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                                    $48,000–$120,000 annually
-                                </p>
-                                <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                                    Priced by qualified workflow family,
-                                    application and environment, runners,
-                                    evidence requirements, support, and
-                                    requalification obligations.
-                                </p>
-                                <p className="mt-3 text-xs leading-relaxed text-ink-3">
-                                    Pricing is based on the operating scope—not
-                                    primarily by seat or run.
+                            <li className="grid gap-2 py-5 sm:grid-cols-[1fr_auto] sm:gap-6">
+                                <div>
+                                    <p className="font-mono text-xs font-medium uppercase tracking-[0.12em] text-accent">
+                                        Production
+                                    </p>
+                                    <h3 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
+                                        Operate with governed evidence and
+                                        support.
+                                    </h3>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                        Annual scope reflects the qualified
+                                        workflow family, environment, runners,
+                                        evidence, support, and requalification.
+                                    </p>
+                                </div>
+                                <p className="text-sm font-semibold text-ink sm:pt-1 sm:text-right">
+                                    Typically $48,000–$120,000/year
                                 </p>
                             </li>
                         </ol>
-
-                        <aside className="border-t border-hairline pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-                            <p className="eyebrow">Embedding OpenAdapt?</p>
-                            <h3 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
-                                OEM
-                            </h3>
-                            <p className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                                $75,000–$150,000 annual minimum
-                            </p>
-                            <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                                Embed the governed contract in your product.
-                                Integration work is scoped separately.
-                            </p>
-                            <code className="mt-4 block overflow-x-auto rounded-lg bg-inset px-4 py-3 text-xs leading-relaxed text-inset-text">
-                                execute(bundle, parameters)
-                                <br />→ VERIFIED | HALTED
-                                <br />→ evidence
-                            </code>
-                        </aside>
                     </div>
-                    <div className="mt-7">
+
+                    <aside className="mt-6 flex flex-col gap-3 border-t border-hairline pt-6 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-sm leading-relaxed text-ink-2">
+                            <span className="font-semibold text-ink">
+                                Embedding OpenAdapt?
+                            </span>{' '}
+                            OEM programs are typically $75,000–$150,000
+                            annually, plus scoped integration work.
+                        </p>
                         <Link
                             href="/qualify"
-                            className="btn-ghost-ink inline-block"
+                            className="shrink-0 text-sm font-semibold text-accent underline"
                         >
-                            Scope the enterprise path
+                            Discuss OEM
                         </Link>
-                    </div>
+                    </aside>
                 </div>
 
                 <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-relaxed text-ink-3">
