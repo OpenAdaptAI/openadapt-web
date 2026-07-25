@@ -3,10 +3,10 @@
     "generated_at": "2026-07-25",
     "product_lifecycle": "Beta",
     "versions": {
-        "launcher": "1.7.2",
+        "launcher": "1.7.3",
         "flow": "1.22.0",
         "capture": "1.1.1",
-        "desktop": "0.10.0"
+        "desktop": "0.11.0"
     },
     "tiers": {
         "Available": "Implemented in the released compiler and governed runtime. Production use still qualifies the exact workflow, application, environment, identity contract, and effect oracle.",
