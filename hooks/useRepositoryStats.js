@@ -6,7 +6,7 @@ import repositoryStatsSelection from 'utils/repositoryStatsSelection'
 const { newerStats, validStats } = repositoryStatsSelection
 
 // Stars/forks move over hours. Poll the same-origin endpoint while the page is
-// visible; Netlify's one-hour durable cache (s-maxage=3600) means normal
+// visible; Netlify's ten-minute durable cache (s-maxage=600) means normal
 // visitor refreshes do not spend GitHub's unauthenticated API quota.
 const POLL_INTERVAL_MS = 90 * 1000
 const MAX_BACKOFF_MS = 10 * 60 * 1000

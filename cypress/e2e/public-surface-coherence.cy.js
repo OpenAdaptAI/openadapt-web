@@ -46,7 +46,7 @@ describe('public surface coherence', () => {
             body: {
                 stars: 1660,
                 forks: 260,
-                observedAt: '2026-07-24T12:00:00.000Z',
+                observedAt: new Date().toISOString(),
                 source: 'github',
                 stale: false,
             },
