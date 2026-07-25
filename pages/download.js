@@ -28,9 +28,14 @@ export async function getServerSideProps({ res }) {
     // rebuild or relying on host-specific ISR support.
     const { getDesktopRelease } = await import('../lib/githubApi')
     const { release, fetchFailed } = await getDesktopRelease()
+    // Browser/proxy caches must revalidate, while Netlify's durable shared
+    // cache refreshes the GitHub-backed release list every minute. A generic
+    // `s-maxage` header is not enough here: Netlify can retain the function
+    // response in its durable cache without the provider-specific TTL.
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate')
     res.setHeader(
-        'Cache-Control',
-        'public, s-maxage=180, stale-while-revalidate=900'
+        'Netlify-CDN-Cache-Control',
+        'public, durable, s-maxage=60, stale-while-revalidate=120, stale-if-error=86400'
     )
     return { props: { release, fetchFailed } }
 }
