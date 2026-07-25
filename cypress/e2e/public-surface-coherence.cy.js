@@ -38,6 +38,13 @@ describe('public surface coherence', () => {
                 'href',
                 'https://docs.openadapt.ai/get-started/'
             )
+        cy.get('[data-testid="cloud-demo-cta"]')
+            .should('be.visible')
+            .and(
+                'have.attr',
+                'href',
+                'https://app.openadapt.ai/demo'
+            )
     })
 
     it('updates homepage hero and footer from one repository-stats response', () => {
