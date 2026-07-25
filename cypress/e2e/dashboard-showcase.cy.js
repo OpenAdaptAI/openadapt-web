@@ -70,11 +70,15 @@ describe('Cloud product showcase', () => {
             'demo.openadapt.ai'
         )
 
-        // The CTA opens the real hosted app.
+        // The CTA opens the real public hosted-product demo without requiring
+        // an account.
         cy.get('#cloud-product')
-            .contains('a', 'Open the Cloud app')
-            .should('have.attr', 'href')
-            .and('include', 'app.openadapt.ai')
+            .contains('a', 'Explore the public demo')
+            .should(
+                'have.attr',
+                'href',
+                'https://app.openadapt.ai/demo'
+            )
 
         // Clicking a tab jumps the large slot to that real frame and moves the
         // highlight and browser address with it.
