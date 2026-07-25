@@ -39,11 +39,11 @@ const usd = (n) => `$${Number(n).toFixed(2)}`
 const secs = (n) => `${Math.round(Number(n))}s`
 const per1k = Math.round(em.agent.cost_usd_per_run * 1000).toLocaleString()
 
-// The run_openemr footage is now recorded clean (no burned-in status badge;
-// openadapt-flow scripts/demo_media.py build_run_openemr composites no overlay),
-// so the floating OpenAdapt HUD below is the SOLE "running · local · $0"
-// indicator, painted as a DOM system overlay on top of the app. Set to false
-// only if the footage is ever reverted to a variant with a baked-in badge.
+// The source footage is clean. This DOM HUD is presentation-only marketing UI,
+// excluded from the recorded evidence and never used by runtime resolution,
+// actuation, accessibility observation, or verification. Real headed execution
+// uses the separate native Desktop overlay; hosted browser streams should use a
+// sibling controller layer rather than injecting controls into the target page.
 const SHOW_SYSTEM_OVERLAY = true
 
 export default function ReplayHero() {
@@ -85,15 +85,16 @@ export default function ReplayHero() {
                             alt="Real footage: OpenAdapt replaying a compiled 18-step workflow against OpenEMR's live public demo, logging in and filling the patient-intake form, locally and with no per-run model calls."
                         />
                         {/*
-                          Floating OpenAdapt system overlay: a HUD painted ON
-                          TOP of whatever app is running (here OpenEMR), a
-                          distinct visual layer from the browser chrome. It
-                          reinforces that OpenAdapt runs over your existing
-                          apps rather than replacing them. The footage is clean
-                          (no baked-in badge), so this is the sole indicator.
+                          Presentation-only HUD over clean evidence footage.
+                          It is intentionally excluded from the target page and
+                          must never be treated as runtime evidence.
                         */}
                         {SHOW_SYSTEM_OVERLAY && (
-                            <div className={styles.sysOverlay}>
+                            <div
+                                className={styles.sysOverlay}
+                                aria-hidden="true"
+                                data-overlay-boundary="presentation-only"
+                            >
                                 <span
                                     className={styles.sysMark}
                                     aria-hidden="true"
