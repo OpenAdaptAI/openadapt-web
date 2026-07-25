@@ -31,10 +31,13 @@ describe('public surface coherence', () => {
         cy.contains('a', 'Qualify one workflow')
             .should('be.visible')
             .and('have.attr', 'href', '/qualify')
-        cy.contains('a', 'Run the open-source demo')
+        cy.get('[data-testid="local-quickstart-cta"]')
             .should('be.visible')
-            .and('have.attr', 'href')
-            .and('include', 'docs.openadapt.ai')
+            .and(
+                'have.attr',
+                'href',
+                'https://docs.openadapt.ai/get-started/'
+            )
     })
 
     it('updates homepage hero and footer from one repository-stats response', () => {

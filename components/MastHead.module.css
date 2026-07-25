@@ -22,10 +22,9 @@
     color: var(--ink-3);
 }
 
-/* Primary hero CTA: the elevated OpenAdapt Cloud action. A single solid
-   accent pill sized to match the ghost secondaries (Evaluate a workflow / Try
-   locally) so the row reads as one primary plus a consistent secondary set,
-   not three competing styles. */
+/* Primary enterprise CTA. The adjacent ghost action is the equally direct
+   local/open-source path, while the install command below carries the
+   no-account trust contract without adding a third competing button. */
 .heroCloud {
     display: inline-flex;
     align-items: center;
