@@ -68,8 +68,8 @@ test('visitor browsers never call api.github.com', () => {
     // api.github.com allows 60 unauthenticated requests/hour per client IP.
     // Any client-side fetch therefore 403s for visitors on shared IPs
     // (offices, VPNs, CGNAT) and breaks the page. GitHub data must only be
-    // fetched server-side: lib/ (dynamically imported in getStaticProps)
-    // and pages/api/ routes.
+    // fetched server-side: lib/ (dynamically imported in a server-side page
+    // loader) and pages/api/ routes.
     const clientSourceDirs = ['components', 'utils', 'pages']
     for (const dir of clientSourceDirs) {
         const entries = fs.readdirSync(path.join(root, dir), {
@@ -109,12 +109,13 @@ test('visitor browsers never call api.github.com', () => {
     assert.match(githubApi, /process\.env\.GITHUB_TOKEN/)
     assert.doesNotMatch(githubApi, /NEXT_PUBLIC/)
 
-    // The download page renders the release list from getStaticProps (ISR),
-    // so the release data is in the initial HTML for every visitor.
+    // The download page server-renders the release list, so release data is in
+    // the initial HTML without a visitor-side GitHub request. The CDN cache is
+    // intentionally short enough for new releases to appear without a deploy.
     const download = read('pages/download.js')
-    assert.match(download, /export async function getStaticProps/)
+    assert.match(download, /export async function getServerSideProps/)
     assert.match(download, /getDesktopRelease/)
-    assert.match(download, /revalidate: 180/)
+    assert.match(download, /s-maxage=180/)
 })
 
 test('public slogans scope demonstrated workflows and governed repair', () => {
