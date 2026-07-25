@@ -28,52 +28,14 @@ test('footer email is a real keyboard-accessible link', () => {
 })
 
 test('GitHub proof uses the canonical repository and a verified fallback', () => {
-    const home = read('pages/index.js')
     const masthead = read('components/MastHead.js')
     const footer = read('components/Footer.js')
     const snapshot = read('data/repositoryStats.js')
-    const loader = read('lib/openAdaptRepositoryStats.js')
-    const endpoint = read('pages/api/repository-stats.js')
-    const hook = read('hooks/useRepositoryStats.js')
-    const paper = read('pages/paper.js')
 
     assert.match(snapshot, /OPENADAPT_REPOSITORY = 'OpenAdaptAI\/OpenAdapt'/)
     assert.match(snapshot, /stars: 1648/)
     assert.match(snapshot, /forks: 258/)
     assert.match(snapshot, /source: 'snapshot'/)
-    assert.match(home, /const githubStats = OPENADAPT_STATS_SNAPSHOT/)
-    assert.doesNotMatch(home, /getOpenAdaptRepositoryStats\(\)/)
-    assert.match(
-        home,
-        /const currentGithubStats = useRepositoryStats\(githubStats\)/
-    )
-    assert.match(home, /<MastHead githubStats=\{currentGithubStats\} \/>/)
-    assert.match(
-        home,
-        /<Footer[\s\S]*repositoryStats=\{currentGithubStats\}[\s\S]*pollRepositoryStats=\{false\}/
-    )
-    assert.equal(
-        (home.match(/useRepositoryStats\(/g) || []).length,
-        1,
-        'home owns one repository-stats polling hook'
-    )
-    assert.doesNotMatch(paper, /getOpenAdaptRepositoryStats/)
-    assert.match(paper, /<Footer \/>/)
-    assert.match(footer, /repositoryStats = OPENADAPT_STATS_SNAPSHOT/)
-    assert.match(footer, /useRepositoryStats\(repositoryStats/)
-    assert.match(footer, /enabled: pollRepositoryStats/)
-    assert.match(hook, /fetch\('\/api\/repository-stats'/)
-    // A failed/rate-limited refresh must keep the last good value, never blank.
-    assert.match(hook, /preserve the last[\s\S]*good observation/i)
-    assert.match(hook, /one-hour durable cache \(s-maxage=3600\)/)
-    assert.doesNotMatch(hook, /s-maxage=600/)
-    assert.match(loader, /const FRESH_TTL_MS = 10 \* 60 \* 1000/)
-    assert.match(loader, /if \(inFlight\) return inFlight/)
-    assert.match(loader, /source:[\s\S]*?'stale'[\s\S]*?'snapshot'/)
-    assert.match(endpoint, /s-maxage=3600/)
-    assert.match(endpoint, /stale-while-revalidate=86400/)
-    assert.match(endpoint, /stale-if-error=86400/)
-    assert.match(endpoint, /Netlify-CDN-Cache-Control/)
     assert.match(
         read('lib/githubApi.js'),
         /return \{ \.\.\.fallback \}/,

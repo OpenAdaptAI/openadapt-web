@@ -13,6 +13,9 @@ import Reveal from '@components/Reveal'
 import TrustSummary from '@components/TrustSummary'
 import useRepositoryStats from 'hooks/useRepositoryStats'
 import { OPENADAPT_STATS_SNAPSHOT } from '../data/repositoryStats'
+import publishedRepositoryStats from '../utils/publishedRepositoryStats'
+
+const { fetchPublishedRepositoryStats } = publishedRepositoryStats
 
 const organizationSchema = {
     '@context': 'https://schema.org',
@@ -101,12 +104,16 @@ const websiteSchema = {
 }
 
 export async function getStaticProps() {
-    // Seed initial HTML with the verified snapshot. One shared same-origin
-    // endpoint refreshes Footer counts after hydration; keeping GitHub stats
-    // out of this five-minute ISR avoids duplicate unauthenticated API calls.
-    const githubStats = OPENADAPT_STATS_SNAPSHOT
     const { getHostedOffer } = await import('../lib/hostedOffer')
-    const hostedOffer = await getHostedOffer()
+    // Seed static HTML from the durable same-origin cache rather than calling
+    // GitHub during each build/ISR. Browser hydration keeps using that same
+    // endpoint, and an outage falls back to the committed last-known counts.
+    const [githubStats, hostedOffer] = await Promise.all([
+        fetchPublishedRepositoryStats({
+            fallback: OPENADAPT_STATS_SNAPSHOT,
+        }),
+        getHostedOffer(),
+    ])
     return {
         props: { githubStats, hostedOffer },
         revalidate: 300,
