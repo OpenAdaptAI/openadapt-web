@@ -1,11 +1,12 @@
 {
     "$comment": "Canonical machine-readable release, capability, evidence, and deployment status for OpenAdapt. Served at https://openadapt.ai/status.json and consumed by status-aware public surfaces and tests. OpenAdapt is one Beta product across browser, Windows, macOS, Linux, RDP, and Citrix/VDI. Capability availability is distinct from the deployment boundary and from the bounded evidence scope recorded for each substrate.",
-    "generated_at": "2026-07-24",
+    "generated_at": "2026-07-25",
     "product_lifecycle": "Beta",
     "versions": {
-        "launcher": "1.7.1",
-        "flow": "1.20.1",
-        "desktop": "0.9.0"
+        "launcher": "1.7.2",
+        "flow": "1.22.0",
+        "capture": "1.1.1",
+        "desktop": "0.10.0"
     },
     "tiers": {
         "Available": "Implemented in the released compiler and governed runtime. Production use still qualifies the exact workflow, application, environment, identity contract, and effect oracle.",
@@ -48,7 +49,7 @@
             "public_label": "Available",
             "internal_tier": "qualified-remote-transport-and-lifecycle",
             "delivery": "Local or customer-controlled",
-            "evidence_note": "RDP has two accepted bounded results: 3/3 real Aardwolf-over-Windows transport/input effects, and a full record-to-compile-to-governed-replay lifecycle over a real FreeRDP round trip with 3/3 healthy effects and 3/3 drift safe-halts. Both report zero model calls, silent incorrect successes, and over-halts.",
+            "evidence_note": "RDP has two accepted bounded results: 3/3 real Aardwolf-over-Windows transport/input effects, and a full record-to-compile-to-governed-replay lifecycle over a real FreeRDP round trip with 3/3 healthy effects and 3/3 drift safe-halts. Consequential input uses a two-phase lease: capture a fresh frame, re-resolve the target and identity, then refuse if session context, pixels, geometry, or readiness changes before delivery. Both accepted results report zero model calls, silent incorrect successes, and over-halts.",
             "evidence_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/affedc5f1f0de533a0744deaa8e30a203c91c6b3/benchmark/rdp_ladder/results.json"
         },
         {
@@ -56,7 +57,7 @@
             "public_label": "Available",
             "internal_tier": "qualified-citrix-workspace-window-contract",
             "delivery": "Local or customer-controlled",
-            "evidence_note": "The released dedicated --backend citrix path binds the exact Citrix Workspace window, gates readiness, carries target metadata into durable resume, and runs the same pixel identity, effect, policy, and halt contracts. The accepted no-DOM qualification confirmed 3/3 healthy effects and 3/3 drift safe-halts with zero model calls, silent writes, false completions, or over-halts.",
+            "evidence_note": "The released dedicated --backend citrix path binds the exact Citrix Workspace window, gates readiness, carries target metadata into durable resume, and runs the same pixel identity, effect, policy, and halt contracts. Consequential input uses the shared two-phase remote lease: a fresh frame is re-resolved and identity-checked, then any change in pixels, focus, geometry, or readiness before delivery is refused. The accepted no-DOM qualification confirmed 3/3 healthy effects and 3/3 drift safe-halts with zero model calls, silent writes, false completions, or over-halts.",
             "qualification_boundary": "The accepted artifact explicitly records ica_hdx_accepted=false. It qualifies the shipped Citrix Workspace-window backend contract over a no-DOM canvas stand-in, not a counted real ICA/HDX batch; an exact ICA/HDX environment is qualified separately before consequential use.",
             "evidence_url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/f6faac5b900b78cbda5980de0e983a9f987285ac/benchmark/citrix_workspace/results.json"
         },
