@@ -115,7 +115,8 @@ test('visitor browsers never call api.github.com', () => {
     const download = read('pages/download.js')
     assert.match(download, /export async function getServerSideProps/)
     assert.match(download, /getDesktopRelease/)
-    assert.match(download, /s-maxage=180/)
+    assert.match(download, /Netlify-CDN-Cache-Control/)
+    assert.match(download, /s-maxage=60/)
 })
 
 test('public slogans scope demonstrated workflows and governed repair', () => {
