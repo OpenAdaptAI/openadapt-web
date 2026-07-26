@@ -132,14 +132,14 @@ export default function ReferenceDemoShowcase({
                             aria-pressed={mediaView === 'presentation'}
                             onClick={() => setMediaView('presentation')}
                         >
-                            Timeline view
+                            Guided view
                         </button>
                         <button
                             type="button"
                             aria-pressed={mediaView === 'source'}
                             onClick={() => setMediaView('source')}
                         >
-                            Raw source
+                            Raw footage
                         </button>
                     </div>
                 )}
@@ -160,7 +160,7 @@ export default function ReferenceDemoShowcase({
                         />
                         <p className={styles.mediaTruth}>
                             {usePresentation
-                                ? 'Exact-frame presentation derived from the retained runtime timeline; raw evidence remains unchanged.'
+                                ? 'Guided view synchronized to the exact retained runtime timeline; raw footage remains unchanged.'
                                 : phaseMedia.sourceCaption}
                         </p>
                     </div>
