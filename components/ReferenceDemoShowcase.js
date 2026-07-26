@@ -173,6 +173,7 @@ export default function ReferenceDemoShowcase({
                             media={media}
                             application={demo.application}
                             phase={selectedMode.modeKind}
+                            modeLabel={selectedMode.label}
                             exactPresentation={playerPresentation}
                             evidenceHref={selectedMode.evidenceHref ?? demo.evidenceHref}
                         />

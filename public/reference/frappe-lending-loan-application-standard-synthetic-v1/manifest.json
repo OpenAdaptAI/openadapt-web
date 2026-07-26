@@ -1,0 +1,313 @@
+{
+  "application": {
+    "environment": "local pinned synthetic reference fixture",
+    "erpnext_version": "v16.27.0",
+    "frappe_version": "v16.27.0",
+    "name": "Frappe Lending",
+    "source_commits": {
+      "erpnext": "9d5c7605b8eae7fb5aaf9efd00a778adae2daeb1",
+      "frappe": "73decbb00106a12c4e854c98dce8c0e3f42f514e",
+      "frappe_docker": "c004361e790125ed13aaa933d11f7838711a8960",
+      "lending": "caed066b6636075634418f4f0382798b60c0e188"
+    },
+    "surface": "browser",
+    "version": "v16.2.0"
+  },
+  "data_classification": "synthetic",
+  "generated_at": "2026-07-26T11:57:01.329846+00:00",
+  "generator_platform": "macOS-15.7.3-arm64-arm-64bit",
+  "methodology_links": [
+    "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/frappe_lending",
+    "https://docs.openadapt.ai/concepts/effect-verification/",
+    "https://docs.openadapt.ai/concepts/execution-profiles/"
+  ],
+  "metrics": {
+    "fresh_trials": 6,
+    "halted_trials": 0,
+    "independent_rest_sql_parity_trials": 6,
+    "model_calls": 0,
+    "observed_silent_incorrect_success": 0,
+    "verified_trials": 6
+  },
+  "pack_id": "frappe-lending-loan-application-standard-synthetic-v1",
+  "phase": "qualified_compiled_replay",
+  "provenance": {
+    "execution_boundary": "local browser plus independent authenticated REST and direct SQL readback",
+    "exporter": "scripts/export_frappe_lending_evidence.py",
+    "fixture": "pinned Frappe/Lending stack with synthetic data only",
+    "fixture_distribution": "repository-only; no upstream copyleft fixture files are included in this pack or package artifacts",
+    "openadapt_flow_version": "1.23.0",
+    "presentation_note": "Overlay is post-composed from exact runtime-retained observations; runtime evidence media remains unmodified.",
+    "runtime_repository": "https://github.com/OpenAdaptAI/openadapt-flow",
+    "runtime_source_commit": "ef33c2f4691040e39eb831f84658b941f715c290",
+    "runtime_source_tree_clean": true
+  },
+  "qualification": {
+    "action_count": 16,
+    "consequential_action_count": 1,
+    "effect_covered_action_count": 1,
+    "environment_digest": "b6b176fe700e173bb95ecc92e6b975fe3ce99ca3fbf8850b6a523555bbddf823",
+    "fault_cases": [
+      "ambiguity",
+      "wrong_identity",
+      "stale_identity",
+      "weak_effect",
+      "missing_effect"
+    ],
+    "fault_results": [
+      {
+        "case_id": "ambiguity",
+        "consequential_actuation_attempted": false,
+        "non_target_state_unchanged": true,
+        "oracle_sha256": "80fa3ab9286218577c99c9f6313a5737ac6360d3de5759e92557ab46de1b20b8",
+        "outcome": "HALTED",
+        "report_sha256": "1943629fa87df1c54a04a8090533e7896a073e7c2925eb82b373155889796a84",
+        "rest_record_count": 0,
+        "sql_record_count": 0
+      },
+      {
+        "case_id": "wrong_identity",
+        "consequential_actuation_attempted": false,
+        "non_target_state_unchanged": true,
+        "oracle_sha256": "2e9ddbeef2d8d77823bcd8a3b9048863437f185df2aaad94db64cd957d7667b6",
+        "outcome": "HALTED",
+        "report_sha256": "2f3de47f751228a7e02a7c3f5705f30d13b2f727428891fdf68f7829d1c76ba3",
+        "rest_record_count": 0,
+        "sql_record_count": 0
+      },
+      {
+        "case_id": "stale_identity",
+        "consequential_actuation_attempted": false,
+        "non_target_state_unchanged": true,
+        "oracle_sha256": "406a0a711399f38e971511c214800a48f36873af03e8790bea3b71230879de65",
+        "outcome": "HALTED",
+        "report_sha256": "c276833a4d132d277a1384f8026fd75f2fa1d30c622672c816501f8d5a5bbb31",
+        "rest_record_count": 0,
+        "sql_record_count": 0
+      },
+      {
+        "admission_refusal": true,
+        "case_id": "weak_effect",
+        "consequential_actuation_attempted": false,
+        "outcome": "HALTED",
+        "refusal_sha256": "b436f139732fdf2d028d3651651571eabcb04fe1111186d68daeb2da3316d347"
+      },
+      {
+        "admission_refusal": true,
+        "case_id": "missing_effect",
+        "consequential_actuation_attempted": false,
+        "outcome": "HALTED",
+        "refusal_sha256": "ba8385e9648be034bee343d4950892cc62e533e94696e9ae05ed42696029844e"
+      }
+    ],
+    "identity_covered_action_count": 1,
+    "minimum_effect_tier": 1,
+    "passed": true,
+    "report_sha256": "51c16142167cbd5fd642359af0f6b957350094c58fd5a8c2e244fd73d7661fa8",
+    "required_conditions": [
+      "baseline",
+      "ui_cosmetic_v1"
+    ],
+    "trials_per_condition": 3
+  },
+  "recording": {
+    "bundle_source_recording_sha256": "5da07449f3d95f1030b65085c154eab84a4a236398a7223d96cde7c6fc95c682",
+    "media": {
+      "bytes": 554703,
+      "codec": "h264",
+      "height": 800,
+      "path": "recording/frappe-source-recording.unbound.mp4",
+      "sha256": "98f78c38134c460738c6eee37eb8b7cdcbcec6a6ebad49ace51ccb00a4b94900",
+      "width": 1280
+    },
+    "outcome_claim": null,
+    "overlay_timeline": null,
+    "poster": {
+      "bytes": 194461,
+      "height": 800,
+      "path": "recording/frappe-source-recording.poster.png",
+      "sha256": "a462b84a1aee106b3a9928c98a3960f40e4dcdffa40a475fc1bce25d188f4544",
+      "width": 1280
+    },
+    "relationship": "unbound source recording for the compiled workflow"
+  },
+  "replay": {
+    "binding": {
+      "bytes": 1276,
+      "path": "replay/frappe-replay.media-binding.json",
+      "sha256": "4f3148f1ae014dba6ea6af51abaafb3a8438a95f7bd5dbc79415040cfbb5d71e"
+    },
+    "contexts": {
+      "bytes": 14624,
+      "path": "replay/frappe-replay.contexts.json",
+      "sha256": "c0f2e887d77db347aaaca83ad7f359f028ace83a340118ca9d7bc1ececf755e9"
+    },
+    "declared_format_duration_us": 18675000,
+    "declared_stream_duration_us": 18675000,
+    "decoded_frame_count": 50,
+    "effect_verification": "authenticated read-only REST plus direct SQL and non-target delta audit",
+    "evidence_class": "reference_qualification",
+    "execution_profile": "standard",
+    "frame_inventory": {
+      "bytes": 867,
+      "path": "replay/frappe-replay.frame-pts-us.json",
+      "sha256": "6c41b1f2fcbad3cb7986334fb559b1a969cf68e678dd5437e77c2e91bd65edb1"
+    },
+    "media": {
+      "bytes": 137925,
+      "codec": "h264",
+      "height": 800,
+      "path": "replay/frappe-replay.mp4",
+      "sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76",
+      "width": 1280
+    },
+    "minimum_effect_tier": 1,
+    "outcome": "VERIFIED",
+    "poster": {
+      "bytes": 123507,
+      "height": 800,
+      "path": "replay/frappe-replay.poster.png",
+      "sha256": "f0431dd2ded209992fa6e51d22515c8f60696591c45ab096bc43c5216a55c8e1",
+      "width": 1280
+    },
+    "presentation_times_us": [
+      0,
+      596000,
+      956000,
+      1040000,
+      1226000,
+      1687000,
+      1719000,
+      2020000,
+      2244000,
+      2294000,
+      2423000,
+      2812000,
+      2843000,
+      2980000,
+      3168000,
+      3219000,
+      3355000,
+      5629000,
+      5659000,
+      5967000,
+      6346000,
+      7102000,
+      7231000,
+      7654000,
+      7687000,
+      7812000,
+      8012000,
+      8660000,
+      8979000,
+      9227000,
+      9270000,
+      9403000,
+      9794000,
+      9819000,
+      9946000,
+      13588000,
+      13620000,
+      13944000,
+      14206000,
+      14249000,
+      14380000,
+      14770000,
+      14802000,
+      14930000,
+      15118000,
+      15161000,
+      15497000,
+      15931000,
+      16924000,
+      18674000
+    ],
+    "relationship": "exact runtime-observation presentation derivative",
+    "timeline": {
+      "bytes": 45413,
+      "path": "replay/frappe-replay.control-overlay.v2.json",
+      "sha256": "a26da6c18fb4047856e84ca572243d67e932b267b4d6983b6325808695591bf0"
+    }
+  },
+  "schema_version": "openadapt.public-cross-surface-presentation/v1",
+  "trials": [
+    {
+      "condition": "baseline",
+      "execution_outcome": "VERIFIED",
+      "execution_profile": "standard",
+      "heal_count": 0,
+      "model_calls": 0,
+      "non_target_state_unchanged": true,
+      "report_sha256": "8a44d0ae332c693dcc8a34fab36ab5217b719a9c7f344ef062c52ecbf0642fc1",
+      "rest_record_count": 1,
+      "runtime_ms": 16973.589374916628,
+      "sql_record_count": 1,
+      "trial": 1
+    },
+    {
+      "condition": "baseline",
+      "execution_outcome": "VERIFIED",
+      "execution_profile": "standard",
+      "heal_count": 0,
+      "model_calls": 0,
+      "non_target_state_unchanged": true,
+      "report_sha256": "32aae545fa46d7b06f8973120de3fa56d00b7126f8cf3f4673f20da92b6d4e28",
+      "rest_record_count": 1,
+      "runtime_ms": 17179.979958105832,
+      "sql_record_count": 1,
+      "trial": 2
+    },
+    {
+      "condition": "baseline",
+      "execution_outcome": "VERIFIED",
+      "execution_profile": "standard",
+      "heal_count": 0,
+      "model_calls": 0,
+      "non_target_state_unchanged": true,
+      "report_sha256": "cb3770949297cb2754aa45fadd2a4f38790cfa6bfe4cbe6e925ca6c336b53d82",
+      "rest_record_count": 1,
+      "runtime_ms": 16034.39633292146,
+      "sql_record_count": 1,
+      "trial": 3
+    },
+    {
+      "condition": "ui_cosmetic_v1",
+      "execution_outcome": "VERIFIED",
+      "execution_profile": "standard",
+      "heal_count": 0,
+      "model_calls": 0,
+      "non_target_state_unchanged": true,
+      "report_sha256": "b4779429ae53abb0f0c41f34084041bbaaccbcaa1bc4f874ac073239fe8023cc",
+      "rest_record_count": 1,
+      "runtime_ms": 16366.366291884333,
+      "sql_record_count": 1,
+      "trial": 1
+    },
+    {
+      "condition": "ui_cosmetic_v1",
+      "execution_outcome": "VERIFIED",
+      "execution_profile": "standard",
+      "heal_count": 0,
+      "model_calls": 0,
+      "non_target_state_unchanged": true,
+      "report_sha256": "c672c63a0b2bf1f8bbe6689e27f44c55856ce6a00864deb7d2449da49f18d488",
+      "rest_record_count": 1,
+      "runtime_ms": 15702.53520901315,
+      "sql_record_count": 1,
+      "trial": 2
+    },
+    {
+      "condition": "ui_cosmetic_v1",
+      "execution_outcome": "VERIFIED",
+      "execution_profile": "standard",
+      "heal_count": 0,
+      "model_calls": 0,
+      "non_target_state_unchanged": true,
+      "report_sha256": "3d5d172af54116936314c09f717798e2011ab6db5994bf29dfc860cf25c7772b",
+      "rest_record_count": 1,
+      "runtime_ms": 15833.21104105562,
+      "sql_record_count": 1,
+      "trial": 3
+    }
+  ]
+}

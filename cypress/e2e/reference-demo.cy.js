@@ -2,7 +2,7 @@ describe('shared real-application demo', () => {
     const routes = [
         ['/', 'healthcare', 'exact-decoded-frame-bound'],
         ['/solutions/healthcare', 'healthcare', 'exact-decoded-frame-bound'],
-        ['/solutions/lending', 'lending', 'omitted-without-exact-timeline'],
+        ['/solutions/lending', 'lending', 'exact-decoded-frame-bound'],
         ['/solutions/insurance', 'insurance', 'exact-decoded-frame-bound'],
         ['/how-it-works', 'healthcare', 'exact-decoded-frame-bound'],
         ['/dental', 'insurance', 'exact-decoded-frame-bound'],
@@ -43,8 +43,8 @@ describe('shared real-application demo', () => {
             .scrollIntoView()
             .should('be.visible')
             .within(() => {
-                cy.get('img').should(($image) => {
-                    expect($image[0].naturalWidth).to.be.greaterThan(0)
+                cy.get('video').should(($video) => {
+                    expect($video[0].videoWidth).to.be.greaterThan(0)
                 })
                 cy.get('button[aria-label="Pause"], button[aria-label="Play"]')
                     .should('have.css', 'width', '44px')
@@ -55,6 +55,83 @@ describe('shared real-application demo', () => {
                 )
             })
     })
+
+    for (const [label, width, height] of [
+        ['desktop', 1280, 900],
+        ['mobile', 390, 844],
+    ]) {
+        it(`keeps exact Frappe target tracking clear of the ${label} status capsule`, () => {
+            cy.viewport(width, height)
+            cy.visit('/solutions/lending', {
+                onBeforeLoad(win) {
+                    win.IntersectionObserver = class {
+                        constructor(callback) {
+                            this.callback = callback
+                        }
+
+                        observe() {
+                            this.callback([{ isIntersecting: true }])
+                        }
+
+                        disconnect() {}
+                    }
+                },
+            })
+            cy.get('[data-testid="reference-evidence-player"]')
+                .scrollIntoView()
+                .as('player')
+            cy.contains('a', 'Reference method').should(
+                'have.attr',
+                'href',
+                'https://github.com/OpenAdaptAI/openadapt-flow/tree/ef33c2f4691040e39eb831f84658b941f715c290/benchmark/frappe_lending'
+            )
+            cy.get('@player')
+                .find('video')
+                .should(($video) => {
+                    expect($video[0].videoWidth).to.be.greaterThan(0)
+                })
+                .then(($video) => {
+                    const video = $video[0]
+                    return new Cypress.Promise((resolve) => {
+                        video.currentTime = 0.59
+                        setTimeout(() => {
+                            video.playbackRate = 0.25
+                            video.play().then(resolve)
+                        }, 100)
+                    })
+                })
+            cy.get('@player')
+                .should('have.attr', 'data-decoded-frame-index', '1')
+                .then(($player) => $player.find('video')[0].pause())
+                .should('contain.text', 'View execution evidence')
+                .and('contain.text', 'Application network traffic observed')
+                .find('[data-decoded-frame-index="1"]')
+                .should('be.visible')
+                .then(($target) => {
+                    cy.get('@player')
+                        .find('[data-overlay-kind="canonical-runtime-state"]')
+                        .should('be.visible')
+                        .and(
+                            'have.attr',
+                            'aria-label',
+                            'OpenAdapt verified replay in Frappe Lending'
+                        )
+                        .then(($capsule) => {
+                            const target = $target[0].getBoundingClientRect()
+                            const capsule = $capsule[0].getBoundingClientRect()
+                            const intersects = !(
+                                target.right <= capsule.left ||
+                                target.left >= capsule.right ||
+                                target.bottom <= capsule.top ||
+                                target.top >= capsule.bottom
+                            )
+                            expect(intersects).to.equal(false)
+                        })
+                })
+            cy.contains('a', 'Qualification pack').should('be.visible')
+            cy.get('@player').screenshot(`frappe-exact-target-${label}`)
+        })
+    }
 
     it('remounts exact media and supports keyboard-complete application tabs', () => {
         cy.visit('/')

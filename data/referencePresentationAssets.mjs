@@ -1,6 +1,10 @@
 import openemrReplayBinding from '../public/reference/openemr-patient-registration-standard-synthetic-v1/replay/openemr-replay.media-binding.json' with { type: 'json' }
 import openemrReplayContexts from '../public/reference/openemr-patient-registration-standard-synthetic-v1/replay/openemr-replay.contexts.json' with { type: 'json' }
 import openemrReplayTimeline from '../public/reference/openemr-patient-registration-standard-synthetic-v1/replay/openemr-replay.control-overlay.v2.json' with { type: 'json' }
+import frappeManifest from '../public/reference/frappe-lending-loan-application-standard-synthetic-v1/manifest.json' with { type: 'json' }
+import frappeReplayBinding from '../public/reference/frappe-lending-loan-application-standard-synthetic-v1/replay/frappe-replay.media-binding.json' with { type: 'json' }
+import frappeReplayContexts from '../public/reference/frappe-lending-loan-application-standard-synthetic-v1/replay/frappe-replay.contexts.json' with { type: 'json' }
+import frappeReplayTimeline from '../public/reference/frappe-lending-loan-application-standard-synthetic-v1/replay/frappe-replay.control-overlay.v2.json' with { type: 'json' }
 import openimisManifest from '../public/reference/openimis-eligibility-standard-synthetic-v1/manifest.json' with { type: 'json' }
 import openimisHaltBinding from '../public/reference/openimis-eligibility-standard-synthetic-v1/fail-safe-halt/expired-halt.media-binding.json' with { type: 'json' }
 import openimisHaltContexts from '../public/reference/openimis-eligibility-standard-synthetic-v1/fail-safe-halt/expired-halt.contexts.json' with { type: 'json' }
@@ -11,6 +15,8 @@ import openimisReplayTimeline from '../public/reference/openimis-eligibility-sta
 
 const openemrRoot =
     '/reference/openemr-patient-registration-standard-synthetic-v1'
+const frappeRoot =
+    '/reference/frappe-lending-loan-application-standard-synthetic-v1'
 const openimisRoot = '/reference/openimis-eligibility-standard-synthetic-v1'
 
 /**
@@ -21,6 +27,11 @@ const openimisRoot = '/reference/openimis-eligibility-standard-synthetic-v1'
 const referencePresentationAssets = Object.freeze({
     schemaVersion: 3,
     catalogs: Object.freeze([
+        Object.freeze({
+            applicationId: 'lending',
+            root: frappeRoot,
+            manifest: frappeManifest,
+        }),
         Object.freeze({
             applicationId: 'insurance',
             root: openimisRoot,
@@ -63,6 +74,40 @@ const referencePresentationAssets = Object.freeze({
                 timeline: `${openemrRoot}/replay/openemr-replay.control-overlay.v2.json`,
                 binding: `${openemrRoot}/replay/openemr-replay.media-binding.json`,
                 contexts: `${openemrRoot}/replay/openemr-replay.contexts.json`,
+            }),
+        }),
+        Object.freeze({
+            applicationId: 'lending',
+            modeId: 'verified_replay',
+            modeKind: 'replay',
+            media: Object.freeze({
+                kind: 'video',
+                src: `${frappeRoot}/replay/frappe-replay.mp4`,
+                mimeType: 'video/mp4',
+                poster: `${frappeRoot}/replay/frappe-replay.poster.png`,
+                sha256: frappeReplayBinding.media_sha256,
+                width: frappeReplayBinding.decoded_width,
+                height: frappeReplayBinding.decoded_height,
+                alt: 'OpenAdapt replaying a Standard-profile synthetic Loan Application workflow in Frappe Lending.',
+            }),
+            timeline: frappeReplayTimeline,
+            binding: Object.freeze({
+                evidencePackId: frappeReplayTimeline.evidence_pack_id,
+                mediaSha256: frappeReplayBinding.media_sha256,
+                mediaFrameCount: frappeReplayBinding.decoded_frame_count,
+                mediaFramePresentationTimesUs:
+                    frappeReplayBinding.presentation_times_us,
+                browserViewportIsExact: true,
+            }),
+            contexts: Object.freeze(frappeReplayContexts.contexts),
+            networkObservation: null,
+            pack: Object.freeze({
+                root: frappeRoot,
+                manifest: `${frappeRoot}/manifest.json`,
+                inventory: `${frappeRoot}/inventory.json`,
+                timeline: `${frappeRoot}/replay/frappe-replay.control-overlay.v2.json`,
+                binding: `${frappeRoot}/replay/frappe-replay.media-binding.json`,
+                contexts: `${frappeRoot}/replay/frappe-replay.contexts.json`,
             }),
         }),
         Object.freeze({
