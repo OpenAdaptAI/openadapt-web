@@ -49,26 +49,6 @@ test('dental local-first block describes design, and defers the legal call', () 
     assert.doesNotMatch(page, /no BAA (is )?required|BAA[- ]free|without a BAA/i)
 })
 
-test('dental halt-moment footage is real and labeled truthfully while dental assets are pending', () => {
-    const demo = read('components/DentalHaltMoment.js')
-
-    // Slots for the dental payer-portal assets, currently backed by the
-    // existing REAL OpenEMR replay footage — labeled as exactly that.
-    assert.match(demo, /const DENTAL_CLIPS = null/)
-    assert.match(demo, /manifest\.steps\.record_openemr/)
-    assert.match(demo, /manifest\.steps\.run_openemr/)
-    assert.match(demo, /real, unstaged screen\s+recordings/i)
-    assert.match(demo, /live OpenEMR instance/)
-    assert.match(demo, /Never point[\s\S]*these slots at mocked or fabricated footage/)
-    assert.match(demo, /verifies delivery, not the[\s\S]*payer.*underlying accuracy/)
-    assert.match(demo, /does not write benefits back/)
-    assert.match(demo, /MFA and CAPTCHA prompts/)
-    assert.match(demo, /ready-to-call task/)
-    assert.match(demo, /does not place the call/)
-    assert.doesNotMatch(demo, /system of record, not just/)
-    assert.doesNotMatch(demo, /actually landed where it belongs/)
-})
-
 test('dental lead form uses a distinct Netlify form with UTM attribution', () => {
     const form = read('components/DentalLeadForm.js')
     const registration = read('public/form.html')

@@ -1,4 +1,3 @@
-import ExecutionEnvironmentOverlay from './ExecutionEnvironmentOverlay'
 import styles from './Clip.module.css'
 
 const BASE = '/how-it-works/'
@@ -20,16 +19,13 @@ const BASE = '/how-it-works/'
  *
  * @param {object} clip - a step (or variant) entry from MANIFEST.json
  */
-export default function Clip({ clip, environment, reference }) {
+export default function Clip({ clip }) {
     const aspectRatio = `${clip.width} / ${clip.height}`
     const src = clip.gif.startsWith('/') ? clip.gif : BASE + clip.gif
     return (
         <figure
             className={styles.figure}
             data-testid="execution-footage-panel"
-            data-reference={reference?.key}
-            data-execution-environment={environment?.key}
-            data-environment-source-kind={environment?.sourceKind}
         >
             <div className={styles.media} style={{ aspectRatio }}>
                 <img
@@ -41,18 +37,9 @@ export default function Clip({ clip, environment, reference }) {
                     loading="lazy"
                     decoding="async"
                 />
-                {environment && reference && (
-                    <ExecutionEnvironmentOverlay
-                        environment={environment}
-                        reference={reference}
-                    />
-                )}
             </div>
             <figcaption className={styles.caption}>
                 <span>{clip.caption}</span>
-                {environment && (
-                    <small>{environment.mediaCaption}</small>
-                )}
             </figcaption>
         </figure>
     )
