@@ -1,0 +1,1496 @@
+{
+  "data_classification": "synthetic",
+  "duration_ms": 18675,
+  "events": [
+    {
+      "at_ms": 0,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 0,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295400374.512833,
+        "observed_at_unix_ms": 1785066188267,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:1:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 1,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 0
+    },
+    {
+      "at_ms": 596,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 1,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295400970.340166,
+        "observed_at_unix_ms": 1785066188862,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:1:16:no-pause:no-resume:no-stop:target-6b6a13aadad24d12",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 1,
+          "total": 16
+        },
+        "target_tracking": {
+          "action_kind": "click",
+          "binding": {
+            "frame_index": 1,
+            "kind": "media_frame",
+            "media_sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76"
+          },
+          "coordinate_space": "top_level_viewport_normalized",
+          "rect": {
+            "height": 0.035,
+            "width": 0.328125,
+            "x": 0.24609375,
+            "y": 0.2325
+          },
+          "source_viewport": {
+            "device_pixel_ratio": 1.0,
+            "height_css_px": 800,
+            "width_css_px": 1280
+          }
+        },
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 1
+    },
+    {
+      "at_ms": 956,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 2,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295401330.878541,
+        "observed_at_unix_ms": 1785066189223,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:1:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 1,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 2
+    },
+    {
+      "at_ms": 1040,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 3,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295401414.966958,
+        "observed_at_unix_ms": 1785066189307,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:2:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 2,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 3
+    },
+    {
+      "at_ms": 1226,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 4,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295401600.506041,
+        "observed_at_unix_ms": 1785066189493,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:2:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 2,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 4
+    },
+    {
+      "at_ms": 1687,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 5,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295402061.261916,
+        "observed_at_unix_ms": 1785066189953,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:2:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 2,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 5
+    },
+    {
+      "at_ms": 1719,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 6,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295402093.323291,
+        "observed_at_unix_ms": 1785066189985,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:3:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 3,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 6
+    },
+    {
+      "at_ms": 2020,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 7,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295402394.06975,
+        "observed_at_unix_ms": 1785066190286,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:3:16:no-pause:no-resume:no-stop:target-9d2fafd2b71ee63c",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 3,
+          "total": 16
+        },
+        "target_tracking": {
+          "action_kind": "click",
+          "binding": {
+            "frame_index": 7,
+            "kind": "media_frame",
+            "media_sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76"
+          },
+          "coordinate_space": "top_level_viewport_normalized",
+          "rect": {
+            "height": 0.035,
+            "width": 0.328125,
+            "x": 0.59765625,
+            "y": 0.2325
+          },
+          "source_viewport": {
+            "device_pixel_ratio": 1.0,
+            "height_css_px": 800,
+            "width_css_px": 1280
+          }
+        },
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 7
+    },
+    {
+      "at_ms": 2244,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 8,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295402618.901041,
+        "observed_at_unix_ms": 1785066190511,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:3:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 3,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 8
+    },
+    {
+      "at_ms": 2294,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 9,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295402668.327458,
+        "observed_at_unix_ms": 1785066190560,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:4:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 4,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 9
+    },
+    {
+      "at_ms": 2423,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 10,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295402797.3285,
+        "observed_at_unix_ms": 1785066190689,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:4:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 4,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 10
+    },
+    {
+      "at_ms": 2812,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 11,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295403186.523958,
+        "observed_at_unix_ms": 1785066191079,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:4:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 4,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 11
+    },
+    {
+      "at_ms": 2843,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 12,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295403217.482458,
+        "observed_at_unix_ms": 1785066191109,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:5:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 5,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 12
+    },
+    {
+      "at_ms": 2980,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 13,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295403354.329875,
+        "observed_at_unix_ms": 1785066191246,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:5:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 5,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 13
+    },
+    {
+      "at_ms": 3168,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 14,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295403542.157583,
+        "observed_at_unix_ms": 1785066191434,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:5:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 5,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 14
+    },
+    {
+      "at_ms": 3219,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 15,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295403593.760291,
+        "observed_at_unix_ms": 1785066191486,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:6:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 6,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 15
+    },
+    {
+      "at_ms": 3355,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 16,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295403729.38125,
+        "observed_at_unix_ms": 1785066191621,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:6:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 6,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 16
+    },
+    {
+      "at_ms": 5629,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 17,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295406003.482,
+        "observed_at_unix_ms": 1785066193895,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:6:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 6,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 17
+    },
+    {
+      "at_ms": 5659,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 18,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295406033.838,
+        "observed_at_unix_ms": 1785066193926,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:7:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 7,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 18
+    },
+    {
+      "at_ms": 5967,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 19,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295406341.194208,
+        "observed_at_unix_ms": 1785066194233,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:7:16:no-pause:no-resume:no-stop:target-1f19bf114b089697",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 7,
+          "total": 16
+        },
+        "target_tracking": {
+          "action_kind": "click",
+          "binding": {
+            "frame_index": 19,
+            "kind": "media_frame",
+            "media_sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76"
+          },
+          "coordinate_space": "top_level_viewport_normalized",
+          "rect": {
+            "height": 0.035,
+            "width": 0.328125,
+            "x": 0.24609375,
+            "y": 0.855
+          },
+          "source_viewport": {
+            "device_pixel_ratio": 1.0,
+            "height_css_px": 800,
+            "width_css_px": 1280
+          }
+        },
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 19
+    },
+    {
+      "at_ms": 6346,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 20,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295406720.191,
+        "observed_at_unix_ms": 1785066194612,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:7:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 7,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 20
+    },
+    {
+      "at_ms": 7102,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 21,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295407476.388375,
+        "observed_at_unix_ms": 1785066195368,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:8:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 8,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 21
+    },
+    {
+      "at_ms": 7231,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 22,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295407605.854666,
+        "observed_at_unix_ms": 1785066195498,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:8:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 8,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 22
+    },
+    {
+      "at_ms": 7654,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 23,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295408028.083791,
+        "observed_at_unix_ms": 1785066195920,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:8:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 8,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 23
+    },
+    {
+      "at_ms": 7687,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 24,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295408061.121791,
+        "observed_at_unix_ms": 1785066195953,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:9:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 9,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 24
+    },
+    {
+      "at_ms": 7812,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 25,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295408186.66475,
+        "observed_at_unix_ms": 1785066196079,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:9:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 9,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 25
+    },
+    {
+      "at_ms": 8012,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 26,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295408386.899875,
+        "observed_at_unix_ms": 1785066196279,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:9:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 9,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 26
+    },
+    {
+      "at_ms": 8660,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 27,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295409034.93425,
+        "observed_at_unix_ms": 1785066196927,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:10:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 10,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 27
+    },
+    {
+      "at_ms": 8979,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 28,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295409353.792,
+        "observed_at_unix_ms": 1785066197246,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:10:16:no-pause:no-resume:no-stop:target-f0e067e8e67e3b16",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 10,
+          "total": 16
+        },
+        "target_tracking": {
+          "action_kind": "click",
+          "binding": {
+            "frame_index": 28,
+            "kind": "media_frame",
+            "media_sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76"
+          },
+          "coordinate_space": "top_level_viewport_normalized",
+          "rect": {
+            "height": 0.035,
+            "width": 0.328125,
+            "x": 0.24609375,
+            "y": 0.94375
+          },
+          "source_viewport": {
+            "device_pixel_ratio": 1.0,
+            "height_css_px": 800,
+            "width_css_px": 1280
+          }
+        },
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 28
+    },
+    {
+      "at_ms": 9227,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 29,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295409601.568375,
+        "observed_at_unix_ms": 1785066197494,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:10:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 10,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 29
+    },
+    {
+      "at_ms": 9270,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 30,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295409644.197416,
+        "observed_at_unix_ms": 1785066197536,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:11:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 11,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 30
+    },
+    {
+      "at_ms": 9403,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 31,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295409777.924916,
+        "observed_at_unix_ms": 1785066197670,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:11:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 11,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 31
+    },
+    {
+      "at_ms": 9794,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 32,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295410168.769916,
+        "observed_at_unix_ms": 1785066198061,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:11:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 11,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 32
+    },
+    {
+      "at_ms": 9819,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 33,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295410193.031791,
+        "observed_at_unix_ms": 1785066198085,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:12:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 12,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 33
+    },
+    {
+      "at_ms": 9946,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 34,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295410320.167541,
+        "observed_at_unix_ms": 1785066198212,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:12:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 12,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 34
+    },
+    {
+      "at_ms": 13588,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 35,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295413962.115583,
+        "observed_at_unix_ms": 1785066201854,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:12:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 12,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 35
+    },
+    {
+      "at_ms": 13620,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 36,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295413994.473041,
+        "observed_at_unix_ms": 1785066201886,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:13:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 13,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 36
+    },
+    {
+      "at_ms": 13944,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 37,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295414318.686291,
+        "observed_at_unix_ms": 1785066202211,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:13:16:no-pause:no-resume:no-stop:target-692c8f6cb05ecbe0",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 13,
+          "total": 16
+        },
+        "target_tracking": {
+          "action_kind": "click",
+          "binding": {
+            "frame_index": 37,
+            "kind": "media_frame",
+            "media_sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76"
+          },
+          "coordinate_space": "top_level_viewport_normalized",
+          "rect": {
+            "height": 0.035,
+            "width": 0.328125,
+            "x": 0.59765625,
+            "y": 0.94375
+          },
+          "source_viewport": {
+            "device_pixel_ratio": 1.0,
+            "height_css_px": 800,
+            "width_css_px": 1280
+          }
+        },
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 37
+    },
+    {
+      "at_ms": 14206,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 38,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295414580.562916,
+        "observed_at_unix_ms": 1785066202473,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:13:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 13,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 38
+    },
+    {
+      "at_ms": 14249,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 39,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295414623.994208,
+        "observed_at_unix_ms": 1785066202516,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:14:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 14,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 39
+    },
+    {
+      "at_ms": 14380,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 40,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295414754.276291,
+        "observed_at_unix_ms": 1785066202646,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:14:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 14,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 40
+    },
+    {
+      "at_ms": 14770,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 41,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295415144.810458,
+        "observed_at_unix_ms": 1785066203037,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:14:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 14,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 41
+    },
+    {
+      "at_ms": 14802,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 42,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295415176.427791,
+        "observed_at_unix_ms": 1785066203068,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:15:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 15,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 42
+    },
+    {
+      "at_ms": 14930,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 43,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295415304.266708,
+        "observed_at_unix_ms": 1785066203196,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:15:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 15,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 43
+    },
+    {
+      "at_ms": 15118,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 44,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295415492.77325,
+        "observed_at_unix_ms": 1785066203385,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:15:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 15,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 44
+    },
+    {
+      "at_ms": 15161,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 45,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295415535.967333,
+        "observed_at_unix_ms": 1785066203428,
+        "phase": "observing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:observing:governed:standard:16:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Observing the application",
+        "step": {
+          "current": 16,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 45
+    },
+    {
+      "at_ms": 15497,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 46,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295415871.566208,
+        "observed_at_unix_ms": 1785066203764,
+        "phase": "executing",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:executing:governed:standard:16:16:no-pause:no-resume:no-stop:target-b7ee5d0929285aca",
+        "status": "Executing with verification gates",
+        "step": {
+          "current": 16,
+          "total": 16
+        },
+        "target_tracking": {
+          "action_kind": "click",
+          "binding": {
+            "frame_index": 46,
+            "kind": "media_frame",
+            "media_sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76"
+          },
+          "coordinate_space": "top_level_viewport_normalized",
+          "rect": {
+            "height": 0.035,
+            "width": 0.0390625,
+            "x": 0.94921875,
+            "y": 0.0125
+          },
+          "source_viewport": {
+            "device_pixel_ratio": 1.0,
+            "height_css_px": 800,
+            "width_css_px": 1280
+          }
+        },
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 46
+    },
+    {
+      "at_ms": 15931,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 47,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295416305.9945,
+        "observed_at_unix_ms": 1785066204198,
+        "phase": "verifying",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verifying:governed:standard:16:16:no-pause:no-resume:no-stop:no-target",
+        "status": "Verifying the intended result",
+        "step": {
+          "current": 16,
+          "total": 16
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 47
+    },
+    {
+      "at_ms": 16924,
+      "frame": {
+        "controls": {
+          "pause": false,
+          "resume": false,
+          "stop": false
+        },
+        "event_sequence": 48,
+        "mode": "governed",
+        "observed_at_monotonic_ms": 1295417298.697208,
+        "observed_at_unix_ms": 1785066205191,
+        "phase": "verified",
+        "presentation": true,
+        "profile": "standard",
+        "schema_version": "openadapt.control-overlay-frame/v2",
+        "state_id": "visible:verified:governed:standard:no-step:no-total:no-pause:no-resume:no-stop:no-target",
+        "status": "Outcome verified",
+        "step": {
+          "current": null,
+          "total": null
+        },
+        "target_tracking": null,
+        "visible": true,
+        "workflow_label": "Governed workflow"
+      },
+      "media_frame_index": 48
+    }
+  ],
+  "evidence_pack_id": "frappe-lending-loan-application-standard-synthetic-v1",
+  "media_frame_count": 50,
+  "media_sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76",
+  "schema_version": "openadapt.control-overlay-timeline/v2"
+}

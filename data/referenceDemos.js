@@ -29,6 +29,9 @@ const referenceDemo = ({ recording, replay, halt = null, ...demo }) =>
 const openimisCatalog = presentationAssets.catalogs.find(
     (candidate) => candidate.applicationId === 'insurance'
 )
+const frappeCatalog = presentationAssets.catalogs.find(
+    (candidate) => candidate.applicationId === 'lending'
+)
 
 const openimisManifestMode = (modeId, details) => {
     const mode = openimisCatalog.manifest.modes.find(
@@ -122,52 +125,53 @@ export const REFERENCE_DEMOS = Object.freeze([
     referenceDemo({
         id: 'lending',
         industry: 'Lending',
-        application: 'Frappe Lending',
-        applicationDetail: 'pinned local reference',
+        application: frappeCatalog.manifest.application.name,
+        applicationDetail: `${frappeCatalog.manifest.application.version} · pinned local synthetic fixture`,
         route: '/solutions/lending',
-        evidenceClass: 'Public application reference',
+        evidenceClass: 'Reference qualification',
         task: 'Create exactly one synthetic Loan Application from structured applicant and loan inputs.',
         recording: Object.freeze({
             id: 'recording',
             label: 'Recorded demonstration',
             modeKind: 'recording',
             evidenceClass: 'Source demonstration · synthetic data',
-            kind: 'gif',
-            src: '/lending-demo/record-frappe.gif',
-            poster: '/lending-demo/record-frappe.jpg',
-            width: 880,
-            height: 550,
+            kind: 'video',
+            src: `${frappeCatalog.root}/${frappeCatalog.manifest.recording.media.path}`,
+            mimeType: 'video/mp4',
+            poster: `${frappeCatalog.root}/${frappeCatalog.manifest.recording.poster.path}`,
+            width: frappeCatalog.manifest.recording.media.width,
+            height: frappeCatalog.manifest.recording.media.height,
             alt: 'OpenAdapt recording a synthetic Loan Application workflow in Frappe Lending.',
             sourceCaption:
-                'Source-derived evidence sequence from the Frappe Lending reference run; not a literal continuous screen recording.',
+                'Unbound source recording used to compile the Frappe Lending workflow. It carries no overlay or outcome claim.',
             ...exactPresentationFor('lending', 'recording'),
         }),
         replay: Object.freeze({
-            id: 'compiled_replay',
-            label: 'Compiled replay',
+            id: 'verified_replay',
+            label: 'Verified replay',
             modeKind: 'replay',
-            kind: 'gif',
-            src: '/lending-demo/replay-frappe.gif',
-            poster: '/lending-demo/replay-frappe.jpg',
-            width: 880,
-            height: 550,
-            alt: 'OpenAdapt replaying the compiled synthetic Loan Application workflow in Frappe Lending.',
+            kind: 'video',
+            src: `${frappeCatalog.root}/${frappeCatalog.manifest.replay.media.path}`,
+            mimeType: 'video/mp4',
+            poster: `${frappeCatalog.root}/${frappeCatalog.manifest.replay.poster.path}`,
+            width: frappeCatalog.manifest.replay.media.width,
+            height: frappeCatalog.manifest.replay.media.height,
+            alt: 'OpenAdapt replaying a Standard-profile synthetic Loan Application workflow in Frappe Lending.',
             sourceCaption:
-                'Source-derived evidence sequence from the Frappe Lending compiled replay; not literal continuous footage.',
-            ...exactPresentationFor('lending', 'replay'),
+                'Exact Standard-profile replay evidence media with presentation chrome omitted.',
+            ...exactPresentationFor('lending', 'verified_replay'),
         }),
         metrics: Object.freeze([
-            Object.freeze({ label: 'Compiled trials', value: '6/6' }),
-            Object.freeze({ label: 'Silent wrong success', value: '0' }),
+            Object.freeze({ label: 'Standard VERIFIED', value: '6/6' }),
+            Object.freeze({ label: 'REST + SQL parity', value: '6/6' }),
             Object.freeze({ label: 'Model calls', value: '0' }),
         ]),
         verification:
-            'A separately authenticated REST readback, direct SQL table delta, and non-target digest audit accepted the saved record.',
-        evidenceHref: '/artifacts/json?source=%2Flending-demo%2Fprovenance.json',
-        evidenceLabel: 'Evidence manifest',
-        methodologyHref:
-            'https://github.com/OpenAdaptAI/openadapt-flow/tree/84c7a94f2d2ca9e183799394d1952ae32fa6bf92/benchmark/frappe_lending',
-        methodologyLabel: 'Reference source',
+            'All 6 fresh Standard-profile runs created exactly one synthetic Loan Application and returned VERIFIED only after separately authenticated REST readback agreed with direct SQL and the non-target-state audit. Five qualification fault cases returned HALTED before a consequential write; no exact HALT footage was retained.',
+        evidenceHref: '/artifacts/json?source=%2Freference%2Ffrappe-lending-loan-application-standard-synthetic-v1%2Fmanifest.json',
+        evidenceLabel: 'Qualification pack',
+        methodologyHref: `${frappeCatalog.manifest.provenance.runtime_repository}/tree/${frappeCatalog.manifest.provenance.runtime_source_commit}/benchmark/frappe_lending`,
+        methodologyLabel: 'Reference method',
     }),
     referenceDemo({
         id: 'insurance',

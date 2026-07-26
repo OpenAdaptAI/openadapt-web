@@ -20,6 +20,7 @@ export default function EvidenceMediaPlayer({
     media,
     application,
     phase,
+    modeLabel,
     exactPresentation = null,
     evidenceHref = null,
 }) {
@@ -148,12 +149,13 @@ export default function EvidenceMediaPlayer({
         setDuration(Number.isFinite(video.duration) ? video.duration : 0)
     }
 
-    const phaseLabel =
-        phase === 'recording'
+    const accessibleModeLabel =
+        modeLabel ??
+        (phase === 'recording'
             ? 'Demonstration'
             : phase === 'halt'
               ? 'Fail-safe halt'
-              : 'Compiled replay'
+              : 'Compiled replay')
     const frame = exactPresentation
         ? executionOverlayFrameAt(
               exactPresentation.timeline,
@@ -197,6 +199,7 @@ export default function EvidenceMediaPlayer({
               exactPresentation.networkObservation
           )
         : null
+    const overlayEvidenceHref = presentation?.evidenceHref ?? evidenceHref
 
     useEffect(() => {
         const stage = stageRef.current
@@ -228,6 +231,9 @@ export default function EvidenceMediaPlayer({
             data-testid="reference-evidence-player"
             data-media-kind={media.kind}
             data-media-src={media.src}
+            data-decoded-frame-index={
+                decodedFrameIndex === null ? 'unbound' : decodedFrameIndex
+            }
             data-target-tracking={
                 exactPresentation
                     ? 'exact-decoded-frame-bound'
@@ -298,9 +304,9 @@ export default function EvidenceMediaPlayer({
                     <div
                         ref={capsuleRef}
                         className={styles.capsule}
-                        aria-label={`OpenAdapt ${phaseLabel.toLowerCase()} in ${application}`}
+                        aria-label={`OpenAdapt ${accessibleModeLabel.toLowerCase()} in ${application}`}
                         data-overlay-kind="canonical-runtime-state"
-                        data-interactive={presentation.evidenceHref ? 'true' : undefined}
+                        data-interactive={overlayEvidenceHref ? 'true' : undefined}
                     >
                         <span className={styles.header}>
                             <span className={styles.brand}>
@@ -345,8 +351,8 @@ export default function EvidenceMediaPlayer({
                                 {presentation.explanation}
                             </span>
                         )}
-                        {(evidenceHref ?? presentation.evidenceHref) && (
-                            <a className={styles.evidenceLink} href={evidenceHref ?? presentation.evidenceHref}>
+                        {overlayEvidenceHref && (
+                            <a className={styles.evidenceLink} href={overlayEvidenceHref}>
                                 View execution evidence
                             </a>
                         )}
@@ -357,7 +363,7 @@ export default function EvidenceMediaPlayer({
             <div
                 className={styles.controls}
                 role="group"
-                aria-label={`${application} ${phaseLabel.toLowerCase()} playback controls`}
+                aria-label={`${application} ${accessibleModeLabel.toLowerCase()} playback controls`}
             >
                 <button
                     type="button"

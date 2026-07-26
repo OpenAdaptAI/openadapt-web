@@ -1,0 +1,60 @@
+{
+  "files": [
+    {
+      "bytes": 10260,
+      "path": "manifest.json",
+      "sha256": "66d18daded5405e4e7b2ffd724f1c5615272518f606f4493f1dee46ccbefeca2"
+    },
+    {
+      "bytes": 194461,
+      "height": 800,
+      "path": "recording/frappe-source-recording.poster.png",
+      "sha256": "a462b84a1aee106b3a9928c98a3960f40e4dcdffa40a475fc1bce25d188f4544",
+      "width": 1280
+    },
+    {
+      "bytes": 554703,
+      "codec": "h264",
+      "height": 800,
+      "path": "recording/frappe-source-recording.unbound.mp4",
+      "sha256": "98f78c38134c460738c6eee37eb8b7cdcbcec6a6ebad49ace51ccb00a4b94900",
+      "width": 1280
+    },
+    {
+      "bytes": 14624,
+      "path": "replay/frappe-replay.contexts.json",
+      "sha256": "c0f2e887d77db347aaaca83ad7f359f028ace83a340118ca9d7bc1ececf755e9"
+    },
+    {
+      "bytes": 45413,
+      "path": "replay/frappe-replay.control-overlay.v2.json",
+      "sha256": "a26da6c18fb4047856e84ca572243d67e932b267b4d6983b6325808695591bf0"
+    },
+    {
+      "bytes": 867,
+      "path": "replay/frappe-replay.frame-pts-us.json",
+      "sha256": "6c41b1f2fcbad3cb7986334fb559b1a969cf68e678dd5437e77c2e91bd65edb1"
+    },
+    {
+      "bytes": 1276,
+      "path": "replay/frappe-replay.media-binding.json",
+      "sha256": "4f3148f1ae014dba6ea6af51abaafb3a8438a95f7bd5dbc79415040cfbb5d71e"
+    },
+    {
+      "bytes": 137925,
+      "codec": "h264",
+      "height": 800,
+      "path": "replay/frappe-replay.mp4",
+      "sha256": "519a6f572ce6ebcd2ad40dd2b587842cbfc5d02cf26b776b9d6a5dd9090dce76",
+      "width": 1280
+    },
+    {
+      "bytes": 123507,
+      "height": 800,
+      "path": "replay/frappe-replay.poster.png",
+      "sha256": "f0431dd2ded209992fa6e51d22515c8f60696591c45ab096bc43c5216a55c8e1",
+      "width": 1280
+    }
+  ],
+  "schema_version": "openadapt.public-pack-inventory/v1"
+}

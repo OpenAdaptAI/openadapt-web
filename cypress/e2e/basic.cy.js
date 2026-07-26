@@ -484,20 +484,22 @@ describe('public product truth', () => {
             .within(() => {
                 cy.contains('Frappe Lending').should('be.visible')
                 cy.contains('button', 'Recorded demonstration').click()
-                cy.get('img')
-                    .should('have.attr', 'alt')
+                cy.get('video')
+                    .should('have.attr', 'aria-label')
                     .and('contain', 'recording a synthetic Loan Application')
-                cy.contains('button', 'Compiled replay').click()
-                cy.get('img')
-                    .should('have.attr', 'alt')
-                    .and('contain', 'replaying the compiled synthetic Loan Application')
-                cy.contains('Compiled trials')
+                cy.contains('button', 'Verified replay').click()
+                cy.get('video')
+                    .should('have.attr', 'aria-label')
+                    .and('contain', 'Standard-profile synthetic Loan Application')
+                cy.get('[data-testid="reference-evidence-player"]')
+                    .should('have.attr', 'data-target-tracking', 'exact-decoded-frame-bound')
+                cy.contains('Standard VERIFIED')
                 cy.contains('6/6')
-                cy.contains('Evidence manifest')
+                cy.contains('Qualification pack')
                     .should('have.attr', 'href')
                     .and(
                         'equal',
-                        '/artifacts/json?source=%2Flending-demo%2Fprovenance.json'
+                        '/artifacts/json?source=%2Freference%2Ffrappe-lending-loan-application-standard-synthetic-v1%2Fmanifest.json'
                     )
             })
 
