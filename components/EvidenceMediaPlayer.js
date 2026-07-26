@@ -4,8 +4,8 @@ import {
     chooseOverlayPlacement,
     decodedMediaFrameIndex,
     exactTargetForDecodedFrame,
+    executionOverlayPresentation,
     executionOverlayFrameAt,
-    executionRailForBoundContext,
     mapTargetToContainedVideo,
 } from '../lib/executionOverlayTimeline'
 import styles from './EvidenceMediaPlayer.module.css'
@@ -15,23 +15,6 @@ const clock = (seconds) => {
     const whole = Math.floor(seconds)
     return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`
 }
-
-const PHASE_LABELS = Object.freeze({
-    idle: 'Ready',
-    observing: 'Observing',
-    recording: 'Recording',
-    executing: 'Executing',
-    pausing: 'Pausing',
-    paused: 'Paused',
-    resuming: 'Resuming',
-    stopping: 'Stopping',
-    verifying: 'Verifying',
-    verified: 'Verified',
-    completed_unverified: 'Unverified',
-    halted: 'Halted',
-    failed: 'Failed',
-    rolled_back: 'Rolled back',
-})
 
 export default function EvidenceMediaPlayer({
     media,
@@ -198,19 +181,12 @@ export default function EvidenceMediaPlayer({
                 : [],
         [media.protectedRegions]
     )
-    const statusLabel = frame?.status ?? phaseLabel
-    const phaseChip = frame ? PHASE_LABELS[frame.phase] : phaseLabel
-    const contextLabel = frame?.step?.current
-        ? `Step ${frame.step.current} of ${frame.step.total}`
-        : exactPresentation
-          ? 'Exact runtime timeline'
-          : 'Raw source media'
     const boundContext = frame
         ? exactPresentation?.contextsBySequence?.[frame.event_sequence] ?? null
         : null
-    const rail = frame
-        ? executionRailForBoundContext(frame, boundContext)
-        : []
+    const presentation = frame
+        ? executionOverlayPresentation(frame, boundContext, currentTime * 1000)
+        : null
 
     useEffect(() => {
         const stage = stageRef.current
@@ -313,22 +289,55 @@ export default function EvidenceMediaPlayer({
                         className={styles.capsule}
                         aria-label={`OpenAdapt ${phaseLabel.toLowerCase()}`}
                         data-overlay-kind="canonical-runtime-state"
+                        data-interactive={presentation.evidenceHref ? 'true' : undefined}
                     >
-                        <span className={styles.brand}>
-                            <i aria-hidden="true" /> OpenAdapt
+                        <span className={styles.header}>
+                            <span className={styles.brand}>
+                                <i aria-hidden="true" /> OpenAdapt
+                            </span>
+                            <span className={styles.phase} data-state={frame.phase}>
+                                {presentation.phaseLabel}
+                            </span>
+                            <span className={styles.progressLabel}>
+                                {presentation.progressLabel}
+                            </span>
                         </span>
-                        <span className={styles.phase}>{phaseChip}</span>
-                        <small>
-                            {application} · {statusLabel} · {contextLabel}
-                        </small>
-                        {rail.length > 0 && (
+                        {presentation.rail.length > 0 && (
                             <span className={styles.rail} aria-label="Execution stage">
-                                {rail.map((item) => (
+                                {presentation.rail.map((item) => (
                                     <i key={item.label} data-state={item.state}>
                                         {item.label}
                                     </i>
                                 ))}
                             </span>
+                        )}
+                        <strong className={styles.status} data-state={frame.phase}>
+                            {presentation.safetyLabel}
+                        </strong>
+                        {presentation.progressValue !== null &&
+                            presentation.progressMax !== null && (
+                                <progress
+                                    className={styles.progress}
+                                    value={presentation.progressValue}
+                                    max={presentation.progressMax}
+                                    aria-label={`Workflow progress: ${presentation.progressValue} of ${presentation.progressMax}`}
+                                />
+                            )}
+                        <span className={styles.secondary}>
+                            <span>{application}</span>
+                            {presentation.secondaryLabels.map((label) => (
+                                <span key={label}>{label}</span>
+                            ))}
+                        </span>
+                        {presentation.expanded && presentation.explanation && (
+                            <span className={styles.explanation}>
+                                {presentation.explanation}
+                            </span>
+                        )}
+                        {presentation.evidenceHref && (
+                            <a className={styles.evidenceLink} href={presentation.evidenceHref}>
+                                View execution evidence
+                            </a>
                         )}
                     </div>
                 )}

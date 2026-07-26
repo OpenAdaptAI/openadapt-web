@@ -150,8 +150,13 @@ test('status persists by bounded time while target exists only on its exact fram
     )
 })
 
-test('capsule placement is event-stable and rail requires exact bound context', async () => {
-    const { chooseOverlayPlacement, executionRailForBoundContext } = await import(
+test('capsule placement is event-stable and presentation facts require exact bound context', async () => {
+    const {
+        bindExecutionOverlayContext,
+        chooseOverlayPlacement,
+        executionOverlayPresentation,
+        executionRailForBoundContext,
+    } = await import(
         '../lib/executionOverlayTimeline.js'
     )
     const dimensions = {
@@ -187,13 +192,39 @@ test('capsule placement is event-stable and rail requires exact bound context', 
     )
     const activeFrame = frame(5)
     assert.deepEqual(executionRailForBoundContext(activeFrame, null), [])
+    const context = bindExecutionOverlayContext(activeFrame, {
+        state_id: activeFrame.state_id,
+        event_sequence: activeFrame.event_sequence,
+        surface: 'browser',
+        runtime: 'local',
+        minimum_effect_tier: 1,
+        effect_evidence: 'passed',
+        execution_stage: 'act',
+        model_calls: 0,
+        external_network_calls: 'observed',
+    })
     assert.deepEqual(
-        executionRailForBoundContext(activeFrame, {
-            state_id: activeFrame.state_id,
-            event_sequence: activeFrame.event_sequence,
-            execution_stage: 'act',
-        }).map(({ state }) => state),
+        executionRailForBoundContext(activeFrame, context).map(({ state }) => state),
         ['complete', 'active', 'pending']
+    )
+    const presentation = executionOverlayPresentation(activeFrame, context, 12_000)
+    assert.equal(presentation.progressLabel, 'Step 1 of 2')
+    assert.deepEqual(presentation.secondaryLabels, [
+        'Browser',
+        'Local runtime',
+        'Standard profile',
+        '0:12',
+        'Independent system check (Tier 1)',
+        'Effect evidence passed',
+        '0 model calls',
+        'External network activity observed',
+    ])
+    assert.throws(
+        () => bindExecutionOverlayContext(activeFrame, {
+            ...context,
+            evidence_href: 'https://example.com/evidence',
+        }),
+        /unsafe evidence link/
     )
 })
 
