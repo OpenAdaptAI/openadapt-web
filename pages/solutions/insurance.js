@@ -46,7 +46,7 @@ export default function InsurancePage() {
                         href="/qualify"
                         className="btn-ink"
                     >
-                        Evaluate a workflow
+                        Qualify one workflow
                     </Link>
                     <Link
                         href="/"
@@ -112,7 +112,7 @@ export default function InsurancePage() {
                         href="/qualify"
                         className="btn-ink mt-5 inline-block"
                     >
-                        Evaluate a workflow
+                        Qualify one workflow
                     </Link>
                 </div>
             </div>
