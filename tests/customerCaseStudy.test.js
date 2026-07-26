@@ -13,15 +13,33 @@ test('the customer case study is a direct OpenAdapt result', () => {
     const page = read('pages/customers/rvu-audit-heart-care.js')
     const combined = `${data}\n${component}\n${page}`
 
-    assert.match(combined, /Dr\. Victor Abrich, MD/)
-    assert.match(combined, /Board-certified electrophysiologist/)
-    assert.match(combined, /MercyOne Waterloo Heart Care/)
+    // Anonymized descriptor: no named person, no named institution.
+    assert.match(combined, /A US cardiology electrophysiology practice/)
     assert.match(combined, /≈\$75,000/)
-    assert.match(combined, /recovered billables per year/)
-    assert.match(combined, /Several hours/)
+    assert.match(
+        combined,
+        /estimated recoverable billables identified per year/
+    )
     assert.match(combined, /manual audit work saved each month/)
     assert.match(combined, /EMR/)
     assert.match(combined, /RVU/)
+
+    // Section 19 methodology fields must be present.
+    assert.match(combined, /observationWindow/)
+    assert.match(combined, /Definition of/)
+    assert.match(combined, /Attribution method/)
+    assert.match(combined, /Out-of-band read-back/)
+    assert.match(combined, /Silent incorrect successes/)
+    assert.match(combined, /institutional endorsement/i)
+
+    // Preliminary-figures footnote must be present.
+    assert.match(combined, /preliminary and under review/i)
+
+    // Regression guard: the named physician and institution, and the
+    // founder surname, must never reappear on this surface.
+    assert.doesNotMatch(combined, /Victor Abrich/i)
+    assert.doesNotMatch(combined, /MercyOne/i)
+    assert.doesNotMatch(combined, /mercyone\.org/i)
     assert.doesNotMatch(
         combined,
         /TurboPA|RVUBot|predecessor|historical product|earlier product|evolved from/i
