@@ -38,7 +38,7 @@ export default function DentalHaltMoment() {
             <ReferenceDemoShowcase
                 initialIndustry="insurance"
                 heading="See the governance mechanism in a public insurance application"
-                intro="This openIMIS clip is a claims-entry reference, not payer-portal eligibility footage. It demonstrates the same capture, deterministic replay, result evidence, and halt mechanism used for an eligibility workflow."
+                intro="This openIMIS eligibility reference includes the source demonstration, an independently VERIFIED replay, and a SQL-refuted HALT. It shows the same verify-or-stop contract used when a payer portal has no suitable API."
             />
 
             <p className="mx-auto max-w-5xl px-4 pb-12 text-sm">

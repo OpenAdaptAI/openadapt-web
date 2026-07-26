@@ -205,6 +205,7 @@ test('capsule placement is event-stable and presentation facts require exact bou
         execution_stage: 'act',
         model_calls: 0,
         external_network_calls: 'observed',
+        off_box_transmissions_observed: 0,
     })
     assert.deepEqual(
         executionRailForBoundContext(activeFrame, context).map(({ state }) => state),
@@ -234,7 +235,7 @@ test('capsule placement is event-stable and presentation facts require exact bou
         'Independent system check (Tier 1)',
         'Effect evidence passed',
         '0 model calls',
-        'External network activity observed',
+        'Local app traffic only · no off-box transmission',
     ])
     assert.throws(
         () => bindExecutionOverlayContext(activeFrame, {

@@ -5,30 +5,69 @@ import {
     isSingleSourceExactPresentationMedia,
 } from '../lib/executionOverlayTimeline'
 
-const exactPresentationFor = (applicationId, phase) => {
+const exactPresentationFor = (applicationId, modeId) => {
     const asset = presentationAssets.assets.find(
         (candidate) =>
-            candidate.applicationId === applicationId && candidate.phase === phase
+            candidate.applicationId === applicationId && candidate.modeId === modeId
     )
     return Object.freeze({
         presentationMedia: asset?.media ?? null,
         presentationTimeline: asset?.timeline ?? null,
         presentationBinding: asset?.binding ?? null,
         presentationContexts: asset?.contexts ?? null,
+        presentationNetworkObservation: asset?.networkObservation ?? null,
     })
 }
+
+const referenceDemo = ({ recording, replay, halt = null, ...demo }) =>
+    Object.freeze({
+        ...demo,
+        defaultModeId: replay.id,
+        modes: Object.freeze([recording, replay, halt].filter(Boolean)),
+    })
+
+const openimisCatalog = presentationAssets.catalogs.find(
+    (candidate) => candidate.applicationId === 'insurance'
+)
+
+const openimisManifestMode = (modeId, details) => {
+    const mode = openimisCatalog.manifest.modes.find(
+        (candidate) => candidate.id === modeId
+    )
+    if (!mode) throw new Error(`openIMIS presentation mode is missing: ${modeId}`)
+    return Object.freeze({
+        id: mode.id,
+        label: mode.label,
+        modeKind: mode.kind,
+        evidenceClass:
+            mode.kind === 'recording'
+                ? 'Source demonstration · synthetic data'
+                : 'Public application reference',
+        kind: 'video',
+        src: `${openimisCatalog.root}/${mode.media.path}`,
+        mimeType: 'video/mp4',
+        poster: `${openimisCatalog.root}/${mode.poster.path}`,
+        width: mode.media.width,
+        height: mode.media.height,
+        ...details,
+        ...exactPresentationFor('insurance', mode.id),
+    })
+}
+
+const openimisLink = (type) =>
+    openimisCatalog.manifest.links.find((candidate) => candidate.type === type)?.href
 
 /**
  * One source of truth for the public real-application footage.
  *
  * Source media remains unmodified and never receives an inferred overlay. A
- * phase may add presentationMedia, a canonical ControlOverlayTimelineV2,
+ * mode may add presentationMedia, a canonical ControlOverlayTimelineV2,
  * and its exact decoded-frame inventory. getExactBoundPresentation refuses the
  * view unless every public-contract and media binding check passes. Raw source
  * media remains inspectable and is never modified by presentation chrome.
  */
 export const REFERENCE_DEMOS = Object.freeze([
-    Object.freeze({
+    referenceDemo({
         id: 'healthcare',
         industry: 'Healthcare',
         application: 'OpenEMR',
@@ -37,6 +76,10 @@ export const REFERENCE_DEMOS = Object.freeze([
         evidenceClass: 'Reference qualification',
         task: 'Create exactly one complete synthetic patient record from structured demographics.',
         recording: Object.freeze({
+            id: 'recording',
+            label: 'Recorded demonstration',
+            modeKind: 'recording',
+            evidenceClass: 'Source demonstration · synthetic data',
             kind: 'video',
             src: '/reference/openemr-patient-registration-standard-synthetic-v1/recording/openemr-source-recording.unbound.mp4',
             mimeType: 'video/mp4',
@@ -49,6 +92,9 @@ export const REFERENCE_DEMOS = Object.freeze([
             ...exactPresentationFor('healthcare', 'recording'),
         }),
         replay: Object.freeze({
+            id: 'verified_replay',
+            label: 'Verified replay',
+            modeKind: 'replay',
             kind: 'video',
             src: '/reference/openemr-patient-registration-standard-synthetic-v1/replay/openemr-replay.mp4',
             mimeType: 'video/mp4',
@@ -58,7 +104,7 @@ export const REFERENCE_DEMOS = Object.freeze([
             alt: 'OpenAdapt replaying a qualified synthetic patient registration workflow in OpenEMR.',
             sourceCaption:
                 'Exact replay evidence media with presentation chrome omitted.',
-            ...exactPresentationFor('healthcare', 'replay'),
+            ...exactPresentationFor('healthcare', 'verified_replay'),
         }),
         metrics: Object.freeze([
             Object.freeze({ label: 'Standard VERIFIED', value: '3/3' }),
@@ -73,7 +119,7 @@ export const REFERENCE_DEMOS = Object.freeze([
             'https://github.com/OpenAdaptAI/openadapt-flow/tree/cb8b785cab84e2c42e8072a1bbd1099ce2454e1e/benchmark/openemr_local',
         methodologyLabel: 'Reference method',
     }),
-    Object.freeze({
+    referenceDemo({
         id: 'lending',
         industry: 'Lending',
         application: 'Frappe Lending',
@@ -82,6 +128,10 @@ export const REFERENCE_DEMOS = Object.freeze([
         evidenceClass: 'Public application reference',
         task: 'Create exactly one synthetic Loan Application from structured applicant and loan inputs.',
         recording: Object.freeze({
+            id: 'recording',
+            label: 'Recorded demonstration',
+            modeKind: 'recording',
+            evidenceClass: 'Source demonstration · synthetic data',
             kind: 'gif',
             src: '/lending-demo/record-frappe.gif',
             poster: '/lending-demo/record-frappe.jpg',
@@ -93,6 +143,9 @@ export const REFERENCE_DEMOS = Object.freeze([
             ...exactPresentationFor('lending', 'recording'),
         }),
         replay: Object.freeze({
+            id: 'compiled_replay',
+            label: 'Compiled replay',
+            modeKind: 'replay',
             kind: 'gif',
             src: '/lending-demo/replay-frappe.gif',
             poster: '/lending-demo/replay-frappe.jpg',
@@ -116,48 +169,54 @@ export const REFERENCE_DEMOS = Object.freeze([
             'https://github.com/OpenAdaptAI/openadapt-flow/tree/84c7a94f2d2ca9e183799394d1952ae32fa6bf92/benchmark/frappe_lending',
         methodologyLabel: 'Reference source',
     }),
-    Object.freeze({
+    referenceDemo({
         id: 'insurance',
         industry: 'Insurance',
-        application: 'openIMIS',
-        applicationDetail: 'pinned local reference',
+        application: openimisCatalog.manifest.application.name,
+        applicationDetail: `${openimisCatalog.manifest.application.version} · pinned local synthetic fixture`,
         route: '/solutions/insurance',
         evidenceClass: 'Public application reference',
-        task: 'Enter exactly one synthetic health-facility claim and save it for review.',
-        recording: Object.freeze({
-            kind: 'gif',
-            src: '/insurance-demo/record-openimis.gif',
-            poster: '/insurance-demo/record-openimis.jpg',
-            width: 880,
-            height: 550,
-            alt: 'OpenAdapt recording a synthetic health-facility claim in openIMIS.',
+        task: openimisCatalog.manifest.task.description,
+        recording: openimisManifestMode('recording', {
+            alt: 'A credential-safe source demonstration of a synthetic insurance eligibility check in openIMIS.',
             sourceCaption:
-                'Source-derived evidence sequence from the openIMIS reference run; not a literal continuous screen recording.',
-            ...exactPresentationFor('insurance', 'recording'),
+                'Credential-safe source demonstration used to compile the eligibility workflow. It carries no overlay or outcome claim.',
         }),
-        replay: Object.freeze({
-            kind: 'gif',
-            src: '/insurance-demo/replay-openimis.gif',
-            poster: '/insurance-demo/replay-openimis.jpg',
-            width: 880,
-            height: 550,
-            alt: 'OpenAdapt replaying the compiled synthetic claim workflow in openIMIS.',
+        replay: openimisManifestMode('verified_replay', {
+            alt: 'OpenAdapt replaying a Standard-profile synthetic insurance eligibility check in openIMIS.',
             sourceCaption:
-                'Source-derived evidence sequence from the openIMIS compiled replay; not literal continuous footage.',
-            ...exactPresentationFor('insurance', 'replay'),
+                'Exact Standard-profile replay evidence media with presentation chrome omitted.',
+            metrics: Object.freeze([
+                Object.freeze({ label: 'Standard VERIFIED', value: '3/3' }),
+                Object.freeze({ label: 'Tier 1 SQL', value: '3/3' }),
+                Object.freeze({ label: 'Model calls', value: '0' }),
+            ]),
+            verification:
+                'All 3 eligible-policy trials returned VERIFIED only after an independent read-only SQL query confirmed policy, product, service, and effective-date state. Observed silent incorrect success was 0/3.',
+        }),
+        halt: openimisManifestMode('fail_safe_halt', {
+            alt: 'OpenAdapt halting an openIMIS eligibility check after independent SQL refuted the browser result.',
+            sourceCaption:
+                'Exact fail-safe evidence media with presentation chrome omitted.',
+            metrics: Object.freeze([
+                Object.freeze({ label: 'Fail-safe HALTED', value: '3/3' }),
+                Object.freeze({ label: 'Wrong success', value: '0/3' }),
+                Object.freeze({ label: 'Model calls', value: '0' }),
+            ]),
+            verification:
+                'In all 3 expired-policy trials, the independent read-only SQL check refuted eligibility. OpenAdapt reported HALTED instead of accepting the browser result or retrying blindly.',
         }),
         metrics: Object.freeze([
-            Object.freeze({ label: 'Compiled replays', value: '3/3' }),
-            Object.freeze({ label: 'Wrong-record writes', value: '0' }),
+            Object.freeze({ label: 'Fresh trials', value: '6' }),
+            Object.freeze({ label: 'Wrong success', value: '0/6' }),
             Object.freeze({ label: 'Model calls', value: '0' }),
         ]),
         verification:
-            'A direct SQL read required exactly one non-voided claim in Entered status for the intended insuree and facility.',
-        evidenceHref: '/artifacts/json?source=%2Finsurance-demo%2Fprovenance.json',
-        evidenceLabel: 'Evidence manifest',
-        methodologyHref:
-            'https://github.com/OpenAdaptAI/openadapt-flow/tree/3276ad2b537c558211a5a357fd7ac1e19f0a029e/benchmark/openimis_claims',
-        methodologyLabel: 'Reference source',
+            openimisCatalog.manifest.verifier.summary,
+        evidenceHref: '/artifacts/json?source=%2Freference%2Fopenimis-eligibility-standard-synthetic-v1%2Fmanifest.json',
+        evidenceLabel: 'Evidence pack',
+        methodologyHref: openimisLink('source_methodology'),
+        methodologyLabel: 'Reference method',
     }),
 ])
 
@@ -202,6 +261,7 @@ export function getExactBoundPresentation(media) {
             media: media.presentationMedia,
             ...exact,
             contextsBySequence: Object.freeze(contextsBySequence),
+            networkObservation: media.presentationNetworkObservation,
         })
     } catch {
         return null

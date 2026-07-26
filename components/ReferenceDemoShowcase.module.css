@@ -362,7 +362,10 @@
 
     .phaseTabs {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(
+            var(--mode-count, 2),
+            minmax(0, 1fr)
+        );
     }
 
     .lifecycle {
