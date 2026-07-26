@@ -1,4 +1,5 @@
 import Clip from './Clip'
+import JsonArtifactLink from './JsonArtifactLink'
 import processStyles from './HowItWorks.module.css'
 import styles from './LendingWorkflowDemo.module.css'
 
@@ -176,9 +177,9 @@ export default function InsuranceWorkflowDemo() {
                         software, task, oracle, media hashes, and scope. OpenAdapt
                         is unaffiliated with the openIMIS Initiative.
                     </p>
-                    <a href="/insurance-demo/provenance.json">
+                    <JsonArtifactLink source="/insurance-demo/provenance.json">
                         Inspect evidence manifest
-                    </a>
+                    </JsonArtifactLink>
                 </div>
             </div>
         </section>
