@@ -413,8 +413,9 @@ export default function Footer({
                             All rights reserved.
                         </p>
                         <p className={styles.license}>
-                            Our software is open source and licensed under the
-                            MIT License.
+                            The local runtime and safety tooling are open
+                            source, licensed under the MIT License. OpenAdapt
+                            Cloud is a commercial service.
                         </p>
                     </div>
                     <div className={styles.social} aria-label="Social links">
