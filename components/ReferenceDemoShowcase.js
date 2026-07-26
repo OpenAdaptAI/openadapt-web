@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import Link from 'next/link'
 
 import EvidenceMediaPlayer from './EvidenceMediaPlayer'
 import {
     getReferenceDemo,
-    hasExactBoundPresentation,
+    getExactBoundPresentation,
     REFERENCE_DEMOS,
 } from '../data/referenceDemos'
 import styles from './ReferenceDemoShowcase.module.css'
@@ -17,20 +17,47 @@ export default function ReferenceDemoShowcase({
 }) {
     const [activeId, setActiveId] = useState(initialIndustry)
     const [phase, setPhase] = useState('replay')
-    const [mediaView, setMediaView] = useState('source')
+    const [mediaView, setMediaView] = useState('presentation')
+    const tabRefs = useRef([])
+    const idPrefix = useId().replace(/:/g, '')
 
     useEffect(() => setActiveId(initialIndustry), [initialIndustry])
 
     const demo = getReferenceDemo(activeId)
     const phaseMedia = phase === 'recording' ? demo.recording : demo.replay
-    const hasPresentation = hasExactBoundPresentation(phaseMedia)
+    const exactPresentation = getExactBoundPresentation(phaseMedia)
+    const hasPresentation = exactPresentation !== null
     const usePresentation = hasPresentation && mediaView === 'presentation'
     const media = usePresentation
-        ? phaseMedia.presentationMedia
+        ? exactPresentation.media
         : phaseMedia
-    const exactTimeline = usePresentation
-        ? phaseMedia.presentationTimeline
+    const playerPresentation = usePresentation
+        ? exactPresentation
         : null
+    const panelId = `${idPrefix}-reference-demo-panel`
+
+    const selectApplication = (index) => {
+        const next = REFERENCE_DEMOS[index]
+        setActiveId(next.id)
+        tabRefs.current[index]?.focus()
+    }
+
+    const handleApplicationKeyDown = (event, index) => {
+        let nextIndex = null
+        if (event.key === 'ArrowRight') {
+            nextIndex = (index + 1) % REFERENCE_DEMOS.length
+        } else if (event.key === 'ArrowLeft') {
+            nextIndex =
+                (index - 1 + REFERENCE_DEMOS.length) % REFERENCE_DEMOS.length
+        } else if (event.key === 'Home') {
+            nextIndex = 0
+        } else if (event.key === 'End') {
+            nextIndex = REFERENCE_DEMOS.length - 1
+        }
+        if (nextIndex === null) return
+        event.preventDefault()
+        selectApplication(nextIndex)
+    }
 
     return (
         <section
@@ -52,16 +79,24 @@ export default function ReferenceDemoShowcase({
                     role="tablist"
                     aria-label="Reference application"
                 >
-                    {REFERENCE_DEMOS.map((item) => (
+                    {REFERENCE_DEMOS.map((item, index) => (
                         <button
                             key={item.id}
+                            ref={(node) => {
+                                tabRefs.current[index] = node
+                            }}
+                            id={`${idPrefix}-reference-tab-${item.id}`}
                             type="button"
                             role="tab"
                             aria-selected={item.id === demo.id}
-                            aria-controls="reference-demo-panel"
+                            aria-controls={panelId}
+                            tabIndex={item.id === demo.id ? 0 : -1}
                             className={styles.applicationTab}
                             data-active={item.id === demo.id ? 'true' : undefined}
                             onClick={() => setActiveId(item.id)}
+                            onKeyDown={(event) =>
+                                handleApplicationKeyDown(event, index)
+                            }
                         >
                             <span>{item.industry}</span>
                             <small>{item.application}</small>
@@ -134,25 +169,23 @@ export default function ReferenceDemoShowcase({
                 )}
 
                 <div
-                    id="reference-demo-panel"
+                    id={panelId}
                     className={styles.panel}
                     role="tabpanel"
-                    aria-label={`${demo.application} ${phase}`}
+                    aria-labelledby={`${idPrefix}-reference-tab-${demo.id}`}
                 >
                     <div className={styles.mediaColumn}>
                         <EvidenceMediaPlayer
-                            key={`${demo.id}-${phase}`}
+                            key={`${demo.id}:${phase}:${mediaView}:${media.kind}:${media.src}:${media.sha256 ?? 'raw'}`}
                             media={media}
                             application={demo.application}
                             phase={phase}
-                            exactTimeline={exactTimeline}
+                            exactPresentation={playerPresentation}
                         />
                         <p className={styles.mediaTruth}>
                             {usePresentation
                                 ? 'Exact-frame presentation derived from the retained runtime timeline; raw evidence remains unchanged.'
-                                : phase === 'recording'
-                                  ? 'Raw source recording.'
-                                  : 'Raw compiled replay footage.'}
+                                : phaseMedia.sourceCaption}
                         </p>
                     </div>
 
