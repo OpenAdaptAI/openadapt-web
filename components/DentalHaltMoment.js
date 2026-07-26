@@ -37,8 +37,8 @@ export default function DentalHaltMoment() {
 
             <ReferenceDemoShowcase
                 initialIndustry="insurance"
-                heading="See the governed loop in a public insurance application"
-                intro="Compare a captured demonstration with its compiled replay, then inspect the exact evidence boundary for the result."
+                heading="See the governance mechanism in a public insurance application"
+                intro="This openIMIS clip is a claims-entry reference, not payer-portal eligibility footage. It demonstrates the same capture, deterministic replay, result evidence, and halt mechanism used for an eligibility workflow."
             />
 
             <p className="mx-auto max-w-5xl px-4 pb-12 text-sm">

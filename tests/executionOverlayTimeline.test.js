@@ -210,6 +210,20 @@ test('capsule placement is event-stable and presentation facts require exact bou
         executionRailForBoundContext(activeFrame, context).map(({ state }) => state),
         ['complete', 'active', 'pending']
     )
+    const haltedFrame = frame(6, 'halted')
+    assert.deepEqual(executionRailForBoundContext(haltedFrame, null), [])
+    const exactHaltContext = bindExecutionOverlayContext(haltedFrame, {
+        state_id: haltedFrame.state_id,
+        event_sequence: haltedFrame.event_sequence,
+        execution_stage: 'verify',
+        halt_delivery_class: 'refuted_effect',
+    })
+    assert.deepEqual(
+        executionRailForBoundContext(haltedFrame, exactHaltContext).map(
+            ({ state }) => state
+        ),
+        ['complete', 'complete', 'halted']
+    )
     const presentation = executionOverlayPresentation(activeFrame, context, 12_000)
     assert.equal(presentation.progressLabel, 'Step 1 of 2')
     assert.deepEqual(presentation.secondaryLabels, [
