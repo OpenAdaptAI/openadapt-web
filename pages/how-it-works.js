@@ -5,6 +5,7 @@ import CompiledProgramSection from '@components/CompiledProgramSection'
 import DriftOutcomes from '@components/DriftOutcomes'
 import Footer from '@components/Footer'
 import HowItWorksCondensed from '@components/HowItWorksCondensed'
+import ReferenceDemoShowcase from '@components/ReferenceDemoShowcase'
 import Reveal from '@components/Reveal'
 
 // Concepts / method page. The homepage keeps one clear narrative arc, so the
@@ -102,26 +103,13 @@ export default function HowItWorksPage() {
                 <DriftOutcomes />
             </Reveal>
 
-            <section className="border-b border-hairline bg-panel px-5 py-20 md:py-28">
-                <div className="mx-auto max-w-3xl text-center">
-                    <p className="eyebrow">See it running</p>
-                    <h2 className="mx-auto mt-3 max-w-2xl font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                        Watch the same loop on a real reference workflow
-                    </h2>
-                    <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-ink-2 md:text-base">
-                        Each reference is a bounded, synthetic fixture with its
-                        own honest evidence and caveats.
-                    </p>
-                    <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                        <Link className="btn-ink" href="/#references">
-                            See reference workflows
-                        </Link>
-                        <Link className="btn-ghost-ink" href="/compare">
-                            Compare with RPA and agents
-                        </Link>
-                    </div>
-                </div>
-            </section>
+            <Reveal>
+                <ReferenceDemoShowcase
+                    initialIndustry="healthcare"
+                    heading="Watch the same governed loop in real applications"
+                    intro="Choose an application, compare the recorded demonstration with its compiled replay, and open the evidence behind the result."
+                />
+            </Reveal>
 
             <Footer />
         </div>

@@ -4,6 +4,7 @@ describe('shared real-application demo', () => {
         ['/solutions/healthcare', 'healthcare'],
         ['/solutions/lending', 'lending'],
         ['/solutions/insurance', 'insurance'],
+        ['/how-it-works', 'healthcare'],
     ]
 
     for (const [route, initialReference] of routes) {
