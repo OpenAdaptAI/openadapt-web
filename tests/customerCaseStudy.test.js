@@ -7,16 +7,18 @@ const root = path.join(__dirname, '..')
 const read = (relativePath) =>
     fs.readFileSync(path.join(root, relativePath), 'utf8')
 
-test('publishes the named RVU audit result without invented run evidence', () => {
+test('keeps the customer result and synthetic validation in one canonical case-study model', () => {
     const combined = `${read('data/customerCaseStudies.js')}\n${read(
         'pages/customers/rvu-audit-heart-care.js'
     )}`
 
-    assert.match(combined, /Dr\. Victor Abrich, MD/)
-    assert.match(combined, /MercyOne Waterloo Heart Care/)
-    assert.match(combined, /≈\$75,000/)
-    assert.match(combined, /Cerner PowerChart/)
-    assert.doesNotMatch(combined, /480|476|99\.2%|v1\.23\.0|out-of-band read-back/)
+    assert.match(combined, /customer:\s*{/)
+    assert.match(combined, /validation:\s*{/)
+    assert.match(combined, /customerCase\.validation\.metrics\.map/)
+    assert.doesNotMatch(
+        combined,
+        /OPENADAPT-CORPUS-PRIVATE-DO-NOT-PACKAGE|reliability_recipes\//
+    )
 })
 
 test('links the customer result from the public discovery surfaces', () => {

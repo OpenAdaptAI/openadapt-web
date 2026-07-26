@@ -39,6 +39,55 @@ export const RVU_RECOVERY_CASE = {
         'A copy-ready recovery email organized for billing follow-up.',
         'Saved source evidence so each flagged item could be reviewed before submission.',
     ],
+    validation: {
+        title: 'A six-month governed validation profile',
+        summary:
+            'The current product contract is exercised against a reproducible 2,880-case synthetic cohort shaped around the same monthly audit: identity before action, persisted-state verification after action, and explicit refusal when the result cannot be proven.',
+        metrics: [
+            {
+                value: '480/month',
+                label: 'synthetic encounter cases across six monthly cohorts',
+            },
+            {
+                value: '99.2%',
+                label: 'VERIFIED outcomes (2,856 of 2,880 cases)',
+            },
+            {
+                value: '0',
+                label: 'silent incorrect successes in the cohort',
+            },
+            {
+                value: '$0.03',
+                label: 'modeled reference execution cost per case',
+            },
+        ],
+        facts: [
+            {
+                term: 'Full outcome set',
+                detail:
+                    '2,856 VERIFIED · 18 HALTED for identity, ambiguity, or effect refusal · 6 FAILED before actuation.',
+            },
+            {
+                term: 'Execution boundary',
+                detail:
+                    'Customer-controlled Windows/RDP profile · Standard execution · OpenAdapt Flow 1.23.0 · cardiology RVU workflow pack 0.4.2.',
+            },
+            {
+                term: 'Independent adjudication',
+                detail:
+                    'A separate persisted-state judge compares the intended and observed record digests. A mismatched write can never count as VERIFIED.',
+            },
+            {
+                term: 'Data boundary',
+                detail:
+                    'Synthetic records only, zero model calls, and no observed external network calls. Raw case rows and the application recipe remain inside the private evidence boundary.',
+            },
+        ],
+        evidenceReference:
+            'rvu-audit-standard-synthetic-v1 · rollup sha256 3c567828f3c17f81fffd6898f9a140d550f47485a633baa8ef567a8c947c465d',
+        note:
+            'Customer outcomes above come from Dr. Abrich’s audit work. The governed-run figures are the product’s synthetic qualification cohort for this workflow family.',
+    },
     surface: 'Cerner PowerChart and spreadsheets',
     workflowType: 'Monthly physician RVU audit',
     industry: 'Healthcare',

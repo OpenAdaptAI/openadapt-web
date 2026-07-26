@@ -26,6 +26,17 @@ const articleSchema = {
     inLanguage: 'en',
 }
 
+function ValidationFact({ term, children }) {
+    return (
+        <div className="border-t border-hairline py-4 first:border-t-0 md:grid md:grid-cols-[minmax(0,13rem)_1fr] md:gap-6">
+            <dt className="text-sm font-semibold text-ink">{term}</dt>
+            <dd className="mt-1 text-sm leading-relaxed text-ink-2 md:mt-0">
+                {children}
+            </dd>
+        </div>
+    )
+}
+
 export default function RvuAuditHeartCareCaseStudy() {
     return (
         <div className="min-h-screen bg-ground text-ink">
@@ -153,6 +164,52 @@ export default function RvuAuditHeartCareCaseStudy() {
                                 </ul>
                             </div>
                         </div>
+
+                        <section
+                            className="mt-14 rounded-2xl border border-hairline bg-panel p-6 md:p-9"
+                            aria-labelledby="rvu-validation-title"
+                        >
+                            <p className="eyebrow">Synthetic product validation</p>
+                            <h2
+                                id="rvu-validation-title"
+                                className="mt-2 max-w-3xl font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl"
+                            >
+                                {customerCase.validation.title}
+                            </h2>
+                            <p className="mt-4 max-w-3xl text-base leading-relaxed text-ink-2">
+                                {customerCase.validation.summary}
+                            </p>
+
+                            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                                {customerCase.validation.metrics.map((metric) => (
+                                    <div
+                                        key={metric.label}
+                                        className="rounded-xl border border-hairline bg-ground p-5"
+                                    >
+                                        <p className="font-display text-2xl font-semibold tracking-tight text-ink">
+                                            {metric.value}
+                                        </p>
+                                        <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                            {metric.label}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <dl className="mt-7 rounded-xl border border-hairline bg-ground px-5">
+                                {customerCase.validation.facts.map((fact) => (
+                                    <ValidationFact key={fact.term} term={fact.term}>
+                                        {fact.detail}
+                                    </ValidationFact>
+                                ))}
+                            </dl>
+                            <p className="mt-5 text-sm leading-relaxed text-ink-3">
+                                {customerCase.validation.note}
+                            </p>
+                            <p className="mt-3 break-all font-mono text-[11px] leading-relaxed text-ink-3/80">
+                                Evidence reference: {customerCase.validation.evidenceReference}
+                            </p>
+                        </section>
 
                         <div className="mt-14 text-center">
                             <p className="eyebrow">Bring your workflow</p>
