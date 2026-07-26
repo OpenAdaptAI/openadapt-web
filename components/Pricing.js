@@ -414,6 +414,37 @@ export default function Pricing({ hostedOffer = null }) {
                     </aside>
                 </div>
 
+                {/*
+                 * Option A (chosen): a credits callout under the tiers, not a
+                 * fourth "pay-with-data" tier. Frames credits as extending
+                 * your monthly run cap, which is what the mechanism does.
+                 * Marked early access; links to /contribute for the full
+                 * program, guarantees, and terms status.
+                 */}
+                <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-hairline bg-panel p-6 md:p-7">
+                    <div className="flex flex-wrap items-center gap-3">
+                        <p className="eyebrow">Earn credits by contributing</p>
+                        <span className="rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2">
+                            Early access
+                        </span>
+                    </div>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                        Contribute a sanitized, de-identified derivative to the
+                        shared hardening corpus and earn run credits that
+                        extend your monthly run cap. Raw recordings never
+                        leave your machine, you approve every byte, and it
+                        stays opt-in; you can stop future contributions at any
+                        time. The program opens once its versioned terms are
+                        finalized.{' '}
+                        <Link
+                            href="/contribute"
+                            className="text-accent underline"
+                        >
+                            Request access to the contributor program.
+                        </Link>
+                    </p>
+                </div>
+
                 <p className="mx-auto mt-8 max-w-3xl text-center text-xs leading-relaxed text-ink-3">
                     {hostedOfferAvailable
                         ? 'The Cloud subscription price comes directly from Stripe and is confirmed again at checkout.'
