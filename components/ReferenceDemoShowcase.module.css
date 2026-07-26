@@ -335,18 +335,29 @@
     }
 
     .applicationTabs {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
     }
 
     .applicationTab {
-        grid-template-columns: auto 1fr;
-        align-items: center;
-        min-height: 50px;
-        gap: 10px;
+        align-content: center;
+        min-height: 58px;
+        gap: 2px;
+        padding: 7px 5px;
+        text-align: center;
+    }
+
+    .applicationTab span {
+        font-size: 12px;
     }
 
     .applicationTab small {
-        text-align: right;
+        overflow: visible;
+        font-size: 8px;
+        line-height: 1.25;
+        text-align: center;
+        text-overflow: clip;
+        white-space: normal;
     }
 
     .phaseTabs {
@@ -355,11 +366,27 @@
     }
 
     .lifecycle {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
     }
 
     .lifecycle li {
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
+        min-height: 58px;
+        gap: 4px;
+        padding: 7px 5px;
+        text-align: center;
+    }
+
+    .lifecycle strong {
+        font-size: 10px;
+        line-height: 1.2;
+    }
+
+    .lifecycle small {
+        display: none;
     }
 
     .phaseTabs button {

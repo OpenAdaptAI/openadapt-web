@@ -42,17 +42,9 @@ describe('shared real-application demo', () => {
                     .should('have.css', 'width', '44px')
                 cy.get('button[aria-label="Enter full screen"]')
                     .should('have.css', 'height', '44px')
-                cy.get('img').then(($media) => {
-                    cy.get('[data-overlay-kind="source-metadata"]').then(
-                        ($capsule) => {
-                            expect(
-                                $capsule[0].getBoundingClientRect().top
-                            ).to.be.at.least(
-                                $media[0].getBoundingClientRect().bottom - 1
-                            )
-                        }
-                    )
-                })
+                cy.get('[data-overlay-kind="source-metadata"]').should(
+                    'not.exist'
+                )
             })
     })
 

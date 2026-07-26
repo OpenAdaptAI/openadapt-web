@@ -122,21 +122,21 @@ export default function ReferenceDemoShowcase({
                 </div>
 
                 <ol className={styles.lifecycle} aria-label="Governed workflow lifecycle">
-                    <li data-active={phase === 'recording' ? 'true' : undefined}>
+                    <li>
                         <span>1</span>
                         <div>
                             <strong>Demonstrate</strong>
                             <small>Capture the task and its evidence.</small>
                         </div>
                     </li>
-                    <li data-active={phase === 'replay' ? 'true' : undefined}>
+                    <li>
                         <span>2</span>
                         <div>
                             <strong>Execute</strong>
                             <small>Replay the compiled workflow locally.</small>
                         </div>
                     </li>
-                    <li data-active={phase === 'replay' ? 'true' : undefined}>
+                    <li>
                         <span>3</span>
                         <div>
                             <strong>Verify or halt</strong>
