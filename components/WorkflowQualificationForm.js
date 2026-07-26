@@ -32,6 +32,8 @@ const INITIAL_FORM = {
     timeline: '',
     budget: '',
     reusePotential: '',
+    leadSegment: '',
+    privacyConsent: '',
     botField: '',
 }
 
@@ -71,8 +73,11 @@ export default function WorkflowQualificationForm({ compact = false }) {
 
     const handleChange = (event) => {
         markStarted()
-        const { name, value } = event.target
-        setForm((current) => ({ ...current, [name]: value }))
+        const { name, value, type, checked } = event.target
+        // The consent checkbox stores 'yes' or '' so every field serializes
+        // uniformly into the POST body (never into a URL).
+        const next = type === 'checkbox' ? (checked ? 'yes' : '') : value
+        setForm((current) => ({ ...current, [name]: next }))
     }
 
     const handleSubmit = async (event) => {
@@ -152,6 +157,7 @@ export default function WorkflowQualificationForm({ compact = false }) {
             name="workflow-qualification"
             data-netlify="true"
             netlify-honeypot="bot-field"
+            method="POST"
             onSubmit={handleSubmit}
             className="space-y-7"
         >
@@ -209,6 +215,13 @@ export default function WorkflowQualificationForm({ compact = false }) {
                         <option value="personal">Personal information</option>
                         <option value="regulated">Regulated or clinical data</option>
                         <option value="restricted">Highly restricted</option>
+                    </SelectField>
+                    <SelectField label="Which best describes you *" name="leadSegment" value={form.leadSegment} onChange={handleChange}>
+                        <option value="enterprise_operator">Enterprise operator automating our own workflows</option>
+                        <option value="oem_vertical">Vertical software vendor / OEM</option>
+                        <option value="bpo_services">BPO, RCM, or services provider</option>
+                        <option value="developer">Developer or technical evaluator</option>
+                        <option value="community">Community / open-source user</option>
                     </SelectField>
                 </div>
             </fieldset>
@@ -332,6 +345,25 @@ export default function WorkflowQualificationForm({ compact = false }) {
                     {error}
                 </p>
             )}
+
+            <label className="flex items-start gap-3 text-sm leading-relaxed text-ink-2">
+                <input
+                    type="checkbox"
+                    name="privacyConsent"
+                    required
+                    checked={form.privacyConsent === 'yes'}
+                    onChange={handleChange}
+                    className="mt-1 h-4 w-4 shrink-0 accent-accent"
+                />
+                <span>
+                    I consent to OpenAdapt processing the details above to
+                    review this workflow and respond, as described in the{' '}
+                    <Link href="/privacy-policy" className="text-accent">
+                        Privacy Notice
+                    </Link>
+                    . *
+                </span>
+            </label>
 
             <div className="flex flex-wrap items-center gap-4">
                 <button

@@ -26,6 +26,7 @@ const SOLUTIONS_LINKS = [
     { label: 'Healthcare', href: '/solutions/healthcare' },
     { label: 'Lending', href: '/solutions/lending' },
     { label: 'Insurance', href: '/solutions/insurance' },
+    { label: 'Partners & OEM', href: '/partners' },
 ]
 
 const PRODUCT_LINKS = [

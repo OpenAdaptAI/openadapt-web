@@ -6,6 +6,7 @@ import DriftOutcomes from '@components/DriftOutcomes'
 import Footer from '@components/Footer'
 import HowItWorksCondensed from '@components/HowItWorksCondensed'
 import ReferenceDemoShowcase from '@components/ReferenceDemoShowcase'
+import RemoteModesFigure from '@components/RemoteModesFigure'
 import Reveal from '@components/Reveal'
 
 // Concepts / method page. The homepage keeps one clear narrative arc, so the
@@ -101,6 +102,10 @@ export default function HowItWorksPage() {
             </Reveal>
             <Reveal>
                 <DriftOutcomes />
+            </Reveal>
+
+            <Reveal>
+                <RemoteModesFigure />
             </Reveal>
 
             <Reveal>
