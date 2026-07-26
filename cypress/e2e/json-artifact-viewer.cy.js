@@ -1,13 +1,13 @@
 describe('public JSON artifact viewer', () => {
     const viewer = '/artifacts/json?source=%2Fstatus.json'
 
-    it('opens an allowlisted artifact with verified integrity and useful controls', () => {
+    it('opens an allowlisted artifact with a computed digest and useful controls', () => {
         cy.visit('/workflows')
         cy.contains('a', 'status manifest').click()
         cy.location('pathname').should('equal', '/artifacts/json')
         cy.location('search').should('include', 'source=%2Fstatus.json')
 
-        cy.contains('Integrity').parent().should('contain.text', 'Verified')
+        cy.get('dt').contains('Loaded SHA-256').parent().should('be.visible')
         cy.get('a[href="/status.json"]').should('have.length', 2)
         cy.get('input[type="search"]').type('citrix')
         cy.get('[aria-label="JSON search results"] li button').first().click()
@@ -30,7 +30,7 @@ describe('public JSON artifact viewer', () => {
     it('keeps the evidence controls usable on a small screen', () => {
         cy.viewport(375, 760)
         cy.visit(viewer)
-        cy.contains('Integrity').parent().should('contain.text', 'Verified')
+        cy.get('dt').contains('Loaded SHA-256').parent().should('be.visible')
         cy.document().then((document) => {
             expect(document.documentElement.scrollWidth).to.be.at.most(375)
         })

@@ -164,7 +164,7 @@ export default function JsonArtifactViewer({ artifact, initialPointer = '' }) {
                         digestInput.buffer
                     )
                 )
-                if (digest !== artifact.sha256) {
+                if (artifact.sha256 && digest !== artifact.sha256) {
                     if (!cancelled) {
                         setLoadState({
                             kind: 'error',
@@ -348,15 +348,28 @@ export default function JsonArtifactViewer({ artifact, initialPointer = '' }) {
 
             <dl className={styles.integrity}>
                 <div>
-                    <dt>Committed SHA-256</dt>
-                    <dd>{artifact.sha256}</dd>
+                    <dt>
+                        {artifact.sha256
+                            ? 'Committed SHA-256'
+                            : 'Integrity boundary'}
+                    </dt>
+                    <dd>
+                        {artifact.sha256 ||
+                            'Exact registered path; digest computed after load'}
+                    </dd>
                 </div>
-                {loadState.kind === 'ready' && (
+                {loadState.kind === 'ready' && artifact.sha256 && (
                     <div>
                         <dt>Integrity</dt>
                         <dd>
                             <span className={styles.verified}>Verified</span>
                         </dd>
+                    </div>
+                )}
+                {loadState.kind === 'ready' && !artifact.sha256 && (
+                    <div>
+                        <dt>Loaded SHA-256</dt>
+                        <dd>{loadState.digest}</dd>
                     </div>
                 )}
             </dl>

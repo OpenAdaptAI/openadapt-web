@@ -22,7 +22,7 @@ function publicJsonFiles(directory = path.join(root, 'public')) {
     return files.sort()
 }
 
-test('the exact public JSON allowlist is complete and hash-bound', async () => {
+test('the exact public JSON allowlist is complete and stable evidence is hash-bound', async () => {
     const {
         PUBLIC_JSON_ARTIFACTS,
         MAX_JSON_ARTIFACT_BYTES,
@@ -35,10 +35,14 @@ test('the exact public JSON allowlist is complete and hash-bound', async () => {
             path.join(root, 'public', artifact.source.slice(1))
         )
         assert.ok(bytes.byteLength <= MAX_JSON_ARTIFACT_BYTES)
-        assert.equal(
-            crypto.createHash('sha256').update(bytes).digest('hex'),
-            artifact.sha256
-        )
+        if (artifact.sha256) {
+            assert.equal(
+                crypto.createHash('sha256').update(bytes).digest('hex'),
+                artifact.sha256
+            )
+        } else {
+            assert.equal(artifact.source, '/status.json')
+        }
         assert.notEqual(
             parseJsonArtifact(bytes.toString('utf8'), artifact.format),
             undefined
