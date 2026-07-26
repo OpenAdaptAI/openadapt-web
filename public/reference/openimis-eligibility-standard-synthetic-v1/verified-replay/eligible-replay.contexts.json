@@ -1,0 +1,199 @@
+{
+  "contexts": [
+    {
+      "event_sequence": 0,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:observing:governed:standard:1:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 1,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:executing:governed:standard:1:6:no-pause:no-resume:no-stop:target-c5f8741b6b1d7a98",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 2,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:verifying:governed:standard:1:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 3,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:observing:governed:standard:2:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 4,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:executing:governed:standard:2:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 5,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:verifying:governed:standard:2:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 6,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:observing:governed:standard:3:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 7,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:executing:governed:standard:3:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 8,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:verifying:governed:standard:3:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 9,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:observing:governed:standard:4:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 10,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:executing:governed:standard:4:6:no-pause:no-resume:no-stop:target-d4c5e915e49eb6fb",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 11,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:verifying:governed:standard:4:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 12,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:observing:governed:standard:5:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 13,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:executing:governed:standard:5:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 14,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:verifying:governed:standard:5:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 15,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:observing:governed:standard:6:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 16,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:executing:governed:standard:6:6:no-pause:no-resume:no-stop:target-48f4434ae2c473d7",
+      "surface": "browser"
+    },
+    {
+      "event_sequence": 17,
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:verifying:governed:standard:6:6:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    },
+    {
+      "effect_evidence": "passed",
+      "event_sequence": 18,
+      "evidence_href": "/demo#evidence",
+      "execution_stage": "verify",
+      "external_network_calls": "observed",
+      "minimum_effect_tier": 1,
+      "model_calls": 0,
+      "off_box_transmissions_observed": 0,
+      "runtime": "local",
+      "state_id": "visible:verified:governed:standard:no-step:no-total:no-pause:no-resume:no-stop:no-target",
+      "surface": "browser"
+    }
+  ],
+  "data_classification": "synthetic",
+  "schema_version": "openadapt.public-presentation-contexts/v2"
+}

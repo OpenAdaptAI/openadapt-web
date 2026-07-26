@@ -119,14 +119,26 @@ function inspectMp4(bytes, label) {
     })
 }
 
-assert.equal(registry.schemaVersion, 2, 'unsupported reference presentation registry')
+assert.equal(registry.schemaVersion, 3, 'unsupported reference presentation registry')
 assert.ok(Array.isArray(registry.assets), 'reference presentation assets must be an array')
+assert.ok(Array.isArray(registry.catalogs), 'reference presentation catalogs must be an array')
+for (const catalog of registry.catalogs) {
+    assert.match(catalog.applicationId, /^[a-z0-9][a-z0-9-]*$/u)
+    assert.match(catalog.root, /^\/reference\/[A-Za-z0-9._/-]+$/u)
+    assert.deepEqual(
+        publicJson(`${catalog.root}/manifest.json`),
+        catalog.manifest,
+        `${catalog.applicationId}: catalog manifest differs from public bytes`
+    )
+}
 
 const identities = new Set()
+const validatedPackRoots = new Set()
 for (const asset of registry.assets) {
-    const label = `${asset.applicationId}:${asset.phase}`
+    const label = `${asset.applicationId}:${asset.modeId}`
     assert.match(asset.applicationId, /^[a-z0-9][a-z0-9-]*$/u, `${label}: invalid app id`)
-    assert.ok(['recording', 'replay'].includes(asset.phase), `${label}: invalid phase`)
+    assert.match(asset.modeId, /^[a-z0-9][a-z0-9_]*$/u, `${label}: invalid mode id`)
+    assert.ok(['recording', 'replay', 'halt'].includes(asset.modeKind), `${label}: invalid mode kind`)
     assert.ok(!identities.has(label), `${label}: duplicate presentation asset`)
     identities.add(label)
     assert.ok(
@@ -216,35 +228,105 @@ for (const asset of registry.assets) {
         `${label}: pack manifest is not inventory-bound`
     )
 
-    const replay = packManifest.replay
+    if (Array.isArray(packManifest.modes) && !validatedPackRoots.has(pack.root)) {
+        validatedPackRoots.add(pack.root)
+        assert.deepEqual(
+            packManifest.mode_order,
+            packManifest.modes.map((candidate) => candidate.id),
+            `${label}: canonical mode order differs from retained modes`
+        )
+        const modeIds = new Set()
+        for (const retainedMode of packManifest.modes) {
+            assert.ok(!modeIds.has(retainedMode.id), `${label}: duplicate retained mode`)
+            modeIds.add(retainedMode.id)
+            const retainedMediaPath = publicPath(`${pack.root}/${retainedMode.media.path}`)
+            const retainedBytes = fs.readFileSync(retainedMediaPath)
+            assert.equal(retainedBytes.byteLength, retainedMode.media.bytes, `${label}: retained media byte count mismatch`)
+            assert.equal(sha256(retainedBytes), retainedMode.media.sha256, `${label}: retained media digest mismatch`)
+            const retainedInspection = await inspectMp4(
+                retainedBytes,
+                `${label}:${retainedMode.id}`
+            )
+            assert.equal(retainedInspection.width, retainedMode.media.width, `${label}: retained media width mismatch`)
+            assert.equal(retainedInspection.height, retainedMode.media.height, `${label}: retained media height mismatch`)
+            assert.equal(retainedInspection.frameCount, retainedMode.media.decoded_frame_count, `${label}: retained media frame count mismatch`)
+            assert.deepEqual(retainedInspection.presentationTimesUs, retainedMode.media.presentation_times_us, `${label}: retained media PTS mismatch`)
+            assert.equal(
+                retainedInspection.durationMs * 1000,
+                retainedMode.declared_stream_duration_us ?? retainedMode.media.declared_stream_duration_us,
+                `${label}: retained stream duration mismatch`
+            )
+            assert.equal(
+                retainedInspection.durationMs * 1000,
+                retainedMode.declared_format_duration_us ?? retainedMode.media.declared_format_duration_us,
+                `${label}: retained format duration mismatch`
+            )
+            const retainedPosterBytes = fs.readFileSync(
+                publicPath(`${pack.root}/${retainedMode.poster.path}`)
+            )
+            assert.equal(retainedPosterBytes.byteLength, retainedMode.poster.bytes, `${label}: retained poster byte count mismatch`)
+            assert.equal(sha256(retainedPosterBytes), retainedMode.poster.sha256, `${label}: retained poster digest mismatch`)
+        }
+    }
+
+    const mode = Array.isArray(packManifest.modes)
+        ? packManifest.modes.find((candidate) => candidate.id === asset.modeId)
+        : asset.modeId === 'verified_replay'
+          ? packManifest.replay
+          : null
+    assert.ok(mode, `${label}: mode is absent from the pack manifest`)
     assert.equal(
-        `${pack.root}/${replay.media.path}`,
+        `${pack.root}/${mode.media.path}`,
         asset.media.src,
         `${label}: registry media differs from pack manifest`
     )
-    assert.equal(replay.media.sha256, digest, `${label}: pack media digest mismatch`)
-    assert.equal(replay.media.width, inspected.width, `${label}: pack media width mismatch`)
-    assert.equal(replay.media.height, inspected.height, `${label}: pack media height mismatch`)
-    assert.equal(replay.decoded_frame_count, inspected.frameCount, `${label}: pack frame count mismatch`)
+    assert.equal(
+        mode.kind ?? (mode === packManifest.replay ? 'replay' : null),
+        asset.modeKind,
+        `${label}: pack mode kind mismatch`
+    )
+    assert.equal(mode.media.sha256, digest, `${label}: pack media digest mismatch`)
+    assert.equal(mode.media.width, inspected.width, `${label}: pack media width mismatch`)
+    assert.equal(mode.media.height, inspected.height, `${label}: pack media height mismatch`)
+    assert.equal(mode.decoded_frame_count, inspected.frameCount, `${label}: pack frame count mismatch`)
     assert.deepEqual(
-        replay.presentation_times_us,
+        mode.presentation_times_us,
         inspected.presentationTimesUs,
         `${label}: pack PTS inventory mismatch`
     )
     assert.equal(
-        replay.declared_stream_duration_us,
+        mode.declared_stream_duration_us,
         inspected.durationMs * 1000,
         `${label}: pack stream duration mismatch`
     )
     assert.equal(
-        replay.declared_format_duration_us,
+        mode.declared_format_duration_us,
         inspected.durationMs * 1000,
         `${label}: pack format duration mismatch`
     )
-    assert.equal(`${pack.root}/${replay.poster.path}`, asset.media.poster, `${label}: pack poster mismatch`)
-    assert.equal(`${pack.root}/${replay.timeline.path}`, pack.timeline, `${label}: timeline path mismatch`)
-    assert.equal(`${pack.root}/${replay.binding.path}`, pack.binding, `${label}: binding path mismatch`)
-    assert.equal(`${pack.root}/${replay.contexts.path}`, pack.contexts, `${label}: contexts path mismatch`)
+    assert.equal(`${pack.root}/${mode.poster.path}`, asset.media.poster, `${label}: pack poster mismatch`)
+    assert.equal(`${pack.root}/${mode.timeline.path}`, pack.timeline, `${label}: timeline path mismatch`)
+    assert.equal(`${pack.root}/${mode.binding.path}`, pack.binding, `${label}: binding path mismatch`)
+    assert.equal(`${pack.root}/${mode.contexts.path}`, pack.contexts, `${label}: contexts path mismatch`)
+
+    if (asset.networkObservation === null) {
+        assert.equal(packManifest.network_observation ?? null, null, `${label}: network observation is not admitted`)
+    } else {
+        assert.deepEqual(
+            asset.networkObservation,
+            packManifest.network_observation,
+            `${label}: network observation differs from pack manifest`
+        )
+        assert.ok(
+            ['none', 'observed', 'unknown'].includes(asset.networkObservation.browser_network),
+            `${label}: invalid browser network observation`
+        )
+        assert.ok(
+            Number.isSafeInteger(asset.networkObservation.off_box_transmissions_observed) &&
+                asset.networkObservation.off_box_transmissions_observed >= 0,
+            `${label}: invalid off-box observation count`
+        )
+    }
 
     const timelineDocument = publicJson(pack.timeline)
     const bindingDocument = publicJson(pack.binding)

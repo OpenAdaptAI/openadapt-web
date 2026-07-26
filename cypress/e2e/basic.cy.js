@@ -502,25 +502,29 @@ describe('public product truth', () => {
             })
 
         cy.visit('/solutions/insurance')
-        cy.get('h1').should('contain.text', 'Claims intake')
-        cy.contains('supported APIs for adjudication').should('be.visible')
+        cy.get('h1').should('contain.text', 'Eligibility checks')
+        cy.contains('independent read-only SQL query').should('be.visible')
         cy.get('[data-testid="reference-demo-showcase"]')
             .should('have.attr', 'data-active-reference', 'insurance')
             .within(() => {
                 cy.contains('openIMIS').should('be.visible')
-                cy.contains('button', 'Recorded demonstration').click()
-                cy.get('img')
-                    .should('have.attr', 'alt')
-                    .and('contain', 'recording a synthetic health-facility claim')
-                cy.contains('button', 'Compiled replay').click()
-                cy.get('img')
-                    .should('have.attr', 'alt')
-                    .and('contain', 'replaying the compiled synthetic claim')
-                cy.contains('Evidence manifest')
+                cy.get('button[data-mode-kind="recording"]').click()
+                cy.get('video')
+                    .should('have.attr', 'aria-label')
+                    .and('contain', 'source demonstration')
+                cy.get('button[data-mode-kind="replay"]').click()
+                cy.get('video')
+                    .should('have.attr', 'aria-label')
+                    .and('contain', 'eligibility check')
+                cy.get('[data-testid="reference-evidence-player"]')
+                    .should('have.attr', 'data-target-tracking', 'exact-decoded-frame-bound')
+                cy.get('button[data-mode-kind="halt"]').click()
+                cy.contains('Fail-safe HALTED')
+                cy.contains('Evidence pack')
                     .should('have.attr', 'href')
                     .and(
                         'equal',
-                        '/artifacts/json?source=%2Finsurance-demo%2Fprovenance.json'
+                        '/artifacts/json?source=%2Freference%2Fopenimis-eligibility-standard-synthetic-v1%2Fmanifest.json'
                     )
             })
 

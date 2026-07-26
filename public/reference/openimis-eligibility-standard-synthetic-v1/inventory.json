@@ -1,0 +1,81 @@
+{
+  "files": [
+    {
+      "bytes": 6692,
+      "path": "fail-safe-halt/expired-halt.contexts.json",
+      "sha256": "d0615c48ce87db0e910c4c51b3661d67502abe34ccc4eef6201975b3a07cd222"
+    },
+    {
+      "bytes": 18160,
+      "path": "fail-safe-halt/expired-halt.control-overlay.v2.json",
+      "sha256": "7badf37d8da3efbaeddee12d6f5e549809289031c5baffa57321959309d7f62a"
+    },
+    {
+      "bytes": 467,
+      "path": "fail-safe-halt/expired-halt.frame-pts-us.json",
+      "sha256": "b49e1b31d0f11cbba208267116e040ccf2a0836f05e5b1ea971334bdb78fe257"
+    },
+    {
+      "bytes": 872,
+      "path": "fail-safe-halt/expired-halt.media-binding.json",
+      "sha256": "63a57ac0b15785ca5e6569f1b5243241934df60af92613998368a23c4d315a9c"
+    },
+    {
+      "bytes": 166215,
+      "path": "fail-safe-halt/expired-halt.mp4",
+      "sha256": "0bacb22000d2f4ffdcba8468b79860375a42db779b5c734cb8a6985de2d07db2"
+    },
+    {
+      "bytes": 74291,
+      "path": "fail-safe-halt/expired-halt.poster.png",
+      "sha256": "f8c79fbb24c6d4d517b5fa06689fae402586132a67860c711901c686724ad408"
+    },
+    {
+      "bytes": 30006,
+      "path": "manifest.json",
+      "sha256": "1a9e6b11dfbb1c99572f3d2e2f564d9dd4780e7b85a9c5868c9c4dac08827d1c"
+    },
+    {
+      "bytes": 127602,
+      "path": "recording/openimis-source-recording.poster.png",
+      "sha256": "6d41cf01645a0a6af92e37dfda471c0afe1e1caab71eaf387029dfe306fed87a"
+    },
+    {
+      "bytes": 492188,
+      "path": "recording/openimis-source-recording.unbound.mp4",
+      "sha256": "2ed62ab7b9e3df69c04eb19c472c929c42f0baaaabbb8e1c4cac754de4bfb7d2"
+    },
+    {
+      "bytes": 6646,
+      "path": "verified-replay/eligible-replay.contexts.json",
+      "sha256": "0f90ad4e06f1bf24ccb9ca4473562914cd99fe411affa7f8fb0feffa9304618f"
+    },
+    {
+      "bytes": 18152,
+      "path": "verified-replay/eligible-replay.control-overlay.v2.json",
+      "sha256": "a99f52eb693d3d6096435596757aa6d9599babfc65d83b2293481879024df70d"
+    },
+    {
+      "bytes": 467,
+      "path": "verified-replay/eligible-replay.frame-pts-us.json",
+      "sha256": "2e8d32c3a84ff34b6728e0807386ae1f6e8ac8c32e7f2f65241eb2f580c62dc7"
+    },
+    {
+      "bytes": 884,
+      "path": "verified-replay/eligible-replay.media-binding.json",
+      "sha256": "275d5e6ac10e5c3c516785a65a2cf52112b6150bb8003c8796b28be4f9997a4a"
+    },
+    {
+      "bytes": 168522,
+      "path": "verified-replay/eligible-replay.mp4",
+      "sha256": "a13cc78a9ca427f7d2d57586902ec815a053729d281fb26f7c752821a2cc73c4"
+    },
+    {
+      "bytes": 74503,
+      "path": "verified-replay/eligible-replay.poster.png",
+      "sha256": "efc33c3d7be9b22926501bc843a87aa7a912b229906c5e5933a1cfaafc7cfc8f"
+    }
+  ],
+  "pack_id": "openimis-eligibility-standard-synthetic-v1",
+  "schema_version": "openadapt.public-pack-inventory/v1"
+}
