@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
+import JsonArtifactLink from '@components/JsonArtifactLink'
 import { track, EVENTS } from 'utils/analytics'
 import { CATALOG, SUBSTRATE_MATURITY } from 'data/workflowCatalog'
 
@@ -237,14 +238,12 @@ export default function WorkflowsPage() {
                     </ul>
                     <p className="mt-3 text-xs leading-relaxed text-ink-3">
                         Labels reconcile to the canonical{' '}
-                        <a
-                            href="/status.json"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <JsonArtifactLink
+                            source="/status.json"
                             className="text-accent underline"
                         >
                             status manifest
-                        </a>
+                        </JsonArtifactLink>
                         . Available means the backend ships in the released
                         compiler/runtime. The manifest records its exact bounded
                         evidence and whether execution is managed or

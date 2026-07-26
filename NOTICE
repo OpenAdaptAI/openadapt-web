@@ -10,3 +10,6 @@ NOT licensed under the MIT License. All rights in those materials are reserved.
 Only SYNTHETIC reference media may be published in this repository (for example,
 synthetic openIMIS / Frappe / OpenEMR reference frames). Do not add real-customer
 or real-EMR screenshots, recordings, datasets, or other confidential material.
+
+The interactive artifact viewer includes react-json-view-lite 2.5.0,
+Copyright (c) 2024 AnyRoad, used under the MIT License.

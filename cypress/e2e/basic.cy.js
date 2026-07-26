@@ -498,7 +498,10 @@ describe('public product truth', () => {
         cy.contains(/Pause animation|Play animation/).should('not.exist')
         cy.contains('Inspect evidence manifest')
             .should('have.attr', 'href')
-            .and('equal', '/lending-demo/provenance.json')
+            .and(
+                'equal',
+                '/artifacts/json?source=%2Flending-demo%2Fprovenance.json'
+            )
         cy.get('img[alt*="OpenEMR"]').should('not.exist')
 
         cy.visit('/solutions/insurance')
@@ -515,7 +518,10 @@ describe('public product truth', () => {
             .should('be.visible')
         cy.contains('Inspect evidence manifest')
             .should('have.attr', 'href')
-            .and('equal', '/insurance-demo/provenance.json')
+            .and(
+                'equal',
+                '/artifacts/json?source=%2Finsurance-demo%2Fprovenance.json'
+            )
 
         cy.viewport(375, 812)
         cy.visit('/solutions/lending')

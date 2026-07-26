@@ -1,4 +1,5 @@
 import Clip from './Clip'
+import JsonArtifactLink from './JsonArtifactLink'
 import processStyles from './HowItWorks.module.css'
 import panelStyles from './LendingWorkflowDemo.module.css'
 import styles from './HomeReferenceWorkflow.module.css'
@@ -228,9 +229,9 @@ export default function HomeReferenceWorkflow({ vertical, onSelectVertical }) {
 
                 <div className={panelStyles.disclosure}>
                     <p>{reference.disclosure.text}</p>
-                    <a href={reference.disclosure.linkHref}>
+                    <JsonArtifactLink source={reference.disclosure.linkHref}>
                         {reference.disclosure.linkLabel}
-                    </a>
+                    </JsonArtifactLink>
                 </div>
             </div>
         </section>
