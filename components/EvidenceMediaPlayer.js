@@ -307,14 +307,12 @@ export default function EvidenceMediaPlayer({
                     />
                 )}
 
-                {(frame?.visible ?? true) && (
+                {exactPresentation && frame?.visible && (
                     <div
                         ref={capsuleRef}
                         className={styles.capsule}
                         aria-label={`OpenAdapt ${phaseLabel.toLowerCase()}`}
-                        data-overlay-kind={
-                            exactPresentation ? 'canonical-runtime-state' : 'source-metadata'
-                        }
+                        data-overlay-kind="canonical-runtime-state"
                     >
                         <span className={styles.brand}>
                             <i aria-hidden="true" /> OpenAdapt
