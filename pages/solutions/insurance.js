@@ -8,38 +8,37 @@ export default function InsurancePage() {
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
-                <title>Verified Insurance Claims Execution | OpenAdapt</title>
+                <title>Verified Insurance Eligibility Execution | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="OpenAdapt compiles repeated claims UI work into deterministic execution and verifies the resulting write against the claims system of record."
+                    content="See OpenAdapt compile an openIMIS eligibility demonstration, verify eligible results with independent SQL, and halt when the system record refutes the browser result."
                 />
                 <link rel="canonical" href="https://openadapt.ai/solutions/insurance" />
-                <meta property="og:title" content="Verified Insurance Claims Execution | OpenAdapt" />
-                <meta property="og:description" content="Claims intake demonstrated once, replayed deterministically, and checked against the system of record." />
+                <meta property="og:title" content="Verified Insurance Eligibility Execution | OpenAdapt" />
+                <meta property="og:description" content="Insurance eligibility demonstrated once, replayed deterministically, and accepted only when an independent system check agrees." />
                 <meta property="og:url" content="https://openadapt.ai/solutions/insurance" />
             </Head>
 
             <div className="mx-auto max-w-4xl px-4 py-14">
                 <p className="eyebrow">
-                    Insurance claims execution
+                    Insurance eligibility execution
                 </p>
                 <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-                    Claims intake, demonstrated once, replayed exactly — and
-                    checked against the claims database.
+                    Eligibility checks, demonstrated once, accepted only when
+                    the system record agrees.
                 </h1>
                 <p className="mt-5 max-w-3xl text-base text-ink-2 md:text-lg">
                     See OpenAdapt run the full loop on a real open-source insurance
-                    system: a health-facility claim is entered once in openIMIS,
-                    compiled into a governed local program, and replayed with a
-                    fresh claim number — with success established only by a
-                    direct SQL read of the claim row, never by pixels or
-                    self-report.
+                    system: a synthetic policyholder and service are looked up in
+                    openIMIS, the demonstration is compiled into a governed local
+                    program, and the browser result is checked against an
+                    independent read-only SQL query.
                 </p>
                 <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
-                    Use supported APIs for adjudication, coverage, and core claims
-                    logic. OpenAdapt completes the repeated last-mile intake or
-                    update trapped in a portal or claims UI, then verifies the
-                    result against the claims database.
+                    An eligible policy returns VERIFIED. An expired policy whose
+                    browser result conflicts with the system record returns
+                    HALTED. Both paths use zero model calls and retain exact
+                    replay evidence.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                     <Link
@@ -60,7 +59,7 @@ export default function InsurancePage() {
             <ReferenceDemoShowcase
                 initialIndustry="insurance"
                 heading="See the workflow in openIMIS, then compare the same loop across industries"
-                intro="The clips show the captured source demonstration and a real compiled replay. The evidence panel links to the exact application version, media hashes, trials, and database verification boundary."
+                intro="Compare the credential-safe source demonstration, the exact VERIFIED replay, and the SQL-refuted fail-safe halt. Every guided overlay is bound to retained runtime frames; Raw footage removes the presentation layer."
             />
 
             <div className="mx-auto max-w-4xl px-4 py-12">
@@ -69,14 +68,12 @@ export default function InsurancePage() {
                         Why the oracle matters here
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-ink-2 md:text-base">
-                        The costly failure in claims operations is not a crash —
-                        it is the claim that is silently entered twice, or
-                        against the wrong policyholder, and surfaces weeks later
-                        in reconciliation. Every run in this reference is
-                        accepted only when the claims database shows exactly one
-                        new claim row, in status Entered, for the demonstrated
-                        policyholder and facility. A duplicate or missing row
-                        fails the run loudly instead of reporting success.
+                        A green banner or populated field proves only what the
+                        current screen rendered. In this reference, OpenAdapt
+                        accepts eligibility only when a separate read-only SQL
+                        query confirms the policy, product, service, and
+                        effective-date state. When that independent result
+                        disagrees, the run halts instead of reporting success.
                     </p>
                 </div>
 
@@ -85,9 +82,8 @@ export default function InsurancePage() {
                 </h2>
                 <ul className="mt-4 space-y-3">
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
-                        First notice of loss or claims intake re-keyed from an
-                        existing structured source into a portal or claims UI
-                        with no supported API.
+                        Eligibility and coverage checks trapped in a portal when
+                        no suitable supported API reaches the required workflow.
                     </li>
                     <li className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2 md:text-base">
                         A bounded status-update or document-attachment step at

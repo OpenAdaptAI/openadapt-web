@@ -16,21 +16,30 @@ export default function ReferenceDemoShowcase({
     compact = false,
 }) {
     const [activeId, setActiveId] = useState(initialIndustry)
-    const [phase, setPhase] = useState('replay')
+    const [modeId, setModeId] = useState(
+        () => getReferenceDemo(initialIndustry).defaultModeId
+    )
     const [mediaView, setMediaView] = useState('presentation')
     const tabRefs = useRef([])
     const idPrefix = useId().replace(/:/g, '')
 
-    useEffect(() => setActiveId(initialIndustry), [initialIndustry])
+    useEffect(() => {
+        const initialDemo = getReferenceDemo(initialIndustry)
+        setActiveId(initialDemo.id)
+        setModeId(initialDemo.defaultModeId)
+    }, [initialIndustry])
 
     const demo = getReferenceDemo(activeId)
-    const phaseMedia = phase === 'recording' ? demo.recording : demo.replay
-    const exactPresentation = getExactBoundPresentation(phaseMedia)
+    const selectedMode =
+        demo.modes.find((candidate) => candidate.id === modeId) ??
+        demo.modes.find((candidate) => candidate.id === demo.defaultModeId) ??
+        demo.modes[0]
+    const exactPresentation = getExactBoundPresentation(selectedMode)
     const hasPresentation = exactPresentation !== null
     const usePresentation = hasPresentation && mediaView === 'presentation'
     const media = usePresentation
         ? exactPresentation.media
-        : phaseMedia
+        : selectedMode
     const playerPresentation = usePresentation
         ? exactPresentation
         : null
@@ -39,6 +48,8 @@ export default function ReferenceDemoShowcase({
     const selectApplication = (index) => {
         const next = REFERENCE_DEMOS[index]
         setActiveId(next.id)
+        setModeId(next.defaultModeId)
+        setMediaView('presentation')
         tabRefs.current[index]?.focus()
     }
 
@@ -93,7 +104,7 @@ export default function ReferenceDemoShowcase({
                             tabIndex={item.id === demo.id ? 0 : -1}
                             className={styles.applicationTab}
                             data-active={item.id === demo.id ? 'true' : undefined}
-                            onClick={() => setActiveId(item.id)}
+                            onClick={() => selectApplication(index)}
                             onKeyDown={(event) =>
                                 handleApplicationKeyDown(event, index)
                             }
@@ -104,21 +115,27 @@ export default function ReferenceDemoShowcase({
                     ))}
                 </div>
 
-                <div className={styles.phaseTabs} role="group" aria-label={`${demo.application} footage`}>
-                    <button
-                        type="button"
-                        aria-pressed={phase === 'recording'}
-                        onClick={() => setPhase('recording')}
-                    >
-                        Recorded demonstration
-                    </button>
-                    <button
-                        type="button"
-                        aria-pressed={phase === 'replay'}
-                        onClick={() => setPhase('replay')}
-                    >
-                        Compiled replay
-                    </button>
+                <div
+                    className={styles.phaseTabs}
+                    role="group"
+                    aria-label={`${demo.application} footage`}
+                    style={{ '--mode-count': demo.modes.length }}
+                >
+                    {demo.modes.map((mode) => (
+                        <button
+                            key={mode.id}
+                            type="button"
+                            data-mode-id={mode.id}
+                            data-mode-kind={mode.modeKind}
+                            aria-pressed={selectedMode.id === mode.id}
+                            onClick={() => {
+                                setModeId(mode.id)
+                                setMediaView('presentation')
+                            }}
+                        >
+                            {mode.label}
+                        </button>
+                    ))}
                 </div>
 
                 {hasPresentation && (
@@ -152,30 +169,29 @@ export default function ReferenceDemoShowcase({
                 >
                     <div className={styles.mediaColumn}>
                         <EvidenceMediaPlayer
-                            key={`${demo.id}:${phase}:${mediaView}:${media.kind}:${media.src}:${media.sha256 ?? 'raw'}`}
+                            key={`${demo.id}:${selectedMode.id}:${mediaView}:${media.kind}:${media.src}:${media.sha256 ?? 'raw'}`}
                             media={media}
                             application={demo.application}
-                            phase={phase}
+                            phase={selectedMode.modeKind}
                             exactPresentation={playerPresentation}
+                            evidenceHref={selectedMode.evidenceHref ?? demo.evidenceHref}
                         />
                         <p className={styles.mediaTruth}>
                             {usePresentation
                                 ? 'Guided view synchronized to the exact retained runtime timeline; raw footage remains unchanged.'
-                                : phaseMedia.sourceCaption}
+                                : selectedMode.sourceCaption}
                         </p>
                     </div>
 
                     <aside className={styles.proof}>
                         <p className={styles.proofClass}>
-                            {phase === 'recording'
-                                ? 'Source demonstration · synthetic data'
-                                : demo.evidenceClass}
+                            {selectedMode.evidenceClass ?? demo.evidenceClass}
                         </p>
                         <h3>{demo.application}</h3>
                         <p className={styles.applicationDetail}>{demo.applicationDetail}</p>
-                        <p className={styles.task}>{demo.task}</p>
+                        <p className={styles.task}>{selectedMode.task ?? demo.task}</p>
 
-                        {phase === 'recording' ? (
+                        {selectedMode.modeKind === 'recording' ? (
                             <div className={styles.recordingNote}>
                                 <strong>Demonstrate once</strong>
                                 <span>
@@ -187,7 +203,7 @@ export default function ReferenceDemoShowcase({
                         ) : (
                             <>
                                 <dl className={styles.metrics}>
-                                    {demo.metrics.map((metric) => (
+                                    {(selectedMode.metrics ?? demo.metrics).map((metric) => (
                                         <div key={metric.label}>
                                             <dt>{metric.label}</dt>
                                             <dd>{metric.value}</dd>
@@ -196,15 +212,17 @@ export default function ReferenceDemoShowcase({
                                 </dl>
                                 <div className={styles.verification}>
                                     <strong>How the result was checked</strong>
-                                    <span>{demo.verification}</span>
+                                    <span>{selectedMode.verification ?? demo.verification}</span>
                                 </div>
                             </>
                         )}
 
                         <div className={styles.links}>
-                            <Link href={demo.evidenceHref}>{demo.evidenceLabel}</Link>
-                            <a href={demo.methodologyHref} target="_blank" rel="noopener noreferrer">
-                                {demo.methodologyLabel}
+                            <Link href={selectedMode.evidenceHref ?? demo.evidenceHref}>
+                                {selectedMode.evidenceLabel ?? demo.evidenceLabel}
+                            </Link>
+                            <a href={selectedMode.methodologyHref ?? demo.methodologyHref} target="_blank" rel="noopener noreferrer">
+                                {selectedMode.methodologyLabel ?? demo.methodologyLabel}
                             </a>
                             <Link href={demo.route}>{demo.industry} use case</Link>
                             <a href="https://app.openadapt.ai/demo">Open the full Cloud demo</a>

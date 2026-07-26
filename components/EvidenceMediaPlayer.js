@@ -21,6 +21,7 @@ export default function EvidenceMediaPlayer({
     application,
     phase,
     exactPresentation = null,
+    evidenceHref = null,
 }) {
     const playerRef = useRef(null)
     const stageRef = useRef(null)
@@ -147,7 +148,12 @@ export default function EvidenceMediaPlayer({
         setDuration(Number.isFinite(video.duration) ? video.duration : 0)
     }
 
-    const phaseLabel = phase === 'recording' ? 'Demonstration' : 'Compiled replay'
+    const phaseLabel =
+        phase === 'recording'
+            ? 'Demonstration'
+            : phase === 'halt'
+              ? 'Fail-safe halt'
+              : 'Compiled replay'
     const frame = exactPresentation
         ? executionOverlayFrameAt(
               exactPresentation.timeline,
@@ -184,7 +190,12 @@ export default function EvidenceMediaPlayer({
         ? exactPresentation?.contextsBySequence?.[frame.event_sequence] ?? null
         : null
     const presentation = frame
-        ? executionOverlayPresentation(frame, boundContext, currentTime * 1000)
+        ? executionOverlayPresentation(
+              frame,
+              boundContext,
+              currentTime * 1000,
+              exactPresentation.networkObservation
+          )
         : null
 
     useEffect(() => {
@@ -334,8 +345,8 @@ export default function EvidenceMediaPlayer({
                                 {presentation.explanation}
                             </span>
                         )}
-                        {presentation.evidenceHref && (
-                            <a className={styles.evidenceLink} href={presentation.evidenceHref}>
+                        {(evidenceHref ?? presentation.evidenceHref) && (
+                            <a className={styles.evidenceLink} href={evidenceHref ?? presentation.evidenceHref}>
                                 View execution evidence
                             </a>
                         )}
