@@ -1,7 +1,6 @@
-// Condensed three-step model for the homepage. The full five-stage walkthrough
-// with per-application footage lives on the solution pages (it uses
-// <HowItWorks showUseCases />); this compresses record + compile + replay +
-// resolve + verify into the three ideas a first-time reader needs.
+// Buyer-level lifecycle used after the shared real-application showcase. The
+// showcase owns footage and evidence; this keeps the architecture explanation
+// to the three ideas a first-time reader needs.
 
 const steps = [
     {

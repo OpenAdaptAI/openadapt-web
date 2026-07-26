@@ -479,53 +479,55 @@ describe('public product truth', () => {
         cy.contains('supported APIs and exports').should('be.visible')
         cy.contains('customer-controlled deployment').should('be.visible')
         cy.contains('experimental').should('not.exist')
-        cy.get('[data-testid="frappe-lending-workflow-demo"]').should(
-            'be.visible'
-        )
-        cy.get('img[alt*="Frappe Lending frames"]')
-            .scrollIntoView()
-            .should('be.visible')
-        cy.get('img[alt*="deterministically replaying"]')
-            .scrollIntoView()
-            .should('be.visible')
-        cy.contains('6/6 compiled trials correct').should('be.visible')
-        cy.get('img[alt*="Frappe Lending frames"]')
-            .should('have.attr', 'src')
-            .and('equal', '/lending-demo/record-frappe.gif')
-        cy.get('img[alt*="deterministically replaying"]')
-            .should('have.attr', 'src')
-            .and('equal', '/lending-demo/replay-frappe.gif')
-        cy.contains(/Pause animation|Play animation/).should('not.exist')
-        cy.contains('Inspect evidence manifest')
-            .should('have.attr', 'href')
-            .and(
-                'equal',
-                '/artifacts/json?source=%2Flending-demo%2Fprovenance.json'
-            )
-        cy.get('img[alt*="OpenEMR"]').should('not.exist')
+        cy.get('[data-testid="reference-demo-showcase"]')
+            .should('have.attr', 'data-active-reference', 'lending')
+            .within(() => {
+                cy.contains('Frappe Lending').should('be.visible')
+                cy.contains('button', 'Recorded demonstration').click()
+                cy.get('img')
+                    .should('have.attr', 'alt')
+                    .and('contain', 'recording a synthetic Loan Application')
+                cy.contains('button', 'Compiled replay').click()
+                cy.get('img')
+                    .should('have.attr', 'alt')
+                    .and('contain', 'replaying the compiled synthetic Loan Application')
+                cy.contains('Compiled trials')
+                cy.contains('6/6')
+                cy.contains('Evidence manifest')
+                    .should('have.attr', 'href')
+                    .and(
+                        'equal',
+                        '/artifacts/json?source=%2Flending-demo%2Fprovenance.json'
+                    )
+            })
 
         cy.visit('/solutions/insurance')
         cy.get('h1').should('contain.text', 'Claims intake')
         cy.contains('supported APIs for adjudication').should('be.visible')
-        cy.get('[data-testid="openimis-claims-workflow-demo"]').should(
-            'be.visible'
-        )
-        cy.get('img[src="/insurance-demo/record-openimis.gif"]')
-            .scrollIntoView()
-            .should('be.visible')
-        cy.get('img[src="/insurance-demo/replay-openimis.gif"]')
-            .scrollIntoView()
-            .should('be.visible')
-        cy.contains('Inspect evidence manifest')
-            .should('have.attr', 'href')
-            .and(
-                'equal',
-                '/artifacts/json?source=%2Finsurance-demo%2Fprovenance.json'
-            )
+        cy.get('[data-testid="reference-demo-showcase"]')
+            .should('have.attr', 'data-active-reference', 'insurance')
+            .within(() => {
+                cy.contains('openIMIS').should('be.visible')
+                cy.contains('button', 'Recorded demonstration').click()
+                cy.get('img')
+                    .should('have.attr', 'alt')
+                    .and('contain', 'recording a synthetic health-facility claim')
+                cy.contains('button', 'Compiled replay').click()
+                cy.get('img')
+                    .should('have.attr', 'alt')
+                    .and('contain', 'replaying the compiled synthetic claim')
+                cy.contains('Evidence manifest')
+                    .should('have.attr', 'href')
+                    .and(
+                        'equal',
+                        '/artifacts/json?source=%2Finsurance-demo%2Fprovenance.json'
+                    )
+            })
 
         cy.viewport(375, 812)
         cy.visit('/solutions/lending')
-        cy.get('[data-testid="frappe-lending-workflow-demo"]')
+        cy.get('[data-testid="reference-demo-showcase"]')
+            .should('have.attr', 'data-active-reference', 'lending')
             .scrollIntoView()
             .should('be.visible')
         cy.document().then((document) => {
