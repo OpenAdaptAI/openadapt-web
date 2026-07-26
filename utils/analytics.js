@@ -23,6 +23,9 @@ export const EVENTS = {
     BOOK_PILOT_CLICK: 'book_pilot_click',
     GITHUB_CLICK: 'github_click',
     INSTALL_COMMAND_COPIED: 'install_command_copied',
+    LOCAL_QUICKSTART_INSTALL_COPIED: 'local_quickstart_install_copied',
+    LOCAL_QUICKSTART_RUN_COPIED: 'local_quickstart_run_copied',
+    LOCAL_TO_CLOUD_CLICK: 'local_to_cloud_click',
     DOCS_CLICK: 'docs_click',
     DISCORD_CLICK: 'discord_click',
     // Signup / hosted-app funnel: every outbound click to app.openadapt.ai

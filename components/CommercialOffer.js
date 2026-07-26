@@ -28,14 +28,12 @@ export default function CommercialOffer({ hostedOffer }) {
                         </p>
                     </div>
                     <div className="flex shrink-0 items-center gap-4 text-sm">
-                        <a
-                            href="https://docs.openadapt.ai/get-started/"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <Link
+                            href="/start"
                             className="btn-ghost-ink inline-block"
                         >
                             Start locally
-                        </a>
+                        </Link>
                         <a
                             href="https://github.com/OpenAdaptAI/OpenAdapt"
                             target="_blank"
