@@ -47,6 +47,21 @@ export default function ProductStatus() {
                     accessibility elements, and remote visual anchors are never
                     treated as interchangeable.
                 </p>
+                <p className="mx-auto mt-3 max-w-3xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
+                    Browser runs in production today; desktop, RDP, and Citrix
+                    run through customer-controlled qualification. Each surface
+                    carries its own measured acceptance evidence, published per
+                    surface in the{' '}
+                    <a
+                        href="https://docs.openadapt.ai/get-started/what-works-today/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent underline"
+                    >
+                        qualification evidence
+                    </a>
+                    .
+                </p>
 
                 <div className="mt-8 rounded-2xl border border-hairline bg-ground p-5 md:p-7">
                     <div className="mt-6 grid gap-4 md:grid-cols-3">
