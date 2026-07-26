@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
-import LendingWorkflowDemo from '@components/LendingWorkflowDemo'
+import ReferenceDemoShowcase from '@components/ReferenceDemoShowcase'
 
 export default function LendingPage() {
     return (
@@ -50,7 +50,11 @@ export default function LendingPage() {
                 </div>
             </div>
 
-            <LendingWorkflowDemo />
+            <ReferenceDemoShowcase
+                initialIndustry="lending"
+                heading="See the workflow in Frappe Lending, then compare the same loop across industries"
+                intro="The clips show the captured source demonstration and a real compiled replay. The evidence panel links to the exact application versions, media hashes, trials, and verification boundary."
+            />
 
             <div className="mx-auto max-w-4xl px-4 py-12">
                 <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
-import InsuranceWorkflowDemo from '@components/InsuranceWorkflowDemo'
+import ReferenceDemoShowcase from '@components/ReferenceDemoShowcase'
 
 export default function InsurancePage() {
     return (
@@ -57,7 +57,11 @@ export default function InsurancePage() {
                 </div>
             </div>
 
-            <InsuranceWorkflowDemo />
+            <ReferenceDemoShowcase
+                initialIndustry="insurance"
+                heading="See the workflow in openIMIS, then compare the same loop across industries"
+                intro="The clips show the captured source demonstration and a real compiled replay. The evidence panel links to the exact application version, media hashes, trials, and database verification boundary."
+            />
 
             <div className="mx-auto max-w-4xl px-4 py-12">
                 <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">
