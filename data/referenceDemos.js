@@ -2,6 +2,7 @@ import benchmark from './benchmark.json'
 import {
     bindExecutionOverlayContext,
     bindExecutionOverlayTimeline,
+    isSingleSourceExactPresentationMedia,
 } from '../lib/executionOverlayTimeline'
 
 const openemr = benchmark.openemr
@@ -17,7 +18,7 @@ const openemr = benchmark.openemr
  * A phase may add presentationMedia, a canonical ControlOverlayTimelineV2,
  * and its exact decoded-frame inventory. getExactBoundPresentation refuses the
  * view unless every public-contract and media binding check passes. Raw source
- * media remains the default and is never modified by presentation chrome.
+ * media remains inspectable and is never modified by presentation chrome.
  */
 export const REFERENCE_DEMOS = Object.freeze([
     Object.freeze({
@@ -183,15 +184,10 @@ export function hasExactBoundPresentation(media) {
 
 export function getExactBoundPresentation(media) {
     if (
-        media?.presentationMedia?.kind !== 'video' ||
-        typeof media.presentationMedia.sha256 !== 'string' ||
-        !['video/webm', 'video/mp4'].includes(
-            media.presentationMedia.mimeType
-        ) ||
-        (media.presentationMedia.fallbackSrc &&
-            !['video/webm', 'video/mp4'].includes(
-                media.presentationMedia.fallbackMimeType
-            )) ||
+        !isSingleSourceExactPresentationMedia(media?.presentationMedia) ||
+        // A different fallback encoding has different bytes and decoded-frame
+        // timing. Exact presentation therefore admits one digest-bound source;
+        // raw footage may continue to offer ordinary browser fallbacks.
         !media.presentationTimeline ||
         !media.presentationBinding
     ) {
