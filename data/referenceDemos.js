@@ -1,12 +1,9 @@
-import benchmark from './benchmark.json'
-import presentationAssets from './referencePresentationAssets.json'
+import presentationAssets from './referencePresentationAssets.mjs'
 import {
     bindExecutionOverlayContext,
     bindExecutionOverlayTimeline,
     isSingleSourceExactPresentationMedia,
 } from '../lib/executionOverlayTimeline'
-
-const openemr = benchmark.openemr
 
 const exactPresentationFor = (applicationId, phase) => {
     const asset = presentationAssets.assets.find(
@@ -24,12 +21,8 @@ const exactPresentationFor = (applicationId, phase) => {
 /**
  * One source of truth for the public real-application footage.
  *
- * The media files are raw source/replay footage. None of the retained clips in
- * this registry has an exact decoded-frame runtime timeline, so the public
- * player deliberately renders no target rectangle or synthetic execution
- * state.
- *
- * A phase may add presentationMedia, a canonical ControlOverlayTimelineV2,
+ * Source media remains unmodified and never receives an inferred overlay. A
+ * phase may add presentationMedia, a canonical ControlOverlayTimelineV2,
  * and its exact decoded-frame inventory. getExactBoundPresentation refuses the
  * view unless every public-contract and media binding check passes. Raw source
  * media remains inspectable and is never modified by presentation chrome.
@@ -39,48 +32,46 @@ export const REFERENCE_DEMOS = Object.freeze([
         id: 'healthcare',
         industry: 'Healthcare',
         application: 'OpenEMR',
-        applicationDetail: 'official public demo',
+        applicationDetail: '8.0.0.3 · pinned local synthetic fixture',
         route: '/solutions/healthcare',
-        evidenceClass: 'Public application demonstration',
-        task: openemr.task,
+        evidenceClass: 'Reference qualification',
+        task: 'Create exactly one complete synthetic patient record from structured demographics.',
         recording: Object.freeze({
             kind: 'video',
-            src: '/how-it-works/record_openemr.webm',
-            mimeType: 'video/webm',
-            fallbackSrc: '/how-it-works/record_openemr.mp4',
-            fallbackMimeType: 'video/mp4',
-            poster: '/how-it-works/record_openemr.jpg',
-            width: 880,
-            height: 550,
-            alt: 'OpenAdapt recording a bounded workflow in the live OpenEMR public demo.',
-            sourceCaption: 'Literal source recording from the OpenEMR demonstration.',
+            src: '/reference/openemr-patient-registration-standard-synthetic-v1/recording/openemr-source-recording.unbound.mp4',
+            mimeType: 'video/mp4',
+            poster: '/reference/openemr-patient-registration-standard-synthetic-v1/recording/openemr-source-recording.poster.png',
+            width: 1280,
+            height: 800,
+            alt: 'OpenAdapt recording a synthetic patient registration workflow in OpenEMR.',
+            sourceCaption:
+                'Unbound source recording used to compile the OpenEMR workflow. It carries no overlay or outcome claim.',
             ...exactPresentationFor('healthcare', 'recording'),
         }),
         replay: Object.freeze({
             kind: 'video',
-            src: '/how-it-works/run_openemr.webm',
-            mimeType: 'video/webm',
-            fallbackSrc: '/how-it-works/run_openemr.mp4',
-            fallbackMimeType: 'video/mp4',
-            poster: '/how-it-works/run_openemr.jpg',
-            width: 880,
-            height: 550,
-            alt: 'OpenAdapt replaying the compiled workflow in the live OpenEMR public demo.',
-            sourceCaption: 'Literal compiled replay footage from the OpenEMR demonstration.',
+            src: '/reference/openemr-patient-registration-standard-synthetic-v1/replay/openemr-replay.mp4',
+            mimeType: 'video/mp4',
+            poster: '/reference/openemr-patient-registration-standard-synthetic-v1/replay/openemr-replay.poster.png',
+            width: 1280,
+            height: 800,
+            alt: 'OpenAdapt replaying a qualified synthetic patient registration workflow in OpenEMR.',
+            sourceCaption:
+                'Exact replay evidence media with presentation chrome omitted.',
             ...exactPresentationFor('healthcare', 'replay'),
         }),
         metrics: Object.freeze([
-            Object.freeze({ label: 'OCR-confirmed outcomes', value: `${openemr.compiled.success_count}/${openemr.compiled.n}` }),
-            Object.freeze({ label: 'Model calls / run', value: String(openemr.compiled.model_calls_per_run) }),
-            Object.freeze({ label: 'Median replay', value: `${openemr.compiled.wall_s_p50.toFixed(1)} s` }),
+            Object.freeze({ label: 'Standard VERIFIED', value: '3/3' }),
+            Object.freeze({ label: 'REST + SQL parity', value: '3/3' }),
+            Object.freeze({ label: 'Model calls', value: '0' }),
         ]),
         verification:
-            'Final settled-screen OCR found the distinct saved note in 20/20 compiled runs. One run halted after the write on a drifting postcondition; OCR still confirmed the note on the final screen. This is screen evidence, not persisted-record readback.',
-        evidenceHref: '/artifacts/json?source=%2Fhow-it-works%2FMANIFEST.json',
-        evidenceLabel: 'Footage manifest',
+            'All 3 fresh Standard-profile runs created exactly one synthetic patient and returned VERIFIED only after separately authenticated REST readback agreed with direct SQL and non-target delta audit. Median end-to-end runtime was 59.8 seconds; observed silent incorrect success was 0/3.',
+        evidenceHref: '/artifacts/json?source=%2Freference%2Fopenemr-patient-registration-standard-synthetic-v1%2Fmanifest.json',
+        evidenceLabel: 'Qualification pack',
         methodologyHref:
-            'https://github.com/OpenAdaptAI/openadapt-flow/blob/f9091aab0f22b4a65401252b94d648a939da0575/benchmark/openemr/BENCHMARK.md',
-        methodologyLabel: 'Method and results',
+            'https://github.com/OpenAdaptAI/openadapt-flow/tree/cb8b785cab84e2c42e8072a1bbd1099ce2454e1e/benchmark/openemr_local',
+        methodologyLabel: 'Reference method',
     }),
     Object.freeze({
         id: 'lending',

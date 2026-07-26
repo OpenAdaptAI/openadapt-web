@@ -191,7 +191,10 @@ test('capsule placement is event-stable and presentation facts require exact bou
         'hidden'
     )
     const activeFrame = frame(5)
-    assert.deepEqual(executionRailForBoundContext(activeFrame, null), [])
+    assert.deepEqual(
+        executionRailForBoundContext(activeFrame, null).map(({ state }) => state),
+        ['complete', 'active', 'pending']
+    )
     const context = bindExecutionOverlayContext(activeFrame, {
         state_id: activeFrame.state_id,
         event_sequence: activeFrame.event_sequence,

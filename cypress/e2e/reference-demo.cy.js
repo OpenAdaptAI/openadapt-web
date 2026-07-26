@@ -1,13 +1,14 @@
 describe('shared real-application demo', () => {
     const routes = [
-        ['/', 'healthcare'],
-        ['/solutions/healthcare', 'healthcare'],
-        ['/solutions/lending', 'lending'],
-        ['/solutions/insurance', 'insurance'],
-        ['/how-it-works', 'healthcare'],
+        ['/', 'healthcare', 'exact-decoded-frame-bound'],
+        ['/solutions/healthcare', 'healthcare', 'exact-decoded-frame-bound'],
+        ['/solutions/lending', 'lending', 'omitted-without-exact-timeline'],
+        ['/solutions/insurance', 'insurance', 'omitted-without-exact-timeline'],
+        ['/how-it-works', 'healthcare', 'exact-decoded-frame-bound'],
+        ['/dental', 'insurance', 'omitted-without-exact-timeline'],
     ]
 
-    for (const [route, initialReference] of routes) {
+    for (const [route, initialReference, replayTracking] of routes) {
         it(`renders the shared evidence player on ${route}`, () => {
             cy.visit(route)
             cy.get('[data-testid="reference-demo-showcase"]')
@@ -18,11 +19,18 @@ describe('shared real-application demo', () => {
                         .should(
                             'have.attr',
                             'data-target-tracking',
-                            'omitted-without-exact-timeline'
+                            replayTracking
                         )
                     cy.contains('button', 'Recorded demonstration').click()
-                    cy.contains('Recorded demonstration')
+                    cy.get('[data-testid="reference-evidence-player"]')
+                        .should(
+                            'have.attr',
+                            'data-target-tracking',
+                            'omitted-without-exact-timeline'
+                        )
                     cy.contains('button', 'Compiled replay').click()
+                    cy.get('[data-testid="reference-evidence-player"]')
+                        .should('have.attr', 'data-target-tracking', replayTracking)
                     cy.contains('Open the full Cloud demo')
                 })
         })
@@ -56,13 +64,23 @@ describe('shared real-application demo', () => {
         cy.get('@showcase')
             .find('video')
             .should(($video) =>
-                expect($video[0].currentSrc).to.include('run_openemr')
+                expect($video[0].currentSrc).to.include('openemr-replay.mp4')
             )
+        cy.get('@showcase').contains('button', 'Guided view').should('be.visible')
+        cy.get('@showcase').contains('button', 'Raw footage').click()
+        cy.get('@showcase')
+            .find('[data-testid="reference-evidence-player"]')
+            .should(
+                'have.attr',
+                'data-target-tracking',
+                'omitted-without-exact-timeline'
+            )
+        cy.get('@showcase').contains('button', 'Guided view').click()
         cy.get('@showcase').contains('button', 'Recorded demonstration').click()
         cy.get('@showcase')
             .find('video')
             .should(($video) =>
-                expect($video[0].currentSrc).to.include('record_openemr')
+                expect($video[0].currentSrc).to.include('openemr-source-recording.unbound.mp4')
             )
 
         cy.get('@showcase')

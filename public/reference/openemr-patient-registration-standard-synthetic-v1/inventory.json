@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "bytes": 9099,
+      "path": "manifest.json",
+      "sha256": "fe6a3e778f169cbacd169a71161626f06ffa2a90f9a7cae2421f4061ec30a646"
+    },
+    {
+      "bytes": 369488,
+      "height": 800,
+      "path": "recording/openemr-source-recording.poster.png",
+      "sha256": "5d1f793fcbff2415a83ec894fecb45f6e129402731344b79216b2bba43b88b10",
+      "width": 1280
+    },
+    {
+      "bytes": 2206939,
+      "codec": "h264",
+      "height": 800,
+      "path": "recording/openemr-source-recording.unbound.mp4",
+      "sha256": "9a730129bf6146e969bcc4de0298578bc7744149f4f064c14f24aebce731c9ec",
+      "width": 1280
+    },
+    {
+      "bytes": 29730,
+      "path": "replay/openemr-replay.contexts.json",
+      "sha256": "98c884953c4858e5451c0f686612657a1b4a9dc0941f335b6cd18b010329c39a"
+    },
+    {
+      "bytes": 93571,
+      "path": "replay/openemr-replay.control-overlay.v2.json",
+      "sha256": "57a71f6652786dddb77b03d985be78323e4922a77fa14eded7b16d475dce17dc"
+    },
+    {
+      "bytes": 2012,
+      "path": "replay/openemr-replay.media-binding.json",
+      "sha256": "15d476ad1616b8ba15a213742ea841ef36babbdec12b565b83b54a92db949273"
+    },
+    {
+      "bytes": 278805,
+      "codec": "h264",
+      "height": 800,
+      "path": "replay/openemr-replay.mp4",
+      "sha256": "ef77240aa6ce74d9024c9cd95e8e45b886ea033f097c648b2bc20258f91c18d5",
+      "width": 1280
+    },
+    {
+      "bytes": 149927,
+      "height": 800,
+      "path": "replay/openemr-replay.poster.png",
+      "sha256": "56043b3d7c7a169a1369b4ed192f1326eeb25cb761683dd8410234923d12363b",
+      "width": 1280
+    }
+  ],
+  "schema_version": "openadapt.public-pack-inventory/v1"
+}

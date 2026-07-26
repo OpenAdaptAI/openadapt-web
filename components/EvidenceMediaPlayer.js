@@ -144,7 +144,6 @@ export default function EvidenceMediaPlayer({
         if (!video) return
         setPlaying(!video.paused)
         setCurrentTime(video.currentTime)
-        setDecodedFrameIndex(null)
         setDuration(Number.isFinite(video.duration) ? video.duration : 0)
     }
 
@@ -246,6 +245,7 @@ export default function EvidenceMediaPlayer({
                         onLoadedMetadata={syncVideo}
                         onDurationChange={syncVideo}
                         onTimeUpdate={syncVideo}
+                        onSeeking={() => setDecodedFrameIndex(null)}
                         onSeeked={syncVideo}
                         onPlay={syncVideo}
                         onPause={syncVideo}
@@ -366,6 +366,7 @@ export default function EvidenceMediaPlayer({
                             aria-label="Playback position"
                             onChange={(event) => {
                                 if (!videoRef.current) return
+                                setDecodedFrameIndex(null)
                                 videoRef.current.currentTime = Number(
                                     event.currentTarget.value
                                 )
