@@ -172,7 +172,7 @@ export default function EvidenceMediaPlayer({
               Math.round(currentTime * 1000)
           )
         : null
-    const target = exactPresentation
+    const target = exactPresentation && frame?.visible
         ? exactTargetForDecodedFrame(
               exactPresentation.timeline,
               exactPresentation.binding,
@@ -307,31 +307,33 @@ export default function EvidenceMediaPlayer({
                     />
                 )}
 
-                <div
-                    ref={capsuleRef}
-                    className={styles.capsule}
-                    aria-label={`OpenAdapt ${phaseLabel.toLowerCase()}`}
-                    data-overlay-kind={
-                        exactPresentation ? 'canonical-runtime-state' : 'source-metadata'
-                    }
-                >
-                    <span className={styles.brand}>
-                        <i aria-hidden="true" /> OpenAdapt
-                    </span>
-                    <span className={styles.phase}>{phaseChip}</span>
-                    <small>
-                        {application} · {statusLabel} · {contextLabel}
-                    </small>
-                    {rail.length > 0 && (
-                        <span className={styles.rail} aria-label="Execution stage">
-                            {rail.map((item) => (
-                                <i key={item.label} data-state={item.state}>
-                                    {item.label}
-                                </i>
-                            ))}
+                {(frame?.visible ?? true) && (
+                    <div
+                        ref={capsuleRef}
+                        className={styles.capsule}
+                        aria-label={`OpenAdapt ${phaseLabel.toLowerCase()}`}
+                        data-overlay-kind={
+                            exactPresentation ? 'canonical-runtime-state' : 'source-metadata'
+                        }
+                    >
+                        <span className={styles.brand}>
+                            <i aria-hidden="true" /> OpenAdapt
                         </span>
-                    )}
-                </div>
+                        <span className={styles.phase}>{phaseChip}</span>
+                        <small>
+                            {application} · {statusLabel} · {contextLabel}
+                        </small>
+                        {rail.length > 0 && (
+                            <span className={styles.rail} aria-label="Execution stage">
+                                {rail.map((item) => (
+                                    <i key={item.label} data-state={item.state}>
+                                        {item.label}
+                                    </i>
+                                ))}
+                            </span>
+                        )}
+                    </div>
+                )}
             </div>
 
             <div
