@@ -125,7 +125,7 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
-    margin: 0 0 16px;
+    margin: 16px 0 0;
     padding: 0;
     list-style: none;
 }
