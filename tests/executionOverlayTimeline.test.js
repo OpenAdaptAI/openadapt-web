@@ -3,10 +3,12 @@ const test = require('node:test')
 
 const digest = 'a'.repeat(64)
 
-const frame = (sequence, phase = 'executing', target = null) => ({
+const targetState = 'target-59b8e1f7cc3dedc6'
+
+const frame = (sequence, phase = 'executing', target = null, visible = true) => ({
     schema_version: 'openadapt.control-overlay-frame/v2',
     state_id: [
-        'visible',
+        visible ? 'visible' : 'hidden',
         phase,
         'governed',
         'standard',
@@ -15,12 +17,12 @@ const frame = (sequence, phase = 'executing', target = null) => ({
         'no-pause',
         'no-resume',
         'no-stop',
-        target ? `target-${'b'.repeat(16)}` : 'no-target',
+        target ? targetState : 'no-target',
     ].join(':'),
     event_sequence: sequence,
     observed_at_unix_ms: 1_785_000_000_000 + sequence,
     observed_at_monotonic_ms: 10_000 + sequence,
-    visible: true,
+    visible,
     phase,
     workflow_label: 'Governed workflow',
     mode: 'governed',
@@ -69,10 +71,14 @@ const binding = () => ({
 })
 
 test('canonical V2 parsing refuses unsafe fields and media/PTS mismatches', async () => {
-    const { bindExecutionOverlayTimeline } = await import(
+    const { bindExecutionOverlayTimeline, canonicalControlOverlayTargetJson } = await import(
         '../lib/executionOverlayTimeline.js'
     )
     assert.doesNotThrow(() => bindExecutionOverlayTimeline(timeline(), binding()))
+    assert.equal(
+        canonicalControlOverlayTargetJson(target),
+        '{"action_kind":"click","binding":{"frame_index":2,"kind":"media_frame","media_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},"coordinate_space":"top_level_viewport_normalized","rect":{"height":0.5,"width":0.5,"x":0.25,"y":0.25},"source_viewport":{"device_pixel_ratio":1.0,"height_css_px":720,"width_css_px":1280}}'
+    )
 
     const leaked = timeline()
     leaked.events[0].frame.patient_name = 'Jane Doe'
@@ -96,6 +102,13 @@ test('canonical V2 parsing refuses unsafe fields and media/PTS mismatches', asyn
             }),
         /inventoried decoded-frame PTS/
     )
+    const forged = timeline()
+    forged.events[1].frame.target_tracking = structuredClone(target)
+    forged.events[1].frame.target_tracking.rect.x = 0.2
+    assert.throws(
+        () => bindExecutionOverlayTimeline(forged, binding()),
+        /state_id does not match/
+    )
 })
 
 test('status persists by bounded time while target exists only on its exact frame', async () => {
@@ -114,7 +127,9 @@ test('status persists by bounded time while target exists only on its exact fram
         exact.binding,
         2
     )
-    assert.equal(boundTarget, target)
+    assert.deepEqual(boundTarget, target)
+    assert.equal(Object.isFrozen(exact.timeline.events[1].frame.target_tracking), true)
+    assert.equal(Object.isFrozen(exact.binding.mediaFramePresentationTimesUs), true)
     assert.deepEqual(
         mapTargetToContainedVideo(boundTarget, {
             elementWidth: 640,
@@ -188,9 +203,12 @@ test('exact presentation refuses an unbound fallback encoding', async () => {
     )
     const exactMedia = {
         kind: 'video',
-        src: '/presentation.webm',
-        mimeType: 'video/webm',
+        src: '/presentation.mp4',
+        mimeType: 'video/mp4',
         sha256: digest,
+        width: 1280,
+        height: 720,
+        alt: 'Exact presentation fixture',
         fallbackSrc: '/presentation.mp4',
         fallbackMimeType: 'video/mp4',
     }

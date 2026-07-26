@@ -1,4 +1,5 @@
 import benchmark from './benchmark.json'
+import presentationAssets from './referencePresentationAssets.json'
 import {
     bindExecutionOverlayContext,
     bindExecutionOverlayTimeline,
@@ -6,6 +7,19 @@ import {
 } from '../lib/executionOverlayTimeline'
 
 const openemr = benchmark.openemr
+
+const exactPresentationFor = (applicationId, phase) => {
+    const asset = presentationAssets.assets.find(
+        (candidate) =>
+            candidate.applicationId === applicationId && candidate.phase === phase
+    )
+    return Object.freeze({
+        presentationMedia: asset?.media ?? null,
+        presentationTimeline: asset?.timeline ?? null,
+        presentationBinding: asset?.binding ?? null,
+        presentationContexts: asset?.contexts ?? null,
+    })
+}
 
 /**
  * One source of truth for the public real-application footage.
@@ -40,10 +54,7 @@ export const REFERENCE_DEMOS = Object.freeze([
             height: 550,
             alt: 'OpenAdapt recording a bounded workflow in the live OpenEMR public demo.',
             sourceCaption: 'Literal source recording from the OpenEMR demonstration.',
-            presentationMedia: null,
-            presentationTimeline: null,
-            presentationBinding: null,
-            presentationContexts: null,
+            ...exactPresentationFor('healthcare', 'recording'),
         }),
         replay: Object.freeze({
             kind: 'video',
@@ -56,10 +67,7 @@ export const REFERENCE_DEMOS = Object.freeze([
             height: 550,
             alt: 'OpenAdapt replaying the compiled workflow in the live OpenEMR public demo.',
             sourceCaption: 'Literal compiled replay footage from the OpenEMR demonstration.',
-            presentationMedia: null,
-            presentationTimeline: null,
-            presentationBinding: null,
-            presentationContexts: null,
+            ...exactPresentationFor('healthcare', 'replay'),
         }),
         metrics: Object.freeze([
             Object.freeze({ label: 'OCR-confirmed outcomes', value: `${openemr.compiled.success_count}/${openemr.compiled.n}` }),
@@ -91,10 +99,7 @@ export const REFERENCE_DEMOS = Object.freeze([
             alt: 'OpenAdapt recording a synthetic Loan Application workflow in Frappe Lending.',
             sourceCaption:
                 'Source-derived evidence sequence from the Frappe Lending reference run; not a literal continuous screen recording.',
-            presentationMedia: null,
-            presentationTimeline: null,
-            presentationBinding: null,
-            presentationContexts: null,
+            ...exactPresentationFor('lending', 'recording'),
         }),
         replay: Object.freeze({
             kind: 'gif',
@@ -105,10 +110,7 @@ export const REFERENCE_DEMOS = Object.freeze([
             alt: 'OpenAdapt replaying the compiled synthetic Loan Application workflow in Frappe Lending.',
             sourceCaption:
                 'Source-derived evidence sequence from the Frappe Lending compiled replay; not literal continuous footage.',
-            presentationMedia: null,
-            presentationTimeline: null,
-            presentationBinding: null,
-            presentationContexts: null,
+            ...exactPresentationFor('lending', 'replay'),
         }),
         metrics: Object.freeze([
             Object.freeze({ label: 'Compiled trials', value: '6/6' }),
@@ -140,10 +142,7 @@ export const REFERENCE_DEMOS = Object.freeze([
             alt: 'OpenAdapt recording a synthetic health-facility claim in openIMIS.',
             sourceCaption:
                 'Source-derived evidence sequence from the openIMIS reference run; not a literal continuous screen recording.',
-            presentationMedia: null,
-            presentationTimeline: null,
-            presentationBinding: null,
-            presentationContexts: null,
+            ...exactPresentationFor('insurance', 'recording'),
         }),
         replay: Object.freeze({
             kind: 'gif',
@@ -154,10 +153,7 @@ export const REFERENCE_DEMOS = Object.freeze([
             alt: 'OpenAdapt replaying the compiled synthetic claim workflow in openIMIS.',
             sourceCaption:
                 'Source-derived evidence sequence from the openIMIS compiled replay; not literal continuous footage.',
-            presentationMedia: null,
-            presentationTimeline: null,
-            presentationBinding: null,
-            presentationContexts: null,
+            ...exactPresentationFor('insurance', 'replay'),
         }),
         metrics: Object.freeze([
             Object.freeze({ label: 'Compiled replays', value: '3/3' }),
