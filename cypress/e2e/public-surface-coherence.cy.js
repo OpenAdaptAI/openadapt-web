@@ -153,10 +153,12 @@ describe('public surface coherence', () => {
                 )
             })
         // The refresh failed, so the committed snapshot survives and is
-        // labelled honestly as a snapshot rather than a fresh fetch.
+        // labelled honestly as last-known counts rather than a fresh fetch. The
+        // committed fallback carries no real observation time, so it shows a
+        // stable label instead of a drifting "snapshot from Nd ago".
         cy.get('[data-testid="footer-repository-source"]').should(
             'contain.text',
-            'GitHub · snapshot'
+            'GitHub · last-known counts'
         )
     })
 })

@@ -55,8 +55,13 @@ test('sourceLabel reports an unreachable-GitHub value as "last updated <rel>"', 
     assert.equal(label, 'GitHub · last updated 5m ago')
 })
 
-test('sourceLabel reports the committed snapshot as "snapshot from <rel>"', () => {
-    const label = sourceLabel(
+test('sourceLabel reports the committed snapshot as a stable "last-known counts"', () => {
+    // The committed fallback's timestamp is its authoring time, not a real
+    // GitHub observation, so its label must NOT drift with age. A growing
+    // "snapshot from Nd ago" is what made the footer read inconsistently stale
+    // across pages (fresh "updated 5m ago" on the home page versus an
+    // ever-growing snapshot age everywhere else).
+    const threeDaysAgo = sourceLabel(
         {
             stars: 1648,
             forks: 258,
@@ -66,7 +71,18 @@ test('sourceLabel reports the committed snapshot as "snapshot from <rel>"', () =
         },
         NOW
     )
-    assert.equal(label, 'GitHub · snapshot from 3d ago')
+    const eightDaysAgo = sourceLabel(
+        {
+            stars: 1648,
+            forks: 258,
+            observedAt: new Date(ago(8 * 24 * 60 * 60 * 1000)).toISOString(),
+            source: 'snapshot',
+            stale: true,
+        },
+        NOW
+    )
+    assert.equal(threeDaysAgo, 'GitHub · last-known counts')
+    assert.equal(eightDaysAgo, 'GitHub · last-known counts')
 })
 
 test('sourceLabel never prints NaN when the timestamp is missing', () => {
@@ -78,7 +94,10 @@ test('sourceLabel never prints NaN when the timestamp is missing', () => {
         sourceLabel({ source: 'stale', stale: true }, NOW),
         'GitHub · last-known counts'
     )
-    assert.equal(sourceLabel({ source: 'snapshot' }, NOW), 'GitHub · snapshot')
+    assert.equal(
+        sourceLabel({ source: 'snapshot' }, NOW),
+        'GitHub · last-known counts'
+    )
 })
 
 test('sourceLabel always begins with the honest "GitHub" attribution', () => {

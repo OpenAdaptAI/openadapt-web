@@ -269,7 +269,7 @@ export default function Pricing({ hostedOffer = null }) {
                         priceDetail={
                             hostedOffer?.cadence || LAUNCH_PRICE_CADENCE
                         }
-                        description="Run approved workflows with history, evidence, usage, and governed updates in one managed control plane."
+                        description="For developers and teams evaluating browser workflows on non-regulated data: run approved workflows with history, evidence, usage, and governed updates in one managed control plane. Regulated data and production SLAs are scoped separately through qualification."
                         features={[
                             'Managed execution, evidence, usage, and workflow updates',
                             'Separate from enterprise qualification',
