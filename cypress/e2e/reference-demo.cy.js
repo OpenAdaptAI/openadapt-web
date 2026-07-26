@@ -103,7 +103,7 @@ describe('shared real-application demo', () => {
             cy.get('@player')
                 .should('have.attr', 'data-decoded-frame-index', '1')
                 .then(($player) => $player.find('video')[0].pause())
-                .should('contain.text', 'View execution evidence')
+                .should('contain.text', 'Evidence')
                 .and('contain.text', 'Application network traffic observed')
                 .find('[data-decoded-frame-index="1"]')
                 .should('be.visible')

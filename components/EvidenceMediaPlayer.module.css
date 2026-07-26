@@ -51,10 +51,6 @@
     backdrop-filter: blur(10px);
 }
 
-.capsule[data-interactive='true'] {
-    pointer-events: auto;
-}
-
 .stage[data-overlay-placement='bottom-left'] .capsule {
     left: 10px;
 }
@@ -226,16 +222,18 @@
 }
 
 .evidenceLink {
-    justify-self: start;
-    min-height: 44px;
-    padding: 8px 12px;
+    display: inline-flex;
+    min-height: 36px;
+    flex: 0 0 auto;
+    align-items: center;
+    padding: 0 10px;
     border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 7px;
     background: rgba(255, 255, 255, 0.08);
     color: #f4f7f2;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    line-height: 28px;
+    line-height: 1.2;
     text-decoration: none;
 }
 
@@ -348,6 +346,10 @@
     .controls input {
         order: 3;
         min-width: 100%;
+    }
+
+    .evidenceLink {
+        min-height: 44px;
     }
 }
 
