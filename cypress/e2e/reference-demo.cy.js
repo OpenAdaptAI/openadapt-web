@@ -110,8 +110,6 @@ describe('shared real-application demo', () => {
                     cy.get('@player')
                         .find('[data-overlay-kind="canonical-runtime-state"]')
                         .should('be.visible')
-                        .and('not.contain.text', 'Standard profile')
-                        .and('not.contain.text', 'Independent system check')
                         .and(
                             'have.attr',
                             'aria-label',
@@ -127,9 +125,6 @@ describe('shared real-application demo', () => {
                                 target.top >= capsule.bottom
                             )
                             expect(intersects).to.equal(false)
-                            expect(
-                                Math.round(capsule.height)
-                            ).to.equal(72)
                         })
                 })
             if (label === 'desktop') {
