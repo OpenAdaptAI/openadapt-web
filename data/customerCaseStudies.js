@@ -84,7 +84,7 @@ export const RVU_RECOVERY_CASE = {
             },
         ],
         evidenceReference:
-            'rvu-audit-standard-synthetic-v1 · rollup sha256 3c567828f3c17f81fffd6898f9a140d550f47485a633baa8ef567a8c947c465d',
+            'rvu-audit-standard-synthetic-v1 · rollup sha256 66c0731c4b754f2beb780562cddc03bdfe66f74acb5a64445c22ea97f64974b9',
         note:
             'Customer outcomes above come from Dr. Abrich’s audit work. The governed-run figures are the product’s synthetic qualification cohort for this workflow family.',
     },
