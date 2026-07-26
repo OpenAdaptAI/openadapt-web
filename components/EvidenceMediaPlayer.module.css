@@ -36,7 +36,6 @@
     position: absolute;
     z-index: 2;
     bottom: 10px;
-    left: 10px;
     display: grid;
     grid-template-columns: auto auto;
     align-items: center;
@@ -51,6 +50,19 @@
     color: #f4f7f2;
     pointer-events: none;
     backdrop-filter: blur(10px);
+}
+
+.stage[data-overlay-placement='bottom-left'] .capsule {
+    left: 10px;
+}
+
+.stage[data-overlay-placement='bottom-right'] .capsule {
+    right: 10px;
+}
+
+.stage[data-overlay-placement='hidden'] .capsule {
+    visibility: hidden;
+    opacity: 0;
 }
 
 .brand,
@@ -91,6 +103,47 @@
     font-size: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.rail {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 5px;
+    color: #839087;
+}
+
+.rail i {
+    display: inline-flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.rail i::before {
+    width: 6px;
+    height: 6px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    content: '';
+}
+
+.rail i[data-state='active'],
+.rail i[data-state='complete'] {
+    color: #bcefd2;
+}
+
+.rail i[data-state='active']::before,
+.rail i[data-state='complete']::before {
+    background: currentColor;
+}
+
+.rail i[data-state='halted'] {
+    color: #f5bc58;
 }
 
 .controls {
@@ -143,13 +196,35 @@
     white-space: nowrap;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
+    .stage {
+        display: flex;
+        overflow: visible;
+        flex-direction: column;
+        aspect-ratio: auto !important;
+    }
+
+    .media {
+        width: 100%;
+        height: auto;
+        aspect-ratio: var(--media-aspect);
+    }
+
     .capsule {
-        bottom: 7px;
-        left: 7px;
+        position: relative;
+        right: auto;
+        bottom: auto;
+        left: auto;
         gap: 3px 6px;
-        max-width: calc(100% - 14px);
-        padding: 6px 8px;
+        width: 100%;
+        max-width: none;
+        padding: 9px 10px;
+        border: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 0;
+        box-shadow: none;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .brand {

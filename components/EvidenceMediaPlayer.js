@@ -1,5 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
+import {
+    chooseOverlayPlacement,
+    decodedMediaFrameIndex,
+    exactTargetForDecodedFrame,
+    executionOverlayFrameAt,
+    executionRailForBoundContext,
+    mapTargetToContainedVideo,
+} from '../lib/executionOverlayTimeline'
 import styles from './EvidenceMediaPlayer.module.css'
 
 const clock = (seconds) => {
@@ -8,21 +16,43 @@ const clock = (seconds) => {
     return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, '0')}`
 }
 
+const PHASE_LABELS = Object.freeze({
+    idle: 'Ready',
+    observing: 'Observing',
+    recording: 'Recording',
+    executing: 'Executing',
+    pausing: 'Pausing',
+    paused: 'Paused',
+    resuming: 'Resuming',
+    stopping: 'Stopping',
+    verifying: 'Verifying',
+    verified: 'Verified',
+    completed_unverified: 'Unverified',
+    halted: 'Halted',
+    failed: 'Failed',
+    rolled_back: 'Rolled back',
+})
+
 export default function EvidenceMediaPlayer({
     media,
     application,
     phase,
-    exactTimeline = null,
+    exactPresentation = null,
 }) {
     const playerRef = useRef(null)
+    const stageRef = useRef(null)
+    const capsuleRef = useRef(null)
     const videoRef = useRef(null)
     const manuallyPaused = useRef(false)
+    const placementRef = useRef({ eventSequence: null, placement: null })
     const [playing, setPlaying] = useState(false)
     const [visible, setVisible] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
     const [duration, setDuration] = useState(0)
     const [motionAllowed, setMotionAllowed] = useState(false)
-    const [activeFrame, setActiveFrame] = useState(null)
+    const [decodedFrameIndex, setDecodedFrameIndex] = useState(null)
+    const [geometryVersion, setGeometryVersion] = useState(0)
+    const [placement, setPlacement] = useState('hidden')
 
     useEffect(() => {
         const reduced = window.matchMedia(
@@ -55,41 +85,56 @@ export default function EvidenceMediaPlayer({
 
         const video = videoRef.current
         if (!video) return undefined
-        if (shouldPlay) {
-            void video.play().catch(() => setPlaying(false))
-        } else {
-            video.pause()
-        }
+        if (shouldPlay) void video.play().catch(() => setPlaying(false))
+        else video.pause()
         return undefined
-    }, [media.kind, motionAllowed, visible])
+    }, [media.kind, media.src, motionAllowed, visible])
 
     useEffect(() => {
-        setActiveFrame(null)
+        const video = videoRef.current
+        if (!video || media.kind !== 'video') return undefined
+        setDecodedFrameIndex(null)
+        setCurrentTime(0)
+        video.load()
+        return undefined
+    }, [media.kind, media.src])
+
+    useEffect(() => {
+        const stage = stageRef.current
+        const capsule = capsuleRef.current
+        if (!stage || !capsule || typeof ResizeObserver === 'undefined') {
+            return undefined
+        }
+        const observer = new ResizeObserver(() =>
+            setGeometryVersion((version) => version + 1)
+        )
+        observer.observe(stage)
+        observer.observe(capsule)
+        return () => observer.disconnect()
+    }, [])
+
+    useEffect(() => {
+        setDecodedFrameIndex(null)
         if (
-            exactTimeline?.binding !== 'exact-decoded-frame' ||
-            media.kind !== 'video'
+            !exactPresentation ||
+            media.kind !== 'video' ||
+            !videoRef.current?.requestVideoFrameCallback
         ) {
             return undefined
         }
 
         const video = videoRef.current
-        if (!video?.requestVideoFrameCallback) return undefined
-
-        const framesByTime = new Map(
-            exactTimeline.frames.map((frame) => [frame.mediaTimeUs, frame])
-        )
         let callbackId
         const onVideoFrame = (_now, metadata) => {
-            // `mediaTime` comes from the decoded frame callback, not the coarse
-            // playback clock. Missing events clear the target immediately: no
-            // persistence or interpolation across frames.
-            const mediaTimeUs = Math.round(metadata.mediaTime * 1_000_000)
-            setActiveFrame(framesByTime.get(mediaTimeUs) ?? null)
+            setCurrentTime(metadata.mediaTime)
+            setDecodedFrameIndex(
+                decodedMediaFrameIndex(metadata.mediaTime, exactPresentation.binding)
+            )
             callbackId = video.requestVideoFrameCallback(onVideoFrame)
         }
         callbackId = video.requestVideoFrameCallback(onVideoFrame)
         return () => video.cancelVideoFrameCallback?.(callbackId)
-    }, [exactTimeline, media.kind, media.src])
+    }, [exactPresentation, media.kind, media.src])
 
     const toggle = () => {
         if (media.kind === 'gif') {
@@ -116,28 +161,79 @@ export default function EvidenceMediaPlayer({
         if (!video) return
         setPlaying(!video.paused)
         setCurrentTime(video.currentTime)
+        setDecodedFrameIndex(null)
         setDuration(Number.isFinite(video.duration) ? video.duration : 0)
     }
 
     const phaseLabel = phase === 'recording' ? 'Demonstration' : 'Compiled replay'
-    const exactBound = exactTimeline?.binding === 'exact-decoded-frame'
-    const targetRect = activeFrame?.targetRect
-    const hasTarget =
-        exactBound &&
-        targetRect &&
-        ['x', 'y', 'width', 'height'].every(
-            (key) =>
-                Number.isFinite(targetRect[key]) &&
-                targetRect[key] >= 0 &&
-                targetRect[key] <= 1
-        ) &&
-        targetRect.x + targetRect.width <= 1 &&
-        targetRect.y + targetRect.height <= 1
-    const statusLabel = activeFrame?.statusLabel ?? phaseLabel
-    const contextLabel =
-        activeFrame?.stepLabel ??
-        exactTimeline?.context?.label ??
-        (exactBound ? 'timeline-bound view' : 'raw footage')
+    const frame = exactPresentation
+        ? executionOverlayFrameAt(
+              exactPresentation.timeline,
+              Math.round(currentTime * 1000)
+          )
+        : null
+    const target = exactPresentation
+        ? exactTargetForDecodedFrame(
+              exactPresentation.timeline,
+              exactPresentation.binding,
+              decodedFrameIndex
+          )
+        : null
+    const mappedTarget = useMemo(() => {
+        const video = videoRef.current
+        if (!target || !video) return null
+        return mapTargetToContainedVideo(target, {
+            elementWidth: video.clientWidth,
+            elementHeight: video.clientHeight,
+            videoWidth: video.videoWidth,
+            videoHeight: video.videoHeight,
+        })
+        // ResizeObserver increments geometryVersion when either box changes.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [target, geometryVersion])
+    const protectedRegions = useMemo(
+        () =>
+            Array.isArray(media.protectedRegions)
+                ? media.protectedRegions
+                : [],
+        [media.protectedRegions]
+    )
+    const statusLabel = frame?.status ?? phaseLabel
+    const phaseChip = frame ? PHASE_LABELS[frame.phase] : phaseLabel
+    const contextLabel = frame?.step?.current
+        ? `Step ${frame.step.current} of ${frame.step.total}`
+        : exactPresentation
+          ? 'Exact runtime timeline'
+          : 'Raw source media'
+    const boundContext = frame
+        ? exactPresentation?.contextsBySequence?.[frame.event_sequence] ?? null
+        : null
+    const rail = frame
+        ? executionRailForBoundContext(frame, boundContext)
+        : []
+
+    useEffect(() => {
+        const stage = stageRef.current
+        const capsule = capsuleRef.current
+        if (!stage || !capsule) return
+        const eventSequence = frame?.event_sequence ?? null
+        const retained =
+            placementRef.current.eventSequence === eventSequence
+                ? placementRef.current.placement
+                : null
+        const next = chooseOverlayPlacement({
+            stageWidth: stage.clientWidth,
+            stageHeight: stage.clientHeight,
+            capsuleWidth: capsule.offsetWidth,
+            capsuleHeight: capsule.offsetHeight,
+            avoidRegions: mappedTarget
+                ? [...protectedRegions, mappedTarget]
+                : protectedRegions,
+            currentPlacement: retained,
+        })
+        placementRef.current = { eventSequence, placement: next }
+        setPlacement(next)
+    }, [frame?.event_sequence, geometryVersion, mappedTarget, protectedRegions])
 
     return (
         <div
@@ -145,13 +241,22 @@ export default function EvidenceMediaPlayer({
             ref={playerRef}
             data-testid="reference-evidence-player"
             data-media-kind={media.kind}
+            data-media-src={media.src}
             data-target-tracking={
-                exactBound
+                exactPresentation
                     ? 'exact-decoded-frame-bound'
                     : 'omitted-without-exact-timeline'
             }
         >
-            <div className={styles.stage} style={{ aspectRatio: `${media.width} / ${media.height}` }}>
+            <div
+                ref={stageRef}
+                className={styles.stage}
+                style={{
+                    aspectRatio: `${media.width} / ${media.height}`,
+                    '--media-aspect': `${media.width} / ${media.height}`,
+                }}
+                data-overlay-placement={placement}
+            >
                 {media.kind === 'video' ? (
                     <video
                         ref={videoRef}
@@ -165,12 +270,16 @@ export default function EvidenceMediaPlayer({
                         onLoadedMetadata={syncVideo}
                         onDurationChange={syncVideo}
                         onTimeUpdate={syncVideo}
+                        onSeeked={syncVideo}
                         onPlay={syncVideo}
                         onPause={syncVideo}
                     >
-                        <source src={media.src} type="video/webm" />
+                        <source src={media.src} type={media.mimeType} />
                         {media.fallbackSrc && (
-                            <source src={media.fallbackSrc} type="video/mp4" />
+                            <source
+                                src={media.fallbackSrc}
+                                type={media.fallbackMimeType}
+                            />
                         )}
                     </video>
                 ) : (
@@ -184,32 +293,44 @@ export default function EvidenceMediaPlayer({
                     />
                 )}
 
-                {hasTarget && (
+                {mappedTarget && (
                     <span
                         className={styles.target}
                         aria-hidden="true"
-                        data-decoded-frame-index={activeFrame.decodedFrameIndex}
+                        data-decoded-frame-index={decodedFrameIndex}
                         style={{
-                            left: `${targetRect.x * 100}%`,
-                            top: `${targetRect.y * 100}%`,
-                            width: `${targetRect.width * 100}%`,
-                            height: `${targetRect.height * 100}%`,
+                            left: `${mappedTarget.left}px`,
+                            top: `${mappedTarget.top}px`,
+                            width: `${mappedTarget.width}px`,
+                            height: `${mappedTarget.height}px`,
                         }}
                     />
                 )}
 
                 <div
+                    ref={capsuleRef}
                     className={styles.capsule}
                     aria-label={`OpenAdapt ${phaseLabel.toLowerCase()}`}
-                    data-overlay-kind="source-metadata"
+                    data-overlay-kind={
+                        exactPresentation ? 'canonical-runtime-state' : 'source-metadata'
+                    }
                 >
                     <span className={styles.brand}>
                         <i aria-hidden="true" /> OpenAdapt
                     </span>
-                    <span className={styles.phase}>{statusLabel}</span>
+                    <span className={styles.phase}>{phaseChip}</span>
                     <small>
-                        {application} · {contextLabel}
+                        {application} · {statusLabel} · {contextLabel}
                     </small>
+                    {rail.length > 0 && (
+                        <span className={styles.rail} aria-label="Execution stage">
+                            {rail.map((item) => (
+                                <i key={item.label} data-state={item.state}>
+                                    {item.label}
+                                </i>
+                            ))}
+                        </span>
+                    )}
                 </div>
             </div>
 
