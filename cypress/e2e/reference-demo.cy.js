@@ -66,6 +66,9 @@ describe('shared real-application demo', () => {
             .should(($video) =>
                 expect($video[0].currentSrc).to.include('openemr-replay.mp4')
             )
+        cy.get('@showcase')
+            .find('[data-overlay-kind="canonical-runtime-state"]')
+            .should('contain.text', 'OpenEMR')
         cy.get('@showcase').contains('button', 'Guided view').should('be.visible')
         cy.get('@showcase').contains('button', 'Raw footage').click()
         cy.get('@showcase')
@@ -77,6 +80,10 @@ describe('shared real-application demo', () => {
             )
         cy.get('@showcase').contains('button', 'Guided view').click()
         cy.get('@showcase').contains('button', 'Recorded demonstration').click()
+        cy.get('@showcase')
+            .contains('Source demonstration · synthetic data')
+            .should('be.visible')
+        cy.get('@showcase').should('not.contain.text', 'Reference qualification')
         cy.get('@showcase')
             .find('video')
             .should(($video) =>

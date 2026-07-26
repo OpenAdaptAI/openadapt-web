@@ -166,7 +166,11 @@ export default function ReferenceDemoShowcase({
                     </div>
 
                     <aside className={styles.proof}>
-                        <p className={styles.proofClass}>{demo.evidenceClass}</p>
+                        <p className={styles.proofClass}>
+                            {phase === 'recording'
+                                ? 'Source demonstration · synthetic data'
+                                : demo.evidenceClass}
+                        </p>
                         <h3>{demo.application}</h3>
                         <p className={styles.applicationDetail}>{demo.applicationDetail}</p>
                         <p className={styles.task}>{demo.task}</p>
