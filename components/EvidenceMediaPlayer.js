@@ -306,7 +306,6 @@ export default function EvidenceMediaPlayer({
                         className={styles.capsule}
                         aria-label={`OpenAdapt ${accessibleModeLabel.toLowerCase()} in ${application}`}
                         data-overlay-kind="canonical-runtime-state"
-                        data-interactive={overlayEvidenceHref ? 'true' : undefined}
                     >
                         <span className={styles.header}>
                             <span className={styles.brand}>
@@ -351,11 +350,6 @@ export default function EvidenceMediaPlayer({
                                 {presentation.explanation}
                             </span>
                         )}
-                        {overlayEvidenceHref && (
-                            <a className={styles.evidenceLink} href={overlayEvidenceHref}>
-                                View execution evidence
-                            </a>
-                        )}
                     </div>
                 )}
             </div>
@@ -396,6 +390,15 @@ export default function EvidenceMediaPlayer({
                     </>
                 ) : (
                     <span className={styles.time}>Looping evidence clip</span>
+                )}
+                {overlayEvidenceHref && (
+                    <a
+                        className={styles.evidenceLink}
+                        href={overlayEvidenceHref}
+                        aria-label={`View evidence for ${application} ${accessibleModeLabel.toLowerCase()}`}
+                    >
+                        Evidence
+                    </a>
                 )}
                 <button
                     type="button"
