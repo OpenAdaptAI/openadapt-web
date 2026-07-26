@@ -6,6 +6,7 @@ import { track, EVENTS } from 'utils/analytics'
 import BenchmarkCharts from '@components/BenchmarkCharts'
 import Faq, { faqItems } from '@components/Faq'
 import benchmark from '../data/benchmark.json'
+import { COMPARISON_LINKS } from '../data/comparisons'
 
 const faqSchema = {
     '@context': 'https://schema.org',
@@ -409,6 +410,41 @@ export default function ComparePage() {
                             Review execution and deployment options
                         </Link>
                     </p>
+                </section>
+
+                <section
+                    className="mt-14"
+                    aria-labelledby="specific-alternatives-heading"
+                >
+                    <p className="eyebrow">Specific alternatives</p>
+                    <h2
+                        id="specific-alternatives-heading"
+                        className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl"
+                    >
+                        Compare OpenAdapt with a specific alternative.
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
+                        Each page credits the alternative for what it genuinely
+                        does well, then shows where OpenAdapt differs on
+                        verification, outcomes, deployment, and openness.
+                    </p>
+                    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {COMPARISON_LINKS.map((link) => (
+                            <Link
+                                key={link.slug}
+                                href={link.href}
+                                className="rounded-2xl border border-hairline bg-panel p-5 font-display text-base font-semibold text-ink transition-colors hover:border-ink"
+                                onClick={() =>
+                                    track(EVENTS.COMPARE_CTA_CLICK, {
+                                        cta: `compare_${link.slug}`,
+                                        location: 'compare_alternatives',
+                                    })
+                                }
+                            >
+                                {link.title}
+                            </Link>
+                        ))}
+                    </div>
                 </section>
 
                 <div className="mt-14">
