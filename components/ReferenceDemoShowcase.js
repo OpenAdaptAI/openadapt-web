@@ -121,30 +121,6 @@ export default function ReferenceDemoShowcase({
                     </button>
                 </div>
 
-                <ol className={styles.lifecycle} aria-label="Governed workflow lifecycle">
-                    <li>
-                        <span>1</span>
-                        <div>
-                            <strong>Demonstrate</strong>
-                            <small>Capture the task and its evidence.</small>
-                        </div>
-                    </li>
-                    <li>
-                        <span>2</span>
-                        <div>
-                            <strong>Execute</strong>
-                            <small>Replay the compiled workflow locally.</small>
-                        </div>
-                    </li>
-                    <li>
-                        <span>3</span>
-                        <div>
-                            <strong>Verify or halt</strong>
-                            <small>Prove the effect, or stop for review.</small>
-                        </div>
-                    </li>
-                </ol>
-
                 {hasPresentation && (
                     <div
                         className={styles.mediaViewTabs}
@@ -231,6 +207,30 @@ export default function ReferenceDemoShowcase({
                         </div>
                     </aside>
                 </div>
+
+                <ol className={styles.lifecycle} aria-label="Governed workflow lifecycle">
+                    <li>
+                        <span>1</span>
+                        <div>
+                            <strong>Demonstrate</strong>
+                            <small>Capture the task and its evidence.</small>
+                        </div>
+                    </li>
+                    <li>
+                        <span>2</span>
+                        <div>
+                            <strong>Execute</strong>
+                            <small>Replay the compiled workflow locally.</small>
+                        </div>
+                    </li>
+                    <li>
+                        <span>3</span>
+                        <div>
+                            <strong>Verify or halt</strong>
+                            <small>Prove the effect, or stop for review.</small>
+                        </div>
+                    </li>
+                </ol>
             </div>
         </section>
     )
