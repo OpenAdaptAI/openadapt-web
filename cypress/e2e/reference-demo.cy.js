@@ -104,7 +104,6 @@ describe('shared real-application demo', () => {
                 .should('have.attr', 'data-decoded-frame-index', '1')
                 .then(($player) => $player.find('video')[0].pause())
                 .should('contain.text', 'Evidence')
-                .and('contain.text', 'Application network traffic observed')
                 .find('[data-decoded-frame-index="1"]')
                 .should('be.visible')
                 .then(($target) => {
@@ -128,6 +127,11 @@ describe('shared real-application demo', () => {
                             expect(intersects).to.equal(false)
                         })
                 })
+            if (label === 'desktop') {
+                cy.get('@player')
+                    .find('[data-overlay-placement]')
+                    .should('have.attr', 'data-overlay-placement', 'bottom-right')
+            }
             cy.contains('a', 'Qualification pack').should('be.visible')
             cy.get('@player').screenshot(`frappe-exact-target-${label}`)
         })
@@ -145,7 +149,11 @@ describe('shared real-application demo', () => {
             )
         cy.get('@showcase')
             .find('[data-overlay-kind="canonical-runtime-state"]')
-            .should('contain.text', 'OpenEMR')
+            .should(
+                'have.attr',
+                'aria-label',
+                'OpenAdapt verified replay in OpenEMR'
+            )
         cy.get('@showcase').contains('button', 'Guided view').should('be.visible')
         cy.get('@showcase').contains('button', 'Raw footage').click()
         cy.get('@showcase')
@@ -193,8 +201,7 @@ describe('shared real-application demo', () => {
                         'verified-replay/eligible-replay.mp4'
                     )
                 })
-                cy.contains('Local app traffic only · no off-box transmission')
-                    .should('be.visible')
+                cy.contains('Tier 1 SQL').should('be.visible')
                 cy.get('button[data-mode-id="fail_safe_halt"]').click()
                 cy.get('video').should(($video) => {
                     expect($video[0].currentSrc).to.include(

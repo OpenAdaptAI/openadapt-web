@@ -318,16 +318,11 @@ export default function EvidenceMediaPlayer({
                                 {presentation.progressLabel}
                             </span>
                         </span>
-                        {presentation.rail.length > 0 && (
-                            <span className={styles.rail} aria-label="Execution stage">
-                                {presentation.rail.map((item) => (
-                                    <i key={item.label} data-state={item.state}>
-                                        {item.label}
-                                    </i>
-                                ))}
-                            </span>
-                        )}
-                        <strong className={styles.status} data-state={frame.phase}>
+                        <strong
+                            className={styles.status}
+                            data-state={frame.phase}
+                            title={presentation.safetyLabel}
+                        >
                             {presentation.safetyLabel}
                         </strong>
                         {presentation.progressValue !== null &&
@@ -339,17 +334,6 @@ export default function EvidenceMediaPlayer({
                                     aria-label={`Workflow progress: ${presentation.progressValue} of ${presentation.progressMax}`}
                                 />
                             )}
-                        <span className={styles.secondary}>
-                            <span className={styles.applicationName}>{application}</span>
-                            {presentation.secondaryLabels.map((label) => (
-                                <span key={label}>{label}</span>
-                            ))}
-                        </span>
-                        {presentation.expanded && presentation.explanation && (
-                            <span className={styles.explanation}>
-                                {presentation.explanation}
-                            </span>
-                        )}
                     </div>
                 )}
             </div>
