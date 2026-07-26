@@ -442,9 +442,7 @@ describe('public product truth', () => {
             .scrollIntoView()
             .should('be.visible')
         cy.contains('≈$75,000').should('be.visible')
-        cy.contains('estimated recoverable billables identified per year').should(
-            'be.visible'
-        )
+        cy.contains('in missed billables recovered per year').should('be.visible')
         cy.contains('Real OpenAdapt Cloud interface').should('be.visible')
 
         cy.viewport(375, 812)
