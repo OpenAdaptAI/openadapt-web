@@ -15,10 +15,7 @@ test('keeps the customer result and synthetic validation in one canonical case-s
     assert.match(combined, /customer:\s*{/)
     assert.match(combined, /validation:\s*{/)
     assert.match(combined, /customerCase\.validation\.metrics\.map/)
-    assert.doesNotMatch(
-        combined,
-        /OPENADAPT-CORPUS-PRIVATE-DO-NOT-PACKAGE|reliability_recipes\//
-    )
+    assert.doesNotMatch(combined, /reliability_recipes\/|outputs\/cases\.jsonl/)
 })
 
 test('links the customer result from the public discovery surfaces', () => {
