@@ -287,7 +287,7 @@ export default function EvidenceMediaPlayer({
                     <div
                         ref={capsuleRef}
                         className={styles.capsule}
-                        aria-label={`OpenAdapt ${phaseLabel.toLowerCase()}`}
+                        aria-label={`OpenAdapt ${phaseLabel.toLowerCase()} in ${application}`}
                         data-overlay-kind="canonical-runtime-state"
                         data-interactive={presentation.evidenceHref ? 'true' : undefined}
                     >
@@ -324,7 +324,7 @@ export default function EvidenceMediaPlayer({
                                 />
                             )}
                         <span className={styles.secondary}>
-                            <span>{application}</span>
+                            <span className={styles.applicationName}>{application}</span>
                             {presentation.secondaryLabels.map((label) => (
                                 <span key={label}>{label}</span>
                             ))}
