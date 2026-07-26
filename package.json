@@ -11,7 +11,8 @@
     "scripts": {
         "dev": "next dev",
         "fetch:paper": "node scripts/fetch-paper-pdf.js",
-        "prebuild": "npm run fetch:paper && npm test",
+        "verify:presentations": "node scripts/verify-reference-presentations.mjs",
+        "prebuild": "npm run fetch:paper && npm test && npm run verify:presentations",
         "build": "next build",
         "start": "next start -H 127.0.0.1 -p 3000",
         "test": "node --test tests/*.test.js",
@@ -23,6 +24,7 @@
         "@fortawesome/free-regular-svg-icons": "^6.4.0",
         "@fortawesome/free-solid-svg-icons": "^6.4.0",
         "@fortawesome/react-fontawesome": "^0.2.0",
+        "@noble/hashes": "2.2.0",
         "@tailwindcss/line-clamp": "^0.4.4",
         "chart.js": "^4.4.3",
         "chartjs-adapter-date-fns": "^3.0.0",
@@ -48,6 +50,7 @@
         "cypress": "^15.18.1",
         "eslint": "^9.39.5",
         "eslint-config-next": "^15.5.16",
+        "mp4box": "2.4.1",
         "postcss": "^8.5.10",
         "tailwindcss": "^3.4.1"
     },

@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import CustomerCaseStudy from '@components/CustomerCaseStudy'
 import Footer from '@components/Footer'
-import HowItWorks from '@components/HowItWorks'
+import ReferenceDemoShowcase from '@components/ReferenceDemoShowcase'
 
 export default function HealthcarePage() {
     return (
@@ -71,7 +71,11 @@ export default function HealthcarePage() {
 
             <CustomerCaseStudy />
 
-            <HowItWorks />
+            <ReferenceDemoShowcase
+                initialIndustry="healthcare"
+                heading="See the workflow in OpenEMR, then compare the same loop across industries"
+                intro="The captured demonstration and compiled replay stay visually consistent across the site. Select Lending or Insurance to compare the same governed pattern in another real application."
+            />
 
             <div className="mx-auto max-w-4xl px-4 py-12">
                 <div className="rounded-2xl border border-hairline bg-panel p-6 md:p-8">

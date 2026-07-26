@@ -157,46 +157,6 @@ test('buyer-fit section leads with infrastructure operators, not vertical claims
     assert.doesNotMatch(industries, /theresanaiforthat|TAAFT/i)
 })
 
-test('workflow and execution-environment selectors are independent and media-honest', () => {
-    const howItWorks = read('components/HowItWorks.js')
-    const overlay = read('components/ExecutionEnvironmentOverlay.js')
-
-    for (const label of [
-        'Healthcare',
-        'Lending',
-        'Insurance',
-        'Browser',
-        'Windows',
-        'macOS',
-        'Linux',
-        'RDP',
-        'Citrix',
-    ]) {
-        assert.match(howItWorks, new RegExp(`label: '${label}'`))
-    }
-
-    assert.match(
-        howItWorks,
-        /Choose a workflow and execution environment\s+independently/
-    )
-    assert.match(howItWorks, /aria-label="Execution environment"/)
-    assert.match(howItWorks, /sourceKind: 'application-footage'/)
-    assert.match(howItWorks, /sourceKind: 'environment-visualization'/)
-    assert.match(howItWorks, /sourceKind: 'transport-visualization'/)
-    assert.match(
-        howItWorks,
-        /Native Linux execution uses AT-SPI structural evidence/
-    )
-    assert.match(
-        howItWorks,
-        /Application footage and execution-environment\s+overlays are labeled separately/
-    )
-    assert.match(
-        overlay,
-        /data-environment-source-kind=\{environment\.sourceKind\}/
-    )
-})
-
 test('end-user quickstarts enter through OpenAdapt while engine links stay technical', () => {
     const install = read('components/InstallSection.js')
     const pricing = read('components/Pricing.js')
@@ -249,39 +209,6 @@ test('machine-readable use cases do not claim mortgage, LOS, or a healthcare ver
 
 test('public repository declares its lifecycle state', () => {
     assert.match(read('README.md'), /Lifecycle: Beta/)
-})
-
-test('lending page shows a real Frappe workflow demo without reusing healthcare media', () => {
-    const lending = read('pages/solutions/lending.js')
-    const demo = read('components/LendingWorkflowDemo.js')
-
-    assert.doesNotMatch(lending, /import HowItWorks/)
-    assert.match(lending, /import LendingWorkflowDemo/)
-    assert.match(lending, /Lending operations/)
-    assert.match(lending, /supported APIs and exports/)
-    assert.match(lending, /final UI-only mile/)
-    assert.doesNotMatch(`${lending}\n${demo}`, /OpenEMR|mortgage|Encompass/i)
-    assert.match(demo, /frappe-lending-workflow-demo/)
-    assert.match(demo, /From demonstration to verified Frappe write/)
-    assert.match(demo, /synthetic local fixture/i)
-    assert.match(demo, /separately authenticated read-only REST session/)
-    assert.match(demo, /direct SQL delta audit/)
-    assert.match(demo, /6\/6 compiled trials correct/)
-    assert.match(demo, /0 silent incorrect successes/)
-    assert.match(demo, /0 over-halts/)
-    assert.match(demo, /0 model calls/)
-    assert.match(demo, /\/lending-demo\/record-frappe\.gif/)
-    assert.match(demo, /\/lending-demo\/replay-frappe\.gif/)
-    assert.match(demo, /import Clip from '\.\/Clip'/)
-    assert.match(demo, /<Clip clip=\{clips\.record\}/)
-    assert.match(demo, /<Clip clip=\{clips\.replay\}/)
-    assert.doesNotMatch(demo, /<picture>|prefers-reduced-motion/)
-    assert.doesNotMatch(demo, /Pause animation|Play animation/)
-    assert.match(demo, /\/lending-demo\/provenance\.json/)
-    assert.match(demo, /Inspect evidence manifest/)
-    assert.match(demo, /evidence manifest records the exact software, task,[\s\S]*oracle, media hashes, and scope/i)
-    assert.match(demo, /Frappe Lending v16\.2\.0/)
-    assert.doesNotMatch(demo, /lending-evidence-placeholder|awaiting oracle verification/i)
 })
 
 test('lending demo media has durable synthetic evidence provenance', () => {
