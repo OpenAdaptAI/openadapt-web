@@ -181,3 +181,21 @@ test('capsule placement is event-stable and rail requires exact bound context', 
         ['complete', 'active', 'pending']
     )
 })
+
+test('exact presentation refuses an unbound fallback encoding', async () => {
+    const { isSingleSourceExactPresentationMedia } = await import(
+        '../lib/executionOverlayTimeline.js'
+    )
+    const exactMedia = {
+        kind: 'video',
+        src: '/presentation.webm',
+        mimeType: 'video/webm',
+        sha256: digest,
+        fallbackSrc: '/presentation.mp4',
+        fallbackMimeType: 'video/mp4',
+    }
+    assert.equal(isSingleSourceExactPresentationMedia(exactMedia), false)
+    delete exactMedia.fallbackSrc
+    delete exactMedia.fallbackMimeType
+    assert.equal(isSingleSourceExactPresentationMedia(exactMedia), true)
+})
