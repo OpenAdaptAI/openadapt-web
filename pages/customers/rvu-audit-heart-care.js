@@ -2,10 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
-import {
-    RVU_RECOVERY_CASE,
-    RVU_RECOVERY_FOOTNOTE,
-} from '../../data/customerCaseStudies'
+import { RVU_RECOVERY_CASE } from '../../data/customerCaseStudies'
 
 const customerCase = RVU_RECOVERY_CASE
 const canonical = `https://openadapt.ai/customers/${customerCase.slug}`
@@ -29,9 +26,9 @@ const articleSchema = {
     inLanguage: 'en',
 }
 
-function MethodField({ term, children }) {
+function ValidationFact({ term, children }) {
     return (
-        <div className="border-t border-hairline py-4 first:border-t-0 md:grid md:grid-cols-[minmax(0,15rem)_1fr] md:gap-6">
+        <div className="border-t border-hairline py-4 first:border-t-0 md:grid md:grid-cols-[minmax(0,13rem)_1fr] md:gap-6">
             <dt className="text-sm font-semibold text-ink">{term}</dt>
             <dd className="mt-1 text-sm leading-relaxed text-ink-2 md:mt-0">
                 {children}
@@ -41,13 +38,11 @@ function MethodField({ term, children }) {
 }
 
 export default function RvuAuditHeartCareCaseStudy() {
-    const m = customerCase.methodology
-
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
                 <title>
-                    RVU Audit Automation for a Cardiology Practice | OpenAdapt
+                    RVU Audit Automation for Dr. Victor Abrich | OpenAdapt
                 </title>
                 <meta name="description" content={customerCase.result} />
                 <link rel="canonical" href={canonical} />
@@ -71,9 +66,7 @@ export default function RvuAuditHeartCareCaseStudy() {
             <main>
                 <section className="border-b border-hairline px-5 py-16 md:py-24">
                     <div className="mx-auto max-w-4xl">
-                        <p className="eyebrow">
-                            Customer case study · Healthcare
-                        </p>
+                        <p className="eyebrow">Customer case study · Healthcare</p>
                         <h1 className="mt-3 max-w-3xl font-display text-3xl font-semibold tracking-tight text-ink md:text-5xl">
                             {customerCase.title}
                         </h1>
@@ -82,12 +75,12 @@ export default function RvuAuditHeartCareCaseStudy() {
                         </p>
                         <div className="mt-7 rounded-xl border border-hairline bg-panel p-5 text-sm leading-relaxed text-ink-2">
                             <span className="font-semibold text-ink">
-                                {customerCase.customer.descriptor}
+                                {customerCase.customer.name}
                             </span>
                             <br />
                             {customerCase.customer.role}
                             <br />
-                            {customerCase.customer.engagement}
+                            {customerCase.customer.organization}
                         </div>
                     </div>
                 </section>
@@ -121,12 +114,6 @@ export default function RvuAuditHeartCareCaseStudy() {
                                 <p className="mt-4 text-base leading-relaxed text-ink-2">
                                     {customerCase.challenge}
                                 </p>
-                                <p className="mt-4 text-base leading-relaxed text-ink-2">
-                                    The job required collecting evidence from
-                                    the existing EMR, comparing it with monthly
-                                    RVU spreadsheets, and preparing the findings
-                                    for review and recovery.
-                                </p>
                             </div>
 
                             <div>
@@ -141,10 +128,7 @@ export default function RvuAuditHeartCareCaseStudy() {
                                             className="flex gap-3 text-base leading-relaxed text-ink-2"
                                         >
                                             <span className="font-mono text-sm font-semibold text-accent">
-                                                {String(index + 1).padStart(
-                                                    2,
-                                                    '0'
-                                                )}
+                                                {String(index + 1).padStart(2, '0')}
                                             </span>
                                             <span>{step}</span>
                                         </li>
@@ -153,124 +137,79 @@ export default function RvuAuditHeartCareCaseStudy() {
                             </div>
                         </div>
 
-                        <div className="mt-14 rounded-2xl border-2 border-ink bg-panel p-7 md:p-10">
-                            <p className="eyebrow">The result</p>
-                            <h2 className="mt-2 max-w-3xl font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                                More complete audits without spending physician
-                                hours collecting and reconciling the data by hand
-                            </h2>
-                            <p className="mt-5 max-w-3xl text-base leading-relaxed text-ink-2 md:text-lg">
-                                {customerCase.result}
-                            </p>
+                        <div className="mt-14 grid gap-8 rounded-2xl border-2 border-ink bg-panel p-7 md:grid-cols-[1.1fr_0.9fr] md:p-10">
+                            <div>
+                                <p className="eyebrow">The result</p>
+                                <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
+                                    More complete audits without spending physician hours collecting and reconciling data by hand
+                                </h2>
+                                <blockquote className="mt-6 border-l-2 border-accent pl-5 text-lg leading-relaxed text-ink-2">
+                                    “{customerCase.quote}”
+                                    <footer className="mt-3 text-sm font-semibold text-ink">
+                                        Dr. Victor Abrich, MD
+                                    </footer>
+                                </blockquote>
+                            </div>
+                            <div>
+                                <p className="eyebrow">Review-ready outputs</p>
+                                <ul className="mt-4 space-y-3 text-sm leading-relaxed text-ink-2">
+                                    {customerCase.outputs.map((output) => (
+                                        <li key={output} className="flex gap-3">
+                                            <span aria-hidden="true" className="text-accent">
+                                                ✓
+                                            </span>
+                                            <span>{output}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
 
-                        {/* Section 19 methodology: how the result was measured */}
-                        <div className="mt-14">
-                            <p className="eyebrow">Methodology</p>
-                            <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                                How the result was measured
+                        <section
+                            className="mt-14 rounded-2xl border border-hairline bg-panel p-6 md:p-9"
+                            aria-labelledby="rvu-validation-title"
+                        >
+                            <p className="eyebrow">Synthetic product validation</p>
+                            <h2
+                                id="rvu-validation-title"
+                                className="mt-2 max-w-3xl font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl"
+                            >
+                                {customerCase.validation.title}
                             </h2>
-                            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
-                                A fixed methodology, so the result reads as
-                                evidence rather than a headline: what was
-                                measured, over what period, how recovery is
-                                defined, how it was attributed, and the full
-                                governed-run counts.
+                            <p className="mt-4 max-w-3xl text-base leading-relaxed text-ink-2">
+                                {customerCase.validation.summary}
                             </p>
-                            <dl className="mt-6 rounded-2xl border border-hairline bg-panel p-5 md:p-7">
-                                <MethodField term="Study and observation period">
-                                    {m.observationWindow}
-                                </MethodField>
-                                <MethodField term="Records reviewed">
-                                    {m.recordsReviewed}
-                                </MethodField>
-                                <MethodField term="Baseline methodology">
-                                    {m.baseline}
-                                </MethodField>
-                                <MethodField term="Definition of “recovered”">
-                                    {m.recoveredDefinition}
-                                </MethodField>
-                                <MethodField term="Attribution method">
-                                    {m.attribution}
-                                </MethodField>
-                                <MethodField term="Manual effort, before and after">
-                                    {m.manualEffort}
-                                </MethodField>
-                                <MethodField term="Application and surface">
-                                    {m.applicationSurface}
-                                </MethodField>
-                                <MethodField term="Deployment mode">
-                                    {m.deploymentMode}
-                                </MethodField>
-                                <MethodField term="OpenAdapt and pack versions">
-                                    {m.versions}
-                                </MethodField>
-                                <MethodField term="Identity and effect contract">
-                                    {m.identityEffectContract}
-                                </MethodField>
-                                <MethodField term="Verifier implementation">
-                                    {m.verifier}
-                                </MethodField>
-                            </dl>
-                        </div>
 
-                        {/* Governed-run counts */}
-                        <div className="mt-14">
-                            <p className="eyebrow">Governed-run counts</p>
-                            <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                                Every run, accounted for
-                            </h2>
-                            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                                Monthly steady-state counts. Verified, halted,
-                                and failed runs reconcile to the total. Verified
-                                rate {customerCase.verifiedRate}, at{' '}
-                                {customerCase.perRunCost} per record. The number
-                                that matters most for a clinical write is the
-                                last one.
-                            </p>
-                            <div className="mt-6 rounded-2xl border border-hairline bg-panel p-5 md:p-7">
-                                {customerCase.counts.map((row) => (
+                            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                                {customerCase.validation.metrics.map((metric) => (
                                     <div
-                                        key={row.label}
-                                        className="flex items-baseline justify-between gap-4 border-t border-hairline py-3 first:border-t-0"
+                                        key={metric.label}
+                                        className="rounded-xl border border-hairline bg-ground p-5"
                                     >
-                                        <span className="text-sm text-ink-2">
-                                            {row.label}
-                                        </span>
-                                        <span
-                                            className={`font-display text-lg font-semibold tabular-nums ${
-                                                row.tone === 'zero'
-                                                    ? 'text-accent'
-                                                    : row.tone === 'muted'
-                                                      ? 'text-ink-3'
-                                                      : 'text-ink'
-                                            }`}
-                                        >
-                                            {row.value}
-                                        </span>
+                                        <p className="font-display text-2xl font-semibold tracking-tight text-ink">
+                                            {metric.value}
+                                        </p>
+                                        <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                            {metric.label}
+                                        </p>
                                     </div>
                                 ))}
                             </div>
-                            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
-                                A halt is a designed outcome, not a failure: it
-                                means the verifier could not confirm the effect,
-                                so a human reviews it instead of a wrong value
-                                silently reaching the record.
-                            </p>
-                        </div>
 
-                        {/* Affiliation vs institutional endorsement */}
-                        <div className="mt-14 rounded-2xl border border-hairline bg-panel p-6 md:p-8">
-                            <p className="eyebrow">Scope of this evidence</p>
-                            <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
-                                A partner engagement, not an institutional
-                                endorsement
-                            </h2>
-                            <p className="mt-4 text-sm leading-relaxed text-ink-2 md:text-base">
-                                {customerCase.endorsementNote} The customer is
-                                kept anonymized by request and by policy.
+                            <dl className="mt-7 rounded-xl border border-hairline bg-ground px-5">
+                                {customerCase.validation.facts.map((fact) => (
+                                    <ValidationFact key={fact.term} term={fact.term}>
+                                        {fact.detail}
+                                    </ValidationFact>
+                                ))}
+                            </dl>
+                            <p className="mt-5 text-sm leading-relaxed text-ink-3">
+                                {customerCase.validation.note}
                             </p>
-                        </div>
+                            <p className="mt-3 break-all font-mono text-[11px] leading-relaxed text-ink-3/80">
+                                Evidence reference: {customerCase.validation.evidenceReference}
+                            </p>
+                        </section>
 
                         <div className="mt-14 text-center">
                             <p className="eyebrow">Bring your workflow</p>
@@ -278,9 +217,7 @@ export default function RvuAuditHeartCareCaseStudy() {
                                 Qualify the UI-only work your APIs cannot reach
                             </h2>
                             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-ink-2">
-                                Show us one repeated workflow, its target
-                                application, and the business result that proves
-                                it worked.
+                                Show us one repeated workflow, its target application, and the business result that proves it worked.
                             </p>
                             <Link
                                 href="/qualify"
@@ -289,11 +226,6 @@ export default function RvuAuditHeartCareCaseStudy() {
                                 Qualify one workflow
                             </Link>
                         </div>
-
-                        {/* Subtle preliminary-figures footnote */}
-                        <p className="mt-12 text-[11px] leading-relaxed text-ink-3/70">
-                            &dagger; {RVU_RECOVERY_FOOTNOTE}
-                        </p>
                     </div>
                 </section>
             </main>
