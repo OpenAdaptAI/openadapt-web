@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-import { ABRICH_RVU_AUDIT_CASE } from '../data/customerCaseStudies'
+import { RVU_RECOVERY_CASE } from '../data/customerCaseStudies'
 
 export default function CustomerCaseStudy() {
-    const customerCase = ABRICH_RVU_AUDIT_CASE
+    const customerCase = RVU_RECOVERY_CASE
 
     return (
         <section
@@ -22,12 +22,12 @@ export default function CustomerCaseStudy() {
                         </p>
                         <p className="mt-5 text-sm leading-relaxed text-ink-3">
                             <span className="font-semibold text-ink">
-                                {customerCase.customer.name}
+                                {customerCase.customer.descriptor}
                             </span>
                             <br />
                             {customerCase.customer.role}
                             <br />
-                            {customerCase.customer.organization}
+                            {customerCase.customer.engagement}
                         </p>
                         <Link
                             href={`/customers/${customerCase.slug}`}
