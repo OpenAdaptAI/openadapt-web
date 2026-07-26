@@ -171,6 +171,7 @@ const CONNECT_COLUMN = [
     BLOG_LINK,
     byLabel('Discord'),
     { label: 'GitHub', href: OPENADAPT_REPOSITORY_URL },
+    { label: 'Contribute workflows', href: '/contribute' },
 ]
 
 export default function Footer({
@@ -359,6 +360,11 @@ export default function Footer({
                             <ul className={styles.columnList}>
                                 <li>
                                     <FooterLink href="/about">About</FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/partners">
+                                        Partners &amp; OEM
+                                    </FooterLink>
                                 </li>
                                 <li>
                                     <FooterLink href={CLOUD_APP_URL}>
