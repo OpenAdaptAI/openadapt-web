@@ -14,6 +14,13 @@
 ## Core Concepts
 - [How It Works](https://openadapt.ai/#how-it-works): Record, compile, replay, resolve or halt, then verify and report
 - [Compare Approaches](https://openadapt.ai/compare): When to choose OpenAdapt, traditional RPA, computer-use agents, browser recorders, or a direct API
+- [OpenAdapt vs UiPath](https://openadapt.ai/compare/uipath): Honest comparison with the leading enterprise RPA platform
+- [OpenAdapt vs Microsoft Power Automate](https://openadapt.ai/compare/power-automate): Honest comparison with Microsoft ecosystem RPA
+- [OpenAdapt vs computer-use agents](https://openadapt.ai/compare/computer-use-agents): Deterministic verified replay compared with per-run model agents
+- [OpenAdapt vs record-and-replay tools](https://openadapt.ai/compare/record-and-replay): What governance adds beyond demonstration-based authoring
+- [OpenAdapt vs browser-agent platforms](https://openadapt.ai/compare/browser-agents): Cross-surface verified execution compared with web-agent stacks
+- [OpenAdapt vs hand-rolled scripts](https://openadapt.ai/compare/hand-rolled-scripts): What governed verification adds beyond Playwright or Selenium scripts
+- [Partner Program](https://openadapt.ai/partners): Application-based tracks for vertical software/OEM, RCM and BPO operators, integration/services, and MSP/deployment partners
 - [How It Runs](https://openadapt.ai/#product-status): Governed workflow lifecycle and local, managed cloud, or customer-controlled execution
 - [FAQ](https://openadapt.ai/#faq): How OpenAdapt differs from RPA tools and AI computer-use agents, data locality, licensing
 - [Security and Data Boundaries](https://openadapt.ai/security): Screenshot, model, secret, report, certification, and commercial deployment boundaries
