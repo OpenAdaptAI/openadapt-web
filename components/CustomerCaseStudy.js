@@ -22,12 +22,12 @@ export default function CustomerCaseStudy() {
                         </p>
                         <p className="mt-5 text-sm leading-relaxed text-ink-3">
                             <span className="font-semibold text-ink">
-                                {customerCase.customer.descriptor}
+                                {customerCase.customer.name}
                             </span>
                             <br />
                             {customerCase.customer.role}
                             <br />
-                            {customerCase.customer.engagement}
+                            {customerCase.customer.organization}
                         </p>
                         <Link
                             href={`/customers/${customerCase.slug}`}
