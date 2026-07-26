@@ -212,6 +212,11 @@
     content: '·';
 }
 
+.applicationName {
+    color: #cbd5ce;
+    font-weight: 700;
+}
+
 .explanation {
     padding-top: 6px;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
