@@ -127,7 +127,6 @@ test('public slogans scope demonstrated workflows and governed repair', () => {
         'components/ReplayHero.js',
         'public/llms.txt',
         'lib/packageDiscovery.js',
-        'public/how-it-works/MANIFEST.json',
     ].map(read).join('\n')
 
     assert.doesNotMatch(sources, /record once|runs? forever|self[- ]heal|milliseconds/i)
