@@ -50,10 +50,13 @@ export default function Home({ githubStats }) {
                                 Automate the UI-only work your APIs can&rsquo;t reach.
                             </h1>
                             <p className="mt-0 mb-4 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
-                                OpenAdapt compiles demonstrations into governed
-                                workflows across browser, desktop, RDP, and
-                                Citrix. It verifies consequential results and
-                                halts when it cannot prove the intended outcome.
+                                OpenAdapt compiles demonstrations into one
+                                governed loop across browser, desktop, RDP, and
+                                Citrix. Browser runs in production today;
+                                desktop, RDP, and Citrix run through
+                                customer-controlled qualification. It verifies
+                                consequential results and halts when it cannot
+                                prove the intended outcome.
                             </p>
                             <p className={styles.fitLine}>
                                 Verified business effects · fail-closed execution ·

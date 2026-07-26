@@ -29,7 +29,16 @@ function formatRelativeTime(observedAtMs, now = Date.now()) {
 //   - github : a live count observed this session (updated <rel> ago)
 //   - stale  : GitHub was unreachable on the last refresh; show when the last
 //              real count was observed (last updated <rel> ago)
-//   - snapshot: no live count yet; show the committed snapshot's age
+//   - snapshot: no live count yet; the committed fallback's timestamp is its
+//              authoring time, not a real GitHub observation, so it gets a
+//              STABLE "last-known counts" label rather than a relative age.
+//              Rendering a drifting "snapshot from Nd ago" here is what made the
+//              footer read inconsistently stale across pages: the home page
+//              seeds a fresh build-time observation ("updated 5m ago") while
+//              every other page seeds this committed fallback, so a growing
+//              "8d ago" looked like a contradiction. A stable fallback label
+//              keeps the two honest and consistent until the client poll
+//              resolves both to the same live "updated <rel> ago".
 function sourceLabel(stats, now = Date.now()) {
     const rel = formatRelativeTime(Date.parse(stats && stats.observedAt), now)
     if (stats && stats.source === 'github' && !stats.stale) {
@@ -38,7 +47,7 @@ function sourceLabel(stats, now = Date.now()) {
     if (stats && stats.source === 'stale') {
         return rel ? `GitHub · last updated ${rel}` : 'GitHub · last-known counts'
     }
-    return rel ? `GitHub · snapshot from ${rel}` : 'GitHub · snapshot'
+    return 'GitHub · last-known counts'
 }
 
 module.exports = { formatRelativeTime, sourceLabel }
