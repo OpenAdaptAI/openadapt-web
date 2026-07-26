@@ -5,6 +5,8 @@
  * panels are labelled representations rather than screenshots.
  */
 
+import JsonArtifactLink from './JsonArtifactLink'
+
 const TRAY_PACKAGE_VERSION = '0.1.1'
 const WINDOWS_INSTALLER_VERSION = '0.6.1'
 
@@ -459,12 +461,12 @@ export default function DesktopPreview() {
 
                 <p className="mt-6 text-xs text-ink-3">
                     Capture provenance for every screenshot is recorded in{' '}
-                    <a
-                        href="/desktop-preview/MANIFEST.json"
+                    <JsonArtifactLink
+                        source="/desktop-preview/MANIFEST.json"
                         className="font-medium underline underline-offset-4"
                     >
                         the media manifest
-                    </a>
+                    </JsonArtifactLink>
                     .
                 </p>
             </div>

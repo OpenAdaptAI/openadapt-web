@@ -1,4 +1,5 @@
 import Clip from './Clip'
+import JsonArtifactLink from './JsonArtifactLink'
 import processStyles from './HowItWorks.module.css'
 import styles from './LendingWorkflowDemo.module.css'
 
@@ -175,9 +176,9 @@ export default function LendingWorkflowDemo() {
                         with Frappe Technologies Pvt. Ltd.; Frappe is its registered
                         trademark.
                     </p>
-                    <a href="/lending-demo/provenance.json">
+                    <JsonArtifactLink source="/lending-demo/provenance.json">
                         Inspect evidence manifest
-                    </a>
+                    </JsonArtifactLink>
                 </div>
             </div>
         </section>
