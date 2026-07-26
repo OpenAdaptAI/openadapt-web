@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import CommercialOffer from '@components/CommercialOffer'
+import ContributeSection from '@components/ContributeSection'
 import CustomerCaseStudy from '@components/CustomerCaseStudy'
 import DashboardShowcase from '@components/DashboardShowcase'
 import FinalQualificationCta from '@components/FinalQualificationCta'
@@ -161,6 +162,16 @@ export default function Home({ githubStats, hostedOffer }) {
             <Reveal><CommercialOffer hostedOffer={hostedOffer} /></Reveal>
             <Reveal><DashboardShowcase /></Reveal>
             <Reveal><TrustSummary /></Reveal>
+            {/*
+             * Contribute-for-credits sits after the trust summary because it
+             * is a commons / flywheel message that extends the open-source
+             * trust story: sanitized contributions strengthen the shared
+             * hardening corpus. It stays out of the hero, the commercial
+             * offer, and the closing qualification CTA so it never interrupts
+             * the buying narrative. Early access, opt-in, links to
+             * /contribute.
+             */}
+            <Reveal><ContributeSection /></Reveal>
             <Reveal><FinalQualificationCta /></Reveal>
             <Footer
                 repositoryStats={currentGithubStats}
