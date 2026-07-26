@@ -165,7 +165,7 @@ test('capsule placement is event-stable and presentation facts require exact bou
         capsuleWidth: 300,
         capsuleHeight: 90,
     }
-    assert.equal(chooseOverlayPlacement(dimensions), 'bottom-left')
+    assert.equal(chooseOverlayPlacement(dimensions), 'bottom-right')
     assert.equal(
         chooseOverlayPlacement({
             ...dimensions,
@@ -176,9 +176,9 @@ test('capsule placement is event-stable and presentation facts require exact bou
     assert.equal(
         chooseOverlayPlacement({
             ...dimensions,
-            avoidRegions: [{ left: 10, top: 350, width: 310, height: 90 }],
+            avoidRegions: [{ left: 480, top: 350, width: 310, height: 90 }],
         }),
-        'bottom-right'
+        'bottom-left'
     )
     assert.equal(
         chooseOverlayPlacement({
