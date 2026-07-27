@@ -1,4 +1,4 @@
-# Hosted launch runbook
+# Hosted checkout runbook
 
 The website launches the configured Hosted subscription through Stripe
 Checkout only after the production lifecycle has been qualified and the
