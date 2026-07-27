@@ -188,6 +188,18 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/tree/main/benchmark/openimis_claims`,
         evidence: null,
+        // Optional `managedOffer`: a live, priced, managed version of this
+        // exact workflow. This is the ONLY internal link into /dental, and
+        // that is deliberate (see tests/dentalOffer.test.js). One contextual
+        // link from the template describing the same workflow gives crawlers,
+        // AI assistants, and readers a real internal path to the offer without
+        // promoting a capacity-bounded, zero-customer vertical offer into
+        // site-wide navigation.
+        managedOffer: {
+            href: '/dental',
+            label: 'See the dental founding-cohort offer',
+            detail: 'Would you rather we ran this for you? OpenAdapt offers a managed version of this workflow to single-location dental practices at $500/month.',
+        },
     },
     {
         slug: 'insurance-eligibility-check',

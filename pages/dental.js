@@ -4,6 +4,38 @@ import Link from 'next/link'
 import DentalHaltMoment from '@components/DentalHaltMoment'
 import DentalLeadForm from '@components/DentalLeadForm'
 import Footer from '@components/Footer'
+import StructuredData, {
+    organizationNode,
+    serviceNode,
+    webPageNode,
+} from '@components/StructuredData'
+
+const PAGE_URL = 'https://openadapt.ai/dental'
+
+// /dental carries no nav entry by design, so machine discovery does the work
+// a nav link would otherwise do: robots.txt + sitemap.xml + llms.txt reach the
+// page, and this graph tells an assistant answering "who automates dental
+// insurance verification, and what does it cost" exactly what the offer is.
+// Every string restates something rendered on this page; nothing here may
+// imply customers, results, or capacity the offer does not have.
+const SCHEMA_NODES = [
+    organizationNode,
+    webPageNode({
+        url: PAGE_URL,
+        name: 'Automated dental insurance verification',
+        description:
+            'A $500/month founding service for single-location dental practices: up to three approved payer portals and 600 attended, local eligibility checks, with a staff-first exception queue and a signed monthly KPI.',
+    }),
+    serviceNode({
+        url: PAGE_URL,
+        name: 'Dental insurance verification — founding cohort',
+        description:
+            'OpenAdapt compiles a dental practice’s own payer-portal verification workflow from recordings of its own staff, then replays it attended on the practice’s front-desk PC. Anything that does not match halts into a ready-to-finish queue instead of guessing. One location, up to three approved payer portals, up to 600 eligibility checks per month, and a monthly service KPI agreed in writing that refunds the month if missed.',
+        serviceType: 'Dental insurance eligibility verification',
+        price: 500,
+        billingDuration: 1,
+    }),
+]
 
 const OFFER_FACTS = [
     {
@@ -43,6 +75,7 @@ export default function DentalPage() {
                     content="$500/month for one dental practice location: up to 3 approved payer portals and 600 attended, local eligibility checks, backed by a signed monthly service KPI."
                 />
                 <meta property="og:url" content="https://openadapt.ai/dental" />
+                <StructuredData nodes={SCHEMA_NODES} />
             </Head>
 
             {/* Offer hero */}
