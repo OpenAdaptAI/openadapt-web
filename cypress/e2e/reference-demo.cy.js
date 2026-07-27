@@ -118,6 +118,12 @@ describe('shared real-application demo', () => {
                         .then(($capsule) => {
                             const target = $target[0].getBoundingClientRect()
                             const capsule = $capsule[0].getBoundingClientRect()
+                            const status = $capsule[0]
+                                .querySelector('strong')
+                                .getBoundingClientRect()
+                            const progress = $capsule[0]
+                                .querySelector('progress')
+                                .getBoundingClientRect()
                             const intersects = !(
                                 target.right <= capsule.left ||
                                 target.left >= capsule.right ||
@@ -125,6 +131,7 @@ describe('shared real-application demo', () => {
                                 target.top >= capsule.bottom
                             )
                             expect(intersects).to.equal(false)
+                            expect(status.bottom).to.be.at.most(progress.top)
                         })
                 })
             if (label === 'desktop') {
