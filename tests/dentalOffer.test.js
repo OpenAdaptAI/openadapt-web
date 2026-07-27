@@ -100,3 +100,45 @@ test('dental page is discoverable and routes booking through the canonical embed
     assert.match(page, /sectionId="book"/)
     assert.match(page, /href="#book"/)
 })
+
+/**
+ * The information-architecture decision, pinned because it is exactly the
+ * kind of thing a later "make it more visible" change reverses by accident.
+ *
+ * /dental is a capacity-bounded founding-cohort offer at a published price
+ * with no customers yet. Crawlers and AI assistants reach it through
+ * robots.txt + sitemap.xml + llms.txt + Service/Offer JSON-LD; readers reach
+ * it through the one topically-matched internal link on the dental template.
+ * It is deliberately NOT in the primary nav or the footer: those Solutions
+ * menus hold /solutions/* positioning pages, and a priced vertical offer
+ * sitting beside them on every page would read as an established product line
+ * the company does not yet have.
+ *
+ * Discovery and navigation are separate questions. This test keeps them so.
+ * Changing it is a positioning decision — update the reasoning above with it.
+ */
+test('dental is discoverable to crawlers and AI search without a nav entry', () => {
+    const sitemap = read('public/sitemap.xml')
+    const llms = read('public/llms.txt')
+    const page = read('pages/dental.js')
+    const nav = read('components/NavHeader.js')
+    const footer = read('components/Footer.js')
+    const templates = read('data/templates.js')
+
+    // Machine discovery: sitemap, the llms.txt index, and a Service/Offer
+    // node whose price matches the price rendered on the page.
+    assert.match(sitemap, /<loc>https:\/\/openadapt\.ai\/dental<\/loc>/)
+    assert.match(llms, /https:\/\/openadapt\.ai\/dental/)
+    assert.match(page, /serviceNode\(/)
+    assert.match(page, /price: 500/)
+
+    // Reader discovery: exactly one contextual internal link, from the
+    // template that describes the same workflow.
+    assert.match(templates, /slug: 'dental-insurance-eligibility'/)
+    assert.match(templates, /managedOffer/)
+    assert.match(templates, /href: '\/dental'/)
+
+    // Not in primary nav, not in the footer.
+    assert.doesNotMatch(nav, /\/dental/)
+    assert.doesNotMatch(footer, /\/dental/)
+})
