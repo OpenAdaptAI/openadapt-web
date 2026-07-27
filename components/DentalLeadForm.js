@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import BookingEmbed from '@components/BookingEmbed'
 
+import { trackBookingClick, trackEmailCapture } from 'utils/conversion'
 import { UTM_KEYS, captureUtmParams } from 'utils/utm'
 
 // Distinct Netlify form name so dental founding-cohort leads are separable
@@ -42,13 +43,13 @@ export default function DentalLeadForm({ sectionId = 'book' }) {
         setIsSubmitting(true)
 
         try {
-            if (typeof window !== 'undefined' && window.gtag) {
-                window.gtag('event', 'submit_form', {
-                    event_category: 'Form',
-                    event_label: DENTAL_FORM_NAME,
-                    value: 1,
-                })
-            }
+            // The canonical E1 "qualified lead" conversion. It must go through
+            // utils/conversion so PostHog, GA4 `generate_lead`, and the Meta
+            // `Lead` standard event all fire with first-touch attribution
+            // attached. A raw gtag call reaches none of them, which leaves the
+            // cost-per-qualified-lead kill criteria blind and gives Meta
+            // nothing to optimize against.
+            trackEmailCapture({ location: 'dental_landing' })
 
             const formData = new URLSearchParams()
             formData.set('form-name', DENTAL_FORM_NAME)
@@ -231,7 +232,15 @@ export default function DentalLeadForm({ sectionId = 'book' }) {
                             </button>
                             <button
                                 type="button"
-                                onClick={() => setIsSubmitted(true)}
+                                onClick={() => {
+                                    // Booking-intent signal, same funnel step
+                                    // as /book; here the scheduler renders in
+                                    // place instead of on a new route.
+                                    trackBookingClick({
+                                        location: 'dental_landing',
+                                    })
+                                    setIsSubmitted(true)
+                                }}
                                 className="btn-ghost-ink"
                             >
                                 Skip form and book now

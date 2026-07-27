@@ -214,6 +214,17 @@ export default function TemplatePage({ template, anchorTemplates }) {
                             Read docs
                         </a>
                     </div>
+                    {t.managedOffer && (
+                        <p className="mx-auto mt-6 max-w-2xl border-t border-hairline pt-5 text-sm text-ink-2">
+                            {t.managedOffer.detail}{' '}
+                            <Link
+                                href={t.managedOffer.href}
+                                className="font-medium"
+                            >
+                                {t.managedOffer.label} →
+                            </Link>
+                        </p>
+                    )}
                 </div>
             </div>
 
