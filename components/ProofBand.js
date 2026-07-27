@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import benchmark from '../data/benchmark.json'
+import { ATTRIBUTION_SHORT } from '../lib/benchmarkProvenance'
 import styles from './ProofBand.module.css'
 
 // Keep the homepage at the buyer-level outcome. Sample sizes, environment,
@@ -42,6 +43,26 @@ export default function ProofBand() {
                         </div>
                     ))}
                 </div>
+                <div
+                    className={styles.measuredOn}
+                    data-testid="benchmark-attribution"
+                >
+                    <p className={styles.measuredOnHead}>
+                        Measured on Flow {benchmark.provenance.flow_version},{' '}
+                        {benchmark.provenance.measured_on}
+                    </p>
+                    <p className={styles.measuredOnBody}>
+                        openadapt-flow {benchmark.provenance.flow_version} is the
+                        version declared at the pinned commit. It predates{' '}
+                        {
+                            benchmark.provenance
+                                .first_release_tag_containing_commit
+                        }
+                        , the first release tag containing that commit, so these
+                        figures describe a pre-release engine build and have not
+                        been re-measured on a later release.
+                    </p>
+                </div>
                 <p className={styles.note}>
                     In a bounded browser benchmark, both approaches completed every
                     tested run. OpenAdapt&apos;s median compiled replay was {speedup}{' '}
@@ -76,6 +97,7 @@ export default function ProofBand() {
                     >
                         commit {benchmark.provenance.commit.slice(0, 7)}
                     </a>
+                    <span className="chip-evidence">{ATTRIBUTION_SHORT}</span>
                     <a
                         className="chip-evidence"
                         href="https://github.com/OpenAdaptAI/openadapt-web/blob/main/tests/publicTruth.test.js"
@@ -87,8 +109,9 @@ export default function ProofBand() {
                 </div>
                 <p className={styles.provenanceNote}>
                     Figures are copied verbatim from the published results file
-                    at the pinned commit and re-rendered at build time. The
-                    claims on this page are checked by automated truth tests.
+                    at the pinned commit, on the engine build named above, and
+                    re-rendered at build time. The claims on this page are
+                    checked by automated truth tests.
                 </p>
             </div>
         </section>

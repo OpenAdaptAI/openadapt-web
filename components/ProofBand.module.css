@@ -57,6 +57,34 @@
     line-height: 1.45;
 }
 
+/* The engine build the figures above were measured on. Deliberately styled as
+   part of the result — a bordered strip directly under the numbers — rather
+   than as fine print a skeptical reader has to go looking for. */
+.measuredOn {
+    margin: 18px auto 0;
+    max-width: 46rem;
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.measuredOnHead {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.measuredOnBody {
+    margin-top: 4px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink-3);
+}
+
 .note {
     margin-top: 18px;
     font-size: 13.5px;

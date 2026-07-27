@@ -778,3 +778,53 @@ describe('security boundary', () => {
         cy.contains('customer-controlled deployment').should('be.visible')
     })
 })
+
+describe('measured-on attribution', () => {
+    // Every published benchmark figure was measured on 2026-07-08 from an
+    // openadapt-flow source build declaring 0.1.0, before v0.2.0 - the first
+    // release tag containing the pinned commit. The site used to render those
+    // numbers with no version at all. A reader must be able to see the engine
+    // build without hunting for it, so this asserts on the rendered page, not
+    // on the source file.
+    it('states the engine build next to the benchmark charts on /compare', () => {
+        cy.visit('/compare')
+        cy.get('[data-testid="benchmark-attribution"]')
+            .first()
+            .scrollIntoView()
+            .should('be.visible')
+            .should('contain.text', 'Measured on Flow 0.1.0')
+            .should('contain.text', '2026-07-08')
+        // The label sits above the charts, not below them in fine print.
+        cy.get('[data-testid="benchmark-attribution"]')
+            .first()
+            .then(($label) => {
+                cy.get('#benchmark-evidence figure')
+                    .first()
+                    .then(($figure) => {
+                        expect(
+                            $label[0].getBoundingClientRect().top
+                        ).to.be.lessThan($figure[0].getBoundingClientRect().top)
+                    })
+            })
+    })
+
+    it('states the engine build with the reported results on /research', () => {
+        cy.visit('/research')
+        cy.get('[data-testid="benchmark-attribution"]')
+            .first()
+            .scrollIntoView()
+            .should('be.visible')
+            .should('contain.text', 'Measured on Flow 0.1.0')
+    })
+
+    it('states the engine build under every trial headline on /workflows', () => {
+        cy.visit('/workflows')
+        cy.get('[data-testid="trial-measured-on"]')
+            .should('have.length.at.least', 3)
+            .each(($node) => {
+                expect($node.text()).to.match(
+                    /Measured on Flow \d+\.\d+\.\d+ dev build .*\d{4}-\d{2}-\d{2}/
+                )
+            })
+    })
+})
