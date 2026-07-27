@@ -37,10 +37,12 @@
     z-index: 2;
     bottom: 10px;
     display: grid;
+    grid-template-rows: max-content max-content 2px;
+    align-content: center;
     gap: 5px;
     box-sizing: border-box;
     width: min(260px, calc(100% - 20px));
-    height: 72px;
+    min-height: 72px;
     min-width: 0;
     padding: 8px 10px;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -250,7 +252,7 @@
         left: auto;
         width: 100%;
         max-width: none;
-        height: 72px;
+        min-height: 72px;
         padding: 8px 10px;
         border: 0;
         border-top: 1px solid rgba(255, 255, 255, 0.16);
