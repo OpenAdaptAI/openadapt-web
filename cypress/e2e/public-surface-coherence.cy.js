@@ -5,17 +5,17 @@ describe('public surface coherence', () => {
         cy.get('[role="list"][aria-label="Local ways to run OpenAdapt"]')
             .find('[role="listitem"]')
             .should('have.length', 2)
-        cy.contains('a', 'Download Desktop').should(
+        cy.get('[data-testid="local-desktop-download"]').should(
             'have.attr',
             'href',
             '/download#desktop-builds'
         )
-        cy.contains('a', 'Open the CLI walkthrough').should(
+        cy.get('[data-testid="local-cli-walkthrough"]').should(
             'have.attr',
             'href',
             'https://docs.openadapt.ai/get-started/'
         )
-        cy.contains('Optional after local success').should('be.visible')
+        cy.get('[data-testid="local-next-steps"]').should('be.visible')
     })
 
     it('routes buyers and developers to the intended entry points', () => {

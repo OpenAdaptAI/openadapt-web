@@ -118,6 +118,7 @@ export default function StartPage() {
                             </p>
                             <div className="mt-auto pt-6">
                                 <a
+                                    data-testid="local-cli-walkthrough"
                                     className="inline-block text-sm underline underline-offset-4"
                                     href="https://docs.openadapt.ai/get-started/"
                                     target="_blank"
@@ -173,6 +174,7 @@ export default function StartPage() {
                             </ol>
                             <div className="mt-auto flex flex-wrap gap-3 pt-7">
                                 <Link
+                                    data-testid="local-desktop-download"
                                     className="btn-ink"
                                     href="/download#desktop-builds"
                                     onClick={() =>
@@ -222,7 +224,10 @@ export default function StartPage() {
                 </div>
             </section>
 
-            <section className="border-b border-hairline bg-panel px-5 py-16 md:py-20">
+            <section
+                className="border-b border-hairline bg-panel px-5 py-16 md:py-20"
+                data-testid="local-next-steps"
+            >
                 <div className="mx-auto max-w-4xl">
                     <p className="eyebrow">Optional after local success</p>
                     <h2 className="mt-2 max-w-2xl font-display text-2xl font-semibold tracking-tight md:text-3xl">
