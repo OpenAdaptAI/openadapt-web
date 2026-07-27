@@ -119,9 +119,38 @@ inline `gtag`/`fbq` calls):
 
 | Conversion | Fires when | PostHog | GA4 | Meta |
 | ---------- | ---------- | ------- | --- | ---- |
-| Email capture (**qualified lead**) | email/contact form submits successfully (`components/EmailForm.js`, `components/ContactBookingSection.js`) | `email_capture_submitted` | `generate_lead` | `Lead` |
-| Booking click | visitor reaches the scheduler (`pages/book.js`) or clicks a direct booking link (`components/BookingEmbed.js`) | `book_call_click` | `book_call_click` | `Contact` |
+| Email capture (**qualified lead**) | any lead form submits **and Netlify accepts it** | `email_capture_submitted` | `generate_lead` | `Lead` |
+| Booking click | visitor reaches the scheduler (`pages/book.js`), reveals it in place (`components/DentalLeadForm.js`), or clicks a direct booking link (`components/BookingEmbed.js`) | `book_call_click` | `book_call_click` | `Contact` |
 | Booking confirmed (**qualified lead**) | Cal.com embed reports a completed booking — best-effort postMessage signal (`components/BookingEmbed.js`) | `book_call_confirmed` | `book_call_confirmed` | `Schedule` |
+
+Every lead form fires the same email-capture conversion, distinguished only by
+its `location` property, so "leads" is one number across the whole site:
+
+| Surface | Page | `location` | Netlify form |
+| ------- | ---- | ---------- | ------------ |
+| `components/WorkflowQualificationForm.js` | `/qualify` (destination of most site CTAs) | `qualification_form` | `workflow-qualification` |
+| `components/DentalLeadForm.js` | `/dental` (paid campaign) | `dental_landing` | `dental-founding-cohort` |
+| `components/ContactBookingSection.js` | `/pricing` | `contact_form` | `contact` |
+| `components/PartnerInquiryForm.js` | `/partners` | `partner_inquiry_form` | `partner-inquiry` |
+| `components/ContributorProgramForm.js` | `/contribute` | `contributor_program_form` | `contributor-program` |
+| `components/EmailForm.js` | not currently mounted | `email_form` (caller-set) | `email` |
+| `components/FeedbackForm.js` | not currently mounted | `feedback_form` | `feedback` |
+
+`components/BookingEmbed.js` renders on `/book`, `/dental`, and `/pricing`, so
+it takes a `location` prop from each mount (`book_page`, `dental_landing`,
+`contact_form`); without it every confirmed booking reported the same label and
+could not be attributed to the page that produced it.
+
+**Ordering rule:** a conversion fires *after* the submission is accepted, never
+before. Firing on submit-attempt counts leads that never arrived, which
+understates cost-per-lead and teaches Meta to optimize toward failed submits.
+
+**This table is not the enforcement mechanism.** `tests/e1Tracking.test.js`
+discovers lead surfaces structurally — any component or page with a submit
+handler and an email field — and fails if one does not route through
+`utils/conversion.js`. Adding a new lead form requires no edit to any list.
+`components/Pricing.js` is deliberately not a lead surface: it opens Stripe
+Checkout, which collects the email on its own hosted page.
 
 ### Attribution
 
