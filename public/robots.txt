@@ -1,34 +1,216 @@
-# OpenAdapt.AI - robots.txt
-# AI crawlers welcome
+# OpenAdapt.AI — robots.txt
+#
+# Policy decision (2026-07-27), made deliberately rather than by default:
+#
+# 1. ALLOW every reputable AI crawler on the public marketing content.
+#    OpenAdapt is MIT-licensed open-source infrastructure. Buyers increasingly
+#    find tools by asking an assistant a question rather than by searching.
+#    Being present in training corpora, retrieval indexes, and live "browse"
+#    fetches is therefore a distribution channel, not a leak. Every page these
+#    crawlers can reach is already public, already on GitHub, or already
+#    published under MIT.
+#
+# 2. DISALLOW /api/ for EVERY agent, including each named AI crawler.
+#    A named User-agent group fully replaces the "*" group; it does not inherit
+#    its Disallow lines. Without repeating the rule per group, an AI crawler
+#    would hammer serverless functions (/api/repository-stats,
+#    /api/pypistats/*, /api/social-feeds, /api/discover-packages) that make
+#    outbound third-party calls and return JSON with no citation value.
+#
+# 3. DISALLOW /_next/static/ build assets for the same reason: no citation
+#    value, real bandwidth cost.
+#
+# 4. Two routes are excluded from indexing at the page level with
+#    <meta name="robots"> rather than here, because they must stay fetchable
+#    by the user's own assistant when the user pastes the link:
+#    /hosted/welcome (post-checkout onboarding) and /artifacts/json (evidence
+#    viewer, noindex,follow).
+#
+# Nothing here is blocked to protect a claim. If a statement on this site is
+# wrong, we would rather an assistant read it and we fix it than have the
+# assistant guess.
 
 User-agent: *
 Allow: /
 Disallow: /_next/static/
 Disallow: /api/
 
-# AI Crawlers - Explicitly Allowed
+# ---------------------------------------------------------------------------
+# OpenAI — GPTBot trains and grounds; OAI-SearchBot builds the ChatGPT search
+# index; ChatGPT-User is the live fetch when a user asks ChatGPT to open a URL.
+# All three are wanted.
+# ---------------------------------------------------------------------------
 User-agent: GPTBot
 Allow: /
+Disallow: /api/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /api/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /api/
 
+# ---------------------------------------------------------------------------
+# Anthropic — ClaudeBot is the corpus crawler, Claude-SearchBot builds the
+# search index, and Claude-User is the live user-initiated fetch. The legacy
+# anthropic-ai token is kept for older deployments that still send it.
+# ---------------------------------------------------------------------------
 User-agent: ClaudeBot
 Allow: /
+Disallow: /api/
 
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /api/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# Perplexity — PerplexityBot indexes; Perplexity-User fetches on demand for a
+# specific answer. Perplexity is a high-intent comparison surface for exactly
+# the "RPA vs computer-use agent" questions this site answers.
+# ---------------------------------------------------------------------------
 User-agent: PerplexityBot
 Allow: /
+Disallow: /api/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# Google — Googlebot governs classic Search and AI Overviews eligibility.
+# Google-Extended is the separate opt-out token for Gemini grounding and
+# training; we explicitly opt IN. Google-CloudVertexBot covers Vertex AI
+# grounding for customers building on Google Cloud.
+# ---------------------------------------------------------------------------
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /api/
 
-User-agent: Amazonbot
+User-agent: Google-CloudVertexBot
 Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# Microsoft / Bing — bingbot powers Bing and Copilot answers.
+# ---------------------------------------------------------------------------
+User-agent: bingbot
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# Apple — Applebot serves Siri and Spotlight; Applebot-Extended is the
+# separate opt-in token for Apple Intelligence generative training.
+# ---------------------------------------------------------------------------
+User-agent: Applebot
+Allow: /
+Disallow: /api/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# Amazon (Alexa / Rufus / Nova grounding).
+# ---------------------------------------------------------------------------
+User-agent: Amazonbot
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# Meta AI grounding and training.
+# ---------------------------------------------------------------------------
+User-agent: meta-externalagent
+Allow: /
+Disallow: /api/
+
+User-agent: FacebookBot
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# DuckDuckGo's assistant (DuckAssistBot) and its answer surface.
+# ---------------------------------------------------------------------------
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# Common Crawl. Deliberate ALLOW. CCBot is the single largest upstream corpus
+# for open-weight and many closed models; blocking it is the most common
+# accidental way a company disappears from model world-knowledge. Our content
+# is MIT-licensed open source with no proprietary text to protect.
+# ---------------------------------------------------------------------------
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# Other assistant and knowledge-graph crawlers we want reading us.
+# Diffbot feeds entity knowledge graphs that several assistants consult for
+# "what company is this" resolution, which is exactly the entity-recognition
+# gap a small company has.
+# ---------------------------------------------------------------------------
+User-agent: MistralAI-User
+Allow: /
+Disallow: /api/
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /api/
+
+User-agent: cohere-training-data-crawler
+Allow: /
+Disallow: /api/
+
+User-agent: Diffbot
+Allow: /
+Disallow: /api/
+
+User-agent: YouBot
+Allow: /
+Disallow: /api/
+
+User-agent: Timpibot
+Allow: /
+Disallow: /api/
+
+User-agent: omgili
+Allow: /
+Disallow: /api/
+
+User-agent: omgilibot
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------------------
+# ByteDance's Bytespider. Deliberate ALLOW with a crawl delay rather than a
+# block: the content is public and we want the reach, but Bytespider is known
+# for high request rates and this site is served from a metered CDN.
+# ---------------------------------------------------------------------------
+User-agent: Bytespider
+Allow: /
+Disallow: /api/
+Crawl-delay: 10
+
+# ---------------------------------------------------------------------------
+# Machine-readable summaries for AI systems:
+#   https://openadapt.ai/llms.txt       — index of the canonical pages
+#   https://openadapt.ai/llms-full.txt  — quotable facts with sources
+#   https://openadapt.ai/status.json    — canonical release/substrate status
+# ---------------------------------------------------------------------------
 
 Sitemap: https://openadapt.ai/sitemap.xml
