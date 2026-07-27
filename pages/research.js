@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
+import BenchmarkAttribution from '@components/BenchmarkAttribution'
 import Footer from '@components/Footer'
 
 const PAPER_URL = '/openadapt-paper.pdf'
@@ -180,6 +181,7 @@ export default function ResearchPage() {
                 <h2 className="mt-14 font-display text-xl font-semibold tracking-tight text-ink">
                     What the paper reports
                 </h2>
+                <BenchmarkAttribution className="mt-4 max-w-3xl" />
                 <ul className="mt-4 max-w-3xl space-y-3 text-sm leading-relaxed text-ink-2 md:text-base">
                     <li>
                         <strong className="text-ink">
