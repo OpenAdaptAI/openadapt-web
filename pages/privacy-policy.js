@@ -1,5 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
+import TrustProviderInventory from '@components/TrustProviderInventory'
 import styles from '@styles/LegalPages.module.css'
 
 const CONTACT_EMAIL = 'hello@openadapt.ai'
@@ -20,10 +21,12 @@ const PrivacyPolicy = () => {
             </Head>
             <h1 className={styles.heading}>Privacy Notice</h1>
             <p className={styles.paragraph}>
-                <strong>Effective July 17, 2026.</strong> This Notice describes how
-                MLDSAI Inc. collects, uses, stores, and shares information through
-                the OpenAdapt website, open-source software interactions, and
-                hosted service.
+                <strong>
+                    Effective July 17, 2026. Last updated July 27, 2026.
+                </strong>{' '}
+                This Notice describes how MLDSAI Inc. collects, uses, stores, and
+                shares information through the OpenAdapt website, open-source
+                software interactions, and hosted service.
             </p>
             <p className={styles.paragraph}>
                 MLDSAI Inc. (&quot;OpenAdapt,&quot; &quot;we,&quot; or
@@ -95,20 +98,15 @@ const PrivacyPolicy = () => {
 
             <h2 className={styles.subheading}>4. Current Service Providers</h2>
             <p className={styles.paragraph}>
-                Current product paths use Netlify for website hosting and forms;
-                Supabase for hosted authentication, database, and private object
-                storage; Modal for managed browser recording and run compute, plus
-                optional hosted compilation only when explicitly enabled; Stripe
-                for Checkout, billing, and subscription state;
-                PostHog for launch-funnel analytics when configured; Cal.com for
-                booking; and GitHub for source links, repository widgets, and
-                public repository data. These providers can receive network and
-                service data needed for the selected interaction and process it
-                under their own terms and privacy policies, potentially outside
-                the visitor&apos;s province or country depending on provider and
-                project configuration. A customer-controlled deployment can use a
-                different approved provider set documented in its scope.
+                The inventory below separates customer-controlled execution from
+                managed authoring, the hosted control plane, and the public sales
+                journey. Providers receive only the data needed for the selected
+                lane, process it under their own terms and privacy policies, and
+                may process it outside the visitor&apos;s province or country. A
+                qualified customer-controlled deployment can use a different
+                approved provider set documented in its scope.
             </p>
+            <TrustProviderInventory compact />
 
             <h2 className={styles.subheading}>5. Website Forms, Booking, and Analytics</h2>
             <p className={styles.paragraph}>
@@ -121,12 +119,19 @@ const PrivacyPolicy = () => {
                 billing details when a visitor enters enabled Checkout.
             </p>
             <p className={styles.paragraph}>
-                If a PostHog key is configured, the site sends page views and named
-                launch-funnel clicks. The current code disables autocapture,
-                persistent browser storage, and session recording and does not send
-                form contents, emails, or free text to PostHog. Without a PostHog
-                key, that analytics path is a no-op. Analytics data is
-                marketing-site data, not workflow runtime data.
+                If a PostHog key is configured, the public site sends page views,
+                bounded CTA events, and autocaptured interactions across the public
+                site using in-memory persistence. Public-site session replay is
+                off by default and masks all input text if explicitly enabled.
+                OpenAdapt Cloud uses a stricter PostHog path: autocapture and replay
+                are disabled, page URLs are stripped of query strings and hashes,
+                and product events use opaque identifiers, organization business
+                name, role/admin flags, enums, counts, and durations. Cloud does not
+                identify users to PostHog by email or deliberately attach
+                screenshots, record contents, or report bodies. Optional GA4 and
+                Meta measurement are environment-gated, and all three browser
+                analytics paths honor Do-Not-Track. Analytics is never workflow
+                execution evidence.
             </p>
 
             <h2 className={styles.subheading}>6. Retention and Deletion Boundaries</h2>
