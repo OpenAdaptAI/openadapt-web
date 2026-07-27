@@ -46,6 +46,14 @@ test('names no employer institution on the customer case study', () => {
         read('data/customerCaseStudies.js'),
         /organization: 'A US cardiology electrophysiology practice'/
     )
+
+    // And no surface explains WHY the employer is absent. Narrating the
+    // omission defeats it: it tells a reader there is an identifiable employer
+    // with a billing story, and the physician is named, so the institution is
+    // one search away. Withhold it without drawing a box around the gap.
+    for (const source of surfaces) {
+        assert.doesNotMatch(source, /employer is not named|did not consent/i)
+    }
 })
 
 test('discloses the founder relationship and the preliminary figures', () => {

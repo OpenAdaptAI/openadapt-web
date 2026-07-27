@@ -341,11 +341,9 @@ have missed, and replaced several hours of monthly chart review with
 review-ready results.
 
 Disclosed with that outcome, because it changes how to read it: the physician is
-the founder's brother and consented to being named, this is OpenAdapt's founding
-deployment rather than arm's-length validation, and the figures are preliminary
-pending customer confirmation. His employer is not named because the institution
-did not consent to a public claim about its billing. There are no external
-production customers.
+the founder's brother, this is OpenAdapt's founding deployment rather than
+independent validation, and the figures are preliminary pending customer
+confirmation. There are no external production customers.
 
 **Governed validation cohort (synthetic, reproducible).** The same workflow
 family, exercised as a six-month cohort of 2,880 synthetic cases (480/month) on a

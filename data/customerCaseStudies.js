@@ -11,6 +11,12 @@
  *    reintroduce an employer, hospital, or health-system name to this file,
  *    to the page, or to llms.txt.
  *
+ *    Say nothing about WHY the employer is absent, either. An earlier version
+ *    explained that the institution had not consented to a public claim about
+ *    its billing. That sentence pointed at the very thing it withheld: it told
+ *    a reader there was an identifiable employer with a billing story, and the
+ *    physician is named, so looking it up is one search away. Omit silently.
+ *
  * The subject is the founder's brother. `relationshipDisclosure` below states
  * that on the page. It is not a hedge — an undisclosed family relationship
  * found by a reader costs far more than a disclosed one, and disclosure is
@@ -29,7 +35,7 @@ export const RVU_RECOVERY_CASE = {
         organization: 'A US cardiology electrophysiology practice',
     },
     relationshipDisclosure:
-        'Disclosure: Dr. Abrich is the founder’s brother and has consented to being named here. This is OpenAdapt’s founding deployment, not arm’s-length validation. His employer is not named: the institution did not consent to a public claim about its billing.',
+        'Disclosure: Dr. Abrich is the founder’s brother. This is OpenAdapt’s founding deployment, not independent validation.',
     title: 'Recovering missed billables with automated RVU audits',
     summary:
         'OpenAdapt automated the repetitive EMR evidence collection and spreadsheet reconciliation behind Dr. Victor Abrich’s monthly RVU audits, helping recover about $75,000 a year in missed billables while saving several hours of physician time each month.',
