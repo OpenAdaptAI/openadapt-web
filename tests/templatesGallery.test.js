@@ -35,7 +35,7 @@ test('registry entries are complete, unique, and search-titled', () => {
         assert.ok(t.quickstart.length >= 3, `${t.slug}: CLI quickstart`)
         assert.equal(
             t.quickstart[0].cmd,
-            'pip install openadapt',
+            "pip install 'openadapt[browser]'",
             `${t.slug}: quickstart starts from the flagship package`
         )
         assert.ok(
