@@ -367,6 +367,9 @@ describe('public product truth', () => {
             expect($menu[0].scrollHeight).to.be.greaterThan(
                 $menu[0].clientHeight
             )
+            expect($menu[0].getBoundingClientRect().bottom).to.be.at.most(
+                $menu[0].ownerDocument.defaultView.visualViewport.height
+            )
         })
         cy.document().then((document) => {
             expect(document.documentElement.scrollWidth).to.be.at.most(375)
