@@ -1,4 +1,23 @@
 describe('public surface coherence', () => {
+    it('offers CLI and Desktop as equal local entry paths before Cloud', () => {
+        cy.visit('/start')
+
+        cy.get('[role="list"][aria-label="Local ways to run OpenAdapt"]')
+            .find('[role="listitem"]')
+            .should('have.length', 2)
+        cy.contains('a', 'Download Desktop').should(
+            'have.attr',
+            'href',
+            '/download#desktop-builds'
+        )
+        cy.contains('a', 'Open the CLI walkthrough').should(
+            'have.attr',
+            'href',
+            'https://docs.openadapt.ai/get-started/'
+        )
+        cy.contains('Optional after local success').should('be.visible')
+    })
+
     it('routes buyers and developers to the intended entry points', () => {
         cy.viewport(1280, 1000)
         // Keep this homepage visit self-contained. Without an immediate

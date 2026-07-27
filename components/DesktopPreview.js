@@ -321,6 +321,7 @@ const WINDOWS_INSTALLER_STEPS = [
 export default function DesktopPreview() {
     return (
         <div
+            id="desktop-preview"
             className="mx-auto max-w-4xl px-4 py-12"
             data-testid="desktop-preview"
         >
