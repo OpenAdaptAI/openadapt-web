@@ -6,6 +6,7 @@ import {
     scoreWorkflowQualification,
 } from '../lib/workflowQualification.mjs'
 import { EVENTS, track } from '../utils/analytics'
+import { trackEmailCapture } from '../utils/conversion'
 
 const INITIAL_FORM = {
     name: '',
@@ -111,6 +112,20 @@ export default function WorkflowQualificationForm({ compact = false }) {
             if (qualification.tier === 'priority') {
                 track(EVENTS.QUALIFIED_WORKFLOW, { tier: 'priority' })
             }
+            // /qualify is the destination of nearly every CTA on the site, so
+            // this submit is the canonical E1 "qualified lead". The PostHog
+            // events above are funnel detail and reach only PostHog; the
+            // fan-out is what emits GA4 `generate_lead` and the Meta `Lead`
+            // standard event with first-touch attribution attached. Without
+            // it, the site's primary conversion is unmeasurable by the
+            // cost-per-qualified-lead kill criteria and unoptimizable by Meta.
+            // `tier` is a computed enum, never a form field.
+            trackEmailCapture({
+                location: compact
+                    ? 'qualification_form_home'
+                    : 'qualification_form',
+                tier: qualification.tier,
+            })
             setResult(qualification)
             setState('submitted')
         } catch (submitError) {
