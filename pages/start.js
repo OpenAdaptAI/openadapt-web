@@ -51,7 +51,7 @@ export default function StartPage() {
                 <title>Run OpenAdapt Locally for Free | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="Install OpenAdapt and complete your first local record, compile, certify, and replay loop with no account, model API, or Cloud service."
+                    content="Run OpenAdapt locally through the native Desktop app or CLI, with no account, model API, or Cloud service required."
                 />
                 <link rel="canonical" href="https://openadapt.ai/start" />
                 <meta
@@ -60,93 +60,179 @@ export default function StartPage() {
                 />
                 <meta
                     property="og:description"
-                    content="Reach a real local OpenAdapt run in two copy-and-paste commands, then inspect the workflow and its run evidence."
+                    content="Choose the native Desktop app or CLI and complete the same local record, compile, qualify, run, and evidence lifecycle."
                 />
                 <meta property="og:url" content="https://openadapt.ai/start" />
             </Head>
 
             <section className="border-b border-hairline px-5 py-16 md:py-24">
                 <div className="mx-auto max-w-4xl">
-                    <p className="eyebrow">Free local quickstart · MIT licensed</p>
+                    <p className="eyebrow">Free local start · MIT licensed</p>
                     <h1 className="mt-3 max-w-3xl font-display text-3xl font-semibold tracking-tight md:text-5xl">
-                        Get to your first local run in two commands.
+                        Start locally with Desktop or the CLI.
                     </h1>
                     <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-2 md:text-lg">
-                        The quickstart records a bundled synthetic tutorial,
-                        compiles it into an inspectable workflow, applies its
-                        explicit demo policy, and replays it locally. No account,
-                        target application, model API, or Cloud service is needed.
+                        Both paths use the same local compiler and governed
+                        runtime. Choose the visual Desktop cockpit or the
+                        scriptable command line. Neither requires a Cloud account
+                        or model API.
                     </p>
 
-                    <div className="mt-10 grid gap-8 md:grid-cols-[1fr_0.85fr]">
-                        <div>
-                            <div>
+                    <div
+                        className="mt-10 grid gap-5 md:grid-cols-2"
+                        role="list"
+                        aria-label="Local ways to run OpenAdapt"
+                    >
+                        <article
+                            className="flex h-full flex-col rounded-2xl border border-hairline bg-panel p-5 md:p-6"
+                            role="listitem"
+                        >
+                            <p className="eyebrow">Command line</p>
+                            <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight">
+                                OpenAdapt CLI
+                            </h2>
+                            <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                                Run the complete local tutorial, inspect every
+                                artifact, and script the same lifecycle in a
+                                terminal or CI environment.
+                            </p>
+
+                            <div className="mt-6">
                                 <p className="eyebrow">1 · Install</p>
                                 <Command
                                     command={INSTALL}
                                     event={EVENTS.LOCAL_QUICKSTART_INSTALL_COPIED}
                                 />
                             </div>
-                            <div className="mt-7">
+                            <div className="mt-5">
                                 <p className="eyebrow">2 · Run the whole loop</p>
                                 <Command
                                     command={QUICKSTART}
                                     event={EVENTS.LOCAL_QUICKSTART_RUN_COPIED}
                                 />
                             </div>
-                            <p className="mt-5 text-sm leading-relaxed text-ink-3">
+                            <p className="mt-5 text-xs leading-relaxed text-ink-3">
                                 Requires Python 3.10–3.12 on Windows, macOS, or
                                 Linux. The first run downloads Chromium once
                                 (about 150 MB), so it can take a few minutes.
                             </p>
-                        </div>
+                            <div className="mt-auto pt-6">
+                                <a
+                                    data-testid="local-cli-walkthrough"
+                                    className="inline-block text-sm underline underline-offset-4"
+                                    href="https://docs.openadapt.ai/get-started/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() =>
+                                        track(EVENTS.DOCS_CLICK, {
+                                            location: 'local_quickstart',
+                                        })
+                                    }
+                                >
+                                    Open the CLI walkthrough
+                                </a>
+                            </div>
+                        </article>
 
-                        <aside className="rounded-2xl border border-hairline bg-panel p-5 md:p-6">
-                            <p className="eyebrow">What you get</p>
-                            <ol className="mt-4 grid gap-4 text-sm leading-relaxed text-ink-2">
+                        <article
+                            className="flex h-full flex-col rounded-2xl border border-hairline bg-panel p-5 md:p-6"
+                            role="listitem"
+                        >
+                            <p className="eyebrow">Native app · Beta</p>
+                            <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight">
+                                OpenAdapt Desktop
+                            </h2>
+                            <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                                Record, compile, inspect, qualify, run, and review
+                                evidence from the visual cockpit. It packages the
+                                same governed workflow engine behind a native app.
+                            </p>
+                            <ol className="mt-6 grid gap-4 text-sm leading-relaxed text-ink-2">
                                 <li>
-                                    <strong className="text-ink">Recording</strong>
+                                    <strong className="text-ink">
+                                        1 · Choose your installer
+                                    </strong>
                                     <br />
-                                    The demonstrated interaction and retained
-                                    target evidence.
+                                    Available for Windows, macOS, and Linux.
                                 </li>
                                 <li>
                                     <strong className="text-ink">
-                                        Workflow bundle
+                                        2 · Follow first-run setup
                                     </strong>
                                     <br />
-                                    The readable program OpenAdapt compiled.
+                                    Grant the local permissions needed to capture
+                                    your demonstration.
                                 </li>
                                 <li>
-                                    <strong className="text-ink">Run report</strong>
+                                    <strong className="text-ink">
+                                        3 · Run the visual workflow
+                                    </strong>
                                     <br />
-                                    The actions, evidence, result, and any halt
-                                    reason.
+                                    Review the compiled graph, policy, result, and
+                                    retained evidence in one place.
                                 </li>
                             </ol>
-                            <a
-                                className="mt-5 inline-block text-sm underline underline-offset-4"
-                                href="https://docs.openadapt.ai/get-started/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() =>
-                                    track(EVENTS.DOCS_CLICK, {
-                                        location: 'local_quickstart',
-                                    })
-                                }
-                            >
-                                Open the full walkthrough
-                            </a>
-                        </aside>
+                            <div className="mt-auto flex flex-wrap gap-3 pt-7">
+                                <Link
+                                    data-testid="local-desktop-download"
+                                    className="btn-ink"
+                                    href="/download#desktop-builds"
+                                    onClick={() =>
+                                        track(EVENTS.DOWNLOAD_CLICK, {
+                                            surface: 'local_start',
+                                            platform: 'chooser',
+                                        })
+                                    }
+                                >
+                                    Download Desktop
+                                </Link>
+                                <Link
+                                    className="btn-ghost-ink"
+                                    href="/download#desktop-preview"
+                                >
+                                    See the app
+                                </Link>
+                            </div>
+                        </article>
                     </div>
+
+                    <aside className="mt-5 rounded-2xl border border-hairline bg-ground p-5 md:p-6">
+                        <p className="eyebrow">One local product</p>
+                        <h2 className="mt-2 font-display text-xl font-semibold tracking-tight">
+                            Whichever path you choose, the result is portable.
+                        </h2>
+                        <div className="mt-5 grid gap-4 text-sm leading-relaxed text-ink-2 sm:grid-cols-3">
+                            <p>
+                                <strong className="text-ink">Recording</strong>
+                                <br />
+                                The demonstration and retained target evidence.
+                            </p>
+                            <p>
+                                <strong className="text-ink">
+                                    Workflow bundle
+                                </strong>
+                                <br />
+                                The inspectable program OpenAdapt compiled.
+                            </p>
+                            <p>
+                                <strong className="text-ink">Run evidence</strong>
+                                <br />
+                                The result, contract evidence, and any halt reason.
+                            </p>
+                        </div>
+                    </aside>
                 </div>
             </section>
 
-            <section className="border-b border-hairline bg-panel px-5 py-16 md:py-20">
+            <section
+                className="border-b border-hairline bg-panel px-5 py-16 md:py-20"
+                data-testid="local-next-steps"
+            >
                 <div className="mx-auto max-w-4xl">
-                    <p className="eyebrow">After your first run</p>
+                    <p className="eyebrow">Optional after local success</p>
                     <h2 className="mt-2 max-w-2xl font-display text-2xl font-semibold tracking-tight md:text-3xl">
-                        Connect Cloud or qualify the real work.
+                        Keep running locally, connect Cloud, or qualify the real
+                        work.
                     </h2>
                     <div className="mt-7 grid gap-5 md:grid-cols-2">
                         <article className="rounded-2xl border border-hairline bg-ground p-5 md:p-6">
