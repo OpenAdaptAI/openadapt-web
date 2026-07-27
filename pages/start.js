@@ -146,7 +146,7 @@ export default function StartPage() {
                 <div className="mx-auto max-w-4xl">
                     <p className="eyebrow">After your first run</p>
                     <h2 className="mt-2 max-w-2xl font-display text-2xl font-semibold tracking-tight md:text-3xl">
-                        Keep it local, connect Cloud, or qualify the real work.
+                        Connect Cloud or qualify the real work.
                     </h2>
                     <div className="mt-7 grid gap-5 md:grid-cols-2">
                         <article className="rounded-2xl border border-hairline bg-ground p-5 md:p-6">
