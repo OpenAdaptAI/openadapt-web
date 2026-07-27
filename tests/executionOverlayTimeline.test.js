@@ -109,6 +109,15 @@ test('canonical V2 parsing refuses unsafe fields and media/PTS mismatches', asyn
         () => bindExecutionOverlayTimeline(forged, binding()),
         /state_id does not match/
     )
+
+    const regressed = timeline()
+    regressed.events[0].frame.step.current = 2
+    regressed.events[0].frame.state_id =
+        'visible:executing:governed:standard:2:2:no-pause:no-resume:no-stop:no-target'
+    assert.throws(
+        () => bindExecutionOverlayTimeline(regressed, binding()),
+        /regresses workflow progress/
+    )
 })
 
 test('status persists by bounded time while target exists only on its exact frame', async () => {
