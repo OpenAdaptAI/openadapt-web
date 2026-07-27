@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import styles from './FeedbackForm.module.css'
+import { trackEmailCapture } from 'utils/conversion'
 
 export default function FeedbackForm({ feedbackData }) {
     const router = useRouter()
@@ -34,6 +35,14 @@ export default function FeedbackForm({ feedbackData }) {
             .then((response) => {
                 if (response.ok) {
                     setFormHidden(true) // Hide form and show success message on successful submission
+                    // E1 qualified-lead conversion: email captured. Carries
+                    // first-touch utm_* attribution; never the email itself.
+                    //
+                    // This component is not currently rendered by any page,
+                    // but its `feedback` Netlify form is still registered and
+                    // accepting submissions, so re-mounting it must not
+                    // silently produce untracked leads.
+                    trackEmailCapture({ location: 'feedback_form' })
                     console.log('Form successfully submitted')
                 } else {
                     console.error('Form submission failed')

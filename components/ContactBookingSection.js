@@ -236,7 +236,11 @@ export default function ContactBookingSection({
                                 time directly below.
                             </p>
                         </div>
-                        <BookingEmbed name={form.name} email={form.email} />
+                        <BookingEmbed
+                            name={form.name}
+                            email={form.email}
+                            location="contact_form"
+                        />
                     </div>
                 )}
             </div>
