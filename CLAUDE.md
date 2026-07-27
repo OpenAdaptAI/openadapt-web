@@ -3,7 +3,14 @@
 ## Repository Overview
 This is the marketing website for OpenAdapt at https://openadapt.ai/
 
-Built with Next.js and deployed via Vercel.
+Built with Next.js and deployed via **Netlify** (`netlify.toml`; responses carry
+a `server: Netlify` header).
+
+This matters more than a hosting trivia detail: **lead capture runs on Netlify
+Forms**, which has no Vercel equivalent. Anyone who believes this site is on
+Vercel will reason incorrectly about the entire lead path — form registration,
+spam filtering, and the `submission_created` email notification that delivers
+inbound leads to a human. This file said "Vercel" until 2026-07-27.
 
 ## Important Rules
 
@@ -25,7 +32,7 @@ gh pr create --title "Title" --body "Description"
 
 This allows:
 - Changes to be reviewed before deployment
-- Vercel preview deployments for testing
+- Netlify deploy previews for testing
 - Proper CI checks to run
 
 ### Development
