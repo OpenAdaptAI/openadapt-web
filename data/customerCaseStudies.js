@@ -1,10 +1,35 @@
+/*
+ * ============================================================================
+ * RVU RECOVERY CASE STUDY DATA
+ *
+ * TWO CONSENT BOUNDARIES, DECIDED SEPARATELY.
+ *
+ * 1. THE INDIVIDUAL consented to being named. Keep the name.
+ * 2. THE EMPLOYER did not, and cannot be named here. A named health system
+ *    paired with a claim about missed billables is an assertion about that
+ *    institution's billing failures. Describe the setting generically. Do not
+ *    reintroduce an employer, hospital, or health-system name to this file,
+ *    to the page, or to llms.txt.
+ *
+ * The subject is the founder's brother. `relationshipDisclosure` below states
+ * that on the page. It is not a hedge — an undisclosed family relationship
+ * found by a reader costs far more than a disclosed one, and disclosure is
+ * what lets the result be read as the founding deployment it is.
+ *
+ * FIGURES ARE PRELIMINARY, pending customer confirmation. `footnote` renders
+ * that. Do not remove it until confirmed values replace the figures.
+ * ============================================================================
+ */
 export const RVU_RECOVERY_CASE = {
     slug: 'rvu-audit-heart-care',
     customer: {
         name: 'Dr. Victor Abrich, MD',
         role: 'Board-certified cardiac electrophysiologist',
-        organization: 'MercyOne Waterloo Heart Care',
+        // Generic setting only. See the employer-consent note above.
+        organization: 'A US cardiology electrophysiology practice',
     },
+    relationshipDisclosure:
+        'Disclosure: Dr. Abrich is the founder’s brother and has consented to being named here. This is OpenAdapt’s founding deployment, not arm’s-length validation. His employer is not named: the institution did not consent to a public claim about its billing.',
     title: 'Recovering missed billables with automated RVU audits',
     summary:
         'OpenAdapt automated the repetitive EMR evidence collection and spreadsheet reconciliation behind Dr. Victor Abrich’s monthly RVU audits, helping recover about $75,000 a year in missed billables while saving several hours of physician time each month.',
@@ -92,5 +117,12 @@ export const RVU_RECOVERY_CASE = {
     workflowType: 'Monthly physician RVU audit',
     industry: 'Healthcare',
 }
+
+// Preliminary-figures footnote, rendered at the bottom of the case-study page.
+// Restored from the pre-#305 version of this file: the figures on this page are
+// still described internally as preliminary and pending customer confirmation,
+// so the page must say so.
+export const RVU_RECOVERY_FOOTNOTE =
+    'Figures on this page are preliminary and under review pending final customer confirmation.'
 
 export const CUSTOMER_CASE_STUDIES = [RVU_RECOVERY_CASE]
