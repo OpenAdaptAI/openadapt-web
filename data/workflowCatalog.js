@@ -75,6 +75,10 @@ export const CATALOG = [
             'is required; pixels and actor self-report never establish success.',
         trialResults: {
             headline: '12/12 model-free rows correct',
+            // Resolved from the evidence commit itself: openadapt-flow 077bae0
+            // declares version 1.9.0 and describes as v1.9.0-1-g077bae0.
+            measuredOn:
+                'Measured on Flow 1.9.0 dev build (v1.9.0-1-g077bae0), 2026-07-16',
             detail:
                 'Compiled and direct-API arms, baseline + ui_cosmetic_v1 drift, ' +
                 '3 trials per cell (compiled 6/6, direct-API 6/6). ' +
@@ -85,9 +89,11 @@ export const CATALOG = [
         },
         secondaryEvidence:
             'A separate historical field showcase on the shared OpenEMR public ' +
-            'demo ran compiled 20/20 vs. computer-use agent 10/10 (2026-07-08); ' +
-            'that is a field result on a daily-resetting shared instance, not a ' +
-            'CI-reproducible benchmark.',
+            'demo ran compiled 20/20 vs. computer-use agent 10/10, measured ' +
+            '2026-07-08 on Flow 0.1.0 (a pre-v0.2.0 source build); that is a ' +
+            'field result on a daily-resetting shared instance, not a ' +
+            'CI-reproducible benchmark, and it has not been re-measured on a ' +
+            'later release.',
         knownLimits: [
             'The 6 paid-agent trials used a separate baseline and all ended ' +
                 'missing-write; this is not a matched three-arm comparison.',
@@ -151,6 +157,14 @@ export const CATALOG = [
             'reviewed. Pixels and self-report never establish success.',
         trialResults: {
             headline: '12/12 model-free rows correct',
+            // Resolved from the evidence commit itself: openadapt-flow
+            // 84c7a94f declares version 1.9.0 and describes as
+            // v1.9.0-3-g84c7a94. The paid-agent arm is a separate, later
+            // measurement on a different build, so it is labelled separately.
+            measuredOn:
+                'Measured on Flow 1.9.0 dev build (v1.9.0-3-g84c7a94), 2026-07-16' +
+                '; the separate paid-agent arm was measured on ' +
+                'Flow 1.19.0 dev build (v1.19.0-58-ge740a7e), 2026-07-21',
             detail:
                 'Compiled and direct-API arms, baseline + ui_cosmetic_v1 drift, ' +
                 '3 trials per cell (compiled 6/6, direct-API 6/6). ' +
@@ -223,6 +237,13 @@ export const CATALOG = [
             'missing row fails the run loudly; pixels never establish success.',
         trialResults: {
             headline: '3/3 compiled replays verified',
+            // Resolved from the evidence commit itself: openadapt-flow
+            // 3276ad2b declares version 1.11.0 and describes as
+            // v1.11.0-3-g3276ad2.
+            measuredOn:
+                'Measured on Flow 1.11.0 dev build (v1.11.0-3-g3276ad2)' +
+                ', evidence committed 2026-07-17; the paid-agent run was on ' +
+                'Flow 1.19.0 dev build (v1.19.0-58-ge740a7e), 2026-07-21',
             detail:
                 '1 recorded demonstration + 3 compiled replays, all 3 ' +
                 'SQL-verified. 0 duplicate claims, 0 wrong-policyholder writes, ' +

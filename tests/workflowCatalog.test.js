@@ -66,6 +66,19 @@ test('every catalog entry carries the required honesty fields', () => {
         // Trial results always carry their own scope caveat.
         assert.ok(entry.trialResults.headline, `${where} trial headline`)
         assert.ok(entry.trialResults.detail, `${where} trial detail`)
+
+        // A trial number without the engine build it was measured on is a
+        // claim about no particular version. Every headline carries both.
+        assert.match(
+            entry.trialResults.measuredOn,
+            /Measured on Flow \d+\.\d+\.\d+/,
+            `${where} trial results name the Flow build they were measured on`
+        )
+        assert.match(
+            entry.trialResults.measuredOn,
+            /\d{4}-\d{2}-\d{2}/,
+            `${where} trial results name the date they were measured on`
+        )
         assert.match(
             entry.trialResults.scope,
             /not (a )?(complete|publication|benchmark)|reference demonstration|engineering subset/i,

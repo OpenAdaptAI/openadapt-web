@@ -2,6 +2,7 @@
 # OpenAdapt installer — https://openadapt.ai
 #
 #   curl -fsSL https://openadapt.ai/install.sh | sh
+#   curl -fsSL https://openadapt.ai/install.sh | sh -s -- browser
 #
 # Installs uv (a fast Python toolchain) if you don't have it, then installs
 # OpenAdapt as a persistent `openadapt` command. Safe to re-run: it upgrades
@@ -30,8 +31,21 @@ if ! command -v uv >/dev/null 2>&1; then
     exit 1
 fi
 
-info "Installing OpenAdapt…"
-uv tool install --upgrade openadapt
+case "${1:-}" in
+    "")
+        package='openadapt'
+        ;;
+    browser)
+        package='openadapt[browser]'
+        ;;
+    *)
+        err "Unknown capability '$1'. Use no argument, or: browser"
+        exit 2
+        ;;
+esac
+
+info "Installing OpenAdapt${1:+ with browser support}…"
+uv tool install --upgrade "$package"
 
 # Make sure the installed `openadapt` command is on PATH in future shells.
 uv tool update-shell >/dev/null 2>&1 || true

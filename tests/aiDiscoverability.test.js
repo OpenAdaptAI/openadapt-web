@@ -392,17 +392,29 @@ test('llms.txt and llms-full.txt never promote a substrate above status.json', (
                 `${name} must list the ${substrate.name} substrate`
             )
         }
-        // Every published version must be stated correctly or not at all.
+        // Every CURRENT-version claim must match status.json. Deliberately
+        // scoped to the "Current published versions:" line rather than every
+        // occurrence of a version number, because a historical measurement
+        // provenance ("measured 2026-07-08 on openadapt-flow 0.1.0", "exercised
+        // under Flow 1.23.0") is a true statement about when something ran and
+        // must NOT be rewritten to the current release — doing so would
+        // fabricate the measurement. Those claims are guarded separately by
+        // scripts/check_published_version_claims.mjs, which classifies each as
+        // pypi-latest / pinned-deployment / historical.
+        const currentLine = text
+            .split('\n')
+            .find((line) => /current published versions/i.test(line))
+        assert.ok(
+            currentLine,
+            `${name} must state the current published versions`
+        )
         for (const [component, version] of Object.entries(status.versions)) {
-            const stale = new RegExp(
-                `${component}\\s+(\\d+\\.\\d+\\.\\d+)`,
-                'gi'
-            )
-            for (const match of text.matchAll(stale)) {
+            const stale = new RegExp(`${component}\\s+(\\d+\\.\\d+\\.\\d+)`, 'gi')
+            for (const match of currentLine.matchAll(stale)) {
                 assert.equal(
                     match[1],
                     version,
-                    `${name} states ${component} ${match[1]} but status.json says ${version}`
+                    `${name} states current ${component} ${match[1]} but status.json says ${version}`
                 )
             }
         }

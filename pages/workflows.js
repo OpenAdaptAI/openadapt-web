@@ -76,6 +76,14 @@ function CatalogEntry({ entry }) {
                 <p className="font-display text-lg font-semibold text-ink">
                     {entry.trialResults.headline}
                 </p>
+                {/* The engine build is part of the result. It sits directly
+                    under the headline number so it cannot be read without it. */}
+                <p
+                    className="mt-1 font-mono text-xs font-semibold text-ink"
+                    data-testid="trial-measured-on"
+                >
+                    {entry.trialResults.measuredOn}
+                </p>
                 <p className="mt-1 text-sm text-ink-2">
                     {entry.trialResults.detail}
                 </p>
