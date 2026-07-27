@@ -1,5 +1,8 @@
 import { useId } from 'react'
 
+import BenchmarkAttribution from './BenchmarkAttribution'
+import { ATTRIBUTION_SHORT } from '../lib/benchmarkProvenance'
+
 /*
  * Native inline-SVG benchmark charts for /compare.
  *
@@ -7,6 +10,10 @@ import { useId } from 'react'
  * verbatim from the openadapt-flow results.json files (see provenance in that
  * file). Nothing is hand-typed into the markup, so the published charts cannot
  * drift from the measured results.
+ *
+ * The engine build is part of the result, not a footnote: the block leads with
+ * the measured-on attribution and every figure repeats it, so a chart that is
+ * screenshotted on its own still says which version produced it.
  *
  * Colors are driven entirely by the site's CSS design tokens (var(--accent),
  * var(--ink), var(--ink-2), var(--ink-3), var(--hairline)), so the charts
@@ -274,6 +281,7 @@ export default function BenchmarkCharts({ dataset }) {
     const speedup = (agent.wall_s_p50 / compiled.wall_s_p50).toFixed(1)
     return (
         <div className="mt-5">
+            <BenchmarkAttribution className="mb-5" />
             <div className="grid gap-6 sm:grid-cols-3">
                 <Stat
                     value={`${speedup}× faster`}
@@ -294,8 +302,11 @@ export default function BenchmarkCharts({ dataset }) {
             </div>
             <div className="mt-6 grid gap-x-8 gap-y-6 md:grid-cols-2">
                 <figure className="rounded-xl border border-hairline bg-ground/60 p-4">
-                    <figcaption className="eyebrow mb-3">
-                        Latency per run
+                    <figcaption className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                        <span className="eyebrow">Latency per run</span>
+                        <span className="font-mono text-[11px] leading-none text-ink-3">
+                            {ATTRIBUTION_SHORT}
+                        </span>
                     </figcaption>
                     <LatencyChart
                         compiled={compiled}
@@ -305,8 +316,13 @@ export default function BenchmarkCharts({ dataset }) {
                     />
                 </figure>
                 <figure className="rounded-xl border border-hairline bg-ground/60 p-4">
-                    <figcaption className="eyebrow mb-3">
-                        Estimated model cost per run
+                    <figcaption className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                        <span className="eyebrow">
+                            Estimated model cost per run
+                        </span>
+                        <span className="font-mono text-[11px] leading-none text-ink-3">
+                            {ATTRIBUTION_SHORT}
+                        </span>
                     </figcaption>
                     <CostChart
                         compiled={compiled}
