@@ -30,6 +30,7 @@ const SOLUTIONS_LINKS = [
 ]
 
 const PRODUCT_LINKS = [
+    { label: 'Run locally', href: '/start' },
     { label: 'How it works', href: '/how-it-works' },
     {
         label: 'Customer results',

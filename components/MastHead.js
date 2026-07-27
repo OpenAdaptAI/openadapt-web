@@ -75,11 +75,9 @@ export default function Home({ githubStats }) {
                                     >
                                         Qualify one workflow
                                     </Link>
-                                    <a
+                                    <Link
                                         className="btn-ghost-ink"
-                                        href="https://docs.openadapt.ai/get-started/"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                        href="/start"
                                         data-testid="local-quickstart-cta"
                                         onClick={() =>
                                             track(EVENTS.HERO_CTA_CLICK, {
@@ -88,7 +86,7 @@ export default function Home({ githubStats }) {
                                         }
                                     >
                                         Run locally for free
-                                    </a>
+                                    </Link>
                                     <a
                                         className="btn-ghost-ink"
                                         href="https://app.openadapt.ai/demo"
