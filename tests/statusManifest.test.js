@@ -8,6 +8,25 @@ const read = (relativePath) =>
     fs.readFileSync(path.join(root, relativePath), 'utf8')
 
 const manifest = JSON.parse(read('public/status.json'))
+const versionClaims = JSON.parse(read('data/published-version-claims.json'))
+
+/*
+ * The versions are deliberately not duplicated in this file.
+ *
+ * A second hard-coded copy of "the current release" verifies nothing; it only
+ * makes the test agree with whatever the manifest said when the copy was
+ * written. This file used to pin launcher 1.7.3 / flow 1.23.0 / capture 1.1.1 /
+ * desktop 0.13.0 behind a comment saying they were verified on 2026-07-25, and
+ * by 2026-07-27 all four were superseded, so the suite enforced the wrong
+ * answer. There is now one machine-readable record,
+ * data/published-version-claims.json, and one authority for whether it is
+ * current: PyPI, compared daily by
+ * scripts/check_published_version_claims.mjs. This file checks that the
+ * manifest and that record agree.
+ */
+const REGISTERED_VERSIONS = versionClaims.claims.find(
+    (claim) => claim.id === 'status-manifest-component-versions'
+)
 
 const CANONICAL_LABELS = {
     Browser: 'Available',
@@ -126,4 +145,17 @@ test('status manifest encodes exact component versions', () => {
         assert.match(version, /^\d+\.\d+\.\d+$/)
     }
     assert.match(manifest.generated_at, /^\d{4}-\d{2}-\d{2}$/)
+
+    // One record, not two copies: the registry the daily PyPI check reads must
+    // describe exactly what this manifest serves.
+    assert.ok(
+        REGISTERED_VERSIONS,
+        'data/published-version-claims.json must register the status manifest versions'
+    )
+    assert.equal(REGISTERED_VERSIONS.kind, 'pypi-latest')
+    assert.deepEqual(manifest.versions, REGISTERED_VERSIONS.versions)
+    assert.deepEqual(
+        Object.keys(manifest.versions).sort(),
+        Object.keys(REGISTERED_VERSIONS.packages).sort()
+    )
 })
