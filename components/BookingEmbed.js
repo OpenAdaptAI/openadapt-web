@@ -27,7 +27,19 @@ function isCalBookingSuccess(event) {
     }
 }
 
-export default function BookingEmbed({ name = '', email = '' }) {
+/**
+ * `location` names the surface this scheduler is mounted on. The same embed
+ * renders on /book, inside the /dental paid-campaign landing page, and inside
+ * the /pricing contact section; without it every completed booking reported
+ * the same `booking_embed` label and a confirmed lead could not be attributed
+ * to the page that produced it. That matters most for /dental, whose paid
+ * spend is judged on cost per qualified lead.
+ */
+export default function BookingEmbed({
+    name = '',
+    email = '',
+    location = 'booking_embed',
+}) {
     const { bookingUrl, provider } = useMemo(() => {
         const config = getBookingConfig()
         return {
@@ -45,12 +57,12 @@ export default function BookingEmbed({ name = '', email = '' }) {
         if (!bookingUrl || provider !== 'calcom') return undefined
         const handleMessage = (event) => {
             if (isCalBookingSuccess(event)) {
-                trackBookingConfirmed({ location: 'booking_embed' })
+                trackBookingConfirmed({ location })
             }
         }
         window.addEventListener('message', handleMessage)
         return () => window.removeEventListener('message', handleMessage)
-    }, [bookingUrl, provider])
+    }, [bookingUrl, provider, location])
 
     if (!bookingUrl) {
         return (
@@ -92,7 +104,7 @@ export default function BookingEmbed({ name = '', email = '' }) {
                         className="btn-ink"
                         onClick={() =>
                             trackBookingClick({
-                                location: 'booking_embed_fallback',
+                                location: `${location}_fallback`,
                             })
                         }
                     >
@@ -128,7 +140,7 @@ export default function BookingEmbed({ name = '', email = '' }) {
                     className="text-accent underline hover:text-ink"
                     onClick={() =>
                         trackBookingClick({
-                            location: 'booking_embed_direct_link',
+                            location: `${location}_direct_link`,
                         })
                     }
                 >

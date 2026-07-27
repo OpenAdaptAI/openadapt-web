@@ -54,7 +54,11 @@ export default function BookPage() {
                     </Link>
                 </div>
                 <div className="mt-8">
-                    <BookingEmbed name={name} email={email} />
+                    <BookingEmbed
+                        name={name}
+                        email={email}
+                        location="book_page"
+                    />
                 </div>
             </div>
             <Footer />

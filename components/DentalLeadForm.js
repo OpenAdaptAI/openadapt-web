@@ -43,14 +43,6 @@ export default function DentalLeadForm({ sectionId = 'book' }) {
         setIsSubmitting(true)
 
         try {
-            // The canonical E1 "qualified lead" conversion. It must go through
-            // utils/conversion so PostHog, GA4 `generate_lead`, and the Meta
-            // `Lead` standard event all fire with first-touch attribution
-            // attached. A raw gtag call reaches none of them, which leaves the
-            // cost-per-qualified-lead kill criteria blind and gives Meta
-            // nothing to optimize against.
-            trackEmailCapture({ location: 'dental_landing' })
-
             const formData = new URLSearchParams()
             formData.set('form-name', DENTAL_FORM_NAME)
             formData.set('name', form.name)
@@ -82,6 +74,19 @@ export default function DentalLeadForm({ sectionId = 'book' }) {
                     `Form submission failed with status ${response.status}`
                 )
             }
+
+            // The canonical E1 "qualified lead" conversion. It must go through
+            // utils/conversion so PostHog, GA4 `generate_lead`, and the Meta
+            // `Lead` standard event all fire with first-touch attribution
+            // attached. A raw gtag call reaches none of them, which leaves the
+            // cost-per-qualified-lead kill criteria blind and gives Meta
+            // nothing to optimize against.
+            //
+            // Fired only after Netlify accepted the submission, matching every
+            // other lead surface. Firing it before the POST counted leads that
+            // never arrived, which understates cost-per-lead and teaches Meta
+            // to optimize toward submits that failed.
+            trackEmailCapture({ location: 'dental_landing' })
 
             setIsSubmitted(true)
         } catch (submitError) {
@@ -256,7 +261,11 @@ export default function DentalLeadForm({ sectionId = 'book' }) {
                                 time directly below.
                             </p>
                         </div>
-                        <BookingEmbed name={form.name} email={form.email} />
+                        <BookingEmbed
+                            name={form.name}
+                            email={form.email}
+                            location="dental_landing"
+                        />
                     </div>
                 )}
             </div>
