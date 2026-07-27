@@ -10,9 +10,10 @@ export const trustDataFlows = Object.freeze([
         id: 'customer-controlled-execution',
         title: 'Customer-controlled execution',
         summary:
-            'Browser, native, RDP, and Citrix recordings, screenshots, input events, live observations, bundles, and machine evidence stay in infrastructure controlled by the customer. OpenAdapt Cloud receives only an explicitly admitted sanitized derivative or schema-minimized control-plane metadata unless the deployment authorizes another destination.',
+            'Browser, native, RDP, and Citrix recordings, screenshots, input events, live observations, bundles, and machine evidence stay in infrastructure controlled by the customer. Optional microphone narration is off by default and transcribed locally; waveform retention is separately opt-in, while transcripts remain sensitive customer-controlled capture data. OpenAdapt Cloud receives only an explicitly admitted sanitized derivative or schema-minimized control-plane metadata unless the deployment authorizes another destination.',
         dataClasses: Object.freeze([
             'raw recordings and input events',
+            'optional local narration transcripts and retained waveforms',
             'live runtime frames and identity evidence',
             'compiled bundles, reports, and checkpoints',
         ]),

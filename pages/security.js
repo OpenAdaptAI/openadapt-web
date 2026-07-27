@@ -208,6 +208,10 @@ const flowZones = [
                 'Persisted step / heal frames',
                 'Redacted through Presidio image scrubbing when image scrubbing is enabled, and implied whenever scrubbing is pinned on.',
             ],
+            [
+                'Microphone narration (opt-in, off by default)',
+                'When explicitly enabled, capture transcribes narration locally and refuses before opening the microphone if no local backend is available. Waveform retention is separately opt-in; transcripts remain sensitive local capture data and are not automatically scrubbed. Control: filesystem + retention.',
+            ],
         ],
     },
     {

@@ -48,6 +48,16 @@ const TermsOfService = () => {
                 hosted policy.
             </p>
             <p className={styles.paragraph}>
+                Recording can include the screen, keyboard, mouse, and optional
+                microphone narration. Narration is off by default and requires an
+                explicit operator action. It is transcribed locally, capture
+                refuses before opening the microphone when no local transcription
+                backend is available, and waveform retention is a separate
+                opt-in. Audio and transcripts are sensitive operator-controlled
+                artifacts; the standard hosted artifact-ingest path does not
+                accept narration audio or capture databases.
+            </p>
+            <p className={styles.paragraph}>
                 The hosted subscription includes managed execution for approved
                 browser workflows. Workflows that require Windows UIA, native
                 macOS, RDP, Citrix, private-network access, or a regulated runtime
