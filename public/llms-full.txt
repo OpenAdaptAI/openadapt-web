@@ -343,7 +343,7 @@ review-ready results.
 Disclosed with that outcome, because it changes how to read it: the physician is
 the founder's brother, this is OpenAdapt's founding deployment rather than
 independent validation, and the figures are preliminary pending customer
-confirmation. There are no external production customers.
+confirmation.
 
 **Governed validation cohort (synthetic, reproducible).** The same workflow
 family, exercised as a six-month cohort of 2,880 synthetic cases (480/month) on a
