@@ -5,6 +5,8 @@ import Footer from '@components/Footer'
 
 const PAPER_URL = '/openadapt-paper.pdf'
 const REPO_URL = 'https://github.com/OpenAdaptAI/openadapt-flow'
+const EFFECT_E2E_URL =
+    'https://github.com/OpenAdaptAI/openadapt-flow/blob/main/benchmark/effect_e2e/EFFECT_E2E.md'
 const PAPER_TITLE =
     'Compile Once, Govern Every Repair: Deterministic Replay for Repeated GUI Work'
 
@@ -36,7 +38,7 @@ const scholarlyArticleSchema = {
         url: 'https://openadapt.ai',
     },
     abstract:
-        'OpenAdapt is a demonstration compiler that converts one recorded GUI trace into a deterministic program. Healthy replay makes no model calls; a resolution ladder repairs targets under interface drift; and system-of-record effect verification refuses rather than trusting a rendered success banner. In an injected-fault study, screen-only verification silently accepted 50 of 90 fault runs while an effect check caught every one.',
+        'OpenAdapt is a demonstration compiler that converts one recorded GUI trace into a deterministic program. Healthy replay makes no model calls; a resolution ladder repairs targets under interface drift; and system-of-record effect verification refuses rather than trusting a rendered success banner. In an injected-fault study measured end to end through the real replayer, a screen-only oracle silently accepted 75.0% of the wrong effects that actually occurred (54 of 90 runs); one out-of-band record oracle cut that to 12.5% (9 of 90), and a complete system-of-record read path to 0 of 90.',
     isAccessibleForFree: true,
     encoding: {
         '@type': 'MediaObject',
@@ -127,28 +129,53 @@ export default function ResearchPage() {
                     The headline result
                 </h2>
                 <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
-                    We injected seven persistence faults behind a real HTTP
-                    boundary and ran each ten times. Judged by the
-                    screen&mdash;the same signal a computer-use agent or an RPA
-                    script trusts&mdash;replay silently accepted 50 of 90 wrong
-                    outcomes. When the consequential step declared a typed effect
-                    checked against the system of record, silent acceptance fell
-                    to zero.
+                    We injected ten transaction-fault classes behind a real HTTP
+                    boundary and replayed each nine times per arm&mdash;90 runs
+                    per arm, end to end through the actual replayer into an
+                    on-disk SQLite system of record, graded by a direct
+                    read-only database connection that bypasses the service
+                    entirely. Judged by the screen&mdash;the same signal a
+                    computer-use agent or an RPA script trusts&mdash;replay
+                    silently accepted <strong className="text-ink">75.0%</strong>{' '}
+                    of the wrong effects that actually occurred. Adding{' '}
+                    <strong className="text-ink">one</strong> out-of-band oracle
+                    that reads the system of record cut that to{' '}
+                    <strong className="text-ink">12.5%</strong>. That middle rung
+                    is the number a real deployment ships.
                 </p>
-                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <Stat
-                        value="50 / 90"
-                        label="fault runs silently accepted by screen-only verification (5 of 7 fault classes)"
+                        value="54 / 90"
+                        label="wrong effects silently accepted by screen-only verification — 75.0% of the runs where a wrong effect actually persisted"
+                    />
+                    <Stat
+                        value="9 / 90"
+                        label="silently accepted once one out-of-band system-of-record oracle is configured — 12.5%, the realistic deployment number"
                     />
                     <Stat
                         value="0 / 90"
-                        label="silently accepted once a system-of-record effect check was configured"
+                        label="silently accepted under a complete read path over every mutable surface — the best case under full in-database instrumentation, not the expected field result"
                     />
                     <Stat
                         value="0 model calls"
                         label="on the healthy replay path; models are optional repair tiers, not the controller"
                     />
                 </div>
+                <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-2 md:text-base">
+                    All nine residual misses are one named class: a collateral
+                    write to a surface the oracle&#39;s read path does not cover.
+                    An out-of-band oracle catches exactly what its read path can
+                    read, and widening that path closes the gap. Full method,
+                    per-fault outcomes, and the closed-world caveat on the 0 are
+                    in{' '}
+                    <a
+                        href={EFFECT_E2E_URL}
+                        className="text-accent hover:underline"
+                    >
+                        the end-to-end effect study
+                    </a>
+                    .
+                </p>
 
                 <h2 className="mt-14 font-display text-xl font-semibold tracking-tight text-ink">
                     What the paper reports
