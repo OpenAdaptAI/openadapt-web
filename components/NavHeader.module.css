@@ -227,8 +227,17 @@
 @media (max-width: 1200px) {
     .headerMenuOpen {
         position: fixed;
-        inset: 0 0 auto;
+        inset: 0;
         width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .headerMenuOpen .inner {
+        flex: 0 0 60px;
     }
 
     .links {
@@ -251,15 +260,20 @@
 
     .mobilePanel {
         display: flex;
+        flex: 1 1 auto;
+        min-height: 0;
         flex-direction: column;
         max-height: calc(100vh - 60px);
+        max-height: calc(100dvh - 60px);
         overscroll-behavior: contain;
         overflow-y: auto;
         overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
         scrollbar-gutter: stable;
+        scroll-padding-bottom: calc(24px + env(safe-area-inset-bottom));
         background: var(--panel);
         border-bottom: 1px solid var(--hairline);
-        padding: 6px 16px 12px;
+        padding: 6px 16px calc(24px + env(safe-area-inset-bottom));
     }
 
     .mobileLink {
