@@ -271,6 +271,11 @@ export default function Footer({
                             <h2 className={styles.columnTitle}>Product</h2>
                             <ul className={styles.columnList}>
                                 <li>
+                                    <FooterLink href="/start">
+                                        Run locally
+                                    </FooterLink>
+                                </li>
+                                <li>
                                     <FooterLink href="/#product-status">
                                         How it runs
                                     </FooterLink>
