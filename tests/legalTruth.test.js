@@ -43,29 +43,43 @@ test('owner-approved legal documents are operative and consistently linked', () 
     assert.doesNotMatch(terms, /the Privacy Policy/)
 })
 
-test('privacy page names current providers and exact model-call posture', () => {
+test('shared trust inventory names current providers and exact model-call posture', async () => {
     const privacy = read('pages/privacy-policy.js')
+    const { trustProviders } = await import(
+        '../data/trustProviderInventory.mjs'
+    )
+    const providers = new Map(
+        trustProviders.map((provider) => [provider.id, provider])
+    )
 
-    for (const provider of [
-        'Netlify',
-        'Supabase',
-        'Modal',
-        'Stripe',
-        'PostHog',
-        'Cal.com',
-        'GitHub',
+    for (const providerId of [
+        'netlify',
+        'supabase',
+        'modal',
+        'stripe',
+        'resend',
+        'posthog',
+        'ga4',
+        'meta',
+        'sentry-compatible',
+        'calcom',
+        'github',
     ]) {
-        assert.match(privacy, new RegExp(provider.replace('.', '\\.')))
+        assert.ok(providers.has(providerId), `missing provider ${providerId}`)
     }
+    assert.deepEqual(providers.get('modal').lanes, ['managed-authoring'])
+    assert.ok(
+        providers.get('posthog').data.includes('does not identify users by email')
+    )
+    assert.ok(
+        providers
+            .get('sentry-compatible')
+            .data.includes('not proof that arbitrary error text is de-identified')
+    )
     assert.match(privacy, /Healthy deterministic replay makes no model calls/)
     assert.match(privacy, /Model-assisted[\s\S]*repair is optional and off by default/)
     assert.match(privacy, /does not bypass identity,[\s\S]*policy checks/)
-    assert.match(
-        privacy,
-        /Modal for managed browser recording and run compute,[\s\S]*optional hosted compilation only when explicitly enabled/
-    )
     assert.doesNotMatch(privacy, /ensuring the security|do not share your email/i)
-    assert.doesNotMatch(read('pages/_app.js'), /googletagmanager|google-analytics/i)
     assert.match(privacy, /is accountable for the practices described here/i)
 })
 

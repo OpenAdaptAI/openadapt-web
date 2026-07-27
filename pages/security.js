@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
+import TrustProviderInventory from '@components/TrustProviderInventory'
+import statusManifest from '../public/status.json'
 
 const REPO_URL = 'https://github.com/OpenAdaptAI/openadapt-flow'
 const ADVISORY_URL =
@@ -14,10 +16,10 @@ const LIMITS_URL =
     'https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/LIMITS.md'
 const RELEASES_URL =
     'https://github.com/OpenAdaptAI/openadapt-desktop/blob/main/RELEASES.md'
-const NATIVE_RELEASE_URL =
-    'https://github.com/OpenAdaptAI/openadapt-desktop/releases/tag/desktop-v0.13.1'
-const CONTROL_OVERLAY_URL =
-    'https://github.com/OpenAdaptAI/openadapt-desktop/blob/desktop-v0.13.1/docs/CONTROL_OVERLAY.md'
+const DESKTOP_VERSION = statusManifest.versions.desktop
+const DESKTOP_RELEASE_TAG = `desktop-v${DESKTOP_VERSION}`
+const NATIVE_RELEASE_URL = `https://github.com/OpenAdaptAI/openadapt-desktop/releases/tag/${DESKTOP_RELEASE_TAG}`
+const CONTROL_OVERLAY_URL = `https://github.com/OpenAdaptAI/openadapt-desktop/blob/${DESKTOP_RELEASE_TAG}/docs/CONTROL_OVERLAY.md`
 // Security reports go through GitHub private advisories or hello@openadapt.ai.
 // There is no security@openadapt.ai mailbox today — do not advertise one.
 const CONTACT_EMAIL = 'hello@openadapt.ai'
@@ -66,7 +68,7 @@ const summary = [
         note: 'Local retention is operator-owned; hosted retention, legal holds, tenant erasure, and deletion receipts are policy-governed.',
     },
     {
-        area: 'Subprocessors',
+        area: 'Service providers',
         anchor: 'subprocessors',
         status: 'yes',
         note: 'Named and current. No default model provider.',
@@ -343,45 +345,11 @@ const reviewPolicies = [
     ],
 ]
 
-const subprocessors = [
-    [
-        'Netlify',
-        'Website hosting and form submissions',
-        'Marketing site, contact/update forms',
-    ],
-    [
-        'Supabase',
-        'Hosted authentication, database, and private object storage',
-        'Hosted service accounts and artifacts',
-    ],
-    [
-        'Modal',
-        'Managed browser recording and run compute; optional hosted compilation only when explicitly enabled',
-        'Hosted service runtime',
-    ],
-    [
-        'Stripe',
-        'Checkout, billing, and subscription state',
-        'Hosted service billing',
-    ],
-    [
-        'PostHog',
-        'Launch-funnel analytics when a key is configured (autocapture, persistence, and session recording disabled)',
-        'Marketing site only',
-    ],
-    ['Cal.com', 'Meeting booking', 'Marketing site booking flow'],
-    [
-        'GitHub',
-        'Source links, repository widgets, and public repository data',
-        'Marketing site + open source',
-    ],
-]
-
 const releaseIntegrity = [
     {
         title: 'Build provenance & attestations',
         status: 'yes',
-        body: 'The PyPI engine publishes wheel and sdist with PEP 740 publish attestations. Desktop Beta 0.13.1 publishes a SHA256SUMS manifest and GitHub build-provenance attestations for every installer, metadata file, and SBOM. Provenance answers "was this built from our source by our CI"; it is not the same as code signing.',
+        body: `The PyPI engine publishes wheel and sdist with PEP 740 publish attestations. Desktop Beta ${DESKTOP_VERSION} publishes a SHA256SUMS manifest and GitHub build-provenance attestations for every installer, metadata file, and SBOM. Provenance answers "was this built from our source by our CI"; it is not the same as code signing.`,
         evidenceUrl: NATIVE_RELEASE_URL,
         evidenceLabel: 'Inspect the public checksums and attestations',
     },
@@ -393,14 +361,14 @@ const releaseIntegrity = [
     {
         title: 'Software bill of materials (SBOM)',
         status: 'yes',
-        body: 'Desktop Beta 0.13.1 publishes a CycloneDX JSON SBOM generated from the exact smoke-tested installer set. The release workflow rejects an empty or malformed SBOM before publication, includes its hash in SHA256SUMS, and attests the SBOM alongside the installers.',
+        body: `Desktop Beta ${DESKTOP_VERSION} publishes a CycloneDX JSON SBOM generated from the exact smoke-tested installer set. The release workflow rejects an empty or malformed SBOM before publication, includes its hash in SHA256SUMS, and attests the SBOM alongside the installers.`,
         evidenceUrl: NATIVE_RELEASE_URL,
         evidenceLabel: 'Download the public CycloneDX SBOM',
     },
     {
         title: 'Execution control overlay',
         status: 'yes',
-        body: 'Desktop Beta 0.13.1 provides a separate native status surface outside the target application. During active observation and execution it is click-through, non-focusable, and excluded from capture before it becomes visible; controls appear only at a safe paused or terminal boundary. Overlay presentation state is never used as target-resolution or verification evidence.',
+        body: `Desktop Beta ${DESKTOP_VERSION} provides a separate native status surface outside the target application. During active observation and execution it is click-through, non-focusable, and excluded from capture before it becomes visible; controls appear only at a safe paused or terminal boundary. Overlay presentation state is never used as target-resolution or verification evidence.`,
         evidenceUrl: CONTROL_OVERLAY_URL,
         evidenceLabel: 'Inspect the released overlay contract',
     },
@@ -903,12 +871,12 @@ export default function SecurityPage() {
                     </div>
                 </div>
 
-                {/* Subprocessors */}
+                {/* Service providers */}
                 <div
                     id="subprocessors"
                     className="mt-14 scroll-mt-20 border-t border-hairline pt-10"
                 >
-                    <p className="eyebrow">Subprocessors</p>
+                    <p className="eyebrow">Service providers</p>
                     <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">
                         The third parties in our current product paths
                     </h2>
@@ -919,37 +887,8 @@ export default function SecurityPage() {
                         use a different approved provider set documented in its
                         scope.
                     </p>
-                    <div className="mt-6 overflow-x-auto rounded-xl border border-hairline bg-panel">
-                        <table className="w-full min-w-[680px] border-collapse text-left text-sm">
-                            <thead className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-3">
-                                <tr>
-                                    <th className="border-b border-hairline px-4 py-3">
-                                        Provider
-                                    </th>
-                                    <th className="border-b border-hairline px-4 py-3">
-                                        Purpose
-                                    </th>
-                                    <th className="border-b border-hairline px-4 py-3">
-                                        Where used
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {subprocessors.map(([name, purpose, where]) => (
-                                    <tr key={name} className="align-top">
-                                        <th className="border-b border-hairline px-4 py-3 font-medium text-ink">
-                                            {name}
-                                        </th>
-                                        <td className="border-b border-hairline px-4 py-3 text-ink-2">
-                                            {purpose}
-                                        </td>
-                                        <td className="border-b border-hairline px-4 py-3 text-ink-2">
-                                            {where}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="mt-6">
+                        <TrustProviderInventory />
                     </div>
                     <p className="mt-4 text-sm leading-relaxed text-ink-2">
                         <strong className="text-ink">
