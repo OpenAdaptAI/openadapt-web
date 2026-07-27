@@ -4,7 +4,7 @@ import { faCopy, faCheck, faTerminal } from '@fortawesome/free-solid-svg-icons';
 import styles from './InstallSection.module.css';
 import { track, EVENTS } from 'utils/analytics';
 
-const INSTALL_COMMAND = 'pip install openadapt';
+const INSTALL_COMMAND = "pip install 'openadapt[browser]'";
 
 function CopyButton({ text, className, onCopied }) {
     const [copied, setCopied] = useState(false);
@@ -99,16 +99,17 @@ export default function InstallSection() {
                     Try the whole loop right now against the bundled demo app,
                     which runs in the browser: record, compile, inspect, certify,
                     replay, and induce known test drift. No account or cloud
-                    service. Once it is
-                    installed, your workflow data stays on your machine. One
-                    heads-up on first run: the first <code>demo-record</code> or{' '}
+                    service. Once it is installed, your workflow data stays on
+                    your machine. The browser extra is not part of native, RDP,
+                    or Citrix-only installs. On first web use,{' '}
+                    <code>demo-record</code> or{' '}
                     <code>replay</code> downloads a bundled Chromium (~150&nbsp;MB)
                     once, so that step takes a few minutes, and on Linux you may
                     need <code>playwright install-deps</code> first.
                 </p>
                 <div className={styles.commandGrid}>
                     <div className={styles.commandItem}>
-                        <code>pip install openadapt</code>
+                        <code>pip install 'openadapt[browser]'</code>
                         <span>Install OpenAdapt</span>
                     </div>
                     <div className={styles.commandItem}>

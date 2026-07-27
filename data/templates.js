@@ -24,7 +24,7 @@ const FLOW_REPO = 'https://github.com/OpenAdaptAI/openadapt-flow'
 // The canonical end-user quickstart enters through the flagship OpenAdapt
 // package while source links below continue to point to the engine repository.
 const DEMO_QUICKSTART = [
-    { cmd: 'pip install openadapt', what: 'Install the OpenAdapt launcher and governed workflow compiler.' },
+    { cmd: "pip install 'openadapt[browser]'", what: 'Install the OpenAdapt launcher, compiler, and browser capability.' },
     { cmd: 'openadapt flow demo-record --out rec', what: 'Serve the bundled MockMed clinic app locally and record the canonical triage demonstration.' },
     { cmd: 'openadapt flow compile rec --out bundle --name triage-note', what: 'Compile the recording into a deterministic, locally executable bundle.' },
     { cmd: 'openadapt flow lint bundle', what: 'Report the bundle’s coverage gaps — expected: it finds the demo’s unarmed irreversible final click.' },
@@ -33,7 +33,7 @@ const DEMO_QUICKSTART = [
 ]
 
 const RECORD_YOUR_OWN = [
-    { cmd: 'pip install openadapt', what: 'Install the OpenAdapt launcher and governed workflow compiler.' },
+    { cmd: "pip install 'openadapt[browser]'", what: 'Install the OpenAdapt launcher, compiler, and browser capability.' },
     { cmd: 'openadapt flow record --url https://your.app --out rec', what: 'Open a headed browser on your app and demonstrate the workflow once; Ctrl-C to finish.' },
     { cmd: 'openadapt flow compile rec --out bundle --name my-task', what: 'Compile the recording into a deterministic bundle with auto-classified risk per step.' },
     { cmd: 'openadapt flow lint bundle && openadapt flow certify bundle --policy permissive', what: 'Surface coverage gaps, then gate the bundle against a policy before it ever deploys.' },
@@ -80,7 +80,7 @@ const templates = [
         summary:
             'The flagship healthcare reference: an 18-step add-patient-note workflow on OpenEMR — log in, find the patient, open the chart, navigate to Patient Messages, enter a parameterized note, save — with the write confirmed against the record itself, never the screen.',
         metaDescription:
-            'Automate patient note entry in OpenEMR: an 18-step demonstrated workflow compiled into deterministic replay, verified against the system of record, with a published field run of 20/20 compiled trials at zero model calls.',
+            'Automate patient note entry in OpenEMR: an 18-step demonstrated workflow compiled into deterministic replay, verified against the system of record, with a published field run of 20/20 compiled trials at zero model calls (measured 2026-07-08 on Flow 0.1.0).',
         runsOn:
             'OpenEMR, the open-source EMR — demonstrated against the third-party OpenEMR public demo (fake patients only; never point this at a real install without qualification) and reproduced in CI against a fixture system of record.',
         steps: [
@@ -99,7 +99,7 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/tree/main/benchmark/openemr_e2e`,
         evidence:
-            'Field run on the real third-party OpenEMR public demo: compiled replay went 20/20 versus 10/10 for a computer-use agent, faster and with zero model calls. Field test, not CI-reproducible — the public demo is shared, resets daily, and the agent sample is small; the verifier and task-prompt units run in CI.',
+            'Field run on the real third-party OpenEMR public demo, measured 2026-07-08 on Flow 0.1.0 (a pre-v0.2.0 source build) and not re-measured since: compiled replay went 20/20 versus 10/10 for a computer-use agent, faster and with zero model calls. Field test, not CI-reproducible — the public demo is shared, resets daily, and the agent sample is small; the verifier and task-prompt units run in CI.',
     },
     {
         slug: 'frappe-loan-application',
@@ -156,7 +156,7 @@ const templates = [
         quickstart: RECORD_YOUR_OWN,
         source: `${FLOW_REPO}/tree/main/benchmark/openimis_claims`,
         evidence:
-            'A reference environment, deliberately not a benchmark: 3/3 compiled replays and, in a separate small-N run, 3/3 paid-agent trials were correct, with 0/3 over-halt, 0/3 silent incorrect, and $0.4793/run. There is no matched timing matrix or publication protocol.',
+            'A reference environment, deliberately not a benchmark: 3/3 compiled replays (measured on Flow 1.11.0, evidence committed 2026-07-17) and, in a separate small-N run, 3/3 paid-agent trials (measured on Flow 1.19.0, 2026-07-21) were correct, with 0/3 over-halt, 0/3 silent incorrect, and $0.4793/run. There is no matched timing matrix or publication protocol.',
     },
 
     // ------------------------------------------------------------------

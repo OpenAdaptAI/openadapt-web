@@ -10,6 +10,7 @@
     },
     "scripts": {
         "dev": "next dev",
+        "check:versions": "node scripts/check_published_version_claims.mjs",
         "fetch:paper": "node scripts/fetch-paper-pdf.js",
         "verify:presentations": "node scripts/verify-reference-presentations.mjs",
         "prebuild": "npm run fetch:paper && npm test && npm run verify:presentations",

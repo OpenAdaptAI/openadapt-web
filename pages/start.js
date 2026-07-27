@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Footer from '@components/Footer'
 import { EVENTS, track } from 'utils/analytics'
 
-const INSTALL = 'python -m pip install --upgrade openadapt'
+const INSTALL = "python -m pip install --upgrade 'openadapt[browser]'"
 const QUICKSTART = 'openadapt quickstart'
 
 function Command({ command, event }) {
@@ -112,9 +112,10 @@ export default function StartPage() {
                                 />
                             </div>
                             <p className="mt-5 text-xs leading-relaxed text-ink-3">
-                                Requires Python 3.10–3.12 on Windows, macOS, or
-                                Linux. The first run downloads Chromium once
-                                (about 150 MB), so it can take a few minutes.
+                                Requires Python 3.10–3.12. The browser extra is
+                                only for this web tutorial; its first web action
+                                downloads matching Chromium once. Native, RDP,
+                                and Citrix installs do not need it.
                             </p>
                             <div className="mt-auto pt-6">
                                 <a
@@ -193,6 +194,12 @@ export default function StartPage() {
                                     See the app
                                 </Link>
                             </div>
+                            <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                                Desktop opens without a browser download.
+                                Chromium is added only if you choose a browser
+                                workflow; native, RDP, and Citrix work stays on
+                                its own substrate path.
+                            </p>
                         </article>
                     </div>
 

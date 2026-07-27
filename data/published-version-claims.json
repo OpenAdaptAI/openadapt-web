@@ -1,0 +1,159 @@
+{
+    "$comment": [
+        "Registry of every version number openadapt.ai states about an OpenAdapt",
+        "component or about the engine build behind a published measurement.",
+        "Enforced by scripts/check_published_version_claims.mjs.",
+        "",
+        "Why this exists: every headline benchmark number on this site (OpenEMR",
+        "20/20 vs 10/10 at 39.2s vs 70.4s, MockMed 100/100 vs 20/20 at 4.9s vs",
+        "37.5s) was measured on 2026-07-08 from an openadapt-flow source build",
+        "declaring 0.1.0 -- before v0.2.0, the first release tag containing the",
+        "pinned commit. By 2026-07-27 the published engine was 1.24.0. The site",
+        "stated the numbers with no version at all, so nothing could notice the",
+        "gap widening. Separately, public/status.json still advertised flow",
+        "1.23.0 / launcher 1.7.3 / capture 1.1.1 / desktop 0.13.0 after all four",
+        "had shipped newer releases.",
+        "",
+        "kind:",
+        "  pypi-latest  This value asserts the CURRENT PUBLISHED release of",
+        "               `package`. Checked against PyPI on the daily lane; a",
+        "               mismatch fails.",
+        "  historical   The engine build a retained measurement was taken on.",
+        "               Frozen: bumping it would falsify the record. Refreshing",
+        "               the claim means re-running the benchmark. Drift is",
+        "               bounded by acknowledged_release_lag, which expires.",
+        "",
+        "Adding a benchmark figure to a surface listed in",
+        "attribution_required without its measured-on attribution fails the",
+        "offline check."
+    ],
+    "claims": [
+        {
+            "id": "status-manifest-component-versions",
+            "kind": "pypi-latest",
+            "source_of_truth": "public/status.json#/versions",
+            "verified_on": "2026-07-27",
+            "evidence": "https://pypi.org/pypi/<package>/json info.version on 2026-07-27, reconciled with openadapt-web PR #318 which published these same values.",
+            "packages": {
+                "launcher": "openadapt",
+                "flow": "openadapt-flow",
+                "capture": "openadapt-capture",
+                "desktop": "openadapt-desktop"
+            },
+            "versions": {
+                "launcher": "1.10.0",
+                "flow": "1.24.0",
+                "capture": "1.2.1",
+                "desktop": "0.14.0"
+            }
+        },
+        {
+            "id": "headline-benchmark-engine-build",
+            "kind": "historical",
+            "package": "openadapt-flow",
+            "version": "0.1.0",
+            "measured_on": "2026-07-08",
+            "source_of_truth": "data/benchmark.json#/provenance",
+            "evidence": "openadapt-flow cbec44c2c2f355d5cc04a72ea9267e2d6ea68ac6 declares version = \"0.1.0\" in pyproject.toml and describes as v0.1.0-24-gcbec44c; v0.2.0 (2026-07-11) is the first release tag containing it.",
+            "verified_on": "2026-07-27",
+            "acknowledged_release_lag": {
+                "as_of_release": "1.24.0",
+                "releases_behind": 68,
+                "minor_releases_behind_first_containing_tag": 22,
+                "acknowledged_on": "2026-07-27",
+                "review_by": "2026-10-31",
+                "note": "68 live openadapt-flow releases postdate 0.1.0, and v0.2.0 -- the first release tag containing the pinned commit -- is 22 minor releases behind 1.24.0. That is recorded, labelled on every surface that renders them, and deliberately NOT edited -- these are historical measurements. The lag may not grow past the acknowledged value without a decision, and the acknowledgement expires on review_by so it cannot be renewed by silence. Refreshing means re-running the benchmarks: MockMed is deterministic and CI-reproducible; OpenEMR runs against a shared public demo that resets daily, so its refresh is a field run whose numbers will legitimately differ."
+            },
+            "attribution_required": [
+                {
+                    "file": "components/BenchmarkAttribution.js",
+                    "context": "Measured on Flow {FLOW_VERSION}, {MEASURED_ON}"
+                },
+                {
+                    "file": "components/BenchmarkCharts.js",
+                    "context": "<BenchmarkAttribution className=\"mb-5\" />"
+                },
+                {
+                    "file": "components/ProofBand.js",
+                    "context": "Measured on Flow {benchmark.provenance.flow_version},"
+                },
+                {
+                    "file": "pages/research.js",
+                    "context": "<BenchmarkAttribution className=\"mt-4 max-w-3xl\" />"
+                },
+                {
+                    "file": "data/templates.js",
+                    "context": "measured 2026-07-08 on Flow 0.1.0 (a pre-v0.2.0 source build)"
+                },
+                {
+                    "file": "data/workflowCatalog.js",
+                    "context": "2026-07-08 on Flow 0.1.0 (a pre-v0.2.0 source build)"
+                },
+                {
+                    "file": "public/llms.txt",
+                    "context": "measured 2026-07-08 on openadapt-flow 0.1.0 (a pre-v0.2.0 source build)"
+                }
+            ]
+        },
+        {
+            "id": "reference-matrix-engine-build-1-9-0",
+            "kind": "historical",
+            "package": "openadapt-flow",
+            "version": "1.9.0",
+            "measured_on": "2026-07-16",
+            "source_of_truth": "data/workflowCatalog.js",
+            "evidence": "openadapt-flow 077bae0 (v1.9.0-1-g077bae0) and 84c7a94f (v1.9.0-3-g84c7a94) both declare version = \"1.9.0\"; they publish the Frappe Lending and local OpenEMR 12/12 model-free matrices.",
+            "verified_on": "2026-07-27",
+            "attribution_required": [
+                {
+                    "file": "data/workflowCatalog.js",
+                    "context": "Measured on Flow 1.9.0 dev build (v1.9.0-1-g077bae0), 2026-07-16"
+                },
+                {
+                    "file": "data/workflowCatalog.js",
+                    "context": "Measured on Flow 1.9.0 dev build (v1.9.0-3-g84c7a94), 2026-07-16"
+                }
+            ]
+        },
+        {
+            "id": "openimis-reference-engine-build-1-11-0",
+            "kind": "historical",
+            "package": "openadapt-flow",
+            "version": "1.11.0",
+            "measured_on": "2026-07-17",
+            "source_of_truth": "data/workflowCatalog.js",
+            "evidence": "openadapt-flow 3276ad2b (v1.11.0-3-g3276ad2) declares version = \"1.11.0\" and carries benchmark/openimis_claims, the 3/3 SQL-verified compiled replays.",
+            "verified_on": "2026-07-27",
+            "attribution_required": [
+                {
+                    "file": "data/workflowCatalog.js",
+                    "context": "Measured on Flow 1.11.0 dev build (v1.11.0-3-g3276ad2)"
+                },
+                {
+                    "file": "data/templates.js",
+                    "context": "measured on Flow 1.11.0, evidence committed 2026-07-17"
+                }
+            ]
+        },
+        {
+            "id": "paid-agent-arm-engine-build-1-19-0",
+            "kind": "historical",
+            "package": "openadapt-flow",
+            "version": "1.19.0",
+            "measured_on": "2026-07-21",
+            "source_of_truth": "data/workflowCatalog.js",
+            "evidence": "openadapt-flow e740a7e (v1.19.0-58-ge740a7e) declares version = \"1.19.0\" and publishes benchmark/agent_arm_verticals, the 2026-07-21 paid-agent aggregates.",
+            "verified_on": "2026-07-27",
+            "attribution_required": [
+                {
+                    "file": "data/workflowCatalog.js",
+                    "context": "Flow 1.19.0 dev build (v1.19.0-58-ge740a7e), 2026-07-21"
+                },
+                {
+                    "file": "data/templates.js",
+                    "context": "measured on Flow 1.19.0, 2026-07-21"
+                }
+            ]
+        }
+    ]
+}
