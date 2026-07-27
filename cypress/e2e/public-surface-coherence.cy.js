@@ -33,11 +33,7 @@ describe('public surface coherence', () => {
             .and('have.attr', 'href', '/qualify')
         cy.get('[data-testid="local-quickstart-cta"]')
             .should('be.visible')
-            .and(
-                'have.attr',
-                'href',
-                'https://docs.openadapt.ai/get-started/'
-            )
+            .and('have.attr', 'href', '/start')
         cy.get('[data-testid="cloud-demo-cta"]')
             .should('be.visible')
             .and(
