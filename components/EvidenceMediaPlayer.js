@@ -34,6 +34,7 @@ export default function EvidenceMediaPlayer({
     const [visible, setVisible] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
     const [duration, setDuration] = useState(0)
+    const [ended, setEnded] = useState(false)
     const [motionAllowed, setMotionAllowed] = useState(false)
     const [decodedFrameIndex, setDecodedFrameIndex] = useState(null)
     const [geometryVersion, setGeometryVersion] = useState(0)
@@ -62,7 +63,8 @@ export default function EvidenceMediaPlayer({
     }, [])
 
     useEffect(() => {
-        const shouldPlay = motionAllowed && visible && !manuallyPaused.current
+        const shouldPlay =
+            motionAllowed && visible && !manuallyPaused.current && !ended
         if (media.kind === 'gif') {
             setPlaying(shouldPlay)
             return undefined
@@ -73,13 +75,15 @@ export default function EvidenceMediaPlayer({
         if (shouldPlay) void video.play().catch(() => setPlaying(false))
         else video.pause()
         return undefined
-    }, [media.kind, media.src, motionAllowed, visible])
+    }, [ended, media.kind, media.src, motionAllowed, visible])
 
     useEffect(() => {
         const video = videoRef.current
         if (!video || media.kind !== 'video') return undefined
         setDecodedFrameIndex(null)
         setCurrentTime(0)
+        setEnded(false)
+        manuallyPaused.current = false
         video.load()
         return undefined
     }, [media.kind, media.src])
@@ -110,15 +114,22 @@ export default function EvidenceMediaPlayer({
 
         const video = videoRef.current
         let callbackId
+        let active = true
         const onVideoFrame = (_now, metadata) => {
+            if (!active) return
             setCurrentTime(metadata.mediaTime)
             setDecodedFrameIndex(
                 decodedMediaFrameIndex(metadata.mediaTime, exactPresentation.binding)
             )
-            callbackId = video.requestVideoFrameCallback(onVideoFrame)
+            if (active) {
+                callbackId = video.requestVideoFrameCallback(onVideoFrame)
+            }
         }
         callbackId = video.requestVideoFrameCallback(onVideoFrame)
-        return () => video.cancelVideoFrameCallback?.(callbackId)
+        return () => {
+            active = false
+            video.cancelVideoFrameCallback?.(callbackId)
+        }
     }, [exactPresentation, media.kind, media.src])
 
     const toggle = () => {
@@ -131,6 +142,22 @@ export default function EvidenceMediaPlayer({
         }
         const video = videoRef.current
         if (!video) return
+        if (ended && exactPresentation) {
+            const restartTime = 0
+            manuallyPaused.current = false
+            setEnded(false)
+            video.currentTime = restartTime
+            setCurrentTime(restartTime)
+            setDecodedFrameIndex(
+                decodedMediaFrameIndex(
+                    restartTime,
+                    exactPresentation.binding
+                )
+            )
+            setMotionAllowed(true)
+            void video.play().catch(() => setPlaying(false))
+            return
+        }
         if (video.paused) {
             manuallyPaused.current = false
             setMotionAllowed(true)
@@ -145,8 +172,33 @@ export default function EvidenceMediaPlayer({
         const video = videoRef.current
         if (!video) return
         setPlaying(!video.paused)
-        setCurrentTime(video.currentTime)
+        // requestVideoFrameCallback is the sole automated clock for exact
+        // presentations. Mixing it with timeupdate/seek events can apply an
+        // older media time after a newer decoded frame.
+        if (!exactPresentation || !video.requestVideoFrameCallback) {
+            setCurrentTime(video.currentTime)
+        }
         setDuration(Number.isFinite(video.duration) ? video.duration : 0)
+    }
+
+    const finishVideo = () => {
+        const video = videoRef.current
+        if (!video) return
+        setPlaying(false)
+        if (!exactPresentation) return
+
+        // Guided evidence is a bounded run, not an ambient animation. Hold its
+        // terminal frame until the viewer explicitly chooses Replay so the
+        // visible workflow step never jumps backwards on an implicit loop.
+        const finalTime = Number.isFinite(video.duration)
+            ? video.duration
+            : currentTime
+        manuallyPaused.current = true
+        setEnded(true)
+        setCurrentTime(finalTime)
+        setDecodedFrameIndex(
+            decodedMediaFrameIndex(finalTime, exactPresentation.binding)
+        )
     }
 
     const accessibleModeLabel =
@@ -239,6 +291,9 @@ export default function EvidenceMediaPlayer({
                     ? 'exact-decoded-frame-bound'
                     : 'omitted-without-exact-timeline'
             }
+            data-playback-state={
+                ended ? 'ended' : playing ? 'playing' : 'paused'
+            }
         >
             <div
                 ref={stageRef}
@@ -254,7 +309,7 @@ export default function EvidenceMediaPlayer({
                         ref={videoRef}
                         className={styles.media}
                         muted
-                        loop
+                        loop={!exactPresentation}
                         playsInline
                         preload="metadata"
                         poster={media.poster}
@@ -266,6 +321,7 @@ export default function EvidenceMediaPlayer({
                         onSeeked={syncVideo}
                         onPlay={syncVideo}
                         onPause={syncVideo}
+                        onEnded={finishVideo}
                     >
                         <source src={media.src} type={media.mimeType} />
                         {media.fallbackSrc && (
@@ -346,9 +402,11 @@ export default function EvidenceMediaPlayer({
                 <button
                     type="button"
                     onClick={toggle}
-                    aria-label={playing ? 'Pause' : 'Play'}
+                    aria-label={ended ? 'Replay' : playing ? 'Pause' : 'Play'}
                 >
-                    <span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span>
+                    <span aria-hidden="true">
+                        {ended ? '↻' : playing ? 'Ⅱ' : '▶'}
+                    </span>
                 </button>
                 {media.kind === 'video' ? (
                     <>
@@ -362,9 +420,12 @@ export default function EvidenceMediaPlayer({
                             onChange={(event) => {
                                 if (!videoRef.current) return
                                 setDecodedFrameIndex(null)
-                                videoRef.current.currentTime = Number(
+                                const nextTime = Number(
                                     event.currentTarget.value
                                 )
+                                videoRef.current.currentTime = nextTime
+                                setCurrentTime(nextTime)
+                                setEnded(false)
                                 syncVideo()
                             }}
                         />

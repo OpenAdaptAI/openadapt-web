@@ -197,6 +197,34 @@ describe('shared real-application demo', () => {
             .should('have.attr', 'aria-labelledby')
     })
 
+    it('holds a guided run at its terminal step until Replay is chosen', () => {
+        cy.visit('/')
+        cy.get('[data-testid="reference-demo-showcase"]')
+            .first()
+            .find('[data-testid="reference-evidence-player"]')
+            .scrollIntoView()
+            .as('player')
+        cy.get('@player')
+            .find('video')
+            .should('have.prop', 'loop', false)
+            .should(($video) => {
+                expect($video[0].videoWidth).to.be.greaterThan(0)
+                expect($video[0].duration).to.be.greaterThan(0)
+            })
+            .then(($video) => {
+                const video = $video[0]
+                video.pause()
+                video.currentTime = video.duration
+                video.dispatchEvent(new Event('ended'))
+            })
+        cy.get('@player')
+            .should('have.attr', 'data-playback-state', 'ended')
+            .should('contain.text', 'Outcome verified')
+        cy.get('@player').find('progress').should('not.exist')
+        cy.get('@player').find('button[aria-label="Replay"]').click()
+        cy.get('@player').contains(/^Step 1 of \d+$/)
+    })
+
     it('binds openIMIS VERIFIED and HALTED modes to their exact evidence media', () => {
         cy.visit('/solutions/insurance')
         cy.get('[data-testid="reference-demo-showcase"]')
