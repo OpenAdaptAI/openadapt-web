@@ -39,7 +39,7 @@ const scholarlyArticleSchema = {
         url: 'https://openadapt.ai',
     },
     abstract:
-        'OpenAdapt is a demonstration compiler that converts one recorded GUI trace into a deterministic program. Healthy replay makes no model calls; a resolution ladder repairs targets under interface drift; and system-of-record effect verification refuses rather than trusting a rendered success banner. In an injected-fault study measured end to end through the real replayer, a screen-only oracle silently accepted 75.0% of the wrong effects that actually occurred (54 of 90 runs); one out-of-band record oracle cut that to 12.5% (9 of 90), and a complete system-of-record read path to 0 of 90.',
+        'OpenAdapt is a demonstration compiler that converts one recorded GUI trace into a deterministic program. Healthy replay makes no model calls; a resolution ladder repairs targets under interface drift; and system-of-record effect verification refuses rather than trusting a rendered success banner. In an injected-fault study measured end to end through the real replayer, 72 of 90 runs per arm produced a genuinely wrong effect: a screen-only oracle silently accepted 75.0% of those (54 of 72, or 60.0% of all runs); one out-of-band record oracle cut that to 12.5% (9 of 72, or 10.0% of all runs); and a complete system-of-record read path reached 0. The middle rung is the realistic deployment number, and all nine residual misses are one class, a collateral write the oracle’s read path does not cover.',
     isAccessibleForFree: true,
     encoding: {
         '@type': 'MediaObject',

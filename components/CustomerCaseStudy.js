@@ -29,6 +29,9 @@ export default function CustomerCaseStudy() {
                             <br />
                             {customerCase.customer.organization}
                         </p>
+                        <p className="mt-4 text-sm leading-relaxed text-ink-3">
+                            {customerCase.relationshipDisclosure}
+                        </p>
                         <Link
                             href={`/customers/${customerCase.slug}`}
                             className="btn-ink mt-7 inline-block"
