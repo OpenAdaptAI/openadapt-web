@@ -2,7 +2,10 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
-import { RVU_RECOVERY_CASE } from '../../data/customerCaseStudies'
+import {
+    RVU_RECOVERY_CASE,
+    RVU_RECOVERY_FOOTNOTE,
+} from '../../data/customerCaseStudies'
 
 const customerCase = RVU_RECOVERY_CASE
 const canonical = `https://openadapt.ai/customers/${customerCase.slug}`
@@ -82,6 +85,9 @@ export default function RvuAuditHeartCareCaseStudy() {
                             <br />
                             {customerCase.customer.organization}
                         </div>
+                        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3">
+                            {customerCase.relationshipDisclosure}
+                        </p>
                     </div>
                 </section>
 
@@ -226,6 +232,10 @@ export default function RvuAuditHeartCareCaseStudy() {
                                 Qualify one workflow
                             </Link>
                         </div>
+
+                        <p className="mt-12 border-t border-hairline pt-6 text-sm leading-relaxed text-ink-3">
+                            {RVU_RECOVERY_FOOTNOTE}
+                        </p>
                     </div>
                 </section>
             </main>
