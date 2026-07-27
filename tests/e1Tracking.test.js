@@ -84,6 +84,7 @@ test('lead forms and booking surfaces use the fan-out, not inline gtag/fbq', () 
         'components/EmailForm.js',
         'components/ContactBookingSection.js',
         'components/BookingEmbed.js',
+        'components/DentalLeadForm.js',
         'pages/book.js',
     ]
     for (const relativePath of conversionSurfaces) {
@@ -106,6 +107,14 @@ test('lead forms and booking surfaces use the fan-out, not inline gtag/fbq', () 
     )
     assert.match(read('pages/book.js'), /trackBookingClick\(/)
     assert.match(read('components/BookingEmbed.js'), /trackBookingConfirmed\(/)
+
+    // /dental is the paid-campaign landing page: its form submit IS the E1
+    // "qualified lead" the cost-per-lead kill criteria are measured on, and
+    // its in-place booking reveal is the booking-intent signal. It shipped
+    // with a raw gtag call that reached none of the three sinks.
+    const dental = read('components/DentalLeadForm.js')
+    assert.match(dental, /trackEmailCapture\(\{ location: 'dental_landing' \}\)/)
+    assert.match(dental, /trackBookingClick\(\{[\s\S]{0,80}'dental_landing'/)
 })
 
 test('.env.example documents both tracker ids as off-by-default', () => {

@@ -259,6 +259,57 @@ export function techArticleNode(args) {
 }
 
 /**
+ * A commercially offered service with a published price.
+ *
+ * This is the entity type AI assistants resolve when someone asks "who does X
+ * for Y, and what does it cost". Every field must restate something the page
+ * itself says: the price is the price rendered on the page, and nothing here
+ * may imply customers, results, or availability the offer does not have.
+ *
+ * `availability` is deliberately `LimitedAvailability` for a capacity-bounded
+ * cohort offer — that is the honest schema value, and it is also the true one.
+ */
+export function serviceNode({
+    url,
+    name,
+    description,
+    serviceType,
+    price,
+    priceCurrency = 'USD',
+    billingDuration,
+    availability = 'https://schema.org/LimitedAvailability',
+}) {
+    return {
+        '@type': 'Service',
+        '@id': `${url}#service`,
+        url,
+        name,
+        description,
+        serviceType,
+        provider: { '@id': ORGANIZATION_ID },
+        isRelatedTo: { '@id': SOFTWARE_ID },
+        offers: {
+            '@type': 'Offer',
+            url,
+            price: String(price),
+            priceCurrency,
+            availability,
+            ...(billingDuration
+                ? {
+                      priceSpecification: {
+                          '@type': 'UnitPriceSpecification',
+                          price: String(price),
+                          priceCurrency,
+                          billingDuration,
+                          unitCode: 'MON',
+                      },
+                  }
+                : {}),
+        },
+    }
+}
+
+/**
  * BreadcrumbList. Nothing on this site emits breadcrumbs today, which costs
  * hierarchy signal on the nested /compare/*, /solutions/*, /templates/*, and
  * /customers/* routes.
