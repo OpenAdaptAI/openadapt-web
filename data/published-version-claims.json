@@ -32,8 +32,8 @@
             "id": "status-manifest-component-versions",
             "kind": "pypi-latest",
             "source_of_truth": "public/status.json#/versions",
-            "verified_on": "2026-07-28",
-            "evidence": "https://pypi.org/pypi/<package>/json info.version on 2026-07-28: openadapt 1.10.2, openadapt-flow 1.25.1, openadapt-capture 1.2.2, openadapt-desktop 0.14.0.",
+            "verified_on": null,
+            "evidence": "Release gate: after openadapt-flow 1.26.0 and openadapt-desktop 0.15.0 are published, verify https://pypi.org/pypi/<package>/json, then record the exact response date and versions here before this candidate can merge or deploy.",
             "packages": {
                 "launcher": "openadapt",
                 "flow": "openadapt-flow",
@@ -42,9 +42,9 @@
             },
             "versions": {
                 "launcher": "1.10.2",
-                "flow": "1.25.1",
+                "flow": "1.26.0",
                 "capture": "1.2.2",
-                "desktop": "0.14.0"
+                "desktop": "0.15.0"
             }
         },
         {

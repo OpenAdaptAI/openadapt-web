@@ -14,8 +14,8 @@ const outcomes = [
     },
     {
         status: 'Operator path',
-        title: 'Human teaching and resume',
-        body: 'A halt produces evidence for an operator. The CLI can teach a correction, and durable mode can checkpoint verified progress for authenticated approval and resume.',
+        title: 'Attended decision, teaching, and resume',
+        body: 'A halt becomes a bounded decision for an authorized operator on a workstation or phone. The customer-controlled runner sends only a signed, PHI-free envelope over outbound HTTPS, then reacquires the live application and rechecks identity, state, and effects before it acts. The operator can also teach a correction for a governed future revision.',
     },
     {
         status: 'Unsupported drift',

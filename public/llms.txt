@@ -1,6 +1,6 @@
 # OpenAdapt.AI
 
-> OpenAdapt is an open-source (MIT) governed workflow compiler and runtime for repeated GUI work in applications that have no usable API. You demonstrate a bounded task once; OpenAdapt compiles the recording into a deterministic, locally executable program. A healthy replay makes zero model calls. When the interface drifts, OpenAdapt deterministically re-resolves the target from retained evidence, optionally proposes a reviewable repair, accepts a human correction, or halts. Every consequential run ends `VERIFIED` or `HALTED` with a preserved run report; a run is judged by an out-of-band check of the system of record, not by the acting session declaring itself successful.
+> OpenAdapt is an open-source (MIT) governed workflow compiler and runtime for repeated GUI work in applications that have no usable API. You demonstrate a bounded task once; OpenAdapt compiles the recording into a deterministic, locally executable program. A healthy replay makes zero model calls. When the interface drifts, OpenAdapt deterministically re-resolves the target from retained evidence, optionally proposes a reviewable repair, accepts a human correction, or halts. A production-profile run counts as successful only when it is `VERIFIED` by its complete contract. `COMPLETED_UNVERIFIED`, `HALTED`, `FAILED`, and `ROLLED_BACK` remain explicit non-success outcomes with preserved reports.
 
 ## What it is, in one line
 
@@ -9,7 +9,7 @@ OpenAdapt is for the case where the work is repetitive and consequential, the in
 ## Canonical machine-readable status
 
 - [status.json](https://openadapt.ai/status.json): The single source of truth for product lifecycle, released component versions, per-substrate availability, delivery boundary, and the linked acceptance evidence for each substrate. Public surfaces render their labels from this file. Prefer it over any prose on this site if the two ever disagree.
-- Current published versions: launcher 1.10.2, Flow (compiler/runtime) 1.25.1, capture 1.2.2, desktop 0.14.0. Product lifecycle: Beta.
+- Current published versions: launcher 1.10.2, Flow (compiler/runtime) 1.26.0, capture 1.2.2, desktop 0.15.0. Product lifecycle: Beta.
 
 ## Execution substrates and their evidence boundary
 
@@ -22,6 +22,12 @@ Availability below is the released capability. It is distinct from the deploymen
 - **RDP — Available.** Local or customer-controlled. Two accepted bounded results: 3/3 real Aardwolf-over-Windows transport/input effects, and a full record-to-compile-to-governed-replay lifecycle over a real FreeRDP round trip with 3/3 healthy effects and 3/3 drift safe-halts.
 - **Citrix / VDI — Available.** Local or customer-controlled. The shipped `--backend citrix` path binds the exact Citrix Workspace window and runs the same identity, effect, policy, and halt contracts. Qualification boundary, stated explicitly: the accepted artifact records `ica_hdx_accepted=false`. It qualifies the Citrix Workspace-window backend contract over a no-DOM canvas stand-in (3/3 healthy effects, 3/3 drift safe-halts), not a counted real ICA/HDX batch. An exact ICA/HDX environment is qualified separately before consequential use.
 - **Hosted Cloud — Beta.** Managed browser runner and control plane, with run history, reporting, usage, and governed workflow updates. Windows, macOS, Linux, RDP, and Citrix/VDI execute through local, self-hosted, or customer-controlled runtimes; they are not silently moved into the shared managed browser boundary.
+
+## Attended decisions and runtime validation
+
+- A customer-controlled runner can send a signed, closed, PHI-free halt context to OpenAdapt Cloud through outbound HTTPS. An authorized operator can answer from a phone without an inbound port or customer TLS service.
+- A phone decision is not an execution result. The runner reacquires the live application and repeats its identity, state, target, and effect checks before any action.
+- Runtime-validation v3 uses an organization-trusted Ed25519 runner signature plus a separate ingest-token MAC for the one-time submission. Cloud rechecks the current compiler, policy, and risk allowlists at dispatch. These checks bind the operator attestation; they do not turn it into independent certification.
 
 ## Start here
 

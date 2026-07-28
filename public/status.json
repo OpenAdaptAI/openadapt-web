@@ -4,9 +4,9 @@
     "product_lifecycle": "Beta",
     "versions": {
         "launcher": "1.10.2",
-        "flow": "1.25.1",
+        "flow": "1.26.0",
         "capture": "1.2.2",
-        "desktop": "0.14.0"
+        "desktop": "0.15.0"
     },
     "tiers": {
         "Available": "Implemented in the released compiler and governed runtime. Production use still qualifies the exact workflow, application, environment, identity contract, and effect oracle.",
@@ -66,7 +66,7 @@
             "public_label": "Beta",
             "internal_tier": "managed-control-plane",
             "delivery": "Managed browser runner and control plane",
-            "evidence_note": "OpenAdapt Cloud provides governed managed browser execution, run history, reporting, usage, and workflow updates. Windows, macOS, Linux, RDP, and Citrix/VDI execute through local, self-hosted, or customer-controlled runtimes under the same governance model; they are not silently moved into the shared managed browser boundary."
+            "evidence_note": "OpenAdapt Cloud provides governed managed browser execution, run history, reporting, usage, and workflow updates. Runtime-validation v3 binds admitted evidence to an organization-trusted Ed25519 runner key and rechecks current compiler, policy, and risk allowlists before dispatch. Connected customer-controlled runners can send a closed, PHI-free halt context over outbound HTTPS for an authenticated phone decision; the runner reacquires and revalidates the live application state before any action. Windows, macOS, Linux, RDP, and Citrix/VDI execution remains local, self-hosted, or customer-controlled and is not moved into the shared managed browser boundary."
         }
     ]
 }
