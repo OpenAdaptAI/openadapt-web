@@ -9,7 +9,7 @@ OpenAdapt is for the case where the work is repetitive and consequential, the in
 ## Canonical machine-readable status
 
 - [status.json](https://openadapt.ai/status.json): The single source of truth for product lifecycle, released component versions, per-substrate availability, delivery boundary, and the linked acceptance evidence for each substrate. Public surfaces render their labels from this file. Prefer it over any prose on this site if the two ever disagree.
-- Current published versions: launcher 1.10.1, Flow (compiler/runtime) 1.25.1, capture 1.2.1, desktop 0.14.0. Product lifecycle: Beta.
+- Current published versions: launcher 1.10.1, Flow (compiler/runtime) 1.25.1, capture 1.2.2, desktop 0.14.0. Product lifecycle: Beta.
 
 ## Execution substrates and their evidence boundary
 
