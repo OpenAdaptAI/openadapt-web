@@ -19,7 +19,7 @@ const steps = [
         number: '3',
         name: 'Execute, verify, and repair',
         description:
-            'Healthy runs use no generative-model calls. OpenAdapt proves the declared effect, halts on uncertainty, and subjects every candidate repair to the workflow contract.',
+            'Healthy runs use no generative-model calls. OpenAdapt proves the declared effect and halts on uncertainty. An authorized operator can answer a bounded halt from a phone, but fresh runtime checks still decide whether execution continues.',
     },
 ]
 

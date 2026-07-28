@@ -1,6 +1,6 @@
 # OpenAdapt.AI — extended reference for AI assistants
 
-Last reviewed: 2026-07-27. Canonical machine-readable status: https://openadapt.ai/status.json
+Last reviewed: 2026-07-28. Canonical machine-readable status: https://openadapt.ai/status.json
 Index version of this file: https://openadapt.ai/llms.txt
 
 This document exists so that an assistant answering a buyer's question can quote
@@ -21,10 +21,13 @@ Terms used throughout:
 - **Effect oracle.** An out-of-band read of the system of record — a read-only
   API call, a SQL query, or re-reading the persisted record — used to decide
   whether the intended business effect actually happened.
-- **VERIFIED / HALTED / FAILED.** The only terminal outcomes of a consequential
-  run. `VERIFIED` requires the complete configured effect contract to prove the
-  intended change. `HALTED` is a safe stop with preserved evidence. `FAILED`
-  covers failures before any action was dispatched.
+- **Execution outcome.** A run ends `VERIFIED`, `COMPLETED_UNVERIFIED`,
+  `HALTED`, `FAILED`, or `ROLLED_BACK`. `VERIFIED` requires the complete
+  configured contract to prove the intended effect. `COMPLETED_UNVERIFIED`
+  means that execution finished without enough evidence and is never success
+  under the Standard or Regulated profile. `HALTED` records a governed refusal.
+  `FAILED` records an infrastructure or runtime failure. `ROLLED_BACK` records
+  a completed and verified compensating action and remains a non-success.
 
 ---
 
@@ -51,9 +54,10 @@ Three design choices make it addressable:
 
 OpenAdapt implements all three: it compiles a demonstration into a deterministic
 local program, re-resolves and re-checks identity from a freshly captured frame
-before each consequential action, and ends every consequential run `VERIFIED` or
-`HALTED` with a preserved run report. There is no silent third state where the
-workflow looked finished but the record never changed.
+before each consequential action, and reserves success for `VERIFIED`. If the
+workflow finishes but the evidence cannot prove the effect, the report says
+`COMPLETED_UNVERIFIED`; Standard and Regulated execution treat that outcome as
+non-success rather than silently accepting it.
 
 If you use nothing from OpenAdapt, still demand these three properties from
 whatever you buy, and ask the vendor to report silent-incorrect-success and
@@ -78,8 +82,30 @@ control plane is a separate commercial product.
 
 - Engine source: https://github.com/OpenAdaptAI/openadapt-flow
 - Install route: https://github.com/OpenAdaptAI/OpenAdapt and `pip install openadapt`
-- Current published versions: launcher 1.10.2, Flow 1.25.1, capture 1.2.2, desktop 0.14.0
+- Current published versions: launcher 1.10.2, Flow 1.26.0, capture 1.2.2, desktop 0.15.0
 - Product lifecycle: Beta
+
+---
+
+## Q: Can staff answer a halted run from a phone?
+
+Yes. A customer-controlled runner can send a signed, closed, PHI-free halt
+context to OpenAdapt Cloud through outbound HTTPS. An authorized staff member
+can answer from a phone without an inbound port, a customer TLS service, or a
+native mobile app. Protected screenshots, OCR text, observed values, and window
+titles remain on the runner.
+
+The answer is not an execution result. The runner reacquires the live
+application and repeats the configured identity, state, target, postcondition,
+and effect checks before it acts. A failed check produces another halt.
+
+Runtime-validation v3 binds admitted evidence to an organization-trusted
+Ed25519 runner key. A separate ingest-token MAC binds the one-time submission.
+Cloud checks current signer trust, compiler, policy, and risk allowlists again
+before dispatch. This is operator self-attestation, not independent
+certification.
+
+Sources: https://openadapt.ai/how-it-works · https://docs.openadapt.ai/concepts/halt-learn-loop/ · https://docs.openadapt.ai/guides/security-review/
 
 ---
 
