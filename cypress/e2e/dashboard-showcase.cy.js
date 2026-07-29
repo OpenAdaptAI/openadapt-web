@@ -2,7 +2,6 @@ describe('Cloud product showcase', () => {
     const TAB_LABELS = [
         'Dashboard',
         'Run detail',
-        'Halt evidence',
         'Program visualizer',
         'Workflow catalog',
     ]
@@ -14,9 +13,9 @@ describe('Cloud product showcase', () => {
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
 
         cy.get('[data-testid="dashboard-product-preview"]').within(() => {
-            // Five real frames are stacked in the rotating stage; the dashboard
+            // Four real frames are stacked in the rotating stage; the dashboard
             // is the default active frame, framed as app.openadapt.ai.
-            cy.get('[data-testid="dashboard-slide"]').should('have.length', 5)
+            cy.get('[data-testid="dashboard-slide"]').should('have.length', 4)
             cy.get('[data-testid="dashboard-slide"]').each(($img) => {
                 cy.wrap($img).should('have.attr', 'loading', 'lazy')
             })
@@ -28,7 +27,7 @@ describe('Cloud product showcase', () => {
             cy.contains('app.openadapt.ai/dashboard').should('be.visible')
 
             // Labeled, clickable tabs for every frame, plus progress dots.
-            cy.get('[data-testid="dashboard-tab"]').should('have.length', 5)
+            cy.get('[data-testid="dashboard-tab"]').should('have.length', 4)
             TAB_LABELS.forEach((label) => {
                 cy.get('[data-testid="dashboard-tabs"]').should(
                     'contain.text',
@@ -37,7 +36,7 @@ describe('Cloud product showcase', () => {
             })
             cy.get('[data-testid="dashboard-dots"] button').should(
                 'have.length',
-                5
+                4
             )
 
             // The Dashboard tab is highlighted as active by default.
@@ -48,7 +47,7 @@ describe('Cloud product showcase', () => {
             // Each tab is a real thumbnail image plus a label.
             cy.get('[data-testid="dashboard-tab"] img').should(
                 'have.length',
-                5
+                4
             )
             // A visible countdown sits on the active thumbnail.
             cy.get('[data-testid="dashboard-countdown"]').should('have.length', 1)
@@ -82,17 +81,6 @@ describe('Cloud product showcase', () => {
 
         // Clicking a tab jumps the large slot to that real frame and moves the
         // highlight and browser address with it.
-        cy.get('[data-testid="dashboard-tab"][data-slide="evidence"]').click()
-        cy.get('[data-testid="dashboard-slide"][data-active="true"]')
-            .should('have.attr', 'data-slide', 'evidence')
-            .and('have.attr', 'src')
-            .and('include', '/cloud-preview/healthcare-evidence.jpg')
-        cy.get('[data-testid="dashboard-tab"][data-slide="evidence"]').should(
-            'have.attr',
-            'aria-selected',
-            'true'
-        )
-
         cy.get('[data-testid="dashboard-tab"][data-slide="program"]').click()
         cy.get('[data-testid="dashboard-slide"][data-active="true"]')
             .should('have.attr', 'data-slide', 'program')

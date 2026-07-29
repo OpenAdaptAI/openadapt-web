@@ -55,7 +55,6 @@ test('the large slot rotates through the real frames with labeled tabs', () => {
     const orderedSlides = [
         { key: 'dashboard', src: '/product-preview/dashboard-workflows.png' },
         { key: 'run', src: '/cloud-preview/healthcare-run.jpg' },
-        { key: 'evidence', src: '/cloud-preview/healthcare-evidence.jpg' },
         { key: 'program', src: '/cloud-preview/program-graph.png' },
         { key: 'catalog', src: '/cloud-preview/workflow-catalog.png' },
     ]
@@ -85,7 +84,6 @@ test('the large slot rotates through the real frames with labeled tabs', () => {
     for (const label of [
         'Dashboard',
         'Run detail',
-        'Halt evidence',
         'Program visualizer',
         'Workflow catalog',
     ]) {
@@ -187,15 +185,14 @@ test('every showcase screenshot is a real, provenance-backed Cloud capture', () 
     )
     // Displayed large: the intrinsic capture is high-resolution. It is a
     // full-page capture at a 1280px viewport with device scale 2 (2560px wide),
-    // matching the other four frames so the five share one product look.
+    // matching the other frames so the four share one product look.
     assert.equal(manifest.assets['dashboard-workflows.png'].width, 2560)
-    assert.equal(manifest.assets['dashboard-workflows.png'].height, 1600)
+    assert.equal(manifest.assets['dashboard-workflows.png'].height, 1440)
 
     // Supporting shots: real run/evidence frames plus the newly added program
     // visualizer and workflow catalog captures. Each must exist on disk.
     const supporting = [
         '/cloud-preview/healthcare-run.jpg',
-        '/cloud-preview/healthcare-evidence.jpg',
         '/cloud-preview/program-graph.png',
         '/cloud-preview/workflow-catalog.png',
     ]
@@ -212,11 +209,8 @@ test('every showcase screenshot is a real, provenance-backed Cloud capture', () 
         )
     }
 
-    // The real run/evidence frames are provenance-backed with a sha256.
-    for (const name of [
-        'healthcare-run.jpg',
-        'healthcare-evidence.jpg',
-    ]) {
+    // The real run frame is provenance-backed with a sha256.
+    for (const name of ['healthcare-run.jpg']) {
         assert.equal(
             typeof provenance.media[name]?.sha256,
             'string',
@@ -237,6 +231,6 @@ test('every showcase screenshot is a real, provenance-backed Cloud capture', () 
     // Each slide record carries explicit intrinsic width and height.
     const widthDecls = component.match(/\bwidth:\s*\d+/g) || []
     const heightDecls = component.match(/\bheight:\s*\d+/g) || []
-    assert.equal(widthDecls.length, 5)
-    assert.equal(heightDecls.length, 5)
+    assert.equal(widthDecls.length, 4)
+    assert.equal(heightDecls.length, 4)
 })

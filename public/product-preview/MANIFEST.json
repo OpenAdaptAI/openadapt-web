@@ -3,10 +3,10 @@
     "captured_at": "2026-07-18T14:36:11-04:00",
     "source": {
         "repository": "https://github.com/OpenAdaptAI/openadapt-cloud",
-        "commit": "730089c2279aebe9926f00c1491d04387b1e062e",
+        "commit": "f2300ee69b555d1676e69348999f910c1cc8cd8c",
         "mode": "local_mock",
-        "capture_method": "Playwright against the unmodified localhost Cloud interface",
-        "data": "Synthetic demonstration workflows and run evidence generated through the application's mock-mode API"
+        "capture_method": "Cypress Electron against the unmodified localhost Cloud interface at /dashboard",
+        "data": "Synthetic OpenEMR patient-registration local mock fixture; no customer or production data"
     },
     "presentation": {
         "required_media_label": "OpenAdapt Cloud · reference workflow",
@@ -25,11 +25,11 @@
         },
         "dashboard-workflows.png": {
             "source_name": "shots/02-workflows.png",
-            "sha256": "3b0420a109954a9d06a001ac73c3cafd4668f2ab2da09f45e536bdfd6bb968cd",
+            "sha256": "ea3b8065cc139f94202ce2422443566ad4fb74f159d0af255e3802f0b7e74a01",
             "bytes": 202483,
             "width": 2560,
-            "height": 1600,
-            "note": "Full-page capture of the real workflows dashboard at 1280x800 viewport, device scale 2. Production-plausible seed names (no demo labels); LOCAL MOCK MODE developer banner suppressed for the marketing capture."
+            "height": 1440,
+            "note": "Focused 1280x800 viewport capture at device scale 2. The grouped navigation and LOCAL MOCK MODE banner remain visible."
         }
     }
 }
