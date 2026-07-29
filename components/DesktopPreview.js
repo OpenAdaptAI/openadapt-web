@@ -19,20 +19,20 @@ const COCKPIT_LEAD = [
         width: 1600,
         height: 1085,
         label: 'The workflow library',
-        alt: 'OpenAdapt Desktop workflow library listing two real replayed demo workflows: MockMed refill triage (halted, needs attention) and Patient intake insurance verify (verified), with an engine-ready and synced status rail.',
+        alt: 'Synthetic OpenAdapt Desktop workflow library with one halted and one verified workflow, rendered from Desktop PR #93.',
         testid: 'desktop-preview-cockpit-dashboard',
         caption:
-            'Two compiled workflows in one library: one needs attention and one completed with verified evidence.',
+            'Two compiled workflows: one needs attention and one has verified evidence.',
     },
     {
         src: '/desktop-preview/cockpit/40_watchrun_halted.png',
         width: 1600,
         height: 1085,
         label: 'Halt evidence: this run stopped safely',
-        alt: 'OpenAdapt Desktop run detail for MockMed refill triage: a replay timeline with 9 of 11 steps verified and one halted, and a "This run stopped safely" card explaining that the typed value could not be verified for step_009.',
+        alt: 'Synthetic Desktop run detail with a halted step and the evidence reason for the safe stop.',
         testid: 'desktop-preview-cockpit-halt',
         caption:
-            'A replay stops safely at step 9 of 11 because the typed value cannot be verified. The run preserves the evidence instead of retyping blindly.',
+            'A run stops safely when identity and postcondition evidence are not sufficient. The evidence remains available for review.',
     },
 ]
 
@@ -42,10 +42,10 @@ const COCKPIT_GRID = [
         width: 1600,
         height: 1085,
         label: 'A verified run',
-        alt: 'OpenAdapt Desktop run detail for Patient intake insurance verify: all 11 of 11 steps verified, with a run report showing 11 steps, 8.2s duration, and $0.000 model cost.',
+        alt: 'Synthetic Desktop run detail showing a verified six-step workflow and its evidence contract.',
         testid: 'desktop-preview-cockpit-verified',
         caption:
-            'A clean replay: 11 of 11 steps verified, 8.2 seconds, and $0.000 model cost.',
+            'A clean replay: six of six steps verified with zero model calls.',
     },
     {
         src: '/desktop-preview/cockpit/50_teach.png',
@@ -62,17 +62,17 @@ const COCKPIT_GRID = [
         width: 1600,
         height: 1348,
         label: 'Settings and policy',
-        alt: 'OpenAdapt Desktop settings: deployment lane (Cloud non-PHI vs BYOC self-hosted PHI), PHI mode, and a hosted-organization connection to https://app.openadapt.ai with a signed-in ingest-token session.',
+        alt: 'Synthetic Desktop settings showing the local and Cloud connection controls.',
         testid: 'desktop-preview-cockpit-settings',
         caption:
-            'Choose the deployment boundary, PHI mode, and connected OpenAdapt Cloud organization.',
+            'Configure the local execution boundary and an optional OpenAdapt Cloud connection.',
     },
     {
         src: '/desktop-preview/cockpit/05_onboarding.png',
         width: 1600,
         height: 1085,
         label: 'First-run onboarding',
-        alt: 'OpenAdapt Desktop first-run onboarding "Record your first workflow", with screen and input permission checks granted and macOS first-launch guidance.',
+        alt: 'Synthetic Desktop first-run onboarding for recording a workflow.',
         testid: 'desktop-preview-cockpit-onboarding',
         caption:
             'First launch walks through the screen and input permissions capture needs before you record.',
@@ -92,7 +92,7 @@ const COCKPIT_GRID = [
         width: 1600,
         height: 1085,
         label: 'Sign in',
-        alt: 'OpenAdapt Desktop sign-in surface with a host field, a browser sign-in option, and an ingest-token paste option.',
+        alt: 'Synthetic Desktop connection surface with local cockpit and Cloud sign-in options.',
         testid: 'desktop-preview-cockpit-login',
         caption:
             'Connect to OpenAdapt Cloud through browser sign-in or an ingest token.',

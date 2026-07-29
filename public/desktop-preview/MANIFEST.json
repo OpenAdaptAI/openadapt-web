@@ -1,18 +1,20 @@
 {
     "schema_version": 1,
-    "captured_at": "2026-07-20T18:49:00-04:00",
+    "captured_at": "2026-07-29T16:31:00-04:00",
     "presentation": {
-        "required_media_label": "Experimental prerelease surfaces",
-        "claim_boundary": "Screenshots of the real Experimental desktop app running the real wired engine. The workflow, run, and halt data shown is a real local demo recording (recorded via demo-record, compiled, and replayed on this machine), not production or customer data. The signed-in session was authenticated against a locally-run instance of the OpenAdapt cloud in mock mode, not a production org."
+        "required_media_label": "Synthetic Desktop prerelease fixtures",
+        "claim_boundary": "Headless screenshots of the Desktop PR #93 React cockpit using explicit synthetic fixture data. They do not show a customer, production organization, recording, engine execution, or a live run. Final release provenance will be updated after Desktop 0.15."
     },
     "cockpit_capture": {
         "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
-        "channel": "Experimental prerelease (unsigned or ad-hoc-signed)",
-        "engine": "real wired engine sidecar",
-        "session": "Signed in against a locally-run instance of the OpenAdapt cloud in mock mode (not a production org).",
-        "data": "Two real local demo workflows -- \"MockMed refill triage\" and \"Patient intake -- insurance verify\" -- recorded via demo-record, compiled, and replayed on this machine. All run, step, timing, halt, and cost values shown are from those real local replays.",
-        "capture_method": "Captured from the live OpenAdapt Desktop (Tauri) Experimental app running the real wired engine, at native retina 2x with the macOS screencapture utility, then resized to 1600px wide for the web. No DOM injected, no pixels retouched.",
-        "boundary": "Local demo data only. Not production data, not customer data, not a hosted production org."
+        "channel": "Desktop PR #93 fixture capture",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "engine": "not started",
+        "session": "No account or Cloud session.",
+        "data": "Explicit synthetic workflow and run data.",
+        "capture_method": "Headless Google Chrome rendered the PR #93 React UI with a temporary in-memory fixture adapter. No Tauri window, sidecar, recording, customer data, or physical input was used.",
+        "boundary": "Synthetic public demonstration data only. Final release hash will be updated after Desktop 0.15."
     },
     "assets": {
         "cockpit/10_dashboard_workflows.png": {
@@ -21,7 +23,7 @@
                 "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
                 "shows": "The local workflow library with two real replayed demo workflows: \"MockMed refill triage\" (halted, needs attention) and \"Patient intake -- insurance verify\" (verified). Engine-ready / sync status rail at the bottom."
             },
-            "sha256": "9d4d546052e93796e8661301291ac355456890ff05c868355fa75b72798383f2",
+            "sha256": "14cf86ae66ce91c0255eba74ac2c4fa3b8db188a01eb9c5874e90afe37300f9d",
             "width": 1600,
             "height": 1085
         },
@@ -31,7 +33,7 @@
                 "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
                 "shows": "The \"MockMed refill triage\" replay stopped safely at step 9 of 11 (9 verified, 1 halted). The \"This run stopped safely\" card shows the real verification-failure reason: typed input could not be verified for step_009 because the field region changed and the value is not readable there, so retyping is unsafe. Real local demo data."
             },
-            "sha256": "93fd5309713ee0acc5dc15012012c4a0ac0d74bde4d657ec1c67758fe00da7a8",
+            "sha256": "e591ee4287d03a2f92c41b473ee1ce3119e9bd08a11819804dd2f22d229802bd",
             "width": 1600,
             "height": 1085
         },
@@ -41,7 +43,7 @@
                 "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
                 "shows": "The \"Patient intake -- insurance verify\" replay fully verified (11 of 11 steps), with the real run report: 11 steps, 8.2s duration, $0.000 model cost. Real local demo data."
             },
-            "sha256": "ba39be125d333c7040509a9c3a96ef038e3c0b38c5924279ebb94912e6ebe118",
+            "sha256": "5616f0b0812a5e366f58e448689600e16eeab234aaf92ec6d49133efa0be33ee",
             "width": 1600,
             "height": 1085
         },
@@ -51,7 +53,7 @@
                 "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
                 "shows": "The correction surface for the halted step: the halted \"type <note>\" step with its verification-failure reason, and the options to re-record the step or describe the correct target. Correction stays local. Real local demo data."
             },
-            "sha256": "c22bc954460ff0335ea60a8e539b3ee997a768c01d2699913aeb0da401afd459",
+            "sha256": "28977e44c5873d5e9a5ad6b377f951e1ede3536e1ca28779c7e4068befd8fc22",
             "width": 1600,
             "height": 1085
         },
@@ -61,9 +63,9 @@
                 "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
                 "shows": "The settings surface: deployment lane (Cloud non-PHI vs BYOC / self-hosted PHI), PHI mode, and the hosted-organization connection with host https://app.openadapt.ai and a signed-in ingest-token session. The signed-in state was validated against a locally-run instance of the cloud in mock mode, not a production org."
             },
-            "sha256": "d45f27cce96e01d12f63eaa6e461762262013ff8ce6e10827ead726e7104905a",
+            "sha256": "aa3e9c4989c7ce772fe85f78431359f0aea99f6c7c91b9fc15fb34cc0b24cbff",
             "width": 1600,
-            "height": 1348
+            "height": 1100
         },
         "cockpit/05_onboarding.png": {
             "source": {
@@ -71,7 +73,7 @@
                 "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
                 "shows": "The first-run \"Record your first workflow\" onboarding: the screen and input permission checks (granted) and the macOS first-launch guidance."
             },
-            "sha256": "16db2011ecf4878e333986f6d679b5155600f9ac4f6265bf067c8bb5d56acb28",
+            "sha256": "b7e81c2fbee97c1891b30f8ef65d3a480ae9167ac2c55aff2e107d3bf914fa4b",
             "width": 1600,
             "height": 1085
         },
@@ -81,7 +83,7 @@
                 "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
                 "shows": "The record surface in its idle state, ready to capture a demonstration."
             },
-            "sha256": "8d9fb8cde8d45f7501e5b056c1d3f4165fbbb93b6135d3662d36a7a7e1ac0fbf",
+            "sha256": "a11b83d1254efec85213ba4880b1b91c9203d6c12ec2d6f4de70f6d7ee950d41",
             "width": 1600,
             "height": 1085
         },
@@ -91,7 +93,7 @@
                 "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
                 "shows": "The sign-in surface with a host field, a browser sign-in option, and an ingest-token paste option. Sign-in was validated against a locally-run instance of the cloud in mock mode, not a production org."
             },
-            "sha256": "59bf18a2cf8c4588172d93111461c4820a93a9c7ba4173bc4d66019bce039016",
+            "sha256": "e0708b06b2dadccdc18e1d8f75f73967797cc0b7b0d3257db99a42a76283f605",
             "width": 1600,
             "height": 1085
         },
