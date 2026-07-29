@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 import ReplayHero from '@components/ReplayHero'
+import AttendedDecisionPreview from '@components/AttendedDecisionPreview'
 import { track, EVENTS } from 'utils/analytics'
 
 import styles from './MastHead.module.css'
@@ -114,6 +115,7 @@ export default function Home({ githubStats }) {
                             </div>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
+                                <AttendedDecisionPreview />
                             </div>
                         </div>
                     </div>
