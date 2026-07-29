@@ -1,165 +1,191 @@
 {
-    "schema_version": 1,
-    "captured_at": "2026-07-20T18:49:00-04:00",
-    "presentation": {
-        "required_media_label": "Experimental prerelease surfaces",
-        "claim_boundary": "Screenshots of the real Experimental desktop app running the real wired engine. The workflow, run, and halt data shown is a real local demo recording (recorded via demo-record, compiled, and replayed on this machine), not production or customer data. The signed-in session was authenticated against a locally-run instance of the OpenAdapt cloud in mock mode, not a production org."
+  "schema_version": 1,
+  "captured_at": "2026-07-29T16:31:00-04:00",
+  "presentation": {
+    "required_media_label": "Synthetic Desktop prerelease fixtures",
+    "claim_boundary": "Headless screenshots of the Desktop PR #93 React cockpit using explicit synthetic fixture data. They do not show a customer, production organization, recording, engine execution, or a live run. Final release provenance will be updated after Desktop 0.15."
+  },
+  "cockpit_capture": {
+    "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+    "channel": "Desktop PR #93 fixture capture",
+    "desktop_pr": "#93",
+    "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+    "engine": "not started",
+    "session": "No account or Cloud session.",
+    "data": "Explicit synthetic workflow and run data.",
+    "capture_method": "Headless Google Chrome rendered the PR #93 React UI with a temporary in-memory fixture adapter. No Tauri window, sidecar, recording, customer data, or physical input was used.",
+    "boundary": "Synthetic public demonstration data only. Final release hash will be updated after Desktop 0.15."
+  },
+  "assets": {
+    "cockpit/10_dashboard_workflows.png": {
+      "source": {
+        "surface": "Home / Workflows library",
+        "capture_method": "Headless Google Chrome capture of the Desktop PR #93 React cockpit with explicit in-memory synthetic fixture data. No Tauri window, engine sidecar, account, Cloud session, recording, physical input, customer data, or live execution was used.",
+        "shows": "Synthetic local workflow library with one halted workflow and one verified workflow.",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "release_note": "Final release hash will be updated after Desktop 0.15."
+      },
+      "sha256": "14cf86ae66ce91c0255eba74ac2c4fa3b8db188a01eb9c5874e90afe37300f9d",
+      "width": 1600,
+      "height": 1100
     },
-    "cockpit_capture": {
+    "cockpit/40_watchrun_halted.png": {
+      "source": {
+        "surface": "Run detail -- halted with effect-verification evidence",
+        "capture_method": "Headless Google Chrome capture of the Desktop PR #93 React cockpit with explicit in-memory synthetic fixture data. No Tauri window, engine sidecar, account, Cloud session, recording, physical input, customer data, or live execution was used.",
+        "shows": "Synthetic six-step workflow halted because identity and postcondition evidence were insufficient.",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "release_note": "Final release hash will be updated after Desktop 0.15."
+      },
+      "sha256": "e591ee4287d03a2f92c41b473ee1ce3119e9bd08a11819804dd2f22d229802bd",
+      "width": 1600,
+      "height": 1100
+    },
+    "cockpit/45_watchrun_verified.png": {
+      "source": {
+        "surface": "Run detail -- fully verified with metrics",
+        "capture_method": "Headless Google Chrome capture of the Desktop PR #93 React cockpit with explicit in-memory synthetic fixture data. No Tauri window, engine sidecar, account, Cloud session, recording, physical input, customer data, or live execution was used.",
+        "shows": "Synthetic six-step workflow with a verified outcome and its evidence contract.",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "release_note": "Final release hash will be updated after Desktop 0.15."
+      },
+      "sha256": "5616f0b0812a5e366f58e448689600e16eeab234aaf92ec6d49133efa0be33ee",
+      "width": 1600,
+      "height": 1100
+    },
+    "cockpit/50_teach.png": {
+      "source": {
+        "surface": "Teach the fix",
+        "capture_method": "Headless Google Chrome capture of the Desktop PR #93 React cockpit with explicit in-memory synthetic fixture data. No Tauri window, engine sidecar, account, Cloud session, recording, physical input, customer data, or live execution was used.",
+        "shows": "Synthetic local correction view for the safely halted workflow.",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "release_note": "Final release hash will be updated after Desktop 0.15."
+      },
+      "sha256": "28977e44c5873d5e9a5ad6b377f951e1ede3536e1ca28779c7e4068befd8fc22",
+      "width": 1600,
+      "height": 1100
+    },
+    "cockpit/20_settings.png": {
+      "source": {
+        "surface": "Settings / policy",
+        "capture_method": "Headless Google Chrome capture of the Desktop PR #93 React cockpit with explicit in-memory synthetic fixture data. No Tauri window, engine sidecar, account, Cloud session, recording, physical input, customer data, or live execution was used.",
+        "shows": "Synthetic settings view for the execution lane, privacy mode, grounding controls, and overlay.",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "release_note": "Final release hash will be updated after Desktop 0.15."
+      },
+      "sha256": "aa3e9c4989c7ce772fe85f78431359f0aea99f6c7c91b9fc15fb34cc0b24cbff",
+      "width": 1600,
+      "height": 1100
+    },
+    "cockpit/05_onboarding.png": {
+      "source": {
+        "surface": "First-run onboarding",
+        "capture_method": "Headless Google Chrome capture of the Desktop PR #93 React cockpit with explicit in-memory synthetic fixture data. No Tauri window, engine sidecar, account, Cloud session, recording, physical input, customer data, or live execution was used.",
+        "shows": "Synthetic first-run workflow recording setup with permission and local video-engine status.",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "release_note": "Final release hash will be updated after Desktop 0.15."
+      },
+      "sha256": "44fd825b0eac680933635a4c7b9d8b9de94866d656d0d6eee5213e0184df6c06",
+      "width": 1600,
+      "height": 1100
+    },
+    "cockpit/30_record.png": {
+      "source": {
+        "surface": "Record & review",
+        "capture_method": "Headless Google Chrome capture of the Desktop PR #93 React cockpit with explicit in-memory synthetic fixture data. No Tauri window, engine sidecar, account, Cloud session, recording, physical input, customer data, or live execution was used.",
+        "shows": "Synthetic idle record-and-review view for a new demonstration.",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "release_note": "Final release hash will be updated after Desktop 0.15."
+      },
+      "sha256": "a11b83d1254efec85213ba4880b1b91c9203d6c12ec2d6f4de70f6d7ee950d41",
+      "width": 1600,
+      "height": 1100
+    },
+    "cockpit/01_login.png": {
+      "source": {
+        "surface": "Sign in",
+        "capture_method": "Headless Google Chrome capture of the Desktop PR #93 React cockpit with explicit in-memory synthetic fixture data. No Tauri window, engine sidecar, account, Cloud session, recording, physical input, customer data, or live execution was used.",
+        "shows": "Synthetic connection screen with a local-first entry and optional Cloud sign-in controls.",
+        "desktop_pr": "#93",
+        "desktop_head": "1f50259ffb052776742b284a493eb9c735caa122",
+        "release_note": "Final release hash will be updated after Desktop 0.15."
+      },
+      "sha256": "e0708b06b2dadccdc18e1d8f75f73967797cc0b7b0d3257db99a42a76283f605",
+      "width": 1600,
+      "height": 1100
+    },
+    "tray-menu.png": {
+      "source": {
+        "repository": "https://github.com/OpenAdaptAI/openadapt-tray",
+        "package": "openadapt-tray 0.1.1 (PyPI)",
+        "capture_method": "The published openadapt-tray package running live in the macOS menu bar with its real menu open, captured with the macOS `screencapture` utility and cropped. A neutral dark window was placed behind the menu before capture; the menu bar, icon, and menu are unmodified. The pynput global-hotkey listener was not started (it requires macOS Input Monitoring permission unavailable to the capture session); all other components ran as shipped. State shown is the real standalone state: no desktop companion process was running and sync is offline."
+      },
+      "sha256": "658f26f04be306ec06ad8abbc0e0f865fe29421e01a0a536403670444a5bd225",
+      "width": 580,
+      "height": 640
+    },
+    "windows/installer-welcome.png": {
+      "source": {
         "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
-        "channel": "Experimental prerelease (unsigned or ad-hoc-signed)",
-        "engine": "real wired engine sidecar",
-        "session": "Signed in against a locally-run instance of the OpenAdapt cloud in mock mode (not a production org).",
-        "data": "Two real local demo workflows -- \"MockMed refill triage\" and \"Patient intake -- insurance verify\" -- recorded via demo-record, compiled, and replayed on this machine. All run, step, timing, halt, and cost values shown are from those real local replays.",
-        "capture_method": "Captured from the live OpenAdapt Desktop (Tauri) Experimental app running the real wired engine, at native retina 2x with the macOS screencapture utility, then resized to 1600px wide for the web. No DOM injected, no pixels retouched.",
-        "boundary": "Local demo data only. Not production data, not customer data, not a hosted production org."
+        "version": "0.6.1",
+        "release_tag": "desktop-v0.6.1",
+        "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
+        "installer_sha256_prefix": "ef30d798f03be2b3",
+        "capture_method": "Live console capture (`prlctl capture`) of the real NSIS v3.11 installer for OpenAdapt Desktop Experimental v0.6.1, run inside a Parallels Windows 11 guest [Version 10.0.22631.6199, display 3024x1812]. Welcome page of the setup wizard, cropped to the dialog. No pixels retouched; VM reverted to its base snapshot afterward.",
+        "shows": "NSIS wizard welcome page: \"Welcome to OpenAdapt Desktop Setup\"."
+      },
+      "sha256": "a365a61a26103430fc13dad3c062a932c19aaa55524694a14fa8ca5d26d741a5",
+      "width": 1044,
+      "height": 784
     },
-    "assets": {
-        "cockpit/10_dashboard_workflows.png": {
-            "source": {
-                "surface": "Home / Workflows library",
-                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
-                "shows": "The local workflow library with two real replayed demo workflows: \"MockMed refill triage\" (halted, needs attention) and \"Patient intake -- insurance verify\" (verified). Engine-ready / sync status rail at the bottom."
-            },
-            "sha256": "9d4d546052e93796e8661301291ac355456890ff05c868355fa75b72798383f2",
-            "width": 1600,
-            "height": 1085
-        },
-        "cockpit/40_watchrun_halted.png": {
-            "source": {
-                "surface": "Run detail -- halted with effect-verification evidence",
-                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
-                "shows": "The \"MockMed refill triage\" replay stopped safely at step 9 of 11 (9 verified, 1 halted). The \"This run stopped safely\" card shows the real verification-failure reason: typed input could not be verified for step_009 because the field region changed and the value is not readable there, so retyping is unsafe. Real local demo data."
-            },
-            "sha256": "93fd5309713ee0acc5dc15012012c4a0ac0d74bde4d657ec1c67758fe00da7a8",
-            "width": 1600,
-            "height": 1085
-        },
-        "cockpit/45_watchrun_verified.png": {
-            "source": {
-                "surface": "Run detail -- fully verified with metrics",
-                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
-                "shows": "The \"Patient intake -- insurance verify\" replay fully verified (11 of 11 steps), with the real run report: 11 steps, 8.2s duration, $0.000 model cost. Real local demo data."
-            },
-            "sha256": "ba39be125d333c7040509a9c3a96ef038e3c0b38c5924279ebb94912e6ebe118",
-            "width": 1600,
-            "height": 1085
-        },
-        "cockpit/50_teach.png": {
-            "source": {
-                "surface": "Teach the fix",
-                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
-                "shows": "The correction surface for the halted step: the halted \"type <note>\" step with its verification-failure reason, and the options to re-record the step or describe the correct target. Correction stays local. Real local demo data."
-            },
-            "sha256": "c22bc954460ff0335ea60a8e539b3ee997a768c01d2699913aeb0da401afd459",
-            "width": 1600,
-            "height": 1085
-        },
-        "cockpit/20_settings.png": {
-            "source": {
-                "surface": "Settings / policy",
-                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
-                "shows": "The settings surface: deployment lane (Cloud non-PHI vs BYOC / self-hosted PHI), PHI mode, and the hosted-organization connection with host https://app.openadapt.ai and a signed-in ingest-token session. The signed-in state was validated against a locally-run instance of the cloud in mock mode, not a production org."
-            },
-            "sha256": "d45f27cce96e01d12f63eaa6e461762262013ff8ce6e10827ead726e7104905a",
-            "width": 1600,
-            "height": 1348
-        },
-        "cockpit/05_onboarding.png": {
-            "source": {
-                "surface": "First-run onboarding",
-                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
-                "shows": "The first-run \"Record your first workflow\" onboarding: the screen and input permission checks (granted) and the macOS first-launch guidance."
-            },
-            "sha256": "16db2011ecf4878e333986f6d679b5155600f9ac4f6265bf067c8bb5d56acb28",
-            "width": 1600,
-            "height": 1085
-        },
-        "cockpit/30_record.png": {
-            "source": {
-                "surface": "Record & review",
-                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine, signed in against a local mock-mode cloud; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
-                "shows": "The record surface in its idle state, ready to capture a demonstration."
-            },
-            "sha256": "8d9fb8cde8d45f7501e5b056c1d3f4165fbbb93b6135d3662d36a7a7e1ac0fbf",
-            "width": 1600,
-            "height": 1085
-        },
-        "cockpit/01_login.png": {
-            "source": {
-                "surface": "Sign in",
-                "capture_method": "Live OpenAdapt Desktop Experimental app, real wired engine; macOS screencapture at retina 2x, resized to 1600px wide, no pixels retouched.",
-                "shows": "The sign-in surface with a host field, a browser sign-in option, and an ingest-token paste option. Sign-in was validated against a locally-run instance of the cloud in mock mode, not a production org."
-            },
-            "sha256": "59bf18a2cf8c4588172d93111461c4820a93a9c7ba4173bc4d66019bce039016",
-            "width": 1600,
-            "height": 1085
-        },
-        "tray-menu.png": {
-            "source": {
-                "repository": "https://github.com/OpenAdaptAI/openadapt-tray",
-                "package": "openadapt-tray 0.1.1 (PyPI)",
-                "capture_method": "The published openadapt-tray package running live in the macOS menu bar with its real menu open, captured with the macOS `screencapture` utility and cropped. A neutral dark window was placed behind the menu before capture; the menu bar, icon, and menu are unmodified. The pynput global-hotkey listener was not started (it requires macOS Input Monitoring permission unavailable to the capture session); all other components ran as shipped. State shown is the real standalone state: no desktop companion process was running and sync is offline."
-            },
-            "sha256": "658f26f04be306ec06ad8abbc0e0f865fe29421e01a0a536403670444a5bd225",
-            "width": 580,
-            "height": 640
-        },
-        "windows/installer-welcome.png": {
-            "source": {
-                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
-                "version": "0.6.1",
-                "release_tag": "desktop-v0.6.1",
-                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
-                "installer_sha256_prefix": "ef30d798f03be2b3",
-                "capture_method": "Live console capture (`prlctl capture`) of the real NSIS v3.11 installer for OpenAdapt Desktop Experimental v0.6.1, run inside a Parallels Windows 11 guest [Version 10.0.22631.6199, display 3024x1812]. Welcome page of the setup wizard, cropped to the dialog. No pixels retouched; VM reverted to its base snapshot afterward.",
-                "shows": "NSIS wizard welcome page: \"Welcome to OpenAdapt Desktop Setup\"."
-            },
-            "sha256": "a365a61a26103430fc13dad3c062a932c19aaa55524694a14fa8ca5d26d741a5",
-            "width": 1044,
-            "height": 784
-        },
-        "windows/installer-location.png": {
-            "source": {
-                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
-                "version": "0.6.1",
-                "release_tag": "desktop-v0.6.1",
-                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
-                "installer_sha256_prefix": "ef30d798f03be2b3",
-                "capture_method": "Live console capture (`prlctl capture`) of the same NSIS installer's Choose Install Location page inside the Parallels Windows 11 guest, cropped to the dialog. Shows the real per-user default path under %LOCALAPPDATA%. No pixels retouched.",
-                "shows": "Choose Install Location page defaulting to C:\\Users\\<user>\\AppData\\Local\\OpenAdapt Desktop; footer reads Nullsoft Install System v3.11."
-            },
-            "sha256": "98f972f4837b5d89db236c4997a7ab0239e7eca808385c4673db289d774ab0a7",
-            "width": 1044,
-            "height": 784
-        },
-        "windows/installer-finish.png": {
-            "source": {
-                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
-                "version": "0.6.1",
-                "release_tag": "desktop-v0.6.1",
-                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
-                "installer_sha256_prefix": "ef30d798f03be2b3",
-                "capture_method": "Live console capture (`prlctl capture`) of the NSIS installer's Completing page inside the Parallels Windows 11 guest, cropped to the dialog. The install itself completes in ~1s. No pixels retouched.",
-                "shows": "\"Completing OpenAdapt Desktop Setup\" with \"Run OpenAdapt Desktop\" and \"Create desktop shortcut\" checked. NOTE: this still is from the v0.6.1 NSIS installer; the launch panic it originally noted (openadapt-desktop issue #26) is fixed in v0.6.2, and the real launched app surfaces are now shown by the cockpit gallery above."
-            },
-            "sha256": "5898e4e54286d6875adfbb7079d6e0d9ea41a4f1a82f6878900529413d3c120d",
-            "width": 1044,
-            "height": 784
-        },
-        "windows/security-warning-unsigned.png": {
-            "source": {
-                "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
-                "version": "0.6.1",
-                "release_tag": "desktop-v0.6.1",
-                "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
-                "installer_sha256_prefix": "ef30d798f03be2b3",
-                "capture_method": "Live console capture (`prlctl capture`) of Windows' real Attachment Manager \"Open File - Security Warning\" dialog for the unsigned NSIS installer inside the Parallels Windows 11 guest. Mark-of-the-Web (ZoneId=3) was set exactly as a browser writes it on download. Cropped to the dialog; no pixels retouched.",
-                "shows": "\"Open File - Security Warning\": \"The publisher could not be verified\", Publisher: Unknown Publisher, for ...v0.6.1-windows-x86_64-unsigned-nsis-setup.exe, with Run / Cancel. This is the friction a first-time user of the unsigned build sees."
-            },
-            "sha256": "a1ee4ce63055c5ae61730783197d685cce88a391aedaadc7a6a8cec47170973c",
-            "width": 990,
-            "height": 740
-        }
+    "windows/installer-location.png": {
+      "source": {
+        "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+        "version": "0.6.1",
+        "release_tag": "desktop-v0.6.1",
+        "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
+        "installer_sha256_prefix": "ef30d798f03be2b3",
+        "capture_method": "Live console capture (`prlctl capture`) of the same NSIS installer's Choose Install Location page inside the Parallels Windows 11 guest, cropped to the dialog. Shows the real per-user default path under %LOCALAPPDATA%. No pixels retouched.",
+        "shows": "Choose Install Location page defaulting to C:\\Users\\<user>\\AppData\\Local\\OpenAdapt Desktop; footer reads Nullsoft Install System v3.11."
+      },
+      "sha256": "98f972f4837b5d89db236c4997a7ab0239e7eca808385c4673db289d774ab0a7",
+      "width": 1044,
+      "height": 784
+    },
+    "windows/installer-finish.png": {
+      "source": {
+        "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+        "version": "0.6.1",
+        "release_tag": "desktop-v0.6.1",
+        "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
+        "installer_sha256_prefix": "ef30d798f03be2b3",
+        "capture_method": "Live console capture (`prlctl capture`) of the NSIS installer's Completing page inside the Parallels Windows 11 guest, cropped to the dialog. The install itself completes in ~1s. No pixels retouched.",
+        "shows": "\"Completing OpenAdapt Desktop Setup\" with \"Run OpenAdapt Desktop\" and \"Create desktop shortcut\" checked. NOTE: this still is from the v0.6.1 NSIS installer; the launch panic it originally noted (openadapt-desktop issue #26) is fixed in v0.6.2, and the real launched app surfaces are now shown by the cockpit gallery above."
+      },
+      "sha256": "5898e4e54286d6875adfbb7079d6e0d9ea41a4f1a82f6878900529413d3c120d",
+      "width": 1044,
+      "height": 784
+    },
+    "windows/security-warning-unsigned.png": {
+      "source": {
+        "repository": "https://github.com/OpenAdaptAI/openadapt-desktop",
+        "version": "0.6.1",
+        "release_tag": "desktop-v0.6.1",
+        "installer_asset": "OpenAdapt-Desktop-Experimental-v0.6.1-windows-x86_64-unsigned-nsis-setup.exe",
+        "installer_sha256_prefix": "ef30d798f03be2b3",
+        "capture_method": "Live console capture (`prlctl capture`) of Windows' real Attachment Manager \"Open File - Security Warning\" dialog for the unsigned NSIS installer inside the Parallels Windows 11 guest. Mark-of-the-Web (ZoneId=3) was set exactly as a browser writes it on download. Cropped to the dialog; no pixels retouched.",
+        "shows": "\"Open File - Security Warning\": \"The publisher could not be verified\", Publisher: Unknown Publisher, for ...v0.6.1-windows-x86_64-unsigned-nsis-setup.exe, with Run / Cancel. This is the friction a first-time user of the unsigned build sees."
+      },
+      "sha256": "a1ee4ce63055c5ae61730783197d685cce88a391aedaadc7a6a8cec47170973c",
+      "width": 990,
+      "height": 740
     }
+  }
 }
