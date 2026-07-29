@@ -30,16 +30,12 @@ const FIGURES = [
         eyebrow: 'Workflow catalog & halt map',
         title: 'Read the whole portfolio, halt by halt.',
         body:
-            'The catalog is a read-only readout across every compiled ' +
-            'workflow: what each one automates, how its trials went, and the ' +
-            'return it stands to make. The step-level halt map shows where runs ' +
-            'stop and why, so you fix the demonstration or policy at the exact ' +
-            'step.',
+            'The catalog is a read-only view of compiled workflows in the ' +
+            'workspace. Review the current workflow state before you run it.',
         image: '/cloud-preview/workflow-catalog.png',
         alt:
-            'OpenAdapt Cloud workflow catalog: a portfolio ROI readout with a ' +
-            'step-level halt map showing where runs halt and why.',
-        caption: 'Workflow catalog & halt map in Cloud',
+            'OpenAdapt Cloud workflow catalog for the synthetic OpenEMR fixture.',
+        caption: 'Workflow catalog in Cloud',
     },
 ]
 

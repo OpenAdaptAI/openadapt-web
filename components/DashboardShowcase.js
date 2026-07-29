@@ -35,8 +35,8 @@ const SLIDES = [
         address: 'app.openadapt.ai/runs',
         label: 'Run detail',
         caption:
-            'Step timeline and independently verified effects for a completed run.',
-        alt: 'OpenAdapt Cloud run detail: run metrics, the verified-effect timeline, and the full machine-readable run report.',
+            'Evidence-qualified execution outcome for a completed run.',
+        alt: 'OpenAdapt Cloud run detail showing its evidence-qualified execution outcome and contract counts.',
     },
     {
         key: 'program',
@@ -57,8 +57,8 @@ const SLIDES = [
         address: 'app.openadapt.ai/workflows',
         label: 'Workflow catalog',
         caption:
-            'Approved workflows, their ROI readout, and a step-level halt map in one catalog.',
-        alt: 'OpenAdapt Cloud workflow catalog: approved workflows, their ROI readout, and a step-level halt map.',
+            'The current workflow catalog in the Cloud workspace.',
+        alt: 'OpenAdapt Cloud workflow catalog for the synthetic OpenEMR fixture.',
     },
 ]
 

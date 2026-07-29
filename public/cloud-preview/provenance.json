@@ -7,7 +7,7 @@
     "commit": "f2300ee69b555d1676e69348999f910c1cc8cd8c",
     "branch": "main",
     "mode": "OPENADAPT_CLOUD_MODE=mock (local development simulator; no live backend)",
-    "capture": "Cypress Electron against the actual local Cloud mock UI at routes /dashboard, /dashboard/runs/00000000-0000-4000-8000-000000000001, /dashboard/workflows/wf_demo_1/graph, and /dashboard/workflows. Each focused viewport capture is 2560x1440. The grouped navigation and LOCAL MOCK MODE banner remain visible. No full-page capture was used.",
+    "capture": "Cypress Electron against the actual local Cloud mock UI at routes /dashboard, /dashboard/runs/00000000-0000-4000-8000-000000000001, /dashboard/workflows/wf_demo_1/graph, and /dashboard/workflows. Each focused viewport capture is 2560x1440. The dashboard capture shows grouped navigation and the LOCAL MOCK MODE banner. No full-page capture was used.",
     "data": "Synthetic local mock data only. The fixture is OpenEMR patient registration with target https://demo.openemr.io/openemr/index.php. No customer or production data is present."
   },
   "media": {
