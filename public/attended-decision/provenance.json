@@ -13,17 +13,26 @@
   "captures": [
     {
       "file": "identity-request.png",
-      "state": "Initial public identity request before an operator action",
-      "sha256": "85e1598320e2bedd3e4ab715f846e1792622e1884e2f061c518e9024ef409400"
+      "state": "Initial public identity request before an operator action; the retained OpenEMR evidence image completed with nonzero natural dimensions before capture",
+      "sha256": "9c9c8673b3497d61fd0aa636fb175ace4fd0f37bcf2b738149a80eefaf8f6cec",
+      "dimensions": {
+        "width": 860,
+        "height": 1936
+      }
     },
     {
       "file": "identity-verified.png",
       "state": "Public runner result after the permitted Check identity action",
-      "sha256": "5a83d5fd4b02f8c16f6ebb25f3ebb6eace839c3fede27077cde0c18945c5d728"
+      "sha256": "5a83d5fd4b02f8c16f6ebb25f3ebb6eace839c3fede27077cde0c18945c5d728",
+      "dimensions": {
+        "width": 860,
+        "height": 1686
+      }
     }
   ],
   "sequence": [
     "Open the public attention demo.",
+    "Wait until the retained OpenEMR evidence image is visible, complete, and has nonzero natural width and height.",
     "Capture the .attention-device element in its initial identity-request state.",
     "Select the permitted Check identity action.",
     "Wait for the Identity verified runner receipt.",
