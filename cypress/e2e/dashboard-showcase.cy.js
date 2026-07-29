@@ -53,14 +53,14 @@ describe('Cloud product showcase', () => {
             'demo.openemr.io/openemr/index.php'
         )
 
-        // The CTA opens the real public hosted-product demo without requiring
-        // an account.
+        // The CTA opens the real public mobile decision demo without requiring
+        // an account. The route is the user-action contract; the label is not.
         cy.get('#cloud-product')
-            .contains('a', 'Explore the public demo')
+            .find('[data-testid="mobile-decision-demo-link"]')
             .should(
                 'have.attr',
                 'href',
-                'https://app.openadapt.ai/demo'
+                'https://app.openadapt.ai/demo/attention'
             )
 
         // Wait for the active capture to decode, then screenshot.
