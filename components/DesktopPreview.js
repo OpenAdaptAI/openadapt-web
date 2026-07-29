@@ -333,9 +333,9 @@ export default function DesktopPreview() {
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
                     Follow the desktop workflow from capture and replay through a
                     verified result, a safe halt, teaching, settings, and sign-in.
-                    The gallery uses synthetic workflows captured from the native
-                    app and wired engine. Exact capture provenance is published
-                    below.
+                    The gallery uses headless synthetic fixtures from Desktop PR #93.
+                    It does not show a live engine or customer run. Exact capture
+                    provenance is published below.
                 </p>
 
                 <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -358,12 +358,13 @@ export default function DesktopPreview() {
                                     {item.label}.
                                 </span>{' '}
                                 {item.caption}
+                                {' '}<a className="underline" href={item.src}>Open full-size image</a>
                             </figcaption>
                         </figure>
                     ))}
                 </div>
 
-                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
                     {COCKPIT_GRID.map((item) => (
                         <figure key={item.src}>
                             <WindowFrame title="OpenAdapt Desktop">
@@ -383,6 +384,7 @@ export default function DesktopPreview() {
                                     {item.label}.
                                 </span>{' '}
                                 {item.caption}
+                                {' '}<a className="underline" href={item.src}>Open full-size image</a>
                             </figcaption>
                         </figure>
                     ))}
