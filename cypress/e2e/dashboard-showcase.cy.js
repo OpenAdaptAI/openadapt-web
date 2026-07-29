@@ -63,11 +63,11 @@ describe('Cloud product showcase', () => {
             'mock-data mode with synthetic records'
         )
 
-        // No fake mini-app scaffolding and no unverifiable domain.
+        // No fake mini-app scaffolding or raw reference-application endpoint.
         cy.get('#cloud-product').should('not.contain.text', 'Operating view')
         cy.get('#cloud-product').should(
             'not.contain.text',
-            'demo.openadapt.ai'
+            'demo.openemr.io/openemr/index.php'
         )
 
         // The CTA opens the real public hosted-product demo without requiring
