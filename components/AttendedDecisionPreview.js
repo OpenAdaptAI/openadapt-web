@@ -1,61 +1,81 @@
+import { useState } from 'react'
+
 import styles from './AttendedDecisionPreview.module.css'
 
 const CLOUD_ATTENTION_DEMO = 'https://app.openadapt.ai/demo/attention'
-const RETAINED_SCREEN =
-    'https://app.openadapt.ai/demo/application-demos/openemr-standard-v1/replay/openemr-replay.poster.png'
 
-/**
- * One real public Cloud case, kept deliberately smaller than the six-case
- * interaction. The Cloud page remains the place to try every decision type.
- */
+const states = {
+    request: {
+        image: '/attended-decision/identity-request.png',
+        alt: 'OpenAdapt mobile portal requesting an identity check before Save',
+    },
+    result: {
+        image: '/attended-decision/identity-verified.png',
+        alt: 'OpenAdapt mobile portal showing the runner-verified identity result',
+    },
+}
+
+// The two images are exact headless captures of the public Cloud identity
+// case. Their source, hashes, and capture sequence are in public/attended-decision.
 export default function AttendedDecisionPreview() {
+    const [state, setState] = useState('request')
+    const current = states[state]
+
     return (
         <section className={styles.section} aria-labelledby="attended-decision-title">
+            <figure className={styles.device}>
+                <div
+                    className={styles.toggle}
+                    role="group"
+                    aria-label="Mobile decision state"
+                    data-testid="attended-decision-toggle"
+                >
+                    <button
+                        type="button"
+                        aria-pressed={state === 'request'}
+                        onClick={() => setState('request')}
+                    >
+                        Request
+                    </button>
+                    <button
+                        type="button"
+                        aria-pressed={state === 'result'}
+                        onClick={() => setState('result')}
+                    >
+                        Runner result
+                    </button>
+                </div>
+                <img
+                    key={state}
+                    src={current.image}
+                    alt={current.alt}
+                    data-testid="attended-decision-capture"
+                />
+                <figcaption>
+                    Exact public Cloud capture · synthetic OpenEMR data
+                </figcaption>
+            </figure>
             <div className={styles.copy}>
-                <p className={styles.eyebrow}>Attended decisions · OpenEMR synthetic demo</p>
+                <p className={styles.eyebrow}>Attended decisions · Cloud demo</p>
                 <h2 id="attended-decision-title">
-                    A person can resolve a pause without giving up runner checks.
+                    Keep a person in the loop. Keep the runner in control.
                 </h2>
                 <p>
-                    In this public Cloud case, OpenAdapt stops before Save when
-                    the patient identity does not match. The operator can only
-                    choose a permitted answer. The customer runner then reads
-                    the live patient and target again.
+                    When identity conflicts, OpenAdapt pauses before Save. The
+                    phone shows only permitted answers. The customer runner
+                    reads the live record again and returns the result.
                 </p>
-                <dl className={styles.decision}>
-                    <div>
-                        <dt>Pause reason</dt>
-                        <dd>The record identity did not match. OpenAdapt stopped before Save.</dd>
-                    </div>
-                    <div>
-                        <dt>Permitted operator action</dt>
-                        <dd>Check identity — continue only if it matches.</dd>
-                    </div>
-                    <div>
-                        <dt>Runner result</dt>
-                        <dd><strong>VERIFIED</strong> — identity and target matched.</dd>
-                    </div>
-                </dl>
                 <a
                     className={styles.demoLink}
                     href={CLOUD_ATTENTION_DEMO}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-testid="attended-decision-demo-link"
                 >
                     Try all six mobile decision cases in Cloud
                     <span aria-hidden="true"> →</span>
                 </a>
             </div>
-            <figure className={styles.evidence}>
-                <img
-                    src={RETAINED_SCREEN}
-                    alt="Retained OpenEMR patient screen from the public identity-pause demo"
-                />
-                <figcaption>
-                    Retained application screen when the run stopped. Real public
-                    Cloud demo asset; synthetic patient data.
-                </figcaption>
-            </figure>
         </section>
     )
 }
