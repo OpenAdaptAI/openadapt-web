@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-20T00:00:00Z",
+    "generated_at": "2026-07-29T17:10:00Z",
   "synthetic_fixture": true,
   "source": {
     "repository": "https://github.com/OpenAdaptAI/openadapt-cloud",
-    "commit": "9eee511959db1c33739e0567102c0f65fb7ccc2a",
+    "commit": "f2300ee69b555d1676e69348999f910c1cc8cd8c",
     "branch": "main",
     "mode": "OPENADAPT_CLOUD_MODE=mock (local development simulator; no live backend)",
-    "capture": "Playwright Chromium, real page navigations of the actual dashboard UI at a 1280x800 viewport with --force-device-scale-factor=2 (2560px-wide output). The four showcase stills (healthcare-run.jpg run detail, healthcare-evidence.jpg halt evidence, program-graph.png program visualizer, workflow-catalog.png workflow catalog) are FULL-PAGE captures so the web showcase can pan through the whole page. Dev-only chrome that is not part of the product is suppressed for the marketing capture: the LOCAL MOCK MODE developer banner is hidden, the sticky top nav is unstuck so it renders once at the top of the full-page image, and the program view's local-preview sample notice is hidden. The remaining industry GIF/JPG sequences are unchanged 880x550 assets and are not used by the showcase.",
-    "data": "Synthetic workflows, runs, halts, and taught fixes. The showcase workspace is seeded with production-plausible names (Invoice entry, Patient intake - insurance verify, Prior-auth submission for the Riverside Clinic workspace) via the mock seed, with the halt-evidence run reported through the app's own POST /api/runs/ingest-report. No customer or production data is present."
+    "capture": "Cypress Electron against the actual local Cloud mock UI at routes /dashboard, /dashboard/runs/00000000-0000-4000-8000-000000000001, /dashboard/workflows/wf_demo_1/graph, and /dashboard/workflows. Each focused viewport capture is 2560x1440. The dashboard capture shows grouped navigation and the LOCAL MOCK MODE banner. No full-page capture was used.",
+    "data": "Synthetic local mock data only. The fixture is OpenEMR patient registration with target https://demo.openemr.io/openemr/index.php. No customer or production data is present."
   },
   "media": {
     "healthcare-evidence.gif": {
@@ -48,10 +48,10 @@
       "loop": "infinite (NETSCAPE2.0)"
     },
     "healthcare-run.jpg": {
-      "sha256": "991f35b43ecc1bb2e20519546fb52fa451e1ba8603c37f51cda873a3d8bfc7bb",
-      "kind": "full-page still of the real run detail (run metrics, verified-effect timeline, run report, machine-readable report)",
+      "sha256": "eeebb381f6de85379318ce6067e638d41565d490c47382e6f8a353676f7ae784",
+      "kind": "focused real local-mock run detail",
       "width": 2560,
-      "height": 4620
+      "height": 1440
     },
     "healthcare-workflow.gif": {
       "sha256": "dc01266c4403fccb3cf4c2b6528a5825c5601efc8ddb37ab13d9142f91d8a7a4",
@@ -180,16 +180,16 @@
       "height": 550
     },
     "program-graph.png": {
-      "sha256": "f7332ac6de56fd86c5019c4deeb9cc10ee65da1e39bdb3c7cc1242cf0bffe47a",
-      "kind": "full-page still of the real OpenAdapt Cloud program-graph view of a compiled bundle, in the app shell with the top nav",
+      "sha256": "bdf607b5082c34037daf552d1952ce6a6fe736602724fdf56f65ee8fe4379737",
+      "kind": "focused real local-mock compiled-program view",
       "width": 2560,
-      "height": 3882
+      "height": 1440
     },
     "workflow-catalog.png": {
-      "sha256": "e554373d836572dd7d043ddae7eec714a1022885b266882ebbc4c0765b3125cb",
-      "kind": "full-page still of the real OpenAdapt Cloud workflow catalog, ROI readout, and step-level halt map",
+      "sha256": "2886a88f117ef6cff0f496b4c75f7a9db0c3e69f838da0a189a160734e1ce081",
+      "kind": "focused real local-mock workflow catalog",
       "width": 2560,
-      "height": 4290
+      "height": 1440
     }
   }
 }

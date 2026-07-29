@@ -3,29 +3,24 @@ import styles from './DashboardShowcase.module.css'
 
 // Real screenshots of the shipping OpenAdapt Cloud product (openadapt-cloud),
 // captured from the actual dashboard UI. This is a rotating showcase: the large
-// slot cycles through the real product frames (dashboard, run detail, halt
-// evidence, program visualizer, workflow catalog) so each gets time on screen
+// slot cycles through the real product frames (dashboard, run detail, program
+// visualizer, workflow catalog) so each gets time on screen
 // big enough to read. Every frame is a full-height capture of the real
 // interface (see /product-preview/MANIFEST.json and /cloud-preview/provenance.json).
 // Nothing here is a hand-drawn or synthetic mockup of an app that does not exist.
 //
-// The captures are full pages, not top crops, and the large stage reveals each
-// one with a slow top-to-bottom vertical auto-pan over its dwell so the visitor
-// sees the WHOLE page rather than just the first screenful. Under reduced motion
-// the pan is dropped and the whole frame is shown at once (see the module CSS),
-// so nothing depends on movement to be legible.
+// The captures are focused viewport frames so the product state is readable.
 //
 // Order matters: the dashboard is first so it is the default (and SSR / no-JS)
 // frame, which is why the browser address bar reads app.openadapt.ai/dashboard
 // before any rotation. Every capture is 2560px wide at the same device scale, so
-// the five frames share one product look; their heights differ because each real
-// page is a different length.
+// the four frames share one product look.
 const SLIDES = [
     {
         key: 'dashboard',
         src: '/product-preview/dashboard-workflows.png',
         width: 2560,
-        height: 1600,
+        height: 1440,
         address: 'app.openadapt.ai/dashboard',
         label: 'Dashboard',
         caption:
@@ -36,29 +31,18 @@ const SLIDES = [
         key: 'run',
         src: '/cloud-preview/healthcare-run.jpg',
         width: 2560,
-        height: 4620,
+        height: 1440,
         address: 'app.openadapt.ai/runs',
         label: 'Run detail',
         caption:
-            'Step timeline and independently verified effects for a completed run.',
-        alt: 'OpenAdapt Cloud run detail: run metrics, the verified-effect timeline, and the full machine-readable run report.',
-    },
-    {
-        key: 'evidence',
-        src: '/cloud-preview/healthcare-evidence.jpg',
-        width: 2560,
-        height: 6594,
-        address: 'app.openadapt.ai/runs/evidence',
-        label: 'Halt evidence',
-        caption:
-            'The locally reported stop, resolver metrics, and the governed repair page.',
-        alt: 'OpenAdapt Cloud halt evidence: the locally reported stop, resolver metrics, and the governed repair page.',
+            'Evidence-qualified execution outcome for a completed run.',
+        alt: 'OpenAdapt Cloud run detail showing its evidence-qualified execution outcome and contract counts.',
     },
     {
         key: 'program',
         src: '/cloud-preview/program-graph.png',
         width: 2560,
-        height: 3882,
+        height: 1440,
         address: 'app.openadapt.ai/workflows/program',
         label: 'Program visualizer',
         caption:
@@ -69,12 +53,12 @@ const SLIDES = [
         key: 'catalog',
         src: '/cloud-preview/workflow-catalog.png',
         width: 2560,
-        height: 4290,
+        height: 1440,
         address: 'app.openadapt.ai/workflows',
         label: 'Workflow catalog',
         caption:
-            'Approved workflows, their ROI readout, and a step-level halt map in one catalog.',
-        alt: 'OpenAdapt Cloud workflow catalog: approved workflows, their ROI readout, and a step-level halt map.',
+            'The current workflow catalog in the Cloud workspace.',
+        alt: 'OpenAdapt Cloud workflow catalog for the synthetic OpenEMR fixture.',
     },
 ]
 
