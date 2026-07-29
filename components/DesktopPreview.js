@@ -17,22 +17,22 @@ const COCKPIT_LEAD = [
     {
         src: '/desktop-preview/cockpit/10_dashboard_workflows.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'The workflow library',
-        alt: 'OpenAdapt Desktop workflow library listing two real replayed demo workflows: MockMed refill triage (halted, needs attention) and Patient intake insurance verify (verified), with an engine-ready and synced status rail.',
+        alt: 'Synthetic OpenAdapt Desktop workflow library with one halted and one verified workflow, rendered from Desktop PR #93.',
         testid: 'desktop-preview-cockpit-dashboard',
         caption:
-            'Two compiled workflows in one library: one needs attention and one completed with verified evidence.',
+            'Two compiled workflows: one needs attention and one has verified evidence.',
     },
     {
         src: '/desktop-preview/cockpit/40_watchrun_halted.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'Halt evidence: this run stopped safely',
-        alt: 'OpenAdapt Desktop run detail for MockMed refill triage: a replay timeline with 9 of 11 steps verified and one halted, and a "This run stopped safely" card explaining that the typed value could not be verified for step_009.',
+        alt: 'Synthetic Desktop run detail with a halted step and the evidence reason for the safe stop.',
         testid: 'desktop-preview-cockpit-halt',
         caption:
-            'A replay stops safely at step 9 of 11 because the typed value cannot be verified. The run preserves the evidence instead of retyping blindly.',
+            'A run stops safely when identity and postcondition evidence are not sufficient. The evidence remains available for review.',
     },
 ]
 
@@ -40,17 +40,17 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/45_watchrun_verified.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'A verified run',
-        alt: 'OpenAdapt Desktop run detail for Patient intake insurance verify: all 11 of 11 steps verified, with a run report showing 11 steps, 8.2s duration, and $0.000 model cost.',
+        alt: 'Synthetic Desktop run detail showing a verified six-step workflow and its evidence contract.',
         testid: 'desktop-preview-cockpit-verified',
         caption:
-            'A clean replay: 11 of 11 steps verified, 8.2 seconds, and $0.000 model cost.',
+            'A clean replay: six of six steps verified with zero model calls.',
     },
     {
         src: '/desktop-preview/cockpit/50_teach.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'Teach the fix',
         alt: 'OpenAdapt Desktop "Teach the fix" surface: the halted type-note step with its verification-failure reason, and options to re-record the step or describe the correct target.',
         testid: 'desktop-preview-cockpit-teach',
@@ -60,19 +60,19 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/20_settings.png',
         width: 1600,
-        height: 1348,
+        height: 1100,
         label: 'Settings and policy',
-        alt: 'OpenAdapt Desktop settings: deployment lane (Cloud non-PHI vs BYOC self-hosted PHI), PHI mode, and a hosted-organization connection to https://app.openadapt.ai with a signed-in ingest-token session.',
+        alt: 'Synthetic Desktop settings showing the local and Cloud connection controls.',
         testid: 'desktop-preview-cockpit-settings',
         caption:
-            'Choose the deployment boundary, PHI mode, and connected OpenAdapt Cloud organization.',
+            'Configure the local execution boundary and an optional OpenAdapt Cloud connection.',
     },
     {
         src: '/desktop-preview/cockpit/05_onboarding.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'First-run onboarding',
-        alt: 'OpenAdapt Desktop first-run onboarding "Record your first workflow", with screen and input permission checks granted and macOS first-launch guidance.',
+        alt: 'Synthetic Desktop first-run onboarding for recording a workflow.',
         testid: 'desktop-preview-cockpit-onboarding',
         caption:
             'First launch walks through the screen and input permissions capture needs before you record.',
@@ -80,7 +80,7 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/30_record.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'Record and review',
         alt: 'OpenAdapt Desktop record surface in its idle state, ready to capture a demonstration, with a Start recording button.',
         testid: 'desktop-preview-cockpit-record',
@@ -90,9 +90,9 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/01_login.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'Sign in',
-        alt: 'OpenAdapt Desktop sign-in surface with a host field, a browser sign-in option, and an ingest-token paste option.',
+        alt: 'Synthetic Desktop connection surface with local cockpit and Cloud sign-in options.',
         testid: 'desktop-preview-cockpit-login',
         caption:
             'Connect to OpenAdapt Cloud through browser sign-in or an ingest token.',
@@ -333,12 +333,12 @@ export default function DesktopPreview() {
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
                     Follow the desktop workflow from capture and replay through a
                     verified result, a safe halt, teaching, settings, and sign-in.
-                    The gallery uses synthetic workflows captured from the native
-                    app and wired engine. Exact capture provenance is published
-                    below.
+                    The gallery uses headless synthetic fixtures from Desktop PR #93.
+                    It does not show a live engine or customer run. Exact capture
+                    provenance is published below.
                 </p>
 
-                <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+                <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
                     {COCKPIT_LEAD.map((item) => (
                         <figure key={item.src}>
                             <WindowFrame title="OpenAdapt Desktop">
@@ -358,12 +358,13 @@ export default function DesktopPreview() {
                                     {item.label}.
                                 </span>{' '}
                                 {item.caption}
+                                {' '}<a className="underline" href={item.src}>Open full-size image</a>
                             </figcaption>
                         </figure>
                     ))}
                 </div>
 
-                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
                     {COCKPIT_GRID.map((item) => (
                         <figure key={item.src}>
                             <WindowFrame title="OpenAdapt Desktop">
@@ -383,6 +384,7 @@ export default function DesktopPreview() {
                                     {item.label}.
                                 </span>{' '}
                                 {item.caption}
+                                {' '}<a className="underline" href={item.src}>Open full-size image</a>
                             </figcaption>
                         </figure>
                     ))}
