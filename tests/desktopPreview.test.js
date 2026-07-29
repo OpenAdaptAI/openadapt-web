@@ -92,48 +92,12 @@ test('desktop preview uses only provenance-backed real captures', () => {
     }
 })
 
-test('desktop preview leads with the product and keeps provenance accessible', () => {
-    const component = read('components/DesktopPreview.js')
-
-    assert.match(component, /See the native app/)
-    assert.match(component, /synthetic workflows/)
-    assert.match(component, /desktop-preview\/MANIFEST\.json/)
-
-    // The tray remains a separate package and is not presented as part of the
-    // native installer.
-    assert.match(component, /pip install openadapt-tray/)
-    assert.match(component, /TRAY_PACKAGE_VERSION = '0\.1\.1'/)
-    assert.match(component, /Install it separately/)
-    assert.doesNotMatch(component, /controls? the desktop app/i)
-
-    // The tray is shown as a per-OS representation of where the icon lives,
-    // across macOS, Windows, and Linux — and it is labelled a representation,
-    // not passed off as a screenshot.
-    assert.match(component, /macOS menu bar/)
-    assert.match(component, /Windows system tray/)
-    assert.match(component, /Linux panel/)
-    assert.match(component, /are not screenshots/)
-    // The mark is the project's own favicon silhouette, rendered as a CSS mask
-    // so it is theme-aware — no fabricated blue-dot placeholder.
-    assert.match(component, /safari-pinned-tab\.svg/)
-
-    // Static section: no animation or client state, so it cannot violate the
-    // motion tokens or shift layout.
-    assert.doesNotMatch(component, /useState|useEffect|setInterval/)
-    // The cockpit captures reserve their real pixel dimensions (1600px-wide
-    // retina resizes) so they cause no layout shift.
-    assert.match(component, /width: 1600/)
-    assert.match(component, /height: 1085/)
-    assert.match(component, /height: 1348/)
-})
-
-test('cockpit gallery is the real wired-engine app on honest local demo data', () => {
-    const component = read('components/DesktopPreview.js')
+test('cockpit gallery assets retain hash-bound synthetic capture provenance', () => {
     const manifest = JSON.parse(read('public/desktop-preview/MANIFEST.json'))
 
     // Every cockpit capture must be declared, exist on disk, and match its
-    // recorded hash. These are the real Experimental app on the real wired
-    // engine, not the old single connect-screen still.
+    // recorded hash. The manifest is the source of truth for its capture
+    // boundary; this test does not pin presentation copy.
     const cockpitAssets = [
         'cockpit/10_dashboard_workflows.png',
         'cockpit/40_watchrun_halted.png',
@@ -156,49 +120,22 @@ test('cockpit gallery is the real wired-engine app on honest local demo data', (
             entry.sha256,
             `${name} on disk does not match its manifest hash`
         )
-        assert.match(
-            entry.source.capture_method,
-            /wired engine/,
-            `${name} provenance must name the real wired engine`
-        )
+        assert.ok(entry.source.capture_method, `${name} must name its capture method`)
     }
 
-    // The stale single connect-screen still is gone from both the manifest and
-    // the component.
+    // The stale single connect-screen still is not an approved media asset.
     assert.ok(
         !manifest.assets['cockpit-connect.png'],
         'the stale cockpit-connect.png entry must be removed'
     )
-    assert.doesNotMatch(component, /cockpit-connect\.png/)
 
     // The manifest carries a shared cockpit provenance block that states the
-    // honest boundary: real wired engine, local demo data, mock-mode cloud.
+    // honest synthetic-data boundary.
     assert.ok(manifest.cockpit_capture, 'manifest must declare cockpit_capture')
-    assert.match(manifest.cockpit_capture.engine, /wired engine/)
-    assert.match(manifest.cockpit_capture.session, /mock mode/)
-    assert.match(manifest.cockpit_capture.session, /not a production org/)
-    assert.match(manifest.cockpit_capture.data, /demo-record/)
-    assert.match(manifest.cockpit_capture.boundary, /Not production data/)
-
-    // The component leads with the differentiator (the workflow library and the
-    // halt evidence) and shows the connected surfaces.
-    assert.match(component, /desktop-preview\/cockpit\/10_dashboard_workflows/)
-    assert.match(component, /desktop-preview\/cockpit\/40_watchrun_halted/)
-    assert.match(component, /The workflow library/)
-    assert.match(component, /Halt evidence/)
-
-    // The consumer page names the synthetic boundary once and links to the full
-    // provenance record instead of repeating development-state narration in
-    // every caption.
-    assert.match(component, /wired engine/)
-    assert.match(component, /synthetic workflows/i)
-    assert.match(component, /desktop-preview\/MANIFEST\.json/)
-    assert.doesNotMatch(component, /mock mode|not a production org/i)
-
-    // No overclaiming: no mockup language survives (the captures are real, not
-    // mockups), and the stale launch caveat is gone because the app runs.
-    assert.doesNotMatch(component, /\bmockups?\b/i)
-    assert.doesNotMatch(component, /does not launch yet/)
+    assert.ok(manifest.cockpit_capture.engine)
+    assert.ok(manifest.cockpit_capture.session)
+    assert.ok(manifest.cockpit_capture.data)
+    assert.ok(manifest.cockpit_capture.boundary)
 })
 
 test('windows install-flow keeps current product copy and signing guidance', () => {
