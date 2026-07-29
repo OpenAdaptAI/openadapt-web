@@ -17,7 +17,7 @@ const COCKPIT_LEAD = [
     {
         src: '/desktop-preview/cockpit/10_dashboard_workflows.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'The workflow library',
         alt: 'Synthetic OpenAdapt Desktop workflow library with one halted and one verified workflow, rendered from Desktop PR #93.',
         testid: 'desktop-preview-cockpit-dashboard',
@@ -27,7 +27,7 @@ const COCKPIT_LEAD = [
     {
         src: '/desktop-preview/cockpit/40_watchrun_halted.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'Halt evidence: this run stopped safely',
         alt: 'Synthetic Desktop run detail with a halted step and the evidence reason for the safe stop.',
         testid: 'desktop-preview-cockpit-halt',
@@ -40,7 +40,7 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/45_watchrun_verified.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'A verified run',
         alt: 'Synthetic Desktop run detail showing a verified six-step workflow and its evidence contract.',
         testid: 'desktop-preview-cockpit-verified',
@@ -50,7 +50,7 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/50_teach.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'Teach the fix',
         alt: 'OpenAdapt Desktop "Teach the fix" surface: the halted type-note step with its verification-failure reason, and options to re-record the step or describe the correct target.',
         testid: 'desktop-preview-cockpit-teach',
@@ -60,7 +60,7 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/20_settings.png',
         width: 1600,
-        height: 1348,
+        height: 1100,
         label: 'Settings and policy',
         alt: 'Synthetic Desktop settings showing the local and Cloud connection controls.',
         testid: 'desktop-preview-cockpit-settings',
@@ -70,7 +70,7 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/05_onboarding.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'First-run onboarding',
         alt: 'Synthetic Desktop first-run onboarding for recording a workflow.',
         testid: 'desktop-preview-cockpit-onboarding',
@@ -80,7 +80,7 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/30_record.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'Record and review',
         alt: 'OpenAdapt Desktop record surface in its idle state, ready to capture a demonstration, with a Start recording button.',
         testid: 'desktop-preview-cockpit-record',
@@ -90,7 +90,7 @@ const COCKPIT_GRID = [
     {
         src: '/desktop-preview/cockpit/01_login.png',
         width: 1600,
-        height: 1085,
+        height: 1100,
         label: 'Sign in',
         alt: 'Synthetic Desktop connection surface with local cockpit and Cloud sign-in options.',
         testid: 'desktop-preview-cockpit-login',
@@ -338,7 +338,7 @@ export default function DesktopPreview() {
                     provenance is published below.
                 </p>
 
-                <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+                <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
                     {COCKPIT_LEAD.map((item) => (
                         <figure key={item.src}>
                             <WindowFrame title="OpenAdapt Desktop">
@@ -364,7 +364,7 @@ export default function DesktopPreview() {
                     ))}
                 </div>
 
-                <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+                <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
                     {COCKPIT_GRID.map((item) => (
                         <figure key={item.src}>
                             <WindowFrame title="OpenAdapt Desktop">
