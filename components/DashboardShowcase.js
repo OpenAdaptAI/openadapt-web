@@ -180,6 +180,8 @@ export default function DashboardShowcase() {
                         This is the hosted product running today at
                         app.openadapt.ai. Workflows, runs, evidence, and
                         reports stay connected in one reviewable dashboard.
+                        When a run needs a person, the same decision arrives
+                        as one focused mobile handoff.
                     </p>
                 </div>
 
@@ -350,12 +352,16 @@ export default function DashboardShowcase() {
                 <div className={styles.actions}>
                     <a
                         className="btn-ink"
+                        data-testid="mobile-decision-demo-link"
+                        href="https://app.openadapt.ai/demo/attention"
+                    >
+                        See a mobile decision
+                    </a>
+                    <a
+                        className="btn-ghost-ink"
                         href="https://app.openadapt.ai/demo"
                     >
-                        Explore the public demo
-                    </a>
-                    <a className="btn-ghost-ink" href="/pricing">
-                        See launch plans
+                        Explore the full demo
                     </a>
                 </div>
             </div>
