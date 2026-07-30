@@ -172,8 +172,10 @@ export default function RdpHybridPresentation({
     graphSrc = '/demos/rdp/program-graph.json',
     timelineSrc = '/demos/rdp/presentation.timeline.json',
 }) {
+    const shellRef = useRef(null)
     const videoRef = useRef(null)
     const stageRef = useRef(null)
+    const startedRef = useRef(false)
     const [manifest, setManifest] = useState(null)
     const [graph, setGraph] = useState(null)
     const [timelinePayload, setTimelinePayload] = useState(null)
@@ -212,12 +214,34 @@ export default function RdpHybridPresentation({
             const video = videoRef.current
             if (!video) return
             if (media.matches) video.pause()
-            else if (video.paused) void video.play().catch(() => {})
         }
         update()
         media.addEventListener?.('change', update)
         return () => media.removeEventListener?.('change', update)
     }, [])
+
+    useEffect(() => {
+        if (reducedMotion || startedRef.current) return undefined
+        const shell = shellRef.current
+        const video = videoRef.current
+        if (!shell || !video || !window.IntersectionObserver) return undefined
+
+        const observer = new window.IntersectionObserver(
+            ([intersection]) => {
+                if (!intersection?.isIntersecting || intersection.intersectionRatio < 0.4) {
+                    return
+                }
+                startedRef.current = true
+                void video.play().catch(() => {
+                    startedRef.current = false
+                })
+                observer.disconnect()
+            },
+            { threshold: [0.4] }
+        )
+        observer.observe(shell)
+        return () => observer.disconnect()
+    }, [reducedMotion])
 
     useEffect(() => {
         const video = videoRef.current
@@ -270,6 +294,7 @@ export default function RdpHybridPresentation({
         const video = videoRef.current
         if (!video) return
         if (video.paused) {
+            startedRef.current = true
             if (video.ended || video.currentTime >= video.duration - 0.1) {
                 video.currentTime = 0
             }
@@ -298,7 +323,11 @@ export default function RdpHybridPresentation({
     }
 
     return (
-        <section className={styles.shell} aria-label="RDP execution presentation">
+        <section
+            ref={shellRef}
+            className={styles.shell}
+            aria-label="RDP execution presentation"
+        >
             <div className={styles.topline}>
                 <span>Recorded reference execution</span>
                 <span className={styles.boundLabel}>Evidence-bound view</span>
@@ -318,7 +347,6 @@ export default function RdpHybridPresentation({
                         ref={videoRef}
                         className={styles.video}
                         controls={false}
-                        autoPlay={!reducedMotion}
                         muted
                         playsInline
                         poster={poster}
