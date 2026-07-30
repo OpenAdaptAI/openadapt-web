@@ -3,7 +3,40 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './RdpHybridPresentation.module.css'
 
 const MISSING_TIMELINE =
-    'The exported presentation has no exact media-time binding yet. OpenAdapt still shows the authenticated media and artifacts, but it does not infer a phase from playback time.'
+    'The media timeline is unavailable. OpenAdapt shows the authenticated video and artifacts, but it does not infer a phase from playback time.'
+
+// These labels only describe renderer phases. The runtime facts stay in the
+// exporter payload and are rendered below without a frontend interpretation.
+const PHASE_PRESENTATION = {
+    execute_request: {
+        label: 'Authorized request',
+        detail: 'A qualified request enters the execution boundary.',
+    },
+    demonstration: {
+        label: 'Demonstrate through RDP',
+        detail: 'The presentation replays retained operator input.',
+    },
+    compiled_workflow: {
+        label: 'Compiled workflow',
+        detail: 'OpenAdapt exposes the exact exported workflow node.',
+    },
+    governed_replay: {
+        label: 'Governed replay',
+        detail: 'The runner replays the qualified workflow with fresh observations.',
+    },
+    independent_effect_check: {
+        label: 'Independent effect proof',
+        detail: 'The configured verifier determines the result.',
+    },
+    wrong_record_refusal: {
+        label: 'Wrong-record refusal',
+        detail: 'The qualified workflow stops before the consequential action.',
+    },
+    terminal_summary: {
+        label: 'Execution result',
+        detail: 'The presentation shows the retained terminal result.',
+    },
+}
 
 const clamp = (value, minimum, maximum) =>
     Math.min(Math.max(value, minimum), maximum)
@@ -54,39 +87,111 @@ function Marker({ type }) {
     )
 }
 
-function validChapter(chapter, durationMs) {
-    if (!chapter || typeof chapter !== 'object') return false
-    if (typeof chapter.id !== 'string' || !chapter.id) return false
-    if (typeof chapter.start_ms !== 'number' || typeof chapter.end_ms !== 'number') {
-        return false
-    }
-    if (chapter.start_ms < 0 || chapter.end_ms <= chapter.start_ms) return false
-    if (chapter.end_ms > durationMs) return false
-    if (!chapter.presentation || typeof chapter.presentation !== 'object') return false
-    if (typeof chapter.presentation.phase !== 'string') return false
-    if (!Array.isArray(chapter.presentation.graph_node_ids)) return false
-    return true
-}
-
 function validTimeline(timeline, manifest) {
     if (!timeline || typeof timeline !== 'object') return null
-    if (timeline.schema_version !== 'openadapt.rdp-media-timeline.v1') return null
-    if (timeline.video_sha256 !== manifest?.video_sha256) return null
-    if (!Number.isFinite(timeline.duration_ms) || timeline.duration_ms <= 0) return null
-    if (!Array.isArray(timeline.chapters) || !timeline.chapters.length) return null
-    if (!timeline.chapters.every((chapter) => validChapter(chapter, timeline.duration_ms))) {
+    if (timeline.schema_version !== 'openadapt.rdp-hybrid-presentation.v1') {
         return null
     }
+    const derivative = timeline.derivative
+    if (!derivative || typeof derivative !== 'object') return null
+    if (derivative.video_sha256 !== manifest?.video_sha256) return null
+    if (derivative.video !== manifest?.video) return null
+    if (!Number.isInteger(derivative.fps) || derivative.fps <= 0) return null
+    if (!Number.isInteger(derivative.frame_count) || derivative.frame_count <= 0) {
+        return null
+    }
+    if (timeline.program_graph_sha256 !== manifest?.program_graph_sha256) return null
+    if (!Array.isArray(timeline.timeline) || !timeline.timeline.length) return null
+    const duration = derivative.frame_count / derivative.fps
+    let expectedStart = 0
+    const valid = timeline.timeline.every((entry) => {
+        if (!entry || typeof entry !== 'object') return false
+        if (typeof entry.phase !== 'string' || !PHASE_PRESENTATION[entry.phase]) {
+            return false
+        }
+        if (!Number.isInteger(entry.start_frame)) return false
+        if (!Number.isInteger(entry.end_frame_exclusive)) return false
+        if (
+            entry.start_frame !== expectedStart ||
+            entry.start_frame < 0 ||
+            entry.end_frame_exclusive <= entry.start_frame
+        ) {
+            return false
+        }
+        if (entry.end_frame_exclusive > derivative.frame_count) return false
+        if (!Number.isFinite(entry.start_pts_s) || !Number.isFinite(entry.end_pts_s)) {
+            return false
+        }
+        if (entry.start_pts_s !== entry.start_frame / derivative.fps) return false
+        if (entry.end_pts_s !== entry.end_frame_exclusive / derivative.fps) return false
+        expectedStart = entry.end_frame_exclusive
+        return entry.end_pts_s <= duration
+    })
+    if (!valid || expectedStart !== derivative.frame_count) return null
     return timeline
 }
 
-function activeChapter(timeline, currentMs) {
+function activeEntry(timeline, currentMs) {
     if (!timeline) return null
-    return (
-        timeline.chapters.find(
-            (chapter) => currentMs >= chapter.start_ms && currentMs < chapter.end_ms
-        ) ?? timeline.chapters.at(-1)
+    const frame = Math.min(
+        timeline.derivative.frame_count - 1,
+        Math.max(0, Math.floor((currentMs / 1000) * timeline.derivative.fps))
     )
+    return (
+        timeline.timeline.find(
+            (entry) =>
+                frame >= entry.start_frame && frame < entry.end_frame_exclusive
+        ) ?? timeline.timeline.at(-1)
+    )
+}
+
+function phaseChapters(timeline) {
+    if (!timeline) return []
+    const chapters = []
+    for (const entry of timeline.timeline) {
+        const previous = chapters.at(-1)
+        if (previous?.phase === entry.phase) {
+            previous.end_pts_s = entry.end_pts_s
+            previous.end_frame_exclusive = entry.end_frame_exclusive
+        } else {
+            chapters.push({
+                phase: entry.phase,
+                start_pts_s: entry.start_pts_s,
+                end_pts_s: entry.end_pts_s,
+                start_frame: entry.start_frame,
+                end_frame_exclusive: entry.end_frame_exclusive,
+            })
+        }
+    }
+    return chapters
+}
+
+function factsAsSignals(facts) {
+    if (!facts || typeof facts !== 'object') return []
+    const signals = []
+    if (Object.hasOwn(facts, 'model_calls')) {
+        signals.push({ type: 'flow', label: 'Model calls', value: String(facts.model_calls) })
+    }
+    if (typeof facts.identity === 'string') {
+        signals.push({ type: 'identity', label: 'Identity', value: facts.identity })
+    }
+    if (typeof facts.effect === 'string') {
+        signals.push({
+            type: facts.effect === 'not_written' ? 'halt' : 'proof',
+            label: 'Effect',
+            value: facts.effect,
+        })
+    }
+    if (typeof facts.effect_verifier_kind === 'string') {
+        signals.push({ type: 'proof', label: 'Verifier', value: facts.effect_verifier_kind })
+    }
+    if (typeof facts.authorization === 'string') {
+        signals.push({ type: 'identity', label: 'Authorization', value: facts.authorization })
+    }
+    if (typeof facts.outcome === 'string') {
+        signals.push({ type: 'flow', label: 'Outcome', value: facts.outcome })
+    }
+    return signals
 }
 
 export default function RdpHybridPresentation({
@@ -156,10 +261,25 @@ export default function RdpHybridPresentation({
         () => validTimeline(timelinePayload, manifest),
         [manifest, timelinePayload]
     )
-    const chapter = activeChapter(timeline, currentMs)
-    const activeNodeIds = new Set(chapter?.presentation?.graph_node_ids ?? [])
+    const entry = activeEntry(timeline, currentMs)
+    const chapters = useMemo(() => phaseChapters(timeline), [timeline])
+    const chapter = chapters.find(
+        (item) =>
+            entry &&
+            entry.start_frame >= item.start_frame &&
+            entry.start_frame < item.end_frame_exclusive
+    )
+    const activeNodeIds = new Set(
+        entry?.compiled_graph?.node_id ? [entry.compiled_graph.node_id] : []
+    )
     const nodes = Array.isArray(graph?.nodes) ? graph.nodes : []
-    const progress = durationMs ? clamp((currentMs / durationMs) * 100, 0, 100) : 0
+    const activeNode = nodes.find((node) => node.id === entry?.compiled_graph?.node_id)
+    const parameterNames = Array.isArray(graph?.bundle?.params)
+        ? graph.bundle.params
+              .map((parameter) => parameter?.name)
+              .filter((name) => typeof name === 'string')
+        : []
+    const phaseContent = entry ? PHASE_PRESENTATION[entry.phase] : null
 
     const toggle = () => {
         const video = videoRef.current
@@ -171,7 +291,13 @@ export default function RdpHybridPresentation({
     const seek = (milliseconds) => {
         const video = videoRef.current
         if (!video || !timeline) return
-        const exactMs = clamp(milliseconds, 0, timeline.duration_ms)
+        const exactMs = clamp(
+            milliseconds,
+            0,
+            Math.round(
+                (timeline.derivative.frame_count / timeline.derivative.fps) * 1000
+            )
+        )
         video.currentTime = exactMs / 1000
         setCurrentMs(exactMs)
     }
@@ -213,9 +339,9 @@ export default function RdpHybridPresentation({
                         Your browser does not support this presentation.
                     </video>
                     <div className={styles.frame} aria-hidden="true" />
-                    <div className={styles.phaseBadge} data-known={Boolean(chapter)}>
-                        <span>{chapter?.presentation?.phase ?? 'Authenticated media'}</span>
-                        <strong>{chapter?.presentation?.outcome ?? 'Evidence view'}</strong>
+                    <div className={styles.phaseBadge} data-known={Boolean(entry)}>
+                        <span>{phaseContent?.label ?? 'Authenticated media'}</span>
+                        <strong>{entry?.facts?.outcome ?? 'Evidence view'}</strong>
                     </div>
                     <button type="button" className={styles.playButton} onClick={toggle}>
                         <span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span>
@@ -243,13 +369,13 @@ export default function RdpHybridPresentation({
                         <p>Execution intelligence</p>
                         <span>{timeline ? 'exact timeline' : 'artifact-bound'}</span>
                     </div>
-                    {chapter ? (
+                    {entry && phaseContent ? (
                         <>
-                            <h3>{chapter.presentation.headline}</h3>
-                            <p>{chapter.presentation.detail}</p>
+                            <h3>{phaseContent.label}</h3>
+                            <p>{phaseContent.detail}</p>
                             <div className={styles.signalList}>
-                                {(chapter.presentation.signals ?? []).map((signal) => (
-                                    <div key={`${chapter.id}-${signal.type}-${signal.label}`} className={styles.signal}>
+                                {factsAsSignals(entry.facts).map((signal) => (
+                                    <div key={`${entry.start_frame}-${signal.type}-${signal.label}`} className={styles.signal}>
                                         <Marker type={signal.type} />
                                         <div>
                                             <strong>{signal.label}</strong>
@@ -257,6 +383,26 @@ export default function RdpHybridPresentation({
                                         </div>
                                     </div>
                                 ))}
+                                {activeNode && (
+                                    <div className={styles.signal}>
+                                        <Marker type="flow" />
+                                        <div>
+                                            <strong>Compiled node</strong>
+                                            <span>{activeNode.title}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {entry.source_frame && (
+                                    <div className={styles.signal}>
+                                        <Marker type="flow" />
+                                        <div>
+                                            <strong>Retained source frame</strong>
+                                            <span>
+                                                {entry.source_frame.presentation_phase} · {entry.source_frame.file}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </>
                     ) : (
@@ -275,19 +421,20 @@ export default function RdpHybridPresentation({
             </div>
 
             <div className={styles.rail} aria-label="Presentation chapters">
-                {(timeline?.chapters ?? []).map((item, index) => {
-                    const selected = item.id === chapter?.id
+                {chapters.map((item, index) => {
+                    const selected = item.phase === chapter?.phase
+                    const presentation = PHASE_PRESENTATION[item.phase]
                     return (
                         <button
-                            key={item.id}
+                            key={`${item.phase}-${item.start_frame}`}
                             type="button"
                             className={styles.chapter}
                             data-active={selected}
-                            onClick={() => seek(item.start_ms)}
+                            onClick={() => seek(Math.round(item.start_pts_s * 1000))}
                         >
                             <span>{String(index + 1).padStart(2, '0')}</span>
-                            <strong>{item.presentation.nav_label}</strong>
-                            <small>{item.presentation.outcome}</small>
+                            <strong>{presentation.label}</strong>
+                            <small>{timeLabel(Math.round(item.start_pts_s * 1000))}</small>
                         </button>
                     )
                 })}
@@ -298,7 +445,11 @@ export default function RdpHybridPresentation({
                 <div className={styles.graphHeader}>
                     <div>
                         <p>Compiled workflow</p>
-                        <span>Only exact exported graph nodes appear here.</span>
+                        <span>
+                            {parameterNames.length
+                                ? `Parameters: ${parameterNames.map((name) => `$${name}`).join(' · ')}`
+                                : 'Only exact exported graph nodes appear here.'}
+                        </span>
                     </div>
                     <span className={styles.motion}>{reducedMotion ? 'Reduced motion' : 'Media-synced'}</span>
                 </div>
