@@ -86,6 +86,12 @@ export default function CommercialOffer({ hostedOffer }) {
                         </Link>
                     </article>
                 </div>
+                <p className="mt-5 text-center text-sm leading-relaxed text-ink-2">
+                    Building vertical software or operating workflows for clients?{' '}
+                    <Link href="/execute" className="font-medium text-accent hover:underline">
+                        Explore OpenAdapt Execute.
+                    </Link>
+                </p>
             </div>
         </section>
     )
