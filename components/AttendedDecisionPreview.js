@@ -52,7 +52,8 @@ export default function AttendedDecisionPreview() {
                     data-testid="attended-decision-capture"
                 />
                 <figcaption>
-                    Exact public Cloud capture · synthetic OpenEMR data
+                    OpenEMR example · “patient record” is this workflow’s
+                    qualified entity class · synthetic data
                 </figcaption>
             </figure>
             <div className={styles.copy}>
