@@ -93,6 +93,9 @@ export default function PartnersPage() {
                     inside customer boundaries. The runtime is MIT-licensed;
                     the partnership adds commercial terms, qualification
                     method, and support boundaries.
+                    {' '}<Link href="/execute" className="text-accent">
+                        See OpenAdapt Execute for OEM integrations.
+                    </Link>
                 </p>
 
                 <section className="mt-12" aria-labelledby="tracks-heading">
