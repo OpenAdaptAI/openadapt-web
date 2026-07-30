@@ -286,6 +286,11 @@ export default function Footer({
                                     </FooterLink>
                                 </li>
                                 <li>
+                                    <FooterLink href="/execute">
+                                        OpenAdapt Execute
+                                    </FooterLink>
+                                </li>
+                                <li>
                                     <FooterLink href="/templates">
                                         Templates
                                     </FooterLink>
