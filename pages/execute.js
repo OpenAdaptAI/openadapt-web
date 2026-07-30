@@ -127,7 +127,7 @@ export default function ExecutePage() {
                                     Watch one transaction cross RDP, verify, and refuse the wrong record.
                                 </h2>
                                 <p className="mt-4 max-w-3xl text-base leading-relaxed text-ink-2">
-                                    A human books a synthetic appointment through a real RDP client and server. OpenAdapt compiles that exact demonstration, replays it with different inputs, checks the saved database row through a separate read-only connection, and halts when the active record changes before Save.
+                                    The demonstration books a synthetic appointment through a real RDP client and server. OpenAdapt compiles that exact demonstration, replays it with different inputs, checks the saved database row through a separate read-only connection, and halts when the active record changes before Save.
                                 </p>
                                 <div className="mt-6 overflow-hidden rounded-2xl border border-hairline bg-ink">
                                     <video
