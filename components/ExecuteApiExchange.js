@@ -15,17 +15,17 @@ export default function ExecuteApiExchange() {
             <ol className={styles.messages}>
                 <li>
                     <p className={styles.label}>1 · Submit an authorized transaction</p>
-                    <pre aria-label="Execute API request"><CodeLine><span className={styles.method}>POST</span> /v1/executions</CodeLine><CodeLine>{'{ "idempotency_key": "txn_…", "input": { … } }'}</CodeLine></pre>
+                    <pre aria-label="Execute API request"><CodeLine><span className={styles.method}>POST</span> /v1/executions</CodeLine><CodeLine>{'{'}</CodeLine><CodeLine>{'  "schema_version":'}</CodeLine><CodeLine>{'    "openadapt.execute-request/v1",'}</CodeLine><CodeLine>{'  "idempotency_key": "txn_…",'}</CodeLine><CodeLine>{'  "parameters": { … }'}</CodeLine><CodeLine>{'}'}</CodeLine></pre>
                     <p className={styles.note}>Your product supplies structured input. The qualified workflow defines the permitted effect.</p>
                 </li>
                 <li>
                     <p className={styles.label}>2 · Keep the transaction identity</p>
-                    <pre aria-label="Execute API accepted response"><CodeLine><span className={styles.status}>202 Accepted</span></CodeLine><CodeLine>{'{ "execution_id": "exec_…", "state": "queued" }'}</CodeLine></pre>
+                    <pre aria-label="Execute API accepted response"><CodeLine><span className={styles.status}>202 Accepted</span></CodeLine><CodeLine>{'{'}</CodeLine><CodeLine>{'  "schema_version":'}</CodeLine><CodeLine>{'    "openadapt.execute-accepted/v1",'}</CodeLine><CodeLine>{'  "execution_id": "exec_…",'}</CodeLine><CodeLine>{'  "state": "queued"'}</CodeLine><CodeLine>{'}'}</CodeLine></pre>
                     <p className={styles.note}>Acceptance is not a success claim. Poll this ID if your webhook endpoint is unavailable.</p>
                 </li>
                 <li>
                     <p className={styles.label}>3 · Verify the terminal delivery</p>
-                    <pre aria-label="Signed terminal webhook"><CodeLine><span className={styles.webhook}>POST</span> https://your-product.example/hooks/openadapt</CodeLine><CodeLine>OpenAdapt-Signature: t=…, v1=…</CodeLine><CodeLine>{'{ "event_type": "execution.terminal",'}</CodeLine><CodeLine>{'  "receipt": { "outcome": "VERIFIED", … } }'}</CodeLine></pre>
+                    <pre aria-label="Signed terminal webhook"><CodeLine><span className={styles.webhook}>POST</span> /hooks/openadapt</CodeLine><CodeLine>{'{'}</CodeLine><CodeLine>{'  "schema_version":'}</CodeLine><CodeLine>{'    "openadapt.execute-webhook/v1",'}</CodeLine><CodeLine>{'  "event_type": "execution.terminal",'}</CodeLine><CodeLine>{'  "receipt": {'}</CodeLine><CodeLine>{'    "outcome": "verified", …'}</CodeLine><CodeLine>{'  },'}</CodeLine><CodeLine>{'  "signature": "hmac-sha256:…"'}</CodeLine><CodeLine>{'}'}</CodeLine></pre>
                     <p className={styles.note}>Verify the signature and store the receipt. The outcome can also require reconciliation instead of a retry.</p>
                 </li>
             </ol>

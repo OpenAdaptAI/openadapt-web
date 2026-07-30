@@ -7,7 +7,7 @@ const outcomes = [
         type: 'verified',
     },
     {
-        name: 'HALTED',
+        name: 'HALTED_BEFORE_EFFECT',
         detail: 'The runner stopped when its authorization, target, identity, or policy evidence did not match.',
         type: 'halted',
     },

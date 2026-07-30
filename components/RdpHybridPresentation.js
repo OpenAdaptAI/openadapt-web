@@ -52,41 +52,6 @@ const readJson = async (source) => {
     return response.json()
 }
 
-function Marker({ type }) {
-    if (type === 'identity') {
-        return (
-            <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.icon}>
-                <path d="M12 3 20 7v5c0 4.5-3.2 7.6-8 9-4.8-1.4-8-4.5-8-9V7l8-4Z" />
-                <path d="m8.6 12.1 2.1 2.1 4.8-5" />
-            </svg>
-        )
-    }
-    if (type === 'proof') {
-        return (
-            <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.icon}>
-                <circle cx="12" cy="12" r="8.5" />
-                <path d="m8.4 12.2 2.3 2.3 5-5.2" />
-            </svg>
-        )
-    }
-    if (type === 'halt') {
-        return (
-            <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.icon}>
-                <path d="M12 3.5 21 20H3l9-16.5Z" />
-                <path d="M12 9v4.8M12 17.2h.01" />
-            </svg>
-        )
-    }
-    return (
-        <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.icon}>
-            <path d="M5 6.5h14M5 12h14M5 17.5h14" />
-            <circle cx="7" cy="6.5" r="1" />
-            <circle cx="12" cy="12" r="1" />
-            <circle cx="17" cy="17.5" r="1" />
-        </svg>
-    )
-}
-
 function validTimeline(timeline, manifest) {
     if (!timeline || typeof timeline !== 'object') return null
     if (timeline.schema_version !== 'openadapt.rdp-hybrid-presentation.v1') {
@@ -166,32 +131,38 @@ function phaseChapters(timeline) {
     return chapters
 }
 
-function factsAsSignals(facts) {
-    if (!facts || typeof facts !== 'object') return []
-    const signals = []
-    if (Object.hasOwn(facts, 'model_calls')) {
-        signals.push({ type: 'flow', label: 'Model calls', value: String(facts.model_calls) })
-    }
-    if (typeof facts.identity === 'string') {
-        signals.push({ type: 'identity', label: 'Identity', value: facts.identity })
-    }
-    if (typeof facts.effect === 'string') {
-        signals.push({
-            type: facts.effect === 'not_written' ? 'halt' : 'proof',
-            label: 'Effect',
-            value: facts.effect,
-        })
-    }
-    if (typeof facts.effect_verifier_kind === 'string') {
-        signals.push({ type: 'proof', label: 'Verifier', value: facts.effect_verifier_kind })
-    }
-    if (typeof facts.authorization === 'string') {
-        signals.push({ type: 'identity', label: 'Authorization', value: facts.authorization })
-    }
-    if (typeof facts.outcome === 'string') {
-        signals.push({ type: 'flow', label: 'Outcome', value: facts.outcome })
-    }
-    return signals
+function evidencePath(entry, activeNode) {
+    const facts = entry?.facts ?? {}
+    return [
+        {
+            label: 'Request',
+            value:
+                typeof facts.authorization === 'string'
+                    ? facts.authorization
+                    : null,
+        },
+        {
+            label: 'Identity',
+            value: typeof facts.identity === 'string' ? facts.identity : null,
+        },
+        {
+            label: 'Compiled action',
+            value: activeNode?.title ?? null,
+        },
+        {
+            label: 'Effect proof',
+            value:
+                typeof facts.effect === 'string'
+                    ? [facts.effect, facts.effect_verifier_kind]
+                          .filter((value) => typeof value === 'string')
+                          .join(' · ')
+                    : null,
+        },
+        {
+            label: 'Outcome',
+            value: typeof facts.outcome === 'string' ? facts.outcome : null,
+        },
+    ]
 }
 
 export default function RdpHybridPresentation({
@@ -202,6 +173,7 @@ export default function RdpHybridPresentation({
     timelineSrc = '/demos/rdp/presentation.timeline.json',
 }) {
     const videoRef = useRef(null)
+    const stageRef = useRef(null)
     const [manifest, setManifest] = useState(null)
     const [graph, setGraph] = useState(null)
     const [timelinePayload, setTimelinePayload] = useState(null)
@@ -209,7 +181,7 @@ export default function RdpHybridPresentation({
     const [currentMs, setCurrentMs] = useState(0)
     const [durationMs, setDurationMs] = useState(0)
     const [playing, setPlaying] = useState(false)
-    const [reducedMotion, setReducedMotion] = useState(false)
+    const [reducedMotion, setReducedMotion] = useState(true)
 
     useEffect(() => {
         let active = true
@@ -234,7 +206,13 @@ export default function RdpHybridPresentation({
 
     useEffect(() => {
         const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-        const update = () => setReducedMotion(media.matches)
+        const update = () => {
+            setReducedMotion(media.matches)
+            const video = videoRef.current
+            if (!video) return
+            if (media.matches) video.pause()
+            else if (video.paused) void video.play().catch(() => {})
+        }
         update()
         media.addEventListener?.('change', update)
         return () => media.removeEventListener?.('change', update)
@@ -274,6 +252,7 @@ export default function RdpHybridPresentation({
     )
     const nodes = Array.isArray(graph?.nodes) ? graph.nodes : []
     const activeNode = nodes.find((node) => node.id === entry?.compiled_graph?.node_id)
+    const evidence = evidencePath(entry, activeNode)
     const parameterNames = Array.isArray(graph?.bundle?.params)
         ? graph.bundle.params
               .map((parameter) => parameter?.name)
@@ -284,7 +263,12 @@ export default function RdpHybridPresentation({
     const toggle = () => {
         const video = videoRef.current
         if (!video) return
-        if (video.paused) void video.play()
+        if (video.paused) {
+            if (video.ended || video.currentTime >= video.duration - 0.1) {
+                video.currentTime = 0
+            }
+            void video.play()
+        }
         else video.pause()
     }
 
@@ -299,27 +283,36 @@ export default function RdpHybridPresentation({
             )
         )
         video.currentTime = exactMs / 1000
-        setCurrentMs(exactMs)
+    }
+
+    const expand = () => {
+        const stage = stageRef.current
+        if (!stage?.requestFullscreen) return
+        void stage.requestFullscreen()
     }
 
     return (
         <section className={styles.shell} aria-label="RDP execution presentation">
             <div className={styles.topline}>
-                <span className={styles.liveDot} aria-hidden="true" />
-                <span>Provenance-bound presentation</span>
+                <span>Recorded reference execution</span>
+                <span className={styles.boundLabel}>Evidence-bound view</span>
                 <span className={styles.digest}>
                     {manifest?.workflow_digest
                         ? `bundle ${manifest.workflow_digest.slice(0, 12)}`
                         : 'loading bundle binding'}
                 </span>
+                <a className={styles.mediaLink} href={videoSrc}>
+                    Open MP4
+                </a>
             </div>
 
             <div className={styles.grid}>
-                <div className={styles.stage}>
+                <div className={styles.stage} ref={stageRef}>
                     <video
                         ref={videoRef}
                         className={styles.video}
                         controls={false}
+                        autoPlay={!reducedMotion}
                         muted
                         playsInline
                         poster={poster}
@@ -329,6 +322,9 @@ export default function RdpHybridPresentation({
                         }}
                         onPlay={() => setPlaying(true)}
                         onPause={() => setPlaying(false)}
+                        onSeeked={(event) => {
+                            setCurrentMs(Math.round(event.currentTarget.currentTime * 1000))
+                        }}
                         onTimeUpdate={(event) => {
                             if (!event.currentTarget.requestVideoFrameCallback) {
                                 setCurrentMs(Math.round(event.currentTarget.currentTime * 1000))
@@ -338,14 +334,26 @@ export default function RdpHybridPresentation({
                         <source src={videoSrc} type="video/mp4" />
                         Your browser does not support this presentation.
                     </video>
-                    <div className={styles.frame} aria-hidden="true" />
                     <div className={styles.phaseBadge} data-known={Boolean(entry)}>
                         <span>{phaseContent?.label ?? 'Authenticated media'}</span>
                         <strong>{entry?.facts?.outcome ?? 'Evidence view'}</strong>
                     </div>
+                    <button
+                        type="button"
+                        className={styles.expandButton}
+                        onClick={expand}
+                    >
+                        Expand evidence
+                    </button>
                     <button type="button" className={styles.playButton} onClick={toggle}>
                         <span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span>
-                        <span>{playing ? 'Pause presentation' : 'Play presentation'}</span>
+                        <span>
+                            {playing
+                                ? 'Pause presentation'
+                                : currentMs >= durationMs - 120
+                                  ? 'Replay execution'
+                                  : 'Play presentation'}
+                        </span>
                     </button>
                     <div className={styles.scrubWrap}>
                         <input
@@ -354,6 +362,7 @@ export default function RdpHybridPresentation({
                             max={durationMs || 1}
                             value={clamp(currentMs, 0, durationMs || 1)}
                             aria-label="RDP presentation time"
+                            aria-valuetext={`${phaseContent?.label ?? 'Authenticated media'}, ${timeLabel(currentMs)}`}
                             onChange={(event) => seek(Number(event.target.value))}
                             disabled={!timeline}
                         />
@@ -364,44 +373,46 @@ export default function RdpHybridPresentation({
                     </div>
                 </div>
 
-                <aside className={styles.console} aria-live="polite">
+                <aside className={styles.console}>
+                    <p className={styles.srOnly} aria-live="polite">
+                        {phaseContent?.label ?? 'Authenticated media'}
+                    </p>
                     <div className={styles.consoleHeader}>
-                        <p>Execution intelligence</p>
-                        <span>{timeline ? 'exact timeline' : 'artifact-bound'}</span>
+                        <p>Verified execution</p>
+                        <span>{timeline ? 'exact frame link' : 'artifact-bound'}</span>
                     </div>
                     {entry && phaseContent ? (
                         <>
                             <h3>{phaseContent.label}</h3>
                             <p>{phaseContent.detail}</p>
-                            <div className={styles.signalList}>
-                                {factsAsSignals(entry.facts).map((signal) => (
-                                    <div key={`${entry.start_frame}-${signal.type}-${signal.label}`} className={styles.signal}>
-                                        <Marker type={signal.type} />
+                            <ol className={styles.evidencePath}>
+                                {evidence.map((stage, index) => (
+                                    <li
+                                        key={stage.label}
+                                        data-supported={Boolean(stage.value)}
+                                    >
+                                        <span>{String(index + 1).padStart(2, '0')}</span>
                                         <div>
-                                            <strong>{signal.label}</strong>
-                                            <span>{signal.value}</span>
+                                            <strong>{stage.label}</strong>
+                                            {stage.value && <small>{stage.value}</small>}
                                         </div>
-                                    </div>
+                                    </li>
                                 ))}
-                                {activeNode && (
-                                    <div className={styles.signal}>
-                                        <Marker type="flow" />
-                                        <div>
-                                            <strong>Compiled node</strong>
-                                            <span>{activeNode.title}</span>
-                                        </div>
-                                    </div>
-                                )}
+                            </ol>
+                            <div className={styles.exactDetails}>
                                 {entry.source_frame && (
-                                    <div className={styles.signal}>
-                                        <Marker type="flow" />
-                                        <div>
-                                            <strong>Retained source frame</strong>
-                                            <span>
-                                                {entry.source_frame.presentation_phase} · {entry.source_frame.file}
-                                            </span>
-                                        </div>
-                                    </div>
+                                    <p>
+                                        <strong>Retained frame</strong>
+                                        <span>
+                                            {entry.source_frame.presentation_phase} · {entry.source_frame.file}
+                                        </span>
+                                    </p>
+                                )}
+                                {Object.hasOwn(entry.facts ?? {}, 'model_calls') && (
+                                    <p>
+                                        <strong>Model calls</strong>
+                                        <span>{entry.facts.model_calls}</span>
+                                    </p>
                                 )}
                             </div>
                         </>
@@ -430,6 +441,7 @@ export default function RdpHybridPresentation({
                             type="button"
                             className={styles.chapter}
                             data-active={selected}
+                            aria-pressed={selected}
                             onClick={() => seek(Math.round(item.start_pts_s * 1000))}
                         >
                             <span>{String(index + 1).padStart(2, '0')}</span>

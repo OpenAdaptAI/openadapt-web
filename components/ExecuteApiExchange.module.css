@@ -32,7 +32,9 @@
 
 .messages li {
     position: relative;
+    min-width: 0;
     padding: 1rem;
+    overflow: hidden;
     border: 1px solid var(--hairline);
     border-radius: 0.75rem;
     background: var(--ground);
@@ -49,6 +51,7 @@
 }
 
 .messages pre {
+    max-width: 100%;
     padding: 0.8rem;
     margin: 0;
     overflow-x: auto;
@@ -60,7 +63,11 @@
     line-height: 1.65;
 }
 
-.line { display: block; white-space: pre; }
+.line {
+    display: block;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
 .method { color: #a9d7b5; }
 .status { color: #d9d68b; }
 .webhook { color: #9bc8d7; }

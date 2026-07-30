@@ -7,14 +7,14 @@ const stages = [
         kind: 'input',
     },
     {
+        title: 'OpenAdapt',
+        detail: 'Qualified contract and authorization',
+        kind: 'proof',
+    },
+    {
         title: 'Customer-controlled runner',
         detail: 'Local observation and actuation',
         kind: 'runner',
-    },
-    {
-        title: 'OpenAdapt',
-        detail: 'Proof or typed exception',
-        kind: 'proof',
     },
 ]
 
@@ -61,7 +61,7 @@ export default function ExecuteBoundaryFlow() {
     return (
         <figure className={styles.figure} aria-labelledby="execute-boundary-flow-title">
             <figcaption id="execute-boundary-flow-title" className={styles.srOnly}>
-                Authorized structured input moves from your product to a customer-controlled runner. The runner acts locally. OpenAdapt returns proof or a typed exception.
+                Your product sends authorized structured input to OpenAdapt. OpenAdapt binds it to a qualified contract and sends it to a customer-controlled runner. The runner acts locally. A signed receipt returns through OpenAdapt.
             </figcaption>
             <div className={styles.flow}>
                 {stages.map((stage, index) => (
@@ -79,7 +79,7 @@ export default function ExecuteBoundaryFlow() {
             </div>
             <div className={styles.returnLane}>
                 <Connector returnPath />
-                <p>Signed receipt returns to your product after verification or a governed stop.</p>
+                <p>A signed receipt returns through OpenAdapt after verification or a governed stop.</p>
             </div>
         </figure>
     )
