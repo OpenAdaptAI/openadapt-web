@@ -26,20 +26,24 @@ const STEPS = [
 
 const OUTCOMES = [
     {
-        label: 'VERIFIED',
+        label: 'verified',
         body: 'The runner completed the authorized work and proved the configured business effect.',
     },
     {
-        label: 'DECISION_REQUIRED',
-        body: 'An authorized operator receives one focused question on phone or computer, then the runner rechecks the live state before it continues.',
-    },
-    {
-        label: 'RECONCILIATION_REQUIRED',
+        label: 'reconciliation_required',
         body: 'The action may have reached the target, but the proof is incomplete. OpenAdapt does not repeat a consequential write blindly.',
     },
     {
-        label: 'HALTED_BEFORE_EFFECT',
+        label: 'halted_before_effect',
         body: 'The runner refused before a business effect when identity, target, authorization, or policy evidence did not match.',
+    },
+    {
+        label: 'rejected_policy',
+        body: 'The authorization or policy contract rejected the request before execution could proceed.',
+    },
+    {
+        label: 'failed_platform',
+        body: 'The execution platform failed before it could establish a verified business result.',
     },
 ]
 
@@ -121,7 +125,7 @@ export default function ExecutePage() {
                                 </article>
                             ))}
                         </div>
-                        <pre className="mt-8 overflow-x-auto rounded-2xl border border-hairline bg-ink p-5 text-sm leading-relaxed text-ground"><code>{`POST /executions\n→ 202 { execution_id, state: "QUEUED" }\n\nwebhook → { outcome: "VERIFIED", receipt: { ... } }\n     or { state: "DECISION_REQUIRED", decision_task: { ... } }`}</code></pre>
+                        <pre className="mt-8 overflow-x-auto rounded-2xl border border-hairline bg-ink p-5 text-sm leading-relaxed text-ground"><code>{`POST /v1/executions\n→ 202 { schema_version: "openadapt.execute-accepted/v1",\n        execution_id, state: "queued" }\n\nwebhook → { schema_version: "openadapt.execute-webhook/v1",\n            event_type: "execution.terminal", receipt: { outcome: "verified" } }`}</code></pre>
                         <p className="mt-3 text-sm leading-relaxed text-ink-3">
                             Execution is asynchronous. A run can wait for an authorized decision, survive a restart, or require reconciliation without losing its transaction identity.
                         </p>
@@ -142,6 +146,12 @@ export default function ExecutePage() {
                                 </article>
                             ))}
                         </div>
+                        <aside className="mt-5 rounded-2xl border border-hairline bg-ground p-5">
+                            <p className="font-mono text-xs font-semibold tracking-[0.12em] text-accent">decision_required · lifecycle state</p>
+                            <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                                This is not a terminal result. The signed decision webhook sends one focused request to an authorized phone or computer. After an answer, the runner rechecks the live application before it acts or issues a terminal receipt.
+                            </p>
+                        </aside>
                     </div>
                 </section>
 
