@@ -43,7 +43,11 @@ const OUTCOMES = [
     },
     {
         label: 'failed_platform',
-        body: 'The execution platform failed before it could establish a verified business result.',
+        body: 'The execution platform failed before any possible business effect.',
+    },
+    {
+        label: 'rolled_back_verified',
+        body: 'A configured compensating action completed and OpenAdapt independently verified its business effect.',
     },
 ]
 
