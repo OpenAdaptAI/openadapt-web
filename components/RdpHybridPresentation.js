@@ -182,6 +182,7 @@ export default function RdpHybridPresentation({
     const [durationMs, setDurationMs] = useState(0)
     const [playing, setPlaying] = useState(false)
     const [reducedMotion, setReducedMotion] = useState(true)
+    const [frameBindingAvailable, setFrameBindingAvailable] = useState(false)
 
     useEffect(() => {
         let active = true
@@ -220,7 +221,9 @@ export default function RdpHybridPresentation({
 
     useEffect(() => {
         const video = videoRef.current
-        if (!video?.requestVideoFrameCallback) return undefined
+        const available = Boolean(video?.requestVideoFrameCallback)
+        setFrameBindingAvailable(available)
+        if (!available) return undefined
         let callbackId
         let mounted = true
         const update = (_now, metadata) => {
@@ -236,8 +239,11 @@ export default function RdpHybridPresentation({
     }, [])
 
     const timeline = useMemo(
-        () => validTimeline(timelinePayload, manifest),
-        [manifest, timelinePayload]
+        () =>
+            frameBindingAvailable
+                ? validTimeline(timelinePayload, manifest)
+                : null,
+        [frameBindingAvailable, manifest, timelinePayload]
     )
     const entry = activeEntry(timeline, currentMs)
     const chapters = useMemo(() => phaseChapters(timeline), [timeline])
@@ -322,14 +328,6 @@ export default function RdpHybridPresentation({
                         }}
                         onPlay={() => setPlaying(true)}
                         onPause={() => setPlaying(false)}
-                        onSeeked={(event) => {
-                            setCurrentMs(Math.round(event.currentTarget.currentTime * 1000))
-                        }}
-                        onTimeUpdate={(event) => {
-                            if (!event.currentTarget.requestVideoFrameCallback) {
-                                setCurrentMs(Math.round(event.currentTarget.currentTime * 1000))
-                            }
-                        }}
                     >
                         <source src={videoSrc} type="video/mp4" />
                         Your browser does not support this presentation.
