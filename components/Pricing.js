@@ -406,10 +406,10 @@ export default function Pricing({ hostedOffer = null }) {
                             annually, plus scoped integration work.
                         </p>
                         <Link
-                            href="/qualify"
+                            href="/execute"
                             className="shrink-0 text-sm font-semibold text-accent underline"
                         >
-                            Discuss OEM
+                            Explore OpenAdapt Execute
                         </Link>
                     </aside>
                 </div>
