@@ -120,14 +120,14 @@ export default function ExecutePage() {
 
                 <section id="rdp-demo" className="scroll-mt-24 border-b border-hairline px-5 py-16 md:py-20">
                     <div className="mx-auto max-w-5xl">
-                        <p className="eyebrow">Real RDP execution</p>
+                        <p className="eyebrow">Real RDP qualification</p>
                         <div className="mt-3 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
                             <div>
                                 <h2 className="font-display text-3xl font-semibold tracking-tight text-ink">
-                                    See the external remote-session path.
+                                    Watch one transaction cross RDP, verify, and refuse the wrong record.
                                 </h2>
                                 <p className="mt-4 max-w-3xl text-base leading-relaxed text-ink-2">
-                                    This synthetic healthcare task crosses a real RDP client and server. OpenAdapt records the remote pixels, compiles the demonstration, verifies the intended record before the write, and checks the saved result outside the remote screen.
+                                    The demonstration books a synthetic appointment through a real RDP client and server. OpenAdapt compiles that exact demonstration, replays it with different inputs, checks the saved database row through a separate read-only connection, and halts when the active record changes before Save.
                                 </p>
                                 <div className="mt-6 overflow-hidden rounded-2xl border border-hairline bg-ink">
                                     <video
@@ -145,7 +145,7 @@ export default function ExecutePage() {
                                     </video>
                                 </div>
                                 <p className="mt-3 text-xs leading-relaxed text-ink-3">
-                                    Reference qualification with synthetic data. The video uses paced presentation timing and exact retained RDP frames. A customer application and environment receive their own qualification.
+                                    Reference qualification with synthetic data. The presentation uses exact retained RDP frames and the exported compiled graph. The slower timing affects the video only.
                                 </p>
                             </div>
                             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
@@ -154,16 +154,19 @@ export default function ExecutePage() {
                                     <p className="mt-2 text-sm leading-relaxed text-ink-2">Healthy RDP runs confirmed the intended identity and saved effect.</p>
                                 </article>
                                 <article className="rounded-2xl border border-hairline bg-panel p-5">
-                                    <p className="font-display text-3xl font-semibold text-ink">3 / 3</p>
-                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">Changed-screen trials halted before a write.</p>
+                                    <p className="font-display text-3xl font-semibold text-ink">6 / 6</p>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">Screen-drift and wrong-record trials halted before a write.</p>
                                 </article>
                                 <article className="rounded-2xl border border-hairline bg-panel p-5">
                                     <p className="font-display text-3xl font-semibold text-ink">0</p>
-                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">Model calls and silent incorrect successes in the accepted batch.</p>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">Model calls, wrong-record writes, and silent incorrect successes.</p>
                                 </article>
                                 <p className="flex flex-col gap-2 px-1 pt-2 text-sm">
                                     <JsonArtifactLink source="/demos/rdp/qualification.json" className="font-medium">
                                         Inspect the qualification evidence →
+                                    </JsonArtifactLink>
+                                    <JsonArtifactLink source="/demos/rdp/program-graph.json" className="font-medium">
+                                        Inspect the compiled workflow →
                                     </JsonArtifactLink>
                                     <a
                                         href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/backends/RDP.md"
