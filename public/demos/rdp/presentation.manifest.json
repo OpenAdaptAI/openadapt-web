@@ -8,40 +8,84 @@
     {
       "outcome": "RECORDED",
       "phase": "Demonstration",
-      "presented_frame_count": 5,
-      "source_frame_count": 5,
+      "presented_frame_count": 158,
+      "source_frame_count": 54,
       "summary": {
-        "actions": 4,
+        "actions": 8,
         "model_calls": 0,
+        "params": {
+          "appointment_slot": "2026-08-12 09:30",
+          "patient_mrn": "MRN A1001",
+          "request_id": "REQ-DEMO-001",
+          "visit_type": "Cardiology follow-up"
+        },
         "surface": "real RDP round-trip"
       }
     },
     {
       "outcome": "VERIFIED",
       "phase": "Governed replay",
-      "presented_frame_count": 5,
-      "source_frame_count": 5,
+      "presented_frame_count": 9,
+      "source_frame_count": 9,
       "summary": {
         "effect_confirmed": true,
         "identity_verified": true,
         "model_calls": 0,
-        "silent_incorrect_success": false
+        "silent_incorrect_success": false,
+        "verifier": {
+          "expected": {
+            "appointment_slot": "2026-08-14 10:45",
+            "patient_mrn": "MRN A1001",
+            "request_id": "REQ-LIVE-2048-1",
+            "status": "scheduled",
+            "visit_type": "Intake consultation"
+          },
+          "kind": "read-only SQL",
+          "query": "SELECT appointment_id, request_id, patient_mrn, patient_name, appointment_slot, visit_type, status FROM appointments",
+          "rows": [
+            {
+              "appointment_id": "APT-90F5510C",
+              "appointment_slot": "2026-08-14 10:45",
+              "patient_mrn": "MRN A1001",
+              "patient_name": "Ada Lovelace",
+              "request_id": "REQ-LIVE-2048-1",
+              "status": "scheduled",
+              "visit_type": "Intake consultation"
+            }
+          ]
+        },
+        "workflow_digest": "1639d92d9c92aa1ba3b87b017ba9a52eae8b2d2a8cbe0e6a3c9deead52df7664"
       }
     },
     {
       "outcome": "HALTED",
-      "phase": "Changed-screen refusal",
+      "phase": "Wrong-record refusal",
       "presented_frame_count": 1,
-      "source_frame_count": 1,
+      "source_frame_count": 9,
       "summary": {
         "effect_written": false,
+        "expected_record": "Ada Lovelace \u00b7 MRN A1001",
+        "identity_mismatch": true,
+        "identity_region": [
+          545,
+          118,
+          680,
+          55
+        ],
         "model_calls": 0,
-        "safety_halt": true
+        "observed_record": "Grace Hopper \u00b7 MRN B2002",
+        "safety_halt": true,
+        "verifier": {
+          "kind": "read-only SQL",
+          "rows": []
+        }
       }
     }
   ],
-  "schema_version": "openadapt.rdp-presentation-render.v1",
-  "timing": "paced presentation timing; source frames remain exact",
+  "program_graph_sha256": "9cffca5540f8fdb9bcbd9748906780d8369576508010af9a6741a64e93b755a3",
+  "schema_version": "openadapt.rdp-presentation-render.v2",
+  "timing": "paced derivative; source frames and input events remain exact",
   "video": "openadapt-rdp-demo.mp4",
-  "video_sha256": "66bced89b5c0d3a5ddd5b04f7ec1181c91f26030d6f0f2c14436405ffefa3812"
+  "video_sha256": "e556b59084864ebe643ab4650abf8d9ebdfd99d4548f5ebeeed21432e0c9f2fa",
+  "workflow_digest": "1639d92d9c92aa1ba3b87b017ba9a52eae8b2d2a8cbe0e6a3c9deead52df7664"
 }

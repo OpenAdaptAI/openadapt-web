@@ -1,7 +1,7 @@
 {
   "accepted": true,
-  "base_commit": "bd4c81e7e33353d275d6f4320663e6e187f73198",
-  "candidate_commit": "f23f6c75d3b480b56f195717e04f903714e3b66c",
+  "base_commit": "6673dd97de169d8c500031c4ac4c64a95bb71656",
+  "candidate_commit": "a3c71c1915ae7465306eb7106511bc1307ba162c",
   "caveat": "Synthetic Tk task over real FreeRDP-transported pixels + input, but NOT Citrix ICA/HDX, NOT the aardwolf transport, NOT a Windows application qualification, and the drift is simulated on the real protocol session (not WAN capture).",
   "contract": {
     "drift_false_completions": 0,
@@ -17,9 +17,14 @@
     "healthy_structural_rung_used": 0,
     "healthy_trials": 3,
     "healthy_visual_rungs_used": {
-      "template": 9
+      "template": 15
     },
-    "healthy_zero_model_calls": true
+    "healthy_zero_model_calls": true,
+    "wrong_record_false_completions": 0,
+    "wrong_record_identity_mismatches": 3,
+    "wrong_record_safely_halted": 3,
+    "wrong_record_silent_writes": 0,
+    "wrong_record_trials": 3
   },
   "environment": {
     "backend": "openadapt_flow FreeRDPBackend (pixel-only, use_structural off)",
@@ -35,7 +40,7 @@
     "pixel_identity_verify": "enabled for this synthetic qualification only",
     "rdp_client": "xfreerdp3 (FreeRDP3 client, fullscreen)",
     "rdp_server": "freerdp-shadow-cli3 (FreeRDP3 server)",
-    "runtime_effect_verifier": "DocumentHashVerifier over bind-mounted oracle",
+    "runtime_effect_verifier": "SqlRecordVerifier over a separate read-only SQLite connection",
     "surface": "Tk kiosk app served over RDP; observed on client display",
     "transport": "DockerX11RdpTransport (screenshot+xdotool over the RDP client)",
     "viewport": [
@@ -53,23 +58,38 @@
     "effect_not_runtime_verified",
     "policy_not_admitted",
     "drift_contract_violation",
+    "wrong_record_contract_violation",
     "reset_not_acknowledged"
   ],
-  "generated_at": "2026-07-30T18:36:11.714461+00:00",
+  "generated_at": "2026-07-30T20:45:29.227149+00:00",
   "model_calls": 0,
-  "oracle": "host read of the bind-mounted kiosk document, plus the runtime DocumentHashVerifier exactly-one-new-document gate",
-  "run_count": 6,
-  "schema_version": "openadapt.rdp-ladder-qualification.v2",
+  "oracle": "host read of the bind-mounted appointment database, plus the runtime read-only SQL exactly-one-new-record and status gates",
+  "run_count": 9,
+  "schema_version": "openadapt.rdp-ladder-qualification.v3",
   "substrate": "real-rdp-freerdp3-roundtrip-linux-kiosk",
-  "successes": 6,
-  "task": "record->compile->replay a patient-note write through the vision-only resolver ladder over a real RDP round-trip, with no structural backend; confirm the write via an independent document oracle; and halt under injected DPI/theme/JPEG drift",
-  "total_s": 173.333,
+  "successes": 9,
+  "task": "record->compile->replay an appointment booking through the vision-only resolver ladder over a real RDP round-trip, with no structural backend; confirm the write through read-only SQL; halt under injected DPI/theme/JPEG drift; and halt when the active patient changes before the write",
+  "total_s": 548.514,
   "trials": [
     {
       "condition_trial": 1,
       "effect_confirmed": true,
-      "effect_expected": "MRN A1001\tfollowup in two weeks / healthy-1",
-      "effect_observed": "MRN A1001\tfollowup in two weeks / healthy-1",
+      "effect_expected": {
+        "appointment_slot": "2026-08-14 10:45",
+        "patient_mrn": "MRN A1001",
+        "request_id": "REQ-LIVE-2048-1",
+        "status": "scheduled",
+        "visit_type": "Intake consultation"
+      },
+      "effect_observed": {
+        "appointment_id": "APT-90F5510C",
+        "appointment_slot": "2026-08-14 10:45",
+        "patient_mrn": "MRN A1001",
+        "patient_name": "Ada Lovelace",
+        "request_id": "REQ-LIVE-2048-1",
+        "status": "scheduled",
+        "visit_type": "Intake consultation"
+      },
       "failure_class": null,
       "identity_diagnostics": {
         "step_000": {
@@ -77,14 +97,14 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            347,
-            192
+            335,
+            190
           ],
           "resolution": {
-            "confidence": 0.9999997615814209,
+            "confidence": 1.0,
             "point": [
-              347,
-              192
+              335,
+              190
             ],
             "rung": "template"
           },
@@ -95,14 +115,14 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            120,
-            588
+            590,
+            268
           ],
           "resolution": {
-            "confidence": 0.999997615814209,
+            "confidence": 1.0,
             "point": [
-              120,
-              588
+              590,
+              268
             ],
             "rung": "template"
           },
@@ -113,14 +133,50 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            910,
-            588
+            590,
+            388
           ],
           "resolution": {
-            "confidence": 0.9999989867210388,
+            "confidence": 1.0,
             "point": [
-              910,
-              588
+              590,
+              388
+            ],
+            "rung": "template"
+          },
+          "status": "verified"
+        },
+        "step_005": {
+          "error": null,
+          "mode": "pixel",
+          "observed": "live identifier crop matches after alignment (worst window 0.000)",
+          "recorded_click_point": [
+            590,
+            508
+          ],
+          "resolution": {
+            "confidence": 0.9999768733978271,
+            "point": [
+              590,
+              508
+            ],
+            "rung": "template"
+          },
+          "status": "verified"
+        },
+        "step_007": {
+          "error": null,
+          "mode": "pixel",
+          "observed": "live identifier crop matches after alignment (worst window 0.000)",
+          "recorded_click_point": [
+            720,
+            590
+          ],
+          "resolution": {
+            "confidence": 0.9999994039535522,
+            "point": [
+              720,
+              590
             ],
             "rung": "template"
           },
@@ -131,7 +187,9 @@
       "identity_statuses": {
         "step_000": "verified",
         "step_001": "verified",
-        "step_003": "verified"
+        "step_003": "verified",
+        "step_005": "verified",
+        "step_007": "verified"
       },
       "identity_verified": true,
       "kind": "healthy_record_compile_replay",
@@ -142,10 +200,12 @@
       "required_identity_step_ids": [
         "step_000",
         "step_001",
-        "step_003"
+        "step_003",
+        "step_005",
+        "step_007"
       ],
       "rung_counts": {
-        "template": 3
+        "template": 5
       },
       "runtime_effect_verified": true,
       "silent_incorrect_success": false,
@@ -184,7 +244,7 @@
           "step_id": "step_002"
         },
         {
-          "effect_verified": true,
+          "effect_verified": null,
           "error": null,
           "input_retried": false,
           "input_verified": null,
@@ -193,20 +253,78 @@
           "resolution_rung": "template",
           "safety_halt": false,
           "step_id": "step_003"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": true,
+          "ok": true,
+          "postconditions_ok": null,
+          "resolution_rung": null,
+          "safety_halt": false,
+          "step_id": "step_004"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": null,
+          "ok": true,
+          "postconditions_ok": true,
+          "resolution_rung": "template",
+          "safety_halt": false,
+          "step_id": "step_005"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": true,
+          "ok": true,
+          "postconditions_ok": null,
+          "resolution_rung": null,
+          "safety_halt": false,
+          "step_id": "step_006"
+        },
+        {
+          "effect_verified": true,
+          "error": null,
+          "input_retried": false,
+          "input_verified": null,
+          "ok": true,
+          "postconditions_ok": true,
+          "resolution_rung": "template",
+          "safety_halt": false,
+          "step_id": "step_007"
         }
       ],
       "structural_rung_used": 0,
       "success": true,
       "trial": 1,
       "visual_rungs_used": {
-        "template": 3
+        "template": 5
       }
     },
     {
       "condition_trial": 2,
       "effect_confirmed": true,
-      "effect_expected": "MRN A1001\tfollowup in two weeks / healthy-2",
-      "effect_observed": "MRN A1001\tfollowup in two weeks / healthy-2",
+      "effect_expected": {
+        "appointment_slot": "2026-08-14 10:45",
+        "patient_mrn": "MRN A1001",
+        "request_id": "REQ-LIVE-2048-2",
+        "status": "scheduled",
+        "visit_type": "Intake consultation"
+      },
+      "effect_observed": {
+        "appointment_id": "APT-3160BFA6",
+        "appointment_slot": "2026-08-14 10:45",
+        "patient_mrn": "MRN A1001",
+        "patient_name": "Ada Lovelace",
+        "request_id": "REQ-LIVE-2048-2",
+        "status": "scheduled",
+        "visit_type": "Intake consultation"
+      },
       "failure_class": null,
       "identity_diagnostics": {
         "step_000": {
@@ -214,14 +332,14 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            347,
-            192
+            335,
+            190
           ],
           "resolution": {
-            "confidence": 0.9999997615814209,
+            "confidence": 1.0,
             "point": [
-              347,
-              192
+              335,
+              190
             ],
             "rung": "template"
           },
@@ -232,14 +350,14 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            120,
-            588
+            590,
+            268
           ],
           "resolution": {
-            "confidence": 0.999997615814209,
+            "confidence": 1.0,
             "point": [
-              120,
-              588
+              590,
+              268
             ],
             "rung": "template"
           },
@@ -250,14 +368,50 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            910,
-            588
+            590,
+            388
           ],
           "resolution": {
-            "confidence": 0.9999989867210388,
+            "confidence": 1.0,
             "point": [
-              910,
-              588
+              590,
+              388
+            ],
+            "rung": "template"
+          },
+          "status": "verified"
+        },
+        "step_005": {
+          "error": null,
+          "mode": "pixel",
+          "observed": "live identifier crop matches after alignment (worst window 0.000)",
+          "recorded_click_point": [
+            590,
+            508
+          ],
+          "resolution": {
+            "confidence": 0.9999768733978271,
+            "point": [
+              590,
+              508
+            ],
+            "rung": "template"
+          },
+          "status": "verified"
+        },
+        "step_007": {
+          "error": null,
+          "mode": "pixel",
+          "observed": "live identifier crop matches after alignment (worst window 0.000)",
+          "recorded_click_point": [
+            720,
+            590
+          ],
+          "resolution": {
+            "confidence": 1.0,
+            "point": [
+              720,
+              590
             ],
             "rung": "template"
           },
@@ -268,7 +422,9 @@
       "identity_statuses": {
         "step_000": "verified",
         "step_001": "verified",
-        "step_003": "verified"
+        "step_003": "verified",
+        "step_005": "verified",
+        "step_007": "verified"
       },
       "identity_verified": true,
       "kind": "healthy_record_compile_replay",
@@ -279,10 +435,12 @@
       "required_identity_step_ids": [
         "step_000",
         "step_001",
-        "step_003"
+        "step_003",
+        "step_005",
+        "step_007"
       ],
       "rung_counts": {
-        "template": 3
+        "template": 5
       },
       "runtime_effect_verified": true,
       "silent_incorrect_success": false,
@@ -321,7 +479,7 @@
           "step_id": "step_002"
         },
         {
-          "effect_verified": true,
+          "effect_verified": null,
           "error": null,
           "input_retried": false,
           "input_verified": null,
@@ -330,20 +488,78 @@
           "resolution_rung": "template",
           "safety_halt": false,
           "step_id": "step_003"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": true,
+          "ok": true,
+          "postconditions_ok": null,
+          "resolution_rung": null,
+          "safety_halt": false,
+          "step_id": "step_004"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": null,
+          "ok": true,
+          "postconditions_ok": true,
+          "resolution_rung": "template",
+          "safety_halt": false,
+          "step_id": "step_005"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": true,
+          "ok": true,
+          "postconditions_ok": null,
+          "resolution_rung": null,
+          "safety_halt": false,
+          "step_id": "step_006"
+        },
+        {
+          "effect_verified": true,
+          "error": null,
+          "input_retried": false,
+          "input_verified": null,
+          "ok": true,
+          "postconditions_ok": true,
+          "resolution_rung": "template",
+          "safety_halt": false,
+          "step_id": "step_007"
         }
       ],
       "structural_rung_used": 0,
       "success": true,
       "trial": 2,
       "visual_rungs_used": {
-        "template": 3
+        "template": 5
       }
     },
     {
       "condition_trial": 3,
       "effect_confirmed": true,
-      "effect_expected": "MRN A1001\tfollowup in two weeks / healthy-3",
-      "effect_observed": "MRN A1001\tfollowup in two weeks / healthy-3",
+      "effect_expected": {
+        "appointment_slot": "2026-08-14 10:45",
+        "patient_mrn": "MRN A1001",
+        "request_id": "REQ-LIVE-2048-3",
+        "status": "scheduled",
+        "visit_type": "Intake consultation"
+      },
+      "effect_observed": {
+        "appointment_id": "APT-F98C16FC",
+        "appointment_slot": "2026-08-14 10:45",
+        "patient_mrn": "MRN A1001",
+        "patient_name": "Ada Lovelace",
+        "request_id": "REQ-LIVE-2048-3",
+        "status": "scheduled",
+        "visit_type": "Intake consultation"
+      },
       "failure_class": null,
       "identity_diagnostics": {
         "step_000": {
@@ -351,14 +567,14 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            347,
-            192
+            335,
+            190
           ],
           "resolution": {
-            "confidence": 0.9999997615814209,
+            "confidence": 1.0,
             "point": [
-              347,
-              192
+              335,
+              190
             ],
             "rung": "template"
           },
@@ -369,14 +585,14 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            120,
-            588
+            590,
+            268
           ],
           "resolution": {
-            "confidence": 0.999997615814209,
+            "confidence": 1.0,
             "point": [
-              120,
-              588
+              590,
+              268
             ],
             "rung": "template"
           },
@@ -387,14 +603,50 @@
           "mode": "pixel",
           "observed": "live identifier crop matches after alignment (worst window 0.000)",
           "recorded_click_point": [
-            910,
-            588
+            590,
+            388
           ],
           "resolution": {
-            "confidence": 0.9999989867210388,
+            "confidence": 1.0,
             "point": [
-              910,
-              588
+              590,
+              388
+            ],
+            "rung": "template"
+          },
+          "status": "verified"
+        },
+        "step_005": {
+          "error": null,
+          "mode": "pixel",
+          "observed": "live identifier crop matches after alignment (worst window 0.000)",
+          "recorded_click_point": [
+            590,
+            508
+          ],
+          "resolution": {
+            "confidence": 0.9999768733978271,
+            "point": [
+              590,
+              508
+            ],
+            "rung": "template"
+          },
+          "status": "verified"
+        },
+        "step_007": {
+          "error": null,
+          "mode": "pixel",
+          "observed": "live identifier crop matches after alignment (worst window 0.000)",
+          "recorded_click_point": [
+            720,
+            590
+          ],
+          "resolution": {
+            "confidence": 1.0,
+            "point": [
+              720,
+              590
             ],
             "rung": "template"
           },
@@ -405,7 +657,9 @@
       "identity_statuses": {
         "step_000": "verified",
         "step_001": "verified",
-        "step_003": "verified"
+        "step_003": "verified",
+        "step_005": "verified",
+        "step_007": "verified"
       },
       "identity_verified": true,
       "kind": "healthy_record_compile_replay",
@@ -416,10 +670,12 @@
       "required_identity_step_ids": [
         "step_000",
         "step_001",
-        "step_003"
+        "step_003",
+        "step_005",
+        "step_007"
       ],
       "rung_counts": {
-        "template": 3
+        "template": 5
       },
       "runtime_effect_verified": true,
       "silent_incorrect_success": false,
@@ -458,7 +714,7 @@
           "step_id": "step_002"
         },
         {
-          "effect_verified": true,
+          "effect_verified": null,
           "error": null,
           "input_retried": false,
           "input_verified": null,
@@ -467,19 +723,63 @@
           "resolution_rung": "template",
           "safety_halt": false,
           "step_id": "step_003"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": true,
+          "ok": true,
+          "postconditions_ok": null,
+          "resolution_rung": null,
+          "safety_halt": false,
+          "step_id": "step_004"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": null,
+          "ok": true,
+          "postconditions_ok": true,
+          "resolution_rung": "template",
+          "safety_halt": false,
+          "step_id": "step_005"
+        },
+        {
+          "effect_verified": null,
+          "error": null,
+          "input_retried": false,
+          "input_verified": true,
+          "ok": true,
+          "postconditions_ok": null,
+          "resolution_rung": null,
+          "safety_halt": false,
+          "step_id": "step_006"
+        },
+        {
+          "effect_verified": true,
+          "error": null,
+          "input_retried": false,
+          "input_verified": null,
+          "ok": true,
+          "postconditions_ok": true,
+          "resolution_rung": "template",
+          "safety_halt": false,
+          "step_id": "step_007"
         }
       ],
       "structural_rung_used": 0,
       "success": true,
       "trial": 3,
       "visual_rungs_used": {
-        "template": 3
+        "template": 5
       }
     },
     {
       "condition_trial": 1,
       "drift": "downscale_0.4x_blur + theme_invert + jpeg_q8 (simulated on real session)",
-      "effect_after_drift": null,
+      "effect_after_drift": [],
       "failure_class": null,
       "false_completion": false,
       "halted": true,
@@ -494,7 +794,7 @@
     {
       "condition_trial": 2,
       "drift": "downscale_0.4x_blur + theme_invert + jpeg_q8 (simulated on real session)",
-      "effect_after_drift": null,
+      "effect_after_drift": [],
       "failure_class": null,
       "false_completion": false,
       "halted": true,
@@ -509,7 +809,7 @@
     {
       "condition_trial": 3,
       "drift": "downscale_0.4x_blur + theme_invert + jpeg_q8 (simulated on real session)",
-      "effect_after_drift": null,
+      "effect_after_drift": [],
       "failure_class": null,
       "false_completion": false,
       "halted": true,
@@ -520,6 +820,81 @@
       "safety_halt": true,
       "silent_write": false,
       "trial": 6
+    },
+    {
+      "condition_trial": 1,
+      "effect_after_wrong_record": [],
+      "failure_class": null,
+      "false_completion": false,
+      "fault": "active record changed from Ada Lovelace / MRN A1001 to Grace Hopper / MRN B2002 before the final write",
+      "fault_acquisition_index": 5,
+      "fault_injected": true,
+      "fresh_frame_acquisitions": 5,
+      "halted": true,
+      "identity_mismatch": true,
+      "identity_statuses": [
+        "verified",
+        "verified",
+        "verified",
+        "verified",
+        "mismatch"
+      ],
+      "kind": "wrong_record_safe_halt",
+      "model_calls": 0,
+      "passed": true,
+      "policy_bound": true,
+      "silent_write": false,
+      "trial": 7
+    },
+    {
+      "condition_trial": 2,
+      "effect_after_wrong_record": [],
+      "failure_class": null,
+      "false_completion": false,
+      "fault": "active record changed from Ada Lovelace / MRN A1001 to Grace Hopper / MRN B2002 before the final write",
+      "fault_acquisition_index": 5,
+      "fault_injected": true,
+      "fresh_frame_acquisitions": 5,
+      "halted": true,
+      "identity_mismatch": true,
+      "identity_statuses": [
+        "verified",
+        "verified",
+        "verified",
+        "verified",
+        "mismatch"
+      ],
+      "kind": "wrong_record_safe_halt",
+      "model_calls": 0,
+      "passed": true,
+      "policy_bound": true,
+      "silent_write": false,
+      "trial": 8
+    },
+    {
+      "condition_trial": 3,
+      "effect_after_wrong_record": [],
+      "failure_class": null,
+      "false_completion": false,
+      "fault": "active record changed from Ada Lovelace / MRN A1001 to Grace Hopper / MRN B2002 before the final write",
+      "fault_acquisition_index": 5,
+      "fault_injected": true,
+      "fresh_frame_acquisitions": 5,
+      "halted": true,
+      "identity_mismatch": true,
+      "identity_statuses": [
+        "verified",
+        "verified",
+        "verified",
+        "verified",
+        "mismatch"
+      ],
+      "kind": "wrong_record_safe_halt",
+      "model_calls": 0,
+      "passed": true,
+      "policy_bound": true,
+      "silent_write": false,
+      "trial": 9
     }
   ]
 }
