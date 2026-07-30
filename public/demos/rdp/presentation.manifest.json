@@ -1,0 +1,47 @@
+{
+  "fps": 12,
+  "frame_size": [
+    1280,
+    800
+  ],
+  "phases": [
+    {
+      "outcome": "RECORDED",
+      "phase": "Demonstration",
+      "presented_frame_count": 5,
+      "source_frame_count": 5,
+      "summary": {
+        "actions": 4,
+        "model_calls": 0,
+        "surface": "real RDP round-trip"
+      }
+    },
+    {
+      "outcome": "VERIFIED",
+      "phase": "Governed replay",
+      "presented_frame_count": 5,
+      "source_frame_count": 5,
+      "summary": {
+        "effect_confirmed": true,
+        "identity_verified": true,
+        "model_calls": 0,
+        "silent_incorrect_success": false
+      }
+    },
+    {
+      "outcome": "HALTED",
+      "phase": "Changed-screen refusal",
+      "presented_frame_count": 1,
+      "source_frame_count": 1,
+      "summary": {
+        "effect_written": false,
+        "model_calls": 0,
+        "safety_halt": true
+      }
+    }
+  ],
+  "schema_version": "openadapt.rdp-presentation-render.v1",
+  "timing": "paced presentation timing; source frames remain exact",
+  "video": "openadapt-rdp-demo.mp4",
+  "video_sha256": "66bced89b5c0d3a5ddd5b04f7ec1181c91f26030d6f0f2c14436405ffefa3812"
+}

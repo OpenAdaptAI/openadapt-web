@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '@components/Footer'
+import JsonArtifactLink from '@components/JsonArtifactLink'
 
 const description =
     'OpenAdapt Execute gives software and service providers verified execution in the systems their products cannot integrate with.'
@@ -113,6 +114,67 @@ export default function ExecutePage() {
                                     <dd className="mt-1 text-ink-2">Binds the workflow, authorization, identity, effect proof, evidence, and exception path.</dd>
                                 </div>
                             </dl>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="rdp-demo" className="scroll-mt-24 border-b border-hairline px-5 py-16 md:py-20">
+                    <div className="mx-auto max-w-5xl">
+                        <p className="eyebrow">Real RDP execution</p>
+                        <div className="mt-3 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
+                            <div>
+                                <h2 className="font-display text-3xl font-semibold tracking-tight text-ink">
+                                    See the external remote-session path.
+                                </h2>
+                                <p className="mt-4 max-w-3xl text-base leading-relaxed text-ink-2">
+                                    This synthetic healthcare task crosses a real RDP client and server. OpenAdapt records the remote pixels, compiles the demonstration, verifies the intended record before the write, and checks the saved result outside the remote screen.
+                                </p>
+                                <div className="mt-6 overflow-hidden rounded-2xl border border-hairline bg-ink">
+                                    <video
+                                        className="aspect-[8/5] w-full object-contain"
+                                        autoPlay
+                                        controls
+                                        loop
+                                        muted
+                                        playsInline
+                                        poster="/demos/rdp/poster.jpg"
+                                        preload="metadata"
+                                    >
+                                        <source src="/demos/rdp/openadapt-rdp-demo.mp4" type="video/mp4" />
+                                        Your browser does not support the video element.
+                                    </video>
+                                </div>
+                                <p className="mt-3 text-xs leading-relaxed text-ink-3">
+                                    Reference qualification with synthetic data. The video uses paced presentation timing and exact retained RDP frames. A customer application and environment receive their own qualification.
+                                </p>
+                            </div>
+                            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                                <article className="rounded-2xl border border-hairline bg-panel p-5">
+                                    <p className="font-display text-3xl font-semibold text-ink">3 / 3</p>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">Healthy RDP runs confirmed the intended identity and saved effect.</p>
+                                </article>
+                                <article className="rounded-2xl border border-hairline bg-panel p-5">
+                                    <p className="font-display text-3xl font-semibold text-ink">3 / 3</p>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">Changed-screen trials halted before a write.</p>
+                                </article>
+                                <article className="rounded-2xl border border-hairline bg-panel p-5">
+                                    <p className="font-display text-3xl font-semibold text-ink">0</p>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">Model calls and silent incorrect successes in the accepted batch.</p>
+                                </article>
+                                <p className="flex flex-col gap-2 px-1 pt-2 text-sm">
+                                    <JsonArtifactLink source="/demos/rdp/qualification.json" className="font-medium">
+                                        Inspect the qualification evidence →
+                                    </JsonArtifactLink>
+                                    <a
+                                        href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/backends/RDP.md"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-medium"
+                                    >
+                                        Read the RDP architecture →
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </section>
