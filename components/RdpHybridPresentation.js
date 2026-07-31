@@ -16,17 +16,12 @@ const PHASE_PRESENTATION = {
             'The authorized appointment data enters the customer-controlled runner.',
     },
     demonstration: {
-        stage: 'build',
+        stage: 'demonstrate',
         label: 'A person shows the task once',
         detail: 'The demonstration includes the real mouse, keyboard, and RDP timing.',
     },
-    compiled_workflow: {
-        stage: 'build',
-        label: 'OpenAdapt builds a reusable workflow',
-        detail: 'The video shows the exact exported program, not a drawn example.',
-    },
     governed_replay: {
-        stage: 'run',
+        stage: 'execute',
         label: 'OpenAdapt completes the task',
         detail: 'The runner checks the live record before it enters the new request.',
     },
@@ -52,8 +47,8 @@ const PHASE_PRESENTATION = {
 
 const STORY_STAGES = [
     { id: 'request', label: 'Request' },
-    { id: 'build', label: 'Build once' },
-    { id: 'run', label: 'Run' },
+    { id: 'demonstrate', label: 'Demonstrate' },
+    { id: 'execute', label: 'Execute' },
     { id: 'verify', label: 'Verify or stop' },
 ]
 
@@ -301,9 +296,6 @@ export default function RdpHybridPresentation({
     const activeStageIndex = STORY_STAGES.findIndex(
         (item) => item.id === phaseContent?.stage
     )
-    const activeNodeIds = new Set(
-        entry?.compiled_graph?.node_id ? [entry.compiled_graph.node_id] : []
-    )
     const nodes = Array.isArray(graph?.nodes) ? graph.nodes : []
     const parameterNames = Array.isArray(graph?.bundle?.params)
         ? graph.bundle.params
@@ -481,7 +473,9 @@ export default function RdpHybridPresentation({
                 <details className={styles.details} open>
                     <summary>
                         <span>
-                            <strong>The workflow OpenAdapt built</strong>
+                            <strong>
+                                What OpenAdapt built from the demonstration
+                            </strong>
                             <small>The exact nine-step program and its inputs</small>
                         </span>
                     </summary>
@@ -498,15 +492,12 @@ export default function RdpHybridPresentation({
                                 </span>
                             </div>
                             <span className={styles.motion}>
-                                {reducedMotion ? 'Reduced motion' : 'Media-synced'}
+                                Exact exported graph
                             </span>
                         </div>
                         <ol>
                             {nodes.map((node) => (
-                                <li
-                                    key={node.id}
-                                    data-active={activeNodeIds.has(node.id)}
-                                >
+                                <li key={node.id}>
                                     <span>
                                         {String(node.index + 1).padStart(2, '0')}
                                     </span>

@@ -350,20 +350,6 @@
     border: 1px solid rgba(142, 207, 193, 0.14);
     border-radius: 12px;
     background: #0b1c1d;
-    opacity: 0.72;
-    transition:
-        border-color 0.25s ease,
-        background 0.25s ease,
-        opacity 0.25s ease,
-        transform 0.25s ease;
-}
-
-.graph > ol > li[data-active='true'] {
-    border-color: rgba(99, 230, 191, 0.72);
-    background: linear-gradient(145deg, #10443e, #0d2728);
-    box-shadow: 0 0 28px -13px #60e6bf;
-    opacity: 1;
-    transform: translateY(-2px);
 }
 
 .graph > ol > li > span {
@@ -577,11 +563,5 @@
 
     .provenance dd {
         text-align: left;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .graph > ol > li {
-        transition: none;
     }
 }
