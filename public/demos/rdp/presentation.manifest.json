@@ -5,7 +5,7 @@
     800
   ],
   "hybrid_timeline": "openadapt-rdp-demo.timeline.json",
-  "hybrid_timeline_sha256": "bb90f660da908d2ae857b5949b77088fae3f977efcb9dcddb1570d68b1d85567",
+  "hybrid_timeline_sha256": "b668275ad7308f359380aa1bcb89ce98b7ae49673b36c4491330c399b2472403",
   "phases": [
     {
       "outcome": "RECORDED",
@@ -88,6 +88,6 @@
   "schema_version": "openadapt.rdp-presentation-render.v2",
   "timing": "paced derivative; source frames and input events remain exact",
   "video": "openadapt-rdp-demo.mp4",
-  "video_sha256": "f98655660d56eb8c96fc50c7d87a6759a895a108ea2fc46616208f7a27537af9",
+  "video_sha256": "c8df573bd0edbf139d4b5718ee14f2bf35b7e69331bfd9c5bc592dbf2e351504",
   "workflow_digest": "da52230dbde8d8ae6bd8060f4d2dc3f8c503487bbb3a214159af9550317670b9"
 }

@@ -5,7 +5,6 @@ import ExecuteApiExchange from '@components/ExecuteApiExchange'
 import ExecuteBoundaryFlow from '@components/ExecuteBoundaryFlow'
 import ExecuteOutcomeCards from '@components/ExecuteOutcomeCards'
 import Footer from '@components/Footer'
-import JsonArtifactLink from '@components/JsonArtifactLink'
 import RdpHybridPresentation from '@components/RdpHybridPresentation'
 
 const description =
@@ -131,30 +130,9 @@ export default function ExecutePage() {
                                     <p className="mt-2 text-sm leading-relaxed text-ink-2">Model calls, wrong-record writes, and silent incorrect successes.</p>
                                 </article>
                             </div>
-                            <div className="mt-4 flex flex-col gap-4 text-xs leading-relaxed text-ink-3 md:flex-row md:items-start md:justify-between">
-                                <p className="max-w-2xl">
-                                    Reference qualification with synthetic data. The presentation uses exact retained RDP frames and the exported compiled graph. The slower timing affects the video only.
-                                </p>
-                                <p className="flex shrink-0 flex-col gap-2 text-sm">
-                                    <JsonArtifactLink source="/demos/rdp/qualification.json" className="font-medium">
-                                        Inspect the qualification evidence →
-                                    </JsonArtifactLink>
-                                    <JsonArtifactLink source="/demos/rdp/program-graph.json" className="font-medium">
-                                        Inspect the compiled workflow →
-                                    </JsonArtifactLink>
-                                    <JsonArtifactLink source="/demos/rdp/presentation.timeline.json" className="font-medium">
-                                        Inspect the media timeline →
-                                    </JsonArtifactLink>
-                                    <a
-                                        href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/backends/RDP.md"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="font-medium"
-                                    >
-                                        Read the RDP architecture →
-                                    </a>
-                                </p>
-                            </div>
+                            <p className="mt-4 max-w-2xl text-xs leading-relaxed text-ink-3">
+                                Reference qualification with synthetic data. The presentation uses exact retained RDP frames and the exported compiled graph. The workflow is shown above. Open Technical evidence for the reports, hashes, and raw artifacts.
+                            </p>
                         </div>
                     </div>
                 </section>

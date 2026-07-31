@@ -1,42 +1,61 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import JsonArtifactLink from './JsonArtifactLink'
 import styles from './RdpHybridPresentation.module.css'
 
 const MISSING_TIMELINE =
     'The media timeline is unavailable. OpenAdapt shows the authenticated video and artifacts, but it does not infer a phase from playback time.'
 
-// These labels only describe renderer phases. The runtime facts stay in the
-// exporter payload and are rendered below without a frontend interpretation.
+// These labels explain exact renderer phases. Runtime facts stay in the
+// exported timeline and are never reconstructed from playback time.
 const PHASE_PRESENTATION = {
     execute_request: {
-        label: 'Authorized request',
-        detail: 'A qualified request enters the execution boundary.',
+        stage: 'request',
+        label: 'The request arrives',
+        detail:
+            'The authorized appointment data enters the customer-controlled runner.',
     },
     demonstration: {
-        label: 'Demonstrate through RDP',
-        detail: 'The presentation replays retained operator input.',
+        stage: 'build',
+        label: 'A person shows the task once',
+        detail: 'The demonstration includes the real mouse, keyboard, and RDP timing.',
     },
     compiled_workflow: {
-        label: 'Compiled workflow',
-        detail: 'OpenAdapt exposes the exact exported workflow node.',
+        stage: 'build',
+        label: 'OpenAdapt builds a reusable workflow',
+        detail: 'The video shows the exact exported program, not a drawn example.',
     },
     governed_replay: {
-        label: 'Governed replay',
-        detail: 'The runner replays the qualified workflow with fresh observations.',
+        stage: 'run',
+        label: 'OpenAdapt completes the task',
+        detail: 'The runner checks the live record before it enters the new request.',
     },
     independent_effect_check: {
-        label: 'Independent effect proof',
-        detail: 'The configured verifier determines the result.',
+        stage: 'verify',
+        label: 'The saved result is checked',
+        detail: 'A separate read-only database check confirms the appointment.',
+        showOutcome: true,
     },
     wrong_record_refusal: {
-        label: 'Wrong-record refusal',
-        detail: 'The qualified workflow stops before the consequential action.',
+        stage: 'verify',
+        label: 'Wrong record. Save blocked.',
+        detail: 'The record changed, so OpenAdapt stopped before the write.',
+        showOutcome: true,
     },
     terminal_summary: {
-        label: 'Execution result',
-        detail: 'The presentation shows the retained terminal result.',
+        stage: 'verify',
+        label: 'Verified result or safe stop',
+        detail:
+            'The correct run is verified. The wrong-record run stops before Save.',
     },
 }
+
+const STORY_STAGES = [
+    { id: 'request', label: 'Request' },
+    { id: 'build', label: 'Build once' },
+    { id: 'run', label: 'Run' },
+    { id: 'verify', label: 'Verify or stop' },
+]
 
 const clamp = (value, minimum, maximum) =>
     Math.min(Math.max(value, minimum), maximum)
@@ -110,59 +129,55 @@ function activeEntry(timeline, currentMs) {
     )
 }
 
-function phaseChapters(timeline) {
+function storyChapters(timeline) {
     if (!timeline) return []
-    const chapters = []
-    for (const entry of timeline.timeline) {
-        const previous = chapters.at(-1)
-        if (previous?.phase === entry.phase) {
-            previous.end_pts_s = entry.end_pts_s
-            previous.end_frame_exclusive = entry.end_frame_exclusive
-        } else {
-            chapters.push({
-                phase: entry.phase,
-                start_pts_s: entry.start_pts_s,
-                end_pts_s: entry.end_pts_s,
-                start_frame: entry.start_frame,
-                end_frame_exclusive: entry.end_frame_exclusive,
-            })
-        }
-    }
-    return chapters
+    return STORY_STAGES.flatMap((stage) => {
+        const entries = timeline.timeline.filter(
+            (entry) => PHASE_PRESENTATION[entry.phase]?.stage === stage.id
+        )
+        if (!entries.length) return []
+        return [
+            {
+                ...stage,
+                start_pts_s: entries[0].start_pts_s,
+                end_pts_s: entries.at(-1).end_pts_s,
+                start_frame: entries[0].start_frame,
+                end_frame_exclusive: entries.at(-1).end_frame_exclusive,
+            },
+        ]
+    })
 }
 
-function evidencePath(entry, activeNode) {
-    const facts = entry?.facts ?? {}
-    return [
-        {
-            label: 'Request',
-            value:
-                typeof facts.authorization === 'string'
-                    ? facts.authorization
-                    : null,
-        },
-        {
-            label: 'Identity',
-            value: typeof facts.identity === 'string' ? facts.identity : null,
-        },
-        {
-            label: 'Compiled action',
-            value: activeNode?.title ?? null,
-        },
-        {
-            label: 'Effect proof',
-            value:
-                typeof facts.effect === 'string'
-                    ? [facts.effect, facts.effect_verifier_kind]
-                          .filter((value) => typeof value === 'string')
-                          .join(' · ')
-                    : null,
-        },
-        {
-            label: 'Outcome',
-            value: typeof facts.outcome === 'string' ? facts.outcome : null,
-        },
-    ]
+function nodeFacts(node) {
+    const facts = []
+    if (node.param) facts.push(`Input: $${node.param}`)
+    const resolutionRungs = Array.isArray(node.resolution?.rungs)
+        ? node.resolution.rungs
+              .filter((rung) => rung?.present && typeof rung.label === 'string')
+              .map((rung) => rung.label)
+        : []
+    if (resolutionRungs.length) {
+        facts.push(`Resolve: ${resolutionRungs.join(' + ')}`)
+    }
+    if (Array.isArray(node.postconditions) && node.postconditions.length) {
+        facts.push(
+            `Check: ${node.postconditions
+                .map((condition) => condition.replaceAll('_', ' '))
+                .join(' + ')}`
+        )
+    }
+    if (Array.isArray(node.badges) && node.badges.length) {
+        facts.push(`Policy: ${node.badges.join(' + ')}`)
+    }
+    if (Array.isArray(node.effects) && node.effects.length) {
+        facts.push(
+            `${node.effects.length} required effect ${
+                node.effects.length === 1 ? 'check' : 'checks'
+            }`
+        )
+    }
+    if (!facts.length && node.kind) facts.push(node.kind)
+    return facts
 }
 
 export default function RdpHybridPresentation({
@@ -171,6 +186,7 @@ export default function RdpHybridPresentation({
     manifestSrc = '/demos/rdp/presentation.manifest.json',
     graphSrc = '/demos/rdp/program-graph.json',
     timelineSrc = '/demos/rdp/presentation.timeline.json',
+    qualificationSrc = '/demos/rdp/qualification.json',
 }) {
     const shellRef = useRef(null)
     const videoRef = useRef(null)
@@ -212,8 +228,7 @@ export default function RdpHybridPresentation({
         const update = () => {
             setReducedMotion(media.matches)
             const video = videoRef.current
-            if (!video) return
-            if (media.matches) video.pause()
+            if (media.matches && video) video.pause()
         }
         update()
         media.addEventListener?.('change', update)
@@ -228,7 +243,10 @@ export default function RdpHybridPresentation({
 
         const observer = new window.IntersectionObserver(
             ([intersection]) => {
-                if (!intersection?.isIntersecting || intersection.intersectionRatio < 0.4) {
+                if (
+                    !intersection?.isIntersecting ||
+                    intersection.intersectionRatio < 0.4
+                ) {
                     return
                 }
                 startedRef.current = true
@@ -269,26 +287,29 @@ export default function RdpHybridPresentation({
                 : null,
         [frameBindingAvailable, manifest, timelinePayload]
     )
+    const effectiveDurationMs =
+        durationMs ||
+        (timeline
+            ? Math.round(
+                  (timeline.derivative.frame_count / timeline.derivative.fps) * 1000
+              )
+            : 0)
     const entry = activeEntry(timeline, currentMs)
-    const chapters = useMemo(() => phaseChapters(timeline), [timeline])
-    const chapter = chapters.find(
-        (item) =>
-            entry &&
-            entry.start_frame >= item.start_frame &&
-            entry.start_frame < item.end_frame_exclusive
+    const chapters = useMemo(() => storyChapters(timeline), [timeline])
+    const phaseContent = entry ? PHASE_PRESENTATION[entry.phase] : null
+    const activeChapter = chapters.find((item) => item.id === phaseContent?.stage)
+    const activeStageIndex = STORY_STAGES.findIndex(
+        (item) => item.id === phaseContent?.stage
     )
     const activeNodeIds = new Set(
         entry?.compiled_graph?.node_id ? [entry.compiled_graph.node_id] : []
     )
     const nodes = Array.isArray(graph?.nodes) ? graph.nodes : []
-    const activeNode = nodes.find((node) => node.id === entry?.compiled_graph?.node_id)
-    const evidence = evidencePath(entry, activeNode)
     const parameterNames = Array.isArray(graph?.bundle?.params)
         ? graph.bundle.params
               .map((parameter) => parameter?.name)
               .filter((name) => typeof name === 'string')
         : []
-    const phaseContent = entry ? PHASE_PRESENTATION[entry.phase] : null
 
     const toggle = () => {
         const video = videoRef.current
@@ -299,8 +320,9 @@ export default function RdpHybridPresentation({
                 video.currentTime = 0
             }
             void video.play()
+        } else {
+            video.pause()
         }
-        else video.pause()
     }
 
     const seek = (milliseconds) => {
@@ -318,8 +340,7 @@ export default function RdpHybridPresentation({
 
     const expand = () => {
         const stage = stageRef.current
-        if (!stage?.requestFullscreen) return
-        void stage.requestFullscreen()
+        if (stage?.requestFullscreen) void stage.requestFullscreen()
     }
 
     return (
@@ -329,16 +350,8 @@ export default function RdpHybridPresentation({
             aria-label="RDP execution presentation"
         >
             <div className={styles.topline}>
-                <span>Recorded reference execution</span>
-                <span className={styles.boundLabel}>Evidence-bound view</span>
-                <span className={styles.digest}>
-                    {manifest?.workflow_digest
-                        ? `bundle ${manifest.workflow_digest.slice(0, 12)}`
-                        : 'loading bundle binding'}
-                </span>
-                <a className={styles.mediaLink} href={videoSrc}>
-                    Open MP4
-                </a>
+                <span>Real RDP demo</span>
+                <span className={styles.boundLabel}>Customer-controlled runner</span>
             </div>
 
             <div className={styles.grid}>
@@ -352,7 +365,9 @@ export default function RdpHybridPresentation({
                         poster={poster}
                         preload="metadata"
                         onLoadedMetadata={(event) => {
-                            setDurationMs(Math.round(event.currentTarget.duration * 1000))
+                            setDurationMs(
+                                Math.round(event.currentTarget.duration * 1000)
+                            )
                         }}
                         onPlay={() => setPlaying(true)}
                         onPause={() => setPlaying(false)}
@@ -360,33 +375,34 @@ export default function RdpHybridPresentation({
                         <source src={videoSrc} type="video/mp4" />
                         Your browser does not support this presentation.
                     </video>
-                    <div className={styles.phaseBadge} data-known={Boolean(entry)}>
-                        <span>{phaseContent?.label ?? 'Authenticated media'}</span>
-                        <strong>{entry?.facts?.outcome ?? 'Evidence view'}</strong>
-                    </div>
                     <button
                         type="button"
                         className={styles.expandButton}
                         onClick={expand}
                     >
-                        Expand evidence
+                        Full screen
                     </button>
-                    <button type="button" className={styles.playButton} onClick={toggle}>
+                    <button
+                        type="button"
+                        className={styles.playButton}
+                        onClick={toggle}
+                    >
                         <span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span>
                         <span>
                             {playing
-                                ? 'Pause presentation'
-                                : currentMs >= durationMs - 120
-                                  ? 'Replay execution'
-                                  : 'Play presentation'}
+                                ? 'Pause'
+                                : effectiveDurationMs > 0 &&
+                                    currentMs >= effectiveDurationMs - 120
+                                  ? 'Replay'
+                                  : 'Play'}
                         </span>
                     </button>
                     <div className={styles.scrubWrap}>
                         <input
                             type="range"
                             min="0"
-                            max={durationMs || 1}
-                            value={clamp(currentMs, 0, durationMs || 1)}
+                            max={effectiveDurationMs || 1}
+                            value={clamp(currentMs, 0, effectiveDurationMs || 1)}
                             aria-label="RDP presentation time"
                             aria-valuetext={`${phaseContent?.label ?? 'Authenticated media'}, ${timeLabel(currentMs)}`}
                             onChange={(event) => seek(Number(event.target.value))}
@@ -394,7 +410,7 @@ export default function RdpHybridPresentation({
                         />
                         <div className={styles.clock}>
                             <span>{timeLabel(currentMs)}</span>
-                            <span>{timeLabel(durationMs)}</span>
+                            <span>{timeLabel(effectiveDurationMs)}</span>
                         </div>
                     </div>
                 </div>
@@ -404,43 +420,26 @@ export default function RdpHybridPresentation({
                         {phaseContent?.label ?? 'Authenticated media'}
                     </p>
                     <div className={styles.consoleHeader}>
-                        <p>Verified execution</p>
-                        <span>{timeline ? 'exact frame link' : 'artifact-bound'}</span>
+                        <p>What is happening</p>
+                        <span>
+                            {activeStageIndex >= 0
+                                ? `Stage ${activeStageIndex + 1} of 4`
+                                : 'Exact media'}
+                        </span>
                     </div>
                     {entry && phaseContent ? (
                         <>
                             <h3>{phaseContent.label}</h3>
                             <p>{phaseContent.detail}</p>
-                            <ol className={styles.evidencePath}>
-                                {evidence.map((stage, index) => (
-                                    <li
-                                        key={stage.label}
-                                        data-supported={Boolean(stage.value)}
+                            {phaseContent.showOutcome &&
+                                typeof entry.facts?.outcome === 'string' && (
+                                    <p
+                                        className={styles.outcome}
+                                        data-outcome={entry.facts.outcome.toLowerCase()}
                                     >
-                                        <span>{String(index + 1).padStart(2, '0')}</span>
-                                        <div>
-                                            <strong>{stage.label}</strong>
-                                            {stage.value && <small>{stage.value}</small>}
-                                        </div>
-                                    </li>
-                                ))}
-                            </ol>
-                            <div className={styles.exactDetails}>
-                                {entry.source_frame && (
-                                    <p>
-                                        <strong>Retained frame</strong>
-                                        <span>
-                                            {entry.source_frame.presentation_phase} · {entry.source_frame.file}
-                                        </span>
+                                        {entry.facts.outcome}
                                     </p>
                                 )}
-                                {Object.hasOwn(entry.facts ?? {}, 'model_calls') && (
-                                    <p>
-                                        <strong>Model calls</strong>
-                                        <span>{entry.facts.model_calls}</span>
-                                    </p>
-                                )}
-                            </div>
                         </>
                     ) : (
                         <>
@@ -448,65 +447,155 @@ export default function RdpHybridPresentation({
                             <p>{MISSING_TIMELINE}</p>
                         </>
                     )}
-                    <div className={styles.provenance}>
-                        <span>Media</span>
-                        <code>{manifest?.video_sha256?.slice(0, 20) ?? 'loading'}…</code>
-                        <span>Graph</span>
-                        <code>{manifest?.program_graph_sha256?.slice(0, 20) ?? 'loading'}…</code>
-                    </div>
                 </aside>
             </div>
 
-            <div className={styles.rail} aria-label="Presentation chapters">
+            <div className={styles.rail} aria-label="Presentation stages">
                 {chapters.map((item, index) => {
-                    const selected = item.phase === chapter?.phase
-                    const presentation = PHASE_PRESENTATION[item.phase]
+                    const selected = item.id === activeChapter?.id
                     return (
                         <button
-                            key={`${item.phase}-${item.start_frame}`}
+                            key={item.id}
                             type="button"
                             className={styles.chapter}
                             data-active={selected}
                             aria-pressed={selected}
-                            onClick={() => seek(Math.round(item.start_pts_s * 1000))}
+                            onClick={() =>
+                                seek(Math.round(item.start_pts_s * 1000))
+                            }
                         >
                             <span>{String(index + 1).padStart(2, '0')}</span>
-                            <strong>{presentation.label}</strong>
-                            <small>{timeLabel(Math.round(item.start_pts_s * 1000))}</small>
+                            <strong>{item.label}</strong>
+                            <small>
+                                {timeLabel(Math.round(item.start_pts_s * 1000))}
+                            </small>
                         </button>
                     )
                 })}
-                {!timeline && <p className={styles.contractNote}>{MISSING_TIMELINE}</p>}
+                {!timeline && (
+                    <p className={styles.contractNote}>{MISSING_TIMELINE}</p>
+                )}
             </div>
 
-            <div className={styles.graph}>
-                <div className={styles.graphHeader}>
-                    <div>
-                        <p>Compiled workflow</p>
+            <div className={styles.detailsStack}>
+                <details className={styles.details} open>
+                    <summary>
                         <span>
-                            {parameterNames.length
-                                ? `Parameters: ${parameterNames.map((name) => `$${name}`).join(' · ')}`
-                                : 'Only exact exported graph nodes appear here.'}
+                            <strong>The workflow OpenAdapt built</strong>
+                            <small>The exact nine-step program and its inputs</small>
                         </span>
+                    </summary>
+                    <div className={styles.graph}>
+                        <div className={styles.graphHeader}>
+                            <div>
+                                <p>Compiled workflow</p>
+                                <span>
+                                    {parameterNames.length
+                                        ? `Inputs: ${parameterNames
+                                              .map((name) => `$${name}`)
+                                              .join(' · ')}`
+                                        : 'Only exact exported graph nodes appear here.'}
+                                </span>
+                            </div>
+                            <span className={styles.motion}>
+                                {reducedMotion ? 'Reduced motion' : 'Media-synced'}
+                            </span>
+                        </div>
+                        <ol>
+                            {nodes.map((node) => (
+                                <li
+                                    key={node.id}
+                                    data-active={activeNodeIds.has(node.id)}
+                                >
+                                    <span>
+                                        {String(node.index + 1).padStart(2, '0')}
+                                    </span>
+                                    <strong>{node.title}</strong>
+                                    <ul className={styles.nodeFacts}>
+                                        {nodeFacts(node).map((fact) => (
+                                            <li key={fact}>{fact}</li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            ))}
+                        </ol>
                     </div>
-                    <span className={styles.motion}>{reducedMotion ? 'Reduced motion' : 'Media-synced'}</span>
-                </div>
-                <ol>
-                    {nodes.map((node) => (
-                        <li key={node.id} data-active={activeNodeIds.has(node.id)}>
-                            <span>{String(node.index + 1).padStart(2, '0')}</span>
-                            <strong>{node.title}</strong>
+                </details>
+
+                <details className={styles.details}>
+                    <summary>
+                        <span>
+                            <strong>Technical evidence</strong>
                             <small>
-                                {node.param
-                                    ? `input: $${node.param}`
-                                    : node.badges?.join(' · ') || node.kind}
+                                Open the reports, exact timeline, graph, and raw media
                             </small>
-                        </li>
-                    ))}
-                </ol>
+                        </span>
+                    </summary>
+                    <div className={styles.evidencePanel}>
+                        <div className={styles.evidenceLinks}>
+                            <JsonArtifactLink source={qualificationSrc}>
+                                Qualification evidence
+                            </JsonArtifactLink>
+                            <JsonArtifactLink source={timelineSrc}>
+                                Exact media timeline
+                            </JsonArtifactLink>
+                            <JsonArtifactLink source={graphSrc}>
+                                Program graph
+                            </JsonArtifactLink>
+                            <JsonArtifactLink source={manifestSrc}>
+                                Presentation manifest
+                            </JsonArtifactLink>
+                            <a href={videoSrc}>Raw MP4</a>
+                            <a
+                                href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/backends/RDP.md"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                RDP architecture
+                            </a>
+                        </div>
+                        <dl className={styles.provenance}>
+                            <div>
+                                <dt>Media hash</dt>
+                                <dd>
+                                    <code>
+                                        {manifest?.video_sha256 ?? 'loading'}
+                                    </code>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Graph hash</dt>
+                                <dd>
+                                    <code>
+                                        {manifest?.program_graph_sha256 ?? 'loading'}
+                                    </code>
+                                </dd>
+                            </div>
+                            {entry?.source_frame && (
+                                <div>
+                                    <dt>Current retained frame</dt>
+                                    <dd>
+                                        <code>
+                                            {entry.source_frame.presentation_phase} ·{' '}
+                                            {entry.source_frame.file}
+                                        </code>
+                                    </dd>
+                                </div>
+                            )}
+                            {Object.hasOwn(entry?.facts ?? {}, 'model_calls') && (
+                                <div>
+                                    <dt>Model calls</dt>
+                                    <dd>{entry.facts.model_calls}</dd>
+                                </div>
+                            )}
+                        </dl>
+                    </div>
+                </details>
             </div>
 
-            {loadError && <p className={styles.error}>Evidence load error: {loadError}</p>}
+            {loadError && (
+                <p className={styles.error}>Evidence load error: {loadError}</p>
+            )}
         </section>
     )
 }
