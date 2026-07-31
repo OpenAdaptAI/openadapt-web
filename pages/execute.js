@@ -1,8 +1,12 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
+import ExecuteApiExchange from '@components/ExecuteApiExchange'
+import ExecuteBoundaryFlow from '@components/ExecuteBoundaryFlow'
+import ExecuteOutcomeCards from '@components/ExecuteOutcomeCards'
 import Footer from '@components/Footer'
 import JsonArtifactLink from '@components/JsonArtifactLink'
+import RdpHybridPresentation from '@components/RdpHybridPresentation'
 
 const description =
     'OpenAdapt Execute gives software and service providers verified execution in the systems their products cannot integrate with.'
@@ -25,19 +29,7 @@ const STEPS = [
     },
 ]
 
-const OUTCOMES = [
-    {
-        label: 'verified',
-        body: 'The runner completed the authorized work and proved the configured business effect.',
-    },
-    {
-        label: 'reconciliation_required',
-        body: 'The action may have reached the target, but the proof is incomplete. OpenAdapt does not repeat a consequential write blindly.',
-    },
-    {
-        label: 'halted_before_effect',
-        body: 'The runner refused before a business effect when identity, target, authorization, or policy evidence did not match.',
-    },
+const ADDITIONAL_OUTCOMES = [
     {
         label: 'rejected_policy',
         body: 'The authorization or policy contract rejected the request before execution could proceed.',
@@ -91,8 +83,8 @@ export default function ExecutePage() {
                 <section className="border-b border-hairline bg-panel px-5 py-16 md:py-20">
                     <div className="mx-auto max-w-5xl">
                         <p className="eyebrow">The execution boundary</p>
-                        <div className="mt-3 grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-start">
-                            <div>
+                        <div className="mt-3">
+                            <div className="max-w-3xl">
                                 <h2 className="font-display text-3xl font-semibold tracking-tight text-ink">
                                     Keep business logic in your product. Put the last mile under a governed contract.
                                 </h2>
@@ -100,20 +92,9 @@ export default function ExecutePage() {
                                     Vertical software, service providers, and operations teams often prepare the right structured data but cannot write it into each customer system. OpenAdapt carries the authorized transaction across that final boundary without turning your product into a general-purpose computer agent.
                                 </p>
                             </div>
-                            <dl className="space-y-4 rounded-2xl border border-hairline bg-ground p-6 text-sm leading-relaxed">
-                                <div>
-                                    <dt className="font-semibold text-ink">Your product</dt>
-                                    <dd className="mt-1 text-ink-2">Chooses the transaction and supplies authorized, structured input.</dd>
-                                </div>
-                                <div>
-                                    <dt className="font-semibold text-ink">Customer-controlled runner</dt>
-                                    <dd className="mt-1 text-ink-2">Observes and acts inside the approved browser, desktop, remote session, or private network boundary.</dd>
-                                </div>
-                                <div>
-                                    <dt className="font-semibold text-ink">OpenAdapt</dt>
-                                    <dd className="mt-1 text-ink-2">Binds the workflow, authorization, identity, effect proof, evidence, and exception path.</dd>
-                                </div>
-                            </dl>
+                            <div className="mt-8">
+                                <ExecuteBoundaryFlow />
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -121,34 +102,22 @@ export default function ExecutePage() {
                 <section id="rdp-demo" className="scroll-mt-24 border-b border-hairline px-5 py-16 md:py-20">
                     <div className="mx-auto max-w-5xl">
                         <p className="eyebrow">Real RDP qualification</p>
-                        <div className="mt-3 grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
-                            <div>
+                        <div className="mt-3">
+                            <div className="max-w-3xl">
                                 <h2 className="font-display text-3xl font-semibold tracking-tight text-ink">
                                     Watch one transaction cross RDP, verify, and refuse the wrong record.
                                 </h2>
                                 <p className="mt-4 max-w-3xl text-base leading-relaxed text-ink-2">
                                     The demonstration books a synthetic appointment through a real RDP client and server. OpenAdapt compiles that exact demonstration, replays it with different inputs, checks the saved database row through a separate read-only connection, and halts when the active record changes before Save.
                                 </p>
-                                <div className="mt-6 overflow-hidden rounded-2xl border border-hairline bg-ink">
-                                    <video
-                                        className="aspect-[8/5] w-full object-contain"
-                                        autoPlay
-                                        controls
-                                        loop
-                                        muted
-                                        playsInline
-                                        poster="/demos/rdp/poster.jpg"
-                                        preload="metadata"
-                                    >
-                                        <source src="/demos/rdp/openadapt-rdp-demo.mp4" type="video/mp4" />
-                                        Your browser does not support the video element.
-                                    </video>
-                                </div>
-                                <p className="mt-3 text-xs leading-relaxed text-ink-3">
-                                    Reference qualification with synthetic data. The presentation uses exact retained RDP frames and the exported compiled graph. The slower timing affects the video only.
+                                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-ink-3">
+                                    SQL is this fixture&apos;s proof path. A qualified workflow can instead use an API, report or export, or persisted-state read-back. If OpenAdapt cannot prove the required result, it does not report VERIFIED. An uncertain write requires reconciliation.
                                 </p>
                             </div>
-                            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                            <div className="mt-7">
+                                <RdpHybridPresentation />
+                            </div>
+                            <div className="mt-5 grid gap-3 sm:grid-cols-3">
                                 <article className="rounded-2xl border border-hairline bg-panel p-5">
                                     <p className="font-display text-3xl font-semibold text-ink">3 / 3</p>
                                     <p className="mt-2 text-sm leading-relaxed text-ink-2">Healthy RDP runs confirmed the intended identity and saved effect.</p>
@@ -161,12 +130,20 @@ export default function ExecutePage() {
                                     <p className="font-display text-3xl font-semibold text-ink">0</p>
                                     <p className="mt-2 text-sm leading-relaxed text-ink-2">Model calls, wrong-record writes, and silent incorrect successes.</p>
                                 </article>
-                                <p className="flex flex-col gap-2 px-1 pt-2 text-sm">
+                            </div>
+                            <div className="mt-4 flex flex-col gap-4 text-xs leading-relaxed text-ink-3 md:flex-row md:items-start md:justify-between">
+                                <p className="max-w-2xl">
+                                    Reference qualification with synthetic data. The presentation uses exact retained RDP frames and the exported compiled graph. The slower timing affects the video only.
+                                </p>
+                                <p className="flex shrink-0 flex-col gap-2 text-sm">
                                     <JsonArtifactLink source="/demos/rdp/qualification.json" className="font-medium">
                                         Inspect the qualification evidence →
                                     </JsonArtifactLink>
                                     <JsonArtifactLink source="/demos/rdp/program-graph.json" className="font-medium">
                                         Inspect the compiled workflow →
+                                    </JsonArtifactLink>
+                                    <JsonArtifactLink source="/demos/rdp/presentation.timeline.json" className="font-medium">
+                                        Inspect the media timeline →
                                     </JsonArtifactLink>
                                     <a
                                         href="https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/backends/RDP.md"
@@ -194,10 +171,9 @@ export default function ExecutePage() {
                                 </article>
                             ))}
                         </div>
-                        <pre className="mt-8 overflow-x-auto rounded-2xl border border-hairline bg-ink p-5 text-sm leading-relaxed text-ground"><code>{`POST /v1/executions\n→ 202 { schema_version: "openadapt.execute-accepted/v1",\n        execution_id, state: "queued" }\n\nwebhook → { schema_version: "openadapt.execute-webhook/v1",\n            event_type: "execution.terminal", receipt: { outcome: "verified" } }`}</code></pre>
-                        <p className="mt-3 text-sm leading-relaxed text-ink-3">
-                            Execution is asynchronous. A run can wait for an authorized decision, survive a restart, or require reconciliation without losing its transaction identity.
-                        </p>
+                        <div className="mt-8">
+                            <ExecuteApiExchange />
+                        </div>
                     </div>
                 </section>
 
@@ -207,8 +183,11 @@ export default function ExecutePage() {
                         <h2 className="mt-2 max-w-3xl font-display text-3xl font-semibold tracking-tight text-ink">
                             A receipt names what the runner proved and what needs attention.
                         </h2>
+                        <div className="mt-7">
+                            <ExecuteOutcomeCards />
+                        </div>
                         <div className="mt-7 grid gap-4 md:grid-cols-2">
-                            {OUTCOMES.map((outcome) => (
+                            {ADDITIONAL_OUTCOMES.map((outcome) => (
                                 <article key={outcome.label} className="rounded-2xl border border-hairline bg-ground p-5">
                                     <h3 className="font-mono text-xs font-semibold tracking-[0.12em] text-accent">{outcome.label}</h3>
                                     <p className="mt-3 text-sm leading-relaxed text-ink-2">{outcome.body}</p>

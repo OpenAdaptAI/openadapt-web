@@ -1,7 +1,7 @@
 {
   "accepted": true,
-  "base_commit": "6673dd97de169d8c500031c4ac4c64a95bb71656",
-  "candidate_commit": "a3c71c1915ae7465306eb7106511bc1307ba162c",
+  "base_commit": "c535bab13e544b0d7e24c8bb0d2d6c0dfded7e16",
+  "candidate_commit": "e0f9ffb9abcc91e151fc764e6550fcad17d73150",
   "caveat": "Synthetic Tk task over real FreeRDP-transported pixels + input, but NOT Citrix ICA/HDX, NOT the aardwolf transport, NOT a Windows application qualification, and the drift is simulated on the real protocol session (not WAN capture).",
   "contract": {
     "drift_false_completions": 0,
@@ -61,7 +61,7 @@
     "wrong_record_contract_violation",
     "reset_not_acknowledged"
   ],
-  "generated_at": "2026-07-30T20:45:29.227149+00:00",
+  "generated_at": "2026-07-30T23:00:45.731263+00:00",
   "model_calls": 0,
   "oracle": "host read of the bind-mounted appointment database, plus the runtime read-only SQL exactly-one-new-record and status gates",
   "run_count": 9,
@@ -69,7 +69,7 @@
   "substrate": "real-rdp-freerdp3-roundtrip-linux-kiosk",
   "successes": 9,
   "task": "record->compile->replay an appointment booking through the vision-only resolver ladder over a real RDP round-trip, with no structural backend; confirm the write through read-only SQL; halt under injected DPI/theme/JPEG drift; and halt when the active patient changes before the write",
-  "total_s": 548.514,
+  "total_s": 556.63,
   "trials": [
     {
       "condition_trial": 1,
@@ -101,7 +101,7 @@
             190
           ],
           "resolution": {
-            "confidence": 1.0,
+            "confidence": 0.9999993443489075,
             "point": [
               335,
               190
@@ -137,7 +137,7 @@
             388
           ],
           "resolution": {
-            "confidence": 1.0,
+            "confidence": 0.9999992847442627,
             "point": [
               590,
               388
@@ -336,7 +336,7 @@
             190
           ],
           "resolution": {
-            "confidence": 1.0,
+            "confidence": 0.9999993443489075,
             "point": [
               335,
               190
@@ -372,7 +372,7 @@
             388
           ],
           "resolution": {
-            "confidence": 1.0,
+            "confidence": 0.9999992847442627,
             "point": [
               590,
               388
@@ -571,7 +571,7 @@
             190
           ],
           "resolution": {
-            "confidence": 1.0,
+            "confidence": 0.9999993443489075,
             "point": [
               335,
               190
@@ -607,7 +607,7 @@
             388
           ],
           "resolution": {
-            "confidence": 1.0,
+            "confidence": 0.9999992847442627,
             "point": [
               590,
               388
