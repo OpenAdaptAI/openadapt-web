@@ -4,6 +4,8 @@
     1280,
     800
   ],
+  "hybrid_timeline": "openadapt-rdp-demo.timeline.json",
+  "hybrid_timeline_sha256": "bb90f660da908d2ae857b5949b77088fae3f977efcb9dcddb1570d68b1d85567",
   "phases": [
     {
       "outcome": "RECORDED",
@@ -54,7 +56,7 @@
             }
           ]
         },
-        "workflow_digest": "1639d92d9c92aa1ba3b87b017ba9a52eae8b2d2a8cbe0e6a3c9deead52df7664"
+        "workflow_digest": "da52230dbde8d8ae6bd8060f4d2dc3f8c503487bbb3a214159af9550317670b9"
       }
     },
     {
@@ -82,10 +84,10 @@
       }
     }
   ],
-  "program_graph_sha256": "9cffca5540f8fdb9bcbd9748906780d8369576508010af9a6741a64e93b755a3",
+  "program_graph_sha256": "7cb346cabe49b1077b9eaa960257d32f6a9262401fcf7443218e7726a7203570",
   "schema_version": "openadapt.rdp-presentation-render.v2",
   "timing": "paced derivative; source frames and input events remain exact",
   "video": "openadapt-rdp-demo.mp4",
-  "video_sha256": "e556b59084864ebe643ab4650abf8d9ebdfd99d4548f5ebeeed21432e0c9f2fa",
-  "workflow_digest": "1639d92d9c92aa1ba3b87b017ba9a52eae8b2d2a8cbe0e6a3c9deead52df7664"
+  "video_sha256": "f98655660d56eb8c96fc50c7d87a6759a895a108ea2fc46616208f7a27537af9",
+  "workflow_digest": "da52230dbde8d8ae6bd8060f4d2dc3f8c503487bbb3a214159af9550317670b9"
 }

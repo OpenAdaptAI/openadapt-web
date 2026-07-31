@@ -1,0 +1,84 @@
+.exchange {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--hairline);
+    border-radius: 1rem;
+    background: var(--panel);
+}
+
+.heading { max-width: 42rem; }
+
+.heading h2 {
+    margin: 0.4rem 0 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.15;
+}
+
+.heading > p:last-child {
+    margin: 0.75rem 0 0;
+    color: var(--ink-2);
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.messages {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    list-style: none;
+}
+
+.messages li {
+    position: relative;
+    min-width: 0;
+    padding: 1rem;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    border-radius: 0.75rem;
+    background: var(--ground);
+}
+
+.label {
+    margin: 0 0 0.65rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.messages pre {
+    max-width: 100%;
+    padding: 0.8rem;
+    margin: 0;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    background: var(--ink);
+    color: var(--ground);
+    font-family: var(--font-mono);
+    font-size: clamp(0.68rem, 1.8vw, 0.76rem);
+    line-height: 1.65;
+}
+
+.line {
+    display: block;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+.method { color: #a9d7b5; }
+.status { color: #d9d68b; }
+.webhook { color: #9bc8d7; }
+
+.note {
+    margin: 0.7rem 0 0;
+    color: var(--ink-2);
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+@media (min-width: 760px) {
+    .messages { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

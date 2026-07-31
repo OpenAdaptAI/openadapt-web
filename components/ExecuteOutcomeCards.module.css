@@ -1,0 +1,52 @@
+.cards {
+    display: grid;
+    gap: 0.8rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.card {
+    display: flex;
+    gap: 0.8rem;
+    padding: 1rem;
+    border: 1px solid var(--hairline);
+    border-radius: 0.75rem;
+    background: var(--ground);
+}
+
+.card > svg {
+    flex: 0 0 auto;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.05rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+.card h3 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    line-height: 1.35;
+}
+
+.card p {
+    margin: 0.4rem 0 0;
+    color: var(--ink-2);
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.verified { color: var(--accent); }
+.halted { color: #955839; }
+.reconcile { color: #77621d; }
+
+@media (min-width: 700px) {
+    .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

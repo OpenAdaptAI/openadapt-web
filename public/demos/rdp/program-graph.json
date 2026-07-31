@@ -3,7 +3,7 @@
   "bundle": {
     "name": "rdp-vision-ladder",
     "schema_version": 2,
-    "created_at": "2026-07-30T20:38:04.671826+00:00",
+    "created_at": "2026-07-30T22:53:14.745572+00:00",
     "viewport": [
       1280,
       800
@@ -52,7 +52,7 @@
       "certification_status": null,
       "policy_name": null,
       "expires_at": null,
-      "content_digest": "1639d92d9c92aa1ba3b87b017ba9a52eae8b2d2a8cbe0e6a3c9deead52df7664",
+      "content_digest": "da52230dbde8d8ae6bd8060f4d2dc3f8c503487bbb3a214159af9550317670b9",
       "source_recording_sha256": null
     }
   },
