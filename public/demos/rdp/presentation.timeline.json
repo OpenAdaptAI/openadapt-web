@@ -7,7 +7,7 @@
       800
     ],
     "video": "openadapt-rdp-demo.mp4",
-    "video_sha256": "f98655660d56eb8c96fc50c7d87a6759a895a108ea2fc46616208f7a27537af9"
+    "video_sha256": "c8df573bd0edbf139d4b5718ee14f2bf35b7e69331bfd9c5bc592dbf2e351504"
   },
   "program_graph_sha256": "7cb346cabe49b1077b9eaa960257d32f6a9262401fcf7443218e7726a7203570",
   "schema_version": "openadapt.rdp-hybrid-presentation.v1",
