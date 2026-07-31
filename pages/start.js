@@ -23,7 +23,7 @@ function Command({ command, event }) {
     }
 
     return (
-        <div className="mt-3 flex items-center gap-3 rounded-xl border border-hairline bg-panel p-3 sm:p-4">
+        <div className="mt-3 flex min-w-0 items-center gap-3 rounded-xl border border-hairline bg-panel p-3 sm:p-4">
             <code className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-sm text-ink">
                 {command}
             </code>
@@ -79,12 +79,12 @@ export default function StartPage() {
                     </p>
 
                     <div
-                        className="mt-10 grid gap-5 md:grid-cols-2"
+                        className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2"
                         role="list"
                         aria-label="Local ways to run OpenAdapt"
                     >
                         <article
-                            className="flex h-full flex-col rounded-2xl border border-hairline bg-panel p-5 md:p-6"
+                            className="flex h-full min-w-0 flex-col rounded-2xl border border-hairline bg-panel p-5 md:p-6"
                             role="listitem"
                         >
                             <p className="eyebrow">Command line</p>
@@ -136,7 +136,7 @@ export default function StartPage() {
                         </article>
 
                         <article
-                            className="flex h-full flex-col rounded-2xl border border-hairline bg-panel p-5 md:p-6"
+                            className="flex h-full min-w-0 flex-col rounded-2xl border border-hairline bg-panel p-5 md:p-6"
                             role="listitem"
                         >
                             <p className="eyebrow">Native app · Beta</p>
