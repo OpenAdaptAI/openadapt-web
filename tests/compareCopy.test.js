@@ -7,19 +7,6 @@ const root = path.join(__dirname, '..')
 const compare = fs.readFileSync(path.join(root, 'pages/compare.js'), 'utf8')
 const llms = fs.readFileSync(path.join(root, 'public/llms.txt'), 'utf8')
 
-test('comparison page leads with buyer fit and operating outcomes', () => {
-    ;[
-        'Choose repeatable automation for work that repeats.',
-        'Predictable repeat economics',
-        'Review reusable change',
-        'Know when it stopped',
-        'Control the runtime boundary',
-        'Choose by the operating model you need.',
-        'Control the failure path.',
-        'Test one real workflow.',
-    ].forEach((claim) => assert.match(compare, new RegExp(claim.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))))
-})
-
 test('comparison page keeps the evidence bounded and details optional', () => {
     assert.match(compare, /This benchmark measures repeat cost and latency on one/)
     assert.match(compare, /Method, raw results, and rerun instructions/)

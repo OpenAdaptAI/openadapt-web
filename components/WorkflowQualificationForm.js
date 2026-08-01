@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import {
     QUALIFICATION_TIERS,
+    buildQualificationSalesTask,
     scoreWorkflowQualification,
 } from '../lib/workflowQualification.mjs'
 import { EVENTS, track } from '../utils/analytics'
@@ -87,13 +88,20 @@ export default function WorkflowQualificationForm({ compact = false }) {
         setError('')
 
         const qualification = scoreWorkflowQualification(form)
+        const salesTask = buildQualificationSalesTask({
+            id: `qualification_${globalThis.crypto.randomUUID()}`,
+            qualification,
+            sourceRoute: compact ? '/' : '/qualify',
+            submittedAt: new Date().toISOString(),
+        })
         const data = new URLSearchParams()
         data.set('form-name', 'workflow-qualification')
         for (const [key, value] of Object.entries(form)) {
             data.set(key === 'botField' ? 'bot-field' : key, value)
         }
-        data.set('qualificationScore', String(qualification.score))
-        data.set('qualificationTier', qualification.tier)
+        for (const [key, value] of Object.entries(salesTask)) {
+            data.set(key, value)
+        }
 
         try {
             const response = await fetch('/form.html', {
@@ -126,7 +134,7 @@ export default function WorkflowQualificationForm({ compact = false }) {
                     : 'qualification_form',
                 tier: qualification.tier,
             })
-            setResult(qualification)
+            setResult({ ...qualification, salesTask })
             setState('submitted')
         } catch (submitError) {
             console.error(submitError)
@@ -146,6 +154,9 @@ export default function WorkflowQualificationForm({ compact = false }) {
                 </h2>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
                     {next.message}
+                </p>
+                <p className="mt-3 font-mono text-xs text-ink-3">
+                    Reference: {result.salesTask.salesTaskId}
                 </p>
                 <div className="mt-6">
                     {external ? (

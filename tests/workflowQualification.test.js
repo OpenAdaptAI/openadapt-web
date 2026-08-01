@@ -69,3 +69,27 @@ test('qualification scoring preserves the three routing outcomes', async () => {
         assert.equal(scoreWorkflowQualification(form).tier, expected)
     }
 })
+
+test('a qualification submission produces one traceable sales-task contract', async () => {
+    const {
+        QUALIFICATION_SALES_TASK_SCHEMA,
+        buildQualificationSalesTask,
+    } = await import('../lib/workflowQualification.mjs')
+    const task = buildQualificationSalesTask({
+        id: 'qualification_018f5b5a-1f8d-7e20-8b70-4e0c8d9a4f21',
+        qualification: { score: 24, tier: 'priority' },
+        sourceRoute: '/qualify',
+        submittedAt: '2026-08-01T12:00:00.000Z',
+    })
+
+    assert.deepEqual(task, {
+        salesTaskSchema: QUALIFICATION_SALES_TASK_SCHEMA,
+        salesTaskId: 'qualification_018f5b5a-1f8d-7e20-8b70-4e0c8d9a4f21',
+        salesTaskStatus: 'new',
+        sourceRoute: '/qualify',
+        bookingState: 'not_booked',
+        submittedAt: '2026-08-01T12:00:00.000Z',
+        qualificationScore: '24',
+        qualificationTier: 'priority',
+    })
+})

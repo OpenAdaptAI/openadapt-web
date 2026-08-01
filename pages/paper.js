@@ -36,6 +36,10 @@ export default function PaperPage() {
                 />
                 <link rel="canonical" href="https://openadapt.ai/paper" />
                 <meta property="og:title" content="OpenAdapt technical paper" />
+                <meta
+                    property="og:description"
+                    content="The OpenAdapt technical paper: compiling a demonstrated GUI workflow into deterministic local execution with effect verification and governed refusal."
+                />
                 <meta property="og:url" content="https://openadapt.ai/paper" />
                 <script
                     type="application/ld+json"

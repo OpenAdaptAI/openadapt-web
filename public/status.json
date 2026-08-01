@@ -1,12 +1,12 @@
 {
     "$comment": "Canonical machine-readable release, capability, evidence, and deployment status for OpenAdapt. Served at https://openadapt.ai/status.json and consumed by status-aware public surfaces and tests. OpenAdapt is one Beta product across browser, Windows, macOS, Linux, RDP, and Citrix/VDI. Capability availability is distinct from the deployment boundary and from the bounded evidence scope recorded for each substrate.",
-    "generated_at": "2026-07-31",
+    "generated_at": "2026-08-01",
     "product_lifecycle": "Beta",
     "versions": {
         "launcher": "1.10.3",
         "flow": "1.27.1",
         "capture": "1.2.2",
-        "desktop": "0.14.0"
+        "desktop": "0.15.0"
     },
     "tiers": {
         "Available": "Implemented in the released compiler and governed runtime. Production use still qualifies the exact workflow, application, environment, identity contract, and effect oracle.",
