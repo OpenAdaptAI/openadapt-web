@@ -6,17 +6,23 @@ describe('Cloud product showcase', () => {
         cy.get('#cloud-product').scrollIntoView().should('be.visible')
 
         cy.get('[data-testid="dashboard-product-preview"]').within(() => {
+            // Keep only the active capture and its successor in the DOM. This
+            // preserves the automatic transition without loading every large
+            // dashboard capture during the first visit.
+            cy.get('[data-testid="dashboard-slide"]').should('have.length', 2)
+            cy.get('[data-testid="dashboard-slide"][data-active="true"]')
+                .should('have.length', 1)
+                .and('have.attr', 'loading', 'eager')
+            cy.get(
+                '[data-testid="dashboard-slide"]:not([data-active="true"])'
+            )
+                .should('have.length', 1)
+                .and('have.attr', 'loading', 'lazy')
+
             // Every discovered tab must activate its matching, decoded slide.
-            cy.get('[data-testid="dashboard-slide"]').each(($img) => {
-                cy.wrap($img).should('have.attr', 'loading', 'lazy')
-            })
             cy.get('[data-testid="dashboard-tab"]')
                 .should('have.length.at.least', 1)
                 .then(($tabs) => {
-                    cy.get('[data-testid="dashboard-slide"]').should(
-                        'have.length',
-                        $tabs.length
-                    )
                     cy.get('[data-testid="dashboard-dots"] button').should(
                         'have.length',
                         $tabs.length
@@ -28,6 +34,7 @@ describe('Cloud product showcase', () => {
                         cy.get('[data-testid="dashboard-slide"][data-active="true"]')
                             .should('have.length', 1)
                             .and('have.attr', 'data-slide', slide)
+                            .and('have.attr', 'loading', 'eager')
                             .should(($img) =>
                                 expect($img[0].naturalWidth).to.be.greaterThan(0)
                             )

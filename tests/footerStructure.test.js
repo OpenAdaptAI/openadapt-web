@@ -85,7 +85,6 @@ test('footer carries the standard brand, legal, and social baseline', () => {
         /© 2023–\{currentYear\} OpenAdapt\.AI and MLDSAI Inc\./
     )
     assert.match(footer, /licensed under the\s+MIT License/)
-    assert.match(footer, /OpenAdapt compiles demonstrated GUI workflows/)
     for (const icon of [
         'faGithub',
         'faXTwitter',

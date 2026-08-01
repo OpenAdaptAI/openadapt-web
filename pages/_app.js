@@ -29,14 +29,11 @@ export default function MyApp({ Component, pageProps }) {
 
     return (
         <>
-            {/* New pages must add their own <Head> with unique title, description, canonical, and og:* tags */}
+            {/* Page-specific title, description, canonical, Open Graph, and
+                Twitter fields belong to each page. Global defaults caused two
+                competing values on every non-home route. */}
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>OpenAdapt — Verified execution for UI-only work</title>
-                <meta
-                    name="description"
-                    content="Automate the UI-only work your APIs cannot reach across browser, desktop, RDP, and Citrix. OpenAdapt verifies consequential effects and halts on uncertainty."
-                />
                 <link
                     rel="apple-touch-icon"
                     sizes="180x180"
@@ -66,19 +63,14 @@ export default function MyApp({ Component, pageProps }) {
                 {/* Open Graph */}
                 <meta property="og:type" content="website" />
                 <meta property="og:site_name" content="OpenAdapt.AI" />
-                <meta property="og:title" content="OpenAdapt — Verified execution for UI-only work" />
-                <meta property="og:description" content="Governed execution across browser, desktop, RDP, and Citrix, with identity gates, effect verification, and fail-closed outcomes." />
                 <meta property="og:image" content="https://openadapt.ai/og.png" />
                 <meta property="og:image:type" content="image/png" />
                 <meta property="og:image:width" content="1024" />
                 <meta property="og:image:height" content="1024" />
-                <meta property="og:url" content="https://openadapt.ai" />
 
                 {/* Twitter Card */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@OpenAdaptAI" />
-                <meta name="twitter:title" content="OpenAdapt — Verified execution for UI-only work" />
-                <meta name="twitter:description" content="Automate consequential UI-only work, verify the business effect, and halt when the contract cannot be proved." />
                 <meta name="twitter:image" content="https://openadapt.ai/og.png" />
 
             </Head>
