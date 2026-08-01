@@ -74,6 +74,7 @@ export default function DashboardShowcase() {
     // chosen slide its full dwell time instead of flipping a moment later.
     const [cycle, setCycle] = useState(0)
     const count = SLIDES.length
+    const nextIndex = (active + 1) % count
 
     // The showcase auto-advances for everyone, including visitors with
     // "reduce motion" enabled. This is a deliberate product decision (matching
@@ -218,7 +219,12 @@ export default function DashboardShowcase() {
                             data-testid="dashboard-stage"
                             ref={stageRef}
                         >
-                            {SLIDES.map((slide, index) => (
+                            {SLIDES.map((slide, index) => ({ slide, index }))
+                                .filter(
+                                    ({ index }) =>
+                                        index === active || index === nextIndex
+                                )
+                                .map(({ slide, index }) => (
                                 <img
                                     key={slide.key}
                                     ref={(node) => {
@@ -229,7 +235,8 @@ export default function DashboardShowcase() {
                                     width={slide.width}
                                     height={slide.height}
                                     alt={slide.alt}
-                                    loading="lazy"
+                                    loading={index === active ? 'eager' : 'lazy'}
+                                    fetchPriority={index === active ? 'high' : 'low'}
                                     decoding="async"
                                     aria-hidden={index !== active}
                                     data-testid="dashboard-slide"
@@ -241,7 +248,7 @@ export default function DashboardShowcase() {
                                         opacity: index === active ? 1 : 0,
                                     }}
                                 />
-                            ))}
+                                ))}
                         </div>
                     </div>
 
@@ -277,16 +284,27 @@ export default function DashboardShowcase() {
                                 onClick={() => jumpTo(index)}
                             >
                                 <span className={styles.thumb}>
-                                    <img
-                                        className={styles.thumbImg}
-                                        src={slide.src}
-                                        width={slide.width}
-                                        height={slide.height}
-                                        alt=""
-                                        loading="lazy"
-                                        decoding="async"
-                                        aria-hidden="true"
-                                    />
+                                    {index === active || index === nextIndex ? (
+                                        <img
+                                            className={styles.thumbImg}
+                                            src={slide.src}
+                                            width={slide.width}
+                                            height={slide.height}
+                                            alt=""
+                                            loading={
+                                                index === active ? 'eager' : 'lazy'
+                                            }
+                                            decoding="async"
+                                            aria-hidden="true"
+                                        />
+                                    ) : (
+                                        <span
+                                            className={styles.thumbPlaceholder}
+                                            aria-hidden="true"
+                                        >
+                                            {index + 1}
+                                        </span>
+                                    )}
                                     {index === active && (
                                         <span
                                             key={`${active}-${cycle}-${paused}`}

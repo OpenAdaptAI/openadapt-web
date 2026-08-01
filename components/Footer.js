@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faGithub,
@@ -12,7 +12,6 @@ import {
     OPENADAPT_STATS_SNAPSHOT,
 } from 'data/repositoryStats'
 import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks'
-import useRepositoryStats from 'hooks/useRepositoryStats'
 import { track, EVENTS } from 'utils/analytics'
 import repositoryStatsView from 'utils/repositoryStatsView'
 import repositoryStatsSelection from 'utils/repositoryStatsSelection'
@@ -57,54 +56,10 @@ function ForkOcticon() {
     )
 }
 
-function usePrefersReducedMotion() {
-    const [reduced, setReduced] = useState(false)
-    useEffect(() => {
-        if (typeof window === 'undefined' || !window.matchMedia) return
-        const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-        const update = () => setReduced(media.matches)
-        update()
-        media.addEventListener?.('change', update)
-        return () => media.removeEventListener?.('change', update)
-    }, [])
-    return reduced
-}
-
-// The honest, live-ticking "GitHub · updated Ns ago" line. The relative time
-// is recomputed locally (no network) on a gentle cadence: 1s normally so the
-// seconds counter reads true, or 30s under prefers-reduced-motion so there is
-// no visible per-second animation. The tick pauses while the tab is hidden and
-// snaps to the current time when it returns. `suppressHydrationWarning` is the
-// documented escape hatch for timestamps whose server and client renders may
-// legitimately differ by a second.
+// Repository counts refresh at build/ISR time. A visitor does not need a
+// repeating timer or a client-side fetch for a value that changes over hours.
 function RepositorySource({ stats }) {
-    const reducedMotion = usePrefersReducedMotion()
-    const [now, setNow] = useState(() => Date.now())
-
-    useEffect(() => {
-        const cadence = reducedMotion ? 30 * 1000 : 1000
-        let timer = null
-        const tick = () => setNow(Date.now())
-        const start = () => {
-            if (document.visibilityState === 'hidden') return
-            timer = setInterval(tick, cadence)
-        }
-        const onVisibility = () => {
-            clearInterval(timer)
-            if (document.visibilityState === 'visible') {
-                tick()
-                start()
-            }
-        }
-        start()
-        document.addEventListener('visibilitychange', onVisibility)
-        return () => {
-            clearInterval(timer)
-            document.removeEventListener('visibilitychange', onVisibility)
-        }
-    }, [reducedMotion])
-
-    const label = sourceLabel(stats, now)
+    const label = sourceLabel(stats, Date.now())
     return (
         <p
             className={styles.repositorySource}
@@ -176,18 +131,12 @@ const CONNECT_COLUMN = [
 
 export default function Footer({
     repositoryStats = OPENADAPT_STATS_SNAPSHOT,
-    pollRepositoryStats = true,
 }) {
     const currentYear = new Date().getFullYear()
     const qualificationHref = '/qualify'
-    const polledStats = useRepositoryStats(repositoryStats, {
-        enabled: pollRepositoryStats,
-    })
-    const stats = pollRepositoryStats
-        ? polledStats
-        : validStats(repositoryStats)
-          ? repositoryStats
-          : OPENADAPT_STATS_SNAPSHOT
+    const stats = validStats(repositoryStats)
+        ? repositoryStats
+        : OPENADAPT_STATS_SNAPSHOT
 
     return (
         <div className={styles.footerContainer}>

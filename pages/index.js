@@ -12,7 +12,6 @@ import ProductStatus from '@components/ProductStatus'
 import Qualification from '@components/Qualification'
 import Reveal from '@components/Reveal'
 import TrustSummary from '@components/TrustSummary'
-import useRepositoryStats from 'hooks/useRepositoryStats'
 import { OPENADAPT_STATS_SNAPSHOT } from '../data/repositoryStats'
 import publishedRepositoryStats from '../utils/publishedRepositoryStats'
 
@@ -122,15 +121,22 @@ export async function getStaticProps() {
 }
 
 export default function Home({ githubStats, hostedOffer }) {
-    // Home owns the one live repository-stats request so every social-proof
-    // consumer updates atomically. Footer polling is disabled on this route;
-    // other pages let their Footer own the same shared hook.
-    const currentGithubStats = useRepositoryStats(githubStats)
+    const currentGithubStats = githubStats || OPENADAPT_STATS_SNAPSHOT
+    const title = 'OpenAdapt — Verified execution for UI-only work'
+    const description =
+        'Automate consequential UI-only work across browser, desktop, RDP, and Citrix. OpenAdapt verifies the business effect and halts on uncertainty.'
 
     return (
         <div>
             <Head>
+                <title>{title}</title>
+                <meta name="description" content={description} />
                 <link rel="canonical" href="https://openadapt.ai" />
+                <meta property="og:title" content={title} />
+                <meta property="og:description" content={description} />
+                <meta property="og:url" content="https://openadapt.ai" />
+                <meta name="twitter:title" content={title} />
+                <meta name="twitter:description" content={description} />
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
@@ -173,10 +179,7 @@ export default function Home({ githubStats, hostedOffer }) {
              */}
             <Reveal><ContributeSection /></Reveal>
             <Reveal><FinalQualificationCta /></Reveal>
-            <Footer
-                repositoryStats={currentGithubStats}
-                pollRepositoryStats={false}
-            />
+            <Footer repositoryStats={currentGithubStats} />
         </div>
     )
 }
