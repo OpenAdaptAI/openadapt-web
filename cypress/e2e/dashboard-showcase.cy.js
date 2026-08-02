@@ -19,6 +19,20 @@ describe('Cloud product showcase', () => {
                 .should('have.length', 1)
                 .and('have.attr', 'loading', 'lazy')
 
+            // The rail uses four small derivatives. It must never replace
+            // inactive previews with empty numbered placeholders merely to
+            // preserve the two-image full-resolution stage budget.
+            cy.get('[data-testid="dashboard-thumbnail"]')
+                .should('have.length', 4)
+                .each(($img) => {
+                    expect($img.attr('src')).to.match(
+                        /^\/cloud-preview\/thumbs\/.+\.webp$/
+                    )
+                    cy.wrap($img).should(($thumbnail) =>
+                        expect($thumbnail[0].naturalWidth).to.be.greaterThan(0)
+                    )
+                })
+
             // Every discovered tab must activate its matching, decoded slide.
             cy.get('[data-testid="dashboard-tab"]')
                 .should('have.length.at.least', 1)
