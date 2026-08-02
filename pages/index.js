@@ -6,6 +6,7 @@ import CustomerCaseStudy from '@components/CustomerCaseStudy'
 import DashboardShowcase from '@components/DashboardShowcase'
 import FinalQualificationCta from '@components/FinalQualificationCta'
 import Footer from '@components/Footer'
+import HeroProofStrip from '@components/HeroProofStrip'
 import HowItWorksCondensed from '@components/HowItWorksCondensed'
 import MastHead from '@components/MastHead'
 import ProductStatus from '@components/ProductStatus'
@@ -157,6 +158,7 @@ export default function Home({ githubStats, hostedOffer }) {
                 />
             </Head>
             <MastHead githubStats={currentGithubStats} />
+            <HeroProofStrip />
             <div id="customer-result">
                 <Reveal>
                     <CustomerCaseStudy />

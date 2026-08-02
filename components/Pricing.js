@@ -347,12 +347,17 @@ export default function Pricing({ hostedOffer = null }) {
                                 One qualification conversation scopes the whole
                                 path.
                             </p>
-                            <Link
-                                href="/qualify"
-                                className="btn-ghost-ink mt-6 inline-block"
-                            >
-                                Qualify one workflow
-                            </Link>
+                            <div className="mt-6 flex flex-wrap gap-3">
+                                <Link
+                                    href="/qualify"
+                                    className="btn-ghost-ink"
+                                >
+                                    Qualify one workflow
+                                </Link>
+                                <a href="#book" className="btn-ghost-ink">
+                                    Book a 30-minute call
+                                </a>
+                            </div>
                         </div>
 
                         <ol className="divide-y divide-hairline border-y border-hairline">

@@ -13,7 +13,7 @@ const description =
 const STEPS = [
     {
         number: '01',
-        title: 'Qualify one transaction',
+        title: 'Qualify one workflow',
         body: 'We bind the intended inputs, identity checks, effect proof, target environment, and exception path to one workflow version.',
     },
     {
@@ -67,7 +67,7 @@ export default function ExecutePage() {
                         </p>
                         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                             <Link href="/qualify" className="btn-ink text-center">
-                                Qualify one transaction
+                                Qualify one workflow
                             </Link>
                             <Link href="/partners#apply" className="btn-ghost-ink text-center">
                                 Discuss an OEM integration
@@ -191,7 +191,7 @@ export default function ExecutePage() {
                             We qualify the first workflow with your team. That creates the reusable execution contract, customer-runner plan, mobile operator decision path, and evidence needed to scale it through your product.
                         </p>
                         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                            <Link href="/qualify" className="btn-ink text-center">Qualify one transaction</Link>
+                            <Link href="/qualify" className="btn-ink text-center">Qualify one workflow</Link>
                             <Link href="/partners#apply" className="btn-ghost-ink text-center">Talk to partnerships</Link>
                         </div>
                     </div>
