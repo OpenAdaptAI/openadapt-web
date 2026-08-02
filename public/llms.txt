@@ -58,6 +58,7 @@ Availability below is the released capability. It is distinct from the deploymen
 ## Where it is used
 
 - [Healthcare Execution Infrastructure](https://openadapt.ai/solutions/healthcare): Governed last-mile execution for RCM vendors, healthcare BPOs, automation teams, and vertical-software companies that already have structured input and business logic.
+- [Dental Front-Desk Automation](https://openadapt.ai/solutions/dental): Insurance eligibility verification and claims status checks compiled from a practice's own demonstration, replayed locally on the front-desk computer, halting instead of writing a wrong record.
 - [Lending Operations](https://openadapt.ai/solutions/lending): A demonstrated Frappe Lending workflow compiled into model-free replay and checked against independent REST and SQL effect oracles.
 - [Insurance Claims Execution](https://openadapt.ai/solutions/insurance): A demonstrated openIMIS claims-intake workflow compiled into model-free replay and checked against a direct SQL claim-row oracle.
 - [Dental front-desk eligibility](https://openadapt.ai/dental): Payer-portal verification that runs on the practice's own front-desk PC.

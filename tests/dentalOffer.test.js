@@ -138,7 +138,10 @@ test('dental is discoverable to crawlers and AI search without a nav entry', () 
     assert.match(templates, /managedOffer/)
     assert.match(templates, /href: '\/dental'/)
 
-    // Not in primary nav, not in the footer.
-    assert.doesNotMatch(nav, /\/dental/)
-    assert.doesNotMatch(footer, /\/dental/)
+    // Not in primary nav, not in the footer. The /solutions/dental
+    // POSITIONING page may appear in both (it is a Solutions page like
+    // healthcare/lending/insurance); the priced /dental OFFER page may not,
+    // so match the exact quoted href rather than the substring.
+    assert.doesNotMatch(nav, /'\/dental'|"\/dental"/)
+    assert.doesNotMatch(footer, /'\/dental'|"\/dental"/)
 })

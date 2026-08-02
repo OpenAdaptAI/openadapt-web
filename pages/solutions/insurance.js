@@ -48,10 +48,10 @@ export default function InsurancePage() {
                         Qualify one workflow
                     </Link>
                     <Link
-                        href="/"
+                        href="/book"
                         className="btn-ghost-ink"
                     >
-                        Back to home
+                        Book a 30-minute call
                     </Link>
                 </div>
             </div>
@@ -104,12 +104,14 @@ export default function InsurancePage() {
                         record that proves its outcome. We&#39;ll map the deployment,
                         verification, shadow run, and supervised rollout.
                     </p>
-                    <Link
-                        href="/qualify"
-                        className="btn-ink mt-5 inline-block"
-                    >
-                        Qualify one workflow
-                    </Link>
+                    <div className="mt-5 flex flex-wrap justify-center gap-3">
+                        <Link href="/qualify" className="btn-ink">
+                            Qualify one workflow
+                        </Link>
+                        <Link href="/book" className="btn-ghost-ink">
+                            Book a 30-minute call
+                        </Link>
+                    </div>
                 </div>
             </div>
 

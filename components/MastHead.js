@@ -4,13 +4,15 @@ import Link from 'next/link'
 import ReplayHero from '@components/ReplayHero'
 import AttendedDecisionPreview from '@components/AttendedDecisionPreview'
 import { track, EVENTS } from 'utils/analytics'
+import useLiveRepositoryStats from 'utils/useLiveRepositoryStats'
 
 import styles from './MastHead.module.css'
 
-const formatStars = (n) =>
-    n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k` : String(n)
-
-export default function Home({ githubStats }) {
+export default function Home({ githubStats: initialGithubStats }) {
+    // Same live source and same en-US formatting as the footer, so the hero
+    // and the footer can never show two different star counts for the same
+    // repository on the same page view.
+    const githubStats = useLiveRepositoryStats(initialGithubStats)
     return (
         <div className={styles.section}>
             <div className="relative flex items-center justify-center">
@@ -40,7 +42,10 @@ export default function Home({ githubStats }) {
                                         style={{ border: '1px solid var(--hairline)' }}
                                     >
                                         <span aria-hidden="true">★</span>
-                                        {formatStars(githubStats.stars)} stars on OpenAdapt
+                                        {githubStats.stars.toLocaleString(
+                                            'en-US'
+                                        )}{' '}
+                                        stars on OpenAdapt
                                         <span className="text-ink-3">
                                             · {githubStats.forks} forks
                                         </span>
@@ -75,6 +80,18 @@ export default function Home({ githubStats }) {
                                         }
                                     >
                                         Qualify one workflow
+                                    </Link>
+                                    <Link
+                                        className="btn-ghost-ink"
+                                        href="/book"
+                                        data-testid="book-call-cta"
+                                        onClick={() =>
+                                            track(EVENTS.HERO_CTA_CLICK, {
+                                                cta: 'book_call',
+                                            })
+                                        }
+                                    >
+                                        Book a 30-minute call
                                     </Link>
                                     <Link
                                         className="btn-ghost-ink"

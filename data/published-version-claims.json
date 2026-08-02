@@ -78,6 +78,10 @@
                     "context": "Measured on Flow {benchmark.provenance.flow_version},"
                 },
                 {
+                    "file": "components/HeroProofStrip.js",
+                    "context": "{ATTRIBUTION_SHORT}"
+                },
+                {
                     "file": "pages/research.js",
                     "context": "<BenchmarkAttribution className=\"mt-4 max-w-3xl\" />"
                 },

@@ -174,12 +174,14 @@ export default function AboutPage() {
                         oracle, execution boundary, and fastest path to a
                         production deployment.
                     </p>
-                    <Link
-                        href="/qualify"
-                        className="btn-ink mt-5 inline-block"
-                    >
-                        Evaluate a workflow
-                    </Link>
+                    <div className="mt-5 flex flex-wrap justify-center gap-3">
+                        <Link href="/book" className="btn-ink">
+                            Book a 30-minute call
+                        </Link>
+                        <Link href="/qualify" className="btn-ghost-ink">
+                            Evaluate a workflow
+                        </Link>
+                    </div>
                 </div>
             </div>
 
