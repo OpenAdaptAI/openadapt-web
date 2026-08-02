@@ -3,8 +3,8 @@
     "generated_at": "2026-08-02",
     "product_lifecycle": "Beta",
     "versions": {
-        "launcher": "1.10.4",
-        "flow": "1.28.0",
+        "launcher": "1.11.0",
+        "flow": "1.29.0",
         "capture": "1.2.2",
         "desktop": "0.15.0"
     },
