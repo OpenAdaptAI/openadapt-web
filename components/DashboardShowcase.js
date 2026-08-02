@@ -19,6 +19,7 @@ const SLIDES = [
     {
         key: 'dashboard',
         src: '/product-preview/dashboard-workflows.png',
+        thumbnailSrc: '/cloud-preview/thumbs/dashboard.webp',
         width: 2560,
         height: 1440,
         address: 'app.openadapt.ai/dashboard',
@@ -30,6 +31,7 @@ const SLIDES = [
     {
         key: 'run',
         src: '/cloud-preview/healthcare-run.jpg',
+        thumbnailSrc: '/cloud-preview/thumbs/run-detail.webp',
         width: 2560,
         height: 1440,
         address: 'app.openadapt.ai/runs',
@@ -41,6 +43,7 @@ const SLIDES = [
     {
         key: 'program',
         src: '/cloud-preview/program-graph.png',
+        thumbnailSrc: '/cloud-preview/thumbs/program-graph.webp',
         width: 2560,
         height: 1440,
         address: 'app.openadapt.ai/workflows/program',
@@ -52,6 +55,7 @@ const SLIDES = [
     {
         key: 'catalog',
         src: '/cloud-preview/workflow-catalog.png',
+        thumbnailSrc: '/cloud-preview/thumbs/workflow-catalog.webp',
         width: 2560,
         height: 1440,
         address: 'app.openadapt.ai/workflows',
@@ -284,27 +288,18 @@ export default function DashboardShowcase() {
                                 onClick={() => jumpTo(index)}
                             >
                                 <span className={styles.thumb}>
-                                    {index === active || index === nextIndex ? (
-                                        <img
-                                            className={styles.thumbImg}
-                                            src={slide.src}
-                                            width={slide.width}
-                                            height={slide.height}
-                                            alt=""
-                                            loading={
-                                                index === active ? 'eager' : 'lazy'
-                                            }
-                                            decoding="async"
-                                            aria-hidden="true"
-                                        />
-                                    ) : (
-                                        <span
-                                            className={styles.thumbPlaceholder}
-                                            aria-hidden="true"
-                                        >
-                                            {index + 1}
-                                        </span>
-                                    )}
+                                    <img
+                                        className={styles.thumbImg}
+                                        src={slide.thumbnailSrc}
+                                        width={640}
+                                        height={360}
+                                        alt=""
+                                        loading="lazy"
+                                        fetchPriority="low"
+                                        decoding="async"
+                                        aria-hidden="true"
+                                        data-testid="dashboard-thumbnail"
+                                    />
                                     {index === active && (
                                         <span
                                             key={`${active}-${cycle}-${paused}`}

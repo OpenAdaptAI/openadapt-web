@@ -11,6 +11,12 @@ const assets = [
     'cloud-preview/program-graph.png',
     'cloud-preview/workflow-catalog.png',
 ]
+const thumbnails = [
+    'cloud-preview/thumbs/dashboard.webp',
+    'cloud-preview/thumbs/run-detail.webp',
+    'cloud-preview/thumbs/program-graph.webp',
+    'cloud-preview/thumbs/workflow-catalog.webp',
+]
 
 test('Cloud showcase assets have exact local-mock provenance', () => {
     const provenance = JSON.parse(fs.readFileSync(path.join(root, 'public/cloud-preview/provenance.json')))
@@ -31,4 +37,15 @@ test('Cloud showcase assets have exact local-mock provenance', () => {
         assert.equal(metadata.width, 2560)
         assert.equal(metadata.height, 1440)
     }
+})
+
+test('Cloud showcase keeps all four preview thumbnails lightweight', () => {
+    let totalBytes = 0
+    for (const asset of thumbnails) {
+        const bytes = fs.readFileSync(path.join(root, 'public', asset))
+        totalBytes += bytes.length
+        assert.equal(bytes.subarray(0, 4).toString('ascii'), 'RIFF', asset)
+        assert.equal(bytes.subarray(8, 12).toString('ascii'), 'WEBP', asset)
+    }
+    assert.ok(totalBytes < 100_000, `${totalBytes} thumbnail bytes`)
 })
