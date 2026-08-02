@@ -15,6 +15,7 @@ import { BLOG_LINK, DEVELOPER_LINKS } from 'data/developerLinks'
 import { track, EVENTS } from 'utils/analytics'
 import repositoryStatsView from 'utils/repositoryStatsView'
 import repositoryStatsSelection from 'utils/repositoryStatsSelection'
+import useLiveRepositoryStats from 'utils/useLiveRepositoryStats'
 import styles from './Footer.module.css'
 
 const { sourceLabel } = repositoryStatsView
@@ -56,8 +57,10 @@ function ForkOcticon() {
     )
 }
 
-// Repository counts refresh at build/ISR time. A visitor does not need a
-// repeating timer or a client-side fetch for a value that changes over hours.
+// Repository counts server-render from build/ISR data, then converge through
+// one shared same-origin refresh (utils/useLiveRepositoryStats) so every page
+// shows the same number. No repeating timer, and never api.github.com from a
+// visitor's browser.
 function RepositorySource({ stats }) {
     const label = sourceLabel(stats, Date.now())
     return (
@@ -134,9 +137,9 @@ export default function Footer({
 }) {
     const currentYear = new Date().getFullYear()
     const qualificationHref = '/qualify'
-    const stats = validStats(repositoryStats)
-        ? repositoryStats
-        : OPENADAPT_STATS_SNAPSHOT
+    const stats = useLiveRepositoryStats(
+        validStats(repositoryStats) ? repositoryStats : OPENADAPT_STATS_SNAPSHOT
+    )
 
     return (
         <div className={styles.footerContainer}>
@@ -273,6 +276,11 @@ export default function Footer({
                                 <li>
                                     <FooterLink href="/solutions/healthcare">
                                         Healthcare
+                                    </FooterLink>
+                                </li>
+                                <li>
+                                    <FooterLink href="/solutions/dental">
+                                        Dental
                                     </FooterLink>
                                 </li>
                                 <li>

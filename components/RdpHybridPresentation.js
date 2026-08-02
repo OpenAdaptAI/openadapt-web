@@ -3,8 +3,12 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import JsonArtifactLink from './JsonArtifactLink'
 import styles from './RdpHybridPresentation.module.css'
 
+// Rendered when a viewer opens the raw video without its exported timeline.
+// This states a design property, not an error: phase annotations come only
+// from the run's exported timeline, so without it OpenAdapt shows the
+// authenticated recording as-is rather than guessing phases from playback.
 const MISSING_TIMELINE =
-    'The media timeline is unavailable. OpenAdapt shows the authenticated video and artifacts, but it does not infer a phase from playback time.'
+    'By design, OpenAdapt never infers a workflow phase from playback time. Phase annotations come from the exported run timeline; here the authenticated video and artifacts are shown as recorded.'
 
 // These labels explain exact renderer phases. Runtime facts stay in the
 // exported timeline and are never reconstructed from playback time.

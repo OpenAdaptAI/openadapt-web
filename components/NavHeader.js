@@ -24,6 +24,7 @@ const CLOUD_APP_URL = 'https://app.openadapt.ai'
 
 const SOLUTIONS_LINKS = [
     { label: 'Healthcare', href: '/solutions/healthcare' },
+    { label: 'Dental', href: '/solutions/dental' },
     { label: 'Lending', href: '/solutions/lending' },
     { label: 'Insurance', href: '/solutions/insurance' },
     { label: 'Partners & OEM', href: '/partners' },
