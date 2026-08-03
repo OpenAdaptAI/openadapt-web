@@ -1,59 +1,55 @@
 {
-  "asOf": "2026-07-20",
+  "asOf": "2026-08-03",
   "source": "pypistats.org",
   "sourceUrl": "https://pypistats.org/packages/openadapt",
   "note": "Excludes mirror traffic. Aggregated across core openadapt-* PyPI packages.",
-  "totalLastMonth": 16027,
+  "totalLastMonth": 38543,
   "topPackage": {
     "name": "openadapt-flow",
-    "lastMonth": 8139
+    "lastMonth": 15499
   },
   "packages": [
     {
       "name": "openadapt-flow",
-      "lastDay": 1209,
-      "lastWeek": 7804,
-      "lastMonth": 8139
+      "lastDay": 583,
+      "lastWeek": 3052,
+      "lastMonth": 15499
     },
     {
       "name": "openadapt-capture",
-      "lastDay": 665,
-      "lastWeek": 2190,
-      "lastMonth": 2677
-    },
-    {
-      "name": "openadapt",
-      "lastDay": 227,
-      "lastWeek": 1317,
-      "lastMonth": 1841
-    },
-    {
-      "name": "openadapt-privacy",
-      "lastDay": 311,
-      "lastWeek": 1294,
-      "lastMonth": 1522
+      "lastDay": 375,
+      "lastWeek": 2123,
+      "lastMonth": 8798
     },
     {
       "name": "openadapt-types",
-      "lastDay": 114,
-      "lastWeek": 788,
-      "lastMonth": 954
+      "lastDay": 106,
+      "lastWeek": 2668,
+      "lastMonth": 4666
+    },
+    {
+      "name": "openadapt-privacy",
+      "lastDay": 117,
+      "lastWeek": 970,
+      "lastMonth": 4612
+    },
+    {
+      "name": "openadapt",
+      "lastDay": 247,
+      "lastWeek": 1012,
+      "lastMonth": 3282
     },
     {
       "name": "openadapt-ml",
-      "lastDay": 121,
-      "lastWeek": 443,
-      "lastMonth": 894
+      "lastDay": 45,
+      "lastWeek": 554,
+      "lastMonth": 1686
     }
   ],
   "history": [
     {
-      "month": "2026-01",
-      "downloads": 882
-    },
-    {
       "month": "2026-02",
-      "downloads": 3519
+      "downloads": 3434
     },
     {
       "month": "2026-03",
@@ -70,6 +66,10 @@
     {
       "month": "2026-06",
       "downloads": 3476
+    },
+    {
+      "month": "2026-07",
+      "downloads": 36949
     }
   ]
 }
