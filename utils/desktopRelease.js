@@ -230,6 +230,44 @@ export function validateDesktopReleaseManifest(release, manifest) {
     }
 }
 
+export function validateDesktopReleaseChecksums(
+    release,
+    manifest,
+    checksumText,
+    manifestDigest
+) {
+    if (
+        !/^[0-9a-f]{64}$/.test(manifestDigest || '') ||
+        typeof checksumText !== 'string'
+    ) {
+        return false
+    }
+    const checksums = new Map()
+    for (const line of checksumText.split('\n').filter(Boolean)) {
+        const match = line.match(/^([0-9a-f]{64})  ([^/\\]+)$/)
+        if (!match || checksums.has(match[2])) return false
+        checksums.set(match[2], match[1])
+    }
+    const expectedNames = new Set(
+        (release.assets || [])
+            .filter(hasDownloadUrl)
+            .map((asset) => asset.name)
+            .filter((name) => name !== 'SHA256SUMS')
+    )
+    if (
+        checksums.size !== expectedNames.size ||
+        [...expectedNames].some((name) => !checksums.has(name)) ||
+        checksums.get(DESKTOP_RELEASE_MANIFEST) !== manifestDigest
+    ) {
+        return false
+    }
+    return (
+        manifest.artifacts.every(
+            (artifact) => checksums.get(artifact.name) === artifact.sha256
+        ) && checksums.get(manifest.sbom.name) === manifest.sbom.sha256
+    )
+}
+
 export function desktopReleaseLifecycle(release) {
     return (
         RELEASE_LIFECYCLES.find((lifecycle) =>

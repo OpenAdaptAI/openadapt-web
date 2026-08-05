@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 
 import {
@@ -8,6 +9,7 @@ import {
     desktopReleaseLifecycle,
     isCompleteDesktopRelease,
     selectDesktopRelease,
+    validateDesktopReleaseChecksums,
     validateDesktopReleaseManifest,
 } from '../utils/desktopRelease.js'
 
@@ -107,6 +109,44 @@ test('validates and binds the fetched release manifest to GitHub assets', () => 
     assert.equal(validated.artifactCount, 6)
     assert.equal(validated.sourceCommit, 'a'.repeat(40))
     assert.equal(validated.sbom.name, sbomName)
+
+    const manifestText = JSON.stringify(manifest)
+    const manifestDigest = createHash('sha256').update(manifestText).digest('hex')
+    const checksumEntries = [
+        ...candidate.assets
+            .filter((asset) => asset.name !== 'SHA256SUMS')
+            .map((asset) => {
+                const described = manifest.artifacts.find(
+                    (artifact) => artifact.name === asset.name
+                )
+                const digest =
+                    asset.name === 'openadapt-desktop-release-manifest.json'
+                        ? manifestDigest
+                        : asset.name === sbomName
+                          ? manifest.sbom.sha256
+                          : described?.sha256 || 'd'.repeat(64)
+                return `${digest}  ${asset.name}`
+            }),
+    ].join('\n')
+    assert.equal(
+        validateDesktopReleaseChecksums(
+            candidate,
+            manifest,
+            checksumEntries,
+            manifestDigest
+        ),
+        true
+    )
+
+    assert.equal(
+        validateDesktopReleaseChecksums(
+            candidate,
+            manifest,
+            checksumEntries.replace(manifestDigest, '0'.repeat(64)),
+            manifestDigest
+        ),
+        false
+    )
 
     manifest.artifacts[1] = { ...manifest.artifacts[0] }
     assert.equal(validateDesktopReleaseManifest(candidate, manifest), null)
