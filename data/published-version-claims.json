@@ -32,8 +32,9 @@
             "id": "status-manifest-component-versions",
             "kind": "pypi-latest",
             "source_of_truth": "public/status.json#/versions",
-            "verified_on": "2026-08-02",
-            "evidence": "Published package and GitHub release records on 2026-08-02: openadapt 1.11.0, openadapt-flow 1.29.0, openadapt-capture 1.2.2, openadapt-desktop 0.15.0.",
+            "release_source_of_truth": "public/status.json#/releases",
+            "verified_on": "2026-08-06",
+            "evidence": "Published package and GitHub release records on 2026-08-06: openadapt 1.12.0, openadapt-flow 1.30.0, openadapt-capture 1.2.2, openadapt-desktop 0.15.0.",
             "packages": {
                 "launcher": "openadapt",
                 "flow": "openadapt-flow",
@@ -41,8 +42,8 @@
                 "desktop": "openadapt-desktop"
             },
             "versions": {
-                "launcher": "1.11.0",
-                "flow": "1.29.0",
+                "launcher": "1.12.0",
+                "flow": "1.30.0",
                 "capture": "1.2.2",
                 "desktop": "0.15.0"
             }
@@ -57,12 +58,12 @@
             "evidence": "openadapt-flow cbec44c2c2f355d5cc04a72ea9267e2d6ea68ac6 declares version = \"0.1.0\" in pyproject.toml and describes as v0.1.0-24-gcbec44c; v0.2.0 (2026-07-11) is the first release tag containing it.",
             "verified_on": "2026-07-27",
             "acknowledged_release_lag": {
-                "as_of_release": "1.29.0",
-                "releases_behind": 75,
-                "minor_releases_behind_first_containing_tag": 27,
-                "acknowledged_on": "2026-08-02",
+                "as_of_release": "1.30.0",
+                "releases_behind": 76,
+                "minor_releases_behind_first_containing_tag": 28,
+                "acknowledged_on": "2026-08-06",
                 "review_by": "2026-10-31",
-                "note": "75 live openadapt-flow releases postdate 0.1.0, and v0.2.0 -- the first release tag containing the pinned commit -- is 27 minor releases behind 1.29.0. That is recorded, labelled on every surface that renders them, and deliberately NOT edited -- these are historical measurements. The lag may not grow past the acknowledged value without a decision, and the acknowledgement expires on review_by so it cannot be renewed by silence. Refreshing means re-running the benchmarks: MockMed is deterministic and CI-reproducible; OpenEMR runs against a shared public demo that resets daily, so its refresh is a field run whose numbers will legitimately differ. Re-acknowledged on 2026-08-02 for v1.29.0 (74 -> 75). review_by is deliberately UNCHANGED at 2026-10-31: restating the count is not a decision to keep waiting, and this acknowledgement must still expire on its original date."
+                "note": "76 live openadapt-flow releases postdate 0.1.0; v0.2.0 is the first release tag containing the pinned commit. The machine-readable minor_releases_behind_first_containing_tag field records the release distance without duplicating it in this note. These are historical measurements and are deliberately NOT edited. The lag may not grow past the acknowledged value without a decision, and the acknowledgement expires on review_by so it cannot be renewed by silence. Refreshing means re-running the benchmarks: MockMed is deterministic and CI-reproducible; OpenEMR runs against a shared public demo that resets daily, so its refresh is a field run whose numbers will legitimately differ. Re-acknowledged on 2026-08-06 for v1.30.0 (75 -> 76). review_by is deliberately UNCHANGED at 2026-10-31: restating the count is not a decision to keep waiting, and this acknowledgement must still expire on its original date."
             },
             "attribution_required": [
                 {
