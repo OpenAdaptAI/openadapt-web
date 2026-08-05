@@ -8,6 +8,7 @@ import {
     DESKTOP_PLATFORMS,
     desktopReleaseLifecycle,
     isCompleteDesktopRelease,
+    isLegacyBetaDesktopRelease,
     selectDesktopRelease,
     validateDesktopReleaseChecksums,
     validateDesktopReleaseManifest,
@@ -76,6 +77,8 @@ test('requires the release manifest for every complete Beta set', () => {
         (asset) => asset.name !== 'openadapt-desktop-release-manifest.json'
     )
     assert.equal(isCompleteDesktopRelease(candidate), false)
+    assert.equal(isLegacyBetaDesktopRelease(candidate), true)
+    assert.equal(selectDesktopRelease([candidate]), candidate)
 })
 
 test('validates and binds the fetched release manifest to GitHub assets', () => {

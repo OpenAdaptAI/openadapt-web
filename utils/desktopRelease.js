@@ -115,7 +115,11 @@ export function assetForPlatform(assets, platform, preferredLifecycle = null) {
         })[0]
 }
 
-function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
+function isCompleteDesktopReleaseForLifecycle(
+    release,
+    lifecycle,
+    requireBetaManifest = true
+) {
     if (
         !release ||
         release.draft ||
@@ -139,7 +143,7 @@ function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
             : REQUIRED_ASSETS
     return (
         hasChecksums &&
-        (lifecycle !== 'beta' || hasReleaseManifest) &&
+        (lifecycle !== 'beta' || !requireBetaManifest || hasReleaseManifest) &&
         required.every((pattern) =>
             assets.some(
                 (asset) =>
@@ -148,6 +152,17 @@ function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
                         asset.name.slice(expectedPrefix.length - 1)
                     )
             )
+        )
+    )
+}
+
+export function isLegacyBetaDesktopRelease(release) {
+    return (
+        isCompleteDesktopReleaseForLifecycle(release, 'beta', false) &&
+        !release.assets.some(
+            (asset) =>
+                hasDownloadUrl(asset) &&
+                asset.name === DESKTOP_RELEASE_MANIFEST
         )
     )
 }
@@ -283,16 +298,22 @@ export function isCompleteDesktopRelease(release) {
 export function selectDesktopRelease(releases) {
     if (!Array.isArray(releases)) return null
     const complete = releases.filter(isCompleteDesktopRelease)
-    if (complete.length === 0) return null
 
     // Once a complete Beta exists, legacy Experimental compatibility releases
-    // can never become primary again—even if one is published later. This
-    // makes the lifecycle transition monotonic while retaining the newest
-    // complete Experimental release as a fallback before Beta is available.
+    // and pre-manifest Beta releases can never become primary again. This
+    // makes the manifest transition monotonic while retaining the published
+    // installer set until the first manifest-backed Beta is available.
     const beta = complete.filter(
         (release) => desktopReleaseLifecycle(release) === 'beta'
     )
-    const candidates = beta.length > 0 ? beta : complete
+    const candidates =
+        beta.length > 0
+            ? beta
+            : [
+                  ...complete,
+                  ...releases.filter(isLegacyBetaDesktopRelease),
+              ]
+    if (candidates.length === 0) return null
 
     // The GitHub endpoint is normally newest-first, but select by publication
     // metadata so a stable release interleaved in the response or a changed
