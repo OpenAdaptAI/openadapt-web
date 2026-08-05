@@ -8,6 +8,7 @@ import {
     desktopReleaseLifecycle,
     isCompleteDesktopRelease,
     selectDesktopRelease,
+    validateDesktopReleaseManifest,
 } from '../utils/desktopRelease.js'
 
 const url = (name) => ({
@@ -42,6 +43,9 @@ function release(lifecycle, version, publishedAt) {
     const names = [
         ...binaryNames(lifecycle, version),
         ...(lifecycle === 'Beta' ? betaMetadataNames(version) : []),
+        ...(lifecycle === 'Beta'
+            ? ['openadapt-desktop-release-manifest.json']
+            : []),
         'SHA256SUMS',
     ]
     return {
@@ -62,6 +66,50 @@ test('accepts a complete Beta set only with checksums and per-platform provenanc
         (asset) => !asset.name.endsWith('windows-x86_64-unsigned-metadata.json')
     )
     assert.equal(isCompleteDesktopRelease(candidate), false)
+})
+
+test('requires the release manifest for every complete Beta set', () => {
+    const candidate = release('Beta', '0.7.0', '2026-07-21T12:00:00Z')
+    candidate.assets = candidate.assets.filter(
+        (asset) => asset.name !== 'openadapt-desktop-release-manifest.json'
+    )
+    assert.equal(isCompleteDesktopRelease(candidate), false)
+})
+
+test('validates and binds the fetched release manifest to GitHub assets', () => {
+    const candidate = release('Beta', '0.7.0', '2026-07-21T12:00:00Z')
+    const sbomName = 'OpenAdapt-Desktop-desktop-v0.7.0.cyclonedx.json'
+    candidate.assets.push(url(sbomName))
+    const manifest = {
+        schema_version: 1,
+        lifecycle: 'Beta',
+        native_tag: candidate.tag_name,
+        native_version: '0.7.0',
+        source_commit: 'a'.repeat(40),
+        artifacts: binaryNames('Beta', '0.7.0').map((name) => ({
+            name,
+            platform: name.includes('-macos-')
+                ? 'macos'
+                : name.includes('-windows-')
+                  ? 'windows'
+                  : 'linux',
+            architecture: name.includes('-arm64-') ? 'arm64' : 'x86_64',
+            signing: name.includes('-adhoc.')
+                ? 'adhoc'
+                : name.includes('-windows-') || name.includes('-linux-')
+                  ? 'unsigned'
+                  : 'adhoc',
+            sha256: 'b'.repeat(64),
+        })),
+        sbom: { name: sbomName, format: 'CycloneDX', sha256: 'c'.repeat(64) },
+    }
+    const validated = validateDesktopReleaseManifest(candidate, manifest)
+    assert.equal(validated.artifactCount, 6)
+    assert.equal(validated.sourceCommit, 'a'.repeat(40))
+    assert.equal(validated.sbom.name, sbomName)
+
+    manifest.artifacts[1] = { ...manifest.artifacts[0] }
+    assert.equal(validateDesktopReleaseManifest(candidate, manifest), null)
 })
 
 test('keeps complete legacy Experimental sets discoverable during transition', () => {

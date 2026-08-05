@@ -86,6 +86,8 @@ const BETA_PROVENANCE_ASSETS = [
     /^-windows-x86_64-(?:unsigned|authenticode)-metadata\.json$/i,
     /^-linux-x86_64-unsigned-metadata\.json$/i,
 ]
+export const DESKTOP_RELEASE_MANIFEST =
+    'openadapt-desktop-release-manifest.json'
 
 function hasDownloadUrl(asset) {
     return Boolean(
@@ -128,12 +130,16 @@ function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
     const expectedPrefix = `OpenAdapt-Desktop-${RELEASE_ASSET_FAMILIES[lifecycle]}-v${version}-`
     const assets = release.assets.filter(hasDownloadUrl)
     const hasChecksums = assets.some((asset) => asset.name === 'SHA256SUMS')
+    const hasReleaseManifest = assets.some(
+        (asset) => asset.name === DESKTOP_RELEASE_MANIFEST
+    )
     const required =
         lifecycle === 'beta'
             ? [...REQUIRED_ASSETS, ...BETA_PROVENANCE_ASSETS]
             : REQUIRED_ASSETS
     return (
         hasChecksums &&
+        (lifecycle !== 'beta' || hasReleaseManifest) &&
         required.every((pattern) =>
             assets.some(
                 (asset) =>
@@ -144,6 +150,84 @@ function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
             )
         )
     )
+}
+
+export function validateDesktopReleaseManifest(release, manifest) {
+    if (
+        !release ||
+        !manifest ||
+        manifest.schema_version !== 1 ||
+        manifest.lifecycle !== 'Beta' ||
+        manifest.native_tag !== release.tag_name ||
+        manifest.native_version !== release.tag_name?.slice('desktop-v'.length) ||
+        !/^[0-9a-f]{40}$/.test(manifest.source_commit || '') ||
+        !Array.isArray(manifest.artifacts)
+    ) {
+        return null
+    }
+    const releaseAssets = new Map(
+        (release.assets || []).filter(hasDownloadUrl).map((asset) => [asset.name, asset])
+    )
+    const expectedInstallerNames = new Set(
+        [...releaseAssets.keys()].filter((name) =>
+            DESKTOP_PLATFORMS.some((platform) => platform.match(name))
+        )
+    )
+    const observed = new Set()
+    for (const artifact of manifest.artifacts) {
+        const expectedPlatform = artifact?.name?.includes('-macos-')
+            ? 'macos'
+            : artifact?.name?.includes('-windows-')
+              ? 'windows'
+              : artifact?.name?.includes('-linux-')
+                ? 'linux'
+                : null
+        const expectedArchitecture = artifact?.name?.includes('-arm64-')
+            ? 'arm64'
+            : artifact?.name?.includes('-x86_64-')
+              ? 'x86_64'
+              : null
+        const expectedSigning = artifact?.name?.match(
+            /-(adhoc|developer-id-notarized|unsigned|authenticode)(?:\.|-nsis-setup\.exe$)/
+        )?.[1]
+        if (
+            !artifact ||
+            typeof artifact.name !== 'string' ||
+            observed.has(artifact.name) ||
+            !expectedInstallerNames.has(artifact.name) ||
+            !/^[0-9a-f]{64}$/.test(artifact.sha256 || '') ||
+            artifact.platform !== expectedPlatform ||
+            artifact.architecture !== expectedArchitecture ||
+            artifact.signing !== expectedSigning
+        ) {
+            return null
+        }
+        observed.add(artifact.name)
+    }
+    if (
+        observed.size !== expectedInstallerNames.size ||
+        [...expectedInstallerNames].some((name) => !observed.has(name))
+    ) {
+        return null
+    }
+    const expectedSbomName = `OpenAdapt-Desktop-${release.tag_name}.cyclonedx.json`
+    if (
+        manifest.sbom?.name !== expectedSbomName ||
+        manifest.sbom?.format !== 'CycloneDX' ||
+        !/^[0-9a-f]{64}$/.test(manifest.sbom?.sha256 || '') ||
+        !releaseAssets.has(expectedSbomName)
+    ) {
+        return null
+    }
+    return {
+        sourceCommit: manifest.source_commit,
+        artifactCount: observed.size,
+        sbom: {
+            ...manifest.sbom,
+            browser_download_url:
+                releaseAssets.get(expectedSbomName).browser_download_url,
+        },
+    }
 }
 
 export function desktopReleaseLifecycle(release) {
