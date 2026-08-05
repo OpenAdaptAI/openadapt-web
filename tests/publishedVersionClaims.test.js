@@ -73,6 +73,21 @@ test('the guard fails when the acknowledged benchmark lag expires', () => {
     assert.match(result.stderr, /acknowledged release lag expired/)
 })
 
+test('the guard fails when served release provenance is not an exact SHA', () => {
+    const target = path.join(root, 'public', 'status.json')
+    const original = fs.readFileSync(target, 'utf8')
+    try {
+        const status = JSON.parse(original)
+        status.releases.flow.release_commit = 'not-a-sha'
+        fs.writeFileSync(target, `${JSON.stringify(status, null, 4)}\n`)
+        const result = run(['--offline'])
+        assert.equal(result.status, 1)
+        assert.match(result.stderr, /flow release_commit must be an exact SHA/)
+    } finally {
+        fs.writeFileSync(target, original)
+    }
+})
+
 test('every historical claim states the build and date it was measured on', () => {
     for (const claim of registry.claims) {
         if (claim.kind !== 'historical') continue

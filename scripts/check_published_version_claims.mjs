@@ -65,6 +65,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REGISTRY_PATH = path.join(ROOT, 'data', 'published-version-claims.json')
 const PYPI_BASE = process.env.OPENADAPT_PYPI_BASE ?? 'https://pypi.org/pypi'
 const PYPI_URL = (pkg) => `${PYPI_BASE}/${pkg}/json`
+const GITHUB_API_BASE =
+    process.env.OPENADAPT_GITHUB_API_BASE ?? 'https://api.github.com'
 const HTTP_TIMEOUT_MS = 20000
 
 const errors = []
@@ -73,6 +75,21 @@ const notes = []
 
 const readJson = (relative) =>
     JSON.parse(fs.readFileSync(path.join(ROOT, relative), 'utf8'))
+
+function readSourceOfTruth(source) {
+    const [file, pointer] = String(source).split('#')
+    const document = readJson(file)
+    const value = pointer
+        .split('/')
+        .filter(Boolean)
+        .reduce((node, key) => (node == null ? node : node[key]), document)
+    return { file, pointer, value }
+}
+
+function releaseRecordsForClaim(claim) {
+    if (!claim.release_source_of_truth) return {}
+    return readSourceOfTruth(claim.release_source_of_truth).value ?? {}
+}
 
 function parseArgs(argv) {
     const args = { offline: false, versions: {}, releases: {}, today: null }
@@ -129,12 +146,7 @@ function releasesBehind(version, publishedVersions) {
 // ---------------------------------------------------------------------------
 
 function checkPypiLatestSourceOfTruth(claim) {
-    const [file, pointer] = String(claim.source_of_truth).split('#')
-    const document = readJson(file)
-    const container = pointer
-        .split('/')
-        .filter(Boolean)
-        .reduce((node, key) => (node == null ? node : node[key]), document)
+    const { file, value: container } = readSourceOfTruth(claim.source_of_truth)
     if (container == null) {
         errors.push(
             `${claim.id}: source of truth ${claim.source_of_truth} does not exist`
@@ -149,6 +161,78 @@ function checkPypiLatestSourceOfTruth(claim) {
                     `registry and the served file must not drift apart.`
             )
         }
+    }
+
+    const releaseRecords = releaseRecordsForClaim(claim)
+    if (!Object.keys(releaseRecords).length) {
+        errors.push(
+            `${claim.id}: ${claim.release_source_of_truth} declares no releases`
+        )
+    }
+    for (const [field, record] of Object.entries(releaseRecords)) {
+        checkReleaseRecordStructure(claim, field, record)
+    }
+}
+
+function checkReleaseRecordStructure(claim, field, record) {
+    if (record.package !== claim.packages[field]) {
+        errors.push(
+            `${claim.id}: ${field} release package ${record.package} does not ` +
+                `match ${claim.packages[field]}`
+        )
+    }
+    if (record.version !== claim.versions[field]) {
+        errors.push(
+            `${claim.id}: ${field} release version ${record.version} does not ` +
+                `match ${claim.versions[field]}`
+        )
+    }
+    if (record.source !== 'pypi') {
+        errors.push(`${claim.id}: ${field} release source must be pypi`)
+    }
+    if (record.tag !== `v${record.version}`) {
+        errors.push(
+            `${claim.id}: ${field} release tag ${record.tag} must be ` +
+                `v${record.version}`
+        )
+    }
+    if (!/^[0-9a-f]{40}$/.test(record.release_commit ?? '')) {
+        errors.push(`${claim.id}: ${field} release_commit must be an exact SHA`)
+    }
+    if (!/^[0-9a-f]{40}$/.test(record.qualified_source_commit ?? '')) {
+        errors.push(
+            `${claim.id}: ${field} qualified_source_commit must be an exact SHA`
+        )
+    }
+    if (!/^[^/]+\/[^/]+$/.test(record.github_repository ?? '')) {
+        errors.push(
+            `${claim.id}: ${field} github_repository must be owner/repository`
+        )
+    }
+    if (!Array.isArray(record.artifacts) || record.artifacts.length === 0) {
+        errors.push(`${claim.id}: ${field} release must list artifacts`)
+        return
+    }
+    const filenames = new Set()
+    for (const artifact of record.artifacts) {
+        if (!artifact.type || !artifact.filename || !artifact.url) {
+            errors.push(
+                `${claim.id}: ${field} release artifact is missing its ` +
+                    `type, filename, or URL`
+            )
+        }
+        if (!/^[0-9a-f]{64}$/.test(artifact.sha256 ?? '')) {
+            errors.push(
+                `${claim.id}: ${field} artifact ${artifact.filename} must ` +
+                    `carry an exact sha256 digest`
+            )
+        }
+        if (filenames.has(artifact.filename)) {
+            errors.push(
+                `${claim.id}: ${field} repeats artifact ${artifact.filename}`
+            )
+        }
+        filenames.add(artifact.filename)
     }
 }
 
@@ -238,7 +322,11 @@ async function fetchReleases(pkg) {
                 ([, files]) => files.length && !files.every((f) => f.yanked)
             )
             .map(([version]) => version)
-        return { version: document.info.version, published: live }
+        return {
+            version: document.info.version,
+            published: live,
+            releases: document.releases ?? {},
+        }
     } finally {
         clearTimeout(timer)
     }
@@ -256,6 +344,111 @@ function checkPypiLatestAgainstRelease(claim, latest) {
                     `${current}. Update the manifest and this registry.`
             )
         }
+    }
+
+    for (const [field, record] of Object.entries(releaseRecordsForClaim(claim))) {
+        const entry = latest[record.package]
+        if (!entry?.releases) continue
+        const files = entry.releases[record.version] ?? []
+        const published = new Map(
+            files.map((file) => [
+                file.filename,
+                {
+                    type: file.packagetype,
+                    url: file.url,
+                    sha256: file.digests?.sha256,
+                },
+            ])
+        )
+        for (const artifact of record.artifacts) {
+            const actual = published.get(artifact.filename)
+            if (!actual) {
+                errors.push(
+                    `${claim.id}: ${field} artifact ${artifact.filename} is ` +
+                        `not published on PyPI for ${record.version}`
+                )
+                continue
+            }
+            for (const key of ['type', 'url', 'sha256']) {
+                if (artifact[key] !== actual[key]) {
+                    errors.push(
+                        `${claim.id}: ${field} artifact ${artifact.filename} ` +
+                            `${key} does not match PyPI`
+                    )
+                }
+            }
+        }
+    }
+}
+
+async function fetchGithubJson(pathname) {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), HTTP_TIMEOUT_MS)
+    try {
+        const response = await fetch(`${GITHUB_API_BASE}${pathname}`, {
+            signal: controller.signal,
+            headers: {
+                Accept: 'application/vnd.github+json',
+                'User-Agent': 'openadapt-published-version-claims',
+            },
+        })
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        return response.json()
+    } finally {
+        clearTimeout(timer)
+    }
+}
+
+async function checkGithubReleaseRecord(claim, field, record) {
+    const repository = record.github_repository
+    try {
+        const ref = await fetchGithubJson(
+            `/repos/${repository}/git/ref/tags/${encodeURIComponent(record.tag)}`
+        )
+        let releaseCommit
+        if (ref.object?.type === 'tag') {
+            const tag = await fetchGithubJson(
+                `/repos/${repository}/git/tags/${ref.object.sha}`
+            )
+            if (tag.object?.type !== 'commit') {
+                errors.push(
+                    `${claim.id}: ${field} tag ${record.tag} does not resolve ` +
+                        `to a commit`
+                )
+                return
+            }
+            releaseCommit = tag.object.sha
+        } else if (ref.object?.type === 'commit') {
+            releaseCommit = ref.object.sha
+        } else {
+            errors.push(
+                `${claim.id}: ${field} tag ${record.tag} has unsupported target`
+            )
+            return
+        }
+        if (releaseCommit !== record.release_commit) {
+            errors.push(
+                `${claim.id}: ${field} release_commit ${record.release_commit} ` +
+                    `does not match ${record.tag} target ${releaseCommit}`
+            )
+            return
+        }
+        const commit = await fetchGithubJson(
+            `/repos/${repository}/git/commits/${releaseCommit}`
+        )
+        const qualifiedSource = commit.parents?.[0]?.sha
+        if (qualifiedSource !== record.qualified_source_commit) {
+            errors.push(
+                `${claim.id}: ${field} qualified_source_commit ` +
+                    `${record.qualified_source_commit} does not match the ` +
+                    `release commit parent ${qualifiedSource}`
+            )
+        }
+    } catch (error) {
+        warnings.push(
+            `could not verify ${repository} ${record.tag} (${error.message}); ` +
+                `skipping its release-commit comparison`
+        )
     }
 }
 
@@ -359,6 +552,16 @@ async function main() {
             if (claim.kind === 'pypi-latest')
                 checkPypiLatestAgainstRelease(claim, latest)
             if (claim.kind === 'historical') checkHistoricalLag(claim, latest)
+        }
+    }
+
+    if (!args.offline) {
+        for (const claim of claims) {
+            for (const [field, record] of Object.entries(
+                releaseRecordsForClaim(claim)
+            )) {
+                await checkGithubReleaseRecord(claim, field, record)
+            }
         }
     }
 

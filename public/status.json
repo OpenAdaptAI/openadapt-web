@@ -1,12 +1,60 @@
 {
     "$comment": "Canonical machine-readable release, capability, evidence, and deployment status for OpenAdapt. Served at https://openadapt.ai/status.json and consumed by status-aware public surfaces and tests. OpenAdapt is one Beta product across browser, Windows, macOS, Linux, RDP, and Citrix/VDI. Capability availability is distinct from the deployment boundary and from the bounded evidence scope recorded for each substrate.",
-    "generated_at": "2026-08-02",
+    "generated_at": "2026-08-06",
     "product_lifecycle": "Beta",
     "versions": {
-        "launcher": "1.11.0",
-        "flow": "1.29.0",
+        "launcher": "1.12.0",
+        "flow": "1.30.0",
         "capture": "1.2.2",
         "desktop": "0.15.0"
+    },
+    "releases": {
+        "launcher": {
+            "package": "openadapt",
+            "version": "1.12.0",
+            "source": "pypi",
+            "github_repository": "OpenAdaptAI/OpenAdapt",
+            "tag": "v1.12.0",
+            "release_commit": "f9a7ec4e9981a0a2926ce7a5b5ee498ac5e22576",
+            "qualified_source_commit": "870f2d6820e50ac4ac6a4e6bba2c0bc2f533d216",
+            "artifacts": [
+                {
+                    "type": "bdist_wheel",
+                    "filename": "openadapt-1.12.0-py3-none-any.whl",
+                    "url": "https://files.pythonhosted.org/packages/8c/0b/47b511f00e9e8a579bdb4fda71272b3663e16d99bb5dd966a5703e37a67b/openadapt-1.12.0-py3-none-any.whl",
+                    "sha256": "06c249def17f95b30292ebb7a9994242128acb91b1c4e81a16b88ca19cd65d6c"
+                },
+                {
+                    "type": "sdist",
+                    "filename": "openadapt-1.12.0.tar.gz",
+                    "url": "https://files.pythonhosted.org/packages/09/d3/34a7cba44f056cc196ab9b67e368fe955826472d9dee7c51a0b4234380e1/openadapt-1.12.0.tar.gz",
+                    "sha256": "e7938ca5c4aa531fdac1197d0a190a75df9bbfd57aad9dba79ff44fdbd2043b4"
+                }
+            ]
+        },
+        "flow": {
+            "package": "openadapt-flow",
+            "version": "1.30.0",
+            "source": "pypi",
+            "github_repository": "OpenAdaptAI/openadapt-flow",
+            "tag": "v1.30.0",
+            "release_commit": "0461fb86d255e681306e6403c134f08a823e70e4",
+            "qualified_source_commit": "c150ad597214eaca27350f8d21f611caa71aade5",
+            "artifacts": [
+                {
+                    "type": "bdist_wheel",
+                    "filename": "openadapt_flow-1.30.0-py3-none-any.whl",
+                    "url": "https://files.pythonhosted.org/packages/5c/0e/680aebe9683c358d1f4b9d0aac62c21f6698f63c46dbff4e027f9d3836ae/openadapt_flow-1.30.0-py3-none-any.whl",
+                    "sha256": "7bf1a7b00388172a79bda666def182688c296ffb5bc9be2fd3281169fc36ae63"
+                },
+                {
+                    "type": "sdist",
+                    "filename": "openadapt_flow-1.30.0.tar.gz",
+                    "url": "https://files.pythonhosted.org/packages/c8/5d/883e608ac2a8e414551b55368fdc3b0b52a83f58ccaff8ba47956e22f5be/openadapt_flow-1.30.0.tar.gz",
+                    "sha256": "3a402610e35f47fd54daaf066b8c3a6006c13483cb4c778740014abea1854ea4"
+                }
+            ]
+        }
     },
     "tiers": {
         "Available": "Implemented in the released compiler and governed runtime. Production use still qualifies the exact workflow, application, environment, identity contract, and effect oracle.",

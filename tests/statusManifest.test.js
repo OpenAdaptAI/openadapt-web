@@ -159,3 +159,31 @@ test('status manifest encodes exact component versions', () => {
         Object.keys(REGISTERED_VERSIONS.packages).sort()
     )
 })
+
+test('status manifest binds current releases to source and artifacts', () => {
+    assert.equal(
+        REGISTERED_VERSIONS.release_source_of_truth,
+        'public/status.json#/releases'
+    )
+
+    for (const [role, release] of Object.entries(manifest.releases)) {
+        assert.equal(release.package, REGISTERED_VERSIONS.packages[role])
+        assert.equal(release.version, manifest.versions[role])
+        assert.equal(release.source, 'pypi')
+        assert.equal(release.tag, `v${release.version}`)
+        assert.match(release.github_repository, /^[^/]+\/[^/]+$/)
+        assert.match(release.release_commit, /^[0-9a-f]{40}$/)
+        assert.match(release.qualified_source_commit, /^[0-9a-f]{40}$/)
+
+        assert.ok(release.artifacts.length > 0)
+        for (const artifact of release.artifacts) {
+            assert.ok(artifact.type)
+            assert.ok(artifact.filename)
+            assert.match(
+                artifact.url,
+                /^https:\/\/files\.pythonhosted\.org\//
+            )
+            assert.match(artifact.sha256, /^[0-9a-f]{64}$/)
+        }
+    }
+})
