@@ -80,12 +80,25 @@ const REQUIRED_ASSETS = [
 // build. Existing Experimental releases predate that contract and remain
 // discoverable during the transition, but a new Beta set is never accepted
 // without all four metadata records and the checksum manifest.
-const BETA_PROVENANCE_ASSETS = [
-    /^-macos-arm64-(?:adhoc|developer-id-notarized)-metadata\.json$/i,
-    /^-macos-x86_64-(?:adhoc|developer-id-notarized)-metadata\.json$/i,
-    /^-windows-x86_64-(?:unsigned|authenticode)-metadata\.json$/i,
-    /^-linux-x86_64-unsigned-metadata\.json$/i,
-]
+export const DESKTOP_RELEASE_MANIFEST =
+    'openadapt-desktop-release-manifest.json'
+
+const RELEASE_VERIFICATION = {
+    sha256_manifest: 'SHA256SUMS',
+    github_artifact_attestation: 'required',
+    installer_smoke: 'install, launch, and uninstall',
+}
+
+function hasExactVerification(value) {
+    return (
+        value &&
+        Object.keys(value).sort().join(',') ===
+            'github_artifact_attestation,installer_smoke,sha256_manifest' &&
+        Object.entries(RELEASE_VERIFICATION).every(
+            ([key, expected]) => value[key] === expected
+        )
+    )
+}
 
 function hasDownloadUrl(asset) {
     return Boolean(
@@ -94,6 +107,65 @@ function hasDownloadUrl(asset) {
             typeof asset.browser_download_url === 'string' &&
             asset.browser_download_url.startsWith('https://')
     )
+}
+
+function exactBetaAssetNames(release, requireManifest) {
+    if (
+        !release ||
+        release.draft ||
+        release.prerelease !== true ||
+        !DESKTOP_TAG.test(release.tag_name || '') ||
+        !Array.isArray(release.assets) ||
+        !release.assets.every(hasDownloadUrl)
+    ) {
+        return null
+    }
+    const names = release.assets.map((asset) => asset.name)
+    const observed = new Set(names)
+    if (observed.size !== names.length) return null
+
+    const version = release.tag_name.slice('desktop-v'.length)
+    const prefix = `OpenAdapt-Desktop-Beta-v${version}`
+    const oneMode = (modes, nameForMode) => {
+        const matches = modes.filter((mode) => observed.has(nameForMode(mode)))
+        return matches.length === 1 ? matches[0] : null
+    }
+    const macosArmMode = oneMode(
+        ['adhoc', 'developer-id-notarized'],
+        (mode) => `${prefix}-macos-arm64-${mode}.dmg`
+    )
+    const macosX64Mode = oneMode(
+        ['adhoc', 'developer-id-notarized'],
+        (mode) => `${prefix}-macos-x86_64-${mode}.dmg`
+    )
+    const windowsMode = oneMode(
+        ['unsigned', 'authenticode'],
+        (mode) => `${prefix}-windows-x86_64-${mode}.msi`
+    )
+    if (!macosArmMode || !macosX64Mode || !windowsMode) return null
+
+    const expected = new Set([
+        `${prefix}-macos-arm64-${macosArmMode}.dmg`,
+        `${prefix}-macos-arm64-${macosArmMode}-metadata.json`,
+        `${prefix}-macos-x86_64-${macosX64Mode}.dmg`,
+        `${prefix}-macos-x86_64-${macosX64Mode}-metadata.json`,
+        `${prefix}-windows-x86_64-${windowsMode}.msi`,
+        `${prefix}-windows-x86_64-${windowsMode}-nsis-setup.exe`,
+        `${prefix}-windows-x86_64-${windowsMode}-metadata.json`,
+        `${prefix}-linux-x86_64-unsigned.AppImage`,
+        `${prefix}-linux-x86_64-unsigned.deb`,
+        `${prefix}-linux-x86_64-unsigned-metadata.json`,
+        `OpenAdapt-Desktop-${release.tag_name}.cyclonedx.json`,
+        'SHA256SUMS',
+        ...(requireManifest ? [DESKTOP_RELEASE_MANIFEST] : []),
+    ])
+    if (
+        expected.size !== observed.size ||
+        [...expected].some((name) => !observed.has(name))
+    ) {
+        return null
+    }
+    return expected
 }
 
 export function assetForPlatform(assets, platform, preferredLifecycle = null) {
@@ -113,7 +185,11 @@ export function assetForPlatform(assets, platform, preferredLifecycle = null) {
         })[0]
 }
 
-function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
+function isCompleteDesktopReleaseForLifecycle(
+    release,
+    lifecycle,
+    requireBetaManifest = true
+) {
     if (
         !release ||
         release.draft ||
@@ -124,14 +200,15 @@ function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
         return false
     }
 
+    if (lifecycle === 'beta') {
+        return exactBetaAssetNames(release, requireBetaManifest) !== null
+    }
+
     const version = release.tag_name.slice('desktop-v'.length)
     const expectedPrefix = `OpenAdapt-Desktop-${RELEASE_ASSET_FAMILIES[lifecycle]}-v${version}-`
     const assets = release.assets.filter(hasDownloadUrl)
     const hasChecksums = assets.some((asset) => asset.name === 'SHA256SUMS')
-    const required =
-        lifecycle === 'beta'
-            ? [...REQUIRED_ASSETS, ...BETA_PROVENANCE_ASSETS]
-            : REQUIRED_ASSETS
+    const required = REQUIRED_ASSETS
     return (
         hasChecksums &&
         required.every((pattern) =>
@@ -143,6 +220,143 @@ function isCompleteDesktopReleaseForLifecycle(release, lifecycle) {
                     )
             )
         )
+    )
+}
+
+export function isLegacyBetaDesktopRelease(release) {
+    return (
+        isCompleteDesktopReleaseForLifecycle(release, 'beta', false) &&
+        !release.assets.some(
+            (asset) =>
+                hasDownloadUrl(asset) &&
+                asset.name === DESKTOP_RELEASE_MANIFEST
+        )
+    )
+}
+
+export function validateDesktopReleaseManifest(
+    release,
+    manifest,
+    tagSourceCommit
+) {
+    if (
+        !release ||
+        !manifest ||
+        manifest.schema_version !== 1 ||
+        manifest.lifecycle !== 'Beta' ||
+        manifest.native_tag !== release.tag_name ||
+        manifest.native_version !== release.tag_name?.slice('desktop-v'.length) ||
+        !/^[0-9a-f]{40}$/.test(tagSourceCommit || '') ||
+        manifest.source_commit !== tagSourceCommit ||
+        !hasExactVerification(manifest.verification) ||
+        !Array.isArray(manifest.artifacts)
+    ) {
+        return null
+    }
+    if (!exactBetaAssetNames(release, true)) return null
+    const releaseAssets = new Map(
+        (release.assets || []).filter(hasDownloadUrl).map((asset) => [asset.name, asset])
+    )
+    const expectedInstallerNames = new Set(
+        [...releaseAssets.keys()].filter((name) =>
+            DESKTOP_PLATFORMS.some((platform) => platform.match(name))
+        )
+    )
+    const observed = new Set()
+    for (const artifact of manifest.artifacts) {
+        const expectedPlatform = artifact?.name?.includes('-macos-')
+            ? 'macos'
+            : artifact?.name?.includes('-windows-')
+              ? 'windows'
+              : artifact?.name?.includes('-linux-')
+                ? 'linux'
+                : null
+        const expectedArchitecture = artifact?.name?.includes('-arm64-')
+            ? 'arm64'
+            : artifact?.name?.includes('-x86_64-')
+              ? 'x86_64'
+              : null
+        const expectedSigning = artifact?.name?.match(
+            /-(adhoc|developer-id-notarized|unsigned|authenticode)(?:\.|-nsis-setup\.exe$)/
+        )?.[1]
+        if (
+            !artifact ||
+            typeof artifact.name !== 'string' ||
+            observed.has(artifact.name) ||
+            !expectedInstallerNames.has(artifact.name) ||
+            !/^[0-9a-f]{64}$/.test(artifact.sha256 || '') ||
+            artifact.platform !== expectedPlatform ||
+            artifact.architecture !== expectedArchitecture ||
+            artifact.signing !== expectedSigning
+        ) {
+            return null
+        }
+        observed.add(artifact.name)
+    }
+    if (
+        observed.size !== expectedInstallerNames.size ||
+        [...expectedInstallerNames].some((name) => !observed.has(name))
+    ) {
+        return null
+    }
+    const expectedSbomName = `OpenAdapt-Desktop-${release.tag_name}.cyclonedx.json`
+    if (
+        !manifest.sbom ||
+        Object.keys(manifest.sbom).sort().join(',') !== 'format,name,sha256' ||
+        manifest.sbom?.name !== expectedSbomName ||
+        manifest.sbom?.format !== 'CycloneDX' ||
+        !/^[0-9a-f]{64}$/.test(manifest.sbom?.sha256 || '') ||
+        !releaseAssets.has(expectedSbomName)
+    ) {
+        return null
+    }
+    return {
+        sourceCommit: manifest.source_commit,
+        artifactCount: observed.size,
+        sbom: {
+            ...manifest.sbom,
+            browser_download_url:
+                releaseAssets.get(expectedSbomName).browser_download_url,
+        },
+    }
+}
+
+export function validateDesktopReleaseChecksums(
+    release,
+    manifest,
+    checksumText,
+    manifestDigest
+) {
+    if (
+        !exactBetaAssetNames(release, true) ||
+        !/^[0-9a-f]{64}$/.test(manifestDigest || '') ||
+        typeof checksumText !== 'string'
+    ) {
+        return false
+    }
+    const checksums = new Map()
+    for (const line of checksumText.split('\n').filter(Boolean)) {
+        const match = line.match(/^([0-9a-f]{64})  ([^/\\]+)$/)
+        if (!match || checksums.has(match[2])) return false
+        checksums.set(match[2], match[1])
+    }
+    const expectedNames = new Set(
+        (release.assets || [])
+            .filter(hasDownloadUrl)
+            .map((asset) => asset.name)
+            .filter((name) => name !== 'SHA256SUMS')
+    )
+    if (
+        checksums.size !== expectedNames.size ||
+        [...expectedNames].some((name) => !checksums.has(name)) ||
+        checksums.get(DESKTOP_RELEASE_MANIFEST) !== manifestDigest
+    ) {
+        return false
+    }
+    return (
+        manifest.artifacts.every(
+            (artifact) => checksums.get(artifact.name) === artifact.sha256
+        ) && checksums.get(manifest.sbom.name) === manifest.sbom.sha256
     )
 }
 
@@ -159,38 +373,45 @@ export function isCompleteDesktopRelease(release) {
 }
 
 export function selectDesktopRelease(releases) {
-    if (!Array.isArray(releases)) return null
-    const complete = releases.filter(isCompleteDesktopRelease)
-    if (complete.length === 0) return null
+    return desktopReleaseCandidates(releases)[0] || null
+}
 
-    // Once a complete Beta exists, legacy Experimental compatibility releases
-    // can never become primary again—even if one is published later. This
-    // makes the lifecycle transition monotonic while retaining the newest
-    // complete Experimental release as a fallback before Beta is available.
-    const beta = complete.filter(
-        (release) => desktopReleaseLifecycle(release) === 'beta'
-    )
-    const candidates = beta.length > 0 ? beta : complete
-
-    // The GitHub endpoint is normally newest-first, but select by publication
-    // metadata so a stable release interleaved in the response or a changed
-    // API ordering cannot make the download page advertise an older desktop
-    // prerelease.
-    return candidates.reduce((latest, candidate) => {
+function newestFirst(candidates) {
+    return [...candidates].sort((left, right) => {
         const latestTime = Date.parse(
-            latest.published_at || latest.created_at || ''
+            left.published_at || left.created_at || ''
         )
         const candidateTime = Date.parse(
-            candidate.published_at || candidate.created_at || ''
+            right.published_at || right.created_at || ''
         )
-        if (
-            Number.isFinite(candidateTime) &&
-            (!Number.isFinite(latestTime) || candidateTime > latestTime)
-        ) {
-            return candidate
+        if (!Number.isFinite(latestTime) && !Number.isFinite(candidateTime)) {
+            return 0
         }
-        return latest
+        if (!Number.isFinite(latestTime)) return 1
+        if (!Number.isFinite(candidateTime)) return -1
+        return candidateTime - latestTime
     })
+}
+
+export function desktopReleaseCandidates(releases) {
+    if (!Array.isArray(releases)) return []
+    const strictBeta = releases.filter(
+        (release) => desktopReleaseLifecycle(release) === 'beta'
+    )
+    const legacyBeta = releases.filter(isLegacyBetaDesktopRelease)
+    const experimental = releases.filter(
+        (release) => desktopReleaseLifecycle(release) === 'experimental'
+    )
+
+    // Lifecycle priority is independent of publication time. A legacy Beta is
+    // therefore never replaced by a newer Experimental release. Every strict
+    // Beta remains ahead of both transition fallbacks, so the server can try
+    // the next strict candidate if the newest manifest content is malformed.
+    return [
+        ...newestFirst(strictBeta),
+        ...newestFirst(legacyBeta),
+        ...newestFirst(experimental),
+    ]
 }
 
 // Compatibility exports for consumers that still use the old names. Their

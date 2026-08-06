@@ -95,6 +95,7 @@ export default function DownloadPage({ release, fetchFailed }) {
         [assets, lifecycle]
     )
     const checksumAsset = assets.find((asset) => asset.name === 'SHA256SUMS')
+    const releaseManifest = release?.manifest || null
 
     return (
         <div className="min-h-screen bg-ground text-ink">
@@ -328,6 +329,45 @@ export default function DownloadPage({ release, fetchFailed }) {
                         {version ? ` (${version})` : ''}. Choose the one that
                         matches your machine.
                     </p>
+                    {releaseManifest && (
+                        <div className="mt-5 rounded-xl border border-hairline bg-panel p-5">
+                            <p className="font-display text-base font-semibold text-ink">
+                                Verified release manifest
+                            </p>
+                            <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                This release binds {releaseManifest.artifactCount}{' '}
+                                installer files and its CycloneDX SBOM to exact
+                                SHA-256 values. Build source:{' '}
+                                <a
+                                    href={`https://github.com/OpenAdaptAI/openadapt-desktop/commit/${releaseManifest.sourceCommit}`}
+                                    className="font-mono underline underline-offset-4"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {releaseManifest.sourceCommit.slice(0, 12)}
+                                </a>
+                                .
+                            </p>
+                            <div className="mt-3 flex flex-wrap gap-4 text-sm">
+                                <a
+                                    href={releaseManifest.browser_download_url}
+                                    className="font-medium underline underline-offset-4"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Release manifest
+                                </a>
+                                <a
+                                    href={releaseManifest.sbom.browser_download_url}
+                                    className="font-medium underline underline-offset-4"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    CycloneDX SBOM
+                                </a>
+                            </div>
+                        </div>
+                    )}
                     <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {platformDownloads.map(({ platform, asset }) => (
                             <div
