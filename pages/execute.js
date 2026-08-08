@@ -188,6 +188,20 @@ export default function ExecutePage() {
                                 linkLabel="Try the mobile decision experience"
                             />
                         </div>
+                        <aside className="mt-5 rounded-2xl border border-hairline bg-ground p-5">
+                            <p className="font-mono text-xs font-semibold tracking-[0.12em] text-accent">Human judgment capture</p>
+                            <p className="mt-3 text-sm leading-relaxed text-ink-2">
+                                When a qualified workflow reaches a policy choice, an authorized operator selects one declared branch. The runner rechecks live state before it continues.
+                            </p>
+                            <a
+                                className="mt-3 inline-flex text-sm font-semibold"
+                                href="https://app.openadapt.ai/demo/judgment"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                View the mobile decision experience <span aria-hidden="true">→</span>
+                            </a>
+                        </aside>
                     </div>
                 </section>
 
