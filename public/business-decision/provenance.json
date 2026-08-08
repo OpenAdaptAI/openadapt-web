@@ -2,28 +2,30 @@
   "source": {
     "url": "https://app.openadapt.ai/demo/judgment",
     "component": "PublicBusinessDecisionDemo",
+    "repository": "OpenAdaptAI/openadapt-cloud",
+    "commit": "1dbc1a610c9a944f52cc0d449831557ea0961a66",
     "data_boundary": "The public demo uses synthetic decision data. The captures do not show customer data."
   },
   "captures": [
     {
       "file": "business-decision-request.png",
       "state": "Initial Exception routing request before an operator selects a declared option.",
-      "sha256": "045aac7f99b7647a504d7be3e87927a71d95cf72e0e1448d8958853d4ea2c914"
+      "sha256": "cf9ab3f36f6869ec80758ae70ff6aa2466d73615997de5d5eed351d2cdca1a65"
     },
     {
       "file": "business-decision-confirmation.png",
       "state": "Confirmation of the selected declared option.",
-      "sha256": "e6047f9c0c8ebaec63087609ce430e939666b02ec53a98bf2a57a82b1fd460ee"
+      "sha256": "df694525a526f5b27d01f5c21686bbb62d8515d0b8161ca66b6d0a046af56015"
     },
     {
       "file": "business-decision-recorded.png",
       "state": "Recorded one-use decision while the runner rechecks live state.",
-      "sha256": "25c9e90d253760c30955eb976900994ba81e7bfc53da67f7937d311124856c04"
+      "sha256": "4efb56c23f3636f8eca3dc90a053cd15e050bb04a73840d214cc4fc96d237833"
     },
     {
       "file": "business-decision-receipt.png",
       "state": "Result receipt for the selected declared branch.",
-      "sha256": "c85ee275a061f45b11c45b29369403ed248a641c8bf04a8765df86e640c97477"
+      "sha256": "13a4827235538116351fee179069e35c17bb01dba580c034afb20d3ea7d032ab"
     }
   ]
 }
