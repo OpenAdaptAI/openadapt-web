@@ -5,6 +5,7 @@ import CompiledProgramSection from '@components/CompiledProgramSection'
 import DriftOutcomes from '@components/DriftOutcomes'
 import Footer from '@components/Footer'
 import HowItWorksCondensed from '@components/HowItWorksCondensed'
+import QualificationJudgmentCapture from '@components/QualificationJudgmentCapture'
 import ReferenceDemoShowcase from '@components/ReferenceDemoShowcase'
 import RemoteModesFigure from '@components/RemoteModesFigure'
 import Reveal from '@components/Reveal'
@@ -99,6 +100,9 @@ export default function HowItWorksPage() {
             </Reveal>
             <Reveal>
                 <CompiledProgramSection />
+            </Reveal>
+            <Reveal>
+                <QualificationJudgmentCapture />
             </Reveal>
             <Reveal>
                 <DriftOutcomes />

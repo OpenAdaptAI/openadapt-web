@@ -1,0 +1,25 @@
+{
+  "schema_version": "openadapt.public-capture-provenance.v1",
+  "capture_kind": "qualification_judgment_authoring",
+  "source": {
+    "repository": "OpenAdaptAI/openadapt-cloud",
+    "pull_request": 281,
+    "commit": "1260a187af71e9af6bbfb8ffea97b03518afbb31",
+    "route": "/demo/qualification-judgment"
+  },
+  "boundary": {
+    "data": "synthetic",
+    "purpose": "public qualification authoring demonstration",
+    "not_a_live_run": true,
+    "not_a_verified_business_result": true
+  },
+  "assets": [
+    {
+      "path": "/qualification-judgment/judgment-capture-human-node.png",
+      "sha256": "fb4785e187d457627123dc930398bda49d8fc81d6803968be2ea91ff934b2967",
+      "width": 860,
+      "height": 3162,
+      "state": "human_decision_node_retained"
+    }
+  ]
+}
