@@ -13,6 +13,11 @@
     text-align: left;
 }
 
+.section[data-variant='embedded'] {
+    max-width: none;
+    margin: 0;
+}
+
 .device {
     display: grid;
     justify-items: center;
@@ -21,7 +26,8 @@
 }
 
 .toggle {
-    display: inline-flex;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
     padding: 3px;
     border: 1px solid var(--hairline);
     border-radius: 999px;
@@ -107,5 +113,10 @@
 
     .device img {
         height: 390px;
+    }
+
+    .toggle button {
+        padding-inline: 8px;
+        font-size: 0.68rem;
     }
 }

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ExecuteApiExchange from '@components/ExecuteApiExchange'
 import ExecuteBoundaryFlow from '@components/ExecuteBoundaryFlow'
 import ExecuteOutcomeCards from '@components/ExecuteOutcomeCards'
+import AttendedDecisionPreview from '@components/AttendedDecisionPreview'
 import Footer from '@components/Footer'
 import RdpHybridPresentation from '@components/RdpHybridPresentation'
 
@@ -178,6 +179,15 @@ export default function ExecutePage() {
                                 This is not a terminal result. The signed decision webhook sends one focused request to an authorized phone or computer. After an answer, the runner rechecks the live application before it acts or issues a terminal receipt.
                             </p>
                         </aside>
+                        <div className="mt-7">
+                            <AttendedDecisionPreview
+                                variant="embedded"
+                                eyebrow="Typed human decision"
+                                title="Send one focused question. Recheck before the runner continues."
+                                body="When execution needs a person, OpenAdapt sends only the actions allowed for that exact pause. The phone returns a signed answer. The customer-controlled runner then checks the live application again before it continues or creates a receipt."
+                                linkLabel="Try the mobile decision experience"
+                            />
+                        </div>
                     </div>
                 </section>
 

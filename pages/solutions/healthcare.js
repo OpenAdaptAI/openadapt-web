@@ -4,6 +4,7 @@ import Link from 'next/link'
 import CustomerCaseStudy from '@components/CustomerCaseStudy'
 import Footer from '@components/Footer'
 import ReferenceDemoShowcase from '@components/ReferenceDemoShowcase'
+import AttendedDecisionPreview from '@components/AttendedDecisionPreview'
 
 export default function HealthcarePage() {
     return (
@@ -123,6 +124,16 @@ export default function HealthcarePage() {
                             Review the runtime safety model →
                         </a>
                     </p>
+                </div>
+
+                <div className="mt-8">
+                    <AttendedDecisionPreview
+                        variant="embedded"
+                        eyebrow="Attended healthcare operations"
+                        title="Give staff one clear decision when identity needs review."
+                        body="This synthetic OpenEMR example shows the exact retained screen, the permitted answers, and what the customer runner will check next. The same interface uses the qualified entity class for each workflow and falls back to the neutral word “record.”"
+                        linkLabel="Try all six decision types"
+                    />
                 </div>
 
                 <h2 className="mt-12 font-display text-xl font-semibold tracking-tight text-ink">
