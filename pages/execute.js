@@ -182,9 +182,9 @@ export default function ExecutePage() {
                         <div className="mt-7">
                             <AttendedDecisionPreview
                                 variant="embedded"
-                                eyebrow="Typed human decision"
+                                eyebrow="Attended operational halt"
                                 title="Send one focused question. Recheck before the runner continues."
-                                body="When execution needs a person, OpenAdapt sends only the actions allowed for that exact pause. The phone returns a signed answer. The customer-controlled runner then checks the live application again before it continues or creates a receipt."
+                                body="This synthetic full-evidence view shows the runner-local portal. The hosted queue sends the same signed actions and transition states without screenshots or protected fields. In both lanes, the phone returns one bounded answer and the customer-controlled runner checks the live application again before it continues or creates a receipt."
                                 linkLabel="Try the mobile decision experience"
                             />
                         </div>

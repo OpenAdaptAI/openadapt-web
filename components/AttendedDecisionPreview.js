@@ -6,15 +6,15 @@ const CLOUD_ATTENTION_DEMO = 'https://app.openadapt.ai/demo/attention'
 
 const states = {
     request: {
-        image: '/attended-decision/identity-request.png',
+        image: '/attended-decision/identity-request.jpg',
         alt: 'OpenAdapt mobile portal requesting an identity check before Save',
     },
     pending: {
-        image: '/attended-decision/decision-pending.png',
-        alt: 'OpenAdapt mobile portal confirming that the answer was accepted while the customer runner checks the live application',
+        image: '/attended-decision/decision-pending.jpg',
+        alt: 'OpenAdapt mobile portal confirming that the answer was accepted once and awaits the customer runner',
     },
     result: {
-        image: '/attended-decision/identity-verified.png',
+        image: '/attended-decision/identity-verified.jpg',
         alt: 'OpenAdapt mobile portal showing the runner-verified identity result',
     },
 }
@@ -23,8 +23,10 @@ const states = {
 // case. Their source, hashes, and capture sequence are in public/attended-decision.
 export default function AttendedDecisionPreview({
     body =
-        'When identity conflicts, OpenAdapt pauses before Save. The phone shows only permitted answers. The customer runner reads the live record again and returns the result.',
-    eyebrow = 'Attended decisions · Cloud demo',
+        'This synthetic full-evidence view shows the runner-local portal. The hosted queue uses the same signed actions and transition states, but it omits screenshots and protected fields. In both lanes, the customer runner checks the live application before it continues.',
+    caption =
+        'Runner-local portal example · synthetic OpenEMR data · the hosted lane omits screenshots',
+    eyebrow = 'Attended operational halt',
     linkLabel = 'Try all six mobile decision cases in Cloud',
     title = 'Keep a person in the loop. Keep the runner in control.',
     variant = 'default',
@@ -73,10 +75,7 @@ export default function AttendedDecisionPreview({
                     alt={current.alt}
                     data-testid="attended-decision-capture"
                 />
-                <figcaption>
-                    OpenEMR example · “patient record” is this workflow’s
-                    qualified entity class · synthetic data
-                </figcaption>
+                <figcaption>{caption}</figcaption>
             </figure>
             <div className={styles.copy}>
                 <p className={styles.eyebrow}>{eyebrow}</p>

@@ -6,13 +6,13 @@ describe('attended decision preview', () => {
             cy.get('button').eq(1).click().should('have.attr', 'aria-pressed', 'true')
         })
         cy.get('[data-testid="attended-decision-capture"]')
-            .should('have.attr', 'src', '/attended-decision/identity-verified.png')
+            .should('have.attr', 'src', '/attended-decision/identity-verified.jpg')
 
         cy.get('[data-testid="attended-decision-toggle"]').within(() => {
             cy.get('button').eq(0).click().should('have.attr', 'aria-pressed', 'true')
         })
         cy.get('[data-testid="attended-decision-capture"]')
-            .should('have.attr', 'src', '/attended-decision/identity-request.png')
+            .should('have.attr', 'src', '/attended-decision/identity-request.jpg')
 
         cy.get('[data-testid="attended-decision-demo-link"]')
             .should('have.attr', 'href', 'https://app.openadapt.ai/demo/attention')

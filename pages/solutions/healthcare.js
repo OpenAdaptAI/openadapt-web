@@ -131,7 +131,7 @@ export default function HealthcarePage() {
                         variant="embedded"
                         eyebrow="Attended healthcare operations"
                         title="Give staff one clear decision when identity needs review."
-                        body="This synthetic OpenEMR example shows the exact retained screen, the permitted answers, and what the customer runner will check next. The same interface uses the qualified entity class for each workflow and falls back to the neutral word “record.”"
+                        body="This synthetic OpenEMR example shows the runner-local full-evidence portal. The hosted queue uses the same signed actions and transition states without screenshots or protected fields. Both lanes use the qualified entity class for each workflow and fall back to the neutral word “record.”"
                         linkLabel="Try all six decision types"
                     />
                 </div>

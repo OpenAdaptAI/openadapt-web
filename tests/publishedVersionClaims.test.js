@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict')
 const { spawnSync } = require('node:child_process')
 const fs = require('node:fs')
+const os = require('node:os')
 const path = require('node:path')
 const test = require('node:test')
 
@@ -14,10 +15,11 @@ const registry = JSON.parse(
     )
 )
 
-const run = (args = []) =>
+const run = (args = [], env = process.env) =>
     spawnSync(process.execPath, [script, ...args], {
         cwd: root,
         encoding: 'utf8',
+        env,
     })
 
 // The offline half runs on every pull request: no network, so it cannot be
@@ -74,17 +76,23 @@ test('the guard fails when the acknowledged benchmark lag expires', () => {
 })
 
 test('the guard fails when served release provenance is not an exact SHA', () => {
-    const target = path.join(root, 'public', 'status.json')
-    const original = fs.readFileSync(target, 'utf8')
+    const source = path.join(root, 'public', 'status.json')
+    const directory = fs.mkdtempSync(
+        path.join(os.tmpdir(), 'openadapt-status-claim-')
+    )
+    const target = path.join(directory, 'status.json')
     try {
-        const status = JSON.parse(original)
+        const status = JSON.parse(fs.readFileSync(source, 'utf8'))
         status.releases.flow.release_commit = 'not-a-sha'
         fs.writeFileSync(target, `${JSON.stringify(status, null, 4)}\n`)
-        const result = run(['--offline'])
+        const result = run(['--offline'], {
+            ...process.env,
+            OPENADAPT_STATUS_PATH: target,
+        })
         assert.equal(result.status, 1)
         assert.match(result.stderr, /flow release_commit must be an exact SHA/)
     } finally {
-        fs.writeFileSync(target, original)
+        fs.rmSync(directory, { recursive: true })
     }
 })
 
