@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 import ReplayHero from '@components/ReplayHero'
-import AttendedDecisionPreview from '@components/AttendedDecisionPreview'
+import BusinessDecisionPreview from '@components/BusinessDecisionPreview'
 import { track, EVENTS } from 'utils/analytics'
 import useLiveRepositoryStats from 'utils/useLiveRepositoryStats'
 
@@ -132,7 +132,7 @@ export default function Home({ githubStats: initialGithubStats }) {
                             </div>
                             <div className="flex flex-col align-center justify-center px-4 min-w-0 max-w-full overflow-hidden">
                                 <ReplayHero />
-                                <AttendedDecisionPreview />
+                                <BusinessDecisionPreview />
                             </div>
                         </div>
                     </div>
