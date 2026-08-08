@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ExecuteApiExchange from '@components/ExecuteApiExchange'
 import ExecuteBoundaryFlow from '@components/ExecuteBoundaryFlow'
 import ExecuteOutcomeCards from '@components/ExecuteOutcomeCards'
+import AttendedDecisionPreview from '@components/AttendedDecisionPreview'
 import Footer from '@components/Footer'
 import RdpHybridPresentation from '@components/RdpHybridPresentation'
 
@@ -178,6 +179,15 @@ export default function ExecutePage() {
                                 This is not a terminal result. The signed decision webhook sends one focused request to an authorized phone or computer. After an answer, the runner rechecks the live application before it acts or issues a terminal receipt.
                             </p>
                         </aside>
+                        <div className="mt-7">
+                            <AttendedDecisionPreview
+                                variant="embedded"
+                                eyebrow="Attended operational halt"
+                                title="Send one focused question. Recheck before the runner continues."
+                                body="This synthetic full-evidence view shows the runner-local portal. The hosted queue sends the same signed actions and transition states without screenshots or protected fields. In both lanes, the phone returns one bounded answer and the customer-controlled runner checks the live application again before it continues or creates a receipt."
+                                linkLabel="Try the mobile decision experience"
+                            />
+                        </div>
                     </div>
                 </section>
 

@@ -1,41 +1,64 @@
 {
   "source": {
-    "url": "https://app.openadapt.ai/demo/attention",
-    "captured_at": "2026-07-29",
-    "method": "Headless Playwright Chromium capture of the live public .attention-device element",
-    "viewport": {
-      "width": 768,
-      "height": 1100,
-      "device_scale_factor": 2
+    "repository": "OpenAdaptAI/openadapt-cloud",
+    "pull_request": "https://github.com/OpenAdaptAI/openadapt-cloud/pull/276",
+    "component_commit": "f250ef34962e9237e49a3d04b37c6fead3b565f9",
+    "capture_asset_commit": "7e462d489b4b9fc249cefb5b70c9a6009c737a0c",
+    "route": "/demo/attention",
+    "component": "src/components/HumanDecisionMobileSurface.tsx",
+    "simulator": "src/components/PublicAttentionTour.tsx",
+    "captured_at": "2026-08-08",
+    "method": "Phone-shell JPEG crop from a Next.js production build at a 390 by 844 CSS-pixel viewport",
+    "media_type": "image/jpeg",
+    "device_scale_factor": 1,
+    "viewport_css_pixels": {
+      "width": 390,
+      "height": 844
     },
-    "data_boundary": "The public demo uses synthetic OpenEMR data. These captures do not show customer data."
+    "phone_crop_css_pixels": {
+      "width": 314,
+      "height": 784,
+      "x": 39,
+      "y": 60
+    },
+    "data_boundary": "The public demo uses synthetic OpenEMR application data. These captures do not show customer data."
   },
   "captures": [
     {
-      "file": "identity-request.png",
-      "state": "Initial public identity request before an operator action; the retained OpenEMR evidence image completed with nonzero natural dimensions before capture",
-      "sha256": "9c9c8673b3497d61fd0aa636fb175ace4fd0f37bcf2b738149a80eefaf8f6cec",
+      "file": "identity-request.jpg",
+      "state": "Open identity request before an operator answer",
+      "sha256": "6249a4288a807a6f33ec05c3df6f1f52ef169a3ee25edf99feebbd89de37464e",
       "dimensions": {
-        "width": 860,
-        "height": 1936
+        "width": 314,
+        "height": 784
       }
     },
     {
-      "file": "identity-verified.png",
-      "state": "Public runner result after the permitted Check identity action",
-      "sha256": "5a83d5fd4b02f8c16f6ebb25f3ebb6eace839c3fede27077cde0c18945c5d728",
+      "file": "decision-pending.jpg",
+      "state": "The signed answer was accepted once; no runner receipt exists and the workflow remains paused",
+      "sha256": "fa616b67e072ed82291b7990e8623bc5d263f64547c5bbd269daf121d77791a5",
       "dimensions": {
-        "width": 860,
-        "height": 1686
+        "width": 314,
+        "height": 784
+      }
+    },
+    {
+      "file": "identity-verified.jpg",
+      "state": "Completed runner result with the verified_and_resumed reason code",
+      "sha256": "3096f8b5064a6271894c894e98c15919668a14ef0bd3aa0c59319710d75d69a6",
+      "dimensions": {
+        "width": 314,
+        "height": 784
       }
     }
   ],
   "sequence": [
-    "Open the public attention demo.",
-    "Wait until the retained OpenEMR evidence image is visible, complete, and has nonzero natural width and height.",
-    "Capture the .attention-device element in its initial identity-request state.",
-    "Select the permitted Check identity action.",
-    "Wait for the Identity verified runner receipt.",
-    "Capture the same .attention-device element."
+    "Build the Cloud application from the component commit.",
+    "Open /demo/attention at a 390 by 844 CSS-pixel viewport.",
+    "Capture the phone shell in the open identity-request state.",
+    "Select the permitted verify_and_resume action.",
+    "Capture the decision_pending state before the customer runner returns a receipt.",
+    "Wait for the verified_and_resumed runner result.",
+    "Capture the completed phone shell."
   ]
 }

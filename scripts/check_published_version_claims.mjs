@@ -63,6 +63,9 @@ import { fileURLToPath } from 'node:url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REGISTRY_PATH = path.join(ROOT, 'data', 'published-version-claims.json')
+const STATUS_PATH = process.env.OPENADAPT_STATUS_PATH
+    ? path.resolve(process.env.OPENADAPT_STATUS_PATH)
+    : path.join(ROOT, 'public', 'status.json')
 const PYPI_BASE = process.env.OPENADAPT_PYPI_BASE ?? 'https://pypi.org/pypi'
 const PYPI_URL = (pkg) => `${PYPI_BASE}/${pkg}/json`
 const GITHUB_API_BASE =
@@ -73,8 +76,13 @@ const errors = []
 const warnings = []
 const notes = []
 
-const readJson = (relative) =>
-    JSON.parse(fs.readFileSync(path.join(ROOT, relative), 'utf8'))
+const readJson = (relative) => {
+    const source =
+        relative === 'public/status.json'
+            ? STATUS_PATH
+            : path.join(ROOT, relative)
+    return JSON.parse(fs.readFileSync(source, 'utf8'))
+}
 
 function readSourceOfTruth(source) {
     const [file, pointer] = String(source).split('#')

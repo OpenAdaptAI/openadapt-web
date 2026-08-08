@@ -391,6 +391,92 @@ export default function DesktopPreview() {
                 </div>
 
                 <div className="mt-12 border-t border-hairline pt-10">
+                    <p className="eyebrow">Attended decisions</p>
+                    <h3 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
+                        Answer a safe pause from a phone
+                    </h3>
+                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-2">
+                        Desktop can connect the customer runner to the hosted
+                        decision queue, or serve the same closed-schema decision
+                        contract through a customer-hosted portal. The phone
+                        returns an answer. The runner checks the live
+                        application again before it continues. The full-evidence
+                        images below show the runner-local portal. The hosted
+                        queue omits screenshots and protected fields.
+                    </p>
+                    <div className="mt-8 grid grid-cols-1 items-start gap-8 sm:grid-cols-3">
+                        <figure>
+                            <img
+                                src="/attended-decision/identity-request.jpg"
+                                width="314"
+                                height="784"
+                                alt="OpenAdapt mobile decision request with retained synthetic OpenEMR evidence and visible permitted action controls."
+                                loading="lazy"
+                                decoding="async"
+                                className="mx-auto block h-auto w-full max-w-[314px]"
+                            />
+                            <figcaption className="mt-3 text-xs leading-relaxed text-ink-3">
+                                <span className="font-medium text-ink-2">Request.</span>{' '}
+                                The runner-local portal shows one question, the
+                                retained screen, and only the actions allowed for
+                                this pause.
+                            </figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="/attended-decision/decision-pending.jpg"
+                                width="314"
+                                height="784"
+                                alt="OpenAdapt mobile decision result confirming that the signed answer was accepted once and awaits the customer runner."
+                                loading="lazy"
+                                decoding="async"
+                                className="mx-auto block h-auto w-full max-w-[314px]"
+                            />
+                            <figcaption className="mt-3 text-xs leading-relaxed text-ink-3">
+                                <span className="font-medium text-ink-2">Answer accepted.</span>{' '}
+                                The phone records the signed answer. It does not
+                                report success while the runner checks the live
+                                application.
+                            </figcaption>
+                        </figure>
+                        <figure>
+                            <img
+                                src="/attended-decision/identity-verified.jpg"
+                                width="314"
+                                height="784"
+                                alt="OpenAdapt mobile decision result after the customer runner verified identity and saved a bound receipt."
+                                loading="lazy"
+                                decoding="async"
+                                className="mx-auto block h-auto w-full max-w-[314px]"
+                            />
+                            <figcaption className="mt-3 text-xs leading-relaxed text-ink-3">
+                                <span className="font-medium text-ink-2">Runner result.</span>{' '}
+                                The result appears only after the customer runner
+                                checks the live application and saves the receipt.
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <p className="mt-5 text-xs text-ink-3">
+                        These exact captures use synthetic OpenEMR data and show
+                        the runner-local full-evidence lane.{' '}
+                        <JsonArtifactLink
+                            source="/attended-decision/provenance.json"
+                            className="font-medium underline underline-offset-4"
+                        >
+                            View capture provenance
+                        </JsonArtifactLink>
+                        {' '}or{' '}
+                        <a
+                            className="font-medium underline underline-offset-4"
+                            href="https://app.openadapt.ai/demo/attention"
+                        >
+                            try all six decision types
+                        </a>
+                        .
+                    </p>
+                </div>
+
+                <div className="mt-12 border-t border-hairline pt-10">
                     <p className="eyebrow">The tray companion</p>
                     <h3 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink">
                         OpenAdapt in the tray, on macOS, Windows, and Linux

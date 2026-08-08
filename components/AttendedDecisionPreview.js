@@ -6,23 +6,40 @@ const CLOUD_ATTENTION_DEMO = 'https://app.openadapt.ai/demo/attention'
 
 const states = {
     request: {
-        image: '/attended-decision/identity-request.png',
+        image: '/attended-decision/identity-request.jpg',
         alt: 'OpenAdapt mobile portal requesting an identity check before Save',
     },
+    pending: {
+        image: '/attended-decision/decision-pending.jpg',
+        alt: 'OpenAdapt mobile portal confirming that the answer was accepted once and awaits the customer runner',
+    },
     result: {
-        image: '/attended-decision/identity-verified.png',
+        image: '/attended-decision/identity-verified.jpg',
         alt: 'OpenAdapt mobile portal showing the runner-verified identity result',
     },
 }
 
-// The two images are exact headless captures of the public Cloud identity
+// The three images are exact production-build captures of the Cloud identity
 // case. Their source, hashes, and capture sequence are in public/attended-decision.
-export default function AttendedDecisionPreview() {
+export default function AttendedDecisionPreview({
+    body =
+        'This synthetic full-evidence view shows the runner-local portal. The hosted queue uses the same signed actions and transition states, but it omits screenshots and protected fields. In both lanes, the customer runner checks the live application before it continues.',
+    caption =
+        'Runner-local portal example · synthetic OpenEMR data · the hosted lane omits screenshots',
+    eyebrow = 'Attended operational halt',
+    linkLabel = 'Try all six mobile decision cases in Cloud',
+    title = 'Keep a person in the loop. Keep the runner in control.',
+    variant = 'default',
+}) {
     const [state, setState] = useState('request')
     const current = states[state]
 
     return (
-        <section className={styles.section} aria-labelledby="attended-decision-title">
+        <section
+            className={styles.section}
+            aria-label={title}
+            data-variant={variant}
+        >
             <figure className={styles.device}>
                 <div
                     className={styles.toggle}
@@ -39,6 +56,13 @@ export default function AttendedDecisionPreview() {
                     </button>
                     <button
                         type="button"
+                        aria-pressed={state === 'pending'}
+                        onClick={() => setState('pending')}
+                    >
+                        Answer accepted
+                    </button>
+                    <button
+                        type="button"
                         aria-pressed={state === 'result'}
                         onClick={() => setState('result')}
                     >
@@ -51,21 +75,12 @@ export default function AttendedDecisionPreview() {
                     alt={current.alt}
                     data-testid="attended-decision-capture"
                 />
-                <figcaption>
-                    OpenEMR example · “patient record” is this workflow’s
-                    qualified entity class · synthetic data
-                </figcaption>
+                <figcaption>{caption}</figcaption>
             </figure>
             <div className={styles.copy}>
-                <p className={styles.eyebrow}>Attended decisions · Cloud demo</p>
-                <h2 id="attended-decision-title">
-                    Keep a person in the loop. Keep the runner in control.
-                </h2>
-                <p>
-                    When identity conflicts, OpenAdapt pauses before Save. The
-                    phone shows only permitted answers. The customer runner
-                    reads the live record again and returns the result.
-                </p>
+                <p className={styles.eyebrow}>{eyebrow}</p>
+                <h2>{title}</h2>
+                <p>{body}</p>
                 <a
                     className={styles.demoLink}
                     href={CLOUD_ATTENTION_DEMO}
@@ -73,7 +88,7 @@ export default function AttendedDecisionPreview() {
                     rel="noopener noreferrer"
                     data-testid="attended-decision-demo-link"
                 >
-                    Try all six mobile decision cases in Cloud
+                    {linkLabel}
                     <span aria-hidden="true"> →</span>
                 </a>
             </div>
