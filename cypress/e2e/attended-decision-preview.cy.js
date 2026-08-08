@@ -1,6 +1,9 @@
 describe('attended decision preview', () => {
     it('switches through the request, accepted, and runner-result states', () => {
-        cy.visit('/')
+        // The homepage now shows the separate qualification-time judgment
+        // capture. The operational request/accept/result contract lives on the
+        // Execute product page.
+        cy.visit('/execute')
 
         cy.get('[data-testid="attended-decision-toggle"]').within(() => {
             cy.get('button').eq(1).click().should('have.attr', 'aria-pressed', 'true')
