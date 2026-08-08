@@ -1,9 +1,15 @@
 describe('attended decision preview', () => {
-    it('switches between the real request and runner result, and links to the full demo', () => {
+    it('switches through the request, accepted, and runner-result states', () => {
         cy.visit('/')
 
         cy.get('[data-testid="attended-decision-toggle"]').within(() => {
             cy.get('button').eq(1).click().should('have.attr', 'aria-pressed', 'true')
+        })
+        cy.get('[data-testid="attended-decision-capture"]')
+            .should('have.attr', 'src', '/attended-decision/decision-pending.jpg')
+
+        cy.get('[data-testid="attended-decision-toggle"]').within(() => {
+            cy.get('button').eq(2).click().should('have.attr', 'aria-pressed', 'true')
         })
         cy.get('[data-testid="attended-decision-capture"]')
             .should('have.attr', 'src', '/attended-decision/identity-verified.jpg')
