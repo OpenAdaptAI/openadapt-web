@@ -4,7 +4,7 @@
   "source": {
     "repository": "OpenAdaptAI/openadapt-cloud",
     "pull_request": 281,
-    "commit": "1260a187af71e9af6bbfb8ffea97b03518afbb31",
+    "commit": "cb911395723cb8a9d77cc0ec36edf2b8a3e64844",
     "route": "/demo/qualification-judgment"
   },
   "boundary": {
@@ -16,9 +16,9 @@
   "assets": [
     {
       "path": "/qualification-judgment/judgment-capture-human-node.png",
-      "sha256": "fb4785e187d457627123dc930398bda49d8fc81d6803968be2ea91ff934b2967",
+      "sha256": "faf7d554bcc1722fcd17719b5aee2725699d22929492c5f1bf35dc9795d03ef6",
       "width": 860,
-      "height": 3162,
+      "height": 3240,
       "state": "human_decision_node_retained"
     }
   ]

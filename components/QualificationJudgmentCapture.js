@@ -60,7 +60,7 @@ export default function QualificationJudgmentCapture() {
                         src="/qualification-judgment/judgment-capture-human-node.png"
                         alt="Mobile qualification screen that retains an insurance exception as an authorized human decision node"
                         width={860}
-                        height={3162}
+                        height={3240}
                         sizes="(max-width: 760px) 88vw, 390px"
                     />
                 </a>
