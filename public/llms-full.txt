@@ -78,7 +78,7 @@ control plane is a separate commercial product.
 
 - Engine source: https://github.com/OpenAdaptAI/openadapt-flow
 - Install route: https://github.com/OpenAdaptAI/OpenAdapt and `pip install openadapt`
-- Current published versions: launcher 1.12.0, Flow 1.30.0, capture 1.2.2, desktop 0.15.0
+- Current published versions: launcher 1.12.1, Flow 1.31.0, capture 1.2.2, desktop 0.15.0
 - Product lifecycle: Beta
 
 ---
