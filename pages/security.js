@@ -77,13 +77,13 @@ const summary = [
         area: 'Identity, access & tenancy',
         anchor: 'access',
         status: 'core',
-        note: 'Org RBAC, row-level tenant isolation, and TOTP step-up protect platform administration; SSO / SAML / SCIM is not included.',
+        note: 'Org RBAC, row-level tenant isolation, and TOTP step-up protect platform administration; SSO / SAML / SCIM is planned and not yet included.',
     },
     {
         area: 'Release integrity',
         anchor: 'release-integrity',
         status: 'provenance',
-        note: 'Build provenance today; code signing not yet — desktop is unsigned/ad-hoc.',
+        note: 'Build provenance today. Installer code signing is planned; desktop is unsigned/ad-hoc until it lands, with published checksums and attestations in the meantime.',
     },
     {
         area: 'Secure development',
@@ -113,7 +113,7 @@ const summary = [
         area: 'SOC 2',
         anchor: 'assurance',
         status: 'none',
-        note: 'Internal controls and evidence are mapped; no auditor-defined observation period or SOC 2 report is held.',
+        note: 'A SOC 2 audit is planned. Internal controls and evidence are mapped; no auditor-defined observation period or SOC 2 report is held yet.',
     },
 ]
 
