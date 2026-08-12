@@ -80,6 +80,41 @@ export default function ExecutePage() {
                     </div>
                 </section>
 
+                <section className="border-b border-hairline px-5 py-16 md:py-20">
+                    <div className="mx-auto max-w-5xl">
+                        <p className="eyebrow">Governed run film</p>
+                        <h2 className="mt-3 max-w-3xl font-display text-3xl font-semibold tracking-tight text-ink">
+                            Watch one governed OpenEMR run.
+                        </h2>
+                        <figure className="mt-7" data-testid="openemr-film">
+                            <video
+                                className="w-full rounded-2xl border border-hairline bg-black"
+                                controls
+                                playsInline
+                                preload="metadata"
+                                poster="/media/openemr/poster.png"
+                                width={1920}
+                                height={1080}
+                                aria-label="Film of a governed OpenAdapt run in OpenEMR"
+                            >
+                                <source
+                                    src="/media/openemr/openadapt_openemr_flagship.mp4"
+                                    type="video/mp4"
+                                />
+                                <track
+                                    kind="captions"
+                                    src="/media/openemr/openadapt_openemr_flagship.vtt"
+                                    srcLang="en"
+                                    label="English"
+                                />
+                            </video>
+                            <figcaption className="mt-4 max-w-2xl text-xs leading-relaxed text-ink-3">
+                                Real OpenEMR, synthetic data. Narration is a synthesized voice.
+                            </figcaption>
+                        </figure>
+                    </div>
+                </section>
+
                 <section className="border-b border-hairline bg-panel px-5 py-16 md:py-20">
                     <div className="mx-auto max-w-5xl">
                         <p className="eyebrow">The execution boundary</p>
