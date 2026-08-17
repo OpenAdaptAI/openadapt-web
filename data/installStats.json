@@ -1,59 +1,55 @@
 {
-  "asOf": "2026-07-20",
+  "asOf": "2026-08-17",
   "source": "pypistats.org",
   "sourceUrl": "https://pypistats.org/packages/openadapt",
   "note": "Excludes mirror traffic. Aggregated across core openadapt-* PyPI packages.",
-  "totalLastMonth": 16027,
+  "totalLastMonth": 34402,
   "topPackage": {
     "name": "openadapt-flow",
-    "lastMonth": 8139
+    "lastMonth": 12696
   },
   "packages": [
     {
       "name": "openadapt-flow",
-      "lastDay": 1209,
-      "lastWeek": 7804,
-      "lastMonth": 8139
+      "lastDay": 63,
+      "lastWeek": 963,
+      "lastMonth": 12696
     },
     {
       "name": "openadapt-capture",
-      "lastDay": 665,
-      "lastWeek": 2190,
-      "lastMonth": 2677
-    },
-    {
-      "name": "openadapt",
-      "lastDay": 227,
-      "lastWeek": 1317,
-      "lastMonth": 1841
-    },
-    {
-      "name": "openadapt-privacy",
-      "lastDay": 311,
-      "lastWeek": 1294,
-      "lastMonth": 1522
+      "lastDay": 17,
+      "lastWeek": 250,
+      "lastMonth": 8674
     },
     {
       "name": "openadapt-types",
-      "lastDay": 114,
-      "lastWeek": 788,
-      "lastMonth": 954
+      "lastDay": 10,
+      "lastWeek": 157,
+      "lastMonth": 4570
+    },
+    {
+      "name": "openadapt-privacy",
+      "lastDay": 2,
+      "lastWeek": 85,
+      "lastMonth": 4176
+    },
+    {
+      "name": "openadapt",
+      "lastDay": 25,
+      "lastWeek": 391,
+      "lastMonth": 2909
     },
     {
       "name": "openadapt-ml",
-      "lastDay": 121,
-      "lastWeek": 443,
-      "lastMonth": 894
+      "lastDay": 9,
+      "lastWeek": 57,
+      "lastMonth": 1377
     }
   ],
   "history": [
     {
-      "month": "2026-01",
-      "downloads": 882
-    },
-    {
       "month": "2026-02",
-      "downloads": 3519
+      "downloads": 1793
     },
     {
       "month": "2026-03",
@@ -70,6 +66,10 @@
     {
       "month": "2026-06",
       "downloads": 3476
+    },
+    {
+      "month": "2026-07",
+      "downloads": 36949
     }
   ]
 }
