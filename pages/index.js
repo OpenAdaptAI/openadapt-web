@@ -59,7 +59,7 @@ const softwareSchema = {
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Windows, macOS, Linux',
     description:
-        'Beta governed execution for consequential UI-only work across browser, Windows, macOS, Linux, RDP, and Citrix, with identity gates, effect verification, and fail-closed outcomes. Production use qualifies the exact workflow, application, environment, identity contract, and effect verifier.',
+        'Governed execution for consequential UI-only work across browser, Windows, macOS, Linux, RDP, and Citrix, with identity gates, effect verification, and fail-closed outcomes. Production use qualifies the exact workflow, application, environment, identity contract, and effect verifier.',
     url: 'https://openadapt.ai',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     author: {

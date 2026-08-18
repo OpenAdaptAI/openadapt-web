@@ -47,8 +47,9 @@ export default function InstallSection() {
                 One command installs the OpenAdapt launcher and governed
                 workflow compiler. The same CLI records, compiles, and replays
                 across browser, Windows, macOS, Linux, RDP, and Citrix under one
-                governed loop. Browser is the reference Beta path. Desktop and
-                remote surfaces run through customer-controlled qualification.
+                governed loop. Browser is the available end-to-end reference
+                path. Desktop and remote surfaces run through
+                customer-controlled qualification.
                 No account or hosted service is required.
             </p>
 

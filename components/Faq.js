@@ -29,7 +29,7 @@ export const faqItems = [
     },
     {
         question: 'How does OpenAdapt qualify production use?',
-        answer: 'OpenAdapt does not use one platform-wide readiness label. The product lifecycle is Beta. Each production deployment qualifies the exact workflow, application, environment, identity contract, effect verifier, data boundary, and operator responsibilities. The public Cloud readiness page checks service dependencies; it is not an SLA or a workflow certificate. A production SLA or regulated deployment is scoped separately.',
+        answer: 'OpenAdapt qualifies production use per deployment, not with one platform-wide readiness label. Browser is the available end-to-end reference path. Each production deployment qualifies the exact workflow, application, environment, identity contract, effect verifier, data boundary, and operator responsibilities. The public Cloud readiness page checks service dependencies; it is not an SLA or a workflow certificate. A production SLA or regulated deployment is scoped separately.',
     },
     {
         question: 'What software does OpenAdapt work with?',

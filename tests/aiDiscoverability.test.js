@@ -368,10 +368,11 @@ test('every anchor cited by llms.txt exists in a rendered component', () => {
     }
 })
 
-test('llms.txt and llms-full.txt never promote a substrate above status.json', () => {
+test('llms.txt and llms-full.txt bind a production-ready claim to immutable evidence', () => {
     // status.json is the canonical machine-readable source of truth. The
     // superseded ladder wording ("early access", "exploratory") must never
-    // reappear, and neither may an unqualified "production ready" claim.
+    // reappear. The target browser claim can publish only with an immutable
+    // acceptance record from the engine or hosted control-plane repository.
     for (const [name, text] of [
         ['llms.txt', llms],
         ['llms-full.txt', llmsFull],
@@ -381,11 +382,19 @@ test('llms.txt and llms-full.txt never promote a substrate above status.json', (
             /early access|exploratory|design.partner/i,
             `${name} must not use the superseded maturity ladder`
         )
-        assert.doesNotMatch(
-            text,
-            /production[- ]ready|fully certified|guaranteed/i,
-            `${name} must not overstate maturity`
-        )
+        assert.doesNotMatch(text, /fully certified|guaranteed/i)
+        if (/production[- ]ready/i.test(text)) {
+            assert.match(
+                text,
+                /production-ready for qualified browser workflows/i,
+                `${name} must scope a production-ready claim to qualified browser workflows`
+            )
+            assert.match(
+                text,
+                /Production-readiness evidence:\s+https:\/\/github\.com\/OpenAdaptAI\/(?:openadapt-flow|openadapt-cloud)\/blob\/[0-9a-f]{40}\/\S+/i,
+                `${name} must bind the production-ready claim to an immutable acceptance record`
+            )
+        }
         for (const substrate of status.substrates) {
             assert.ok(
                 text.includes(substrate.name),
@@ -448,8 +457,8 @@ test('llms files make production qualification workflow-specific', () => {
         ['llms-full.txt', llmsFull],
     ]) {
         const normalized = text.replace(/\s+/g, ' ')
-        assert.match(normalized, /does not use one platform-wide readiness label/i)
-        assert.match(normalized, /product lifecycle is Beta/i)
+        assert.match(normalized, /not with one platform-wide readiness label/i)
+        assert.match(normalized, /Browser is the available end-to-end reference path/i)
         assert.match(normalized, /Each production deployment qualifies the exact workflow/i)
         assert.match(normalized, /not an SLA or a workflow certificate/i)
         assert.match(normalized, /Desktop is a Beta supporting surface/i)

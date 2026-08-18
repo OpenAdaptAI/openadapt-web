@@ -48,10 +48,10 @@ export default function ProductStatus() {
                     treated as interchangeable.
                 </p>
                 <p className="mx-auto mt-3 max-w-3xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    Browser is the reference Beta path. Desktop, RDP, and
-                    Citrix run through customer-controlled qualification. Each
-                    surface carries its own measured acceptance evidence,
-                    published per surface in the{' '}
+                    Browser is the available end-to-end reference path.
+                    Desktop, RDP, and Citrix run through customer-controlled
+                    qualification. Each surface carries its own measured
+                    acceptance evidence, published per surface in the{' '}
                     <a
                         href="https://docs.openadapt.ai/get-started/what-works-today/"
                         target="_blank"
