@@ -207,7 +207,8 @@ test('machine-readable use cases do not claim mortgage, LOS, or a healthcare ver
 })
 
 test('public repository declares its lifecycle state', () => {
-    assert.match(read('README.md'), /Lifecycle: Beta/)
+    assert.match(read('README.md'), /Lifecycle: Internal/)
+    assert.match(read('README.md'), /product lifecycle.*Beta/is)
 })
 
 test('lending demo media has durable synthetic evidence provenance', () => {

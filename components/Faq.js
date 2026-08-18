@@ -28,6 +28,10 @@ export const faqItems = [
         answer: 'Yes. OpenAdapt Cloud provides managed browser execution plus run history, reports, usage, and governed workflow updates. Desktop, RDP, and Citrix connect through self-hosted or customer-controlled runtimes under the same governance model. Start from the pricing section, then qualify the first workflow and its verification boundary during onboarding.',
     },
     {
+        question: 'How does OpenAdapt qualify production use?',
+        answer: 'OpenAdapt does not use one platform-wide readiness label. The product lifecycle is Beta. Each production deployment qualifies the exact workflow, application, environment, identity contract, effect verifier, data boundary, and operator responsibilities. The public Cloud readiness page checks service dependencies; it is not an SLA or a workflow certificate. A production SLA or regulated deployment is scoped separately.',
+    },
+    {
         question: 'What software does OpenAdapt work with?',
         answer: 'OpenAdapt targets repeated workflows across browser applications, Windows UI Automation, native macOS Accessibility, Linux AT-SPI, RDP, Citrix, and other remote desktop environments. Choose managed browser execution or connect a local, self-hosted, or customer-controlled runtime for desktop, remote, private-system, and regulated workflows.',
     },

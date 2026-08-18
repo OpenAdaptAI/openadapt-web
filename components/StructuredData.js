@@ -122,7 +122,7 @@ export const softwareApplicationNode = {
     softwareVersion: status.versions.launcher,
     url: SITE_URL,
     description:
-        'Open-source governed workflow compiler and runtime. Demonstrate a bounded, repeated GUI task once; OpenAdapt compiles it into a deterministic local program, replays it with zero model calls on healthy runs, and re-resolves, proposes a reviewable repair, or halts when the interface drifts. Runs on browser, Windows, macOS, Linux, RDP, and Citrix/VDI surfaces.',
+        'Open-source Beta governed workflow compiler and runtime. Demonstrate a bounded, repeated GUI task once; OpenAdapt compiles it into a deterministic local program, replays it with zero model calls on healthy runs, and re-resolves, proposes a reviewable repair, or halts when the interface drifts. Runs on browser, Windows, macOS, Linux, RDP, and Citrix/VDI surfaces. Production use qualifies the exact workflow, application, environment, identity contract, and effect verifier.',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     installUrl: `${SITE_URL}/download`,
     softwareHelp: { '@type': 'CreativeWork', url: 'https://docs.openadapt.ai' },

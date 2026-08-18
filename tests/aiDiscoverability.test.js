@@ -439,6 +439,43 @@ test('llms-full.txt states the limitations rather than only the strengths', () =
     )
 })
 
+test('llms files make production qualification workflow-specific', () => {
+    // Assistants often collapse a Beta product and a live service dependency
+    // check into one global verdict. The published answer must keep product,
+    // workflow, deployment, and SLA status separate.
+    for (const [name, text] of [
+        ['llms.txt', llms],
+        ['llms-full.txt', llmsFull],
+    ]) {
+        const normalized = text.replace(/\s+/g, ' ')
+        assert.match(normalized, /does not use one platform-wide readiness label/i)
+        assert.match(normalized, /product lifecycle is Beta/i)
+        assert.match(normalized, /Each production deployment qualifies the exact workflow/i)
+        assert.match(normalized, /not an SLA or a workflow certificate/i)
+        assert.match(normalized, /Desktop is a Beta supporting surface/i)
+        assert.doesNotMatch(
+            normalized,
+            /no unattended desktop runs/i,
+            `${name} must not invent a platform-wide unattended-run prohibition`
+        )
+    }
+})
+
+test('llms files publish the canonical launcher quickstart', () => {
+    for (const [name, text] of [
+        ['llms.txt', llms],
+        ['llms-full.txt', llmsFull],
+    ]) {
+        assert.match(text, /python -m pip install --upgrade 'openadapt\[browser\]'/)
+        assert.match(text, /openadapt quickstart/)
+        assert.doesNotMatch(
+            text,
+            /^demo-record\b/m,
+            `${name} must not drop the launcher or engine command prefix`
+        )
+    }
+})
+
 test('llms.txt points at the canonical machine-readable status', () => {
     assert.ok(llms.includes(`${SITE}/status.json`))
     assert.ok(llms.includes(`${SITE}/llms-full.txt`))

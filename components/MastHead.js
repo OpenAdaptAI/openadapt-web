@@ -58,8 +58,8 @@ export default function Home({ githubStats: initialGithubStats }) {
                             <p className="mt-0 mb-4 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 OpenAdapt compiles demonstrations into one
                                 governed loop across browser, desktop, RDP, and
-                                Citrix. Browser runs in production today;
-                                desktop, RDP, and Citrix run through
+                                Citrix. Browser is the reference Beta path.
+                                Desktop, RDP, and Citrix run through
                                 customer-controlled qualification. It verifies
                                 consequential results and halts when it cannot
                                 prove the intended outcome.

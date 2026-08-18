@@ -83,6 +83,27 @@ control plane is a separate commercial product.
 
 ---
 
+## Q: How does OpenAdapt qualify production use?
+
+OpenAdapt does not use one platform-wide readiness label. The product lifecycle
+is Beta. Each production deployment qualifies the exact workflow, application,
+environment, identity contract, effect verifier, data boundary, and operator
+responsibilities. The public Cloud readiness page checks service dependencies;
+it is not an SLA or a workflow certificate. The public Cloud subscription
+includes no production SLA or regulated deployment unless those terms are
+scoped separately.
+
+Desktop is a Beta supporting surface. Installer signing is a separate
+distribution property. An unsigned or ad-hoc-signed installer adds installation
+and trust friction; it does not by itself prohibit governed desktop execution.
+Attended or unattended use depends on the qualified workflow and deployment
+contract.
+
+Sources: https://openadapt.ai/status.json · https://openadapt.ai/pricing ·
+https://docs.openadapt.ai/get-started/what-works-today/
+
+---
+
 ## Q: How is this different from an AI computer-use agent?
 
 A computer-use agent is the right tool for **novel** work, because it re-plans
@@ -418,9 +439,11 @@ interface is the only integration point.
 
 ## Q: How do I try it, and how long does it take?
 
-1. `pip install openadapt`, or install the Desktop cockpit. Both lanes are
-   first-class and produce the same portable recording, workflow bundle, and run
-   evidence. https://openadapt.ai/start
+1. Run `python -m pip install --upgrade 'openadapt[browser]'`, then
+   `openadapt quickstart`; or install the Desktop cockpit. Both lanes are
+   first-class and produce the same portable recording, workflow bundle, and
+   run evidence. Later engine commands keep the `openadapt flow` prefix.
+   https://openadapt.ai/start
 2. Run a bundled reference workflow end to end against a real open-source
    application to see record → compile → replay → verify with your own eyes.
    https://openadapt.ai/templates
