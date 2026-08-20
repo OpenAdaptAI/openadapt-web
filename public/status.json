@@ -1,57 +1,57 @@
 {
     "$comment": "Canonical machine-readable release, capability, evidence, and deployment status for OpenAdapt. Served at https://openadapt.ai/status.json and consumed by status-aware public surfaces and tests. OpenAdapt is one Beta product across browser, Windows, macOS, Linux, RDP, and Citrix/VDI. Capability availability is distinct from the deployment boundary and from the bounded evidence scope recorded for each substrate.",
-    "generated_at": "2026-08-11",
+    "generated_at": "2026-08-20",
     "product_lifecycle": "Beta",
     "versions": {
-        "launcher": "1.12.1",
-        "flow": "1.31.0",
+        "launcher": "1.13.1",
+        "flow": "1.32.0",
         "capture": "1.2.2",
         "desktop": "0.15.0"
     },
     "releases": {
         "launcher": {
             "package": "openadapt",
-            "version": "1.12.1",
+            "version": "1.13.1",
             "source": "pypi",
             "github_repository": "OpenAdaptAI/OpenAdapt",
-            "tag": "v1.12.1",
-            "release_commit": "aabecc8e2c3807f35d9bf3092fa302004df2e55e",
-            "qualified_source_commit": "c6fbd7535a638514d0366da1dcbe201244d30ea8",
+            "tag": "v1.13.1",
+            "release_commit": "7f69923e164a028893e7d570658aa5dcbebc121f",
+            "qualified_source_commit": "bb91e4b744fff1199241f48adf31761224771e11",
             "artifacts": [
                 {
                     "type": "bdist_wheel",
-                    "filename": "openadapt-1.12.1-py3-none-any.whl",
-                    "url": "https://files.pythonhosted.org/packages/b4/0b/af4c42a91d55795f73cf1f3891aa65d40eea1cfb38c6b4cd93f5df4733c7/openadapt-1.12.1-py3-none-any.whl",
-                    "sha256": "1b469f1171ed1c0e3d9165ba31cb9eedd94f55165eba66b4ddbb7c7305683b28"
+                    "filename": "openadapt-1.13.1-py3-none-any.whl",
+                    "url": "https://files.pythonhosted.org/packages/ac/5b/1c651245dde5124e9bca11be36b7b241ca5a9cd85678d1893718212b5a36/openadapt-1.13.1-py3-none-any.whl",
+                    "sha256": "e168825bf3f553e537786c2ab24a9da726f96a8043ac5d52604cb95d83e6ea3b"
                 },
                 {
                     "type": "sdist",
-                    "filename": "openadapt-1.12.1.tar.gz",
-                    "url": "https://files.pythonhosted.org/packages/db/a2/65234ea92c9dc24b289449a35a28741144b5e6ea0ec582dd5eb65b5b2269/openadapt-1.12.1.tar.gz",
-                    "sha256": "d1756fcbc09c106f9172af13c4682ab3c73be9c6afacc078f78f1dc87078eef7"
+                    "filename": "openadapt-1.13.1.tar.gz",
+                    "url": "https://files.pythonhosted.org/packages/14/3a/c5a50e0fdd22985453734e560507749dfb82485b9085dd08d666ca706ae3/openadapt-1.13.1.tar.gz",
+                    "sha256": "ba6a6c86bd21eebf31ed59b4d0f5c0860f16aed479826da8cf4dc6a5288b5de0"
                 }
             ]
         },
         "flow": {
             "package": "openadapt-flow",
-            "version": "1.31.0",
+            "version": "1.32.0",
             "source": "pypi",
             "github_repository": "OpenAdaptAI/openadapt-flow",
-            "tag": "v1.31.0",
-            "release_commit": "2d225dea9a0ad29ca84ce1b037cc0ac671367e28",
-            "qualified_source_commit": "faf9945537d4011baeb36ce5f063b6e1814903e6",
+            "tag": "v1.32.0",
+            "release_commit": "d1b054c718d60465fb8a2e1853e6a84c7f26dec2",
+            "qualified_source_commit": "02e68bf9e658d4d2147243fc33e69b4f2dd70b21",
             "artifacts": [
                 {
                     "type": "bdist_wheel",
-                    "filename": "openadapt_flow-1.31.0-py3-none-any.whl",
-                    "url": "https://files.pythonhosted.org/packages/a7/20/dd8ccd56afb0c3c369f13adb85695acf4f0495a0a61553f576ec0977ab19/openadapt_flow-1.31.0-py3-none-any.whl",
-                    "sha256": "81133db1528ad1bb1f26e3fcb6aea61b0651db6d905cf2e4943e8383c1f3d29c"
+                    "filename": "openadapt_flow-1.32.0-py3-none-any.whl",
+                    "url": "https://files.pythonhosted.org/packages/a9/88/eb6f1c789298c1dd0ff92050cd6bf0ef562eff328e97c1c13e5e1b1a8e03/openadapt_flow-1.32.0-py3-none-any.whl",
+                    "sha256": "d58dcf8b7e54c8a45199db4390a588dc261bb754c5ab2af0fdb540e44cb6bb8a"
                 },
                 {
                     "type": "sdist",
-                    "filename": "openadapt_flow-1.31.0.tar.gz",
-                    "url": "https://files.pythonhosted.org/packages/9b/47/07ea24067eaa93cc2416a432df83508fe9d2f77bdf7955298580f2e1d35f/openadapt_flow-1.31.0.tar.gz",
-                    "sha256": "cf1fc356d14d267df82be188de3e9a3575734f18f46ef91ac8075438cc731540"
+                    "filename": "openadapt_flow-1.32.0.tar.gz",
+                    "url": "https://files.pythonhosted.org/packages/df/25/f8adeb01a20a7034d1f6dc24d7da4ca04c23d7182fd39c8eeafbfe6a3153/openadapt_flow-1.32.0.tar.gz",
+                    "sha256": "c3125f16c1b12420dff4a3af4c3d676e1d267cd961cb9e5f4825beb372b7f97e"
                 }
             ]
         }
