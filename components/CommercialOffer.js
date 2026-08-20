@@ -17,7 +17,7 @@ export default function CommercialOffer({ hostedOffer }) {
             <div className="mx-auto max-w-5xl">
                 <p className="eyebrow text-center">Commercial offer</p>
                 <h2 className="mx-auto mt-2 max-w-3xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Qualify the workflow before scaling the deployment
+                    Start with one workflow
                 </h2>
                 <div className="mt-8 flex flex-col gap-5 rounded-2xl border border-hairline bg-panel p-5 sm:flex-row sm:items-center sm:justify-between md:px-7">
                     <div>
@@ -50,7 +50,7 @@ export default function CommercialOffer({ hostedOffer }) {
                             From $15,000
                         </h3>
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            In a ten-business-day target, we assess one named
+                            We target a decision within ten business days. We assess one named
                             workflow, application, environment, identity contract,
                             effect verifier, failure boundary, deployment path,
                             and ROI. You receive a qualified prototype and a signed
@@ -76,10 +76,10 @@ export default function CommercialOffer({ hostedOffer }) {
                             <p className="mt-2 text-sm font-semibold text-ink">{runCap}</p>
                         )}
                         <p className="mt-3 text-sm leading-relaxed text-ink-2">
-                            A separate managed subscription for approved workflows,
-                            run history, evidence, and governed updates. Enterprise
-                            qualification, regulated deployment, and SLAs are scoped
-                            separately.
+                            Run approved browser workflows with managed runners,
+                            run history, evidence, and controlled updates. We scope
+                            enterprise qualification, regulated deployment, and
+                            SLAs separately.
                         </p>
                         <Link href="/pricing#cloud-preview" className="btn-ghost-ink mt-6 inline-block">
                             See Cloud and enterprise pricing
@@ -87,7 +87,8 @@ export default function CommercialOffer({ hostedOffer }) {
                     </article>
                 </div>
                 <p className="mt-5 text-center text-sm leading-relaxed text-ink-2">
-                    Building vertical software or operating workflows for clients?{' '}
+                    OpenAdapt Execute gives vertical software and service providers{' '}
+                    a verified last-mile execution API.{' '}
                     <Link href="/execute" className="font-medium text-accent hover:underline">
                         Explore OpenAdapt Execute.
                     </Link>

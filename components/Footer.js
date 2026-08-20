@@ -151,9 +151,9 @@ export default function Footer({
                             <span className="font-semibold">Adapt</span>
                         </a>
                         <p className={styles.tagline}>
-                            OpenAdapt compiles demonstrated GUI workflows into
-                            deterministic, locally executable programs, and
-                            halts when it can’t verify the result.
+                            OpenAdapt turns demonstrated GUI work into
+                            deterministic automation and verifies the result
+                            before it reports success.
                         </p>
                         <a
                             href={qualificationHref}

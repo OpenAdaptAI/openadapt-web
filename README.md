@@ -4,12 +4,11 @@
 
 Source for the [openadapt.ai](https://openadapt.ai) marketing site.
 
-OpenAdapt is a governed demonstration compiler for GUI workflows: record a task
-once, compile it, and replay it deterministically with zero model calls on the
-healthy path. When replay cannot verify what it is about to do, it halts instead
-of guessing. Every execution substrate is first-class under one governed loop:
-browser, Windows, macOS, Linux, RDP, and Citrix/VDI. OpenAdapt is local-first
-and open-core (MIT); managed cloud is optional.
+OpenAdapt provides verified automation from demonstration. It compiles repeated
+GUI work into deterministic programs for browser, Windows, macOS, Linux, RDP,
+and Citrix/VDI. Healthy runs make no model calls. OpenAdapt checks the declared
+result before it reports `VERIFIED` and stops when the required evidence is
+missing. The local runtime is MIT licensed; managed Cloud is optional.
 
 This repository is the public website only. Installers and the unified CLI live
 in [OpenAdaptAI/OpenAdapt](https://github.com/OpenAdaptAI/OpenAdapt), the

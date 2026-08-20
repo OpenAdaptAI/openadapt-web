@@ -22,9 +22,9 @@
     color: var(--ink-3);
 }
 
-/* Primary enterprise CTA. The adjacent ghost action is the equally direct
-   local/open-source path, while the install command below carries the
-   no-account trust contract without adding a third competing button. */
+/* Primary workflow-fit CTA. The adjacent action jumps to the evidence demo.
+   The compact install line keeps the local, no-account path available without
+   adding a third competing button. */
 .heroCloud {
     display: inline-flex;
     align-items: center;

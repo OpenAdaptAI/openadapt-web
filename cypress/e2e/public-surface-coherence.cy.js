@@ -33,14 +33,16 @@ describe('public surface coherence', () => {
             'contain.text',
             'stars on OpenAdapt'
         )
-        cy.contains('a', 'Qualify one workflow')
+        cy.get('[data-testid="workflow-fit-cta"]')
             .should('be.visible')
             .and('have.attr', 'href', '/qualify')
+        cy.get('[data-testid="demo-cta"]')
+            .should('be.visible')
+            .and('have.attr', 'href', '/#demo')
         cy.get('[data-testid="local-quickstart-cta"]')
             .should('be.visible')
             .and('have.attr', 'href', '/start')
         cy.get('[data-testid="cloud-demo-cta"]')
-            .should('be.visible')
             .and(
                 'have.attr',
                 'href',

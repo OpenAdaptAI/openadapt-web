@@ -41,12 +41,12 @@ describe('public product truth', () => {
         cy.visit('/')
     })
 
-    it('leads with the governed compiler and qualifies the buyer', () => {
+    it('leads with the buyer outcome and routes to a workflow review', () => {
         cy.get('h1').should(
             'contain.text',
-            'Automate the UI-only work your APIs can’t reach.'
+            'Automate the work your systems still make people do.'
         )
-        cy.contains('a', 'Qualify one workflow').should(
+        cy.get('[data-testid="workflow-fit-cta"]').should(
             'have.attr',
             'href',
             '/qualify'

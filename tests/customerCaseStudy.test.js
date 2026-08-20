@@ -82,5 +82,5 @@ test('links the customer result from the public discovery surfaces', () => {
     assert.match(read('pages/index.js'), /<CustomerCaseStudy \/>/)
     assert.match(read('components/NavHeader.js'), /Customer results/)
     assert.match(read('public/sitemap.xml'), /\/customers\/rvu-audit-heart-care/)
-    assert.match(read('public/llms.txt'), /Customer Case Study — RVU Audits/)
+    assert.match(read('public/llms.txt'), /Customer Case Study: RVU Audits/)
 })

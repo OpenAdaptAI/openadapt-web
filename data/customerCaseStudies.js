@@ -38,7 +38,7 @@ export const RVU_RECOVERY_CASE = {
         'Disclosure: Dr. Abrich is the founder’s brother. This is OpenAdapt’s founding deployment, not independent validation.',
     title: 'Recovering missed billables with automated RVU audits',
     summary:
-        'OpenAdapt automated the repetitive EMR evidence collection and spreadsheet reconciliation behind Dr. Victor Abrich’s monthly RVU audits, helping recover about $75,000 a year in missed billables while saving several hours of physician time each month.',
+        'OpenAdapt now handles the repetitive EMR evidence collection and spreadsheet reconciliation behind Dr. Victor Abrich’s monthly RVU audits. The workflow helps recover about $75,000 a year in missed billables and saves several hours of physician time each month.',
     challenge:
         'Reviewing every relevant chart and reconciling the findings against monthly RVU reports took several hours each month, and manual review still missed billable work.',
     workflow: [

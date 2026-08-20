@@ -90,19 +90,55 @@ describe('shared real-application demo', () => {
                 .should(($video) => {
                     expect($video[0].videoWidth).to.be.greaterThan(0)
                 })
-                .then(($video) => {
-                    const video = $video[0]
-                    return new Cypress.Promise((resolve) => {
-                        video.currentTime = 0.59
-                        setTimeout(() => {
-                            video.playbackRate = 0.25
-                            video.play().then(resolve)
-                        }, 100)
+            cy.get('@player').then(($player) => {
+                const player = $player[0]
+                const video = player.querySelector('video')
+                const Observer =
+                    player.ownerDocument.defaultView.MutationObserver
+
+                return new Cypress.Promise((resolve, reject) => {
+                    let timeoutId
+                    let playbackTimer
+                    const fail = (error) => {
+                        observer.disconnect()
+                        video.pause()
+                        clearTimeout(timeoutId)
+                        clearTimeout(playbackTimer)
+                        reject(error)
+                    }
+                    const finishIfBound = () => {
+                        if (
+                            player.getAttribute('data-decoded-frame-index') !== '1'
+                        ) {
+                            return false
+                        }
+                        video.pause()
+                        observer.disconnect()
+                        clearTimeout(timeoutId)
+                        clearTimeout(playbackTimer)
+                        resolve()
+                        return true
+                    }
+                    const observer = new Observer(finishIfBound)
+                    video.pause()
+                    observer.observe(player, {
+                        attributes: true,
+                        attributeFilter: ['data-decoded-frame-index'],
                     })
+                    timeoutId = setTimeout(() => {
+                        fail(new Error('Decoded frame 1 was not observed'))
+                    }, 10000)
+
+                    if (finishIfBound()) return
+                    playbackTimer = setTimeout(() => {
+                        video.currentTime = 0.59
+                        video.playbackRate = 0.25
+                        video.play().catch(fail)
+                    }, 100)
                 })
+            })
             cy.get('@player')
                 .should('have.attr', 'data-decoded-frame-index', '1')
-                .then(($player) => $player.find('video')[0].pause())
                 .should('contain.text', 'Evidence')
                 .find('[data-decoded-frame-index="1"]')
                 .should('be.visible')

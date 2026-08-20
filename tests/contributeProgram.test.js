@@ -7,7 +7,7 @@ const pricing = fs.readFileSync('components/Pricing.js', 'utf8')
 const page = fs.readFileSync('pages/contribute.js', 'utf8')
 const intake = fs.readFileSync('components/ContributorProgramForm.js', 'utf8')
 const formDefinitions = fs.readFileSync('public/form.html', 'utf8')
-const home = fs.readFileSync('pages/index.js', 'utf8')
+const footer = fs.readFileSync('components/Footer.js', 'utf8')
 
 // JSX wraps prose across indented lines, so phrase assertions run against a
 // whitespace-normalized view. Banned-phrase checks also strip JS comments,
@@ -85,10 +85,10 @@ test('contributor leads use a dedicated Netlify form, segmented from contact', (
     assert.doesNotMatch(page, /ContactBookingSection/)
 })
 
-test('the homepage renders the contribute section and pricing carries the credits callout', () => {
-    assert.match(home, /<ContributeSection \/>/)
+test('pricing and the footer link to the contributor program', () => {
     assert.match(norm(pricing), /Earn credits by contributing/)
     assert.match(pricing, /href="\/contribute"/)
+    assert.match(footer, /href: '\/contribute'/)
     // The page links to the real pricing route, not a stale homepage anchor.
     assert.match(page, /href="\/pricing"/)
     assert.doesNotMatch(page, /href="\/#pricing"/)
