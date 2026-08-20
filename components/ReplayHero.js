@@ -32,8 +32,9 @@ export default function ReplayHero() {
                 <a
                     className="btn-ink"
                     href="https://app.openadapt.ai/demo"
+                    data-testid="cloud-demo-cta"
                 >
-                    Open the end-to-end demo
+                    Explore the full demo
                 </a>
                 <Link className="btn-ghost-ink" href="/compare">
                     Compare methods and results

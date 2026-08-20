@@ -1,10 +1,10 @@
 # OpenAdapt.AI
 
-> OpenAdapt is an open-source (MIT) governed workflow compiler and runtime for repeated GUI work in applications that have no usable API. You demonstrate a bounded task once; OpenAdapt compiles the recording into a deterministic, locally executable program. A healthy replay makes zero model calls. When the interface drifts, OpenAdapt deterministically re-resolves the target from retained evidence, optionally proposes a reviewable repair, accepts a human correction, or halts. Every consequential run ends `VERIFIED` or `HALTED` with a preserved run report; a run is judged by an out-of-band check of the system of record, not by the acting session declaring itself successful.
+> OpenAdapt provides verified automation from demonstration. Show it a repeated GUI task and it compiles the recording into a deterministic, locally executable program. A healthy replay makes zero model calls. When the interface drifts, OpenAdapt re-resolves the target from retained evidence, proposes a governed repair, accepts an authorized correction, or halts. A governed run reports a typed outcome and keeps the evidence used to reach it. `VERIFIED` means the declared result check passed.
 
 ## What it is, in one line
 
-OpenAdapt is for the case where the work is repetitive and consequential, the interface is visual or integration-hostile, and a silently wrong write would be worse than no write at all.
+OpenAdapt fits repetitive, consequential work where the application has no practical API and another system or session can verify the result.
 
 ## Canonical machine-readable status
 
@@ -15,19 +15,19 @@ OpenAdapt is for the case where the work is repetitive and consequential, the in
 
 Availability below is the released capability. It is distinct from the deployment boundary and from the bounded acceptance evidence recorded for each substrate. Exact evidence URLs are in `status.json`.
 
-- **Browser — Available.** Local, managed OpenAdapt Cloud, or customer-controlled. The reference loop: record, compile, and replay end to end with no model calls on healthy runs.
-- **Windows (UI Automation) — Available.** Local or customer-controlled. Accepted WinForms matrix: 3/3 independently verified effects, 3/3 stale targets refused, 3/3 ambiguous targets refused, zero silent incorrect successes, zero over-halts, zero model calls.
-- **macOS (Accessibility) — Available.** Local or customer-controlled. Binds one exact application window and refuses ambiguity before input. Counted TextEdit evidence: 3/3 exact-byte effects plus a two-window ambiguity refusal.
-- **Linux (AT-SPI) — Available.** Local or customer-controlled. Required current-main CI: 3/3 exact-file effects, 3/3 ambiguity refusals, 3/3 stale-target refusals.
-- **RDP — Available.** Local or customer-controlled. Two accepted bounded results: 3/3 real Aardwolf-over-Windows transport/input effects, and a full record-to-compile-to-governed-replay lifecycle over a real FreeRDP round trip with 3/3 healthy effects and 3/3 drift safe-halts.
-- **Citrix / VDI — Available.** Local or customer-controlled. The shipped `--backend citrix` path binds the exact Citrix Workspace window and runs the same identity, effect, policy, and halt contracts. Qualification boundary, stated explicitly: the accepted artifact records `ica_hdx_accepted=false`. It qualifies the Citrix Workspace-window backend contract over a no-DOM canvas stand-in (3/3 healthy effects, 3/3 drift safe-halts), not a counted real ICA/HDX batch. An exact ICA/HDX environment is qualified separately before consequential use.
-- **Hosted Cloud — Beta.** Managed browser runner and control plane, with run history, reporting, usage, and governed workflow updates. Windows, macOS, Linux, RDP, and Citrix/VDI execute through local, self-hosted, or customer-controlled runtimes; they are not silently moved into the shared managed browser boundary.
+- **Browser: Available.** Local, managed OpenAdapt Cloud, or customer-controlled. The reference loop records, compiles, and replays end to end with no model calls on healthy runs.
+- **Windows (UI Automation): Available.** Local or customer-controlled. Accepted WinForms matrix: 3/3 independently verified effects, 3/3 stale targets refused, 3/3 ambiguous targets refused, zero silent incorrect successes, zero over-halts, zero model calls.
+- **macOS (Accessibility): Available.** Local or customer-controlled. Binds one exact application window and refuses ambiguity before input. Counted TextEdit evidence: 3/3 exact-byte effects plus a two-window ambiguity refusal.
+- **Linux (AT-SPI): Available.** Local or customer-controlled. Required current-main CI: 3/3 exact-file effects, 3/3 ambiguity refusals, 3/3 stale-target refusals.
+- **RDP: Available.** Local or customer-controlled. Two accepted bounded results: 3/3 real Aardwolf-over-Windows transport/input effects, and a full record-to-compile-to-governed-replay lifecycle over a real FreeRDP round trip with 3/3 healthy effects and 3/3 drift safe-halts.
+- **Citrix / VDI: Available.** Local or customer-controlled. The shipped `--backend citrix` path binds the exact Citrix Workspace window and runs the same identity, effect, policy, and halt contracts. Qualification boundary, stated explicitly: the accepted artifact records `ica_hdx_accepted=false`. It qualifies the Citrix Workspace-window backend contract over a no-DOM canvas stand-in (3/3 healthy effects, 3/3 drift safe-halts), not a counted real ICA/HDX batch. An exact ICA/HDX environment is qualified separately before consequential use.
+- **Hosted Cloud: Beta.** The managed browser runner and control plane include run history, reporting, usage, and governed workflow updates. Windows, macOS, Linux, RDP, and Citrix/VDI execute through local, self-hosted, or customer-controlled runtimes. OpenAdapt does not move them into the shared managed browser boundary.
 
 ## Start here
 
 - [Run it locally, free](https://openadapt.ai/start): The CLI and the Desktop cockpit are equal first-class local lanes. Both produce the same portable recording, workflow bundle, and run evidence. Cloud is an optional handoff after local success.
 - [Install](https://openadapt.ai/download): Installers and `pip install openadapt`, then `openadapt flow ...`.
-- [How it works](https://openadapt.ai/how-it-works): Record and compile, replay deterministically, then resolve, repair, or halt under drift — including what a compiled program actually contains and where repair stops.
+- [How it works](https://openadapt.ai/how-it-works): Record and compile, replay deterministically, then resolve, repair, or halt under drift. The page shows what a compiled program contains and where repair stops.
 - [Documentation](https://docs.openadapt.ai): Installation, quick start, CLI reference, and what works today.
 
 ## Decide whether it fits
@@ -44,7 +44,7 @@ Availability below is the released capability. It is distinct from the deploymen
 ## Trust, safety, and data boundaries
 
 - [Trust center](https://openadapt.ai/security): Screenshot, model, secret, report, certification, and commercial deployment boundaries; build provenance, code signing, and SBOM.
-- [Safety model](https://openadapt.ai/safety): The refusal ladder — what makes a run halt rather than guess, with worked cases.
+- [Safety model](https://openadapt.ai/safety): The refusal ladder shows what makes a run halt rather than guess, with worked cases.
 - [Privacy module](https://github.com/OpenAdaptAI/openadapt-privacy): Open-source PII/PHI scrubbing used before any artifact leaves the local boundary.
 - [Privacy policy](https://openadapt.ai/privacy-policy) · [Terms of service](https://openadapt.ai/terms-of-service)
 
@@ -53,7 +53,7 @@ Availability below is the released capability. It is distinct from the deploymen
 - [Research](https://openadapt.ai/research): The technical paper, machine-checked benchmark constants, methodology, limitations, and artifact checklist.
 - [Technical paper (PDF)](https://openadapt.ai/paper): Reader-facing paper page; source lives in the openadapt-flow repository.
 - [Workflow reference catalog](https://openadapt.ai/workflows): Every reference workflow with its substrate, oracle, and status label reconciled against `status.json`.
-- [Customer Case Study — RVU Audits](https://openadapt.ai/customers/rvu-audit-heart-care): A board-certified cardiac electrophysiologist's monthly Cerner PowerChart evidence collection and RVU spreadsheet reconciliation, helping recover about $75,000 a year in missed billables while saving several hours of physician time each month. Disclosed on the page: the physician is the founder's brother, this is OpenAdapt's founding deployment rather than independent validation, and the figures are preliminary pending customer confirmation. The same page separately reports a reproducible six-month synthetic governed-validation cohort: 2,880 cases (480/month), 2,856 VERIFIED (99.2%), 18 HALTED, 6 FAILED before actuation, zero observed silent incorrect successes, zero model calls, $0.03 modeled reference cost per case.
+- [Customer Case Study: RVU Audits](https://openadapt.ai/customers/rvu-audit-heart-care): A board-certified cardiac electrophysiologist's monthly Cerner PowerChart evidence collection and RVU spreadsheet reconciliation, helping recover about $75,000 a year in missed billables while saving several hours of physician time each month. Disclosed on the page: the physician is the founder's brother, this is OpenAdapt's founding deployment rather than independent validation, and the figures are preliminary pending customer confirmation. The same page separately reports a reproducible six-month synthetic governed-validation cohort: 2,880 cases (480/month), 2,856 VERIFIED (99.2%), 18 HALTED, 6 FAILED before actuation, zero observed silent incorrect successes, zero model calls, $0.03 modeled reference cost per case.
 
 ## Where it is used
 
@@ -68,18 +68,18 @@ Availability below is the released capability. It is distinct from the deploymen
 Every template corresponds to something that actually runs. Proven references execute end to end against real open-source applications in the `openadapt-flow` repository with system-of-record verification. Pattern templates are workflow shapes compiled from a recording of the customer's own team, anchored to those references. No template exists for a workflow that has not actually been run.
 
 - [Template gallery](https://openadapt.ai/templates): All templates with proof level, demonstrated steps, verification oracles, and CLI quickstart.
-- [Patient triage note](https://openadapt.ai/templates/patient-triage-note): Proven — the canonical tutorial on the bundled synthetic clinic app, including the clinical-write policy gate refusing an under-verified bundle.
-- [OpenEMR patient note](https://openadapt.ai/templates/openemr-patient-note): Proven — 18-step add-patient-note workflow verified against the record itself, with a published field run of 20/20 compiled trials at zero model calls, measured 2026-07-08 on openadapt-flow 0.1.0 (a pre-v0.2.0 source build).
-- [Frappe lending loan application](https://openadapt.ai/templates/frappe-loan-application): Proven — verified by independent REST, SQL, and exact table-delta oracles.
-- [openIMIS claim intake](https://openadapt.ai/templates/openimis-claim-intake): Proven — verified by a direct SQL claim-row oracle.
-- [Dental insurance eligibility checks](https://openadapt.ai/templates/dental-insurance-eligibility): Pattern — a practice's own payer-portal verification workflow, compiled from its own recording.
-- [Insurance eligibility and coverage checks](https://openadapt.ai/templates/insurance-eligibility-check): Pattern — repeated carrier-portal lookups with per-case parameters and halt-on-ambiguity.
-- [New patient record entry](https://openadapt.ai/templates/new-patient-record): Pattern — registration re-keying with per-patient parameters, anchored to the OpenEMR reference.
-- [Report export with arrival verification](https://openadapt.ai/templates/report-export-verification): Pattern — exports accepted only when exactly one conforming file actually arrived, with optional SHA-256 content identity.
+- [Patient triage note](https://openadapt.ai/templates/patient-triage-note): Proven. The canonical tutorial uses the bundled synthetic clinic app. Its clinical-write policy gate refuses an under-verified bundle.
+- [OpenEMR patient note](https://openadapt.ai/templates/openemr-patient-note): Proven. The 18-step add-patient-note workflow checks the record itself. A published field run completed 20/20 compiled trials with zero model calls, measured 2026-07-08 on openadapt-flow 0.1.0 (a pre-v0.2.0 source build).
+- [Frappe lending loan application](https://openadapt.ai/templates/frappe-loan-application): Proven. Independent REST, SQL, and exact table-delta oracles verify the result.
+- [openIMIS claim intake](https://openadapt.ai/templates/openimis-claim-intake): Proven. A direct SQL claim-row oracle verifies the result.
+- [Dental insurance eligibility checks](https://openadapt.ai/templates/dental-insurance-eligibility): Pattern. The workflow is compiled from the practice's own payer-portal demonstration.
+- [Insurance eligibility and coverage checks](https://openadapt.ai/templates/insurance-eligibility-check): Pattern. The workflow repeats carrier-portal lookups with per-case parameters and halts on ambiguity.
+- [New patient record entry](https://openadapt.ai/templates/new-patient-record): Pattern. The workflow handles registration re-keying with per-patient parameters. It is anchored to the OpenEMR reference.
+- [Report export with arrival verification](https://openadapt.ai/templates/report-export-verification): Pattern. The workflow accepts an export only when exactly one conforming file arrived. It can also check the SHA-256 content identity.
 
 ## Buy, qualify, and partner
 
-- [Pricing](https://openadapt.ai/pricing): Three ways to start. **OpenAdapt Community** — free, MIT-licensed local runtime and qualification tools, no Cloud account required. **Workflow Qualification Sprint** — from $15,000 with a ten-business-day target, qualifying one application, one environment, and one measurable business effect; native, RDP, and Citrix qualifications are typically $25,000–$40,000; the sprint is paid even when the correct outcome is not to automate. **OpenAdapt Cloud** — $500/month managed browser execution for non-regulated data, with no production SLA and no regulated deployment included. Production, pilot, and OEM paths follow a successful qualification.
+- [Pricing](https://openadapt.ai/pricing): Three ways to start. **OpenAdapt Community:** free, MIT-licensed local runtime and qualification tools, with no Cloud account required. **Workflow Qualification Sprint:** from $15,000 with a ten-business-day target. It qualifies one application, one environment, and one measurable business effect. Native, RDP, and Citrix qualifications are typically $25,000–$40,000. The sprint is paid even when the correct outcome is not to automate. **OpenAdapt Cloud:** $500/month managed browser execution for non-regulated data, with no production SLA and no regulated deployment included. Production, pilot, and OEM paths follow a successful qualification.
 - [OpenAdapt Execute](https://openadapt.ai/execute): Private partner API and OEM integration for software and service providers that already know the transaction but cannot complete it in a customer system. It returns a verified receipt or a typed exception through an approved customer-controlled runner.
 - [Qualify a workflow](https://openadapt.ai/qualify): Submit one exact application, environment, workflow, volume, verification path, and deployment boundary for a paid qualification.
 - [Partner program](https://openadapt.ai/partners): Application-based tracks for vertical software/OEM, RCM and BPO operators, integration and services firms, and MSP/deployment partners.
@@ -89,7 +89,7 @@ Every template corresponds to something that actually runs. Proven references ex
 ## Source code
 
 - [OpenAdapt (launcher / flagship)](https://github.com/OpenAdaptAI/OpenAdapt): MIT-licensed public entry point and the stable install route.
-- [openadapt-flow (compiler and governed runtime)](https://github.com/OpenAdaptAI/openadapt-flow): The canonical engine — compilation, resolution ladder, identity and effect verification, policy gates, run reports, and every substrate backend.
+- [openadapt-flow (compiler and governed runtime)](https://github.com/OpenAdaptAI/openadapt-flow): The canonical engine. It includes compilation, the resolution ladder, identity and effect verification, policy gates, run reports, and every substrate backend.
 - [openadapt-capture](https://github.com/OpenAdaptAI/openadapt-capture): Native screen, mouse, keyboard, timing, and window-scoped capture.
 - [openadapt-privacy](https://github.com/OpenAdaptAI/openadapt-privacy): PII/PHI scrubbing.
 - [openadapt-evals](https://github.com/OpenAdaptAI/openadapt-evals): Benchmark tooling, including Windows Agent Arena integration.

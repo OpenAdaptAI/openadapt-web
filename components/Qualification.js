@@ -1,4 +1,5 @@
 const fits = [
+    'A person can demonstrate the task from start to finish.',
     'Inputs are mostly structured and the business intent stays stable.',
     'The target application has no practical write API for the last mile.',
     'A wrong action has operational, financial, or compliance cost.',
@@ -13,19 +14,18 @@ export default function Qualification() {
             className="border-b border-hairline bg-panel px-5 py-20 md:py-28"
         >
             <div className="mx-auto max-w-5xl">
-                <p className="eyebrow text-center">The right fit</p>
+                <p className="eyebrow text-center">A strong first workflow</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Where OpenAdapt creates the most value
+                    Start where an error has a cost and the result can be checked
                 </h2>
                 <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    Start with one repeated workflow trapped behind a browser,
-                    desktop, RDP, or Citrix interface. OpenAdapt turns it into
-                    governed execution with evidence of the result.
+                    A good candidate repeats often, follows stable rules, and
+                    ends in a result that another system or session can verify.
                 </p>
                 <div className="mx-auto mt-8 max-w-4xl">
                     <article className="rounded-2xl border border-hairline bg-ground p-6 md:p-8">
                         <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
-                            A strong first workflow
+                            Use this quick fit check
                         </h3>
                         <ul className="mt-5 grid gap-3 text-sm leading-relaxed text-ink-2 md:grid-cols-2 md:gap-x-8">
                             {fits.map((item) => (

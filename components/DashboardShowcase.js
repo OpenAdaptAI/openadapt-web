@@ -179,14 +179,13 @@ export default function DashboardShowcase() {
                         className={styles.heading}
                         id="cloud-product-heading"
                     >
-                        From approved workflow to reviewable outcome.
+                        See every approved workflow, run, and result in one place
                     </h2>
                     <p className={styles.summary}>
-                        This is the hosted product running today at
-                        app.openadapt.ai. Workflows, runs, evidence, and
-                        reports stay connected in one reviewable dashboard.
-                        When a run needs a person, the same decision arrives
-                        as one focused mobile handoff.
+                        The hosted product at app.openadapt.ai connects each
+                        workflow version to its runs, evidence, and reports.
+                        When a run needs a person, it sends one focused mobile
+                        request.
                     </p>
                 </div>
 

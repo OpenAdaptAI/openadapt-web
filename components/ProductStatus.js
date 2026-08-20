@@ -18,7 +18,7 @@ const boundaries = [
 const executionSurfaces = [
     {
         title: 'Browser',
-        detail: 'Combine DOM, accessibility, visual, and interaction evidence for governed web execution.',
+        detail: 'Use DOM, accessibility, visual, and interaction evidence to run approved web workflows.',
     },
     {
         title: 'Native desktop',
@@ -26,7 +26,7 @@ const executionSurfaces = [
     },
     {
         title: 'Remote applications',
-        detail: 'Drive RDP, Citrix Workspace, and VDI externally through pixels, keyboard, and mouse while preserving identity, policy, verification, and audit.',
+        detail: 'Operate RDP, Citrix Workspace, and VDI through pixels, keyboard, and mouse, with the same identity and result checks.',
     },
 ]
 
@@ -37,15 +37,14 @@ export default function ProductStatus() {
             className="border-b border-hairline bg-panel px-5 py-20 md:py-28"
         >
             <div className="mx-auto max-w-5xl">
-                <p className="eyebrow text-center">Cross-surface execution</p>
+                <p className="eyebrow text-center">Browser, desktop, and remote</p>
                 <h2 className="mx-auto mt-2 max-w-2xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    One governance model across the interfaces you use
+                    Use one verified workflow across the interfaces you use
                 </h2>
                 <p className="mx-auto mt-3 max-w-3xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    Portable workflow intent stays separate from each
-                    environment-specific binding, so DOM selectors,
-                    accessibility elements, and remote visual anchors are never
-                    treated as interchangeable.
+                    OpenAdapt keeps the workflow and its safety checks separate
+                    from the controls used in each application. Each surface
+                    uses the strongest evidence it provides.
                 </p>
                 <p className="mx-auto mt-3 max-w-3xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
                     Browser runs in production today; desktop, RDP, and Citrix

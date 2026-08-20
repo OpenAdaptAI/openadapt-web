@@ -17,15 +17,14 @@ export default function BusinessDecisionPreview() {
                 </figcaption>
             </figure>
             <div className={styles.copy}>
-                <p className={styles.eyebrow}>Human judgment capture</p>
+                <p className={styles.eyebrow}>Human decision</p>
                 <h2 id="business-decision-title">
-                    Keep institutional judgment inside the workflow.
+                    Ask a person when the workflow reaches a real judgment call.
                 </h2>
                 <p>
-                    When a workflow reaches a policy choice, OpenAdapt asks one
-                    authorized person one clear question. The choice selects a
-                    reviewed branch. The runner checks the live state again
-                    before it continues.
+                    OpenAdapt pauses at an approved policy choice and asks one
+                    authorized person one clear question. Before it continues,
+                    the runner checks the live application again.
                 </p>
                 <a
                     className={styles.demoLink}

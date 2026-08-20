@@ -13,9 +13,9 @@ export default function TrustSummary() {
     return (
         <section className="border-b border-hairline bg-panel px-5 py-20 md:py-28">
             <div className="mx-auto max-w-5xl">
-                <p className="eyebrow text-center">Trust by construction</p>
+                <p className="eyebrow text-center">Data and control</p>
                 <h2 className="mx-auto mt-2 max-w-3xl text-center font-display text-2xl font-semibold tracking-tight text-ink md:text-3xl">
-                    Keep control of the data, action, and evidence
+                    Keep sensitive work in the boundary you approve
                 </h2>
                 <ul className="mx-auto mt-8 grid max-w-4xl gap-4 text-sm leading-relaxed text-ink-2 md:grid-cols-2">
                     {controls.map((control) => (
@@ -34,4 +34,3 @@ export default function TrustSummary() {
         </section>
     )
 }
-

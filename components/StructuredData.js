@@ -71,7 +71,7 @@ export const organizationNode = {
     },
     image: `${SITE_URL}/og.png`,
     description:
-        'OpenAdapt builds an open-source governed workflow compiler and runtime for repeated GUI work in applications without a usable API. A demonstrated task is compiled into a deterministic local program; healthy runs make no model calls; every consequential run ends verified or halted with a preserved report.',
+        'OpenAdapt provides verified automation from demonstration. It compiles repeated GUI work into deterministic local programs, makes no model calls on healthy runs, and keeps the evidence behind each typed outcome.',
     foundingDate: '2023',
     sameAs: SAME_AS,
     knowsAbout: [
@@ -84,7 +84,7 @@ export const organizationNode = {
         'Healthcare revenue cycle automation',
         'Electronic health record workflow automation',
     ],
-    slogan: 'Automate the UI-only work your APIs cannot reach.',
+    slogan: 'Automate the work your systems still make people do.',
 }
 
 export const websiteNode = {
@@ -94,7 +94,7 @@ export const websiteNode = {
     alternateName: 'OpenAdapt',
     url: SITE_URL,
     description:
-        'OpenAdapt compiles demonstrated GUI workflows into deterministic, locally executable programs, verifies the intended business effect against the system of record, and halts when the execution contract cannot be proved.',
+        'OpenAdapt compiles demonstrated GUI work into deterministic automation and verifies the declared result before it reports success.',
     publisher: { '@id': ORGANIZATION_ID },
     inLanguage: 'en',
 }
@@ -122,7 +122,7 @@ export const softwareApplicationNode = {
     softwareVersion: status.versions.launcher,
     url: SITE_URL,
     description:
-        'Open-source governed workflow compiler and runtime. Demonstrate a bounded, repeated GUI task once; OpenAdapt compiles it into a deterministic local program, replays it with zero model calls on healthy runs, and re-resolves, proposes a reviewable repair, or halts when the interface drifts. Runs on browser, Windows, macOS, Linux, RDP, and Citrix/VDI surfaces.',
+        'Open-source compiler and governed runtime for repeated GUI work. OpenAdapt turns a bounded demonstration into a deterministic local program, replays it with zero model calls on healthy runs, and re-resolves, proposes a governed repair, or halts when the interface drifts. Runs on browser, Windows, macOS, Linux, RDP, and Citrix/VDI surfaces.',
     downloadUrl: 'https://pypi.org/project/openadapt/',
     installUrl: `${SITE_URL}/download`,
     softwareHelp: { '@type': 'CreativeWork', url: 'https://docs.openadapt.ai' },
