@@ -1,6 +1,9 @@
 # openadapt-web
 
-**Lifecycle: Beta**
+**Lifecycle: Internal**
+
+This label classifies the website publishing repository. It does not change the
+OpenAdapt product lifecycle in `public/status.json`, which is Beta.
 
 Source for the [openadapt.ai](https://openadapt.ai) marketing site.
 

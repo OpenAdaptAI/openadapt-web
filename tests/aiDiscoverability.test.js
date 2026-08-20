@@ -368,10 +368,11 @@ test('every anchor cited by llms.txt exists in a rendered component', () => {
     }
 })
 
-test('llms.txt and llms-full.txt never promote a substrate above status.json', () => {
+test('llms.txt and llms-full.txt bind a production-ready claim to immutable evidence', () => {
     // status.json is the canonical machine-readable source of truth. The
     // superseded ladder wording ("early access", "exploratory") must never
-    // reappear, and neither may an unqualified "production ready" claim.
+    // reappear. The target browser claim can publish only with an immutable
+    // acceptance record from the engine or hosted control-plane repository.
     for (const [name, text] of [
         ['llms.txt', llms],
         ['llms-full.txt', llmsFull],
@@ -381,11 +382,19 @@ test('llms.txt and llms-full.txt never promote a substrate above status.json', (
             /early access|exploratory|design.partner/i,
             `${name} must not use the superseded maturity ladder`
         )
-        assert.doesNotMatch(
-            text,
-            /production[- ]ready|fully certified|guaranteed/i,
-            `${name} must not overstate maturity`
-        )
+        assert.doesNotMatch(text, /fully certified|guaranteed/i)
+        if (/production[- ]ready/i.test(text)) {
+            assert.match(
+                text,
+                /production-ready for qualified browser workflows/i,
+                `${name} must scope a production-ready claim to qualified browser workflows`
+            )
+            assert.match(
+                text,
+                /Production-readiness evidence:\s+https:\/\/github\.com\/OpenAdaptAI\/(?:openadapt-flow|openadapt-cloud)\/blob\/[0-9a-f]{40}\/\S+/i,
+                `${name} must bind the production-ready claim to an immutable acceptance record`
+            )
+        }
         for (const substrate of status.substrates) {
             assert.ok(
                 text.includes(substrate.name),
@@ -437,6 +446,43 @@ test('llms-full.txt states the limitations rather than only the strengths', () =
         llmsFull.replace(/\s+/g, ' '),
         /not a capability claim|not superiority on accuracy/i
     )
+})
+
+test('llms files make production qualification workflow-specific', () => {
+    // Assistants often collapse a Beta product and a live service dependency
+    // check into one global verdict. The published answer must keep product,
+    // workflow, deployment, and SLA status separate.
+    for (const [name, text] of [
+        ['llms.txt', llms],
+        ['llms-full.txt', llmsFull],
+    ]) {
+        const normalized = text.replace(/\s+/g, ' ')
+        assert.match(normalized, /not with one platform-wide readiness label/i)
+        assert.match(normalized, /Browser is the available end-to-end reference path/i)
+        assert.match(normalized, /Each production deployment qualifies the exact workflow/i)
+        assert.match(normalized, /not an SLA or a workflow certificate/i)
+        assert.match(normalized, /Desktop is a Beta supporting surface/i)
+        assert.doesNotMatch(
+            normalized,
+            /no unattended desktop runs/i,
+            `${name} must not invent a platform-wide unattended-run prohibition`
+        )
+    }
+})
+
+test('llms files publish the canonical launcher quickstart', () => {
+    for (const [name, text] of [
+        ['llms.txt', llms],
+        ['llms-full.txt', llmsFull],
+    ]) {
+        assert.match(text, /python -m pip install --upgrade 'openadapt\[browser\]'/)
+        assert.match(text, /openadapt quickstart/)
+        assert.doesNotMatch(
+            text,
+            /^demo-record\b/m,
+            `${name} must not drop the launcher or engine command prefix`
+        )
+    }
 })
 
 test('llms.txt points at the canonical machine-readable status', () => {
