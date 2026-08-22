@@ -1,0 +1,26 @@
+{
+    "slug": "exception-routing-human-approval",
+    "name": "Route exceptions to one authorized human decision",
+    "application": null,
+    "surface": "browser",
+    "vertical": "operations",
+    "proof": "pattern",
+    "dataStatus": "pending-evidence",
+    "route": false,
+    "order": 100,
+    "summary":
+        "A cross-application workflow that pauses at an approved policy choice, asks one authorized person one clear question on their phone, re-checks the live application after the answer, and only then continues to the verified result. The public Cloud demo shows all six pause types with synthetic data.",
+    "evidenceNote":
+        "Evidence in progress. The pause-and-decide mechanics are demonstrated end to end in the public Cloud demo (six pause reasons, synthetic tasks, runner receipts), but no per-workflow trial counts have been published for this template shape. This card makes no performance claim.",
+    "provenance": [
+        {
+            "label": "Public Cloud demo: mobile decision experience and pause types",
+            "url": "https://app.openadapt.ai/demo"
+        }
+    ],
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and browser capability."
+    },
+    "faq": []
+}

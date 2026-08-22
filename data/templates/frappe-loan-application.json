@@ -1,0 +1,64 @@
+{
+    "slug": "frappe-loan-application",
+    "name": "Automate loan application entry in Frappe Lending",
+    "application": "Frappe Lending",
+    "surface": "browser",
+    "vertical": "lending",
+    "proof": "reference",
+    "dataStatus": "published",
+    "route": true,
+    "order": 40,
+    "demonstrates":
+        "A loan application entered once on a pinned Frappe Lending v16.2.0 fixture and accepted only when three independent oracles - a separately authenticated read-only REST session, a direct SQL read-back, and an exact table-delta audit - agree that exactly one application was written.",
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and browser capability."
+    },
+    "tryItCommand":
+        "openadapt flow record --url http://localhost:8000/app/loan-application --out rec && openadapt flow compile rec --out bundle --name loan-application",
+    "runStats": {
+        "sourceLabel": "Compiled-replay arm across the pinned baseline and a cosmetic-drift variant",
+        "environment":
+            "Frappe Lending v16.2.0 pinned synthetic fixture; every trial restores the same SHA-256-bound database snapshot",
+        "trials": 6,
+        "verifiedRuns": 6,
+        "expectedHalts": 0,
+        "silentIncorrectSuccesses": 0,
+        "overHalts": 0,
+        "modelCallsPerRun": 0,
+        "modelCostPerRunUsd": 0,
+        "comparisonArm":
+            "Separate small-N paid-agent run: 6/6 correct writes (5/6 clean), 1/6 post-write cost-cap over-halt, 0/6 silent incorrect, $0.4240 per run; baselines were not matched, so this remains engineering evidence rather than a publication benchmark",
+        "measuredOn": "openadapt-flow benchmark harness; see benchmark/frappe_lending raw results"
+    },
+    "provenance": [
+        {
+            "label": "Benchmark harness and raw results (openadapt-flow)",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/frappe_lending"
+        }
+    ],
+    "faq": [
+        {
+            "question": "Why three oracles instead of checking the screen?",
+            "answer":
+                "Pixels and actor self-report never establish success here. The REST session is authenticated as a different fixture user than the writer, the SQL read-back reads the target fields directly, and the exact table-delta contract accepts only one new Loan Application row - so a duplicate write, a wrong-customer write, or a collateral insert fails loudly.",
+            "sources": [
+                {
+                    "label": "benchmark/frappe_lending",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/frappe_lending"
+                }
+            ]
+        },
+        {
+            "question": "What did the compiled trials cost?",
+            "answer":
+                "$0 model cost with zero model calls across all six compiled trials. A separate small-N paid-agent comparison arm averaged $0.4240 per run, but the baselines were not matched.",
+            "sources": [
+                {
+                    "label": "Template registry evidence note",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-web/blob/main/data/templates.js"
+                }
+            ]
+        }
+    ]
+}

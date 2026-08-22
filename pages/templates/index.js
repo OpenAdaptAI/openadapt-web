@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import Footer from '@components/Footer'
 import { templates } from 'data/templates'
+import { loadTemplateEntries, buildTemplateGallery } from 'lib/generators/buildTemplates'
 
 const PROOF_LABELS = {
     reference: 'Proven reference',
@@ -18,18 +19,48 @@ const VERTICAL_LABELS = {
     operations: 'Back-office operations',
 }
 
-export default function TemplatesIndexPage() {
+const SURFACE_LABELS = {
+    browser: 'Browser',
+    native: 'Native desktop',
+    remote: 'Remote (RDP/Citrix)',
+}
+
+function formatRunStats(stats) {
+    if (!stats) return null
+    const parts = [`${stats.trials} trials`]
+    if (stats.verifiedRuns !== undefined && stats.expectedHalts !== undefined) {
+        parts.push(`${stats.verifiedRuns} VERIFIED / ${stats.expectedHalts} expected halts`)
+    } else if (stats.verifiedRuns !== undefined) {
+        parts.push(`${stats.verifiedRuns}/${stats.trials} VERIFIED`)
+    }
+    if (stats.modelCallsPerRun === 0 || stats.modelCallsPerRun === null) {
+        parts.push('0 model calls')
+    }
+    const duration =
+        stats.medianVerifiedRunDurationMs != null
+            ? `${(Math.round(stats.medianVerifiedRunDurationMs / 10) / 100).toFixed(2)} s median verified run`
+            : stats.medianRunDurationSeconds != null
+              ? `${stats.medianRunDurationSeconds} s median run`
+              : stats.meanRunDurationSeconds != null
+                ? `${stats.meanRunDurationSeconds} s mean run`
+                : null
+    return { chips: parts, duration }
+}
+
+export default function TemplatesIndexPage({ galleryEntries }) {
+    const routable = galleryEntries.filter((entry) => entry.href)
+
     const itemListSchema = {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
         name: 'OpenAdapt workflow template gallery',
         description:
             'Runnable workflow templates: demonstrated GUI workflows compiled into deterministic, locally executable programs with verification against the system of record.',
-        itemListElement: templates.map((t, i) => ({
+        itemListElement: routable.map((t, i) => ({
             '@type': 'ListItem',
             position: i + 1,
-            name: t.title,
-            url: `https://openadapt.ai/templates/${t.slug}`,
+            name: t.name,
+            url: `https://openadapt.ai${t.href}`,
         })),
     }
 
@@ -39,7 +70,7 @@ export default function TemplatesIndexPage() {
                 <title>Workflow Template Gallery — Verified GUI Automation | OpenAdapt</title>
                 <meta
                     name="description"
-                    content="Runnable workflow templates for healthcare, lending, insurance, and back-office operations. Each template is a demonstrated GUI workflow compiled into deterministic local replay and verified against the system of record — no page for a workflow we haven't actually run."
+                    content="Runnable workflow templates for healthcare, lending, insurance, and back-office operations. Each template ships with its published evidence — trials, verified runs, expected halts, model calls — cited to its source. No template page for a workflow we haven't actually run."
                 />
                 <link rel="canonical" href="https://openadapt.ai/templates" />
                 <meta property="og:title" content="Workflow Template Gallery | OpenAdapt" />
@@ -75,36 +106,89 @@ export default function TemplatesIndexPage() {
                 </p>
                 <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
                     Our honesty bar: no template for a workflow we haven&apos;t
-                    actually run, and no logos of applications we haven&apos;t
-                    driven.
+                    actually run, no logos of applications we haven&apos;t
+                    driven, and every published number cited to its source.
+                    Cards marked &ldquo;evidence in progress&rdquo; make no
+                    performance claim.
                 </p>
 
                 <div className="mt-10 grid gap-4 md:grid-cols-2">
-                    {templates.map((t) => (
-                        <Link
-                            key={t.slug}
-                            href={`/templates/${t.slug}`}
-                            className="group flex flex-col rounded-2xl border border-hairline bg-panel p-6 no-underline transition-colors hover:border-ink"
-                        >
-                            <div className="flex flex-wrap items-center gap-2">
-                                <span className="eyebrow">
-                                    {VERTICAL_LABELS[t.vertical]}
-                                </span>
-                                <span className="rounded-full border border-hairline px-2 py-0.5 text-[11px] text-ink-3">
-                                    {PROOF_LABELS[t.proof]}
-                                </span>
-                            </div>
-                            <h2 className="font-display mt-3 text-lg font-semibold tracking-tight text-ink">
-                                {t.title}
-                            </h2>
-                            <p className="mt-2 text-sm leading-relaxed text-ink-2">
-                                {t.summary}
-                            </p>
-                            <p className="mt-auto pt-4 text-sm font-medium text-ink group-hover:underline">
-                                View template →
-                            </p>
-                        </Link>
-                    ))}
+                    {galleryEntries.map((t) => {
+                        if (!t.href) {
+                            return (
+                                <article
+                                    key={t.slug}
+                                    className="flex flex-col rounded-2xl border border-dashed border-hairline bg-panel p-6 opacity-90"
+                                    data-testid="pending-evidence-card"
+                                >
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <span className="eyebrow">
+                                            {VERTICAL_LABELS[t.vertical] || t.vertical}
+                                        </span>
+                                        <span className="rounded-full border border-hairline px-2 py-0.5 text-[11px] text-ink-3">
+                                            Evidence in progress
+                                        </span>
+                                        {t.surface && (
+                                            <span className="rounded-full border border-hairline px-2 py-0.5 text-[11px] text-ink-3">
+                                                {SURFACE_LABELS[t.surface]}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <h2 className="font-display mt-3 text-lg font-semibold tracking-tight text-ink">
+                                        {t.name}
+                                    </h2>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                        {t.summary}
+                                    </p>
+                                    <p className="mt-auto pt-4 text-xs leading-relaxed text-ink-3">
+                                        {t.evidenceNote}
+                                    </p>
+                                </article>
+                            )
+                        }
+
+                        const stats = formatRunStats(t.runStats)
+                        return (
+                            <Link
+                                key={t.slug}
+                                href={t.href}
+                                className="group flex flex-col rounded-2xl border border-hairline bg-panel p-6 no-underline transition-colors hover:border-ink"
+                            >
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <span className="eyebrow">
+                                        {VERTICAL_LABELS[t.vertical]}
+                                    </span>
+                                    <span className="rounded-full border border-hairline px-2 py-0.5 text-[11px] text-ink-3">
+                                        {PROOF_LABELS[t.proof]}
+                                    </span>
+                                    {t.surface && (
+                                        <span className="rounded-full border border-hairline px-2 py-0.5 text-[11px] text-ink-3">
+                                            {SURFACE_LABELS[t.surface]}
+                                        </span>
+                                    )}
+                                </div>
+                                <h2 className="font-display mt-3 text-lg font-semibold tracking-tight text-ink">
+                                    {t.name}
+                                </h2>
+                                <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                    {t.summary}
+                                </p>
+                                {stats && (
+                                    <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-ink-3">
+                                        {stats.chips.map((chip) => (
+                                            <span key={chip}>{chip}</span>
+                                        ))}
+                                        {stats.duration && (
+                                            <span>{stats.duration}</span>
+                                        )}
+                                    </p>
+                                )}
+                                <p className="mt-auto pt-4 text-sm font-medium text-ink group-hover:underline">
+                                    View template →
+                                </p>
+                            </Link>
+                        )
+                    })}
                 </div>
 
                 <div className="mt-14 rounded-2xl border-2 border-ink bg-panel p-6 text-center md:p-8">
@@ -131,4 +215,10 @@ export default function TemplatesIndexPage() {
             <Footer />
         </div>
     )
+}
+
+export async function getStaticProps() {
+    const entries = loadTemplateEntries('data/templates')
+    const { galleryEntries } = buildTemplateGallery(templates, entries)
+    return { props: { galleryEntries } }
 }

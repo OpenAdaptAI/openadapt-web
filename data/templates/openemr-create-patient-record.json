@@ -1,0 +1,104 @@
+{
+    "slug": "openemr-create-patient-record",
+    "name": "Automate patient record creation in OpenEMR",
+    "application": "OpenEMR",
+    "surface": "browser",
+    "vertical": "healthcare",
+    "proof": "reference",
+    "dataStatus": "published",
+    "route": true,
+    "order": 20,
+    "title": "Automate patient record creation in OpenEMR",
+    "metaDescription":
+        "Create exactly one complete synthetic patient record in OpenEMR from structured demographics. Published qualification: 3/3 Standard VERIFIED runs, REST readback agreed with direct SQL, median runtime 59.8 seconds, 0 model calls.",
+    "summary":
+        "A complete synthetic patient is created from structured demographics on a pinned local OpenEMR 8.0.0.3 fixture. The run returns VERIFIED only when a separately authenticated REST readback agrees with a direct SQL read and a non-target table-delta audit - the screen never certifies its own write.",
+    "runsOn":
+        "OpenEMR 8.0.0.3 on a pinned local synthetic fixture - fake patients only, everything binds to localhost. Never point this at a real install without qualification.",
+    "steps": [
+        "Log in to the OpenEMR fixture as the demo admin",
+        "Open the patient creation flow from the main dashboard",
+        "Enter the structured demographic fields - each value a parameter substituted per run",
+        "Save exactly one complete patient record",
+        "Wait for the independent effect check: separately authenticated REST readback must agree with direct SQL and the non-target delta audit"
+    ],
+    "parameters": [
+        "the structured demographics demonstrated in the recording (one parameter each)"
+    ],
+    "verification":
+        "All three fresh Standard-profile runs created exactly one synthetic patient and returned VERIFIED only after a separately authenticated REST readback agreed with a direct SQL read and a non-target delta audit. Observed silent incorrect success was 0/3.",
+    "verificationOracles": [
+        "separately authenticated REST readback",
+        "direct SQL read of the patient row",
+        "non-target table-delta audit (exactly one new patient, nothing else changed)"
+    ],
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and browser capability."
+    },
+    "tryItCommand":
+        "openadapt flow record --url http://localhost/openemr --out rec && openadapt flow compile rec --out bundle --name create-patient",
+    "runStats": {
+        "sourceLabel": "Reference qualification published on openadapt.ai and app.openadapt.ai/demo",
+        "environment": "OpenEMR 8.0.0.3 pinned local synthetic fixture",
+        "trials": 3,
+        "verifiedRuns": 3,
+        "expectedHalts": 0,
+        "silentIncorrectSuccesses": 0,
+        "modelCallsPerRun": 0,
+        "medianRunDurationSeconds": 59.8,
+        "durationBasis": "published median end-to-end runtime across the three Standard-profile runs",
+        "measuredOn": "compiler 1.23.0 line; evidence pack fe6a3e778f16 referenced by the live demo"
+    },
+    "media": [
+        {
+            "label": "Recorded demonstration and verified replay footage (live demo)",
+            "url": "https://app.openadapt.ai/demo"
+        }
+    ],
+    "provenance": [
+        {
+            "label": "Landing page reference qualification block",
+            "url": "https://openadapt.ai/"
+        },
+        {
+            "label": "Live governed-execution demo with evidence pack link",
+            "url": "https://app.openadapt.ai/demo"
+        }
+    ],
+    "faq": [
+        {
+            "question": "How is success established for this workflow?",
+            "answer":
+                "By an out-of-band check of the system of record: a separately authenticated REST readback that agrees with a direct SQL read plus an audit that no other table changed. The browser session cannot certify its own result.",
+            "sources": [
+                {
+                    "label": "How the result was checked (landing page)",
+                    "url": "https://openadapt.ai/"
+                }
+            ]
+        },
+        {
+            "question": "What did the three published trials cost in model calls?",
+            "answer":
+                "Zero. All three Standard-profile runs recorded zero model calls, and observed silent incorrect success was 0 out of 3.",
+            "sources": [
+                {
+                    "label": "Reference qualification stats",
+                    "url": "https://app.openadapt.ai/demo"
+                }
+            ]
+        },
+        {
+            "question": "Can I run this against a real EMR?",
+            "answer":
+                "Not without qualification. The published evidence is against a pinned local synthetic fixture with fake patients; a real deployment requires your own identity, effect, and policy contracts qualified against your system of record.",
+            "sources": [
+                {
+                    "label": "Qualification approach",
+                    "url": "https://docs.openadapt.ai/get-started/what-works-today/"
+                }
+            ]
+        }
+    ]
+}

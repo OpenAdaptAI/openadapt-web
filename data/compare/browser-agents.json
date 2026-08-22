@@ -1,0 +1,163 @@
+{
+    "slug": "browser-agents",
+    "competitor": "browser-use agents (Workflow Use and Browser Use)",
+    "positioningSummary":
+        "Workflow Use and Browser Use are the fastest-moving open-source stack for web tasks, and their deterministic-rerun direction validates demonstration-based authoring. OpenAdapt targets repeated consequential workflows that cross beyond the browser and must end in an independently verified business result.",
+    "dimensions": [
+        {
+            "id": "determinism-on-drift",
+            "label": "Determinism when interfaces drift",
+            "openadapt":
+                "Compiled replay resolves its target from retained evidence at run time; drift it was never shown halts instead of guessing, and repair is governed rather than improvised.",
+            "them":
+                "Workflow Use records browser interactions into deterministic workflows with variables; when a step fails it falls back to the Browser Use agent - a model re-reasons the step. The project describes itself as in very early development and not recommended for production.",
+            "sources": [
+                {
+                    "label": "Workflow Use README: deterministic workflows with agent fallback",
+                    "url": "https://github.com/browser-use/workflow-use/blob/main/README.md"
+                }
+            ]
+        },
+        {
+            "id": "cost-per-run",
+            "label": "Cost per run",
+            "openadapt":
+                "Healthy runs are local and make zero model calls at $0 model cost on the MIT runtime; model spend is reserved for compilation and reviewable repair.",
+            "them":
+                "Browser Use Cloud advertises deterministic rerun of a cached script with no LLM at up to 99% lower cost, agent runs measured at $0.17 per solved task on its internal benchmark, hosted model tokens from $0.24/1M input and $1.44/1M output, plus $0.02 per browser-hour.",
+            "sources": [
+                {
+                    "label": "Browser Use developer index: pricing and benchmarks",
+                    "url": "https://browser-use.com/"
+                },
+                {
+                    "label": "Browser Use docs: deterministic rerun",
+                    "url": "https://docs.browser-use.com/cloud/agent/cache-script"
+                },
+                {
+                    "label": "Frappe Lending benchmark: $0 model cost",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/frappe_lending"
+                }
+            ]
+        },
+        {
+            "id": "verification-of-effects",
+            "label": "Verification of business effects",
+            "openadapt":
+                "Success is judged out of band against the system of record (SQL, REST readback, table-delta audit, file arrival); the acting session cannot certify its own result.",
+            "them":
+                "Both stacks judge success in band: the session that acted reports completion. Workflow Use offers progress events, recordings, and observability; no independent read-back of a business system of record is part of the published loop.",
+            "sources": [
+                {
+                    "label": "Browser Use developer index: recordings and observability",
+                    "url": "https://browser-use.com/"
+                }
+            ]
+        },
+        {
+            "id": "halting-behavior",
+            "label": "Halting behavior",
+            "openadapt":
+                "Ambiguity or wrong identity halts before acting; a refuted effect ends the run HALTED with evidence preserved for reconciliation - never a silent third state.",
+            "them":
+                "Failure handling is retry-or-fallback oriented: Workflow Use's advertised roadmap item is improving LLM fallback when a step fails, which hands control back to the model rather than stopping for review.",
+            "sources": [
+                {
+                    "label": "Workflow Use README: roadmap and fallback",
+                    "url": "https://github.com/browser-use/workflow-use/blob/main/README.md"
+                }
+            ]
+        },
+        {
+            "id": "data-locality",
+            "label": "Data locality",
+            "openadapt":
+                "The runtime is MIT licensed and local-first; screenshots-may-leave-box is an explicit per-run flag observed false in the published demo evidence pack.",
+            "them":
+                "The open-source libraries can run locally against your own Chromium, but the managed path routes tasks, tokens, and browser time through Browser Use Cloud infrastructure.",
+            "sources": [
+                {
+                    "label": "Browser Use developer index: cloud vs open source",
+                    "url": "https://browser-use.com/"
+                },
+                {
+                    "label": "mockmed-triage-v3 pack: egress observed false",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/manifest.json"
+                }
+            ]
+        },
+        {
+            "id": "scope",
+            "label": "Scope: browser, desktop, RDP/Citrix",
+            "openadapt":
+                "Browser in production today plus native desktop and external-lane remote execution for managed RDP/Citrix estates, each surface carrying published acceptance evidence.",
+            "them":
+                "Web only: Workflow Use records browser sessions and Browser Use drives managed or local Chromium; desktop applications and remote desktop surfaces are outside the published scope.",
+            "sources": [
+                {
+                    "label": "Workflow Use README: browser recording focus",
+                    "url": "https://github.com/browser-use/workflow-use/blob/main/README.md"
+                },
+                {
+                    "label": "OpenAdapt qualification evidence per surface",
+                    "url": "https://docs.openadapt.ai/get-started/what-works-today/"
+                }
+            ]
+        }
+    ],
+    "strengths": [
+        {
+            "text":
+                "Fastest setup for web tasks: point a Browser Use agent at a URL and useful behavior often emerges in minutes; Workflow Use converts one recording into a reusable workflow file.",
+            "source": null
+        },
+        {
+            "text":
+                "Deterministic rerun without an LLM: Browser Use Cloud advertises cached-script reruns at up to 99% lower cost than an agent run.",
+            "source": {
+                "label": "Browser Use docs: deterministic rerun",
+                "url": "https://docs.browser-use.com/cloud/agent/cache-script"
+            }
+        },
+        {
+            "text":
+                "Published benchmark results: 82% of 106 internal Bench Hard tasks solved at $0.17 per solved task and 98% across Online-Mind2Web.",
+            "source": {
+                "label": "Browser Use developer index: benchmarks",
+                "url": "https://browser-use.com/"
+            }
+        },
+        {
+            "text":
+                "Active open-source ecosystem iterating quickly, with managed cloud-browser infrastructure ($0.02/browser-hour) if you do not want to run browsers yourself.",
+            "source": {
+                "label": "Browser Use developer index: browser infrastructure",
+                "url": "https://browser-use.com/"
+            }
+        }
+    ],
+    "faq": [
+        {
+            "question": "Is Workflow Use production ready?",
+            "answer":
+                "Not by its own description: the README states the project is in very early development and recommends against production use. It is a strong signal of where demonstration-based authoring is heading.",
+            "sources": [
+                {
+                    "label": "Workflow Use README",
+                    "url": "https://github.com/browser-use/workflow-use/blob/main/README.md"
+                }
+            ]
+        },
+        {
+            "question": "What does OpenAdapt add over deterministic browser replay?",
+            "answer":
+                "Out-of-band verification against the system of record, explicit VERIFIED-or-HALTED outcomes with preserved evidence, identity checks before consequential actions, and execution beyond the browser - native desktop and zero-install remote lanes - with published qualification evidence per surface.",
+            "sources": [
+                {
+                    "label": "OpenAdapt qualification evidence",
+                    "url": "https://docs.openadapt.ai/get-started/what-works-today/"
+                }
+            ]
+        }
+    ]
+}

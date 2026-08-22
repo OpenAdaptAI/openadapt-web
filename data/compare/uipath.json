@@ -1,0 +1,158 @@
+{
+    "slug": "uipath",
+    "competitor": "UiPath",
+    "positioningSummary":
+        "UiPath is the most mature enterprise RPA platform, and for fleet-scale automation programs it is a strong default. OpenAdapt is designed for the narrower problem of repeated consequential GUI transactions that must end in an independently verified business result.",
+    "dimensions": [
+        {
+            "id": "determinism-on-drift",
+            "label": "Determinism when interfaces drift",
+            "openadapt":
+                "A compiled workflow replays deterministically with zero model calls on healthy runs; drift it was never shown halts instead of guessing, and repair goes through governed, reviewable re-resolution.",
+            "them":
+                "Studio workflows replay deterministically; when UI changes break selectors, UiPath's Enterprise tier offers the Healing Agent, which suggests fixes and heals UI issues at runtime (available for purchase).",
+            "sources": [
+                {
+                    "label": "UiPath plans and pricing: Healing Agent",
+                    "url": "https://www.uipath.com/pricing"
+                }
+            ]
+        },
+        {
+            "id": "cost-per-run",
+            "label": "Cost per run",
+            "openadapt":
+                "The local runtime is MIT licensed with no per-run license fee: healthy runs make zero model calls at $0 model cost, as measured in the published Frappe Lending trials.",
+            "them":
+                "License-based pricing: Automation Cloud Basic starts at $25 per month for individuals and small teams; Standard and Enterprise are quoted by sales, and users/robots may require additional licenses. No per-run price is published.",
+            "sources": [
+                {
+                    "label": "UiPath plans and pricing",
+                    "url": "https://www.uipath.com/pricing"
+                },
+                {
+                    "label": "Frappe Lending benchmark: 0 model calls, $0 model cost",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/frappe_lending"
+                }
+            ]
+        },
+        {
+            "id": "verification-of-effects",
+            "label": "Verification of business effects",
+            "openadapt":
+                "Success is established out of band - read-only API reads, SQL queries, table-delta audits, or file checks against the system of record - and every run ends VERIFIED or HALTED with preserved evidence.",
+            "them":
+                "Orchestrator provides centralized audit trails, search, filter, and export of audit events, and queue-based transaction status. The acting session's own success signals remain the primary in-band check; an independent read-back of the business system of record is not part of the published core loop.",
+            "sources": [
+                {
+                    "label": "UiPath pricing comparison: audit and governance features",
+                    "url": "https://www.uipath.com/pricing"
+                }
+            ]
+        },
+        {
+            "id": "halting-behavior",
+            "label": "Halting behavior",
+            "openadapt":
+                "Ambiguity, wrong identity, or a refuted effect stops the run before or after the consequential action with a preserved halt report; uncertain delivery is classified for reconciliation rather than retried blindly.",
+            "them":
+                "Unattended robots are designed to run task-heavy, long-running processes without human supervision; attended robots put the human in the loop. Queue items expose retry and exception statuses for operators.",
+            "sources": [
+                {
+                    "label": "UiPath pricing comparison: robot limits descriptions",
+                    "url": "https://www.uipath.com/pricing"
+                }
+            ]
+        },
+        {
+            "id": "data-locality",
+            "label": "Data locality",
+            "openadapt":
+                "Recordings, bundles, and evidence stay inside your boundary by design: local execution is the default path, and screenshots-may-leave-box is an explicit per-run flag observed false in the published demo pack.",
+            "them":
+                "Strong enterprise options: self-hosted deployment including air-gapped installs, bring-your-own encryption keys and credential vaults (Enterprise), and opt-out of data collection (Standard and above). Basic-tier cloud hosting is Europe-region only.",
+            "sources": [
+                {
+                    "label": "UiPath plans and pricing: deployment and governance rows",
+                    "url": "https://www.uipath.com/pricing"
+                }
+            ]
+        },
+        {
+            "id": "scope",
+            "label": "Scope: browser, desktop, RDP/Citrix",
+            "openadapt":
+                "Browser runs in production today; native desktop through accessibility plus visual evidence; managed remote estates through an external zero-install lane qualified against a stand-in and a real FreeRDP round trip, with real ICA/HDX qualified per customer before consequential use.",
+            "them":
+                "Broadest published surface coverage in the market: web, desktop, Citrix virtual desktops, SAP, and APIs, with a very large activity library and mature Orchestrator fleet management.",
+            "sources": [
+                {
+                    "label": "OpenAdapt qualification evidence per surface",
+                    "url": "https://docs.openadapt.ai/get-started/what-works-today/"
+                },
+                {
+                    "label": "UiPath platform overview",
+                    "url": "https://www.uipath.com/pricing"
+                }
+            ]
+        }
+    ],
+    "strengths": [
+        {
+            "text":
+                "Mature enterprise platform: Orchestrator provides scheduling, work queues, credential vaults, role-based access, audit export, and cold data retention up to five years on Enterprise.",
+            "source": {
+                "label": "UiPath plans and pricing",
+                "url": "https://www.uipath.com/pricing"
+            }
+        },
+        {
+            "text":
+                "Self-hosted deployment including air-gapped Kubernetes installs, dedicated cloud, and delayed release rings are available on upper tiers.",
+            "source": {
+                "label": "UiPath plans and pricing: deploy anywhere section",
+                "url": "https://www.uipath.com/pricing"
+            }
+        },
+        {
+            "text":
+                "Healing Agent runtime healing of broken UI automation is available for purchase on the Enterprise tier.",
+            "source": {
+                "label": "UiPath plans and pricing: Healing Agent row",
+                "url": "https://www.uipath.com/pricing"
+            }
+        },
+        {
+            "text":
+                "Automation Cloud Basic starts at $25 per month, giving individuals and small teams a low entry point.",
+            "source": {
+                "label": "UiPath plans and pricing: Basic tier",
+                "url": "https://www.uipath.com/pricing"
+            }
+        }
+    ],
+    "faq": [
+        {
+            "question": "Is OpenAdapt replacing UiPath?",
+            "answer":
+                "No. For standardized enterprise programs with hundreds of automations, existing licenses, and a center of excellence, UiPath is often the right answer. OpenAdapt is designed for consequential GUI transactions where the system of record must be independently confirmed after every run.",
+            "sources": [
+                {
+                    "label": "OpenAdapt comparison guide",
+                    "url": "https://openadapt.ai/compare/uipath"
+                }
+            ]
+        },
+        {
+            "question": "Which tool publishes per-run verification results?",
+            "answer":
+                "OpenAdapt publishes per-workflow trial counts, verified/halt outcomes, silent incorrect success, and model-call counts tied to immutable evidence packs, for example the MockMed triage pack with 18 trials (3 verified, 15 expected halts, 0 model calls). UiPath publishes product capabilities and service uptime, not per-workflow verification trials.",
+            "sources": [
+                {
+                    "label": "mockmed-triage-v3 evidence pack",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/manifest.json"
+                }
+            ]
+        }
+    ]
+}

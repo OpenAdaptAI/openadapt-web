@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import Footer from '@components/Footer'
 import { templates } from 'data/templates'
+import { loadTemplateEntries, buildTemplateGallery } from 'lib/generators/buildTemplates'
 
 const PROOF_LABELS = {
     reference: 'Proven reference',
@@ -17,6 +18,15 @@ const PROOF_EXPLANATIONS = {
         'This workflow runs today against the named application, and has additionally been measured in a field run — with the field-test caveats stated below.',
     pattern:
         'This is a workflow shape, not a canned connector: you compile it from a recording of your own team in your own applications. The execution and verification mechanics it relies on are proven on the linked reference templates.',
+}
+
+function formatDuration(stats) {
+    if (stats.medianVerifiedRunDurationMs != null) {
+        return `${(Math.round(stats.medianVerifiedRunDurationMs / 10) / 100).toFixed(2)} s`
+    }
+    if (stats.medianRunDurationSeconds != null) return `${stats.medianRunDurationSeconds} s median`
+    if (stats.meanRunDurationSeconds != null) return `${stats.meanRunDurationSeconds} s mean`
+    return null
 }
 
 export default function TemplatePage({ template, anchorTemplates }) {
@@ -44,6 +54,21 @@ export default function TemplatePage({ template, anchorTemplates }) {
         })),
     }
 
+    const faqSchema =
+        t.faq && t.faq.length > 0
+            ? {
+                  '@context': 'https://schema.org',
+                  '@type': 'FAQPage',
+                  mainEntity: t.faq.map((item) => ({
+                      '@type': 'Question',
+                      name: item.question,
+                      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+                  })),
+              }
+            : null
+
+    const stats = t.runStats
+
     return (
         <div className="min-h-screen bg-ground text-ink">
             <Head>
@@ -57,6 +82,12 @@ export default function TemplatePage({ template, anchorTemplates }) {
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
                 />
+                {faqSchema && (
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                    />
+                )}
             </Head>
 
             <div className="mx-auto max-w-4xl px-4 py-14">
@@ -79,6 +110,94 @@ export default function TemplatePage({ template, anchorTemplates }) {
                 <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-3 md:text-base">
                     {PROOF_EXPLANATIONS[t.proof]}
                 </p>
+
+                {/* Published results */}
+                {stats && (
+                    <div className="mt-8 rounded-2xl border border-hairline bg-panel p-6">
+                        <h2 className="eyebrow">Published results — exactly as measured</h2>
+                        <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4" data-testid="run-stats">
+                            <div>
+                                <dt className="text-xs uppercase tracking-wide text-ink-3">Trials</dt>
+                                <dd className="font-display mt-1 text-xl font-semibold text-ink">
+                                    {stats.trials}
+                                </dd>
+                            </div>
+                            {(stats.verifiedRuns !== undefined || stats.expectedHalts !== undefined) && (
+                                <div>
+                                    <dt className="text-xs uppercase tracking-wide text-ink-3">
+                                        Verified / expected halts
+                                    </dt>
+                                    <dd className="font-display mt-1 text-xl font-semibold text-ink">
+                                        {stats.verifiedRuns ?? 0} / {stats.expectedHalts ?? 0}
+                                    </dd>
+                                </div>
+                            )}
+                            <div>
+                                <dt className="text-xs uppercase tracking-wide text-ink-3">
+                                    Silent incorrect successes
+                                </dt>
+                                <dd className="font-display mt-1 text-xl font-semibold text-ink">
+                                    {stats.silentIncorrectSuccesses}
+                                </dd>
+                            </div>
+                            <div>
+                                <dt className="text-xs uppercase tracking-wide text-ink-3">Model calls per run</dt>
+                                <dd className="font-display mt-1 text-xl font-semibold text-ink">
+                                    {stats.modelCallsPerRun === 0 || stats.modelCallsPerRun == null
+                                        ? '0'
+                                        : stats.modelCallsPerRun}
+                                </dd>
+                            </div>
+                            {formatDuration(stats) && (
+                                <div>
+                                    <dt className="text-xs uppercase tracking-wide text-ink-3">Duration</dt>
+                                    <dd className="font-display mt-1 text-xl font-semibold text-ink">
+                                        {formatDuration(stats)}
+                                    </dd>
+                                </div>
+                            )}
+                        </dl>
+                        <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                            {stats.durationBasis && `${stats.durationBasis}. `}
+                            Source: {stats.sourceLabel}. Measured on {stats.measuredOn}.
+                        </p>
+                        {stats.comparisonArm && (
+                            <p className="mt-2 text-xs leading-relaxed text-ink-3">{stats.comparisonArm}</p>
+                        )}
+                    </div>
+                )}
+
+                {/* Provenance */}
+                {t.provenance && t.provenance.length > 0 && (
+                    <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6">
+                        <h2 className="eyebrow">Provenance</h2>
+                        <ul className="mt-3 space-y-2 text-sm">
+                            {t.provenance.map((p) => (
+                                <li key={p.url}>
+                                    <a href={p.url} target="_blank" rel="noopener noreferrer">
+                                        {p.label} →
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
+                {/* Media */}
+                {t.media && t.media.length > 0 && (
+                    <div className="mt-6 rounded-2xl border border-hairline bg-panel p-6">
+                        <h2 className="eyebrow">Footage and evidence media</h2>
+                        <ul className="mt-3 space-y-2 text-sm">
+                            {t.media.map((m) => (
+                                <li key={m.url}>
+                                    <a href={m.url} target="_blank" rel="noopener noreferrer">
+                                        {m.label} →
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
 
                 {/* Runs on */}
                 <div className="mt-8 rounded-2xl border border-hairline bg-panel p-6">
@@ -142,6 +261,50 @@ export default function TemplatePage({ template, anchorTemplates }) {
                             {t.evidence}
                         </p>
                     </div>
+                )}
+
+                {/* FAQ */}
+                {t.faq && t.faq.length > 0 && (
+                    <section className="mt-12" aria-labelledby="template-faq-heading">
+                        <h2
+                            id="template-faq-heading"
+                            className="font-display text-xl font-semibold tracking-tight text-ink"
+                        >
+                            Questions about this template
+                        </h2>
+                        <div className="mt-4 space-y-3">
+                            {t.faq.map((item) => (
+                                <details
+                                    key={item.question}
+                                    className="rounded-xl border border-hairline bg-panel p-4"
+                                >
+                                    <summary className="cursor-pointer text-sm font-medium text-ink">
+                                        {item.question}
+                                    </summary>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                        {item.answer}
+                                    </p>
+                                    {item.sources?.length > 0 && (
+                                        <p className="mt-2 text-xs text-ink-3">
+                                            Source:{' '}
+                                            {item.sources.map((s, i) => (
+                                                <span key={s.url}>
+                                                    {i > 0 && ' · '}
+                                                    <a
+                                                        href={s.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        {s.label}
+                                                    </a>
+                                                </span>
+                                            ))}
+                                        </p>
+                                    )}
+                                </details>
+                            ))}
+                        </div>
+                    </section>
                 )}
 
                 {/* Anchors for pattern templates */}
@@ -234,16 +397,30 @@ export default function TemplatePage({ template, anchorTemplates }) {
 }
 
 export function getStaticPaths() {
+    const entries = loadTemplateEntries('data/templates')
+    const { routableTemplates } = buildTemplateGallery(templates, entries)
+    const slugs = new Set([
+        ...templates.map((t) => t.slug),
+        ...routableTemplates.map((t) => t.slug),
+    ])
     return {
-        paths: templates.map((t) => ({ params: { slug: t.slug } })),
+        paths: [...slugs].map((slug) => ({ params: { slug } })),
         fallback: false,
     }
 }
 
 export function getStaticProps({ params }) {
-    const template = templates.find((t) => t.slug === params.slug)
+    const entries = loadTemplateEntries('data/templates')
+    const { routableTemplates } = buildTemplateGallery(templates, entries)
+    const template =
+        routableTemplates.find((t) => t.slug === params.slug) ||
+        templates.find((t) => t.slug === params.slug)
+    if (!template) return { notFound: true }
     const anchorTemplates = (template.anchors || [])
-        .map((slug) => templates.find((t) => t.slug === slug))
+        .map((slug) =>
+            routableTemplates.find((t) => t.slug === slug) ||
+            templates.find((t) => t.slug === slug)
+        )
         .filter(Boolean)
         .map(({ slug, title, proof }) => ({ slug, title, proof }))
     return { props: { template, anchorTemplates } }
