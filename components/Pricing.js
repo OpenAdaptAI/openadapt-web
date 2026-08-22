@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
+import TierSelector from '@components/TierSelector'
+
 import { track, EVENTS } from 'utils/analytics'
 import status from '../public/status.json'
 
@@ -199,10 +201,14 @@ export default function Pricing({ hostedOffer = null }) {
                     Choose how you want to start.
                 </h1>
                 <p className="mx-auto mt-4 max-w-3xl text-center text-sm leading-relaxed text-ink-2 md:text-base">
-                    Run OpenAdapt yourself, qualify a consequential enterprise
-                    workflow with our team, or subscribe to managed Cloud for an
-                    approved workflow.
+                    Run OpenAdapt yourself, subscribe to managed Cloud for an
+                    approved workflow, or qualify a consequential enterprise
+                    workflow with our team.
                 </p>
+
+                <div className="mx-auto mt-10 max-w-4xl">
+                    <TierSelector />
+                </div>
 
                 <div
                     role="list"
@@ -234,34 +240,6 @@ export default function Pricing({ hostedOffer = null }) {
                     </EntryCard>
 
                     <EntryCard
-                        id="pricing-enterprise"
-                        eyebrow="Recommended for enterprise"
-                        title="Workflow Qualification Sprint"
-                        price="From $15,000"
-                        priceDetail="ten-business-day target"
-                        description="Qualify one application, one environment, and one measurable business effect before scaling."
-                        features={[
-                            'Suitability decision and qualified prototype',
-                            'Identity and effect-verification contract',
-                            'Failure, exception, and deployment analysis',
-                            'ROI model and signed go/no-go report',
-                        ]}
-                        featured
-                    >
-                        <p className="mt-4 text-xs leading-relaxed text-ink-3">
-                            Native, RDP, and Citrix qualifications are typically
-                            $25,000–$40,000. The sprint is paid even when the
-                            correct outcome is not to automate.
-                        </p>
-                        <Link
-                            href="/qualify"
-                            className="btn-ink mt-5 w-full text-center"
-                        >
-                            Qualify one workflow
-                        </Link>
-                    </EntryCard>
-
-                    <EntryCard
                         id="cloud-preview"
                         eyebrow="Managed self-service"
                         title="OpenAdapt Cloud"
@@ -277,22 +255,32 @@ export default function Pricing({ hostedOffer = null }) {
                             'Live subscription with secure Stripe checkout',
                         ]}
                     >
-                        <div className="mb-5 flex items-center gap-3">
+                        <div>
                             <span
-                                className="rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2"
+                                className="inline-block rounded-full border border-hairline bg-ground px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-ink-2"
                                 data-testid="hosted-status-label"
                             >
                                 {hostedStatusLabel}
                             </span>
                             {runCapLabel && (
-                                <span
-                                    className="text-xs font-medium text-ink-2"
+                                <p
+                                    className="mt-2 text-xs font-medium text-ink-2"
                                     data-testid="hosted-run-cap"
                                 >
                                     {runCapLabel}
-                                </span>
+                                </p>
                             )}
                         </div>
+                        <p className="mb-5 mt-3 text-xs leading-relaxed text-ink-3">
+                            Evaluating first? The free{' '}
+                            <a
+                                href="#community"
+                                className="text-accent underline"
+                            >
+                                OpenAdapt Community
+                            </a>{' '}
+                            runtime runs locally at no cost.
+                        </p>
                         <HostedCheckoutButton
                             available={hostedOfferAvailable}
                         />
@@ -324,6 +312,34 @@ export default function Pricing({ hostedOffer = null }) {
                                 Review the security boundary.
                             </Link>
                         </p>
+                    </EntryCard>
+
+                    <EntryCard
+                        id="pricing-enterprise"
+                        eyebrow="Recommended for enterprise"
+                        title="Workflow Qualification Sprint"
+                        price="From $15,000"
+                        priceDetail="ten-business-day target"
+                        description="Qualify one application, one environment, and one measurable business effect before scaling."
+                        features={[
+                            'Suitability decision and qualified prototype',
+                            'Identity and effect-verification contract',
+                            'Failure, exception, and deployment analysis',
+                            'ROI model and signed go/no-go report',
+                        ]}
+                        featured
+                    >
+                        <p className="mt-4 text-xs leading-relaxed text-ink-3">
+                            Native, RDP, and Citrix qualifications are typically
+                            $25,000–$40,000. The sprint is paid even when the
+                            correct outcome is not to automate.
+                        </p>
+                        <Link
+                            href="/qualify"
+                            className="btn-ink mt-5 w-full text-center"
+                        >
+                            Qualify one workflow
+                        </Link>
                     </EntryCard>
                 </div>
 
@@ -417,6 +433,12 @@ export default function Pricing({ hostedOffer = null }) {
                             Explore OpenAdapt Execute
                         </Link>
                     </aside>
+
+                    <p className="mt-4 border-t border-hairline pt-4 text-xs leading-relaxed text-ink-3">
+                        Production contracts are priced per verified
+                        workflow-run volume against the published annual floor
+                        shown above; exact quotes follow qualification.
+                    </p>
                 </div>
 
                 {/*

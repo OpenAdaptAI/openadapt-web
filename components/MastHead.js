@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
+import { siteCopy } from 'lib/siteCopy'
 import { track, EVENTS } from 'utils/analytics'
 import useLiveRepositoryStats from 'utils/useLiveRepositoryStats'
 
@@ -51,7 +52,7 @@ export default function Home({ githubStats: initialGithubStats }) {
                                 )}
                             </div>
                             <h1 className="font-display text-2xl md:text-3xl mt-0 mb-4 font-semibold tracking-tight text-ink">
-                                Automate the work your systems still make people do.
+                                {siteCopy.buyerLine}
                             </h1>
                             <p className="mt-0 mb-4 mx-auto max-w-2xl font-sans font-normal text-base md:text-lg text-ink-2">
                                 Show OpenAdapt a repeated task. It compiles the
@@ -67,6 +68,18 @@ export default function Home({ githubStats: initialGithubStats }) {
                                 <div className="flex flex-wrap items-center justify-center gap-3 mt-0 mb-4">
                                     <Link
                                         className={styles.heroCloud}
+                                        href="#demo"
+                                        data-testid="demo-cta"
+                                        onClick={() =>
+                                            track(EVENTS.HERO_CTA_CLICK, {
+                                                cta: 'watch_demo',
+                                            })
+                                        }
+                                    >
+                                        Watch it prove a result (65s)
+                                    </Link>
+                                    <Link
+                                        className="btn-ghost-ink"
                                         href="/qualify"
                                         data-testid="workflow-fit-cta"
                                         onClick={() =>
@@ -77,19 +90,11 @@ export default function Home({ githubStats: initialGithubStats }) {
                                     >
                                         See if your workflow fits
                                     </Link>
-                                    <Link
-                                        className="btn-ghost-ink"
-                                        href="#demo"
-                                        data-testid="demo-cta"
-                                        onClick={() =>
-                                            track(EVENTS.HERO_CTA_CLICK, {
-                                                cta: 'watch_demo',
-                                            })
-                                        }
-                                    >
-                                        Watch the 65-second demo
-                                    </Link>
                                 </div>
+                                <p className="mt-0 mb-6 text-sm leading-relaxed text-ink-3">
+                                    Qualification means we test your workflow
+                                    against real failures before it runs.
+                                </p>
                                 <p className="mb-8 text-sm leading-relaxed text-ink-3">
                                     <code className="rounded border border-hairline bg-panel px-2 py-1 text-ink">
                                         pip install openadapt

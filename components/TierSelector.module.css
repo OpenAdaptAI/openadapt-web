@@ -1,0 +1,42 @@
+/* Stateful segmented-option styling lives here so selected states never rely
+   on dynamically composed Tailwind class strings. Color values mirror the
+   theme tokens in tailwind.config.js (hairline, panel, ground, ink, ink-2,
+   ink-3, accent). */
+
+.group + .group {
+    margin-top: 1rem;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.option {
+    border: 1px solid #dddcd2;
+    border-radius: 9999px;
+    background-color: #fdfcf9;
+    color: #4c523f;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+    cursor: pointer;
+}
+
+.option:hover {
+    border-color: #23281f;
+}
+
+.option:focus-visible {
+    outline: 2px solid #3e6b4f;
+    outline-offset: 2px;
+}
+
+.optionSelected,
+.optionSelected:hover {
+    border-color: #23281f;
+    background-color: #23281f;
+    color: #f2f1ec;
+}
