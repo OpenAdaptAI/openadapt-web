@@ -8,6 +8,7 @@ import FinalQualificationCta from '@components/FinalQualificationCta'
 import Footer from '@components/Footer'
 import HowItWorksCondensed from '@components/HowItWorksCondensed'
 import MastHead from '@components/MastHead'
+import NewsletterCapture from '@components/NewsletterCapture'
 import ProductStatus from '@components/ProductStatus'
 import Qualification from '@components/Qualification'
 import ReplayHero from '@components/ReplayHero'
@@ -157,11 +158,6 @@ export default function Home({ githubStats, hostedOffer }) {
                 />
             </Head>
             <MastHead githubStats={currentGithubStats} />
-            <div id="customer-result">
-                <Reveal>
-                    <CustomerCaseStudy />
-                </Reveal>
-            </div>
             <section
                 id="demo"
                 className="border-b border-hairline bg-panel px-5 py-20 md:py-28"
@@ -182,6 +178,11 @@ export default function Home({ githubStats, hostedOffer }) {
                     <BusinessDecisionPreview />
                 </div>
             </section>
+            <div id="customer-result">
+                <Reveal>
+                    <CustomerCaseStudy />
+                </Reveal>
+            </div>
             <Reveal><HowItWorksCondensed /></Reveal>
             <Reveal><Qualification /></Reveal>
             <Reveal><ProductStatus /></Reveal>
@@ -189,6 +190,7 @@ export default function Home({ githubStats, hostedOffer }) {
             <Reveal><DashboardShowcase /></Reveal>
             <Reveal><TrustSummary /></Reveal>
             <Reveal><FinalQualificationCta /></Reveal>
+            <NewsletterCapture location="newsletter_home" />
             <Footer repositoryStats={currentGithubStats} />
         </div>
     )

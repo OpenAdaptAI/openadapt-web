@@ -16,6 +16,7 @@ import { track, EVENTS } from 'utils/analytics'
 import repositoryStatsView from 'utils/repositoryStatsView'
 import repositoryStatsSelection from 'utils/repositoryStatsSelection'
 import useLiveRepositoryStats from 'utils/useLiveRepositoryStats'
+import NewsletterCapture from './NewsletterCapture'
 import styles from './Footer.module.css'
 
 const { sourceLabel } = repositoryStatsView
@@ -126,10 +127,26 @@ const DEVELOPER_COLUMN = [
 })
 
 const CONNECT_COLUMN = [
-    BLOG_LINK,
     byLabel('Discord'),
     { label: 'GitHub', href: OPENADAPT_REPOSITORY_URL },
     { label: 'Contribute workflows', href: '/contribute' },
+]
+
+// Blog posts live on the external blog; "All posts" is the canonical
+// BLOG_LINK destination shared with the top nav.
+const BLOG_COLUMN = [
+    {
+        label: 'We ran it on a real EMR',
+        href: 'https://blog.openadapt.ai/posts/openemr-benchmark/',
+    },
+    {
+        label: 'The silent wrong write',
+        href: 'https://blog.openadapt.ai/posts/silent-wrong-action/',
+    },
+    {
+        label: 'Compile once, govern every repair',
+        href: 'https://blog.openadapt.ai/posts/2026-07-20-compile-once-govern-every-repair/',
+    },
 ]
 
 export default function Footer({
@@ -144,6 +161,7 @@ export default function Footer({
     return (
         <div className={styles.footerContainer}>
             <footer className={styles.footer}>
+                <NewsletterCapture />
                 <div className={styles.top}>
                     <div className={styles.brand}>
                         <a href="/" className={styles.wordmark}>
@@ -306,6 +324,24 @@ export default function Footer({
                                         </FooterLink>
                                     </li>
                                 ))}
+                            </ul>
+                        </div>
+
+                        <div className={styles.column}>
+                            <h2 className={styles.columnTitle}>Blog</h2>
+                            <ul className={styles.columnList}>
+                                {BLOG_COLUMN.map((item) => (
+                                    <li key={item.label}>
+                                        <FooterLink href={item.href}>
+                                            {item.label}
+                                        </FooterLink>
+                                    </li>
+                                ))}
+                                <li>
+                                    <FooterLink href={BLOG_LINK.href}>
+                                        All posts
+                                    </FooterLink>
+                                </li>
                             </ul>
                         </div>
 
