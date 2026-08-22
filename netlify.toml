@@ -44,3 +44,16 @@
   for = "/reference/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Short marketing paths for the hosted demo and the documentation site.
+[[redirects]]
+  from = "/demo"
+  to = "https://app.openadapt.ai/demo"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/docs"
+  to = "https://docs.openadapt.ai"
+  status = 301
+  force = true

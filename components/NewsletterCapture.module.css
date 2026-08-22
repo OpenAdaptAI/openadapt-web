@@ -1,0 +1,82 @@
+.wrap {
+    max-width: 26rem;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.leader {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.input {
+    flex: 1 1 13rem;
+    padding: 9px 16px;
+    border-radius: 9999px;
+    border: 1px solid var(--hairline);
+    background: var(--panel);
+    color: var(--ink);
+    font-size: 14px;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.submit {
+    padding: 9px 20px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--accent);
+    background: var(--accent);
+    color: var(--ground);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--dur-2, 180ms) var(--ease-out, ease);
+}
+
+.submit:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.submit:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.success {
+    margin: 0;
+    font-size: 14px;
+    color: var(--accent);
+}
+
+.error {
+    margin: 0;
+    font-size: 13px;
+    color: #b42318;
+}
+
+/* The honeypot stays in the DOM for bots but invisible to humans. */
+.hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
