@@ -204,7 +204,7 @@ describe('public product truth', () => {
         cy.get('header')
             .first()
             .within(() => {
-                cy.contains('a', 'Qualify one workflow').should(
+                cy.contains('a', 'Start your first workflow').should(
                     'have.attr',
                     'href',
                     '/qualify'

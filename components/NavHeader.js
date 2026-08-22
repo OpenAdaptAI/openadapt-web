@@ -365,7 +365,7 @@ export default function NavHeader() {
                             })
                         }
                     >
-                        Qualify one workflow
+                        Start your first workflow
                     </Link>
                 </div>
                 <button
