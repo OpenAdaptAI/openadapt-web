@@ -62,7 +62,7 @@ export default function NewsletterCapture({
                             name="form-name"
                             value="newsletter"
                         />
-                        <p className={styles.hidden}>
+                        <p className="hidden">
                             <label>
                                 Do not fill this out if you are human:{' '}
                                 <input

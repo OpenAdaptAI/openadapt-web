@@ -1,4 +1,6 @@
 .wrap {
+    width: 100%;
+    min-width: 0;
     max-width: 26rem;
     margin: 0 auto 2.5rem;
     display: flex;
@@ -23,6 +25,7 @@
 
 .input {
     flex: 1 1 13rem;
+    min-width: 0;
     padding: 9px 16px;
     border-radius: 9999px;
     border: 1px solid var(--hairline);
@@ -70,13 +73,3 @@
     color: #b42318;
 }
 
-/* The honeypot stays in the DOM for bots but invisible to humans. */
-.hidden {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-}
