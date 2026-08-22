@@ -1,0 +1,73 @@
+{
+    "slug": "batch-worklist-loop",
+    "name": "Process a batch worklist with one demonstrated workflow",
+    "application": "OpenEMR",
+    "surface": "browser",
+    "vertical": "operations",
+    "proof": "reference",
+    "dataStatus": "published",
+    "route": true,
+    "order": 70,
+    "title": "Process a batch worklist with one demonstrated workflow",
+    "metaDescription":
+        "Wrap one demonstrated OpenEMR note-entry workflow in a bounded loop that runs once per worklist record: deterministic, zero-model iteration, per-record identity gates and effect checks, and a fail-safe halt when the worklist exceeds the bound.",
+    "summary":
+        "The committed showcase-loop bundle wraps the real 18-step OpenEMR recording in a LOOP that runs the demonstrated body once per record of a CSV worklist, binding each record's note column to the workflow parameter. Iteration is deterministic and makes zero model calls; every iteration re-runs the same identity gate and effect verifier as a single replay, so iteration N acts on the right record or halts.",
+    "runsOn":
+        "OpenEMR (the recorded reference workflow) or your own browser application: provide the worklist as a CSV whose columns map to the workflow's parameters. This covers the provided-worklist case; reading a queue off the screen mid-run is not yet supported and is stated as future work upstream.",
+    "steps": [
+        "Record or reuse the single-demonstration body - here, the 18-step OpenEMR add-note workflow",
+        "Author the loop over a worklist CSV with openadapt flow for-each, mapping columns to parameters",
+        "Set max_iterations to the intended bound",
+        "Replay: the runtime executes the compiled program once per record, verifying each write against its declared effect",
+        "Any ambiguous or poisoned record triggers a safe halt for that run instead of a wrong write or silent skip"
+    ],
+    "parameters": ["worklist.csv columns mapped to demonstrated workflow parameters"],
+    "verification":
+        "Per-record: each iteration re-runs the hardened per-action pipeline - identity gate plus system-of-record effect verifier - so the write for record N is confirmed against the value it actually wrote. Bounded: a worklist longer than max_iterations halts rather than running unbounded. Zero-model: loop iteration, per-row binding, and worklist resolution are deterministic code. No trial counts are published for this shape yet; what is published is the committed bundle, its regeneration procedure, and the interpreter behavior it demonstrates.",
+    "verificationOracles": [
+        "per-iteration record_written + field_equals effect contracts",
+        "identity gates re-checked on every iteration",
+        "bounded max_iterations halt"
+    ],
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and browser capability."
+    },
+    "tryItCommand":
+        "openadapt flow for-each <single-demo-bundle> --records worklist.csv --out my-loop-bundle --map note=note",
+    "provenance": [
+        {
+            "label": "Data-driven LOOP showcase (committed bundle + README)",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/docs/showcase-loop"
+        },
+        {
+            "label": "Compact encounter-loop companion showcase",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/docs/showcase-encounter-loop"
+        }
+    ],
+    "faq": [
+        {
+            "question": "Are there published trial counts for batch runs?",
+            "answer":
+                "No. The repository publishes the committed bundle, a deterministic regeneration script, and the documented halt behaviors - not a per-workflow trial matrix. We do not quote numbers that have not been measured.",
+            "sources": [
+                {
+                    "label": "showcase-loop README",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/showcase-loop/README.md"
+                }
+            ]
+        },
+        {
+            "question": "What happens if the worklist has more rows than the loop allows?",
+            "answer":
+                "The run halts. The loop is bounded by max_iterations and treats an over-length worklist as fail-safe, never running unbounded.",
+            "sources": [
+                {
+                    "label": "showcase-loop README",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/showcase-loop/README.md"
+                }
+            ]
+        }
+    ]
+}

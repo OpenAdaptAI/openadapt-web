@@ -8,6 +8,7 @@ import {
     OPENADAPT_DIFFERENTIATORS,
     QUALIFICATION_EVIDENCE_URL,
 } from '../../data/comparisons'
+import { loadComparisons, findComparison } from '../../lib/generators/buildComparisons'
 
 // Targeted alternative pages under /compare/<slug>. The overview table stays
 // on /compare; these pages go deeper on one alternative at a time under the
@@ -15,6 +16,10 @@ import {
 // real strengths, differentiate only on what OpenAdapt actually does, and
 // never lean on commoditized capabilities (recording, visual targeting,
 // Citrix awareness, self-healing) as if they were unique.
+//
+// The capability-dimension grid below is generated from
+// data/compare/<slug>.json, where every factual claim names its public
+// source; those citations are rendered next to the claims they support.
 
 export async function getStaticPaths() {
     return {
@@ -25,10 +30,35 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
     const comparison = COMPARISONS.find(({ slug }) => slug === params.slug)
-    return { props: { comparison } }
+    let dimensionData = null
+    try {
+        const structured = loadComparisons('data/compare')
+        dimensionData = findComparison(structured, params.slug)
+    } catch (error) {
+        if (process.env.NODE_ENV !== 'production') throw error
+        dimensionData = null
+    }
+    return { props: { comparison, dimensionData } }
 }
 
-export default function ComparisonDetailPage({ comparison }) {
+function SourceLinks({ sources }) {
+    if (!sources || sources.length === 0) return null
+    return (
+        <p className="mt-2 text-xs leading-relaxed text-ink-3">
+            Source:{' '}
+            {sources.map((s, i) => (
+                <span key={s.url}>
+                    {i > 0 && ' · '}
+                    <a href={s.url} target="_blank" rel="noopener noreferrer">
+                        {s.label}
+                    </a>
+                </span>
+            ))}
+        </p>
+    )
+}
+
+export default function ComparisonDetailPage({ comparison, dimensionData }) {
     const url = `https://openadapt.ai/compare/${comparison.slug}`
     const webPageSchema = {
         '@context': 'https://schema.org',
@@ -43,6 +73,36 @@ export default function ComparisonDetailPage({ comparison }) {
         },
         inLanguage: 'en',
     }
+
+    const itemListSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'OpenAdapt alternative comparisons',
+        itemListElement: [
+            ...COMPARISON_LINKS.map((link, i) => ({
+                '@type': 'ListItem',
+                position: i + 1,
+                name: link.title,
+                url: `https://openadapt.ai${link.href}`,
+            })),
+        ],
+    }
+
+    const faqSchema =
+        dimensionData && dimensionData.faq && dimensionData.faq.length > 0
+            ? {
+                  '@context': 'https://schema.org',
+                  '@type': 'FAQPage',
+                  mainEntity: dimensionData.faq.map((item) => ({
+                      '@type': 'Question',
+                      name: item.question,
+                      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+                  })),
+              }
+            : null
+
+    const citedStrengths =
+        (dimensionData && dimensionData.strengths && dimensionData.strengths.filter((s) => s.source)) || []
 
     return (
         <div className="min-h-screen bg-ground text-ink">
@@ -65,6 +125,20 @@ export default function ComparisonDetailPage({ comparison }) {
                         __html: JSON.stringify(webPageSchema),
                     }}
                 />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify(itemListSchema),
+                    }}
+                />
+                {faqSchema && (
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{
+                            __html: JSON.stringify(faqSchema),
+                        }}
+                    />
+                )}
             </Head>
 
             <main className="mx-auto max-w-4xl px-4 py-14">
@@ -79,6 +153,73 @@ export default function ComparisonDetailPage({ comparison }) {
                 <p className="mt-5 max-w-3xl text-base leading-relaxed text-ink-2 md:text-lg">
                     {comparison.intro}
                 </p>
+
+                {/* Capability dimensions, generated from data/compare/<slug>.json */}
+                {dimensionData && (
+                    <section
+                        className="mt-12"
+                        aria-labelledby="dimensions-heading"
+                        data-testid="capability-dimensions"
+                    >
+                        <h2
+                            id="dimensions-heading"
+                            className="font-display text-2xl font-semibold tracking-tight text-ink"
+                        >
+                            Side by side on the dimensions that matter
+                        </h2>
+                        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-3">
+                            Every claim below names its public source. Where a
+                            vendor publishes no figure, we say so instead of
+                            estimating one.
+                        </p>
+                        <div className="mt-6 space-y-4">
+                            {dimensionData.dimensions.map((dimension) => (
+                                <article
+                                    key={dimension.id}
+                                    className="rounded-2xl border border-hairline bg-panel p-5"
+                                >
+                                    <h3 className="font-display text-lg font-semibold text-ink">
+                                        {dimension.label}
+                                    </h3>
+                                    <div className="mt-3 grid gap-4 md:grid-cols-2">
+                                        <div>
+                                            <p className="eyebrow">OpenAdapt</p>
+                                            <p className="mt-1 text-sm leading-relaxed text-ink-2">
+                                                {dimension.openadapt}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className="eyebrow">{comparison.name}</p>
+                                            <p className="mt-1 text-sm leading-relaxed text-ink-2">
+                                                {dimension.them}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <SourceLinks sources={dimension.sources} />
+                                </article>
+                            ))}
+                        </div>
+
+                        {citedStrengths.length > 0 && (
+                            <>
+                                <h3 className="font-display mt-8 text-lg font-semibold tracking-tight text-ink">
+                                    Published figures about {comparison.name} that we cite
+                                </h3>
+                                <ul className="mt-3 space-y-2">
+                                    {citedStrengths.map((strength) => (
+                                        <li
+                                            key={strength.text}
+                                            className="rounded-xl border border-hairline bg-panel p-4 text-sm leading-relaxed text-ink-2"
+                                        >
+                                            {strength.text}
+                                            <SourceLinks sources={[strength.source]} />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </>
+                        )}
+                    </section>
+                )}
 
                 <section
                     className="mt-12"
@@ -148,6 +289,34 @@ export default function ComparisonDetailPage({ comparison }) {
                     </p>
                 </section>
 
+                {/* FAQ, generated from data/compare/<slug>.json */}
+                {dimensionData && dimensionData.faq && dimensionData.faq.length > 0 && (
+                    <section className="mt-12" aria-labelledby="compare-faq-heading">
+                        <h2
+                            id="compare-faq-heading"
+                            className="font-display text-2xl font-semibold tracking-tight text-ink"
+                        >
+                            Frequently asked questions
+                        </h2>
+                        <div className="mt-4 space-y-3">
+                            {dimensionData.faq.map((item) => (
+                                <details
+                                    key={item.question}
+                                    className="rounded-xl border border-hairline bg-panel p-4"
+                                >
+                                    <summary className="cursor-pointer text-sm font-medium text-ink">
+                                        {item.question}
+                                    </summary>
+                                    <p className="mt-2 text-sm leading-relaxed text-ink-2">
+                                        {item.answer}
+                                    </p>
+                                    <SourceLinks sources={item.sources} />
+                                </details>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
                 <section
                     className="mt-12 rounded-2xl border-2 border-ink bg-panel p-6 md:p-8"
                     aria-labelledby="which-to-choose-heading"
@@ -214,11 +383,21 @@ export default function ComparisonDetailPage({ comparison }) {
                         Bring one repeated, consequential workflow and measure
                         authoring time, run time, intervention rate, and
                         incorrect-success rate against your current approach.
+                        Or watch the governed-execution demo first: every run
+                        shown ends verified or halted.
                     </p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
                         <Link href="/qualify" className="btn-ink">
                             Qualify one workflow
                         </Link>
+                        <a
+                            href="https://app.openadapt.ai/demo"
+                            className="btn-ghost-ink"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Watch the live demo
+                        </a>
                         <a
                             href="https://docs.openadapt.ai/get-started/"
                             className="btn-ghost-ink"

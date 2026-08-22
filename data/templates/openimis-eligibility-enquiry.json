@@ -1,0 +1,104 @@
+{
+    "slug": "openimis-eligibility-enquiry",
+    "name": "Automate insurance eligibility enquiries in openIMIS",
+    "application": "openIMIS",
+    "surface": "browser",
+    "vertical": "insurance",
+    "proof": "reference",
+    "dataStatus": "published",
+    "route": true,
+    "order": 60,
+    "title": "Automate insurance eligibility enquiries in openIMIS",
+    "metaDescription":
+        "Run an openIMIS eligibility enquiry as a compiled workflow with a read-only SQL oracle: 3/3 eligible-policy runs VERIFIED, 3/3 expired-policy runs HALTED on the refuted business condition, mean runtime 19.7 seconds, 0 model calls.",
+    "summary":
+        "The same compiled browser workflow - insuree number in, coverage answer out - run six fresh times against openIMIS 25.10 with synthetic data. When read-only SQL confirmed the policy state, all three runs returned VERIFIED. When SQL returned Ineligible where the declared effect required Eligible, all three runs halted instead of trusting the screen.",
+    "runsOn":
+        "openIMIS 25.10, browser surface, synthetic sample data bound to localhost. openIMIS exposes a GraphQL API that a real deployment should prefer; this demonstration stands in for commercial eligibility portals that expose no API.",
+    "steps": [
+        "Click the Insuree enquiry control",
+        "Type the insuree number - parameterized per replay",
+        "Press Enter to resolve the policyholder",
+        "Search and select the demonstrated service option",
+        "Read the eligibility result and confirm it against an independent read-only SQL query of the policy state"
+    ],
+    "parameters": ["insurance_no", "service_code", "as_of_date"],
+    "verification":
+        "A Tier 1 independent system interface: the campaign queried openIMIS through a separate read-only SQL connection, so the browser that performed the task could not certify its own result. The workflow required at least Tier 3 evidence and received the stronger Tier 1 proof. On expired policies the SQL result contradicted the declared effect and every run halted with no blind retry of the consequential action.",
+    "verificationOracles": [
+        "read-only SQL confirmation of policy, product, service, and effective-date state (Tier 1)",
+        "identity gates on three consequential actions",
+        "declared-effect check with explicit halt path"
+    ],
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and browser capability."
+    },
+    "tryItCommand":
+        "openadapt flow record --url http://localhost:8000/ --out rec && openadapt flow compile rec --out bundle --name eligibility-enquiry",
+    "runStats": {
+        "sourceLabel": "openIMIS Standard execution evidence campaign (live demo deep-dive)",
+        "environment": "openIMIS 25.10, browser, synthetic sample data, off-box transmissions observed: 0",
+        "trials": 6,
+        "verifiedRuns": 3,
+        "expectedHalts": 3,
+        "silentIncorrectSuccesses": 0,
+        "overHalts": 0,
+        "modelCallsPerRun": 0,
+        "meanRunDurationSeconds": 19.7,
+        "durationBasis": "published mean runtime across the six fresh Standard-profile runs",
+        "representativeDurationsSeconds": {
+            "eligibleVerified": [20.3, 12.7, 17.8],
+            "expiredPolicyHalted": [25.3, 19.4, 22.6]
+        },
+        "contractsPassed": "16/16 contracts on the representative VERIFIED run; 15/16 on the representative HALTED run, where the refuted effect check is exactly the failed contract",
+        "measuredOn": "compiler 1.23.0; evidence manifest d163375358f1 referenced by the live demo"
+    },
+    "media": [
+        {
+            "label": "Guided and raw footage plus halt clip (live demo)",
+            "url": "https://app.openadapt.ai/demo"
+        }
+    ],
+    "provenance": [
+        {
+            "label": "openIMIS Standard execution evidence deep-dive",
+            "url": "https://app.openadapt.ai/demo"
+        }
+    ],
+    "faq": [
+        {
+            "question": "Why did half the trials end in HALTED?",
+            "answer":
+                "By design. Three trials ran against an expired policy: read-only SQL returned Ineligible where the declared effect required Eligible, so OpenAdapt refused the contradictory result, did not accept the browser screen as success, and did not retry the consequential action blindly. Zero over-halts were observed across the campaign.",
+            "sources": [
+                {
+                    "label": "Expired-policy trial results",
+                    "url": "https://app.openadapt.ai/demo"
+                }
+            ]
+        },
+        {
+            "question": "What evidence tier verified the eligible runs?",
+            "answer":
+                "Tier 1, an independent system interface: a separate read-only SQL connection confirmed the policy, product, service, and effective-date state. The workflow only required Tier 3; it received the stronger proof.",
+            "sources": [
+                {
+                    "label": "Evidence classification notes",
+                    "url": "https://app.openadapt.ai/demo"
+                }
+            ]
+        },
+        {
+            "question": "How long does one enquiry take?",
+            "answer":
+                "Mean runtime across the six published runs was 19.7 seconds; individual verified runs ranged from 12.7 to 20.3 seconds as published in the trial list.",
+            "sources": [
+                {
+                    "label": "Campaign summary",
+                    "url": "https://app.openadapt.ai/demo"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "slug": "native-desktop-data-entry",
+    "name": "Automate native desktop application data entry",
+    "application": null,
+    "surface": "native",
+    "vertical": "operations",
+    "proof": "pattern",
+    "dataStatus": "pending-evidence",
+    "route": false,
+    "order": 80,
+    "summary":
+        "Data entry into a Windows, macOS, or Linux desktop application - demonstrated once by your team through the native interface, compiled, and replayed with per-record parameters. The runtime resolves targets from native accessibility evidence plus retained visuals.",
+    "evidenceNote":
+        "Evidence in progress. The native execution surface is described on the product surfaces page, but we have not yet published per-workflow trial counts for a desktop-application template. This card makes no performance claim; when qualified evidence exists it will be published here with the same structure as the proven templates.",
+    "provenance": [
+        {
+            "label": "Execution surfaces (browser in production today; desktop through customer-controlled qualification)",
+            "url": "https://openadapt.ai/"
+        }
+    ],
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and capture capability."
+    },
+    "faq": []
+}

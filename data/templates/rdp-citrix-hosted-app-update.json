@@ -1,0 +1,30 @@
+{
+    "slug": "rdp-citrix-hosted-app-update",
+    "name": "Automate updates inside hosted RDP and Citrix applications",
+    "application": null,
+    "surface": "remote",
+    "vertical": "operations",
+    "proof": "pattern",
+    "dataStatus": "pending-evidence",
+    "route": false,
+    "order": 90,
+    "summary":
+        "A record-keeping update inside an application that lives on a managed remote desktop or Citrix session - driven from the local client window from outside the session, so nothing is installed inside the managed environment. Pixels, keyboard, and mouse carry the same identity and result checks as local surfaces.",
+    "evidenceNote":
+        "Evidence in progress. The external remote lane is qualified today against a deterministic stand-in and a real FreeRDP round trip; a real ICA/HDX environment is qualified per customer before consequential use. No workflow-level trial counts are published yet, so this card makes no performance claim.",
+    "provenance": [
+        {
+            "label": "Remote lane qualification status (comparison data disclosure)",
+            "url": "https://openadapt.ai/compare/uipath"
+        },
+        {
+            "label": "Execution surfaces",
+            "url": "https://openadapt.ai/"
+        }
+    ],
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and capture capability."
+    },
+    "faq": []
+}

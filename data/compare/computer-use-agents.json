@@ -1,0 +1,156 @@
+{
+    "slug": "computer-use-agents",
+    "competitor": "computer-use agents (OpenAI and Anthropic)",
+    "positioningSummary":
+        "Computer-use models from OpenAI and Anthropic point a frontier model at the screen and reason their way through a task; that flexibility is real and improving fast. OpenAdapt compiles a demonstration once and replays it deterministically, reserving models for compilation and reviewable repair.",
+    "dimensions": [
+        {
+            "id": "determinism-on-drift",
+            "label": "Determinism when interfaces drift",
+            "openadapt":
+                "Healthy runs replay the same compiled steps deterministically with zero model calls; drift outside what was demonstrated halts for a governed decision.",
+            "them":
+                "Every run re-reasons from screenshots: OpenAI's loop sends a screenshot back after each action batch so the model can plan the next step, which adapts to novelty but makes each run non-deterministic by construction.",
+            "sources": [
+                {
+                    "label": "OpenAI computer use guide: screenshot-action loop",
+                    "url": "https://platform.openai.com/docs/guides/tools-computer-use"
+                }
+            ]
+        },
+        {
+            "id": "cost-per-run",
+            "label": "Cost per run",
+            "openadapt":
+                "$0 model cost per healthy run on the MIT runtime - published trials across MockMed triage (18 trials), Frappe Lending (6/6), and openIMIS eligibility (6 runs) all recorded zero model calls.",
+            "them":
+                "Metered per model turn: screenshots are billed as image inputs every step. Claude's computer-use toolset definition alone adds about 4,500 input tokens to a request before any screenshot; OpenAI recommends original-detail screenshots each turn for click accuracy.",
+            "sources": [
+                {
+                    "label": "Claude computer use tool: pricing",
+                    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool"
+                },
+                {
+                    "label": "OpenAI computer use guide: screenshot detail guidance",
+                    "url": "https://platform.openai.com/docs/guides/tools-computer-use"
+                },
+                {
+                    "label": "OpenAdapt published trials with 0 model calls",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/manifest.json"
+                }
+            ]
+        },
+        {
+            "id": "verification-of-effects",
+            "label": "Verification of business effects",
+            "openadapt":
+                "Every consequential run ends VERIFIED or HALTED based on an independent check of the system of record, with silent incorrect success counted as a tracked failure metric in published evidence.",
+            "them":
+                "The acting model reports task completion from what it sees; providers direct developers to keep a human in the loop for high-impact actions rather than providing an out-of-band business-effect oracle.",
+            "sources": [
+                {
+                    "label": "OpenAI computer use guide: human-in-the-loop safeguards",
+                    "url": "https://platform.openai.com/docs/guides/tools-computer-use"
+                }
+            ]
+        },
+        {
+            "id": "halting-behavior",
+            "label": "Halting behavior",
+            "openadapt":
+                "Halting is a designed outcome: ambiguity, wrong identity, or a refuted effect stops the run with preserved evidence instead of proceeding or retrying blindly.",
+            "them":
+                "The model keeps attempting until it believes the task is done or its budget is exhausted; stopping criteria are prompt- and harness-level, not contract-level.",
+            "sources": [
+                {
+                    "label": "OpenAI computer use guide: agent loop semantics",
+                    "url": "https://platform.openai.com/docs/guides/tools-computer-use"
+                }
+            ]
+        },
+        {
+            "id": "data-locality",
+            "label": "Data locality",
+            "openadapt":
+                "Runs execute locally inside your boundary; egress is an explicit observed flag (false in the published demo pack), and Claude computer use is documented as ZDR eligible when your application controls storage.",
+            "them":
+                "Screen content leaves the machine to the model provider on every step: OpenAI's reference loop ships screenshots to the API each action batch, and Anthropic bills those screenshots as image input under standard API data handling.",
+            "sources": [
+                {
+                    "label": "Claude computer use tool: data retention and ZDR",
+                    "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool"
+                },
+                {
+                    "label": "mockmed-triage-v3 pack: off-box egress observed false",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/artifacts/cases/representative/trial-01/outcome.json"
+                }
+            ]
+        },
+        {
+            "id": "scope",
+            "label": "Scope: browser, desktop, RDP/Citrix",
+            "openadapt":
+                "Browser in production today plus native desktop and external-lane remote execution into managed RDP/Citrix estates, with published acceptance evidence per surface.",
+            "them":
+                "Any UI a screenshot can describe, including desktops inside VMs or containers the harness controls; consumer agents such as Operator extend the same approach to end users.",
+            "sources": [
+                {
+                    "label": "OpenAI computer use guide: browser and VM harnesses",
+                    "url": "https://platform.openai.com/docs/guides/tools-computer-use"
+                }
+            ]
+        }
+    ],
+    "strengths": [
+        {
+            "text":
+                "Genuine flexibility on novel, one-off, or loosely specified tasks with no authoring step at all.",
+            "source": null
+        },
+        {
+            "text":
+                "They generalize across unfamiliar interfaces, recovering from situations nobody anticipated in advance, and improve with every model generation without changes to your workflow definitions.",
+            "source": null
+        },
+        {
+            "text":
+                "A plain-language instruction is the whole interface; OpenAI documents harness shapes from built-in loops to code-execution environments mixing visual and programmatic interaction.",
+            "source": {
+                "label": "OpenAI computer use guide: integration paths",
+                "url": "https://platform.openai.com/docs/guides/tools-computer-use"
+            }
+        },
+        {
+            "text":
+                "Anthropic provides a reference implementation with a web UI, Docker container, example tools, and an agent loop to get started quickly.",
+            "source": {
+                "label": "Claude computer use tool: quick start",
+                "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool"
+            }
+        }
+    ],
+    "faq": [
+        {
+            "question": "Are computer-use agents and OpenAdapt rivals?",
+            "answer":
+                "They are complementary. Agent providers themselves recommend isolated environments and human oversight for high-impact actions; OpenAdapt uses models too - at compile and repair time - while healthy runs replay deterministically with zero model calls.",
+            "sources": [
+                {
+                    "label": "OpenAI computer use guide: safeguards",
+                    "url": "https://platform.openai.com/docs/guides/tools-computer-use"
+                }
+            ]
+        },
+        {
+            "question": "Which should run the same workflow a thousand times?",
+            "answer":
+                "When correctness matters, replay a verified program: OpenAdapt's published evidence counts verified outcomes, expected halts, and silent incorrect successes per workflow - for example 18 MockMed triage trials with 0 model calls and 0 silent incorrect successes - instead of re-reasoning the task on every run.",
+            "sources": [
+                {
+                    "label": "mockmed-triage-v3 evidence pack",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/manifest.json"
+                }
+            ]
+        }
+    ]
+}

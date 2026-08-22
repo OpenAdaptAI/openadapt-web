@@ -1,0 +1,67 @@
+{
+    "slug": "openemr-patient-note",
+    "name": "Automate patient note entry in OpenEMR",
+    "application": "OpenEMR",
+    "surface": "browser",
+    "vertical": "healthcare",
+    "proof": "field",
+    "dataStatus": "published",
+    "route": true,
+    "order": 30,
+    "demonstrates":
+        "An 18-step add-patient-note workflow on the real third-party OpenEMR public demo: log in, find the patient, open the chart, navigate to Patient Messages, enter a parameterized note, save - with each replay substituting a distinct note value.",
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and browser capability."
+    },
+    "tryItCommand":
+        "openadapt flow record --url https://demo.openemr.io/openemr --out rec && openadapt flow compile rec --out bundle --name add-note",
+    "runStats": {
+        "sourceLabel": "Field run on the OpenEMR public demo, measured 2026-07-08",
+        "environment":
+            "Third-party OpenEMR public demo (fake patients only; shared instance that resets daily)",
+        "trials": 20,
+        "verifiedRuns": 20,
+        "expectedHalts": 0,
+        "silentIncorrectSuccesses": 0,
+        "modelCallsPerRun": 0,
+        "comparisonArm":
+            "A computer-use agent baseline completed 10/10 trials under the same conditions; compiled replay was faster with zero model calls",
+        "measuredOn":
+            "openadapt-flow 0.1.0 (a pre-v0.2.0 source build), 2026-07-08; not re-measured since"
+    },
+    "provenance": [
+        {
+            "label": "Benchmark harness and raw results (openadapt-flow)",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/openemr_e2e"
+        },
+        {
+            "label": "Spike findings write-up",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/docs/showcase-openemr/FINDINGS.md"
+        }
+    ],
+    "faq": [
+        {
+            "question": "Was this measured in CI or in the field?",
+            "answer":
+                "In the field, against the real third-party OpenEMR public demo. It is not CI-reproducible: the demo is shared and resets daily, and the agent sample is small. The verifier and task-prompt units do run in CI.",
+            "sources": [
+                {
+                    "label": "Template registry evidence note",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-web/blob/main/data/templates.js"
+                }
+            ]
+        },
+        {
+            "question": "How does the run know the write actually happened?",
+            "answer":
+                "The Save step carries system-of-record effect contracts (record_written plus a field_equals check on the note). Under an injected fault where the screen paints Saved while the record drops the note, effect verification refutes the run and it halts.",
+            "sources": [
+                {
+                    "label": "benchmark/openemr_e2e",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/openemr_e2e"
+                }
+            ]
+        }
+    ]
+}

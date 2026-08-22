@@ -1,0 +1,158 @@
+{
+    "slug": "power-automate",
+    "competitor": "Microsoft Power Automate",
+    "positioningSummary":
+        "Power Automate is the default automation layer of the Microsoft ecosystem and is very hard to beat there on integration and per-seat price. OpenAdapt is designed for the non-API last mile where a wrong write matters and the result must be verified against the system of record.",
+    "dimensions": [
+        {
+            "id": "determinism-on-drift",
+            "label": "Determinism when interfaces drift",
+            "openadapt":
+                "Compiled replay is deterministic with zero model calls on healthy runs; undemonstrated states halt, and repairs pass through governed re-resolution before a new version deploys.",
+            "them":
+                "Desktop flows replay recorded UI steps deterministically; cloud flows are deterministic API orchestrations. Drift handling relies on standard error handling and retry configuration rather than evidence-based re-resolution.",
+            "sources": [
+                {
+                    "label": "Power Automate plans: desktop flows (RPA)",
+                    "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+                }
+            ]
+        },
+        {
+            "id": "cost-per-run",
+            "label": "Cost per run",
+            "openadapt":
+                "The local runtime carries no license fee and healthy runs make zero model calls; published trials recorded $0 model cost per run.",
+            "them":
+                "Published list pricing: Premium $15.00 user/month, Process $150.00 bot/month for unattended desktop flows, Hosted Process $215.00 bot/month including a Microsoft-hosted Azure VM (paid yearly). A bot executes one unattended run at a time.",
+            "sources": [
+                {
+                    "label": "Power Automate pricing page",
+                    "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+                },
+                {
+                    "label": "Frappe Lending benchmark: $0 model cost",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/frappe_lending"
+                }
+            ]
+        },
+        {
+            "id": "verification-of-effects",
+            "label": "Verification of business effects",
+            "openadapt":
+                "Every consequential run ends VERIFIED or HALTED based on an out-of-band check of the system of record - REST readback, SQL, table-delta audit, or file arrival - never the acting session's own report.",
+            "them":
+                "Cloud flows surface run history and error details in the Power Platform admin center; Dataverse stores the data flows act on. Verification of a desktop flow's business effect is typically expressed as configured assertions or downstream checks the builder authors.",
+            "sources": [
+                {
+                    "label": "Power Automate pricing: admin and capacity features",
+                    "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+                }
+            ]
+        },
+        {
+            "id": "halting-behavior",
+            "label": "Halting behavior",
+            "openadapt":
+                "Ambiguity halts before acting; a refuted effect halts after acting without blind retry, classifying delivery as uncertain for operator reconciliation.",
+            "them":
+                "Desktop flows support configurable error handling, retries, and timeouts defined by the flow author; unattended runs proceed under the machine/bot license without a human unless the flow requests one.",
+            "sources": [
+                {
+                    "label": "Power Automate pricing: attended vs unattended desktop flows",
+                    "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+                }
+            ]
+        },
+        {
+            "id": "data-locality",
+            "label": "Data locality",
+            "openadapt":
+                "Execution is local-first and customer-controlled: recordings, bundles, and evidence can remain inside your boundary on an inspectable MIT runtime.",
+            "them":
+                "Runs ride Microsoft-hosted infrastructure; the Hosted Process tier explicitly places the automation VM on Azure-managed infrastructure, and capacities pool at the tenant level in Dataverse.",
+            "sources": [
+                {
+                    "label": "Power Automate pricing: Hosted Process plan",
+                    "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+                }
+            ]
+        },
+        {
+            "id": "scope",
+            "label": "Scope: browser, desktop, RDP/Citrix",
+            "openadapt":
+                "Browser in production today, native desktop via accessibility plus visual evidence, and an external zero-install lane into managed RDP/Citrix estates qualified per customer before consequential use.",
+            "them":
+                "Deep Microsoft 365 coverage plus hundreds of prebuilt connectors for API-first work; desktop RPA covers Windows applications, with remote scenarios handled through the hosted VM tier.",
+            "sources": [
+                {
+                    "label": "OpenAdapt qualification evidence per surface",
+                    "url": "https://docs.openadapt.ai/get-started/what-works-today/"
+                },
+                {
+                    "label": "Power Automate pricing: connectors and hosted VM rows",
+                    "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+                }
+            ]
+        }
+    ],
+    "strengths": [
+        {
+            "text":
+                "Premium per-user pricing starts around $15.00 user/month paid yearly, which makes broad light automation inexpensive across many seats.",
+            "source": {
+                "label": "Power Automate pricing: Premium plan",
+                "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+            }
+        },
+        {
+            "text":
+                "Unattended automation scales through Process ($150.00 bot/month) and Hosted Process ($215.00 bot/month with a Microsoft-hosted Azure VM), both paid yearly.",
+            "source": {
+                "label": "Power Automate pricing: Process plans",
+                "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+            }
+        },
+        {
+            "text":
+                "Native integration with Microsoft 365, Dataverse entitlements pooled at the tenant level, and centralized administration through the Power Platform admin center.",
+            "source": {
+                "label": "Power Automate pricing: included features",
+                "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+            }
+        },
+        {
+            "text":
+                "Process mining is available as a first-class add-on ($5,000 tenant/month) for discovering what to automate.",
+            "source": {
+                "label": "Power Automate pricing: Process Mining add-on",
+                "url": "https://www.microsoft.com/en-us/power-platform/products/power-automate/pricing"
+            }
+        }
+    ],
+    "faq": [
+        {
+            "question": "If a supported connector reaches my system, which tool should I use?",
+            "answer":
+                "Use the connector. OpenAdapt exists for the UI-only remainder where no practical API exists and correctness has to be proved against the system of record rather than assumed.",
+            "sources": [
+                {
+                    "label": "OpenAdapt comparison guide",
+                    "url": "https://openadapt.ai/compare/power-automate"
+                }
+            ]
+        },
+        {
+            "question": "How does per-run verification differ?",
+            "answer":
+                "OpenAdapt's published trials verify writes out of band - for example 3/3 OpenEMR patient-record runs confirmed by REST readback agreeing with direct SQL plus a non-target delta audit, with 0 model calls. Desktop-flow runs report their own execution status; independent system-of-record confirmation is not part of the published plan features.",
+            "sources": [
+                {
+                    "label": "Reference qualification results",
+                    "url": "https://app.openadapt.ai/demo"
+                }
+            ]
+        }
+    ]
+}

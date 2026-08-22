@@ -1,0 +1,63 @@
+{
+    "slug": "openimis-claim-intake",
+    "name": "Automate health insurance claim intake in openIMIS",
+    "application": "openIMIS",
+    "surface": "browser",
+    "vertical": "insurance",
+    "proof": "reference",
+    "dataStatus": "published",
+    "route": true,
+    "order": 50,
+    "demonstrates":
+        "A health-facility claim entered once in openIMIS - the open-source system used by national health-insurance schemes - compiled, and replayed with a fresh claim number, accepted only when a direct SQL read shows exactly one new claim row in status Entered for the right policyholder and facility.",
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and browser capability."
+    },
+    "tryItCommand":
+        "openadapt flow record --url http://localhost:8000/ --out rec && openadapt flow compile rec --out bundle --name claim-intake",
+    "runStats": {
+        "sourceLabel": "Reference environment replays (deliberately not a benchmark)",
+        "environment":
+            "openIMIS 25.10 from digest-pinned images with the upstream synthetic demo dataset; everything binds to localhost",
+        "trials": 3,
+        "verifiedRuns": 3,
+        "expectedHalts": 0,
+        "silentIncorrectSuccesses": 0,
+        "modelCallsPerRun": null,
+        "comparisonArm":
+            "Separate small-N paid-agent run on a different flow build: 3/3 correct, 0/3 over-halt, 0/3 silent incorrect, $0.4793 per run; no matched timing matrix, so no comparative claim is made",
+        "measuredOn":
+            "compiled arm on openadapt-flow 1.11.0 (evidence committed 2026-07-17); agent arm on openadapt-flow 1.19.0 (2026-07-21)"
+    },
+    "provenance": [
+        {
+            "label": "Reference environment and raw results (openadapt-flow)",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/openimis_claims"
+        }
+    ],
+    "faq": [
+        {
+            "question": "What failure does the SQL oracle catch?",
+            "answer":
+                "The costly one: the claim silently entered twice, or against the wrong policyholder, surfacing weeks later in reconciliation. A duplicate or missing claim row fails the run loudly instead of reporting success.",
+            "sources": [
+                {
+                    "label": "benchmark/openimis_claims",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/benchmark/openimis_claims"
+                }
+            ]
+        },
+        {
+            "question": "Is this a benchmark result?",
+            "answer":
+                "No. The repository describes it as a reference environment, deliberately not a benchmark: there is no matched timing matrix or publication protocol behind the 3/3 compiled replays.",
+            "sources": [
+                {
+                    "label": "Template registry evidence note",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-web/blob/main/data/templates.js"
+                }
+            ]
+        }
+    ]
+}

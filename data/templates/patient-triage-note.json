@@ -1,0 +1,98 @@
+{
+    "slug": "patient-triage-note",
+    "name": "Automate patient triage note entry",
+    "application": "MockMed",
+    "surface": "browser",
+    "vertical": "healthcare",
+    "proof": "reference",
+    "dataStatus": "published",
+    "route": true,
+    "order": 10,
+    "summary": null,
+    "demonstrates":
+        "A nurse's triage-note workflow demonstrated once in a synthetic clinic app, compiled into a deterministic local program, and replayed with the note text as a parameter - including five injected fault classes that must halt instead of proceeding.",
+    "install": {
+        "command": "pip install 'openadapt[browser]'",
+        "note": "Installs the OpenAdapt launcher, compiler, and browser capability."
+    },
+    "tryItCommand": "openadapt flow replay bundle --param note=\"Triage note from $(date +%F)\"",
+    "runStats": {
+        "sourceLabel": "Immutable public-demo evidence pack mockmed-triage-v3",
+        "environment": "MockMed synthetic clinic app (MIT, synthetic data only)",
+        "trials": 18,
+        "verifiedRuns": 3,
+        "expectedHalts": 15,
+        "silentIncorrectSuccesses": 0,
+        "wrongTargetActions": 0,
+        "modelCallsPerRun": 0,
+        "medianVerifiedRunDurationMs": 4706.64,
+        "durationBasis": "median of the three verified representative-run durations published in the pack outcomes (4820.51 ms, 4706.64 ms, 4697.14 ms)",
+        "faultClassesHalted": [
+            "ambiguous target",
+            "missing effect",
+            "stale identity",
+            "weak effect",
+            "wrong identity"
+        ],
+        "measuredOn": "openadapt-flow 1.23.0, commit 7cc518ee0b83dd571c0902423134a5525635e6b2, pack generated 2026-07-26"
+    },
+    "media": [
+        {
+            "label": "Verified replay (derived presentation view)",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/artifacts/presentation/verified.webm"
+        },
+        {
+            "label": "Safe halt footage (derived presentation view)",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/artifacts/presentation/halted.webm"
+        }
+    ],
+    "provenance": [
+        {
+            "label": "Evidence pack manifest (byte inventory, SHA-256 bound)",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/manifest.json"
+        },
+        {
+            "label": "Qualification report for the same pack",
+            "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/artifacts/qualification/report.json"
+        },
+        {
+            "label": "Live governed-execution demo",
+            "url": "https://app.openadapt.ai/demo"
+        }
+    ],
+    "faq": [
+        {
+            "question": "Does this template make model calls when it runs?",
+            "answer":
+                "No. Every one of the 18 published trials in evidence pack mockmed-triage-v3 recorded 0 model calls, including the 15 fault trials.",
+            "sources": [
+                {
+                    "label": "Pack outcome envelopes",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/tree/main/public-demo/evidence-packs/mockmed-triage-v3/artifacts/cases"
+                }
+            ]
+        },
+        {
+            "question": "What happens when the target is ambiguous?",
+            "answer":
+                "The run halts before acting. In the published fault trials, an ambiguous locator produced a structural safety refusal - no action was admitted - in 3 of 3 trials.",
+            "sources": [
+                {
+                    "label": "fault-ambiguity outcome example",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-flow/blob/main/public-demo/evidence-packs/mockmed-triage-v3/artifacts/cases/fault-ambiguity/trial-01/outcome.json"
+                }
+            ]
+        },
+        {
+            "question": "Is the clinical-write bundle certified?",
+            "answer":
+                "No. The bundled tutorial is runnable but intentionally not certified for clinical writes; lint reports its unarmed irreversible final click and the strict policy gate refuses certification. That refusal is the safety boundary working.",
+            "sources": [
+                {
+                    "label": "Template gallery source registry",
+                    "url": "https://github.com/OpenAdaptAI/openadapt-web/blob/main/data/templates.js"
+                }
+            ]
+        }
+    ]
+}
